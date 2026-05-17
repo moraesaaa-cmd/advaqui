@@ -1,0 +1,72 @@
+import type { MetadataRoute } from "next";
+import { SITE } from "@/lib/config";
+import { STATES } from "@/lib/data/states";
+import { getAllCities } from "@/lib/data/cities";
+import { SPECIALTIES } from "@/lib/data/specialties";
+import { MOCK_LAWYERS } from "@/lib/data/mock-lawyers";
+
+/**
+ * Sitemap principal. Inclui:
+ *  - páginas estáticas (home, planos, sobre, FAQ, contato, termos, privacidade)
+ *  - índice do diretório
+ *  - todas as 27 páginas de estado
+ *  - perfis de advogados
+ *  - capitais + capital×especialidade (importantes para SEO)
+ *
+ * Sitemaps secundários cobrem todas as cidades e cidade×especialidade
+ * (~89.000 URLs), divididos por UF em `app/sitemap-cidades/[uf]/sitemap.ts`
+ * e `app/sitemap-especialidades/[uf]/sitemap.ts`. O `robots.ts` aponta para
+ * o sitemap raiz e o Google segue os links normalmente.
+ */
+export default function sitemap(): MetadataRoute.Sitemap {
+  const base = SITE.url.replace(/\/$/, "");
+  const now = new Date();
+
+  const staticRoutes: MetadataRoute.Sitemap = [
+    { url: `${base}/`, changeFrequency: "daily", priority: 1.0, lastModified: now },
+    { url: `${base}/advogados`, changeFrequency: "daily", priority: 0.9, lastModified: now },
+    { url: `${base}/planos`, changeFrequency: "monthly", priority: 0.7, lastModified: now },
+    { url: `${base}/sobre`, changeFrequency: "yearly", priority: 0.4, lastModified: now },
+    { url: `${base}/faq`, changeFrequency: "monthly", priority: 0.5, lastModified: now },
+    { url: `${base}/contato`, changeFrequency: "yearly", priority: 0.4, lastModified: now },
+    { url: `${base}/termos`, changeFrequency: "yearly", priority: 0.3, lastModified: now },
+    { url: `${base}/privacidade`, changeFrequency: "yearly", priority: 0.3, lastModified: now },
+    { url: `${base}/aviso-legal`, changeFrequency: "yearly", priority: 0.3, lastModified: now },
+    { url: `${base}/cadastro`, changeFrequency: "monthly", priority: 0.5, lastModified: now },
+    { url: `${base}/login`, changeFrequency: "yearly", priority: 0.2, lastModified: now }
+  ];
+
+  const stateRoutes: MetadataRoute.Sitemap = STATES.map((s) => ({
+    url: `${base}/advogados/${s.uf.toLowerCase()}`,
+    changeFrequency: "weekly",
+    priority: 0.8,
+    lastModified: now
+  }));
+
+  const profileRoutes: MetadataRoute.Sitemap = MOCK_LAWYERS.map((l) => ({
+    url: `${base}/p/${l.slug}`,
+    changeFrequency: "weekly",
+    priority: 0.5,
+    lastModified: now
+  }));
+
+  const capitalSpecRoutes: MetadataRoute.Sitemap = [];
+  for (const c of getAllCities().filter((c) => c.isCapital)) {
+    capitalSpecRoutes.push({
+      url: `${base}/advogados/${c.uf.toLowerCase()}/${c.slug}`,
+      changeFrequency: "weekly",
+      priority: 0.7,
+      lastModified: now
+    });
+    for (const sp of SPECIALTIES) {
+      capitalSpecRoutes.push({
+        url: `${base}/advogados/${c.uf.toLowerCase()}/${c.slug}/${sp.slug}`,
+        changeFrequency: "weekly",
+        priority: 0.6,
+        lastModified: now
+      });
+    }
+  }
+
+  return [...staticRoutes, ...stateRoutes, ...capitalSpecRoutes, ...profileRoutes];
+}

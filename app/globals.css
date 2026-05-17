@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #FBF9F4;
+    color: #0F1B2D;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a {
+    text-decoration: none;
+  }
+  *:focus-visible {
+    outline: 2px solid #C9A24C;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .container-tight {
+    @apply max-w-6xl mx-auto px-4 sm:px-6;
+  }
+  .container-narrow {
+    @apply max-w-3xl mx-auto px-4 sm:px-6;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-ink text-white font-semibold transition hover:bg-brand-deep active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-accent focus-visible:outline-offset-2;
+  }
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-accent text-brand-ink font-bold transition hover:bg-brand-accent2 active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-brand-ink hover:bg-brand-line/60 transition;
+  }
+  .card {
+    @apply bg-white rounded-2xl border border-brand-line p-6 shadow-card transition;
+  }
+  .input {
+    @apply w-full px-4 py-3 rounded-xl border border-brand-line bg-white text-brand-ink placeholder:text-brand-ink/40 outline-none focus:border-brand-deep focus:ring-2 focus:ring-brand-deep/15 transition;
+  }
+  .label {
+    @apply block text-sm font-medium text-brand-ink mb-1.5;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border border-brand-line bg-white;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
