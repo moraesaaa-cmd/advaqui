@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { MapPin, Award } from "lucide-react";
 import { findState, STATES } from "@/lib/data/states";
 import { citiesByUf, findCapital } from "@/lib/data/cities";
-import { lawyersForCity, lawyersForState } from "@/lib/data/mock-lawyers";
+import { getLawyerCountsByCity } from "@/lib/data/lawyers";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -41,11 +41,12 @@ const groupCitiesByLetter = (cities: Array<{ name: string; slug: string; uf: str
   return Array.from(groups.entries()).sort(([a], [b]) => a.localeCompare(b));
 };
 
-export default function StatePage({ params }: { params: { uf: string } }) {
+export default async function StatePage({ params }: { params: { uf: string } }) {
   const st = findState(params.uf);
   if (!st) notFound();
   const cities = citiesByUf(st.uf);
-  const totalLawyers = lawyersForState(st.uf).length;
+  const lawyerCounts = await getLawyerCountsByCity(st.uf);
+  const totalLawyers = Object.values(lawyerCounts).reduce((a, b) => a + b, 0);
   const capital = findCapital(st.uf);
   const grouped = groupCitiesByLetter(cities);
 
@@ -84,7 +85,7 @@ export default function StatePage({ params }: { params: { uf: string } }) {
                 Advogados em {capital.name}
               </Link>
               <p className="text-sm text-brand-ink/60 mt-1">
-                {lawyersForCity(st.uf, capital.slug).length} profissional(is) cadastrado(s)
+                {lawyerCounts[capital.slug] || 0} profissional(is) cadastrado(s)
               </p>
             </div>
           </div>
@@ -107,7 +108,7 @@ export default function StatePage({ params }: { params: { uf: string } }) {
             </h3>
             <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-1.5">
               {list.map((c) => {
-                const count = lawyersForCity(st.uf, c.slug).length;
+                const count = lawyerCounts[c.slug] || 0;
                 return (
                   <li key={c.slug}>
                     <Link

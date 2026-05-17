@@ -4,13 +4,18 @@ import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { MapPin, ChevronRight, Loader2 } from "lucide-react";
-import { MOCK_LAWYERS } from "@/lib/data/mock-lawyers";
 import { Breadcrumb } from "@/components/Breadcrumb";
 
-const normalize = (s: string): string =>
-  s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-
 type CityHit = { name: string; slug: string; uf: string; isCapital: boolean };
+type LawyerHit = {
+  id: string;
+  slug: string;
+  name: string;
+  oab: string;
+  oab_uf: string;
+  city_name: string;
+  uf: string;
+};
 
 function ResultsInner() {
   const params = useSearchParams();
@@ -18,31 +23,37 @@ function ResultsInner() {
   const term = q.trim();
 
   const [cities, setCities] = useState<CityHit[]>([]);
+  const [lawyers, setLawyers] = useState<LawyerHit[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (term.length < 2) {
       setCities([]);
+      setLawyers([]);
       return;
     }
     const ctrl = new AbortController();
     setLoading(true);
-    fetch(`/api/cities?q=${encodeURIComponent(term)}&limit=20`, { signal: ctrl.signal })
-      .then((r) => (r.ok ? r.json() : []))
-      .then((data: CityHit[]) => {
-        setCities(data);
+
+    Promise.all([
+      fetch(`/api/cities?q=${encodeURIComponent(term)}&limit=20`, { signal: ctrl.signal })
+        .then((r) => (r.ok ? r.json() : []))
+        .catch(() => []),
+      fetch(`/api/lawyers/search?q=${encodeURIComponent(term)}&limit=10`, { signal: ctrl.signal })
+        .then((r) => (r.ok ? r.json() : []))
+        .catch(() => [])
+    ])
+      .then(([c, l]) => {
+        setCities(c as CityHit[]);
+        setLawyers(l as LawyerHit[]);
         setLoading(false);
       })
       .catch((err) => {
         if (err?.name !== "AbortError") setLoading(false);
       });
+
     return () => ctrl.abort();
   }, [term]);
-
-  const lawyers =
-    term.length < 2
-      ? []
-      : MOCK_LAWYERS.filter((l) => normalize(l.name).includes(normalize(term))).slice(0, 10);
 
   return (
     <div className="container-tight py-10">
@@ -110,7 +121,7 @@ function ResultsInner() {
                   <div>
                     <p className="font-semibold text-brand-ink">{l.name}</p>
                     <p className="text-xs text-brand-ink/60">
-                      OAB/{l.oabUf} {l.oab} — {l.cityName}/{l.uf}
+                      OAB/{l.oab_uf} {l.oab} — {l.city_name}/{l.uf}
                     </p>
                   </div>
                   <ChevronRight

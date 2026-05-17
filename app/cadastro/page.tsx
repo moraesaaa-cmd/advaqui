@@ -15,11 +15,8 @@ import {
 } from "@/lib/utils/validation";
 import { formatCpf, formatPhone, formatCep } from "@/lib/utils/format";
 import { slugify } from "@/lib/utils/slug";
-import { generateId } from "@/lib/utils/id";
-import { store } from "@/lib/store/localStore";
 import { toast } from "@/components/Toast";
-import { hashPassword } from "@/lib/auth/hash";
-import type { Lawyer } from "@/lib/data/mock-lawyers";
+import { createClient } from "@/lib/supabase/client";
 
 type FormState = {
   name: string;
@@ -127,9 +124,7 @@ export default function CadastroPage() {
         e.confirmPassword = "Senhas não coincidem";
       if (!form.acceptTerms) e.acceptTerms = "Aceite os termos para continuar";
       if (!form.acceptLgpd) e.acceptLgpd = "Aceite o consentimento LGPD";
-      const users = store.getUsers();
-      if (users.find((x) => x.email === form.email))
-        e.email = "Este e-mail já está cadastrado";
+      // Duplicidade de e-mail é verificada pelo Supabase Auth no signUp.
     }
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -142,45 +137,59 @@ export default function CadastroPage() {
     }
   };
 
+  const [submitting, setSubmitting] = useState(false);
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.honeypot) return;
     if (!validate(2)) return;
+    if (submitting) return;
 
+    setSubmitting(true);
     const citySlug = slugify(form.city);
-    const slug = `${slugify(form.name)}-${form.uf.toLowerCase()}-${citySlug}-${generateId().slice(0, 4)}`;
-    const passwordHash = await hashPassword(form.password);
+    const supabase = createClient();
 
-    const newLawyer: Lawyer = {
-      id: generateId(),
-      slug,
-      name: form.name,
-      oab: form.oab,
-      oabUf: form.oabUf,
+    const { data, error } = await supabase.auth.signUp({
       email: form.email.toLowerCase().trim(),
-      phone: form.phone,
-      whatsapp: form.whatsapp || form.phone,
-      address: form.address,
-      cityName: form.city,
-      citySlug,
-      uf: form.uf,
-      specialties: form.specialties,
-      bio: form.bio,
-      planStatus: "free",
-      createdAt: new Date().toISOString(),
-      passwordHash
-    };
-
-    const users = store.getUsers();
-    store.setUsers([...users, newLawyer]);
-    store.setSession({
-      userId: newLawyer.id,
-      role: "lawyer",
-      name: newLawyer.name,
-      email: newLawyer.email
+      password: form.password,
+      options: {
+        // Esses dados são lidos pelo trigger handle_new_user() no Supabase,
+        // que cria a linha em public.lawyers automaticamente.
+        data: {
+          name: form.name,
+          oab: form.oab,
+          oab_uf: form.oabUf,
+          cpf: form.cpf,
+          phone: form.phone,
+          whatsapp: form.whatsapp || form.phone,
+          address: form.address,
+          city_name: form.city,
+          city_slug: citySlug,
+          uf: form.uf,
+          specialties: form.specialties,
+          bio: form.bio
+        }
+      }
     });
-    toast("Cadastro realizado! Bem-vindo ao AdvAqui.");
-    router.push("/painel");
+
+    setSubmitting(false);
+
+    if (error) {
+      const msg = error.message.toLowerCase();
+      if (msg.includes("already") || msg.includes("registered")) {
+        setErrors({ email: "Este e-mail já está cadastrado" });
+        setStep(0);
+        return;
+      }
+      setErrors({ password: error.message });
+      return;
+    }
+
+    if (data.user) {
+      toast("Cadastro realizado! Bem-vindo ao AdvAqui.");
+      router.push("/painel");
+      router.refresh();
+    }
   };
 
   return (

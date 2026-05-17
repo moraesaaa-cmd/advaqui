@@ -14,14 +14,14 @@ import {
   TrendingUp,
   AlertCircle
 } from "lucide-react";
-import { store } from "@/lib/store/localStore";
-import type { Lawyer, PlanStatus } from "@/lib/data/mock-lawyers";
 import { PlanBadge } from "@/components/PlanBadge";
 import { PLAN } from "@/lib/config";
 import { formatCurrency, formatDate, daysUntil } from "@/lib/utils/format";
-import { generateId } from "@/lib/utils/id";
 import { toast } from "@/components/Toast";
 import { SPECIALTIES } from "@/lib/data/specialties";
+import { createClient } from "@/lib/supabase/client";
+import { mapLawyerRow, type Lawyer } from "@/lib/data/lawyers";
+import type { LawyerRow, PlanStatus } from "@/lib/supabase/types";
 
 const planMessage = (status: PlanStatus, daysLeft: number | null): string => {
   if (status === "active" && daysLeft !== null) {
@@ -57,21 +57,32 @@ export default function PainelPage() {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState<Lawyer | null>(null);
   const [msg, setMsg] = useState("");
+  const [sendingMsg, setSendingMsg] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    const session = store.getSession();
-    if (!session || session.role !== "lawyer") {
-      router.push("/login");
-      return;
-    }
-    const u = store.getUsers().find((x) => x.id === session.userId);
-    if (!u) {
-      store.setSession(null);
-      router.push("/login");
-      return;
-    }
-    setUser(u);
-    setLoading(false);
+    const supabase = createClient();
+    (async () => {
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      if (!authUser) {
+        router.push("/login");
+        return;
+      }
+      const { data: row, error } = await supabase
+        .from("lawyers")
+        .select("*")
+        .eq("id", authUser.id)
+        .maybeSingle();
+      if (error || !row) {
+        // Trigger handle_new_user pode ter falhado — orienta cadastro de novo.
+        toast("Cadastro incompleto. Refaça por favor.", "error");
+        await supabase.auth.signOut();
+        router.push("/cadastro");
+        return;
+      }
+      setUser(mapLawyerRow(row as LawyerRow));
+      setLoading(false);
+    })();
   }, [router]);
 
   const daysLeft = useMemo(() => daysUntil(user?.planEndDate), [user?.planEndDate]);
@@ -84,37 +95,57 @@ export default function PainelPage() {
     setEditing(true);
   };
 
-  const saveEdit = () => {
+  const saveEdit = async () => {
     if (!draft || !user) return;
-    const users = store.getUsers();
-    const next = users.map((u) => (u.id === user.id ? { ...u, ...draft } : u));
-    store.setUsers(next);
+    setSaving(true);
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("lawyers")
+      .update({
+        name: draft.name,
+        phone: draft.phone,
+        whatsapp: draft.whatsapp,
+        address: draft.address,
+        bio: draft.bio
+      })
+      .eq("id", user.id);
+    setSaving(false);
+
+    if (error) {
+      toast("Erro ao salvar — tente novamente", "error");
+      return;
+    }
     setUser(draft);
     setEditing(false);
     toast("Perfil atualizado");
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!user || msg.trim().length < 5) return;
-    const all = store.getMessages();
-    const message = {
-      id: generateId(),
-      fromUserId: user.id,
-      fromName: user.name,
+    setSendingMsg(true);
+    const supabase = createClient();
+    const { error } = await supabase.from("messages").insert({
+      from_user_id: user.id,
+      from_name: user.name,
+      from_email: user.email,
       subject: "Suporte",
       body: msg.trim(),
-      date: new Date().toISOString(),
-      read: false
-    };
-    store.setMessages([...all, message]);
+      source: "support"
+    });
+    setSendingMsg(false);
+    if (error) {
+      toast("Erro ao enviar — tente novamente", "error");
+      return;
+    }
     setMsg("");
     toast("Mensagem enviada ao suporte");
   };
 
-  const logout = () => {
-    store.setSession(null);
+  const logout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
     toast("Sessão encerrada");
     router.push("/");
+    router.refresh();
   };
 
   if (loading || !user) {
@@ -239,7 +270,9 @@ export default function PainelPage() {
                   </div>
                 ))}
                 <div className="flex gap-2 pt-2">
-                  <button onClick={saveEdit} className="btn-primary">Salvar</button>
+                  <button onClick={saveEdit} className="btn-primary" disabled={saving}>
+                    {saving ? "Salvando…" : "Salvar"}
+                  </button>
                   <button
                     onClick={() => setEditing(false)}
                     className="btn-ghost border border-brand-line"
@@ -254,7 +287,7 @@ export default function PainelPage() {
                   ["Nome", user.name],
                   ["OAB", `${user.oab} / ${user.oabUf}`],
                   ["E-mail", user.email],
-                  ["Telefone", user.phone],
+                  ["Telefone", user.phone || "—"],
                   ["WhatsApp", user.whatsapp || "—"],
                   ["Endereço", user.address || "—"],
                   ["Cidade", `${user.cityName} / ${user.uf}`],
@@ -262,6 +295,7 @@ export default function PainelPage() {
                     "Áreas",
                     user.specialties
                       .map((s) => SPECIALTIES.find((sp) => sp.slug === s)?.name)
+                      .filter(Boolean)
                       .join(", ") || "—"
                   ],
                   ["Bio", user.bio || "—"]
@@ -288,10 +322,10 @@ export default function PainelPage() {
             <button
               onClick={sendMessage}
               className="btn-primary mt-3 text-sm"
-              disabled={msg.trim().length < 5}
+              disabled={msg.trim().length < 5 || sendingMsg}
             >
               <MessageSquare className="w-4 h-4" aria-hidden />
-              Enviar
+              {sendingMsg ? "Enviando…" : "Enviar"}
             </button>
           </section>
         </div>

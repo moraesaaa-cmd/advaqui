@@ -1,6 +1,20 @@
-﻿"use client";
+"use client";
 
-import type { Lawyer } from "@/lib/data/mock-lawyers";
+/**
+ * @deprecated Esta camada de armazenamento via localStorage foi substituída
+ * pela integração Supabase a partir da versão 0.2.0 do AdvAqui. Os exports
+ * abaixo permanecem apenas para evitar erros de typecheck em código legado
+ * que ainda não foi removido. Nenhum componente em produção deve usar este
+ * módulo. Use:
+ *
+ *   - Auth: `import { createClient } from "@/lib/supabase/client"`
+ *   - Server: `import { createClient } from "@/lib/supabase/server"`
+ *   - Admin: `import { createAdminClient } from "@/lib/supabase/admin"`
+ *   - Lawyer ops: `import { ... } from "@/lib/data/lawyers"`
+ *   - Message ops: `import { ... } from "@/lib/data/messages"`
+ *
+ * Este arquivo pode ser deletado quando todo código legado for revisado.
+ */
 
 export type Message = {
   id: string;
@@ -21,50 +35,12 @@ export type Session = {
   email: string;
 };
 
-const KEYS = {
-  users: "AdvAqui:users",
-  messages: "AdvAqui:messages",
-  session: "AdvAqui:session"
-} as const;
-
-const isBrowser = typeof window !== "undefined";
-
-const read = <T,>(key: string, fallback: T): T => {
-  if (!isBrowser) return fallback;
-  try {
-    const raw = window.localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : fallback;
-  } catch {
-    return fallback;
-  }
-};
-
-const write = (key: string, value: unknown): void => {
-  if (!isBrowser) return;
-  try {
-    window.localStorage.setItem(key, JSON.stringify(value));
-  } catch {
-    // ignore
-  }
-};
-
-const remove = (key: string): void => {
-  if (!isBrowser) return;
-  try {
-    window.localStorage.removeItem(key);
-  } catch {
-    // ignore
-  }
-};
-
+// Stubs vazios para evitar runtime errors caso alguma rota não migrada ainda chame.
 export const store = {
-  getUsers: (): Lawyer[] => read<Lawyer[]>(KEYS.users, []),
-  setUsers: (u: Lawyer[]) => write(KEYS.users, u),
-  getMessages: (): Message[] => read<Message[]>(KEYS.messages, []),
-  setMessages: (m: Message[]) => write(KEYS.messages, m),
-  getSession: (): Session | null => read<Session | null>(KEYS.session, null),
-  setSession: (s: Session | null) => {
-    if (s) write(KEYS.session, s);
-    else remove(KEYS.session);
-  }
+  getUsers: (): unknown[] => [],
+  setUsers: (_u: unknown[]) => undefined,
+  getMessages: (): Message[] => [],
+  setMessages: (_m: Message[]) => undefined,
+  getSession: (): Session | null => null,
+  setSession: (_s: Session | null) => undefined
 };

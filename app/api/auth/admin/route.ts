@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createAdminToken, setAdminCookie } from "@/lib/auth/adminSession";
 
 /**
  * Endpoint server-side de autenticação admin.
@@ -95,7 +96,10 @@ export async function POST(req: Request) {
 
   if (ok) {
     attempts.delete(key);
-    return NextResponse.json({ ok: true, email: expectedEmail });
+    const token = createAdminToken();
+    const res = NextResponse.json({ ok: true, email: expectedEmail });
+    setAdminCookie(res, token);
+    return res;
   }
 
   const fresh = !state || now - state.firstAt > WINDOW_MS;

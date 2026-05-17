@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { STATES } from "@/lib/data/states";
 import { citiesByUf, totalCityCount } from "@/lib/data/cities";
-import { lawyersForState } from "@/lib/data/mock-lawyers";
+import { getLawyerCountsByState } from "@/lib/data/lawyers";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { Breadcrumb } from "@/components/Breadcrumb";
 
@@ -15,12 +15,15 @@ export const metadata = buildMetadata({
 
 const REGIONS = ["Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"] as const;
 
-export default function DiretorioPage() {
+export const revalidate = 600;
+
+export default async function DiretorioPage() {
   const byRegion = REGIONS.map((r) => ({
     region: r,
     states: STATES.filter((s) => s.region === r)
   }));
   const total = totalCityCount();
+  const lawyerCountsByState = await getLawyerCountsByState();
 
   return (
     <div className="container-tight py-10">
@@ -42,7 +45,7 @@ export default function DiretorioPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {states.map((st) => {
               const cityCount = citiesByUf(st.uf).length;
-              const lawCount = lawyersForState(st.uf).length;
+              const lawCount = lawyerCountsByState[st.uf] || 0;
               return (
                 <Link
                   key={st.uf}

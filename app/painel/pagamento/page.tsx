@@ -1,13 +1,15 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Star } from "lucide-react";
-import { store } from "@/lib/store/localStore";
 import { PixDisplay } from "@/components/PixDisplay";
 import { toast } from "@/components/Toast";
-import type { Lawyer } from "@/lib/data/mock-lawyers";
+import { createClient } from "@/lib/supabase/client";
+import { mapLawyerRow, type Lawyer } from "@/lib/data/lawyers";
+import type { LawyerRow } from "@/lib/supabase/types";
+import { PLAN } from "@/lib/config";
 
 export default function PagamentoPage() {
   const router = useRouter();
@@ -16,30 +18,57 @@ export default function PagamentoPage() {
   const [confirmed, setConfirmed] = useState(false);
 
   useEffect(() => {
-    const session = store.getSession();
-    if (!session || session.role !== "lawyer") {
-      router.push("/login");
-      return;
-    }
-    const u = store.getUsers().find((x) => x.id === session.userId);
-    if (!u) {
-      router.push("/login");
-      return;
-    }
-    setUser(u);
+    const supabase = createClient();
+    (async () => {
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      if (!authUser) {
+        router.push("/login");
+        return;
+      }
+      const { data, error } = await supabase
+        .from("lawyers")
+        .select("*")
+        .eq("id", authUser.id)
+        .maybeSingle();
+      if (error || !data) {
+        router.push("/login");
+        return;
+      }
+      setUser(mapLawyerRow(data as LawyerRow));
+    })();
   }, [router]);
 
-  const confirm = () => {
-    if (!user) return;
+  const confirm = async () => {
+    if (!user || confirming) return;
     setConfirming(true);
-    const updated: Lawyer = {
-      ...user,
-      planStatus: "pending",
-      paymentDate: new Date().toISOString()
-    };
-    const users = store.getUsers();
-    store.setUsers(users.map((u) => (u.id === user.id ? updated : u)));
-    setUser(updated);
+
+    const supabase = createClient();
+    const now = new Date().toISOString();
+    const { error } = await supabase
+      .from("lawyers")
+      .update({
+        plan_status: "pending",
+        payment_date: now
+      })
+      .eq("id", user.id);
+
+    // Registra no histórico de pagamento
+    if (!error) {
+      await supabase.from("plan_history").insert({
+        lawyer_id: user.id,
+        amount: PLAN.price,
+        status: "pending",
+        payment_date: now
+      });
+    }
+
+    setConfirming(false);
+
+    if (error) {
+      toast("Erro ao registrar — tente novamente", "error");
+      return;
+    }
+
     setConfirmed(true);
     toast("Pagamento sinalizado! Ativação em até 48 horas.");
   };
@@ -101,7 +130,7 @@ export default function PagamentoPage() {
         disabled={confirming}
         className="btn-primary w-full mt-6 bg-emerald-600 hover:bg-emerald-500"
       >
-        Já realizei o pagamento
+        {confirming ? "Registrando…" : "Já realizei o pagamento"}
       </button>
 
       <p className="text-xs text-brand-ink/50 mt-4 text-center leading-relaxed">

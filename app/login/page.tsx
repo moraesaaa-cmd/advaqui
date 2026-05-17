@@ -4,9 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AlertCircle, KeyRound } from "lucide-react";
-import { store } from "@/lib/store/localStore";
 import { toast } from "@/components/Toast";
-import { verifyPassword } from "@/lib/auth/hash";
+import { createClient } from "@/lib/supabase/client";
 
 type AdminResponse = {
   ok: boolean;
@@ -61,14 +60,10 @@ export default function LoginPage() {
       const data: AdminResponse = await res.json().catch(() => ({ ok: false }));
 
       if (res.ok && data.ok) {
-        store.setSession({
-          userId: "admin",
-          role: "admin",
-          name: "Administrador",
-          email: data.email || email.trim()
-        });
+        // Cookie httpOnly assinado já setado pelo endpoint via setAdminCookie.
         toast("Bem-vindo, administrador");
         router.push("/admin");
+        router.refresh();
         return;
       }
 
@@ -80,25 +75,21 @@ export default function LoginPage() {
         return;
       }
 
-      // 2. Se não bateu como admin, tenta como advogado (localStorage).
-      const users = store.getUsers();
-      const user = users.find(
-        (u) => u.email === email.trim().toLowerCase()
-      );
+      // 2. Se não bateu como admin, tenta como advogado via Supabase Auth.
+      const supabase = createClient();
+      const { data: signInData, error: signInError } =
+        await supabase.auth.signInWithPassword({
+          email: email.trim().toLowerCase(),
+          password
+        });
 
-      if (user) {
-        const ok = await verifyPassword(password, user.passwordHash);
-        if (ok) {
-          store.setSession({
-            userId: user.id,
-            role: "lawyer",
-            name: user.name,
-            email: user.email
-          });
-          toast(`Bem-vindo, ${user.name.split(" ")[0]}!`);
-          router.push("/painel");
-          return;
-        }
+      if (!signInError && signInData.user) {
+        const userName =
+          (signInData.user.user_metadata?.name as string) || signInData.user.email || "";
+        toast(`Bem-vindo, ${userName.split(" ")[0] || "advogado"}!`);
+        router.push("/painel");
+        router.refresh();
+        return;
       }
 
       // Falhou em ambos os caminhos.

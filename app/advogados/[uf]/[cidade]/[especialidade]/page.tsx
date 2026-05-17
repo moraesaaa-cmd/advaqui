@@ -4,7 +4,7 @@ import { Users, ArrowLeft } from "lucide-react";
 import { findState } from "@/lib/data/states";
 import { findCity, findCapital } from "@/lib/data/cities";
 import { SPECIALTIES, findSpecialty } from "@/lib/data/specialties";
-import { lawyersBySpecialty, sortLawyers } from "@/lib/data/mock-lawyers";
+import { getLawyersBySpecialty, sortLawyers } from "@/lib/data/lawyers";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { LawyerCard } from "@/components/LawyerCard";
 import { JsonLd } from "@/components/JsonLd";
@@ -50,7 +50,7 @@ export async function generateMetadata({
   });
 }
 
-export default function CitySpecialtyPage({
+export default async function CitySpecialtyPage({
   params
 }: {
   params: { uf: string; cidade: string; especialidade: string };
@@ -60,7 +60,7 @@ export default function CitySpecialtyPage({
   const sp = findSpecialty(params.especialidade);
   if (!st || !city || !sp) notFound();
 
-  const lawyers = sortLawyers(lawyersBySpecialty(st.uf, city.slug, sp.slug));
+  const lawyers = sortLawyers(await getLawyersBySpecialty(st.uf, city.slug, sp.slug));
   const capital = findCapital(st.uf);
 
   return (

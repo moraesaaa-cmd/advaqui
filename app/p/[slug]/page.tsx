@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MapPin, Phone, Mail, Star, ShieldCheck, MessageCircle, User } from "lucide-react";
-import { MOCK_LAWYERS, findLawyerBySlug } from "@/lib/data/mock-lawyers";
+import { findLawyerBySlug, getAllLawyerSlugs } from "@/lib/data/lawyers";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
@@ -11,13 +11,15 @@ import { whatsappLink, telLink, formatDate } from "@/lib/utils/format";
 import { SITE } from "@/lib/config";
 
 export const revalidate = 3600;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  return MOCK_LAWYERS.map((l) => ({ slug: l.slug }));
+  const slugs = await getAllLawyerSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const l = findLawyerBySlug(params.slug);
+  const l = await findLawyerBySlug(params.slug);
   if (!l) return buildMetadata({ title: "Perfil", description: "Perfil não encontrado", noIndex: true });
   return buildMetadata({
     title: `${l.name} — Advogado em ${l.cityName}, ${l.uf}`,
@@ -29,8 +31,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 const labelOf = (slug: string) =>
   SPECIALTIES.find((s) => s.slug === slug)?.name || slug;
 
-export default function ProfilePage({ params }: { params: { slug: string } }) {
-  const l = findLawyerBySlug(params.slug);
+export default async function ProfilePage({ params }: { params: { slug: string } }) {
+  const l = await findLawyerBySlug(params.slug);
   if (!l) notFound();
 
   const featured = l.planStatus === "active" || l.featured;

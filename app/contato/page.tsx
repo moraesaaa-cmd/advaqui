@@ -3,17 +3,17 @@
 import { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
 import { isValidEmail } from "@/lib/utils/validation";
-import { generateId } from "@/lib/utils/id";
-import { store } from "@/lib/store/localStore";
 import { toast } from "@/components/Toast";
 import { SITE } from "@/lib/config";
+import { createClient } from "@/lib/supabase/client";
 
 export default function ContatoPage() {
   const [form, setForm] = useState({ name: "", email: "", message: "", honeypot: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.honeypot) return;
     const err: Record<string, string> = {};
@@ -23,17 +23,22 @@ export default function ContatoPage() {
     setErrors(err);
     if (Object.keys(err).length > 0) return;
 
-    const msg = {
-      id: generateId(),
-      fromUserId: "visitor",
-      fromName: `${form.name} (${form.email})`,
+    setSubmitting(true);
+    const supabase = createClient();
+    const { error } = await supabase.from("messages").insert({
+      from_user_id: null,
+      from_name: form.name.trim(),
+      from_email: form.email.trim().toLowerCase(),
       subject: "Contato do site",
-      body: form.message,
-      date: new Date().toISOString(),
-      read: false
-    };
-    const all = store.getMessages();
-    store.setMessages([...all, msg]);
+      body: form.message.trim(),
+      source: "contact_form"
+    });
+    setSubmitting(false);
+
+    if (error) {
+      toast("Erro ao enviar. Tente novamente em instantes.", "error");
+      return;
+    }
     setSent(true);
     toast("Mensagem enviada. Responderemos pelo e-mail informado.");
   };
@@ -102,9 +107,9 @@ export default function ContatoPage() {
             />
             {errors.message && <p className="text-red-600 text-xs mt-1">{errors.message}</p>}
           </div>
-          <button type="submit" className="btn-primary w-full">
+          <button type="submit" className="btn-primary w-full" disabled={submitting}>
             <Send className="w-4 h-4" aria-hidden />
-            Enviar mensagem
+            {submitting ? "Enviando…" : "Enviar mensagem"}
           </button>
         </form>
       )}

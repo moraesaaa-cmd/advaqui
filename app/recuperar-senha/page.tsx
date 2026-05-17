@@ -2,30 +2,27 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AlertCircle, Mail, ArrowLeft } from "lucide-react";
+import { AlertCircle, Mail, ArrowLeft, CheckCircle } from "lucide-react";
 import { isValidEmail } from "@/lib/utils/validation";
-import { store } from "@/lib/store/localStore";
 import { SITE } from "@/lib/config";
+import { createClient } from "@/lib/supabase/client";
 
 /**
  * Página de recuperação de senha.
  *
- * Estado atual — envio de e-mail transacional ainda não está integrado
- * (planejado via Resend ou similar quando o domínio for finalizado).
- * Esta tela é honesta com o usuário — não simula sucesso falso.
- *
- * Comportamento:
- *  - Confirma se o e-mail existe no localStorage (advogados cadastrados)
- *  - Mostra mensagem clara sobre a limitação
- *  - Orienta a entrar em contato direto com o suporte via mailto
+ * Usa Supabase Auth `resetPasswordForEmail` — o Supabase envia um e-mail
+ * com um link único de redefinição. Funciona automaticamente assim que o
+ * SMTP do projeto está configurado (Supabase usa SMTP de teste por padrão
+ * no plano free — entrega ~3 e-mails/hora). Para produção sem limite,
+ * configure SMTP custom em Project Settings → Auth → SMTP Settings.
  */
 export default function RecuperarSenhaPage() {
   const [email, setEmail] = useState("");
-  const [step, setStep] = useState<"form" | "result">("form");
-  const [emailExists, setEmailExists] = useState(false);
+  const [step, setStep] = useState<"form" | "sent">("form");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -34,11 +31,26 @@ export default function RecuperarSenhaPage() {
       return;
     }
 
-    const trimmed = email.trim().toLowerCase();
-    const users = store.getUsers();
-    const found = users.some((u) => u.email === trimmed);
-    setEmailExists(found);
-    setStep("result");
+    setLoading(true);
+    const supabase = createClient();
+    const { error: supaError } = await supabase.auth.resetPasswordForEmail(
+      email.trim().toLowerCase(),
+      {
+        redirectTo: `${typeof window !== "undefined" ? window.location.origin : ""}/redefinir-senha`
+      }
+    );
+    setLoading(false);
+
+    // Não revela se o e-mail existe ou não (prevenção de enumeração de usuários).
+    // Sempre mostra "se o e-mail estiver cadastrado, você receberá...".
+    if (supaError) {
+      // Erro real de servidor — mostra mensagem genérica.
+      setError(
+        "Não conseguimos processar agora. Tente novamente ou contate o suporte."
+      );
+      return;
+    }
+    setStep("sent");
   };
 
   const supportMail = `mailto:${SITE.supportEmail}?subject=${encodeURIComponent(
@@ -47,7 +59,7 @@ export default function RecuperarSenhaPage() {
     `Olá, preciso recuperar a senha da minha conta.\n\nE-mail cadastrado: ${email}\n\nObrigado.`
   )}`;
 
-  if (step === "result") {
+  if (step === "sent") {
     return (
       <div className="container-narrow max-w-md py-16">
         <div className="card">
@@ -59,37 +71,25 @@ export default function RecuperarSenhaPage() {
             Voltar ao login
           </Link>
 
-          <div className="flex items-start gap-3 rounded-xl bg-amber-50 border border-amber-200 p-4 mb-4">
-            <AlertCircle
-              className="w-5 h-5 text-amber-700 flex-shrink-0 mt-0.5"
+          <div className="text-center py-4">
+            <CheckCircle
+              className="w-14 h-14 text-emerald-600 mx-auto mb-3"
               aria-hidden
             />
-            <div className="text-sm text-amber-900">
-              <p className="font-semibold mb-1">
-                Recuperação automática indisponível por enquanto
-              </p>
-              <p className="leading-relaxed">
-                O envio automático de e-mails de recuperação ainda está sendo
-                configurado. Para redefinir sua senha agora, entre em contato com
-                o suporte usando o botão abaixo.
-              </p>
-            </div>
+            <h1 className="font-display text-xl font-bold text-brand-ink mb-2">
+              Verifique seu e-mail
+            </h1>
+            <p className="text-sm text-brand-ink/80 leading-relaxed mb-4">
+              Se houver uma conta cadastrada com{" "}
+              <strong className="font-mono break-all">{email}</strong>, você
+              receberá em alguns minutos um e-mail com um link para redefinir a
+              senha. Verifique também a caixa de spam.
+            </p>
           </div>
 
-          <p className="text-sm text-brand-ink/80 mb-4">
-            E-mail informado:{" "}
-            <strong className="font-mono break-all">{email}</strong>
-          </p>
-
-          {emailExists && (
-            <p className="text-sm text-emerald-700 mb-4">
-              Encontramos uma conta com esse e-mail. Cite-o ao falar com o suporte.
-            </p>
-          )}
-
-          <a href={supportMail} className="btn-primary w-full justify-center">
+          <a href={supportMail} className="btn-ghost border border-brand-line w-full justify-center text-sm">
             <Mail className="w-4 h-4" aria-hidden />
-            Enviar e-mail ao suporte
+            Não recebeu? Fale com o suporte
           </a>
 
           <p className="text-xs text-brand-ink/50 text-center mt-4">
@@ -129,8 +129,8 @@ export default function RecuperarSenhaPage() {
             />
             {error && <p className="text-red-600 text-xs mt-1">{error}</p>}
           </div>
-          <button type="submit" className="btn-primary w-full">
-            Continuar
+          <button type="submit" className="btn-primary w-full" disabled={loading}>
+            {loading ? "Enviando…" : "Enviar link de recuperação"}
           </button>
         </form>
 

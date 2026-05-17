@@ -1,5 +1,5 @@
 import { SITE } from "@/lib/config";
-import type { Lawyer } from "@/lib/data/mock-lawyers";
+import type { Lawyer } from "@/lib/data/lawyers";
 
 export const orgSchema = () => ({
   "@context": "https://schema.org",

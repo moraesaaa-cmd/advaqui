@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Award, Users, MapPin } from "lucide-react";
 import { findState } from "@/lib/data/states";
 import { findCity, getSsgCityParams, nearbyCities, findCapital } from "@/lib/data/cities";
-import { lawyersForCity, sortLawyers } from "@/lib/data/mock-lawyers";
+import { getLawyersForCity, sortLawyers } from "@/lib/data/lawyers";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { LawyerCard } from "@/components/LawyerCard";
@@ -37,7 +37,7 @@ export async function generateMetadata({
   });
 }
 
-export default function CityPage({
+export default async function CityPage({
   params
 }: {
   params: { uf: string; cidade: string };
@@ -46,7 +46,7 @@ export default function CityPage({
   const city = findCity(params.uf, params.cidade);
   if (!st || !city) notFound();
 
-  const allLawyers = lawyersForCity(st.uf, city.slug);
+  const allLawyers = await getLawyersForCity(st.uf, city.slug);
   const sorted = sortLawyers(allLawyers);
   const featured = sorted.filter((l) => l.planStatus === "active" || l.featured);
   const regular = sorted.filter((l) => !(l.planStatus === "active" || l.featured));

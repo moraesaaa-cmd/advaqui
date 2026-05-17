@@ -1,4 +1,4 @@
-import type { PlanStatus } from "@/lib/data/mock-lawyers";
+import type { PlanStatus } from "@/lib/supabase/types";
 import { Award, Clock, AlertCircle, X } from "lucide-react";
 
 const MAP: Record<PlanStatus, { label: string; cls: string; Icon: typeof Award | null }> = {

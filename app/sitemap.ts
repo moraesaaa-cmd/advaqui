@@ -3,7 +3,7 @@ import { SITE } from "@/lib/config";
 import { STATES } from "@/lib/data/states";
 import { getAllCities } from "@/lib/data/cities";
 import { SPECIALTIES } from "@/lib/data/specialties";
-import { MOCK_LAWYERS } from "@/lib/data/mock-lawyers";
+import { getAllLawyerSlugs } from "@/lib/data/lawyers";
 
 /**
  * Sitemap principal. Inclui:
@@ -18,7 +18,9 @@ import { MOCK_LAWYERS } from "@/lib/data/mock-lawyers";
  * e `app/sitemap-especialidades/[uf]/sitemap.ts`. O `robots.ts` aponta para
  * o sitemap raiz e o Google segue os links normalmente.
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = SITE.url.replace(/\/$/, "");
   const now = new Date();
 
@@ -43,8 +45,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: now
   }));
 
-  const profileRoutes: MetadataRoute.Sitemap = MOCK_LAWYERS.map((l) => ({
-    url: `${base}/p/${l.slug}`,
+  const slugs = await getAllLawyerSlugs();
+  const profileRoutes: MetadataRoute.Sitemap = slugs.map((slug) => ({
+    url: `${base}/p/${slug}`,
     changeFrequency: "weekly",
     priority: 0.5,
     lastModified: now

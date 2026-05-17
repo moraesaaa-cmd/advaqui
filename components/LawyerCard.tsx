@@ -1,6 +1,6 @@
 ﻿import Link from "next/link";
 import { MapPin, Phone, Star, User, MessageCircle } from "lucide-react";
-import type { Lawyer } from "@/lib/data/mock-lawyers";
+import type { Lawyer } from "@/lib/data/lawyers";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { whatsappLink } from "@/lib/utils/format";
 

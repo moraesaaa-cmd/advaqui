@@ -12,12 +12,14 @@ import {
 import { SearchBox } from "@/components/SearchBox";
 import { STATES } from "@/lib/data/states";
 import { SPECIALTIES } from "@/lib/data/specialties";
-import { MOCK_LAWYERS } from "@/lib/data/mock-lawyers";
+import { getLawyerCount } from "@/lib/data/lawyers";
 import { SITE, PLAN } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
 
-export default function HomePage() {
-  const totalLawyers = MOCK_LAWYERS.length;
+export const revalidate = 600;
+
+export default async function HomePage() {
+  const totalLawyers = await getLawyerCount();
 
   return (
     <>

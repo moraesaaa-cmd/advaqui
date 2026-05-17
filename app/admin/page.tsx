@@ -12,12 +12,10 @@ import {
   Star,
   Reply
 } from "lucide-react";
-import { store, type Message } from "@/lib/store/localStore";
-import type { Lawyer, PlanStatus } from "@/lib/data/mock-lawyers";
 import { PlanBadge } from "@/components/PlanBadge";
 import { formatDate } from "@/lib/utils/format";
 import { toast } from "@/components/Toast";
-import { PLAN } from "@/lib/config";
+import type { LawyerRow, MessageRow, PlanStatus } from "@/lib/supabase/types";
 
 const TABS = [
   { id: "users", label: "Cadastros", Icon: Users },
@@ -27,102 +25,157 @@ const TABS = [
 
 type Tab = (typeof TABS)[number]["id"];
 
+async function callAdmin(payload: Record<string, unknown>) {
+  const res = await fetch("/api/admin", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  return { status: res.status, json: await res.json().catch(() => ({})) };
+}
+
 export default function AdminPage() {
   const router = useRouter();
   const [ready, setReady] = useState(false);
   const [tab, setTab] = useState<Tab>("users");
-  const [users, setUsers] = useState<Lawyer[]>([]);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [users, setUsers] = useState<LawyerRow[]>([]);
+  const [messages, setMessages] = useState<MessageRow[]>([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | PlanStatus>("all");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
+  const [busy, setBusy] = useState(false);
 
+  // Verifica autenticação admin e carrega dados iniciais
   useEffect(() => {
-    const session = store.getSession();
-    if (!session || session.role !== "admin") {
-      router.push("/login");
-      return;
-    }
-    setUsers(store.getUsers());
-    setMessages(store.getMessages());
-    setReady(true);
+    (async () => {
+      const check = await fetch("/api/admin", { method: "GET" });
+      if (!check.ok) {
+        router.push("/login");
+        return;
+      }
+      await Promise.all([refreshUsers(), refreshMessages()]);
+      setReady(true);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
+
+  const refreshUsers = async () => {
+    const r = await callAdmin({ action: "list-lawyers" });
+    if (r.status === 200 && Array.isArray(r.json.lawyers)) {
+      setUsers(r.json.lawyers as LawyerRow[]);
+    }
+  };
+
+  const refreshMessages = async () => {
+    const r = await callAdmin({ action: "list-messages" });
+    if (r.status === 200 && Array.isArray(r.json.messages)) {
+      setMessages(r.json.messages as MessageRow[]);
+    }
+  };
 
   const filteredUsers = useMemo(() => {
     const term = search.trim().toLowerCase();
     return users.filter((u) => {
-      if (filter !== "all" && u.planStatus !== filter) return false;
+      if (filter !== "all" && u.plan_status !== filter) return false;
       if (!term) return true;
-      return [u.name, u.email, u.cityName, u.uf, u.phone, u.oab]
+      return [u.name, u.email, u.city_name, u.uf, u.phone, u.oab]
         .filter(Boolean)
-        .some((f) => f.toLowerCase().includes(term));
+        .some((f) => String(f).toLowerCase().includes(term));
     });
   }, [users, search, filter]);
 
-  const updateUser = (id: string, changes: Partial<Lawyer>) => {
-    const next = users.map((u) => (u.id === id ? { ...u, ...changes } : u));
-    store.setUsers(next);
-    setUsers(next);
-    toast("Cadastro atualizado");
+  const activatePremium = async (id: string) => {
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "activate-premium", id, days: 30 });
+    setBusy(false);
+    if (r.status === 200) {
+      toast("Plano premium ativado");
+      await refreshUsers();
+    } else {
+      toast("Erro ao ativar", "error");
+    }
   };
 
-  const deleteUser = (id: string) => {
+  const deactivatePremium = async (id: string) => {
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "deactivate-premium", id });
+    setBusy(false);
+    if (r.status === 200) {
+      toast("Plano desativado");
+      await refreshUsers();
+    } else {
+      toast("Erro", "error");
+    }
+  };
+
+  const toggleFeatured = async (id: string, current: boolean) => {
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "toggle-featured", id, value: !current });
+    setBusy(false);
+    if (r.status === 200) {
+      toast(current ? "Destaque removido" : "Destacado");
+      await refreshUsers();
+    } else {
+      toast("Erro", "error");
+    }
+  };
+
+  const toggleVerifiedOab = async (id: string, current: boolean) => {
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "toggle-verified-oab", id, value: !current });
+    setBusy(false);
+    if (r.status === 200) {
+      toast(current ? "Verificação removida" : "OAB verificada");
+      await refreshUsers();
+    } else {
+      toast("Erro", "error");
+    }
+  };
+
+  const deleteUser = async (id: string) => {
     if (!confirm("Tem certeza? Essa ação não pode ser desfeita.")) return;
-    const next = users.filter((u) => u.id !== id);
-    store.setUsers(next);
-    setUsers(next);
-    toast("Cadastro removido", "info");
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "delete-lawyer", id });
+    setBusy(false);
+    if (r.status === 200) {
+      toast("Cadastro removido");
+      await refreshUsers();
+    } else {
+      toast("Erro ao excluir", "error");
+    }
   };
 
-  const activatePremium = (id: string) => {
-    const start = new Date();
-    const end = new Date(start);
-    end.setDate(end.getDate() + PLAN.cycleDays);
-    updateUser(id, {
-      planStatus: "active",
-      planStartDate: start.toISOString(),
-      planEndDate: end.toISOString()
-    });
+  const markRead = async (id: string) => {
+    const r = await callAdmin({ action: "mark-message-read", id });
+    if (r.status === 200) await refreshMessages();
   };
 
-  const deactivatePremium = (id: string) => {
-    updateUser(id, {
-      planStatus: "free",
-      planStartDate: undefined,
-      planEndDate: undefined,
-      featured: false
-    });
-  };
-
-  const toggleFeatured = (id: string, current?: boolean) => {
-    updateUser(id, { featured: !current });
-  };
-
-  const markRead = (id: string) => {
-    const next = messages.map((m) => (m.id === id ? { ...m, read: true } : m));
-    store.setMessages(next);
-    setMessages(next);
-  };
-
-  const submitReply = (id: string) => {
+  const submitReply = async (id: string) => {
     if (replyText.trim().length < 5) return;
-    const next = messages.map((m) =>
-      m.id === id
-        ? { ...m, reply: replyText.trim(), replyDate: new Date().toISOString(), read: true }
-        : m
-    );
-    store.setMessages(next);
-    setMessages(next);
-    setReplyingTo(null);
-    setReplyText("");
-    toast("Resposta registrada");
+    setBusy(true);
+    const r = await callAdmin({ action: "reply-message", id, reply: replyText.trim() });
+    setBusy(false);
+    if (r.status === 200) {
+      setReplyingTo(null);
+      setReplyText("");
+      toast("Resposta registrada");
+      await refreshMessages();
+    } else {
+      toast("Erro ao responder", "error");
+    }
   };
 
-  const logout = () => {
-    store.setSession(null);
+  const logout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
     toast("Sessão encerrada");
     router.push("/");
+    router.refresh();
   };
 
   if (!ready) {
@@ -166,10 +219,7 @@ export default function AdminPage() {
         <div>
           <div className="flex flex-col sm:flex-row gap-3 mb-4">
             <div className="flex-1 relative">
-              <Search
-                className="absolute left-3 top-3.5 w-4 h-4 text-brand-ink/40"
-                aria-hidden
-              />
+              <Search className="absolute left-3 top-3.5 w-4 h-4 text-brand-ink/40" aria-hidden />
               <input
                 className="input pl-10"
                 placeholder="Buscar por nome, cidade, OAB, telefone..."
@@ -201,41 +251,44 @@ export default function AdminPage() {
                   <div>
                     <p className="font-display font-bold text-brand-ink">{u.name}</p>
                     <p className="text-sm text-brand-ink/60">
-                      OAB/{u.oabUf} {u.oab} — {u.cityName}/{u.uf}
+                      OAB/{u.oab_uf} {u.oab} — {u.city_name}/{u.uf}
                     </p>
                   </div>
-                  <PlanBadge status={u.planStatus} />
+                  <PlanBadge status={u.plan_status} />
                 </div>
                 <dl className="text-xs text-brand-ink/70 grid sm:grid-cols-2 gap-1 mb-3">
                   <div>E-mail — {u.email}</div>
-                  <div>Telefone — {u.phone}</div>
-                  <div>Cadastro — {formatDate(u.createdAt)}</div>
-                  <div>Pagamento — {formatDate(u.paymentDate)}</div>
-                  <div>Vencimento — {formatDate(u.planEndDate)}</div>
+                  <div>Telefone — {u.phone || "—"}</div>
+                  <div>Cadastro — {formatDate(u.created_at)}</div>
+                  <div>Pagamento — {formatDate(u.payment_date)}</div>
+                  <div>Vencimento — {formatDate(u.plan_end_date)}</div>
                   <div>{u.featured && "★ Em destaque manual"}</div>
                 </dl>
                 <div className="flex flex-wrap gap-2">
-                  {(u.planStatus === "pending" ||
-                    u.planStatus === "free" ||
-                    u.planStatus === "expired") && (
+                  {(u.plan_status === "pending" ||
+                    u.plan_status === "free" ||
+                    u.plan_status === "expired") && (
                     <button
                       onClick={() => activatePremium(u.id)}
-                      className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-500"
+                      disabled={busy}
+                      className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-500 disabled:opacity-50"
                     >
                       Ativar premium
                     </button>
                   )}
-                  {u.planStatus === "active" && (
+                  {u.plan_status === "active" && (
                     <button
                       onClick={() => deactivatePremium(u.id)}
-                      className="px-3 py-1.5 bg-orange-500 text-white rounded-lg text-xs font-medium hover:bg-orange-400"
+                      disabled={busy}
+                      className="px-3 py-1.5 bg-orange-500 text-white rounded-lg text-xs font-medium hover:bg-orange-400 disabled:opacity-50"
                     >
                       Desativar premium
                     </button>
                   )}
                   <button
                     onClick={() => toggleFeatured(u.id, u.featured)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium inline-flex items-center gap-1 ${
+                    disabled={busy}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium inline-flex items-center gap-1 disabled:opacity-50 ${
                       u.featured
                         ? "bg-brand-accent text-brand-ink"
                         : "bg-brand-line text-brand-ink hover:bg-brand-line/70"
@@ -245,18 +298,20 @@ export default function AdminPage() {
                     {u.featured ? "Destacado" : "Destacar"}
                   </button>
                   <button
-                    onClick={() => updateUser(u.id, { verifiedOab: !u.verifiedOab })}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium ${
-                      u.verifiedOab
+                    onClick={() => toggleVerifiedOab(u.id, u.verified_oab)}
+                    disabled={busy}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium disabled:opacity-50 ${
+                      u.verified_oab
                         ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                         : "bg-brand-line text-brand-ink hover:bg-brand-line/70"
                     }`}
                   >
-                    {u.verifiedOab ? "OAB verificada" : "Verificar OAB"}
+                    {u.verified_oab ? "OAB verificada" : "Verificar OAB"}
                   </button>
                   <button
                     onClick={() => deleteUser(u.id)}
-                    className="px-3 py-1.5 bg-red-50 text-red-700 rounded-lg text-xs font-medium hover:bg-red-100 inline-flex items-center gap-1"
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-red-50 text-red-700 rounded-lg text-xs font-medium hover:bg-red-100 inline-flex items-center gap-1 disabled:opacity-50"
                   >
                     <Trash2 className="w-3 h-3" aria-hidden /> Excluir
                   </button>
@@ -280,76 +335,75 @@ export default function AdminPage() {
               Nenhuma mensagem recebida ainda.
             </p>
           )}
-          {messages
-            .slice()
-            .reverse()
-            .map((m) => (
-              <article
-                key={m.id}
-                className={`card ${!m.read ? "border-brand-deep bg-brand-deep/5" : ""}`}
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <div>
-                    <p className="font-semibold text-brand-ink text-sm">{m.fromName}</p>
-                    <p className="text-xs text-brand-ink/60">{formatDate(m.date)}</p>
-                  </div>
-                  {!m.read && (
+          {messages.map((m) => (
+            <article
+              key={m.id}
+              className={`card ${!m.read ? "border-brand-deep bg-brand-deep/5" : ""}`}
+            >
+              <div className="flex items-start justify-between mb-2">
+                <div>
+                  <p className="font-semibold text-brand-ink text-sm">{m.from_name}</p>
+                  <p className="text-xs text-brand-ink/60">
+                    {formatDate(m.created_at)} {m.from_email ? `· ${m.from_email}` : ""}
+                  </p>
+                </div>
+                {!m.read && (
+                  <button
+                    onClick={() => markRead(m.id)}
+                    className="text-xs text-brand-deep font-medium"
+                  >
+                    Marcar como lida
+                  </button>
+                )}
+              </div>
+              <p className="text-sm text-brand-ink/85 whitespace-pre-wrap">{m.body}</p>
+              {m.reply && (
+                <div className="mt-3 rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-sm text-emerald-900">
+                  <p className="text-xs font-semibold mb-1">
+                    Sua resposta — {formatDate(m.reply_date)}
+                  </p>
+                  {m.reply}
+                </div>
+              )}
+              {!m.reply && (
+                <>
+                  {replyingTo === m.id ? (
+                    <div className="mt-3 space-y-2">
+                      <textarea
+                        className="input min-h-20"
+                        placeholder="Sua resposta..."
+                        value={replyText}
+                        onChange={(e) => setReplyText(e.target.value)}
+                        autoFocus
+                      />
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => submitReply(m.id)}
+                          className="btn-primary text-xs"
+                          disabled={replyText.trim().length < 5 || busy}
+                        >
+                          Enviar resposta
+                        </button>
+                        <button
+                          onClick={() => setReplyingTo(null)}
+                          className="btn-ghost text-xs border border-brand-line"
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
                     <button
-                      onClick={() => markRead(m.id)}
-                      className="text-xs text-brand-deep font-medium"
+                      onClick={() => setReplyingTo(m.id)}
+                      className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-brand-deep hover:underline"
                     >
-                      Marcar como lida
+                      <Reply className="w-3 h-3" aria-hidden /> Responder
                     </button>
                   )}
-                </div>
-                <p className="text-sm text-brand-ink/85 whitespace-pre-wrap">{m.body}</p>
-                {m.reply && (
-                  <div className="mt-3 rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-sm text-emerald-900">
-                    <p className="text-xs font-semibold mb-1">
-                      Sua resposta — {formatDate(m.replyDate)}
-                    </p>
-                    {m.reply}
-                  </div>
-                )}
-                {!m.reply && (
-                  <>
-                    {replyingTo === m.id ? (
-                      <div className="mt-3 space-y-2">
-                        <textarea
-                          className="input min-h-20"
-                          placeholder="Sua resposta..."
-                          value={replyText}
-                          onChange={(e) => setReplyText(e.target.value)}
-                          autoFocus
-                        />
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => submitReply(m.id)}
-                            className="btn-primary text-xs"
-                            disabled={replyText.trim().length < 5}
-                          >
-                            Enviar resposta
-                          </button>
-                          <button
-                            onClick={() => setReplyingTo(null)}
-                            className="btn-ghost text-xs border border-brand-line"
-                          >
-                            Cancelar
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() => setReplyingTo(m.id)}
-                        className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-brand-deep hover:underline"
-                      >
-                        <Reply className="w-3 h-3" aria-hidden /> Responder
-                      </button>
-                    )}
-                  </>
-                )}
-              </article>
-            ))}
+                </>
+              )}
+            </article>
+          ))}
         </div>
       )}
 
@@ -360,12 +414,12 @@ export default function AdminPage() {
               ["Total cadastrados", users.length, Users],
               [
                 "Premium ativos",
-                users.filter((u) => u.planStatus === "active").length,
+                users.filter((u) => u.plan_status === "active").length,
                 Star
               ],
               [
                 "Aguardando ativação",
-                users.filter((u) => u.planStatus === "pending").length,
+                users.filter((u) => u.plan_status === "pending").length,
                 MessageSquare
               ],
               ["Mensagens não lidas", unread, MessageSquare]
