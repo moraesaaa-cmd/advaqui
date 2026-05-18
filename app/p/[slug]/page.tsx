@@ -66,14 +66,14 @@ export default async function ProfilePage({ params }: { params: { slug: string }
                   <Star className="w-3.5 h-3.5" aria-hidden /> Destaque
                 </span>
               )}
-              {l.verifiedOab && (
+              {featured && l.verifiedOab && (
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                   <ShieldCheck className="w-3.5 h-3.5" aria-hidden /> OAB verificada
                 </span>
               )}
             </div>
             <p className="text-brand-ink/70 mt-1">OAB/{l.oabUf} {l.oab}</p>
-            {l.bio && <p className="text-brand-ink/85 mt-3 leading-relaxed">{l.bio}</p>}
+            {featured && l.bio && <p className="text-brand-ink/85 mt-3 leading-relaxed">{l.bio}</p>}
           </div>
         </header>
 
@@ -81,11 +81,11 @@ export default async function ProfilePage({ params }: { params: { slug: string }
           <div className="flex items-center gap-3 rounded-xl border border-brand-line p-3">
             <MapPin className="w-4 h-4 text-brand-ink/50" aria-hidden />
             <span>
-              {l.address ? `${l.address} — ` : ""}
+              {featured && l.address ? `${l.address} — ` : ""}
               {l.cityName}/{l.uf}
             </span>
           </div>
-          {tel && (
+          {featured && tel && (
             <a
               href={tel}
               className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition"
@@ -94,14 +94,16 @@ export default async function ProfilePage({ params }: { params: { slug: string }
               <span>{l.phone}</span>
             </a>
           )}
-          <a
-            href={`mailto:${l.email}`}
-            className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition"
-          >
-            <Mail className="w-4 h-4 text-brand-ink/50" aria-hidden />
-            <span className="break-all">{l.email}</span>
-          </a>
-          {wa && (
+          {featured && (
+            <a
+              href={`mailto:${l.email}`}
+              className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition"
+            >
+              <Mail className="w-4 h-4 text-brand-ink/50" aria-hidden />
+              <span className="break-all">{l.email}</span>
+            </a>
+          )}
+          {featured && wa && (
             <a
               href={wa}
               target="_blank"
@@ -113,6 +115,22 @@ export default async function ProfilePage({ params }: { params: { slug: string }
             </a>
           )}
         </div>
+
+        {!featured && (
+          <div className="mt-6 rounded-2xl border border-brand-line bg-brand-bg p-5">
+            <p className="text-sm font-semibold text-brand-ink">
+              Telefone, WhatsApp e endereço completo disponíveis no plano premium
+            </p>
+            <p className="text-xs text-brand-ink/70 mt-1.5 mb-3">
+              No plano gratuito, o perfil aparece no diretório com nome, OAB e cidade.
+              Os dados de contato direto (telefone, WhatsApp clicável, endereço profissional
+              e bio) ficam visíveis apenas quando o profissional adere ao plano premium.
+            </p>
+            <Link href="/planos" className="text-sm font-medium text-brand-deep underline">
+              Conheça as diferenças entre gratuito e premium
+            </Link>
+          </div>
+        )}
 
         {l.specialties.length > 0 && (
           <section className="mt-6">

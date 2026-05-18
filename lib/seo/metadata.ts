@@ -9,20 +9,26 @@ type PageMetaInput = {
   noIndex?: boolean;
 };
 
+/**
+ * Constrói Metadata para um page.tsx específico.
+ *
+ * - title — apenas o nome curto da página (ex: "Planos"). O `template` em
+ *   `app/layout.tsx` adiciona automaticamente " — AdvAqui" no final.
+ *   Se algum chamador passar com sufixo, removemos para evitar duplicação.
+ * - Open Graph e Twitter usam o título completo (curto + sufixo).
+ * - canonical absoluto via metadataBase + path.
+ */
 export const buildMetadata = (input: PageMetaInput): Metadata => {
-  const fullTitle = input.title.includes(SITE.name)
-    ? input.title
-    : `${input.title} — ${SITE.name}`;
+  const trailingSiteName = new RegExp(`\\s*(—|-)\\s*${SITE.name}\\s*$`, "i");
+  const shortTitle = input.title.replace(trailingSiteName, "").trim();
+  const fullTitle = `${shortTitle} — ${SITE.name}`;
   const url = input.path ? `${SITE.url}${input.path}` : SITE.url;
-  const image = input.image || `${SITE.url}/og-default.png`;
+  const image = input.image || `${SITE.url}/opengraph-image`;
 
   return {
-    title: fullTitle,
+    title: shortTitle,
     description: input.description,
-    metadataBase: new URL(SITE.url),
-    alternates: {
-      canonical: url
-    },
+    alternates: { canonical: url },
     openGraph: {
       title: fullTitle,
       description: input.description,

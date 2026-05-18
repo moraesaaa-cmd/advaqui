@@ -13,7 +13,7 @@ import {
   isValidPhone,
   isStrongPassword
 } from "@/lib/utils/validation";
-import { formatCpf, formatPhone, formatCep } from "@/lib/utils/format";
+import { formatCpf, formatPhone, formatCep, titleCaseNameBR } from "@/lib/utils/format";
 import { slugify } from "@/lib/utils/slug";
 import { toast } from "@/components/Toast";
 import { createClient } from "@/lib/supabase/client";
@@ -286,6 +286,9 @@ export default function CadastroPage() {
     }
 
     const citySlug = slugify(form.city);
+    // Normaliza o nome em title case brasileiro antes de persistir.
+    // Evita ALL-CAPS ('KELLSONS DE MORAES') ou tudo-minúsculo nos cards públicos.
+    const normalizedName = titleCaseNameBR(form.name);
     const supabase = createClient();
 
     const { data, error } = await supabase.auth.signUp({
@@ -295,7 +298,7 @@ export default function CadastroPage() {
         // Esses dados são lidos pelo trigger handle_new_user() no Supabase,
         // que cria a linha em public.lawyers automaticamente.
         data: {
-          name: form.name,
+          name: normalizedName,
           oab: form.oab,
           oab_uf: form.oabUf,
           cpf: form.cpf,

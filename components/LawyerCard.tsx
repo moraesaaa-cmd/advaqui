@@ -1,15 +1,43 @@
-﻿import Link from "next/link";
-import { MapPin, Phone, Star, User, MessageCircle } from "lucide-react";
-import type { Lawyer } from "@/lib/data/lawyers";
+import Link from "next/link";
+import { MapPin, Phone, Star, User, MessageCircle, ShieldCheck, Lock } from "lucide-react";
+import type { Lawyer } from "@/lib/data/lawyer-mapper";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { whatsappLink } from "@/lib/utils/format";
 
 const labelOf = (slug: string) =>
   SPECIALTIES.find((s) => s.slug === slug)?.name || slug;
 
+/**
+ * Card de advogado no diretório.
+ *
+ * Contrato dos planos (definido pelo produto):
+ *
+ * GRATUITO — Apenas o que é estritamente necessário para o cliente identificar
+ * que o profissional existe e atua naquela cidade. Sem contato direto exposto.
+ *   • Nome
+ *   • OAB e UF
+ *   • Cidade
+ *   • Áreas de atuação (chips)
+ *
+ * PREMIUM — Tudo do gratuito + experiência completa.
+ *   • Selo "Destaque" dourado
+ *   • Selo "OAB verificada" (quando validado pelo admin)
+ *   • Telefone clicável (tel:)
+ *   • WhatsApp clicável (wa.me)
+ *   • Endereço profissional completo
+ *   • Bio até 500 chars (no perfil individual)
+ *   • Posição privilegiada (topo da página da cidade)
+ *   • Card maior e moldura âmbar
+ */
 export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: boolean }) {
   const isFeatured = featured ?? (lawyer.planStatus === "active" || lawyer.featured);
-  const wa = whatsappLink(lawyer.whatsapp || lawyer.phone, `Olá ${lawyer.name}, encontrei seu perfil no AdvAqui e gostaria de conversar.`);
+  const wa = isFeatured
+    ? whatsappLink(
+        lawyer.whatsapp || lawyer.phone,
+        `Olá ${lawyer.name}, encontrei seu perfil no AdvAqui e gostaria de conversar.`
+      )
+    : undefined;
+
   return (
     <article
       className={`rounded-2xl border p-5 transition hover:shadow-cardHover bg-white ${
@@ -31,8 +59,10 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
                 <Star className="w-3 h-3" aria-hidden /> Destaque
               </span>
             )}
-            {lawyer.verifiedOab && (
-              <span className="text-xs text-emerald-700 font-medium">OAB verificada</span>
+            {isFeatured && lawyer.verifiedOab && (
+              <span className="inline-flex items-center gap-1 text-xs text-emerald-700 font-medium">
+                <ShieldCheck className="w-3 h-3" aria-hidden /> OAB verificada
+              </span>
             )}
           </div>
           <p className="text-sm text-brand-ink/70 mt-1">
@@ -48,19 +78,26 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
         <div className="flex items-start gap-2">
           <MapPin className="w-4 h-4 mt-0.5 text-brand-ink/50 flex-shrink-0" aria-hidden />
           <span>
-            {lawyer.address ? `${lawyer.address}, ` : ""}
+            {isFeatured && lawyer.address ? `${lawyer.address}, ` : ""}
             {lawyer.cityName}/{lawyer.uf}
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <Phone className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
-          <span>{lawyer.phone}</span>
-        </div>
+        {isFeatured && lawyer.phone && (
+          <div className="flex items-center gap-2">
+            <Phone className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
+            <a
+              href={`tel:+55${lawyer.phone.replace(/\D/g, "")}`}
+              className="text-brand-ink hover:text-brand-deep hover:underline"
+            >
+              {lawyer.phone}
+            </a>
+          </div>
+        )}
       </div>
 
       {lawyer.specialties.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mt-3">
-          {lawyer.specialties.slice(0, 5).map((s) => (
+          {lawyer.specialties.slice(0, isFeatured ? 8 : 5).map((s) => (
             <span key={s} className="chip text-brand-ink/80">
               {labelOf(s)}
             </span>
@@ -75,7 +112,7 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
         >
           Ver perfil completo
         </Link>
-        {wa && (
+        {isFeatured && wa && (
           <a
             href={wa}
             target="_blank"
@@ -85,6 +122,12 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
             <MessageCircle className="w-4 h-4" aria-hidden />
             WhatsApp
           </a>
+        )}
+        {!isFeatured && (
+          <span className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs text-brand-ink/60 bg-brand-line/40">
+            <Lock className="w-3.5 h-3.5" aria-hidden />
+            Contato direto no plano premium
+          </span>
         )}
       </div>
     </article>

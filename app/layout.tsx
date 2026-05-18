@@ -30,16 +30,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   applicationName: SITE.name,
   authors: [{ name: SITE.name }],
-  generator: "Next.js",
-  keywords: [
-    "advogados",
-    "diretório de advogados",
-    "advogado por cidade",
-    "OAB",
-    "advogado trabalhista",
-    "advogado de família",
-    "direito"
-  ],
+  // 'keywords' removido — ignorado pelo Google desde 2009 e
+  // pode ser sinal de spam para alguns crawlers.
+  alternates: { canonical: SITE.url },
   openGraph: {
     type: "website",
     locale: "pt_BR",

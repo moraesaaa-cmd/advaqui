@@ -1,23 +1,46 @@
 import { SITE } from "@/lib/config";
-import type { Lawyer } from "@/lib/data/lawyers";
+import type { Lawyer } from "@/lib/data/lawyer-mapper";
 
+/**
+ * Organization — entidade que opera o site. Inclui contato de suporte
+ * para sinalização do Google de que existe canal humano de atendimento.
+ */
 export const orgSchema = () => ({
   "@context": "https://schema.org",
   "@type": "Organization",
   name: SITE.name,
   url: SITE.url,
   description: SITE.description,
-  logo: `${SITE.url}/logo.png`
+  logo: `${SITE.url}/opengraph-image`,
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      email: SITE.email,
+      contactType: "customer support",
+      availableLanguage: ["Portuguese"]
+    }
+  ]
 });
 
+/**
+ * WebSite — habilita o sitelink searchbox no Google quando o site tem
+ * autoridade suficiente (mostra caixa de busca direto nos resultados).
+ *
+ * O template `target` usa /buscar?q= que é a rota da busca interna.
+ */
 export const websiteSchema = () => ({
   "@context": "https://schema.org",
   "@type": "WebSite",
   url: SITE.url,
   name: SITE.name,
+  description: SITE.description,
+  inLanguage: "pt-BR",
   potentialAction: {
     "@type": "SearchAction",
-    target: `${SITE.url}/buscar?q={search_term_string}`,
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${SITE.url}/buscar?q={search_term_string}`
+    },
     "query-input": "required name=search_term_string"
   }
 });

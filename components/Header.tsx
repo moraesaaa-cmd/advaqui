@@ -17,7 +17,6 @@ const NAV = [
 ];
 
 type SessionState =
-  | { status: "loading" }
   | { status: "anonymous" }
   | { status: "logged"; name: string; firstName: string };
 
@@ -25,7 +24,10 @@ export function Header() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [session, setSession] = useState<SessionState>({ status: "loading" });
+  // Default ANÔNIMO desde o primeiro render (evita flicker do header sem botões
+  // Entrar/Cadastrar enquanto detecta auth). Se houver sessão, o useEffect
+  // abaixo substitui pelo dropdown com nome.
+  const [session, setSession] = useState<SessionState>({ status: "anonymous" });
 
   // Detecta auth do advogado via Supabase. Admin tem fluxo próprio em /admin,
   // não exibe nada no header global por enquanto.
@@ -137,14 +139,11 @@ export function Header() {
                   </>
                 )}
               </div>
-            ) : session.status === "anonymous" ? (
+            ) : (
               <>
                 <Link href="/login" className="btn-ghost text-sm">Entrar</Link>
                 <Link href="/cadastro" className="btn-accent text-sm py-2 px-4">Cadastrar advogado</Link>
               </>
-            ) : (
-              /* loading — placeholder neutro pra evitar flicker entre estados */
-              <div className="w-44 h-9" aria-hidden />
             )}
           </div>
         </nav>

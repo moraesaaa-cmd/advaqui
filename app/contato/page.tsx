@@ -7,8 +7,18 @@ import { toast } from "@/components/Toast";
 import { SITE } from "@/lib/config";
 import { createClient } from "@/lib/supabase/client";
 
+const LGPD_CONSENT_TEXT =
+  "Li e concordo com a Política de Privacidade e autorizo o tratamento dos meus dados " +
+  "pessoais com a finalidade de resposta a esta mensagem (art. 7º, V e art. 8º da LGPD).";
+
 export default function ContatoPage() {
-  const [form, setForm] = useState({ name: "", email: "", message: "", honeypot: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+    acceptLgpd: false,
+    honeypot: ""
+  });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -20,23 +30,30 @@ export default function ContatoPage() {
     if (!form.name.trim()) err.name = "Informe seu nome";
     if (!isValidEmail(form.email)) err.email = "E-mail inválido";
     if (form.message.trim().length < 10) err.message = "Escreva ao menos 10 caracteres";
+    if (!form.acceptLgpd) err.acceptLgpd = "É necessário aceitar o tratamento dos dados";
     setErrors(err);
     if (Object.keys(err).length > 0) return;
 
     setSubmitting(true);
     const supabase = createClient();
+    // Persiste consentimento LGPD junto da mensagem (timestamp + texto exato exibido)
+    // anexado ao corpo. Quando houver tabela dedicada de consentimentos, migrar pra lá.
+    const consentSuffix =
+      `\n\n---\n[Consentimento LGPD] Aceito em ${new Date().toISOString()}\n` +
+      `Texto exibido: "${LGPD_CONSENT_TEXT}"`;
     const { error } = await supabase.from("messages").insert({
       from_user_id: null,
       from_name: form.name.trim(),
       from_email: form.email.trim().toLowerCase(),
       subject: "Contato do site",
-      body: form.message.trim(),
+      body: form.message.trim() + consentSuffix,
       source: "contact_form"
     });
     setSubmitting(false);
 
     if (error) {
-      toast("Erro ao enviar. Tente novamente em instantes.", "error");
+      console.error("[contato] insert failed", error);
+      toast(`Erro ao enviar — ${error.message}`, "error");
       return;
     }
     setSent(true);
@@ -106,6 +123,28 @@ export default function ContatoPage() {
               required
             />
             {errors.message && <p className="text-red-600 text-xs mt-1">{errors.message}</p>}
+          </div>
+          <div className="rounded-xl border border-brand-line bg-brand-bg p-4">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={form.acceptLgpd}
+                onChange={(e) => setForm((p) => ({ ...p, acceptLgpd: e.target.checked }))}
+                className="mt-1 flex-shrink-0"
+              />
+              <span className="text-sm text-brand-ink/85 leading-relaxed">
+                Li e concordo com a{" "}
+                <a href="/privacidade" className="text-brand-deep underline font-medium">
+                  Política de Privacidade
+                </a>{" "}
+                e autorizo o tratamento dos meus dados pessoais com a finalidade de resposta
+                a esta mensagem (art. 7º, V e art. 8º da{" "}
+                <abbr title="Lei Geral de Proteção de Dados — Lei 13.709/2018">LGPD</abbr>).
+              </span>
+            </label>
+            {errors.acceptLgpd && (
+              <p className="text-red-600 text-xs mt-2 ml-7">{errors.acceptLgpd}</p>
+            )}
           </div>
           <button type="submit" className="btn-primary w-full" disabled={submitting}>
             <Send className="w-4 h-4" aria-hidden />

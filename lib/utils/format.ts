@@ -29,6 +29,32 @@ export const formatCep = (raw: string): string => {
 export const formatCurrency = (value: number): string =>
   value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
+/**
+ * Capitaliza nome de pessoa em padrão brasileiro:
+ *
+ *   "MARIA JOÃO DA SILVA" → "Maria João da Silva"
+ *   "joão pereira"        → "João Pereira"
+ *
+ * Mantém conectivos comuns (da, de, do, das, dos, e) em minúsculas,
+ * exceto quando primeira palavra. Preserva acentos e ç.
+ */
+export const titleCaseNameBR = (raw: string): string => {
+  const connectives = new Set(["da", "de", "do", "das", "dos", "e", "del"]);
+  return raw
+    .trim()
+    .toLowerCase()
+    .split(/\s+/)
+    .map((word, i) => {
+      if (i > 0 && connectives.has(word)) return word;
+      // Trata hífens (ex: "del-rei" → "Del-Rei")
+      return word
+        .split("-")
+        .map((part) => part.charAt(0).toLocaleUpperCase("pt-BR") + part.slice(1))
+        .join("-");
+    })
+    .join(" ");
+};
+
 export const whatsappLink = (
   raw: string | undefined | null,
   message?: string
