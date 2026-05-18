@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Eye, EyeOff, Check } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Eye, EyeOff, Check, MapPin } from "lucide-react";
 import { STATES } from "@/lib/data/states";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import {
@@ -17,6 +17,8 @@ import { formatCpf, formatPhone, formatCep } from "@/lib/utils/format";
 import { slugify } from "@/lib/utils/slug";
 import { toast } from "@/components/Toast";
 import { createClient } from "@/lib/supabase/client";
+
+type CitySuggestion = { name: string; slug: string; uf: string; isCapital: boolean };
 
 type FormState = {
   name: string;
@@ -78,11 +80,23 @@ export default function CadastroPage() {
         : [...form.specialties, slug]
     );
 
-  const [citySuggestions, setCitySuggestions] = useState<
-    Array<{ name: string; slug: string; uf: string; isCapital: boolean }>
-  >([]);
+  // -------- Autocomplete de cidade (IBGE autoritativa) -----------------------
+  // Estado controlado para evitar o bug em que a lista nunca fechava após o
+  // clique (a lista re-aparecia porque o useEffect re-disparava ao mudar
+  // form.city, mesmo após o user ter selecionado). Agora `showSuggestions`
+  // só fica true enquanto o user está DIGITANDO; ao selecionar, perde foco,
+  // clicar fora ou apertar Esc, a lista some.
+
+  const [citySuggestions, setCitySuggestions] = useState<CitySuggestion[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [highlightIndex, setHighlightIndex] = useState(-1);
+  const [citySelected, setCitySelected] = useState(false);
+  const [cityValidating, setCityValidating] = useState(false);
+  const cityBoxRef = useRef<HTMLDivElement>(null);
+  const cepInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (!showSuggestions) return;
     const term = form.city.trim();
     if (term.length < 2) {
       setCitySuggestions([]);
@@ -92,9 +106,10 @@ export default function CadastroPage() {
     const t = setTimeout(() => {
       fetch(`/api/cities?q=${encodeURIComponent(term)}&limit=10`, { signal: ctrl.signal })
         .then((r) => (r.ok ? r.json() : []))
-        .then((data: Array<{ name: string; slug: string; uf: string; isCapital: boolean }>) => {
-          // Filtra pela UF escolhida no formulário para autocomplete contextual.
+        .then((data: CitySuggestion[]) => {
+          // Filtra pela UF escolhida (autocomplete contextual)
           setCitySuggestions(data.filter((c) => c.uf === form.uf).slice(0, 6));
+          setHighlightIndex(-1);
         })
         .catch(() => undefined);
     }, 200);
@@ -102,7 +117,115 @@ export default function CadastroPage() {
       ctrl.abort();
       clearTimeout(t);
     };
-  }, [form.city, form.uf]);
+  }, [form.city, form.uf, showSuggestions]);
+
+  // Fecha a lista ao clicar fora do container do autocomplete
+  useEffect(() => {
+    if (!showSuggestions) return;
+    const onClickOutside = (ev: MouseEvent) => {
+      if (cityBoxRef.current && !cityBoxRef.current.contains(ev.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, [showSuggestions]);
+
+  // Seleção de cidade (clique ou Enter no teclado)
+  const selectCity = useCallback((c: CitySuggestion) => {
+    setForm((p) => ({ ...p, city: c.name }));
+    setCitySelected(true);
+    setShowSuggestions(false);
+    setHighlightIndex(-1);
+    setErrors((e) => {
+      const { city: _omit, ...rest } = e;
+      return rest;
+    });
+    // Move foco para o próximo campo lógico (CEP)
+    setTimeout(() => cepInputRef.current?.focus(), 0);
+  }, []);
+
+  const onCityKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showSuggestions || citySuggestions.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setHighlightIndex((i) => (i + 1) % citySuggestions.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setHighlightIndex((i) => (i <= 0 ? citySuggestions.length - 1 : i - 1));
+    } else if (e.key === "Enter") {
+      if (highlightIndex >= 0 && highlightIndex < citySuggestions.length) {
+        e.preventDefault();
+        selectCity(citySuggestions[highlightIndex]);
+      }
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      setShowSuggestions(false);
+    }
+  };
+
+  // Valida no servidor que {uf, name} existe na base IBGE. Retorna true se OK.
+  const validateCityIBGE = useCallback(async (name: string, uf: string): Promise<boolean> => {
+    const trimmed = name.trim();
+    if (trimmed.length < 2) return false;
+    try {
+      setCityValidating(true);
+      const res = await fetch(
+        `/api/cities?q=${encodeURIComponent(trimmed)}&limit=20`
+      );
+      if (!res.ok) return false;
+      const data = (await res.json()) as CitySuggestion[];
+      const norm = (s: string) =>
+        s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+      return data.some((c) => c.uf === uf && norm(c.name) === norm(trimmed));
+    } finally {
+      setCityValidating(false);
+    }
+  }, []);
+
+  // -------- ViaCEP — autopreenche endereço/cidade/UF ---------------------------
+  // Endpoint público gratuito (https://viacep.com.br/ws/{cep}/json/), sem chave.
+  // Reduz drasticamente erros de digitação. Em falha silenciosa, o user
+  // preenche manualmente (degradação graciosa).
+
+  const handleCepBlur = async () => {
+    const digits = form.cep.replace(/\D/g, "");
+    if (digits.length !== 8) return;
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 3000);
+      const res = await fetch(`https://viacep.com.br/ws/${digits}/json/`, {
+        signal: ctrl.signal
+      });
+      clearTimeout(timer);
+      if (!res.ok) return;
+      const data = (await res.json()) as {
+        erro?: boolean;
+        logradouro?: string;
+        bairro?: string;
+        localidade?: string;
+        uf?: string;
+      };
+      if (data.erro) return;
+      setForm((p) => {
+        const next = { ...p };
+        const parts: string[] = [];
+        if (data.logradouro) parts.push(data.logradouro);
+        if (data.bairro) parts.push(data.bairro);
+        const composed = parts.join(", ");
+        if (!next.address && composed) next.address = composed;
+        if (data.localidade) next.city = data.localidade;
+        if (data.uf) next.uf = data.uf;
+        return next;
+      });
+      // Marca cidade como selecionada (vem do ViaCEP, fonte oficial)
+      if (data.localidade) setCitySelected(true);
+    } catch {
+      // Silencioso — user preenche manualmente
+    }
+  };
+
+  // ---------------------------------------------------------------------------
 
   const validate = (which: number): boolean => {
     const e: Record<string, string> = {};
@@ -115,6 +238,8 @@ export default function CadastroPage() {
     if (which >= 1) {
       if (!isValidOab(form.oab)) e.oab = "Número da OAB inválido";
       if (!form.city.trim()) e.city = "Informe sua cidade";
+      else if (!citySelected)
+        e.city = "Selecione uma cidade da lista (use o autocompletar)";
       if (form.specialties.length === 0) e.specialties = "Escolha ao menos uma especialidade";
     }
     if (which >= 2) {
@@ -146,6 +271,20 @@ export default function CadastroPage() {
     if (submitting) return;
 
     setSubmitting(true);
+
+    // Validação server-side derradeira da cidade contra IBGE
+    // (não confia só no flag client `citySelected`).
+    const cityIsValid = await validateCityIBGE(form.city, form.uf);
+    if (!cityIsValid) {
+      setSubmitting(false);
+      setErrors({
+        city: `"${form.city}/${form.uf}" não é uma cidade reconhecida no IBGE. Use o autocomplete para selecionar.`
+      });
+      setStep(1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
     const citySlug = slugify(form.city);
     const supabase = createClient();
 
@@ -348,6 +487,22 @@ export default function CadastroPage() {
                 autoComplete="street-address"
               />
             </div>
+            <div>
+              <label htmlFor="r-cep" className="label">CEP (opcional, autopreenche endereço)</label>
+              <input
+                id="r-cep"
+                ref={cepInputRef}
+                className="input"
+                value={form.cep}
+                onChange={(e) => u("cep", formatCep(e.target.value))}
+                onBlur={handleCepBlur}
+                inputMode="numeric"
+                placeholder="00000-000"
+              />
+              <p className="text-xs text-brand-ink/50 mt-1">
+                Digite o CEP e saia do campo — preenchemos endereço, cidade e UF automaticamente.
+              </p>
+            </div>
             <div className="grid sm:grid-cols-3 gap-4">
               <div>
                 <label htmlFor="r-uf" className="label">Estado (UF)</label>
@@ -355,54 +510,124 @@ export default function CadastroPage() {
                   id="r-uf"
                   className="input"
                   value={form.uf}
-                  onChange={(e) => u("uf", e.target.value)}
+                  onChange={(e) => {
+                    u("uf", e.target.value);
+                    // Mudou UF — revoga seleção anterior (cidade pode não pertencer ao novo UF)
+                    setCitySelected(false);
+                  }}
                 >
                   {STATES.map((s) => (
                     <option key={s.uf} value={s.uf}>{s.uf}</option>
                   ))}
                 </select>
               </div>
-              <div className="sm:col-span-2 relative">
+              <div className="sm:col-span-2 relative" ref={cityBoxRef}>
                 <label htmlFor="r-city" className="label">Cidade</label>
-                <input
-                  id="r-city"
-                  className="input"
-                  value={form.city}
-                  onChange={(e) => u("city", e.target.value)}
-                  autoComplete="address-level2"
-                  placeholder="Digite o nome da sua cidade"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    id="r-city"
+                    className="input pr-10"
+                    value={form.city}
+                    onChange={(e) => {
+                      u("city", e.target.value);
+                      setCitySelected(false);
+                      setShowSuggestions(true);
+                    }}
+                    onFocus={() => {
+                      if (form.city.trim().length >= 2) setShowSuggestions(true);
+                    }}
+                    onBlur={() => {
+                      // Atraso pra o onMouseDown do item disparar antes do blur fechar
+                      setTimeout(() => setShowSuggestions(false), 150);
+                    }}
+                    onKeyDown={onCityKeyDown}
+                    autoComplete="address-level2"
+                    placeholder="Digite o nome da sua cidade"
+                    role="combobox"
+                    aria-expanded={showSuggestions && citySuggestions.length > 0}
+                    aria-controls="city-listbox"
+                    aria-autocomplete="list"
+                    aria-activedescendant={
+                      highlightIndex >= 0 ? `city-opt-${highlightIndex}` : undefined
+                    }
+                    required
+                  />
+                  {citySelected && (
+                    <Check
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-600"
+                      aria-label="Cidade validada na base IBGE"
+                    />
+                  )}
+                </div>
                 <p className="text-xs text-brand-ink/50 mt-1">
-                  Digite apenas o nome (ex.: <strong>Almenara</strong>). O estado já está selecionado ao lado.
+                  Digite apenas o nome (ex.: <strong>Almenara</strong>) e <strong>clique na sugestão</strong>. Aceitamos as 5.571 cidades do IBGE.
                 </p>
-                {citySuggestions.length > 0 && form.city.length >= 2 && (
-                  <ul className="absolute z-10 left-0 right-0 mt-1 bg-white rounded-xl shadow-cardHover border border-brand-line overflow-hidden">
-                    {citySuggestions.map((c) => (
-                      <li key={c.slug}>
-                        <button
-                          type="button"
-                          onClick={() => u("city", c.name)}
-                          className="w-full text-left px-3 py-2 hover:bg-brand-line/40 text-sm"
-                        >
-                          {c.name}
-                        </button>
+
+                {showSuggestions && form.city.trim().length >= 2 && (
+                  <ul
+                    id="city-listbox"
+                    role="listbox"
+                    className="absolute z-20 left-0 right-0 mt-1 bg-white rounded-xl shadow-cardHover border border-brand-line overflow-hidden"
+                  >
+                    {citySuggestions.length > 0 ? (
+                      citySuggestions.map((c, i) => (
+                        <li key={c.slug} role="presentation">
+                          <button
+                            id={`city-opt-${i}`}
+                            type="button"
+                            role="option"
+                            aria-selected={i === highlightIndex}
+                            // onMouseDown dispara ANTES de onBlur do input — garante a seleção
+                            onMouseDown={(ev) => {
+                              ev.preventDefault();
+                              selectCity(c);
+                            }}
+                            onMouseEnter={() => setHighlightIndex(i)}
+                            className={`w-full text-left px-3 py-3 min-h-[44px] text-sm inline-flex items-center gap-2 ${
+                              i === highlightIndex
+                                ? "bg-brand-deep/10 text-brand-ink"
+                                : "hover:bg-brand-line/40 text-brand-ink"
+                            }`}
+                          >
+                            <MapPin className="w-3.5 h-3.5 text-brand-ink/40" aria-hidden />
+                            <span>{c.name}</span>
+                            {c.isCapital && (
+                              <span className="ml-1 text-[10px] uppercase tracking-wider text-brand-accent2 font-semibold">
+                                capital
+                              </span>
+                            )}
+                          </button>
+                        </li>
+                      ))
+                    ) : (
+                      <li className="px-3 py-3 text-sm text-brand-ink/70">
+                        <p className="font-medium">
+                          Nenhuma cidade encontrada para &quot;{form.city}&quot; em {form.uf}.
+                        </p>
+                        <p className="text-xs text-brand-ink/50 mt-1">
+                          Verifique a grafia (acentos, hífens) ou{" "}
+                          <a
+                            href={`mailto:contato@advaqui.com?subject=${encodeURIComponent(
+                              "Cidade faltante no cadastro"
+                            )}&body=${encodeURIComponent(
+                              `Tentei me cadastrar com a cidade "${form.city}" em ${form.uf}. Por favor verifiquem se está faltando na base.`
+                            )}`}
+                            className="text-brand-deep underline font-medium"
+                          >
+                            avise nosso suporte
+                          </a>
+                          .
+                        </p>
                       </li>
-                    ))}
+                    )}
                   </ul>
+                )}
+
+                {cityValidating && (
+                  <p className="text-xs text-brand-ink/50 mt-1">Validando cidade…</p>
                 )}
                 {errors.city && <p className="text-red-600 text-xs mt-1">{errors.city}</p>}
               </div>
-            </div>
-            <div>
-              <label htmlFor="r-cep" className="label">CEP (opcional)</label>
-              <input
-                id="r-cep"
-                className="input"
-                value={form.cep}
-                onChange={(e) => u("cep", formatCep(e.target.value))}
-                inputMode="numeric"
-              />
             </div>
             <div>
               <span className="label">Áreas de atuação</span>

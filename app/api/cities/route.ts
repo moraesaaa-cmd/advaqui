@@ -10,8 +10,25 @@ import { getAllCities } from "@/lib/data/cities";
  *
  * Cache HTTP de 1 hora para reduzir requests repetidos.
  */
+/**
+ * Normalização para busca tolerante:
+ * - Lowercase
+ * - Remove diacríticos (acentos)
+ * - Substitui hífens e pontuação por espaços (para "Mâncio-Lima" casar com "Mâncio Lima")
+ * - Colapsa múltiplos espaços
+ *
+ * Exemplos:
+ *   "São João del-Rei" → "sao joao del rei"
+ *   "sao-joao del rei"  → "sao joao del rei"  ✓ casam
+ */
 const normalize = (s: string): string =>
-  s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[-_'/.,]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
 export const runtime = "nodejs";
 
