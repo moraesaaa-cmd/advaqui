@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { isAdminRequest } from "@/lib/auth/adminSession";
 import { createAdminClient } from "@/lib/supabase/admin";
+import type { LawyerRow } from "@/lib/supabase/types";
 import {
   adminListLawyers,
   adminActivatePremium,
@@ -219,15 +220,21 @@ export async function POST(req: Request) {
     case "update-lawyer": {
       if (!body.id || !body.fields)
         return NextResponse.json({ ok: false, error: "ID e fields obrigatorios" }, { status: 400 });
-      // Whitelist de campos editaveis pelo admin (evita inject de plan_status etc)
-      const ALLOWED = new Set([
+      // Whitelist tipada de campos editaveis pelo admin (evita inject de
+      // plan_status etc). Usar `keyof LawyerRow` garante que o filtro casa
+      // com `Partial<LawyerRow>` que o supabase-js 2.106 espera no update.
+      const ALLOWED: ReadonlyArray<keyof LawyerRow> = [
         "name", "phone", "whatsapp", "address", "city_name", "city_slug",
         "uf", "oab", "oab_uf", "bio", "specialties", "target_city",
         "target_uf", "extra_cities", "verified_oab", "featured"
-      ]);
-      const filtered: Record<string, unknown> = {};
-      for (const [key, value] of Object.entries(body.fields)) {
-        if (ALLOWED.has(key)) filtered[key] = value;
+      ];
+      const filtered: Partial<LawyerRow> = {};
+      for (const key of ALLOWED) {
+        if (key in body.fields) {
+          // O valor vem como `unknown` do JSON, mas confiamos no caller
+          // (admin autenticado) e tipamos via cast pro campo certo.
+          (filtered as Record<string, unknown>)[key] = body.fields[key];
+        }
       }
       if (Object.keys(filtered).length === 0) {
         return NextResponse.json({ ok: false, error: "Nenhum campo valido" }, { status: 400 });
