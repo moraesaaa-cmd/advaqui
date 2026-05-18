@@ -111,7 +111,9 @@ export function normalizeExtraCities(input: unknown): ExtraCityRow[] {
   for (const item of input) {
     if (!item || typeof item !== "object") continue;
     const raw = item as Partial<ExtraCityRow>;
-    const name = typeof raw.name === "string" ? raw.name.trim() : "";
+    const rawName = typeof raw.name === "string" ? raw.name.trim() : "";
+    // Capitaliza para Title Case BR (consistente com cidade principal)
+    const name = rawName ? titleCaseNameBR(rawName) : "";
     const uf = typeof raw.uf === "string" ? raw.uf.trim().toUpperCase() : "";
     const slug =
       typeof raw.slug === "string" && raw.slug.trim()

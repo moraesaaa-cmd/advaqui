@@ -15,6 +15,7 @@ import {
   TrendingUp
 } from "lucide-react";
 import { PlanBadge } from "@/components/PlanBadge";
+import { ExtraCityField } from "@/components/ExtraCityField";
 import { PLAN } from "@/lib/config";
 import { daysUntil, formatCurrency, formatDate } from "@/lib/utils/format";
 import { SPECIALTIES } from "@/lib/data/specialties";
@@ -554,47 +555,22 @@ export default function PainelPage() {
                   ) : (
                     <div className="space-y-2 mt-3">
                       {(draft.extraCities || []).map((city, index) => (
-                        <div
-                          key={`${city.uf}-${city.slug}-${index}`}
-                          className="grid sm:grid-cols-[80px_1fr_auto] gap-2 items-end p-3 bg-white rounded-lg border border-brand-line"
-                        >
-                          <div>
-                            <label className="text-xs text-brand-ink/60">UF</label>
-                            <select
-                              className="input text-sm"
-                              value={city.uf || "MG"}
-                              disabled={status !== "active"}
-                              onChange={(event) => updateExtraCity(index, "uf", event.target.value)}
-                            >
-                              {UFS.map((uf) => (
-                                <option key={uf} value={uf}>{uf}</option>
-                              ))}
-                            </select>
-                          </div>
-                          <div>
-                            <label className="text-xs text-brand-ink/60">Nome da cidade</label>
-                            <input
-                              className="input text-sm"
-                              value={city.name || ""}
-                              disabled={status !== "active"}
-                              placeholder="Ex.: Belo Horizonte"
-                              onChange={(event) => updateExtraCity(index, "name", event.target.value)}
-                            />
-                            {city.slug && (
-                              <p className="text-[10px] text-brand-ink/40 mt-1">
-                                URL: /advogados/{(city.uf || "mg").toLowerCase()}/{city.slug}
-                              </p>
-                            )}
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => removeExtraCity(index)}
-                            disabled={status !== "active"}
-                            className="text-xs text-red-600 hover:text-red-700 hover:underline px-2 py-1 disabled:opacity-40"
-                          >
-                            Remover
-                          </button>
-                        </div>
+                        // KEY ESTAVEL POR INDICE — o slug muda a cada letra
+                        // digitada, entao se a key usasse city.slug, o React
+                        // desmontaria o input a cada keystroke e o foco seria
+                        // perdido. O array nao reordena durante edicao, entao
+                        // index puro eh seguro aqui.
+                        <ExtraCityField
+                          key={`extra-${index}`}
+                          value={city}
+                          disabled={status !== "active"}
+                          onChange={(next) => {
+                            const list = [...(draft.extraCities || [])];
+                            list[index] = next;
+                            setDraft({ ...draft, extraCities: list });
+                          }}
+                          onRemove={() => removeExtraCity(index)}
+                        />
                       ))}
                     </div>
                   )}

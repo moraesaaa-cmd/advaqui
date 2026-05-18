@@ -217,6 +217,60 @@ export async function POST(req: Request) {
       }
       return NextResponse.json({ ok: true });
     }
+    case "get-lawyer-full": {
+      if (!body.id)
+        return NextResponse.json({ ok: false, error: "ID obrigatorio" }, { status: 400 });
+      const admin = createAdminClient();
+      // Carrega 4 coisas em paralelo: lawyer (TUDO incluindo CPF), auth user
+      // (data de criacao, ultimo login, email confirmation), historico de
+      // pagamentos e mensagens enviadas por esse advogado.
+      const [lawyerRes, authRes, planHistRes, msgsRes] = await Promise.all([
+        admin.from("lawyers").select("*").eq("id", body.id).maybeSingle(),
+        admin.auth.admin.getUserById(body.id),
+        admin
+          .from("plan_history")
+          .select("*")
+          .eq("lawyer_id", body.id)
+          .order("created_at", { ascending: false }),
+        admin
+          .from("messages")
+          .select("*")
+          .eq("from_user_id", body.id)
+          .order("created_at", { ascending: false })
+          .limit(100)
+      ]);
+
+      if (lawyerRes.error || !lawyerRes.data) {
+        return NextResponse.json(
+          { ok: false, error: lawyerRes.error?.message || "Advogado nao encontrado" },
+          { status: 404 }
+        );
+      }
+
+      // Filtra dados sensiveis do auth que nao queremos enviar pro client
+      const authUser = authRes.data?.user;
+      const authSummary = authUser
+        ? {
+            id: authUser.id,
+            email: authUser.email,
+            email_confirmed_at: authUser.email_confirmed_at,
+            phone: authUser.phone,
+            last_sign_in_at: authUser.last_sign_in_at,
+            created_at: authUser.created_at,
+            updated_at: authUser.updated_at,
+            user_metadata: authUser.user_metadata,
+            app_metadata: authUser.app_metadata
+          }
+        : null;
+
+      return NextResponse.json({
+        ok: true,
+        lawyer: lawyerRes.data,
+        authUser: authSummary,
+        planHistory: planHistRes.data || [],
+        messages: msgsRes.data || []
+      });
+    }
     case "update-lawyer": {
       if (!body.id || !body.fields)
         return NextResponse.json({ ok: false, error: "ID e fields obrigatorios" }, { status: 400 });

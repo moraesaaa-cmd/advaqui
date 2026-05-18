@@ -131,6 +131,31 @@ export default function AdminPage() {
     });
   }, [users, search, filter]);
 
+  // Estado pra "Ver tudo" — guarda os dados completos do advogado expandido
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [fullData, setFullData] = useState<Record<string, unknown> | null>(null);
+  const [loadingFull, setLoadingFull] = useState(false);
+
+  const viewFullLawyer = async (id: string) => {
+    if (expandedId === id) {
+      // Toggle off
+      setExpandedId(null);
+      setFullData(null);
+      return;
+    }
+    setLoadingFull(true);
+    setExpandedId(id);
+    setFullData(null);
+    const r = await callAdmin({ action: "get-lawyer-full", id });
+    setLoadingFull(false);
+    if (r.status === 200) {
+      setFullData(r.json as Record<string, unknown>);
+    } else {
+      toast(r.json.error || "Erro ao carregar dados completos", "error");
+      setExpandedId(null);
+    }
+  };
+
   const activatePremium = async (id: string) => {
     if (busy) return;
     setBusy(true);
@@ -472,6 +497,14 @@ export default function AdminPage() {
                     Editar cidade
                   </button>
                   <button
+                    onClick={() => viewFullLawyer(u.id)}
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-brand-ink text-white rounded-lg text-xs font-medium hover:bg-brand-ink/90 disabled:opacity-50"
+                    title="Ver tudo: CPF, datas, plano, pagamentos, mensagens enviadas, dados de auth"
+                  >
+                    {expandedId === u.id ? "Fechar detalhes" : "Ver tudo"}
+                  </button>
+                  <button
                     onClick={() => deleteUser(u.id)}
                     disabled={busy}
                     className="px-3 py-1.5 bg-red-50 text-red-700 rounded-lg text-xs font-medium hover:bg-red-100 inline-flex items-center gap-1 disabled:opacity-50"
@@ -479,6 +512,57 @@ export default function AdminPage() {
                     <Trash2 className="w-3 h-3" aria-hidden /> Excluir
                   </button>
                 </div>
+
+                {expandedId === u.id && (
+                  <div className="mt-4 pt-4 border-t border-brand-line">
+                    <h4 className="font-display text-sm font-bold text-brand-ink mb-2">
+                      Dados completos
+                    </h4>
+                    {loadingFull && (
+                      <p className="text-xs text-brand-ink/60">Carregando...</p>
+                    )}
+                    {fullData && (
+                      <div className="space-y-3">
+                        <details open className="rounded-lg bg-brand-bg p-3">
+                          <summary className="cursor-pointer text-xs font-semibold text-brand-deep">
+                            Perfil completo (lawyers)
+                          </summary>
+                          <pre className="mt-2 text-[11px] text-brand-ink/80 whitespace-pre-wrap break-all bg-white p-2 rounded border border-brand-line max-h-96 overflow-y-auto">
+                            {JSON.stringify(fullData.lawyer, null, 2)}
+                          </pre>
+                        </details>
+                        <details className="rounded-lg bg-brand-bg p-3">
+                          <summary className="cursor-pointer text-xs font-semibold text-brand-deep">
+                            Auth (login, e-mail confirmado, ultimo acesso)
+                          </summary>
+                          <pre className="mt-2 text-[11px] text-brand-ink/80 whitespace-pre-wrap break-all bg-white p-2 rounded border border-brand-line max-h-96 overflow-y-auto">
+                            {JSON.stringify(fullData.authUser, null, 2)}
+                          </pre>
+                        </details>
+                        <details className="rounded-lg bg-brand-bg p-3">
+                          <summary className="cursor-pointer text-xs font-semibold text-brand-deep">
+                            Historico de pagamentos ({Array.isArray(fullData.planHistory) ? fullData.planHistory.length : 0})
+                          </summary>
+                          <pre className="mt-2 text-[11px] text-brand-ink/80 whitespace-pre-wrap break-all bg-white p-2 rounded border border-brand-line max-h-96 overflow-y-auto">
+                            {JSON.stringify(fullData.planHistory, null, 2)}
+                          </pre>
+                        </details>
+                        <details className="rounded-lg bg-brand-bg p-3">
+                          <summary className="cursor-pointer text-xs font-semibold text-brand-deep">
+                            Mensagens enviadas pelo advogado ({Array.isArray(fullData.messages) ? fullData.messages.length : 0})
+                          </summary>
+                          <pre className="mt-2 text-[11px] text-brand-ink/80 whitespace-pre-wrap break-all bg-white p-2 rounded border border-brand-line max-h-96 overflow-y-auto">
+                            {JSON.stringify(fullData.messages, null, 2)}
+                          </pre>
+                        </details>
+                        <p className="text-[11px] text-brand-ink/50 italic">
+                          Senha NAO eh visivel (armazenada como hash bcrypt no Supabase Auth).
+                          Use o botao &quot;Resetar senha&quot; acima para definir uma nova.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </article>
             ))}
 
