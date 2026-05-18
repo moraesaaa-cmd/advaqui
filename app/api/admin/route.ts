@@ -29,19 +29,40 @@ async function revalidateLawyerPages(lawyerId: string): Promise<void> {
     const supabase = createAdminClient();
     const { data } = await supabase
       .from("lawyers")
-      .select("slug,uf,city_slug,target_uf,target_city")
+      .select("slug,uf,city_slug,target_uf,target_city,extra_cities")
       .eq("id", lawyerId)
       .maybeSingle();
     if (!data) return;
+    const paths = new Set<string>();
+    paths.add("/");
+    paths.add(`/p/${data.slug}`);
+
     const uf = (data.uf as string).toLowerCase();
-    const citySlug = data.city_slug as string;
-    revalidatePath("/");
-    revalidatePath(`/advogados/${uf}`);
-    revalidatePath(`/advogados/${uf}/${citySlug}`);
-    revalidatePath(`/p/${data.slug}`);
+    paths.add(`/advogados/${uf}`);
+    paths.add(`/advogados/${uf}/${data.city_slug}`);
+
     if (data.target_uf && data.target_city) {
       const tuf = (data.target_uf as string).toLowerCase();
-      revalidatePath(`/advogados/${tuf}/${data.target_city}`);
+      paths.add(`/advogados/${tuf}`);
+      paths.add(`/advogados/${tuf}/${data.target_city}`);
+    }
+
+    // Inclui extra_cities (até 9 entradas)
+    const extras = Array.isArray(data.extra_cities) ? data.extra_cities : [];
+    for (const c of extras as Array<{ uf?: string; slug?: string }>) {
+      if (c && typeof c.uf === "string" && typeof c.slug === "string") {
+        const tuf = c.uf.toLowerCase();
+        paths.add(`/advogados/${tuf}`);
+        paths.add(`/advogados/${tuf}/${c.slug}`);
+      }
+    }
+
+    for (const path of paths) {
+      try {
+        revalidatePath(path);
+      } catch (err) {
+        console.error("[admin] revalidatePath failed for", path, err);
+      }
     }
   } catch (err) {
     console.error("[admin] revalidateLawyerPages failed", err);

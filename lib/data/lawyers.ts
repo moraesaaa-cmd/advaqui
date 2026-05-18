@@ -44,11 +44,19 @@ export async function getLawyersForCity(
 ): Promise<Lawyer[]> {
   const supabase = createAdminClient();
   const ufUpper = uf.toUpperCase();
+  // Matches em 3 lugares:
+  //   1. uf + city_slug = cidade principal do cadastro
+  //   2. target_uf + target_city = cidade adicional legada (campos antigos)
+  //   3. extra_cities jsonb contém { uf, slug } = nova lista (até 9 entradas)
+  // O containedBy/contains do supabase-js usa o operador @> do jsonb com
+  // index GIN (lawyers_extra_cities_gin_idx). É O(log N) mesmo com muitos
+  // advogados.
+  const extraMatch = JSON.stringify([{ uf: ufUpper, slug: citySlug }]);
   const { data, error } = await supabase
     .from("lawyers")
     .select(PUBLIC_COLUMNS)
     .or(
-      `and(uf.eq.${ufUpper},city_slug.eq.${citySlug}),and(target_uf.eq.${ufUpper},target_city.eq.${citySlug})`
+      `and(uf.eq.${ufUpper},city_slug.eq.${citySlug}),and(target_uf.eq.${ufUpper},target_city.eq.${citySlug}),extra_cities.cs.${extraMatch}`
     )
     .order("plan_status", { ascending: false }) // active vem antes de free
     .order("featured", { ascending: false })
@@ -58,7 +66,16 @@ export async function getLawyersForCity(
     console.error("getLawyersForCity error:", error.message);
     return [];
   }
-  return (data || []).map((r) => mapLawyerRow(r as PublicLawyer));
+  // Dedup por id (lawyer pode bater em mais de uma cláusula do or).
+  const seen = new Set<string>();
+  const result: Lawyer[] = [];
+  for (const r of data || []) {
+    const row = r as PublicLawyer;
+    if (seen.has(row.id)) continue;
+    seen.add(row.id);
+    result.push(mapLawyerRow(row));
+  }
+  return result;
 }
 
 /**

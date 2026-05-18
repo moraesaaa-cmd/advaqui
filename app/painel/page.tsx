@@ -97,12 +97,28 @@ export default function PainelPage() {
 
   const saveEdit = async () => {
     if (!draft || !user) return;
+    if (saving) return; // guard contra duplo-clique
     setSaving(true);
+
+    // Helper local: promise com timeout pra evitar UI travada se o request
+    // não responder (bug reportado em alguns navegadores).
+    const withTimeout = async <T,>(p: Promise<T>, ms: number): Promise<T> => {
+      let to: ReturnType<typeof setTimeout> | undefined;
+      const timeout = new Promise<never>((_, reject) => {
+        to = setTimeout(() => reject(new Error("__timeout__")), ms);
+      });
+      try {
+        return (await Promise.race([p, timeout])) as T;
+      } finally {
+        if (to) clearTimeout(to);
+      }
+    };
+
     const supabase = createClient();
     // Salva todos os campos editáveis pelo próprio advogado.
     // Cidade principal e UF NÃO são alteráveis pelo painel — exigem novo
     // signUp ou solicitação ao suporte (regra: slug é estável para SEO).
-    // Cidade adicional (target_*) é editável apenas para premium.
+    // Cidade adicional (target_*) e extra_cities são editáveis apenas premium.
     const update: Record<string, unknown> = {
       name: draft.name,
       phone: draft.phone,
@@ -115,21 +131,56 @@ export default function PainelPage() {
     if (isPremium) {
       update.target_city = draft.targetCity || null;
       update.target_uf = draft.targetUf || null;
+      // Sanity: máximo 9 entradas em extra_cities (limite do banco).
+      update.extra_cities = (draft.extraCities || []).slice(0, 9);
+    } else {
+      // Free não pode ter cidades extras — limpa qualquer resíduo.
+      update.target_city = null;
+      update.target_uf = null;
+      update.extra_cities = [];
     }
-    const { error } = await supabase
-      .from("lawyers")
-      .update(update)
-      .eq("id", user.id);
-    setSaving(false);
 
-    if (error) {
-      console.error("[painel:saveEdit]", error);
-      toast(`Erro ao salvar — ${error.message}`, "error");
-      return;
+    try {
+      const { error } = await withTimeout(
+        supabase.from("lawyers").update(update).eq("id", user.id),
+        15000
+      );
+
+      if (error) {
+        console.error("[painel:saveEdit]", error);
+        toast(`Erro ao salvar — ${error.message}`, "error");
+        return;
+      }
+
+      // Invalida o cache SSG das páginas onde o perfil aparece
+      // (cidade principal + extras + perfil + estado + home).
+      // Não bloqueia o sucesso se a revalidação falhar.
+      try {
+        await withTimeout(
+          fetch("/api/lawyer/revalidate", { method: "POST" }),
+          5000
+        );
+      } catch (err) {
+        console.warn("[painel:saveEdit] revalidate failed", err);
+      }
+
+      setUser(draft);
+      setEditing(false);
+      toast("Perfil atualizado. As páginas públicas serão atualizadas em segundos.");
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : String(err);
+      if (errMsg === "__timeout__") {
+        toast(
+          "O servidor demorou demais para responder. Tente novamente em alguns segundos.",
+          "error"
+        );
+      } else {
+        console.error("[painel:saveEdit] unexpected", err);
+        toast("Erro de conexão. Tente novamente.", "error");
+      }
+    } finally {
+      setSaving(false);
     }
-    setUser(draft);
-    setEditing(false);
-    toast("Perfil atualizado com sucesso");
   };
 
   const toggleDraftSpec = (slug: string) => {
@@ -140,6 +191,45 @@ export default function PainelPage() {
         ? draft.specialties.filter((s) => s !== slug)
         : [...draft.specialties, slug]
     });
+  };
+
+  const addExtraCity = () => {
+    if (!draft) return;
+    if ((draft.extraCities || []).length >= 9) {
+      toast("Máximo de 9 cidades adicionais (10 no total com a principal).", "error");
+      return;
+    }
+    setDraft({
+      ...draft,
+      extraCities: [...(draft.extraCities || []), { name: "", slug: "", uf: "MG" }]
+    });
+  };
+
+  const updateExtraCity = (
+    index: number,
+    field: "name" | "slug" | "uf",
+    value: string
+  ) => {
+    if (!draft) return;
+    const list = [...(draft.extraCities || [])];
+    list[index] = { ...list[index], [field]: value };
+    // Se mudou o name, recalcula o slug automaticamente
+    if (field === "name") {
+      list[index].slug = value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[̀-ͯ]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    }
+    setDraft({ ...draft, extraCities: list });
+  };
+
+  const removeExtraCity = (index: number) => {
+    if (!draft) return;
+    const list = [...(draft.extraCities || [])];
+    list.splice(index, 1);
+    setDraft({ ...draft, extraCities: list });
   };
 
   const sendMessage = async () => {
@@ -340,59 +430,88 @@ export default function PainelPage() {
                 </div>
 
                 <div className="rounded-xl border border-brand-line bg-brand-bg p-4">
-                  <p className="text-xs font-semibold text-brand-ink mb-1">
-                    Cidade adicional (atendimento secundário)
-                  </p>
-                  <p className="text-xs text-brand-ink/60 mb-3">
-                    Se você atende em mais de uma cidade, informe a segunda aqui.
-                    Seu perfil também aparecerá na página dessa cidade.
-                    {status !== "active" && (
-                      <span className="block mt-1 text-brand-accent2 font-medium">
-                        Recurso disponível apenas no plano premium.
-                      </span>
-                    )}
-                  </p>
-                  <div className="grid sm:grid-cols-3 gap-3">
+                  <div className="flex items-start justify-between gap-3 mb-2">
                     <div>
-                      <label className="label">UF adicional</label>
-                      <select
-                        className="input"
-                        value={draft.targetUf || ""}
-                        disabled={status !== "active"}
-                        onChange={(e) =>
-                          setDraft({ ...draft, targetUf: e.target.value || undefined })
-                        }
+                      <p className="text-xs font-semibold text-brand-ink">
+                        Cidades adicionais de atendimento ({(draft.extraCities || []).length} / 9)
+                      </p>
+                      <p className="text-xs text-brand-ink/60 mt-1">
+                        Você atende em outras cidades além da principal? Adicione até 9 cidades
+                        extras. Seu perfil aparecerá na página de cada cidade listada.
+                        {status !== "active" && (
+                          <span className="block mt-1 text-brand-accent2 font-medium">
+                            Recurso disponível apenas no plano premium.
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                    {status === "active" && (draft.extraCities || []).length < 9 && (
+                      <button
+                        type="button"
+                        onClick={addExtraCity}
+                        className="text-xs font-medium px-3 py-1.5 rounded-lg bg-brand-deep text-white hover:bg-brand-deep/90 whitespace-nowrap"
                       >
-                        <option value="">(nenhuma)</option>
-                        {[
-                          "AC","AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT",
-                          "PA","PB","PE","PI","PR","RJ","RN","RO","RR","RS","SC","SE","SP","TO"
-                        ].map((uf) => (
-                          <option key={uf} value={uf}>{uf}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="sm:col-span-2">
-                      <label className="label">Slug da cidade (ex.: belo-horizonte)</label>
-                      <input
-                        className="input"
-                        value={draft.targetCity || ""}
-                        disabled={status !== "active"}
-                        placeholder="nome-da-cidade-sem-acentos"
-                        onChange={(e) =>
-                          setDraft({
-                            ...draft,
-                            targetCity: e.target.value
-                              .toLowerCase()
-                              .normalize("NFD")
-                              .replace(/[̀-ͯ]/g, "")
-                              .replace(/[^a-z0-9]+/g, "-")
-                              .replace(/^-+|-+$/g, "") || undefined
-                          })
-                        }
-                      />
-                    </div>
+                        + Adicionar cidade
+                      </button>
+                    )}
                   </div>
+
+                  {(draft.extraCities || []).length === 0 ? (
+                    <p className="text-xs text-brand-ink/40 italic mt-3">
+                      Nenhuma cidade adicional cadastrada.
+                    </p>
+                  ) : (
+                    <div className="space-y-2 mt-3">
+                      {(draft.extraCities || []).map((c, idx) => (
+                        <div
+                          key={idx}
+                          className="grid sm:grid-cols-[80px_1fr_auto] gap-2 items-end p-3 bg-white rounded-lg border border-brand-line"
+                        >
+                          <div>
+                            <label className="text-xs text-brand-ink/60">UF</label>
+                            <select
+                              className="input text-sm"
+                              value={c.uf || "MG"}
+                              disabled={status !== "active"}
+                              onChange={(e) => updateExtraCity(idx, "uf", e.target.value)}
+                            >
+                              {[
+                                "AC","AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT",
+                                "PA","PB","PE","PI","PR","RJ","RN","RO","RR","RS","SC","SE","SP","TO"
+                              ].map((uf) => (
+                                <option key={uf} value={uf}>{uf}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <div>
+                            <label className="text-xs text-brand-ink/60">
+                              Nome da cidade
+                            </label>
+                            <input
+                              className="input text-sm"
+                              value={c.name || ""}
+                              disabled={status !== "active"}
+                              placeholder="Ex.: Belo Horizonte"
+                              onChange={(e) => updateExtraCity(idx, "name", e.target.value)}
+                            />
+                            {c.slug && (
+                              <p className="text-[10px] text-brand-ink/40 mt-1">
+                                URL: /advogados/{(c.uf || "mg").toLowerCase()}/{c.slug}
+                              </p>
+                            )}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeExtraCity(idx)}
+                            disabled={status !== "active"}
+                            className="text-xs text-red-600 hover:text-red-700 hover:underline px-2 py-1 disabled:opacity-40"
+                          >
+                            Remover
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <p className="text-xs text-brand-ink/50 pt-2 border-t border-brand-line">
@@ -423,9 +542,13 @@ export default function PainelPage() {
                   ["Endereço", user.address || "—"],
                   ["Cidade principal", `${user.cityName} / ${user.uf}`],
                   [
-                    "Cidade adicional",
-                    user.targetCity && user.targetUf
-                      ? `${user.targetCity} / ${user.targetUf}`
+                    "Cidades adicionais",
+                    (user.extraCities || []).length > 0
+                      ? user.extraCities
+                          .map((c) => `${c.name}/${c.uf}`)
+                          .join(", ")
+                      : status === "active"
+                      ? "— (nenhuma cadastrada)"
                       : "— (recurso premium)"
                   ],
                   [

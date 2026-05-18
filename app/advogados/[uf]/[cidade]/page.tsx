@@ -176,10 +176,6 @@ export default async function CityPage({
           posição privilegiada na página de {city.name} e ganha mais exposição em buscas relacionadas
           à sua cidade e à sua área de atuação. Sem fidelidade, cancelamento livre.
         </p>
-        <p className="text-xs text-brand-bg/60 mb-4 max-w-2xl">
-          O destaque amplia a visibilidade dentro da plataforma. Não há promessa de captação garantida
-          nem de posicionamento em mecanismos externos como Google.
-        </p>
         <Link href="/planos" className="btn-accent">
           Conhecer planos
         </Link>

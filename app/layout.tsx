@@ -46,7 +46,13 @@ export const metadata: Metadata = {
     title: `${SITE.name} — ${SITE.tagline}`,
     description: SITE.description
   },
-  robots: { index: true, follow: true }
+  robots: { index: true, follow: true },
+  // Verificação Google Search Console.
+  // Funciona como 2ª camada caso a verificação por DNS TXT falhe.
+  // O Google aceita qualquer um dos dois métodos.
+  verification: {
+    google: "UGeskHmRDfHUpwUpuOQ8tSbEIiRuMNDvNjg8zBK57iM"
+  }
 };
 
 export const viewport: Viewport = {

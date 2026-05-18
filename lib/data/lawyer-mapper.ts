@@ -12,6 +12,8 @@ import type { LawyerRow, PublicLawyer, PlanStatus } from "@/lib/supabase/types";
  */
 
 // Tipo público usado pelos componentes (camelCase, sem CPF).
+export type ExtraCity = { name: string; slug: string; uf: string };
+
 export type Lawyer = {
   id: string;
   slug: string;
@@ -35,36 +37,64 @@ export type Lawyer = {
   verifiedOab?: boolean;
   targetCity?: string;
   targetUf?: string;
+  /** Cidades adicionais de atendimento (até 9 no premium). */
+  extraCities: ExtraCity[];
   createdAt: string;
 };
 
-export const mapLawyerRow = (row: LawyerRow | PublicLawyer): Lawyer => ({
-  id: row.id,
-  slug: row.slug,
-  name: row.name,
-  oab: row.oab,
-  oabUf: row.oab_uf,
-  email: row.email,
-  phone: row.phone || undefined,
-  whatsapp: row.whatsapp || undefined,
-  address: row.address || undefined,
-  cityName: row.city_name,
-  citySlug: row.city_slug,
-  uf: row.uf,
-  specialties: row.specialties || [],
-  bio: row.bio || undefined,
-  planStatus: row.plan_status,
-  planStartDate: row.plan_start_date || undefined,
-  planEndDate: row.plan_end_date || undefined,
-  paymentDate: row.payment_date || undefined,
-  featured: row.featured,
-  verifiedOab: row.verified_oab,
-  targetCity: row.target_city || undefined,
-  targetUf: row.target_uf || undefined,
-  createdAt: row.created_at
-});
+export const mapLawyerRow = (
+  row: (LawyerRow | PublicLawyer) & { extra_cities?: unknown }
+): Lawyer => {
+  // Normaliza extra_cities — pode vir como array, string JSON ou undefined
+  // (depende do schema atual do banco; após migration 0003 é sempre array).
+  let extras: ExtraCity[] = [];
+  const raw = (row as { extra_cities?: unknown }).extra_cities;
+  if (Array.isArray(raw)) {
+    extras = (raw as Array<Partial<ExtraCity>>)
+      .filter((c) => c && typeof c.name === "string" && typeof c.slug === "string" && typeof c.uf === "string")
+      .map((c) => ({ name: c.name as string, slug: c.slug as string, uf: c.uf as string }));
+  } else if (typeof raw === "string") {
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        extras = (parsed as Array<Partial<ExtraCity>>)
+          .filter((c) => c && typeof c.name === "string" && typeof c.slug === "string" && typeof c.uf === "string")
+          .map((c) => ({ name: c.name as string, slug: c.slug as string, uf: c.uf as string }));
+      }
+    } catch {
+      // ignora
+    }
+  }
+
+  return {
+    id: row.id,
+    slug: row.slug,
+    name: row.name,
+    oab: row.oab,
+    oabUf: row.oab_uf,
+    email: row.email,
+    phone: row.phone || undefined,
+    whatsapp: row.whatsapp || undefined,
+    address: row.address || undefined,
+    cityName: row.city_name,
+    citySlug: row.city_slug,
+    uf: row.uf,
+    specialties: row.specialties || [],
+    bio: row.bio || undefined,
+    planStatus: row.plan_status,
+    planStartDate: row.plan_start_date || undefined,
+    planEndDate: row.plan_end_date || undefined,
+    paymentDate: row.payment_date || undefined,
+    featured: row.featured,
+    verifiedOab: row.verified_oab,
+    targetCity: row.target_city || undefined,
+    targetUf: row.target_uf || undefined,
+    extraCities: extras,
+    createdAt: row.created_at
+  };
+};
 
 // Colunas seguras para exposição pública (sem CPF).
 // Usado pelos selects do server-side em lawyers.ts.
 export const PUBLIC_COLUMNS =
-  "id,slug,name,oab,oab_uf,email,phone,whatsapp,address,city_name,city_slug,uf,specialties,bio,plan_status,plan_start_date,plan_end_date,payment_date,featured,verified_oab,target_city,target_uf,created_at,updated_at";
+  "id,slug,name,oab,oab_uf,email,phone,whatsapp,address,city_name,city_slug,uf,specialties,bio,plan_status,plan_start_date,plan_end_date,payment_date,featured,verified_oab,target_city,target_uf,extra_cities,created_at,updated_at";
