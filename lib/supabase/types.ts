@@ -107,6 +107,7 @@ export type Database = {
           uf: string;
         };
         Update: Partial<LawyerRow>;
+        Relationships: [];
       };
       messages: {
         Row: MessageRow;
@@ -115,6 +116,7 @@ export type Database = {
           body: string;
         };
         Update: Partial<MessageRow>;
+        Relationships: [];
       };
       plan_history: {
         Row: PlanHistoryRow;
@@ -123,10 +125,12 @@ export type Database = {
           amount: number;
         };
         Update: Partial<PlanHistoryRow>;
+        Relationships: [];
       };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
     Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
 };

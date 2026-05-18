@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import { Check, Clock, Copy } from "lucide-react";
@@ -34,12 +35,13 @@ export function PixDisplay({ txid }: { txid?: string }) {
 
       {qrUrl && (
         <div className="flex justify-center bg-brand-bg rounded-xl p-4 mb-4">
-          <img
+          <Image
             src={qrUrl}
             width={240}
             height={240}
             alt="QR Code Pix para pagamento"
             className="rounded-md"
+            unoptimized
           />
         </div>
       )}

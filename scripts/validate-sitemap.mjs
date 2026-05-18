@@ -22,7 +22,8 @@ const BASE = process.argv[2] || "";
 const STATES_UF = ["AC","AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT","PA","PB","PE","PI","PR","RJ","RN","RO","RR","RS","SC","SE","SP","TO"];
 const SPECIALTIES = ["trabalhista","civil","criminal","previdenciario","familia","empresarial","tributario","imobiliario","consumidor","administrativo","ambiental","digital","eleitoral","militar","internacional"];
 
-const cities = JSON.parse(readFileSync(resolve(ROOT, "data/cities.json"), "utf8"));
+const readJson = (path) => JSON.parse(readFileSync(path, "utf8").replace(/^\uFEFF/, ""));
+const cities = readJson(resolve(ROOT, "data/cities.json"));
 
 const expectedUrls = new Set();
 const base = BASE.replace(/\/$/, "");

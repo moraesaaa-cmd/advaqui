@@ -14,14 +14,14 @@
     "validate": "npm run validate:cities"
   },
   "dependencies": {
-    "next": "14.2.30",
+    "next": "14.2.35",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "lucide-react": "0.439.0",
     "clsx": "2.1.1",
     "qrcode": "1.5.4",
-    "@supabase/supabase-js": "2.45.4",
-    "@supabase/ssr": "0.5.1"
+    "@supabase/supabase-js": "2.106.0",
+    "@supabase/ssr": "0.10.3"
   },
   "devDependencies": {
     "@types/node": "20.16.5",
@@ -30,9 +30,9 @@
     "@types/qrcode": "1.5.5",
     "typescript": "5.5.4",
     "tailwindcss": "3.4.10",
-    "postcss": "8.4.45",
+    "postcss": "8.5.14",
     "autoprefixer": "10.4.20",
     "eslint": "8.57.0",
-    "eslint-config-next": "14.2.30"
+    "eslint-config-next": "14.2.35"
   }
 }

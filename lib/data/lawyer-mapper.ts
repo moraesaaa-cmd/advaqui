@@ -1,4 +1,5 @@
 import type { LawyerRow, PublicLawyer, PlanStatus } from "@/lib/supabase/types";
+import { titleCaseNameBR } from "@/lib/utils/format";
 
 /**
  * Tipos e mapeadores puros, **sem dependência de `next/headers`** —
@@ -69,7 +70,11 @@ export const mapLawyerRow = (
   return {
     id: row.id,
     slug: row.slug,
-    name: row.name,
+    // Normaliza nome para Title Case BR mesmo em registros legados que
+    // foram salvos em CAPS no banco. Garante que cards públicos, perfis
+    // e listagens mostrem 'Kellsons de Moraes Oliveira' em vez de
+    // 'KELLSONS DE MORAES OLIVEIRA' até a migração SQL normalizar.
+    name: titleCaseNameBR(row.name),
     oab: row.oab,
     oabUf: row.oab_uf,
     email: row.email,

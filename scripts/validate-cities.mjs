@@ -45,13 +45,14 @@ const warnings = [];
 
 const fail = (msg) => errors.push(msg);
 const warn = (msg) => warnings.push(msg);
+const readJson = (path) => JSON.parse(readFileSync(path, "utf8").replace(/^\uFEFF/, ""));
 
 // 1. Carrega cities.json
 const citiesPath = resolve(ROOT, "data/cities.json");
 if (!existsSync(citiesPath)) {
   fail("data/cities.json não encontrado. Rode npm run import:ibge");
 } else {
-  const raw = JSON.parse(readFileSync(citiesPath, "utf8"));
+  const raw = readJson(citiesPath);
   if (!Array.isArray(raw)) {
     fail("data/cities.json não é um array");
   } else {

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Menu, X, User as UserIcon, LogOut, LayoutDashboard, ChevronDown } from "lucide-react";
 import { Logo } from "./Logo";
 import { createClient } from "@/lib/supabase/client";
+import { titleCaseNameBR } from "@/lib/utils/format";
 
 const NAV = [
   { href: "/", label: "Início" },
@@ -42,10 +43,10 @@ export function Header() {
         setSession({ status: "anonymous" });
         return;
       }
-      const full =
-        (data.user.user_metadata?.name as string | undefined) ||
-        data.user.email ||
-        "Advogado";
+      const metadataName = data.user.user_metadata?.name as string | undefined;
+      const full = metadataName
+        ? titleCaseNameBR(metadataName)
+        : data.user.email || "Advogado";
       const firstName = full.trim().split(/\s+/)[0] || "Advogado";
       setSession({ status: "logged", name: full, firstName });
     };
