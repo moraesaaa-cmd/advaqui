@@ -12,7 +12,11 @@ import { stateIntro } from "@/lib/data/templates";
 import { PLAN } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
 
-export const dynamicParams = false;
+// dynamicParams: true permite gerar a rota on-demand caso o build estatico
+// nao tenha incluido aquela UF (ISR fallback). Com false, qualquer UF que
+// nao tenha sido pre-gerado retornava 404, e algumas rotas como /advogados/mg
+// foram reportadas como 404 mesmo com generateStaticParams retornando todas.
+export const dynamicParams = true;
 export const revalidate = 3600;
 
 export async function generateStaticParams() {

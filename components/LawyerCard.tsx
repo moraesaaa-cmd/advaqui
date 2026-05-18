@@ -41,27 +41,46 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
 
   return (
     <article
-      className={`rounded-2xl border p-5 transition hover:shadow-cardHover bg-white ${
+      className={`rounded-2xl border-2 p-5 transition bg-white relative ${
         isFeatured
-          ? "border-brand-accent/60 ring-1 ring-brand-accent/30 shadow-card"
-          : "border-brand-line shadow-card"
+          ? "border-brand-accent shadow-cardHover ring-2 ring-brand-accent/20 hover:ring-brand-accent/40"
+          : "border-brand-line shadow-card hover:shadow-cardHover"
       }`}
     >
+      {isFeatured && (
+        // Faixa dourada no topo do card premium — sinal visual imediato
+        // de que esse perfil tem destaque pago.
+        <div
+          aria-hidden
+          className="absolute -top-px left-4 right-4 h-1 bg-gradient-to-r from-brand-accent2 via-brand-accent to-brand-accent2 rounded-b"
+        />
+      )}
       <div className="flex items-start justify-between gap-3">
         <div>
           <div className="flex items-center flex-wrap gap-2">
-            <h3 className={`font-display ${isFeatured ? "text-xl" : "text-lg"} font-bold text-brand-ink`}>
+            {/* Ícone de estrela inline antes do nome — reforço visual do premium */}
+            {isFeatured && (
+              <Star
+                className="w-5 h-5 text-brand-accent fill-brand-accent flex-shrink-0"
+                aria-label="Perfil em destaque"
+              />
+            )}
+            <h3
+              className={`font-display ${
+                isFeatured ? "text-xl text-brand-deep" : "text-lg text-brand-ink"
+              } font-bold`}
+            >
               <Link href={`/p/${lawyer.slug}`} className="hover:underline underline-offset-2">
                 {lawyer.name}
               </Link>
             </h3>
             {isFeatured && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-brand-accent text-brand-ink">
-                <Star className="w-3 h-3" aria-hidden /> Destaque
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-brand-accent text-brand-ink uppercase tracking-wide">
+                <Star className="w-3 h-3 fill-current" aria-hidden /> Destaque
               </span>
             )}
             {isFeatured && lawyer.verifiedOab && (
-              <span className="inline-flex items-center gap-1 text-xs text-emerald-700 font-medium">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                 <ShieldCheck className="w-3 h-3" aria-hidden /> OAB verificada
               </span>
             )}
@@ -70,8 +89,17 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
             OAB/{lawyer.oabUf} {lawyer.oab}
           </p>
         </div>
-        <div className="w-12 h-12 rounded-full bg-brand-line flex items-center justify-center flex-shrink-0">
-          <User className="w-6 h-6 text-brand-deep" aria-hidden />
+        <div
+          className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
+            isFeatured
+              ? "bg-brand-accent/20 ring-2 ring-brand-accent/40"
+              : "bg-brand-line"
+          }`}
+        >
+          <User
+            className={`w-6 h-6 ${isFeatured ? "text-brand-accent2" : "text-brand-deep"}`}
+            aria-hidden
+          />
         </div>
       </div>
 

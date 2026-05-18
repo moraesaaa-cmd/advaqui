@@ -6,21 +6,17 @@ import {
   MapPin,
   Briefcase,
   CreditCard,
-  Eye,
-  Users
+  Eye
 } from "lucide-react";
 import { SearchBox } from "@/components/SearchBox";
 import { STATES } from "@/lib/data/states";
 import { SPECIALTIES } from "@/lib/data/specialties";
-import { getLawyerCount } from "@/lib/data/lawyers";
 import { SITE, PLAN } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
 
 export const revalidate = 600;
 
 export default async function HomePage() {
-  const totalLawyers = await getLawyerCount();
-
   return (
     <>
       <section className="relative bg-gradient-to-br from-brand-ink via-brand-deep to-brand-primary text-white">
@@ -48,10 +44,6 @@ export default async function HomePage() {
               <SearchBox />
             </div>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-sm text-brand-bg/75">
-              <span className="inline-flex items-center gap-2">
-                <Users className="w-4 h-4 text-brand-accent" aria-hidden />
-                {totalLawyers}+ advogados cadastrados
-              </span>
               <span className="inline-flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-brand-accent" aria-hidden />
                 Todas as regiões do Brasil

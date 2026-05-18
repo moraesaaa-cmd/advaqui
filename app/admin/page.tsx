@@ -339,6 +339,72 @@ export default function AdminPage() {
     }
   };
 
+  /**
+   * Editor de cidades adicionais (extra_cities) do lawyer.
+   *
+   * Formato esperado pelo banco: array JSON com até 9 entradas, cada uma
+   * { name, slug, uf }. Aqui o admin edita via texto multilinha simples:
+   * uma cidade por linha no formato "UF,nome-com-slug,Nome Apresentavel".
+   *
+   * Exemplo:
+   *   MG,belo-horizonte,Belo Horizonte
+   *   SP,sao-paulo,São Paulo
+   *
+   * Validações: o handler server-side ainda passa pelo normalizeExtraCities
+   * que valida cada entrada e aplica title-case no nome.
+   */
+  const editExtraCities = async (
+    id: string,
+    name: string,
+    current: unknown
+  ) => {
+    const list = Array.isArray(current) ? current : [];
+    const currentText = list
+      .map((c) => {
+        const item = c as { uf?: string; slug?: string; name?: string };
+        return `${item.uf || ""},${item.slug || ""},${item.name || ""}`;
+      })
+      .join("\n");
+    const text = window.prompt(
+      `Cidades adicionais de ${name} (uma por linha):\n` +
+        "Formato: UF,slug-da-cidade,Nome Apresentavel\n" +
+        "Exemplo: MG,belo-horizonte,Belo Horizonte\n\n" +
+        "(deixe vazio pra remover todas)",
+      currentText
+    );
+    if (text === null) return;
+
+    const parsed: Array<{ name: string; slug: string; uf: string }> = [];
+    for (const line of text.split("\n")) {
+      const parts = line.split(",").map((p) => p.trim());
+      if (parts.length < 3) continue;
+      const [uf, slug, cityName] = parts;
+      if (!uf || !slug || !cityName) continue;
+      parsed.push({ uf: uf.toUpperCase(), slug: slug.toLowerCase(), name: cityName });
+      if (parsed.length >= 9) break;
+    }
+
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({
+      action: "update-lawyer",
+      id,
+      fields: { extra_cities: parsed }
+    });
+    setBusy(false);
+    if (r.status === 200) {
+      toast(`Cidades adicionais atualizadas (${parsed.length})`);
+      await refreshUsers();
+      // Se estiver vendo detalhes desse user, refresh do JSON
+      if (expandedId === id) {
+        await viewFullLawyer(id);
+        await viewFullLawyer(id);
+      }
+    } else {
+      toast(r.json.error || "Erro ao atualizar cidades", "error");
+    }
+  };
+
   const logout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     toast("Sessão encerrada");
@@ -360,6 +426,40 @@ export default function AdminPage() {
           <LogOut className="w-4 h-4" aria-hidden /> Sair
         </button>
       </div>
+
+      <details className="mb-6 rounded-2xl border border-amber-300 bg-amber-50 p-4">
+        <summary className="cursor-pointer text-sm font-semibold text-amber-900">
+          Sobre senhas dos usuários (clique para expandir)
+        </summary>
+        <div className="mt-3 text-sm text-amber-900/90 space-y-2 leading-relaxed">
+          <p>
+            <strong>Não é possível visualizar a senha original de nenhum advogado.</strong>{" "}
+            Esta é uma limitação técnica obrigatória — o Supabase Auth armazena senhas como
+            hash bcrypt com salt único por usuário. Mesmo o administrador do banco de dados
+            não consegue ler as senhas em texto plano. Isso é prática-padrão de segurança
+            (não vazaria mesmo num ataque ao servidor) e exigência da LGPD para credenciais.
+          </p>
+          <p>
+            <strong>Quando um advogado pedir a senha dele, você tem duas opções:</strong>
+          </p>
+          <ol className="list-decimal list-inside space-y-1 ml-2">
+            <li>
+              <strong>Resetar senha</strong> (botão amarelo no card) — você define uma nova
+              senha temporária e avisa o advogado.
+            </li>
+            <li>
+              <strong>Magic link</strong> (botão roxo no card) — gera um link de login
+              passwordless válido por 1h. Copia automaticamente para sua área de
+              transferência. Envia pelo WhatsApp/e-mail. O advogado clica e entra direto.
+            </li>
+          </ol>
+          <p className="text-xs text-amber-900/70 pt-1 border-t border-amber-200 mt-2">
+            Ambas as opções funcionam sem você precisar saber a senha atual. Acesso a tudo o
+            mais do perfil (e-mail, telefone, OAB, cidade, endereço, bio, plano, pagamentos,
+            histórico, mensagens) está disponível via &quot;Ver tudo&quot; e botões de edição.
+          </p>
+        </div>
+      </details>
 
       <div className="flex gap-2 mb-6 flex-wrap">
         {TABS.map(({ id, label, Icon }) => (
@@ -562,6 +662,14 @@ export default function AdminPage() {
                     title="Editar bio do advogado"
                   >
                     Editar bio
+                  </button>
+                  <button
+                    onClick={() => editExtraCities(u.id, u.name, u.extra_cities)}
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    title="Editar cidades adicionais de atendimento (até 9, formato UF,slug,nome)"
+                  >
+                    Editar cidades extras
                   </button>
                   <button
                     onClick={() => viewFullLawyer(u.id)}
