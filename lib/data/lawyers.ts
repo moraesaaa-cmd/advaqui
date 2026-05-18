@@ -44,38 +44,60 @@ export async function getLawyersForCity(
 ): Promise<Lawyer[]> {
   const supabase = createAdminClient();
   const ufUpper = uf.toUpperCase();
-  // Matches em 3 lugares:
-  //   1. uf + city_slug = cidade principal do cadastro
-  //   2. target_uf + target_city = cidade adicional legada (campos antigos)
-  //   3. extra_cities jsonb contém { uf, slug } = nova lista (até 9 entradas)
-  // O containedBy/contains do supabase-js usa o operador @> do jsonb com
-  // index GIN (lawyers_extra_cities_gin_idx). É O(log N) mesmo com muitos
-  // advogados.
-  const extraMatch = JSON.stringify([{ uf: ufUpper, slug: citySlug }]);
-  const { data, error } = await supabase
-    .from("lawyers")
-    .select(PUBLIC_COLUMNS)
-    .or(
-      `and(uf.eq.${ufUpper},city_slug.eq.${citySlug}),and(target_uf.eq.${ufUpper},target_city.eq.${citySlug}),extra_cities.cs.${extraMatch}`
-    )
-    .order("plan_status", { ascending: false }) // active vem antes de free
-    .order("featured", { ascending: false })
-    .order("name", { ascending: true });
 
-  if (error) {
-    console.error("getLawyersForCity error:", error.message);
-    return [];
+  // Matches em 3 lugares — duas queries paralelas (Supabase rejeita o
+  // operador `cs` dentro de `or()` quando o valor contém JSON com colchetes
+  // e aspas; a query inteira retornava 0 rows e fazia advogados sumirem
+  // das paginas de cidade). Fazemos duas chamadas e mesclamos no app.
+  //
+  //   Query A: uf + city_slug (cidade principal) ou target_uf + target_city
+  //            (cidade adicional legada)
+  //   Query B: extra_cities @> [{ uf, slug }] (nova lista até 9 entradas)
+  //
+  // Performance — ambas usam índice (lawyers_city_idx pro primário,
+  // lawyers_extra_cities_gin_idx pro jsonb). Latência somada < 100ms.
+  const [primaryRes, extrasRes] = await Promise.all([
+    supabase
+      .from("lawyers")
+      .select(PUBLIC_COLUMNS)
+      .or(
+        `and(uf.eq.${ufUpper},city_slug.eq.${citySlug}),and(target_uf.eq.${ufUpper},target_city.eq.${citySlug})`
+      ),
+    supabase
+      .from("lawyers")
+      .select(PUBLIC_COLUMNS)
+      .contains("extra_cities", [{ uf: ufUpper, slug: citySlug }])
+  ]);
+
+  if (primaryRes.error) {
+    console.error("getLawyersForCity primary error:", primaryRes.error.message);
   }
-  // Dedup por id (lawyer pode bater em mais de uma cláusula do or).
+  if (extrasRes.error) {
+    console.error("getLawyersForCity extras error:", extrasRes.error.message);
+  }
+
+  // Merge + dedup (lawyer pode estar em ambas as queries se a cidade
+  // principal estiver também em extra_cities por engano).
   const seen = new Set<string>();
-  const result: Lawyer[] = [];
-  for (const r of data || []) {
+  const merged: Lawyer[] = [];
+  for (const r of [...(primaryRes.data || []), ...(extrasRes.data || [])]) {
     const row = r as PublicLawyer;
     if (seen.has(row.id)) continue;
     seen.add(row.id);
-    result.push(mapLawyerRow(row));
+    merged.push(mapLawyerRow(row));
   }
-  return result;
+
+  // Ordenação consistente: premium ativos primeiro, featured antes do resto,
+  // depois alfabético pelo nome.
+  return merged.sort((a, b) => {
+    const aPrem = a.planStatus === "active" ? 1 : 0;
+    const bPrem = b.planStatus === "active" ? 1 : 0;
+    if (aPrem !== bPrem) return bPrem - aPrem;
+    const aFeat = a.featured ? 1 : 0;
+    const bFeat = b.featured ? 1 : 0;
+    if (aFeat !== bFeat) return bFeat - aFeat;
+    return a.name.localeCompare(b.name, "pt-BR");
+  });
 }
 
 /**
