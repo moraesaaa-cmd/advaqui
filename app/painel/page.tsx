@@ -99,25 +99,47 @@ export default function PainelPage() {
     if (!draft || !user) return;
     setSaving(true);
     const supabase = createClient();
+    // Salva todos os campos editáveis pelo próprio advogado.
+    // Cidade principal e UF NÃO são alteráveis pelo painel — exigem novo
+    // signUp ou solicitação ao suporte (regra: slug é estável para SEO).
+    // Cidade adicional (target_*) é editável apenas para premium.
+    const update: Record<string, unknown> = {
+      name: draft.name,
+      phone: draft.phone,
+      whatsapp: draft.whatsapp,
+      address: draft.address,
+      bio: draft.bio,
+      specialties: draft.specialties
+    };
+    const isPremium = user.planStatus === "active";
+    if (isPremium) {
+      update.target_city = draft.targetCity || null;
+      update.target_uf = draft.targetUf || null;
+    }
     const { error } = await supabase
       .from("lawyers")
-      .update({
-        name: draft.name,
-        phone: draft.phone,
-        whatsapp: draft.whatsapp,
-        address: draft.address,
-        bio: draft.bio
-      })
+      .update(update)
       .eq("id", user.id);
     setSaving(false);
 
     if (error) {
-      toast("Erro ao salvar — tente novamente", "error");
+      console.error("[painel:saveEdit]", error);
+      toast(`Erro ao salvar — ${error.message}`, "error");
       return;
     }
     setUser(draft);
     setEditing(false);
-    toast("Perfil atualizado");
+    toast("Perfil atualizado com sucesso");
+  };
+
+  const toggleDraftSpec = (slug: string) => {
+    if (!draft) return;
+    setDraft({
+      ...draft,
+      specialties: draft.specialties.includes(slug)
+        ? draft.specialties.filter((s) => s !== slug)
+        : [...draft.specialties, slug]
+    });
   };
 
   const sendMessage = async () => {
@@ -261,14 +283,14 @@ export default function PainelPage() {
             </div>
 
             {editing && draft ? (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {(
                   [
-                    ["name", "Nome"],
+                    ["name", "Nome completo"],
                     ["phone", "Telefone"],
                     ["whatsapp", "WhatsApp"],
-                    ["address", "Endereço"],
-                    ["bio", "Bio"]
+                    ["address", "Endereço profissional"],
+                    ["bio", "Bio (até 500 caracteres)"]
                   ] as const
                 ).map(([k, label]) => (
                   <div key={k}>
@@ -277,6 +299,7 @@ export default function PainelPage() {
                       <textarea
                         className="input min-h-24"
                         value={draft[k] || ""}
+                        maxLength={500}
                         onChange={(e) => setDraft({ ...draft, [k]: e.target.value })}
                       />
                     ) : (
@@ -288,9 +311,98 @@ export default function PainelPage() {
                     )}
                   </div>
                 ))}
+
+                <div>
+                  <label className="label">Áreas de atuação</label>
+                  <p className="text-xs text-brand-ink/60 mb-2">
+                    Selecione todas as áreas em que você atua. Esses chips definem em quais
+                    páginas de especialidade seu perfil aparece.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {SPECIALTIES.map((s) => {
+                      const active = draft.specialties.includes(s.slug);
+                      return (
+                        <button
+                          key={s.slug}
+                          type="button"
+                          onClick={() => toggleDraftSpec(s.slug)}
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium border transition ${
+                            active
+                              ? "bg-brand-deep text-white border-brand-deep"
+                              : "bg-white text-brand-ink border-brand-line hover:border-brand-deep"
+                          }`}
+                        >
+                          {s.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-brand-line bg-brand-bg p-4">
+                  <p className="text-xs font-semibold text-brand-ink mb-1">
+                    Cidade adicional (atendimento secundário)
+                  </p>
+                  <p className="text-xs text-brand-ink/60 mb-3">
+                    Se você atende em mais de uma cidade, informe a segunda aqui.
+                    Seu perfil também aparecerá na página dessa cidade.
+                    {status !== "active" && (
+                      <span className="block mt-1 text-brand-accent2 font-medium">
+                        Recurso disponível apenas no plano premium.
+                      </span>
+                    )}
+                  </p>
+                  <div className="grid sm:grid-cols-3 gap-3">
+                    <div>
+                      <label className="label">UF adicional</label>
+                      <select
+                        className="input"
+                        value={draft.targetUf || ""}
+                        disabled={status !== "active"}
+                        onChange={(e) =>
+                          setDraft({ ...draft, targetUf: e.target.value || undefined })
+                        }
+                      >
+                        <option value="">(nenhuma)</option>
+                        {[
+                          "AC","AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT",
+                          "PA","PB","PE","PI","PR","RJ","RN","RO","RR","RS","SC","SE","SP","TO"
+                        ].map((uf) => (
+                          <option key={uf} value={uf}>{uf}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="label">Slug da cidade (ex.: belo-horizonte)</label>
+                      <input
+                        className="input"
+                        value={draft.targetCity || ""}
+                        disabled={status !== "active"}
+                        placeholder="nome-da-cidade-sem-acentos"
+                        onChange={(e) =>
+                          setDraft({
+                            ...draft,
+                            targetCity: e.target.value
+                              .toLowerCase()
+                              .normalize("NFD")
+                              .replace(/[̀-ͯ]/g, "")
+                              .replace(/[^a-z0-9]+/g, "-")
+                              .replace(/^-+|-+$/g, "") || undefined
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-xs text-brand-ink/50 pt-2 border-t border-brand-line">
+                  <strong>Cidade principal e OAB não são editáveis</strong> pelo painel — para
+                  mudanças nesses campos, fale com o suporte abaixo.
+                </p>
+
                 <div className="flex gap-2 pt-2">
                   <button onClick={saveEdit} className="btn-primary" disabled={saving}>
-                    {saving ? "Salvando…" : "Salvar"}
+                    {saving ? "Salvando…" : "Salvar alterações"}
                   </button>
                   <button
                     onClick={() => setEditing(false)}
@@ -309,7 +421,13 @@ export default function PainelPage() {
                   ["Telefone", user.phone || "—"],
                   ["WhatsApp", user.whatsapp || "—"],
                   ["Endereço", user.address || "—"],
-                  ["Cidade", `${user.cityName} / ${user.uf}`],
+                  ["Cidade principal", `${user.cityName} / ${user.uf}`],
+                  [
+                    "Cidade adicional",
+                    user.targetCity && user.targetUf
+                      ? `${user.targetCity} / ${user.targetUf}`
+                      : "— (recurso premium)"
+                  ],
                   [
                     "Áreas",
                     user.specialties

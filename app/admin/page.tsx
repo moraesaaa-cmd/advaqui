@@ -10,7 +10,8 @@ import {
   LogOut,
   Trash2,
   Star,
-  Reply
+  Reply,
+  Mail
 } from "lucide-react";
 import { PlanBadge } from "@/components/PlanBadge";
 import { formatDate } from "@/lib/utils/format";
@@ -24,6 +25,51 @@ const TABS = [
 ] as const;
 
 type Tab = (typeof TABS)[number]["id"];
+
+/**
+ * Constrói um link `mailto:` pré-preenchido com texto convidando o advogado
+ * gratuito a assinar o plano premium. Abre no cliente de e-mail padrão do
+ * sistema (Outlook, Apple Mail, Gmail webmail, etc).
+ *
+ * Quando o admin clica o botão, NÃO há automação de envio — o admin revisa
+ * o texto antes de mandar. Isso evita ser confundido com spam pela operadora
+ * de e-mail e mantém o tom pessoal.
+ *
+ * Conforme RESEND_API_KEY for configurada futuramente, podemos migrar pra
+ * uma campanha automática programada (com opt-in, regras de frequência).
+ */
+function buildUpsellMailto(u: LawyerRow): string {
+  const firstName = (u.name || "").trim().split(/\s+/)[0] || "Doutor(a)";
+  const subject = `${firstName}, destaque seu perfil no AdvAqui em ${u.city_name}`;
+  const body = `Olá ${firstName},
+
+Aqui é a equipe do AdvAqui. Notei que você está cadastrado(a) gratuitamente em ${u.city_name}/${u.uf} — obrigado(a) por confiar no nosso diretório.
+
+Queria te apresentar rapidamente o plano Premium (R$ 59,90/mês, Pix, sem fidelidade), que pode aumentar significativamente a visibilidade do seu perfil:
+
+  • Seu perfil aparece no TOPO da página de ${u.city_name}, acima dos demais
+  • Selo dourado "Destaque" + selo "OAB verificada" (após validação)
+  • Botão WhatsApp clicável direto no card (cliente fala com você em 1 toque)
+  • Bio livre até 500 caracteres explicando sua atuação
+  • Áreas de atuação com filtro avançado nas buscas
+  • Cidade adicional de atendimento (atenda em 2 cidades, não só 1)
+  • Estatísticas básicas de quantas pessoas visualizaram seu perfil
+
+Vale lembrar: o plano é mensal, pago via Pix, sem fidelidade. Você cancela quando quiser, sem multa.
+
+Para ativar, é só acessar:
+https://advaqui.com/painel/pagamento
+
+Qualquer dúvida, é só responder este e-mail.
+
+Atenciosamente,
+Equipe AdvAqui
+contato@AdvAqui.com.br`;
+
+  return `mailto:${encodeURIComponent(u.email)}?subject=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(body)}`;
+}
 
 async function callAdmin(payload: Record<string, unknown>) {
   const res = await fetch("/api/admin", {
@@ -308,6 +354,15 @@ export default function AdminPage() {
                   >
                     {u.verified_oab ? "OAB verificada" : "Verificar OAB"}
                   </button>
+                  {(u.plan_status === "free" || u.plan_status === "expired") && (
+                    <a
+                      href={buildUpsellMailto(u)}
+                      className="px-3 py-1.5 bg-brand-deep text-white rounded-lg text-xs font-medium hover:bg-brand-deep/90 inline-flex items-center gap-1"
+                      title="Abrir cliente de e-mail com mensagem pronta apresentando o plano premium"
+                    >
+                      <Mail className="w-3 h-3" aria-hidden /> Convidar pra premium
+                    </a>
+                  )}
                   <button
                     onClick={() => deleteUser(u.id)}
                     disabled={busy}

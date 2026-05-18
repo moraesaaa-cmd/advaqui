@@ -73,7 +73,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
               )}
             </div>
             <p className="text-brand-ink/70 mt-1">OAB/{l.oabUf} {l.oab}</p>
-            {featured && l.bio && <p className="text-brand-ink/85 mt-3 leading-relaxed">{l.bio}</p>}
+            {l.bio && <p className="text-brand-ink/85 mt-3 leading-relaxed">{l.bio}</p>}
           </div>
         </header>
 
@@ -81,11 +81,11 @@ export default async function ProfilePage({ params }: { params: { slug: string }
           <div className="flex items-center gap-3 rounded-xl border border-brand-line p-3">
             <MapPin className="w-4 h-4 text-brand-ink/50" aria-hidden />
             <span>
-              {featured && l.address ? `${l.address} — ` : ""}
+              {l.address ? `${l.address} — ` : ""}
               {l.cityName}/{l.uf}
             </span>
           </div>
-          {featured && tel && (
+          {tel && (
             <a
               href={tel}
               className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition"
@@ -117,17 +117,17 @@ export default async function ProfilePage({ params }: { params: { slug: string }
         </div>
 
         {!featured && (
-          <div className="mt-6 rounded-2xl border border-brand-line bg-brand-bg p-5">
+          <div className="mt-6 rounded-2xl border border-brand-accent/40 bg-brand-accent/5 p-5">
             <p className="text-sm font-semibold text-brand-ink">
-              Telefone, WhatsApp e endereço completo disponíveis no plano premium
+              Quer aparecer no topo de {l.cityName} e ter WhatsApp clicável no perfil?
             </p>
             <p className="text-xs text-brand-ink/70 mt-1.5 mb-3">
-              No plano gratuito, o perfil aparece no diretório com nome, OAB e cidade.
-              Os dados de contato direto (telefone, WhatsApp clicável, endereço profissional
-              e bio) ficam visíveis apenas quando o profissional adere ao plano premium.
+              O plano premium ({" "}
+              <strong>R$ 59,90/mês</strong>, sem fidelidade) coloca seu perfil em destaque,
+              libera botão WhatsApp clicável, bio completa, e selo de OAB verificada.
             </p>
             <Link href="/planos" className="text-sm font-medium text-brand-deep underline">
-              Conheça as diferenças entre gratuito e premium
+              Conhecer o plano premium
             </Link>
           </div>
         )}

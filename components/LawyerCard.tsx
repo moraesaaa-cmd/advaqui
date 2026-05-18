@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MapPin, Phone, Star, User, MessageCircle, ShieldCheck, Lock } from "lucide-react";
+import { MapPin, Phone, Star, User, MessageCircle, ShieldCheck } from "lucide-react";
 import type { Lawyer } from "@/lib/data/lawyer-mapper";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { whatsappLink } from "@/lib/utils/format";
@@ -10,27 +10,28 @@ const labelOf = (slug: string) =>
 /**
  * Card de advogado no diretório.
  *
- * Contrato dos planos (definido pelo produto):
+ * Contrato dos planos (definido pelo produto, Maio/2026):
  *
- * GRATUITO — Apenas o que é estritamente necessário para o cliente identificar
- * que o profissional existe e atua naquela cidade. Sem contato direto exposto.
+ * GRATUITO — dados públicos visíveis no diretório:
  *   • Nome
  *   • OAB e UF
  *   • Cidade
- *   • Áreas de atuação (chips)
+ *   • Endereço profissional (quando preenchido)
+ *   • Telefone (clicável tel:)
+ *   • Áreas de atuação (até 5 chips)
  *
- * PREMIUM — Tudo do gratuito + experiência completa.
+ * PREMIUM — tudo do gratuito + diferenciais:
  *   • Selo "Destaque" dourado
  *   • Selo "OAB verificada" (quando validado pelo admin)
- *   • Telefone clicável (tel:)
- *   • WhatsApp clicável (wa.me)
- *   • Endereço profissional completo
+ *   • Botão WhatsApp clicável (wa.me) com mensagem pré-preenchida
  *   • Bio até 500 chars (no perfil individual)
  *   • Posição privilegiada (topo da página da cidade)
  *   • Card maior e moldura âmbar
+ *   • Até 8 chips de especialidade (vs 5 no free)
  */
 export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: boolean }) {
   const isFeatured = featured ?? (lawyer.planStatus === "active" || lawyer.featured);
+  const tel = lawyer.phone ? `tel:+55${lawyer.phone.replace(/\D/g, "")}` : undefined;
   const wa = isFeatured
     ? whatsappLink(
         lawyer.whatsapp || lawyer.phone,
@@ -78,15 +79,15 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
         <div className="flex items-start gap-2">
           <MapPin className="w-4 h-4 mt-0.5 text-brand-ink/50 flex-shrink-0" aria-hidden />
           <span>
-            {isFeatured && lawyer.address ? `${lawyer.address}, ` : ""}
+            {lawyer.address ? `${lawyer.address}, ` : ""}
             {lawyer.cityName}/{lawyer.uf}
           </span>
         </div>
-        {isFeatured && lawyer.phone && (
+        {tel && (
           <div className="flex items-center gap-2">
             <Phone className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
             <a
-              href={`tel:+55${lawyer.phone.replace(/\D/g, "")}`}
+              href={tel}
               className="text-brand-ink hover:text-brand-deep hover:underline"
             >
               {lawyer.phone}
@@ -122,12 +123,6 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
             <MessageCircle className="w-4 h-4" aria-hidden />
             WhatsApp
           </a>
-        )}
-        {!isFeatured && (
-          <span className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs text-brand-ink/60 bg-brand-line/40">
-            <Lock className="w-3.5 h-3.5" aria-hidden />
-            Contato direto no plano premium
-          </span>
         )}
       </div>
     </article>

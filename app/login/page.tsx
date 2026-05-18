@@ -50,16 +50,41 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
+    // Helper: fetch com timeout (evita travamento eterno se /api/auth/admin
+    // não responder por algum motivo — o user vê erro útil em 6 segundos).
+    const withTimeout = async <T,>(promise: Promise<T>, ms: number): Promise<T> => {
+      let to: ReturnType<typeof setTimeout> | undefined;
+      const timeout = new Promise<never>((_, reject) => {
+        to = setTimeout(() => reject(new Error("__timeout__")), ms);
+      });
+      try {
+        return (await Promise.race([promise, timeout])) as T;
+      } finally {
+        if (to) clearTimeout(to);
+      }
+    };
+
     try {
       // 1. Tenta login admin via endpoint server-side (que lê .env do servidor).
-      const res = await fetch("/api/auth/admin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), password })
-      });
-      const data: AdminResponse = await res.json().catch(() => ({ ok: false }));
+      let data: AdminResponse = { ok: false };
+      let adminStatus = 0;
+      try {
+        const res = await withTimeout(
+          fetch("/api/auth/admin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email.trim(), password })
+          }),
+          6000
+        );
+        adminStatus = res.status;
+        data = (await res.json().catch(() => ({ ok: false }))) as AdminResponse;
+      } catch {
+        // Timeout ou erro de rede no admin — continua tentando como advogado.
+        data = { ok: false };
+      }
 
-      if (res.ok && data.ok) {
+      if (adminStatus === 200 && data.ok) {
         // Cookie httpOnly assinado já setado pelo endpoint via setAdminCookie.
         toast("Bem-vindo, administrador");
         router.push("/admin");
@@ -68,7 +93,7 @@ export default function LoginPage() {
       }
 
       // Caso de rate limit (429) — não tenta lawyer.
-      if (res.status === 429) {
+      if (adminStatus === 429) {
         setLockedUntil(Date.now() + (data.lockedSeconds || 0) * 1000);
         setError(data.error || "Muitas tentativas. Aguarde alguns minutos.");
         setPassword("");
@@ -77,11 +102,14 @@ export default function LoginPage() {
 
       // 2. Se não bateu como admin, tenta como advogado via Supabase Auth.
       const supabase = createClient();
-      const { data: signInData, error: signInError } =
-        await supabase.auth.signInWithPassword({
-          email: email.trim().toLowerCase(),
-          password
-        });
+      const signInPromise = supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
+        password
+      });
+      const { data: signInData, error: signInError } = await withTimeout(
+        signInPromise,
+        10000
+      );
 
       if (!signInError && signInData.user) {
         const userName =
@@ -92,7 +120,34 @@ export default function LoginPage() {
         return;
       }
 
-      // Falhou em ambos os caminhos.
+      // Trata erros específicos do Supabase Auth com mensagens úteis.
+      if (signInError) {
+        const msg = signInError.message.toLowerCase();
+        if (msg.includes("email not confirmed") || msg.includes("not confirmed")) {
+          setError(
+            "Seu e-mail ainda não foi confirmado. Verifique sua caixa de entrada ou entre em contato pelo /contato."
+          );
+          setPassword("");
+          focusPassword();
+          return;
+        }
+        if (msg.includes("invalid login credentials")) {
+          setError("E-mail ou senha incorretos.");
+          setPassword("");
+          focusPassword();
+          return;
+        }
+        if (msg.includes("rate") || msg.includes("too many")) {
+          setError("Muitas tentativas. Aguarde alguns minutos antes de tentar novamente.");
+          return;
+        }
+        setError(`Erro: ${signInError.message}`);
+        setPassword("");
+        focusPassword();
+        return;
+      }
+
+      // Fallback genérico
       if (typeof data.attemptsRemaining === "number") {
         setAttemptsRemaining(data.attemptsRemaining);
         setError(
@@ -106,7 +161,15 @@ export default function LoginPage() {
       setPassword("");
       focusPassword();
     } catch (err) {
-      setError("Erro de conexão. Tente novamente.");
+      const errMsg = err instanceof Error ? err.message : String(err);
+      if (errMsg === "__timeout__") {
+        setError(
+          "O servidor demorou muito para responder. Tente novamente em alguns segundos."
+        );
+      } else {
+        console.error("[login] unexpected error", err);
+        setError("Erro de conexão. Tente novamente.");
+      }
     } finally {
       setLoading(false);
     }
