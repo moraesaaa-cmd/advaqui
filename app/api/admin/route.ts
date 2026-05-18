@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { isAdminRequest } from "@/lib/auth/adminSession";
+import { createAdminClient } from "@/lib/supabase/admin";
 import {
   adminListLawyers,
   adminActivatePremium,
@@ -16,6 +18,35 @@ import {
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+/**
+ * Revalida páginas afetadas por uma mudança no perfil do advogado.
+ * Chamado após activate/deactivate-premium, toggle-featured, toggle-verified-oab
+ * e delete-lawyer para evitar cache de até 1h no SSG das páginas de cidade/UF/perfil.
+ */
+async function revalidateLawyerPages(lawyerId: string): Promise<void> {
+  try {
+    const supabase = createAdminClient();
+    const { data } = await supabase
+      .from("lawyers")
+      .select("slug,uf,city_slug,target_uf,target_city")
+      .eq("id", lawyerId)
+      .maybeSingle();
+    if (!data) return;
+    const uf = (data.uf as string).toLowerCase();
+    const citySlug = data.city_slug as string;
+    revalidatePath("/");
+    revalidatePath(`/advogados/${uf}`);
+    revalidatePath(`/advogados/${uf}/${citySlug}`);
+    revalidatePath(`/p/${data.slug}`);
+    if (data.target_uf && data.target_city) {
+      const tuf = (data.target_uf as string).toLowerCase();
+      revalidatePath(`/advogados/${tuf}/${data.target_city}`);
+    }
+  } catch (err) {
+    console.error("[admin] revalidateLawyerPages failed", err);
+  }
+}
 
 /**
  * Endpoint admin unificado. Recebe `{ action: string, ...payload }` via POST.
@@ -75,25 +106,31 @@ export async function POST(req: Request) {
     case "activate-premium": {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
       const result = await adminActivatePremium(body.id, body.days);
+      if (result.ok) await revalidateLawyerPages(body.id);
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
     }
     case "deactivate-premium": {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
       const result = await adminDeactivatePremium(body.id);
+      if (result.ok) await revalidateLawyerPages(body.id);
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
     }
     case "toggle-featured": {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
       const result = await adminToggleFeatured(body.id, !!body.value);
+      if (result.ok) await revalidateLawyerPages(body.id);
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
     }
     case "toggle-verified-oab": {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
       const result = await adminToggleVerifiedOab(body.id, !!body.value);
+      if (result.ok) await revalidateLawyerPages(body.id);
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
     }
     case "delete-lawyer": {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
+      // Revalida ANTES do delete (depois não existe mais o lawyer para buscar slugs)
+      await revalidateLawyerPages(body.id);
       const result = await adminDeleteLawyer(body.id);
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
     }

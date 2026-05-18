@@ -121,7 +121,15 @@ export default function PainelPage() {
   };
 
   const sendMessage = async () => {
-    if (!user || msg.trim().length < 5) return;
+    if (!user) {
+      toast("Sessão expirada — faça login novamente", "error");
+      return;
+    }
+    const trimmed = msg.trim();
+    if (trimmed.length < 10) {
+      toast("Escreva uma mensagem com pelo menos 10 caracteres", "error");
+      return;
+    }
     setSendingMsg(true);
     const supabase = createClient();
     const { error } = await supabase.from("messages").insert({
@@ -129,19 +137,30 @@ export default function PainelPage() {
       from_name: user.name,
       from_email: user.email,
       subject: "Suporte",
-      body: msg.trim(),
+      body: trimmed,
       source: "support"
     });
     setSendingMsg(false);
     if (error) {
-      toast("Erro ao enviar — tente novamente", "error");
+      // Log estruturado pra investigação futura
+      console.error("[painel:sendMessage] insert failed", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint
+      });
+      toast(`Erro ao enviar — ${error.message}`, "error");
       return;
     }
     setMsg("");
-    toast("Mensagem enviada ao suporte");
+    toast("Mensagem enviada ao suporte. Responderemos em até 48h pelo seu e-mail.");
   };
 
   const logout = async () => {
+    // Limpa sessão no cliente PRIMEIRO (dispara onAuthStateChange p/ Header)
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    // Depois limpa cookies do server (SSR + cookie admin)
     await fetch("/api/auth/logout", { method: "POST" });
     toast("Sessão encerrada");
     router.push("/");
@@ -313,16 +332,33 @@ export default function PainelPage() {
             <h2 className="font-display text-xl font-bold text-brand-ink mb-3">
               Falar com o suporte
             </h2>
+            <p className="text-sm text-brand-ink/60 mb-3">
+              Dúvidas sobre pagamento, ativação ou perfil. Respondemos em até 48 horas pelo e-mail
+              cadastrado.
+            </p>
             <textarea
               className="input min-h-24 resize-y"
-              placeholder="Escreva sua mensagem..."
+              placeholder="Descreva sua dúvida ou problema com detalhes (mínimo 10 caracteres)..."
               value={msg}
               onChange={(e) => setMsg(e.target.value)}
             />
+            <div className="flex items-center justify-between mt-2">
+              <p className="text-xs text-brand-ink/50">
+                {msg.trim().length < 10 ? (
+                  <>
+                    {msg.trim().length} / 10 caracteres mínimos
+                  </>
+                ) : (
+                  <span className="text-emerald-700 font-medium">
+                    ✓ {msg.trim().length} caracteres
+                  </span>
+                )}
+              </p>
+            </div>
             <button
               onClick={sendMessage}
               className="btn-primary mt-3 text-sm"
-              disabled={msg.trim().length < 5 || sendingMsg}
+              disabled={msg.trim().length < 10 || sendingMsg}
             >
               <MessageSquare className="w-4 h-4" aria-hidden />
               {sendingMsg ? "Enviando…" : "Enviar"}

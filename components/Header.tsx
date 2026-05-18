@@ -1,9 +1,11 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Menu, X, User as UserIcon, LogOut, LayoutDashboard, ChevronDown } from "lucide-react";
 import { Logo } from "./Logo";
+import { createClient } from "@/lib/supabase/client";
 
 const NAV = [
   { href: "/", label: "Início" },
@@ -14,8 +16,60 @@ const NAV = [
   { href: "/contato", label: "Contato" }
 ];
 
+type SessionState =
+  | { status: "loading" }
+  | { status: "anonymous" }
+  | { status: "logged"; name: string; firstName: string };
+
 export function Header() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [session, setSession] = useState<SessionState>({ status: "loading" });
+
+  // Detecta auth do advogado via Supabase. Admin tem fluxo próprio em /admin,
+  // não exibe nada no header global por enquanto.
+  useEffect(() => {
+    const supabase = createClient();
+    let cancelled = false;
+
+    const sync = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (cancelled) return;
+      if (!data.user) {
+        setSession({ status: "anonymous" });
+        return;
+      }
+      const full =
+        (data.user.user_metadata?.name as string | undefined) ||
+        data.user.email ||
+        "Advogado";
+      const firstName = full.trim().split(/\s+/)[0] || "Advogado";
+      setSession({ status: "logged", name: full, firstName });
+    };
+
+    sync();
+
+    // Reage a mudanças de sessão (login/logout em outra aba ou pós-redirect)
+    const { data: sub } = supabase.auth.onAuthStateChange(() => sync());
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
+  const logout = async () => {
+    setMenuOpen(false);
+    // Limpa sessão no cliente PRIMEIRO (dispara onAuthStateChange em outras abas)
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    // Depois limpa cookies httpOnly do server (sessão SSR + cookie admin)
+    await fetch("/api/auth/logout", { method: "POST" });
+    setSession({ status: "anonymous" });
+    router.push("/");
+    router.refresh();
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-brand-bg/95 backdrop-blur border-b border-brand-line">
       <div className="container-tight flex items-center justify-between h-16">
@@ -33,8 +87,65 @@ export function Header() {
             </Link>
           ))}
           <div className="ml-2 flex items-center gap-2">
-            <Link href="/login" className="btn-ghost text-sm">Entrar</Link>
-            <Link href="/cadastro" className="btn-accent text-sm py-2 px-4">Cadastrar advogado</Link>
+            {session.status === "logged" ? (
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setMenuOpen((v) => !v)}
+                  aria-expanded={menuOpen}
+                  aria-haspopup="menu"
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-brand-deep/10 text-brand-ink hover:bg-brand-deep/15 transition text-sm font-medium"
+                >
+                  <UserIcon className="w-4 h-4" aria-hidden />
+                  <span>
+                    Olá, <strong>{session.firstName}</strong>
+                  </span>
+                  <ChevronDown className="w-3.5 h-3.5" aria-hidden />
+                </button>
+                {menuOpen && (
+                  <>
+                    {/* overlay invisível pra fechar ao clicar fora */}
+                    <button
+                      type="button"
+                      aria-label="Fechar menu"
+                      onClick={() => setMenuOpen(false)}
+                      className="fixed inset-0 z-30 cursor-default"
+                    />
+                    <div
+                      role="menu"
+                      className="absolute right-0 mt-2 z-40 w-56 rounded-xl bg-white border border-brand-line shadow-cardHover overflow-hidden"
+                    >
+                      <Link
+                        role="menuitem"
+                        href="/painel"
+                        onClick={() => setMenuOpen(false)}
+                        className="flex items-center gap-2 px-4 py-3 text-sm text-brand-ink hover:bg-brand-line/40"
+                      >
+                        <LayoutDashboard className="w-4 h-4 text-brand-deep" aria-hidden />
+                        Meu painel
+                      </Link>
+                      <button
+                        role="menuitem"
+                        type="button"
+                        onClick={logout}
+                        className="flex items-center gap-2 px-4 py-3 text-sm text-red-700 hover:bg-red-50 w-full text-left border-t border-brand-line"
+                      >
+                        <LogOut className="w-4 h-4" aria-hidden />
+                        Sair
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : session.status === "anonymous" ? (
+              <>
+                <Link href="/login" className="btn-ghost text-sm">Entrar</Link>
+                <Link href="/cadastro" className="btn-accent text-sm py-2 px-4">Cadastrar advogado</Link>
+              </>
+            ) : (
+              /* loading — placeholder neutro pra evitar flicker entre estados */
+              <div className="w-44 h-9" aria-hidden />
+            )}
           </div>
         </nav>
         <button
@@ -59,13 +170,42 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <div className="pt-2 flex flex-col gap-2">
-              <Link href="/login" onClick={() => setOpen(false)} className="btn-ghost justify-center">
-                Entrar
-              </Link>
-              <Link href="/cadastro" onClick={() => setOpen(false)} className="btn-accent justify-center">
-                Cadastrar advogado
-              </Link>
+            <div className="pt-2 flex flex-col gap-2 border-t border-brand-line mt-2">
+              {session.status === "logged" ? (
+                <>
+                  <p className="px-3 text-xs text-brand-ink/60">
+                    Logado como <strong className="text-brand-ink">{session.firstName}</strong>
+                  </p>
+                  <Link
+                    href="/painel"
+                    onClick={() => setOpen(false)}
+                    className="btn-primary justify-center inline-flex items-center gap-2"
+                  >
+                    <LayoutDashboard className="w-4 h-4" aria-hidden />
+                    Meu painel
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpen(false);
+                      void logout();
+                    }}
+                    className="btn-ghost justify-center inline-flex items-center gap-2 text-red-700"
+                  >
+                    <LogOut className="w-4 h-4" aria-hidden />
+                    Sair
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" onClick={() => setOpen(false)} className="btn-ghost justify-center">
+                    Entrar
+                  </Link>
+                  <Link href="/cadastro" onClick={() => setOpen(false)} className="btn-accent justify-center">
+                    Cadastrar advogado
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
