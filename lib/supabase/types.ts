@@ -8,6 +8,12 @@
 
 export type PlanStatus = "free" | "pending" | "active" | "expired" | "cancelled";
 
+/**
+ * Estrutura de uma cidade extra (jsonb array em lawyers.extra_cities).
+ * Limite de 9 entradas enforced no banco (migration 0003).
+ */
+export type ExtraCityRow = { name: string; slug: string; uf: string };
+
 export type LawyerRow = {
   id: string;
   slug: string;
@@ -32,6 +38,8 @@ export type LawyerRow = {
   verified_oab: boolean;
   target_city: string | null;
   target_uf: string | null;
+  /** Cidades adicionais de atendimento (até 9 entradas no premium). */
+  extra_cities: ExtraCityRow[];
   created_at: string;
   updated_at: string;
 };
