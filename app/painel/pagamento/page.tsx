@@ -7,7 +7,7 @@ import { ArrowLeft, Star } from "lucide-react";
 import { PixDisplay } from "@/components/PixDisplay";
 import { toast } from "@/components/Toast";
 import { createClient } from "@/lib/supabase/client";
-import { mapLawyerRow, type Lawyer } from "@/lib/data/lawyers";
+import { mapLawyerRow, type Lawyer } from "@/lib/data/lawyer-mapper";
 import type { LawyerRow } from "@/lib/supabase/types";
 import { PLAN } from "@/lib/config";
 

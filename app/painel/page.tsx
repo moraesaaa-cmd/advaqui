@@ -20,7 +20,7 @@ import { formatCurrency, formatDate, daysUntil } from "@/lib/utils/format";
 import { toast } from "@/components/Toast";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { createClient } from "@/lib/supabase/client";
-import { mapLawyerRow, type Lawyer } from "@/lib/data/lawyers";
+import { mapLawyerRow, type Lawyer } from "@/lib/data/lawyer-mapper";
 import type { LawyerRow, PlanStatus } from "@/lib/supabase/types";
 
 const planMessage = (status: PlanStatus, daysLeft: number | null): string => {

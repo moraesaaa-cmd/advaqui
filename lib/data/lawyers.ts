@@ -1,6 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { LawyerRow, PublicLawyer, PlanStatus } from "@/lib/supabase/types";
+import {
+  type Lawyer,
+  mapLawyerRow,
+  PUBLIC_COLUMNS
+} from "@/lib/data/lawyer-mapper";
 
 /**
  * Funções server-side de acesso a `public.lawyers`.
@@ -9,64 +14,14 @@ import type { LawyerRow, PublicLawyer, PlanStatus } from "@/lib/supabase/types";
  * - Funções `admin*` usam o cliente service_role (ignora RLS, só Route Handlers).
  * - Funções retornam tipo `Lawyer` (camelCase) compatível com os componentes
  *   existentes (LawyerCard, schema, sitemap).
+ *
+ * O tipo `Lawyer` e a função `mapLawyerRow` foram movidos para
+ * `lib/data/lawyer-mapper.ts` para evitar que Client Components puxem
+ * `next/headers` ao importarem só o mapper. Re-exportamos aqui por
+ * compatibilidade com código já existente.
  */
 
-// Tipo público usado pelos componentes (camelCase, sem CPF).
-export type Lawyer = {
-  id: string;
-  slug: string;
-  name: string;
-  oab: string;
-  oabUf: string;
-  email: string;
-  phone?: string;
-  whatsapp?: string;
-  address?: string;
-  cityName: string;
-  citySlug: string;
-  uf: string;
-  specialties: string[];
-  bio?: string;
-  planStatus: PlanStatus;
-  planStartDate?: string;
-  planEndDate?: string;
-  paymentDate?: string;
-  featured?: boolean;
-  verifiedOab?: boolean;
-  targetCity?: string;
-  targetUf?: string;
-  createdAt: string;
-};
-
-export const mapLawyerRow = (row: LawyerRow | PublicLawyer): Lawyer => ({
-  id: row.id,
-  slug: row.slug,
-  name: row.name,
-  oab: row.oab,
-  oabUf: row.oab_uf,
-  email: row.email,
-  phone: row.phone || undefined,
-  whatsapp: row.whatsapp || undefined,
-  address: row.address || undefined,
-  cityName: row.city_name,
-  citySlug: row.city_slug,
-  uf: row.uf,
-  specialties: row.specialties || [],
-  bio: row.bio || undefined,
-  planStatus: row.plan_status,
-  planStartDate: row.plan_start_date || undefined,
-  planEndDate: row.plan_end_date || undefined,
-  paymentDate: row.payment_date || undefined,
-  featured: row.featured,
-  verifiedOab: row.verified_oab,
-  targetCity: row.target_city || undefined,
-  targetUf: row.target_uf || undefined,
-  createdAt: row.created_at
-});
-
-// Colunas seguras para exposição pública (sem CPF).
-const PUBLIC_COLUMNS =
-  "id,slug,name,oab,oab_uf,email,phone,whatsapp,address,city_name,city_slug,uf,specialties,bio,plan_status,plan_start_date,plan_end_date,payment_date,featured,verified_oab,target_city,target_uf,created_at,updated_at";
+export { type Lawyer, mapLawyerRow };
 
 /**
  * Lista advogados de uma cidade específica (uf+slug).
