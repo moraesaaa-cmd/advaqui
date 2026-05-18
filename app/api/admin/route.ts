@@ -217,6 +217,39 @@ export async function POST(req: Request) {
       }
       return NextResponse.json({ ok: true });
     }
+    case "send-magic-link": {
+      // Gera link de login direto (passwordless) que o admin pode entregar
+      // ao advogado quando ele esquecer a senha. Substitui a necessidade de
+      // saber a senha original (que e bcrypt e nao pode ser recuperada).
+      // Link expira em 1h por padrao do Supabase.
+      if (!body.id)
+        return NextResponse.json({ ok: false, error: "ID obrigatorio" }, { status: 400 });
+      const admin = createAdminClient();
+      const { data: userRes } = await admin.auth.admin.getUserById(body.id);
+      const email = userRes?.user?.email;
+      if (!email) {
+        return NextResponse.json(
+          { ok: false, error: "E-mail do usuario nao encontrado" },
+          { status: 404 }
+        );
+      }
+      const { data, error } = await admin.auth.admin.generateLink({
+        type: "magiclink",
+        email
+      });
+      if (error || !data?.properties?.action_link) {
+        return NextResponse.json(
+          { ok: false, error: error?.message || "Erro ao gerar magic link" },
+          { status: 500 }
+        );
+      }
+      return NextResponse.json({
+        ok: true,
+        magicLink: data.properties.action_link,
+        email,
+        expiresInHours: 1
+      });
+    }
     case "get-lawyer-full": {
       if (!body.id)
         return NextResponse.json({ ok: false, error: "ID obrigatorio" }, { status: 400 });

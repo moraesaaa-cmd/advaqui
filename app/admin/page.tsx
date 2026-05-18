@@ -284,6 +284,37 @@ export default function AdminPage() {
     }
   };
 
+  const sendMagicLink = async (id: string, name: string) => {
+    if (busy) return;
+    const ok = window.confirm(
+      `Gerar magic link de login para ${name}?\n\n` +
+        "O link permite que o advogado entre uma vez sem usar senha. Util quando " +
+        "ele esqueceu a senha e voce precisa dar acesso sem redefini-la.\n\n" +
+        "Expira em 1 hora. Copie e envie pelo WhatsApp/e-mail."
+    );
+    if (!ok) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "send-magic-link", id });
+    setBusy(false);
+    if (r.status === 200 && typeof r.json.magicLink === "string") {
+      const link = r.json.magicLink as string;
+      // Copia automatico se browser suportar
+      try {
+        await navigator.clipboard.writeText(link);
+        toast("Magic link copiado para a area de transferencia (cole no WhatsApp).");
+      } catch {
+        toast("Magic link gerado. Copie do prompt abaixo.");
+      }
+      // Mostra o link num prompt pra garantir que o admin veja
+      window.prompt(
+        `Magic link para ${name} (expira em 1h):\n\nCole no WhatsApp/e-mail do advogado:`,
+        link
+      );
+    } else {
+      toast(r.json.error || "Erro ao gerar magic link", "error");
+    }
+  };
+
   const editLawyerField = async (
     id: string,
     fieldKey: string,
@@ -471,6 +502,14 @@ export default function AdminPage() {
                     Resetar senha
                   </button>
                   <button
+                    onClick={() => sendMagicLink(u.id, u.name)}
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-purple-50 text-purple-800 rounded-lg text-xs font-medium hover:bg-purple-100 disabled:opacity-50"
+                    title="Gerar link de login passwordless (expira em 1h) — útil quando user esqueceu a senha"
+                  >
+                    Magic link
+                  </button>
+                  <button
                     onClick={() => editLawyerField(u.id, "name", "Novo nome completo", u.name)}
                     disabled={busy}
                     className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
@@ -495,6 +534,34 @@ export default function AdminPage() {
                     title="Editar cidade do advogado"
                   >
                     Editar cidade
+                  </button>
+                  <button
+                    onClick={() => editLawyerField(u.id, "oab", "Novo numero OAB", u.oab)}
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    title="Editar numero OAB"
+                  >
+                    Editar OAB
+                  </button>
+                  <button
+                    onClick={() =>
+                      editLawyerField(u.id, "address", "Novo endereco profissional", u.address || "")
+                    }
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    title="Editar endereco profissional"
+                  >
+                    Editar endereço
+                  </button>
+                  <button
+                    onClick={() =>
+                      editLawyerField(u.id, "bio", "Nova bio (ate 500 chars)", u.bio || "")
+                    }
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    title="Editar bio do advogado"
+                  >
+                    Editar bio
                   </button>
                   <button
                     onClick={() => viewFullLawyer(u.id)}

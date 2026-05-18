@@ -45,51 +45,59 @@ export async function getLawyersForCity(
   const supabase = createAdminClient();
   const ufUpper = uf.toUpperCase();
 
-  // Matches em 3 lugares — duas queries paralelas (Supabase rejeita o
-  // operador `cs` dentro de `or()` quando o valor contém JSON com colchetes
-  // e aspas; a query inteira retornava 0 rows e fazia advogados sumirem
-  // das paginas de cidade). Fazemos duas chamadas e mesclamos no app.
+  // Match em 3 lugares — fazemos uma query simples por UF (índice
+  // lawyers_uf_idx) e filtramos no aplicativo. Motivo:
   //
-  //   Query A: uf + city_slug (cidade principal) ou target_uf + target_city
-  //            (cidade adicional legada)
-  //   Query B: extra_cities @> [{ uf, slug }] (nova lista até 9 entradas)
+  //   • A versão anterior usava .contains('extra_cities', [{uf,slug}]) que,
+  //     com supabase-js 2.106 + PostgREST, não estava casando consistemente
+  //     em produção (bug reportado: advogado Rude com Itaobim/MG em
+  //     extra_cities, mas /advogados/mg/itaobim retornava vazio).
+  //   • Cada UF tem no máximo centenas de advogados (cidades grandes têm 50
+  //     em média). Filter em memória é O(N) com N pequeno — performático.
+  //   • Robusto contra qualquer variação futura no jsonb (acentuação,
+  //     diferença de tipos).
   //
-  // Performance — ambas usam índice (lawyers_city_idx pro primário,
-  // lawyers_extra_cities_gin_idx pro jsonb). Latência somada < 100ms.
-  const [primaryRes, extrasRes] = await Promise.all([
-    supabase
-      .from("lawyers")
-      .select(PUBLIC_COLUMNS)
-      .or(
-        `and(uf.eq.${ufUpper},city_slug.eq.${citySlug}),and(target_uf.eq.${ufUpper},target_city.eq.${citySlug})`
-      ),
-    supabase
-      .from("lawyers")
-      .select(PUBLIC_COLUMNS)
-      .contains("extra_cities", [{ uf: ufUpper, slug: citySlug }])
-  ]);
+  // Match positivo:
+  //   1. uf + city_slug = cidade principal do cadastro
+  //   2. target_uf + target_city = cidade adicional legada (campos antigos)
+  //   3. extra_cities[i] = { uf, slug } match exato em alguma entrada
+  const { data, error } = await supabase
+    .from("lawyers")
+    .select(PUBLIC_COLUMNS)
+    .or(`uf.eq.${ufUpper},target_uf.eq.${ufUpper}`);
 
-  if (primaryRes.error) {
-    console.error("getLawyersForCity primary error:", primaryRes.error.message);
-  }
-  if (extrasRes.error) {
-    console.error("getLawyersForCity extras error:", extrasRes.error.message);
+  if (error) {
+    console.error("getLawyersForCity error:", error.message);
+    return [];
   }
 
-  // Merge + dedup (lawyer pode estar em ambas as queries se a cidade
-  // principal estiver também em extra_cities por engano).
-  const seen = new Set<string>();
-  const merged: Lawyer[] = [];
-  for (const r of [...(primaryRes.data || []), ...(extrasRes.data || [])]) {
-    const row = r as PublicLawyer;
-    if (seen.has(row.id)) continue;
-    seen.add(row.id);
-    merged.push(mapLawyerRow(row));
+  const matched: Lawyer[] = [];
+  for (const row of (data || []) as PublicLawyer[]) {
+    // 1) cidade principal
+    if (row.uf === ufUpper && row.city_slug === citySlug) {
+      matched.push(mapLawyerRow(row));
+      continue;
+    }
+    // 2) cidade adicional legada (target_*)
+    if (row.target_uf === ufUpper && row.target_city === citySlug) {
+      matched.push(mapLawyerRow(row));
+      continue;
+    }
+    // 3) extra_cities jsonb (nova lista até 9 entradas)
+    const extras = Array.isArray(row.extra_cities) ? row.extra_cities : [];
+    const found = extras.some((c) => {
+      if (!c || typeof c !== "object") return false;
+      const cityUf = typeof c.uf === "string" ? c.uf.toUpperCase() : "";
+      const citySlugLower =
+        typeof c.slug === "string" ? c.slug.toLowerCase() : "";
+      return cityUf === ufUpper && citySlugLower === citySlug.toLowerCase();
+    });
+    if (found) matched.push(mapLawyerRow(row));
   }
 
   // Ordenação consistente: premium ativos primeiro, featured antes do resto,
   // depois alfabético pelo nome.
-  return merged.sort((a, b) => {
+  return matched.sort((a, b) => {
     const aPrem = a.planStatus === "active" ? 1 : 0;
     const bPrem = b.planStatus === "active" ? 1 : 0;
     if (aPrem !== bPrem) return bPrem - aPrem;
