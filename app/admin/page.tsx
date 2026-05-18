@@ -217,6 +217,72 @@ export default function AdminPage() {
     }
   };
 
+  const changeEmail = async (id: string, currentEmail: string) => {
+    const newEmail = window.prompt(
+      `E-mail atual: ${currentEmail}\n\nDigite o novo e-mail:`,
+      currentEmail
+    );
+    if (!newEmail || newEmail === currentEmail) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
+      toast("E-mail invalido", "error");
+      return;
+    }
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "set-email", id, email: newEmail });
+    setBusy(false);
+    if (r.status === 200) {
+      toast(`E-mail alterado para ${newEmail}`);
+      await refreshUsers();
+    } else {
+      toast(r.json.error || "Erro ao trocar e-mail", "error");
+    }
+  };
+
+  const resetPassword = async (id: string, name: string) => {
+    const newPass = window.prompt(
+      `Defina uma nova senha para ${name}.\n\nMinimo 8 caracteres. Avise o advogado pelo canal habitual.\nDigite a nova senha:`
+    );
+    if (!newPass) return;
+    if (newPass.length < 8) {
+      toast("Senha precisa ter pelo menos 8 caracteres", "error");
+      return;
+    }
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "set-password", id, password: newPass });
+    setBusy(false);
+    if (r.status === 200) {
+      toast("Senha redefinida. Avise o usuario.");
+    } else {
+      toast(r.json.error || "Erro ao redefinir senha", "error");
+    }
+  };
+
+  const editLawyerField = async (
+    id: string,
+    fieldKey: string,
+    fieldLabel: string,
+    currentValue: string
+  ) => {
+    const value = window.prompt(`${fieldLabel}:`, currentValue || "");
+    if (value === null) return;
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({
+      action: "update-lawyer",
+      id,
+      fields: { [fieldKey]: value.trim() }
+    });
+    setBusy(false);
+    if (r.status === 200) {
+      toast(`${fieldLabel} atualizado`);
+      await refreshUsers();
+    } else {
+      toast(r.json.error || "Erro ao atualizar", "error");
+    }
+  };
+
   const logout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     toast("Sessão encerrada");
@@ -363,6 +429,48 @@ export default function AdminPage() {
                       <Mail className="w-3 h-3" aria-hidden /> Convidar pra premium
                     </a>
                   )}
+                  <button
+                    onClick={() => changeEmail(u.id, u.email)}
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-sky-50 text-sky-800 rounded-lg text-xs font-medium hover:bg-sky-100 disabled:opacity-50"
+                    title="Trocar o e-mail de login do advogado"
+                  >
+                    Trocar e-mail
+                  </button>
+                  <button
+                    onClick={() => resetPassword(u.id, u.name)}
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-amber-50 text-amber-800 rounded-lg text-xs font-medium hover:bg-amber-100 disabled:opacity-50"
+                    title="Definir uma nova senha — use com cautela, avise o advogado"
+                  >
+                    Resetar senha
+                  </button>
+                  <button
+                    onClick={() => editLawyerField(u.id, "name", "Novo nome completo", u.name)}
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    title="Editar nome do advogado"
+                  >
+                    Editar nome
+                  </button>
+                  <button
+                    onClick={() => editLawyerField(u.id, "phone", "Novo telefone", u.phone || "")}
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    title="Editar telefone do advogado"
+                  >
+                    Editar telefone
+                  </button>
+                  <button
+                    onClick={() =>
+                      editLawyerField(u.id, "city_name", "Nova cidade (nome completo)", u.city_name)
+                    }
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    title="Editar cidade do advogado"
+                  >
+                    Editar cidade
+                  </button>
                   <button
                     onClick={() => deleteUser(u.id)}
                     disabled={busy}

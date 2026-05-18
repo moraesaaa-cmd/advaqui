@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, X, User as UserIcon, LogOut, LayoutDashboard, ChevronDown } from "lucide-react";
+import { Menu, X, User as UserIcon, LogOut, LayoutDashboard, ChevronDown, Shield } from "lucide-react";
 import { Logo } from "./Logo";
 import { createClient } from "@/lib/supabase/client";
-import { titleCaseNameBR } from "@/lib/utils/format";
 
 const NAV = [
   { href: "/", label: "Início" },
@@ -19,53 +18,82 @@ const NAV = [
 
 type SessionState =
   | { status: "anonymous" }
-  | { status: "logged"; name: string; firstName: string };
+  | { status: "lawyer"; name: string; firstName: string }
+  | { status: "admin"; email: string };
 
 export function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  // Default ANÔNIMO desde o primeiro render (evita flicker do header sem botões
-  // Entrar/Cadastrar enquanto detecta auth). Se houver sessão, o useEffect
-  // abaixo substitui pelo dropdown com nome.
+  // Default ANÔNIMO desde o primeiro render — evita flicker do header sem
+  // botões Entrar/Cadastrar enquanto a API valida quem é o visitante.
   const [session, setSession] = useState<SessionState>({ status: "anonymous" });
 
-  // Detecta auth do advogado via Supabase. Admin tem fluxo próprio em /admin,
-  // não exibe nada no header global por enquanto.
+  // Detecta auth via /api/auth/me — endpoint server-side que sabe se é admin
+  // (cookie HMAC), advogado (sessão Supabase) ou anônimo. Mais confiável que
+  // chamar supabase.auth.getUser() direto do client porque a versão nova do
+  // @supabase/ssr leva alguns ms pra hidratar a sessão no browser, dando
+  // janela em que o Header mostraria "Entrar" mesmo com user logado.
   useEffect(() => {
-    const supabase = createClient();
     let cancelled = false;
 
     const sync = async () => {
-      const { data } = await supabase.auth.getUser();
-      if (cancelled) return;
-      if (!data.user) {
+      try {
+        const res = await fetch("/api/auth/me", { cache: "no-store" });
+        if (cancelled) return;
+        if (!res.ok) {
+          setSession({ status: "anonymous" });
+          return;
+        }
+        const data = (await res.json()) as {
+          kind?: "admin" | "lawyer" | "anonymous";
+          email?: string;
+          name?: string;
+          firstName?: string;
+        };
+        if (cancelled) return;
+        if (data.kind === "admin" && data.email) {
+          setSession({ status: "admin", email: data.email });
+        } else if (data.kind === "lawyer" && data.name && data.firstName) {
+          setSession({ status: "lawyer", name: data.name, firstName: data.firstName });
+        } else {
+          setSession({ status: "anonymous" });
+        }
+      } catch (err) {
+        if (cancelled) return;
+        console.warn("[Header] auth check failed", err);
         setSession({ status: "anonymous" });
-        return;
       }
-      const metadataName = data.user.user_metadata?.name as string | undefined;
-      const full = metadataName
-        ? titleCaseNameBR(metadataName)
-        : data.user.email || "Advogado";
-      const firstName = full.trim().split(/\s+/)[0] || "Advogado";
-      setSession({ status: "logged", name: full, firstName });
     };
 
-    sync();
+    void sync();
 
-    // Reage a mudanças de sessão (login/logout em outra aba ou pós-redirect)
-    const { data: sub } = supabase.auth.onAuthStateChange(() => sync());
+    // Re-sincroniza quando a sessão Supabase muda no client (login/logout
+    // dispara onAuthStateChange — chamamos /api/auth/me de novo).
+    const supabase = createClient();
+    const { data: sub } = supabase.auth.onAuthStateChange(() => {
+      void sync();
+    });
+
     return () => {
       cancelled = true;
       sub.subscription.unsubscribe();
     };
-  }, []);
+    // pathname no deps garante re-check ao navegar entre páginas (cobre
+    // o caso de login admin sem onAuthStateChange Supabase).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   const logout = async () => {
     setMenuOpen(false);
     // Limpa sessão no cliente PRIMEIRO (dispara onAuthStateChange em outras abas)
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+    } catch {
+      // ignore
+    }
     // Depois limpa cookies httpOnly do server (sessão SSR + cookie admin)
     await fetch("/api/auth/logout", { method: "POST" });
     setSession({ status: "anonymous" });
@@ -90,7 +118,7 @@ export function Header() {
             </Link>
           ))}
           <div className="ml-2 flex items-center gap-2">
-            {session.status === "logged" ? (
+            {session.status === "lawyer" || session.status === "admin" ? (
               <div className="relative">
                 <button
                   type="button"
@@ -99,9 +127,21 @@ export function Header() {
                   aria-haspopup="menu"
                   className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-brand-deep/10 text-brand-ink hover:bg-brand-deep/15 transition text-sm font-medium"
                 >
-                  <UserIcon className="w-4 h-4" aria-hidden />
+                  {session.status === "admin" ? (
+                    <Shield className="w-4 h-4" aria-hidden />
+                  ) : (
+                    <UserIcon className="w-4 h-4" aria-hidden />
+                  )}
                   <span>
-                    Olá, <strong>{session.firstName}</strong>
+                    {session.status === "admin" ? (
+                      <>
+                        <strong>Admin</strong>
+                      </>
+                    ) : (
+                      <>
+                        Olá, <strong>{session.firstName}</strong>
+                      </>
+                    )}
                   </span>
                   <ChevronDown className="w-3.5 h-3.5" aria-hidden />
                 </button>
@@ -120,12 +160,12 @@ export function Header() {
                     >
                       <Link
                         role="menuitem"
-                        href="/painel"
+                        href={session.status === "admin" ? "/admin" : "/painel"}
                         onClick={() => setMenuOpen(false)}
                         className="flex items-center gap-2 px-4 py-3 text-sm text-brand-ink hover:bg-brand-line/40"
                       >
                         <LayoutDashboard className="w-4 h-4 text-brand-deep" aria-hidden />
-                        Meu painel
+                        {session.status === "admin" ? "Painel admin" : "Meu painel"}
                       </Link>
                       <button
                         role="menuitem"
@@ -171,18 +211,22 @@ export function Header() {
               </Link>
             ))}
             <div className="pt-2 flex flex-col gap-2 border-t border-brand-line mt-2">
-              {session.status === "logged" ? (
+              {session.status === "lawyer" || session.status === "admin" ? (
                 <>
                   <p className="px-3 text-xs text-brand-ink/60">
-                    Logado como <strong className="text-brand-ink">{session.firstName}</strong>
+                    {session.status === "admin" ? (
+                      <>Logado como <strong className="text-brand-ink">Admin</strong></>
+                    ) : (
+                      <>Logado como <strong className="text-brand-ink">{session.firstName}</strong></>
+                    )}
                   </p>
                   <Link
-                    href="/painel"
+                    href={session.status === "admin" ? "/admin" : "/painel"}
                     onClick={() => setOpen(false)}
                     className="btn-primary justify-center inline-flex items-center gap-2"
                   >
                     <LayoutDashboard className="w-4 h-4" aria-hidden />
-                    Meu painel
+                    {session.status === "admin" ? "Painel admin" : "Meu painel"}
                   </Link>
                   <button
                     type="button"

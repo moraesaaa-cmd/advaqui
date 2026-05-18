@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getCurrentLawyer, normalizeExtraCities, revalidateLawyerPages, toPanelLawyer } from "@/lib/painel/server";
 import { titleCaseNameBR } from "@/lib/utils/format";
+import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import type { LawyerRow } from "@/lib/supabase/types";
 
 export const runtime = "nodejs";
@@ -120,4 +122,51 @@ export async function PATCH(req: Request) {
     ok: true,
     lawyer: toPanelLawyer(row)
   });
+}
+
+/**
+ * DELETE /api/painel/profile
+ *
+ * Apaga a conta do advogado logado. Remove tanto da tabela public.lawyers
+ * (cascade na FK) quanto de auth.users (admin.auth.admin.deleteUser).
+ * Operação irreversível. Não pede confirmação no server — confiamos no
+ * confirm() do cliente que mostra modal antes de chamar.
+ *
+ * Antes de apagar, revalida as páginas onde o perfil aparece pra que o
+ * card desapareça do diretório público imediatamente.
+ */
+export async function DELETE() {
+  const current = await getCurrentLawyer();
+  if (!current.ok) {
+    return NextResponse.json(current, { status: current.status });
+  }
+
+  // Revalida ANTES do delete (depois não conseguimos buscar as cidades)
+  revalidateLawyerPages(current.lawyer);
+
+  // Apaga em auth.users — cascade em public.lawyers via FK (on delete cascade)
+  const admin = createAdminClient();
+  const { error: authError } = await admin.auth.admin.deleteUser(current.lawyer.id);
+
+  if (authError) {
+    console.error("[painel] account delete failed", authError);
+    return NextResponse.json(
+      {
+        ok: false,
+        code: "delete_failed",
+        error: authError.message || "Não foi possível excluir a conta."
+      },
+      { status: 500 }
+    );
+  }
+
+  // Limpa sessão do cliente (cookies httpOnly)
+  try {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+  } catch {
+    // ignore — o user já está sendo apagado
+  }
+
+  return NextResponse.json({ ok: true });
 }

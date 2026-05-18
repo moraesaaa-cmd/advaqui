@@ -314,9 +314,8 @@ export default function CadastroPage() {
       }
     });
 
-    setSubmitting(false);
-
     if (error) {
+      setSubmitting(false);
       const msg = error.message.toLowerCase();
       if (msg.includes("already") || msg.includes("registered")) {
         setErrors({ email: "Este e-mail já está cadastrado" });
@@ -324,14 +323,53 @@ export default function CadastroPage() {
         return;
       }
       setErrors({ password: error.message });
+      toast(`Erro no cadastro: ${error.message}`, "error");
       return;
     }
 
-    if (data.user) {
-      toast("Cadastro realizado! Bem-vindo ao AdvAqui.");
-      router.push("/painel");
-      router.refresh();
+    if (!data.user) {
+      setSubmitting(false);
+      toast("Cadastro nao retornou usuario. Tente novamente.", "error");
+      return;
     }
+
+    // Aguarda 800ms pra trigger handle_new_user() criar a linha em
+    // public.lawyers (a função roda síncrona no Postgres mas o cliente
+    // pode receber a resposta antes do commit ser visível).
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    // Garante sessão ativa antes de redirecionar. Se Confirm Email
+    // estiver desativado, signUp já retorna data.session, mas em alguns
+    // cenários (race) pode vir null. Forçamos signIn como fallback.
+    if (!data.session) {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: form.email.toLowerCase().trim(),
+        password: form.password
+      });
+      if (signInError) {
+        setSubmitting(false);
+        const sim = signInError.message.toLowerCase();
+        if (sim.includes("email not confirmed") || sim.includes("not confirmed")) {
+          toast(
+            "Cadastro criado! Verifique seu e-mail e clique no link de confirmacao antes de fazer login.",
+            "info"
+          );
+        } else {
+          toast(
+            `Cadastro criado! Faca login em /login. (${signInError.message})`,
+            "info"
+          );
+        }
+        router.push("/login");
+        router.refresh();
+        return;
+      }
+    }
+
+    setSubmitting(false);
+    toast("Cadastro realizado! Bem-vindo ao AdvAqui.");
+    // Hard reload pra garantir que o Header re-sincroniza /api/auth/me
+    window.location.href = "/painel";
   };
 
   return (

@@ -93,6 +93,9 @@ type Payload = {
   days?: number;
   value?: boolean;
   reply?: string;
+  email?: string;
+  password?: string;
+  fields?: Record<string, unknown>;
 };
 
 export async function POST(req: Request) {
@@ -171,6 +174,84 @@ export async function POST(req: Request) {
         adminEmail
       });
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
+    }
+    case "set-email": {
+      if (!body.id || !body.email)
+        return NextResponse.json({ ok: false, error: "ID e email obrigatorios" }, { status: 400 });
+      const admin = createAdminClient();
+      const newEmail = body.email.trim().toLowerCase();
+      // Atualiza auth.users (canonical) + public.lawyers (espelho)
+      const { error: authError } = await admin.auth.admin.updateUserById(body.id, {
+        email: newEmail,
+        email_confirm: true
+      });
+      if (authError) {
+        return NextResponse.json({ ok: false, error: authError.message }, { status: 500 });
+      }
+      const { error: rowError } = await admin
+        .from("lawyers")
+        .update({ email: newEmail })
+        .eq("id", body.id);
+      if (rowError) {
+        return NextResponse.json({ ok: false, error: rowError.message }, { status: 500 });
+      }
+      await revalidateLawyerPages(body.id);
+      return NextResponse.json({ ok: true });
+    }
+    case "set-password": {
+      if (!body.id || !body.password)
+        return NextResponse.json({ ok: false, error: "ID e nova senha obrigatorios" }, { status: 400 });
+      if (body.password.length < 8) {
+        return NextResponse.json(
+          { ok: false, error: "Senha precisa ter pelo menos 8 caracteres" },
+          { status: 400 }
+        );
+      }
+      const admin = createAdminClient();
+      const { error } = await admin.auth.admin.updateUserById(body.id, {
+        password: body.password
+      });
+      if (error) {
+        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      }
+      return NextResponse.json({ ok: true });
+    }
+    case "update-lawyer": {
+      if (!body.id || !body.fields)
+        return NextResponse.json({ ok: false, error: "ID e fields obrigatorios" }, { status: 400 });
+      // Whitelist de campos editaveis pelo admin (evita inject de plan_status etc)
+      const ALLOWED = new Set([
+        "name", "phone", "whatsapp", "address", "city_name", "city_slug",
+        "uf", "oab", "oab_uf", "bio", "specialties", "target_city",
+        "target_uf", "extra_cities", "verified_oab", "featured"
+      ]);
+      const filtered: Record<string, unknown> = {};
+      for (const [key, value] of Object.entries(body.fields)) {
+        if (ALLOWED.has(key)) filtered[key] = value;
+      }
+      if (Object.keys(filtered).length === 0) {
+        return NextResponse.json({ ok: false, error: "Nenhum campo valido" }, { status: 400 });
+      }
+      const admin = createAdminClient();
+      const { error } = await admin
+        .from("lawyers")
+        .update(filtered)
+        .eq("id", body.id);
+      if (error) {
+        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      }
+      // Sync de name no auth.users.user_metadata se foi alterado
+      if (filtered.name && typeof filtered.name === "string") {
+        try {
+          await admin.auth.admin.updateUserById(body.id, {
+            user_metadata: { name: filtered.name }
+          });
+        } catch (err) {
+          console.warn("[admin] auth metadata sync failed", err);
+        }
+      }
+      await revalidateLawyerPages(body.id);
+      return NextResponse.json({ ok: true });
     }
     default:
       return NextResponse.json(

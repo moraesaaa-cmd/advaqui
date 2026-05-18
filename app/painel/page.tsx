@@ -284,6 +284,43 @@ export default function PainelPage() {
     router.refresh();
   };
 
+  const [deleting, setDeleting] = useState(false);
+  const deleteAccount = async () => {
+    if (!user || deleting) return;
+    const confirmed = window.confirm(
+      "Tem certeza que deseja excluir sua conta?\n\n" +
+        "Esta acao e IRREVERSIVEL. Seu perfil sera removido do diretorio publico, " +
+        "todas as mensagens enviadas serao desvinculadas e os pagamentos sinalizados " +
+        "ficarao no historico mas sem conta associada."
+    );
+    if (!confirmed) return;
+    const reConfirm = window.prompt(
+      'Digite EXCLUIR (em maiusculas) para confirmar a exclusao definitiva da sua conta:'
+    );
+    if (reConfirm !== "EXCLUIR") {
+      toast("Exclusao cancelada.");
+      return;
+    }
+    setDeleting(true);
+    try {
+      await requestJson<{ ok: true }>("/api/painel/profile", { method: "DELETE" }, 15000);
+      // signOut local pra limpar cache do Supabase no browser
+      try {
+        const supabase = createClient();
+        await supabase.auth.signOut();
+      } catch {
+        // ignore
+      }
+      toast("Conta excluida. Sentimos sua saida.");
+      router.push("/");
+      router.refresh();
+    } catch (err) {
+      console.error("[painel:deleteAccount]", err);
+      toast(err instanceof Error ? err.message : "Erro ao excluir conta.", "error");
+      setDeleting(false);
+    }
+  };
+
   if (loadState !== "ready" || !user) {
     const isLoading = loadState === "loading";
     const title =
@@ -648,6 +685,24 @@ export default function PainelPage() {
             >
               <MessageSquare className="w-4 h-4" aria-hidden />
               {sendingMsg ? "Enviando..." : "Enviar"}
+            </button>
+          </section>
+
+          <section className="rounded-2xl border-2 border-red-200 bg-red-50 p-5">
+            <h2 className="font-display text-lg font-bold text-red-900 mb-1">
+              Zona de perigo
+            </h2>
+            <p className="text-sm text-red-900/80 mb-3">
+              Exclui permanentemente sua conta do AdvAqui. Seu perfil sai do
+              diretorio publico imediatamente. Esta acao nao pode ser desfeita.
+            </p>
+            <button
+              type="button"
+              onClick={deleteAccount}
+              disabled={deleting}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition disabled:opacity-50"
+            >
+              {deleting ? "Excluindo..." : "Excluir minha conta"}
             </button>
           </section>
         </div>
