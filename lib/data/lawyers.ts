@@ -1,4 +1,3 @@
-import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { LawyerRow, PublicLawyer, PlanStatus } from "@/lib/supabase/types";
 import {
@@ -10,10 +9,21 @@ import {
 /**
  * Funções server-side de acesso a `public.lawyers`.
  *
- * - Funções `get*` usam o cliente normal (respeita RLS).
- * - Funções `admin*` usam o cliente service_role (ignora RLS, só Route Handlers).
- * - Funções retornam tipo `Lawyer` (camelCase) compatível com os componentes
- *   existentes (LawyerCard, schema, sitemap).
+ * IMPORTANTE — as funções `get*` (leitura pública) usam `createAdminClient`
+ * (service_role) em vez do server client com cookies. Motivo:
+ *
+ *   1. São chamadas em build time (`generateStaticParams`, `sitemap.ts`,
+ *      Server Components no SSG) onde NÃO existe request scope, e o
+ *      `createClient` do `lib/supabase/server.ts` quebra com erro
+ *      "cookies was called outside a request scope".
+ *
+ *   2. Lêem apenas `PUBLIC_COLUMNS` (sem CPF, sem dados sensíveis), então
+ *      ignorar RLS aqui não expõe nada que já não seja público pela API.
+ *
+ *   3. service_role roda só no servidor (nunca chega ao cliente).
+ *
+ * Funções `admin*` continuam usando service_role para escritas/leitura
+ * completa (CPF, status) — chamadas só de Route Handlers protegidos.
  *
  * O tipo `Lawyer` e a função `mapLawyerRow` foram movidos para
  * `lib/data/lawyer-mapper.ts` para evitar que Client Components puxem
@@ -32,7 +42,7 @@ export async function getLawyersForCity(
   uf: string,
   citySlug: string
 ): Promise<Lawyer[]> {
-  const supabase = createClient();
+  const supabase = createAdminClient();
   const ufUpper = uf.toUpperCase();
   const { data, error } = await supabase
     .from("lawyers")
@@ -67,7 +77,7 @@ export async function getLawyersBySpecialty(
  * Lista todos os advogados de um estado (qualquer cidade).
  */
 export async function getLawyersForState(uf: string): Promise<Lawyer[]> {
-  const supabase = createClient();
+  const supabase = createAdminClient();
   const ufUpper = uf.toUpperCase();
   const { data, error } = await supabase
     .from("lawyers")
@@ -86,7 +96,7 @@ export async function getLawyersForState(uf: string): Promise<Lawyer[]> {
  * Busca um advogado pelo slug (URL pública /p/[slug]).
  */
 export async function findLawyerBySlug(slug: string): Promise<Lawyer | null> {
-  const supabase = createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("lawyers")
     .select(PUBLIC_COLUMNS)
@@ -105,7 +115,7 @@ export async function findLawyerBySlug(slug: string): Promise<Lawyer | null> {
  * Lista todos os slugs públicos (usado em generateStaticParams).
  */
 export async function getAllLawyerSlugs(): Promise<string[]> {
-  const supabase = createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("lawyers")
     .select("slug")
@@ -122,7 +132,7 @@ export async function getAllLawyerSlugs(): Promise<string[]> {
  * Contagem total de advogados cadastrados.
  */
 export async function getLawyerCount(): Promise<number> {
-  const supabase = createClient();
+  const supabase = createAdminClient();
   const { count, error } = await supabase
     .from("lawyers")
     .select("*", { count: "exact", head: true });
@@ -140,7 +150,7 @@ export async function getLawyerCount(): Promise<number> {
  * pela página /advogados (diretório de estados).
  */
 export async function getLawyerCountsByState(): Promise<Record<string, number>> {
-  const supabase = createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("lawyers")
     .select("uf");
@@ -165,7 +175,7 @@ export async function getLawyerCountsByState(): Promise<Record<string, number>> 
 export async function getLawyerCountsByCity(
   uf: string
 ): Promise<Record<string, number>> {
-  const supabase = createClient();
+  const supabase = createAdminClient();
   const ufUpper = uf.toUpperCase();
   const { data, error } = await supabase
     .from("lawyers")
