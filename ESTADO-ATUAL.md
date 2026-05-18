@@ -139,11 +139,11 @@ Drives C: e G: estão chegando ao limite (estavam com 200 MB livres, agora ~1.7 
 
 ### 🟠 Secret key Supabase exposta no chat
 
-A chave `sb_secret_vmqk2o7LL_pzA2b0AYBWrA_dHMXvFtb` apareceu visualmente no print quando você clicou em "Reveal". Embora apenas eu (a IA) tenha visto, conversas podem ser armazenadas. **Rotacione no painel Supabase** depois de terminar a migração.
+A Secret Key (que começa com `sb_secret_`) apareceu visualmente no print quando você clicou em "Reveal" durante o setup. Embora apenas eu (a IA) tenha visto, conversas podem ser armazenadas. **Rotacione no painel Supabase** depois de terminar a migração — gere uma nova em **Settings → API Keys → New secret key** e apague a antiga.
 
 ### 🟠 Senha admin do site exposta no chat
 
-A senha `MoraesAdv@2026Forte` apareceu em vários momentos. Trocar no `.env.local` do VPS via `nano /var/www/advaqui/.env.local`.
+A senha admin (a que está no `ADMIN_PASSWORD` do `.env.local`) apareceu em vários momentos durante a conversa. Trocar via `nano /var/www/advaqui/.env.local`, alterando o valor para uma senha nova de pelo menos 15 caracteres (letras, números e símbolos).
 
 ### 🟡 Mock-lawyers de demonstração
 

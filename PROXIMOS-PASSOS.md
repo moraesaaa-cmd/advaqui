@@ -76,10 +76,10 @@ Trocar busca em MOCK_LAWYERS por chamada Supabase. Manter o componente Client + 
 Adicionar:
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=https://YOUR-PROJECT.supabase.co
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxxxxxxxxxxx
-SUPABASE_SECRET_KEY=sb_secret_xxxxxxxxxxxx
-ADMIN_SESSION_SECRET=defina_um_segredo_aleatorio_de_pelo_menos_32_caracteres
+NEXT_PUBLIC_SUPABASE_URL=<URL do seu projeto Supabase>
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<publishable key do Supabase>
+SUPABASE_SECRET_KEY=<secret key do Supabase>
+ADMIN_SESSION_SECRET=<segredo aleatorio de 32+ caracteres>
 ```
 
 ### Passo 5 — Criar `middleware.ts` (opcional, recomendado)
@@ -120,8 +120,8 @@ nano .env.local
 Adicionar no final do arquivo:
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=https://rtnxaqfhypbldztodlbz.supabase.co
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_uyVXC8BBUIJbKTQShGBrHQ_xFvrp_-s
+NEXT_PUBLIC_SUPABASE_URL=<cole aqui sua URL do Supabase>
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<cole aqui sua publishable key do Supabase>
 SUPABASE_SECRET_KEY=<cole aqui a secret do seu arquivo de credenciais>
 ADMIN_SESSION_SECRET=<gerar um valor aleatório de 32+ caracteres>
 ```
@@ -162,7 +162,7 @@ Se algum passo falhar, ver logs no VPS — `pm2 logs advaqui --lines 100`.
 
 ### Rotacionar Secret Key Supabase
 
-A `sb_secret_vmqk2o7LL_pzA2b0AYBWrA_dHMXvFtb` apareceu no chat. Como conversas podem ser armazenadas, gerar nova chave e desativar a antiga.
+A Secret Key Supabase (a que começa com `sb_secret_`) apareceu no chat durante o setup. Como conversas podem ser armazenadas, gerar nova chave e desativar a antiga.
 
 1. Painel Supabase → **Settings → API Keys**
 2. Na seção "Secret keys", botão **+ New secret key** → criar
@@ -173,7 +173,7 @@ A `sb_secret_vmqk2o7LL_pzA2b0AYBWrA_dHMXvFtb` apareceu no chat. Como conversas p
 
 ### Trocar senha admin do site
 
-A `MoraesAdv@2026Forte` apareceu no chat várias vezes.
+A senha admin (do `ADMIN_PASSWORD` do `.env.local`) apareceu no chat várias vezes.
 
 1. No VPS — `nano /var/www/advaqui/.env.local`
 2. Trocar `ADMIN_PASSWORD=...` por senha nova (mínimo 15 caracteres com letras, números e símbolos)
