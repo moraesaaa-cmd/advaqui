@@ -1,8 +1,8 @@
-﻿import Link from "next/link";
-import { Check, Star, Award, Eye, MapPin, Phone, ShieldCheck } from "lucide-react";
+﻿import { Check, Star, Award, MapPin, Phone, ShieldCheck } from "lucide-react";
 import { PLAN } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { PlanosCTAFree, PlanosCTAPremium } from "@/components/PlanosCTAs";
 
 export const metadata = buildMetadata({
   title: "Planos",
@@ -57,9 +57,7 @@ export default function PlanosPage() {
               </li>
             ))}
           </ul>
-          <Link href="/cadastro" className="btn-ghost border border-brand-line justify-center">
-            Cadastrar gratuitamente
-          </Link>
+          <PlanosCTAFree />
         </div>
 
         <div className="rounded-2xl bg-gradient-to-br from-brand-ink to-brand-deep text-white p-6 shadow-cardHover relative overflow-hidden flex flex-col">
@@ -82,9 +80,7 @@ export default function PlanosPage() {
               </li>
             ))}
           </ul>
-          <Link href="/cadastro" className="btn-accent justify-center">
-            Cadastrar e ativar premium
-          </Link>
+          <PlanosCTAPremium />
         </div>
       </div>
 
