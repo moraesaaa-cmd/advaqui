@@ -1,12 +1,14 @@
 ﻿export const SITE = {
   name: process.env.NEXT_PUBLIC_SITE_NAME || "AdvAqui",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://AdvAqui.com.br",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://advaqui.com",
   description:
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||
     "Encontre o advogado certo na sua cidade. Diretório verificado em todas as regiões do Brasil.",
   tagline: "Seu advogado, perto de você",
-  email: "contato@AdvAqui.com.br",
-  supportEmail: "suporte@AdvAqui.com.br"
+  // Email em lowercase — convenção universal e evita problemas em filtros
+  // de email que normalizam o domínio.
+  email: "contato@advaqui.com.br",
+  supportEmail: "suporte@advaqui.com.br"
 };
 
 export const PIX = {

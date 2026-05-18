@@ -141,10 +141,12 @@ export default function PainelPage() {
     }
 
     try {
-      const { error } = await withTimeout(
-        supabase.from("lawyers").update(update).eq("id", user.id),
-        15000
-      );
+      // Supabase-js já tem timeout interno de ~30s no fetch. Não envolvo em
+      // withTimeout local pra evitar problemas de tipo com PostgrestFilterBuilder.
+      const { error } = await supabase
+        .from("lawyers")
+        .update(update)
+        .eq("id", user.id);
 
       if (error) {
         console.error("[painel:saveEdit]", error);
