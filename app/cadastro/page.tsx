@@ -349,35 +349,8 @@ export default function CadastroPage() {
               />
             </div>
             <div className="grid sm:grid-cols-3 gap-4">
-              <div className="sm:col-span-2 relative">
-                <label htmlFor="r-city" className="label">Cidade de atuação</label>
-                <input
-                  id="r-city"
-                  className="input"
-                  value={form.city}
-                  onChange={(e) => u("city", e.target.value)}
-                  autoComplete="address-level2"
-                  required
-                />
-                {citySuggestions.length > 0 && form.city.length >= 2 && (
-                  <ul className="absolute z-10 left-0 right-0 mt-1 bg-white rounded-xl shadow-cardHover border border-brand-line overflow-hidden">
-                    {citySuggestions.map((c) => (
-                      <li key={c.slug}>
-                        <button
-                          type="button"
-                          onClick={() => u("city", c.name)}
-                          className="w-full text-left px-3 py-2 hover:bg-brand-line/40 text-sm"
-                        >
-                          {c.name}, {c.uf}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                {errors.city && <p className="text-red-600 text-xs mt-1">{errors.city}</p>}
-              </div>
               <div>
-                <label htmlFor="r-uf" className="label">UF</label>
+                <label htmlFor="r-uf" className="label">Estado (UF)</label>
                 <select
                   id="r-uf"
                   className="input"
@@ -388,6 +361,37 @@ export default function CadastroPage() {
                     <option key={s.uf} value={s.uf}>{s.uf}</option>
                   ))}
                 </select>
+              </div>
+              <div className="sm:col-span-2 relative">
+                <label htmlFor="r-city" className="label">Cidade</label>
+                <input
+                  id="r-city"
+                  className="input"
+                  value={form.city}
+                  onChange={(e) => u("city", e.target.value)}
+                  autoComplete="address-level2"
+                  placeholder="Digite o nome da sua cidade"
+                  required
+                />
+                <p className="text-xs text-brand-ink/50 mt-1">
+                  Digite apenas o nome (ex.: <strong>Almenara</strong>). O estado já está selecionado ao lado.
+                </p>
+                {citySuggestions.length > 0 && form.city.length >= 2 && (
+                  <ul className="absolute z-10 left-0 right-0 mt-1 bg-white rounded-xl shadow-cardHover border border-brand-line overflow-hidden">
+                    {citySuggestions.map((c) => (
+                      <li key={c.slug}>
+                        <button
+                          type="button"
+                          onClick={() => u("city", c.name)}
+                          className="w-full text-left px-3 py-2 hover:bg-brand-line/40 text-sm"
+                        >
+                          {c.name}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {errors.city && <p className="text-red-600 text-xs mt-1">{errors.city}</p>}
               </div>
             </div>
             <div>
