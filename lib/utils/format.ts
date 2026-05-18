@@ -30,7 +30,7 @@ export const formatCurrency = (value: number): string =>
   value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
 export const whatsappLink = (
-  raw: string,
+  raw: string | undefined | null,
   message?: string
 ): string | undefined => {
   const d = (raw || "").replace(/\D/g, "");
@@ -40,7 +40,7 @@ export const whatsappLink = (
   return `https://wa.me/${number}${params}`;
 };
 
-export const telLink = (raw: string): string | undefined => {
+export const telLink = (raw: string | undefined | null): string | undefined => {
   const d = (raw || "").replace(/\D/g, "");
   if (d.length < 10) return undefined;
   return `tel:+55${d}`;
