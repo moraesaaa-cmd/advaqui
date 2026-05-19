@@ -20,6 +20,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { TemplateDownloadButton } from "@/components/TemplateDownloadButton";
 import { ContentGate } from "@/components/ContentGate";
+import { TemplateBody } from "@/components/TemplateBody";
 
 export const dynamicParams = false;
 export const revalidate = 3600;
@@ -158,15 +159,15 @@ export default function TemplatePage({ params }: { params: { slug: string } }) {
                 title="Liberar modelo completo e baixar"
                 description="Cadastro grátis em 2 minutos libera ESTE modelo e mais 19 documentos jurídicos, além do checklist de marketing jurídico e artigos para advogados."
                 ctaLabel="Cadastrar grátis para baixar"
-                previewLines={16}
+                previewLines={22}
               >
-                <pre className="whitespace-pre-wrap text-[13px] leading-relaxed font-mono text-brand-ink/90">
-                  {template.content}
-                </pre>
+                <div className="rounded-2xl border border-brand-line bg-white shadow-card p-6 md:p-8">
+                  <TemplateBody content={template.content} />
+                </div>
               </ContentGate>
 
               <p className="text-xs text-brand-ink/55 mt-3">
-                Substitua os campos entre <code className="px-1 py-0.5 rounded bg-brand-line/40 font-mono">[colchetes]</code> pelos seus dados antes de imprimir ou enviar.
+                Substitua os trechos em <span className="inline-block px-1.5 py-0.5 rounded-md bg-brand-accent/25 text-brand-deep font-semibold text-xs border border-brand-accent/40">[colchetes amarelos]</span> pelos seus dados antes de imprimir ou enviar.
               </p>
             </section>
 

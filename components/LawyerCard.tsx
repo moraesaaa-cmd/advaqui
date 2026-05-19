@@ -89,18 +89,32 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
             OAB/{lawyer.oabUf} {lawyer.oab}
           </p>
         </div>
-        <div
-          className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
-            isFeatured
-              ? "bg-brand-accent/20 ring-2 ring-brand-accent/40"
-              : "bg-brand-line"
-          }`}
-        >
-          <User
-            className={`w-6 h-6 ${isFeatured ? "text-brand-accent2" : "text-brand-deep"}`}
-            aria-hidden
+        {lawyer.photoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={lawyer.photoUrl}
+            alt={`Foto de ${lawyer.name}`}
+            className={`w-14 h-14 rounded-full object-cover flex-shrink-0 ${
+              isFeatured
+                ? "ring-2 ring-brand-accent border-2 border-white shadow-card"
+                : "border-2 border-brand-line"
+            }`}
           />
-        </div>
+        ) : (
+          <div
+            className={`w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 ${
+              isFeatured
+                ? "bg-brand-accent/20 ring-2 ring-brand-accent/40"
+                : "bg-brand-line"
+            }`}
+            aria-hidden
+          >
+            <User
+              className={`w-6 h-6 ${isFeatured ? "text-brand-accent2" : "text-brand-deep"}`}
+              aria-hidden
+            />
+          </div>
+        )}
       </div>
 
       <div className="mt-3 space-y-1.5 text-sm text-brand-ink/80">

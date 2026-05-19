@@ -1,6 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MapPin, Phone, Mail, Star, ShieldCheck, MessageCircle, User } from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Star,
+  ShieldCheck,
+  MessageCircle,
+  User,
+  Globe,
+  Instagram,
+  Linkedin,
+  Clock
+} from "lucide-react";
 import { findLawyerBySlug, getAllLawyerSlugs } from "@/lib/data/lawyers";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { Breadcrumb } from "@/components/Breadcrumb";
@@ -55,9 +67,20 @@ export default async function ProfilePage({ params }: { params: { slug: string }
 
       <article className="card">
         <header className="flex flex-col sm:flex-row items-start gap-5">
-          <div className="w-20 h-20 rounded-2xl bg-brand-deep/10 flex items-center justify-center flex-shrink-0">
-            <User className="w-10 h-10 text-brand-deep" aria-hidden />
-          </div>
+          {l.photoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={l.photoUrl}
+              alt={`Foto de ${l.name}`}
+              className={`w-24 h-24 rounded-2xl object-cover flex-shrink-0 ${
+                featured ? "ring-2 ring-brand-accent border-2 border-white shadow-card" : "border-2 border-brand-line"
+              }`}
+            />
+          ) : (
+            <div className="w-24 h-24 rounded-2xl bg-brand-deep/10 flex items-center justify-center flex-shrink-0" aria-hidden>
+              <User className="w-12 h-12 text-brand-deep" aria-hidden />
+            </div>
+          )}
           <div className="flex-1">
             <div className="flex items-center flex-wrap gap-2">
               <h1 className="font-display text-3xl font-bold text-brand-ink">{l.name}</h1>
@@ -147,6 +170,86 @@ export default async function ProfilePage({ params }: { params: { slug: string }
                   {labelOf(s)}
                 </Link>
               ))}
+            </div>
+          </section>
+        )}
+
+        {/* Horários de atendimento — exclusivo premium */}
+        {featured && l.officeHours && (
+          <section className="mt-6 rounded-2xl border border-brand-line bg-brand-bg/40 p-4">
+            <h2 className="font-display text-lg font-bold text-brand-ink mb-2 inline-flex items-center gap-2">
+              <Clock className="w-4 h-4 text-brand-accent2" aria-hidden />
+              Horário de atendimento
+            </h2>
+            <p className="text-sm text-brand-ink/85 leading-relaxed">{l.officeHours}</p>
+          </section>
+        )}
+
+        {/* Cidades adicionais (premium) — região de atendimento ampliada */}
+        {featured && l.extraCities && l.extraCities.length > 0 && (
+          <section className="mt-6">
+            <h2 className="font-display text-lg font-bold text-brand-ink mb-2 inline-flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-brand-accent2" aria-hidden />
+              Também atendo em
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {l.extraCities.map((c) => (
+                <Link
+                  key={`${c.uf}-${c.slug}`}
+                  href={`/advogados/${c.uf.toLowerCase()}/${c.slug}`}
+                  className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
+                >
+                  {c.name}/{c.uf}
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Links sociais — exclusivos premium */}
+        {featured && (l.website || l.instagram || l.linkedin) && (
+          <section className="mt-6">
+            <h2 className="font-display text-lg font-bold text-brand-ink mb-2">
+              Presença digital
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {l.website && (
+                <a
+                  href={l.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-brand-line bg-white hover:border-brand-accent transition text-sm text-brand-ink"
+                >
+                  <Globe className="w-4 h-4 text-brand-deep" aria-hidden />
+                  Site oficial
+                </a>
+              )}
+              {l.instagram && (
+                <a
+                  href={`https://instagram.com/${l.instagram}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-brand-line bg-white hover:border-brand-accent transition text-sm text-brand-ink"
+                >
+                  <Instagram className="w-4 h-4 text-pink-600" aria-hidden />
+                  @{l.instagram}
+                </a>
+              )}
+              {l.linkedin && (
+                <a
+                  href={
+                    l.linkedin.startsWith("http")
+                      ? l.linkedin
+                      : `https://linkedin.com/in/${l.linkedin}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-brand-line bg-white hover:border-brand-accent transition text-sm text-brand-ink"
+                >
+                  <Linkedin className="w-4 h-4 text-blue-700" aria-hidden />
+                  LinkedIn
+                </a>
+              )}
             </div>
           </section>
         )}

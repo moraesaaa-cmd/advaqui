@@ -40,6 +40,16 @@ export type Lawyer = {
   targetUf?: string;
   /** Cidades adicionais de atendimento (até 9 no premium). */
   extraCities: ExtraCity[];
+  /** Foto de perfil (URL pública). */
+  photoUrl?: string;
+  /** Site profissional (premium only — vai pra perfil público). */
+  website?: string;
+  /** Instagram handle (sem @). */
+  instagram?: string;
+  /** LinkedIn handle ou URL. */
+  linkedin?: string;
+  /** Horários de atendimento. */
+  officeHours?: string;
   createdAt: string;
 };
 
@@ -95,6 +105,11 @@ export const mapLawyerRow = (
     targetCity: row.target_city || undefined,
     targetUf: row.target_uf || undefined,
     extraCities: extras,
+    photoUrl: (row as { photo_url?: string | null }).photo_url || undefined,
+    website: (row as { website?: string | null }).website || undefined,
+    instagram: (row as { instagram?: string | null }).instagram || undefined,
+    linkedin: (row as { linkedin?: string | null }).linkedin || undefined,
+    officeHours: (row as { office_hours?: string | null }).office_hours || undefined,
     createdAt: row.created_at
   };
 };
@@ -102,4 +117,4 @@ export const mapLawyerRow = (
 // Colunas seguras para exposição pública (sem CPF).
 // Usado pelos selects do server-side em lawyers.ts.
 export const PUBLIC_COLUMNS =
-  "id,slug,name,oab,oab_uf,email,phone,whatsapp,address,city_name,city_slug,uf,specialties,bio,plan_status,plan_start_date,plan_end_date,payment_date,featured,verified_oab,target_city,target_uf,extra_cities,created_at,updated_at";
+  "id,slug,name,oab,oab_uf,email,phone,whatsapp,address,city_name,city_slug,uf,specialties,bio,plan_status,plan_start_date,plan_end_date,payment_date,featured,verified_oab,target_city,target_uf,extra_cities,photo_url,website,instagram,linkedin,office_hours,created_at,updated_at";

@@ -40,6 +40,16 @@ export type LawyerRow = {
   target_uf: string | null;
   /** Cidades adicionais de atendimento (até 9 entradas no premium). */
   extra_cities: ExtraCityRow[];
+  /** URL da foto (avatars/{id}.jpg do Storage, ou URL externa). */
+  photo_url: string | null;
+  /** Site profissional (https://...). Premium only. */
+  website: string | null;
+  /** Handle do Instagram (sem @). Premium only. */
+  instagram: string | null;
+  /** Handle ou URL do LinkedIn. Premium only. */
+  linkedin: string | null;
+  /** Horários de atendimento (texto livre). Premium only. */
+  office_hours: string | null;
   created_at: string;
   updated_at: string;
 };

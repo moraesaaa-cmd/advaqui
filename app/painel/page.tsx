@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { PlanBadge } from "@/components/PlanBadge";
 import { ExtraCityField } from "@/components/ExtraCityField";
+import { PhotoUploader } from "@/components/PhotoUploader";
 import { PLAN } from "@/lib/config";
 import { daysUntil, formatCurrency, formatDate } from "@/lib/utils/format";
 import { SPECIALTIES } from "@/lib/data/specialties";
@@ -118,6 +119,7 @@ const completeness = (lawyer: Lawyer): { pct: number; missing: string[] } => {
     [!!lawyer.phone, "Telefone"],
     [!!lawyer.whatsapp, "WhatsApp"],
     [!!lawyer.address, "Endereco profissional"],
+    [!!lawyer.photoUrl, "Foto de perfil"],
     [!!lawyer.bio && lawyer.bio.length > 30, "Bio com pelo menos 30 caracteres"],
     [lawyer.specialties.length >= 2, "Pelo menos 2 areas de atuacao"]
   ];
@@ -232,7 +234,12 @@ export default function PainelPage() {
             specialties: draft.specialties,
             targetCity: draft.targetCity,
             targetUf: draft.targetUf,
-            extraCities: draft.extraCities
+            extraCities: draft.extraCities,
+            // Campos premium (server ignora se não-premium)
+            website: draft.website,
+            instagram: draft.instagram,
+            linkedin: draft.linkedin,
+            officeHours: draft.officeHours
           })
         },
         12000
@@ -453,6 +460,14 @@ export default function PainelPage() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
+          {/* Foto de perfil — disponível pra qualquer plano. Endpoint
+              /api/painel/photo trata upload via Supabase Storage. */}
+          <PhotoUploader
+            initialPhotoUrl={user.photoUrl}
+            fallbackName={user.name}
+            onChange={(url) => setUser({ ...user, photoUrl: url || undefined })}
+          />
+
           <section className="card">
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-display text-xl font-bold text-brand-ink">Meu perfil</h2>
@@ -581,6 +596,84 @@ export default function PainelPage() {
                   )}
                 </div>
 
+                {/* Bloco PREMIUM extra: presença digital, horários */}
+                <div
+                  className={`rounded-xl border p-4 ${
+                    status === "active"
+                      ? "border-brand-accent/40 bg-brand-accent/5"
+                      : "border-brand-line bg-brand-bg/40"
+                  }`}
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <Star
+                      className={`w-4 h-4 ${
+                        status === "active" ? "text-brand-accent fill-brand-accent" : "text-brand-ink/30"
+                      }`}
+                      aria-hidden
+                    />
+                    <p className="text-xs font-semibold text-brand-ink">
+                      Presença digital e horários (premium)
+                    </p>
+                  </div>
+                  <p className="text-xs text-brand-ink/60 mb-3">
+                    Apenas advogados com plano premium ativo têm esses campos exibidos
+                    no perfil público. Você pode preencher mesmo gratuito — começa a
+                    aparecer assim que ativar o plano.
+                  </p>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="label">Horários de atendimento</label>
+                      <input
+                        className="input"
+                        placeholder="Seg-Sex 9h-18h, Sáb 9h-12h"
+                        maxLength={200}
+                        value={draft.officeHours || ""}
+                        onChange={(event) =>
+                          setDraft({ ...draft, officeHours: event.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="grid sm:grid-cols-3 gap-3">
+                      <div>
+                        <label className="label">Site (URL)</label>
+                        <input
+                          className="input text-sm"
+                          placeholder="meusite.com.br"
+                          maxLength={250}
+                          value={draft.website || ""}
+                          onChange={(event) =>
+                            setDraft({ ...draft, website: event.target.value })
+                          }
+                        />
+                      </div>
+                      <div>
+                        <label className="label">Instagram</label>
+                        <input
+                          className="input text-sm"
+                          placeholder="seu_perfil"
+                          maxLength={60}
+                          value={draft.instagram || ""}
+                          onChange={(event) =>
+                            setDraft({ ...draft, instagram: event.target.value })
+                          }
+                        />
+                      </div>
+                      <div>
+                        <label className="label">LinkedIn</label>
+                        <input
+                          className="input text-sm"
+                          placeholder="seu-perfil"
+                          maxLength={100}
+                          value={draft.linkedin || ""}
+                          onChange={(event) =>
+                            setDraft({ ...draft, linkedin: event.target.value })
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <p className="text-xs text-brand-ink/50 pt-2 border-t border-brand-line">
                   <strong>Cidade principal e OAB nao sao editaveis</strong> pelo painel. Para
                   mudancas nesses campos, fale com o suporte abaixo.
@@ -626,7 +719,11 @@ export default function PainelPage() {
                       .filter(Boolean)
                       .join(", ") || "-"
                   ],
-                  ["Bio", user.bio || "-"]
+                  ["Bio", user.bio || "-"],
+                  ["Horario de atendimento", user.officeHours || (status === "active" ? "-" : "- (premium)")],
+                  ["Site", user.website || (status === "active" ? "-" : "- (premium)")],
+                  ["Instagram", user.instagram ? `@${user.instagram}` : (status === "active" ? "-" : "- (premium)")],
+                  ["LinkedIn", user.linkedin || (status === "active" ? "-" : "- (premium)")]
                 ].map(([label, value]) => (
                   <div key={label} className="flex flex-col sm:flex-row gap-1 sm:gap-3">
                     <dt className="sm:w-32 text-brand-ink/60">{label}</dt>

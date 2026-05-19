@@ -67,23 +67,57 @@ export async function PATCH(req: Request) {
   }
 
   const isPremium = current.lawyer.plan_status === "active";
+
+  // Sanitiza URL: aceita https/http, rejeita javascript: e similares.
+  const optionalUrl = (value: unknown, max = 250): string | null => {
+    const t = optionalText(value, max);
+    if (!t) return null;
+    const lower = t.toLowerCase();
+    if (lower.startsWith("javascript:") || lower.startsWith("data:")) return null;
+    // Auto-prepend https:// se não tem protocolo (UX: user cola "instagram.com/xpto")
+    if (!/^https?:\/\//i.test(t)) return `https://${t}`;
+    return t;
+  };
+
+  // Normaliza handle do Instagram: remove @, espaços, URL completa.
+  const normalizeHandle = (value: unknown, max = 60): string | null => {
+    const t = optionalText(value, max);
+    if (!t) return null;
+    // Se for URL, extrai o último segmento
+    const urlMatch = t.match(/(?:instagram\.com|linkedin\.com\/in)\/([^/?#]+)/i);
+    if (urlMatch) return urlMatch[1].replace(/^@/, "").trim() || null;
+    return t.replace(/^@/, "").trim() || null;
+  };
+
   const update: Partial<LawyerRow> = {
     name,
     phone: optionalText(body.phone, 30),
     whatsapp: optionalText(body.whatsapp, 30),
     address: optionalText(body.address, 250),
     bio: optionalText(body.bio, 500),
-    specialties: normalizeSpecialties(body.specialties)
+    specialties: normalizeSpecialties(body.specialties),
+    // photo_url é aceito de qualquer plano — foto é direito básico do perfil.
+    // Aceita tanto path do bucket (avatars/xxx.jpg) quanto URL externa.
+    photo_url: optionalText(body.photoUrl, 500)
   };
 
   if (isPremium) {
     update.target_city = optionalText(body.targetCity, 120);
     update.target_uf = optionalText(body.targetUf, 2)?.toUpperCase() || null;
     update.extra_cities = normalizeExtraCities(body.extraCities);
+    // Premium-only fields:
+    update.website = optionalUrl(body.website, 250);
+    update.instagram = normalizeHandle(body.instagram, 60);
+    update.linkedin = normalizeHandle(body.linkedin, 100);
+    update.office_hours = optionalText(body.officeHours, 200);
   } else {
     update.target_city = null;
     update.target_uf = null;
     update.extra_cities = [];
+    update.website = null;
+    update.instagram = null;
+    update.linkedin = null;
+    update.office_hours = null;
   }
 
   const { data, error } = await current.admin

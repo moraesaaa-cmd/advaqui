@@ -1,161 +1,471 @@
-﻿import { Check, Star, Award, MapPin, Phone, ShieldCheck } from "lucide-react";
+import Link from "next/link";
+import {
+  Check,
+  X,
+  Star,
+  ShieldCheck,
+  TrendingUp,
+  MessageCircle,
+  Camera,
+  Clock,
+  Globe,
+  MapPin,
+  Sparkles,
+  ArrowRight,
+  AlertCircle,
+  type LucideIcon
+} from "lucide-react";
 import { PLAN } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { PlanosCTAFree, PlanosCTAPremium } from "@/components/PlanosCTAs";
-import { PremiumValueSection } from "@/components/PremiumValueSection";
 
 export const metadata = buildMetadata({
-  title: "Planos",
+  title: "Planos — apareça primeiro na sua cidade",
   description:
-    "Compare o cadastro gratuito e o plano premium do AdvAqui. R$ 59,90/mês via Pix, sem fidelidade, com destaque no diretório da sua cidade.",
+    "Plano premium do AdvAqui por R$ 59,90/mês via Pix. Apareça no topo das buscas da sua cidade, WhatsApp clicável, foto destacada, OAB verificada. Sem fidelidade.",
   path: "/planos"
 });
 
-const FREE_FEATURES = [
-  "Perfil listado no diretório da sua cidade",
-  "Nome, OAB e cidade visíveis",
-  "Aparece em buscas por especialidade",
-  "Cadastro em 5 minutos",
-  "Sem cobrança, para sempre"
+const COMPARISON: Array<{
+  group: string;
+  rows: Array<{ feature: string; free: boolean | string; premium: boolean | string }>;
+}> = [
+  {
+    group: "Visibilidade",
+    rows: [
+      { feature: "Perfil no diretório por cidade", free: true, premium: true },
+      { feature: "Posição na página da cidade", free: "Após os premium", premium: "TOPO" },
+      { feature: "Tamanho do card no diretório", free: "Padrão", premium: "Ampliado + faixa dourada" },
+      { feature: "Aparecer em buscas por especialidade", free: true, premium: true },
+      { feature: "Cidades adicionais de atuação", free: "0", premium: "Até 9" },
+      { feature: "Selo de OAB verificada", free: false, premium: true },
+      { feature: "Selo de Destaque dourado", free: false, premium: true }
+    ]
+  },
+  {
+    group: "Perfil e identidade",
+    rows: [
+      { feature: "Foto de perfil", free: true, premium: true },
+      { feature: "Nome, OAB, cidade", free: true, premium: true },
+      { feature: "Bio profissional", free: "200 chars", premium: "500 chars destacada" },
+      { feature: "Áreas de atuação listadas", free: "Até 5", premium: "Até 8" },
+      { feature: "Endereço profissional completo", free: "Parcial", premium: "Completo + mapa" },
+      { feature: "Horários de atendimento", free: false, premium: true }
+    ]
+  },
+  {
+    group: "Canais de contato",
+    rows: [
+      { feature: "Telefone clicável (tel:)", free: true, premium: true },
+      { feature: "Botão WhatsApp clicável (wa.me)", free: false, premium: "Com mensagem pronta" },
+      { feature: "E-mail visível no perfil", free: false, premium: true },
+      { feature: "Link para site profissional", free: false, premium: true },
+      { feature: "Link para Instagram", free: false, premium: true },
+      { feature: "Link para LinkedIn", free: false, premium: true }
+    ]
+  },
+  {
+    group: "Administração",
+    rows: [
+      { feature: "Painel pra editar perfil", free: true, premium: true },
+      { feature: "Estatísticas básicas", free: false, premium: "Em breve" },
+      { feature: "Suporte por mensagem", free: "Resposta em 7 dias", premium: "Resposta em 48h" },
+      { feature: "Fidelidade", free: "Sem", premium: "Sem (cancela quando quiser)" },
+      { feature: "Forma de pagamento", free: "—", premium: "Pix manual" }
+    ]
+  }
 ];
 
-const PREMIUM_FEATURES = [
-  "Tudo do plano gratuito",
-  "Perfil no topo da página da sua cidade",
-  "Selo de destaque dourado",
-  "Telefone e WhatsApp clicáveis visíveis",
-  "Endereço profissional completo",
-  "Bio livre (até 500 caracteres)",
-  "Áreas de atuação com filtro avançado",
-  "Selo de OAB verificada (após validação)",
-  "Estatísticas básicas (visualizações)",
-  "Sem fidelidade, cancelamento livre"
-];
+const renderCell = (value: boolean | string, kind: "free" | "premium") => {
+  if (value === true) {
+    return (
+      <span className="inline-flex items-center gap-1.5 text-emerald-700 font-medium text-sm">
+        <Check className="w-4 h-4 flex-shrink-0" aria-hidden />
+        Sim
+      </span>
+    );
+  }
+  if (value === false) {
+    return (
+      <span className="inline-flex items-center gap-1.5 text-brand-ink/40 text-sm">
+        <X className="w-4 h-4 flex-shrink-0" aria-hidden />
+        Não
+      </span>
+    );
+  }
+  // string
+  return (
+    <span className={`text-sm font-medium ${kind === "premium" ? "text-brand-deep" : "text-brand-ink/75"}`}>
+      {value}
+    </span>
+  );
+};
 
 export default function PlanosPage() {
+  const dailyCost = (PLAN.price / 30).toFixed(2).replace(".", ",");
+
   return (
-    <div className="container-narrow py-12">
-      <header className="text-center mb-10">
-        <h1 className="font-display text-4xl font-bold text-brand-ink">Escolha seu plano</h1>
-        <p className="text-brand-ink/60 mt-2">
-          Cadastro gratuito para qualquer advogado. Destaque premium para quem quer ser encontrado primeiro.
-        </p>
-      </header>
-
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="card flex flex-col">
-          <div className="mb-4">
-            <h2 className="font-display text-2xl font-bold text-brand-ink">Gratuito</h2>
-            <p className="text-3xl font-extrabold text-brand-deep mt-2">R$ 0</p>
-            <p className="text-sm text-brand-ink/60">Sem cartão, sem cobrança</p>
-          </div>
-          <ul className="space-y-2.5 mb-6 flex-1">
-            {FREE_FEATURES.map((f) => (
-              <li key={f} className="flex items-start gap-2 text-sm text-brand-ink/80">
-                <Check className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" aria-hidden />
-                {f}
-              </li>
-            ))}
-          </ul>
-          <PlanosCTAFree />
-        </div>
-
-        <div className="rounded-2xl bg-gradient-to-br from-brand-ink to-brand-deep text-white p-6 shadow-cardHover relative overflow-hidden flex flex-col">
-          <span className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold bg-brand-accent text-brand-ink">
-            Mais popular
-          </span>
-          <div className="mb-4">
-            <h2 className="font-display text-2xl font-bold">Premium</h2>
-            <p className="text-3xl font-extrabold mt-2">
-              {formatCurrency(PLAN.price)}
-              <span className="text-base font-normal text-brand-bg/70">/mês</span>
-            </p>
-            <p className="text-sm text-brand-bg/70">Pix manual. Sem fidelidade.</p>
-          </div>
-          <ul className="space-y-2.5 mb-6 flex-1">
-            {PREMIUM_FEATURES.map((f) => (
-              <li key={f} className="flex items-start gap-2 text-sm text-brand-bg/90">
-                <Star className="w-4 h-4 text-brand-accent mt-0.5 flex-shrink-0" aria-hidden />
-                {f}
-              </li>
-            ))}
-          </ul>
-          <PlanosCTAPremium />
-        </div>
-      </div>
-
-      <section className="mt-12 rounded-2xl border border-brand-line bg-white p-6">
-        <h3 className="font-display text-2xl font-bold text-brand-ink mb-4">
-          O que muda na prática
-        </h3>
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="rounded-xl border border-dashed border-brand-line p-4">
-            <p className="text-xs uppercase tracking-wider text-brand-ink/60 mb-2">Gratuito</p>
-            <div className="rounded-xl border border-brand-line p-4 bg-brand-bg/40">
-              <p className="font-semibold text-brand-ink">Dr. Exemplo Silva</p>
-              <p className="text-xs text-brand-ink/60">OAB/MG 123.456</p>
-              <p className="text-xs text-brand-ink/60 mt-2">Belo Horizonte/MG</p>
+    <>
+      {/* HERO */}
+      <section className="relative bg-gradient-to-br from-brand-ink via-brand-deep to-brand-primary text-white overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 20% 30%, rgba(245,158,11,0.6) 0%, transparent 45%), radial-gradient(circle at 80% 70%, rgba(251,191,36,0.4) 0%, transparent 45%)"
+          }}
+        />
+        <div className="relative container-tight py-14 md:py-20">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-accent text-brand-ink mb-4">
+              <Star className="w-3.5 h-3.5 fill-current" aria-hidden />
+              Planos AdvAqui
             </div>
-            <p className="text-xs text-brand-ink/60 mt-3">
-              Listagem simples, sem destaque, abaixo dos premium.
-            </p>
-          </div>
-
-          <div className="rounded-xl border-2 border-brand-accent p-4 bg-brand-accent/5">
-            <p className="text-xs uppercase tracking-wider text-brand-ink/60 mb-2 inline-flex items-center gap-1">
-              <Award className="w-3.5 h-3.5 text-brand-accent" aria-hidden /> Premium
-            </p>
-            <div className="rounded-xl border border-brand-accent p-4 bg-white">
-              <div className="flex items-center gap-2 mb-1">
-                <p className="font-display font-bold text-brand-ink text-lg">Dr. Exemplo Silva</p>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-brand-accent text-brand-ink">
-                  <Star className="w-3 h-3" aria-hidden /> Destaque
-                </span>
-              </div>
-              <p className="text-sm text-brand-ink/70">OAB/MG 123.456</p>
-              <p className="text-sm text-brand-ink/70 mt-2 flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5 text-brand-ink/40" aria-hidden /> Av. Afonso Pena, 1500
-              </p>
-              <p className="text-sm text-brand-ink/70 flex items-center gap-1">
-                <Phone className="w-3.5 h-3.5 text-brand-ink/40" aria-hidden /> (31) 99999-0001
-              </p>
-              <p className="text-sm text-brand-ink/70 mt-2 flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" aria-hidden /> OAB verificada
-              </p>
-            </div>
-            <p className="text-xs text-brand-ink/70 mt-3">
-              Topo da página, selo, contato completo, mais conversão.
+            <h1 className="font-display text-4xl md:text-6xl font-bold leading-tight text-balance">
+              Apareça primeiro na sua cidade,<br className="hidden md:inline" /> sem precisar fazer nada
+            </h1>
+            <p className="text-lg md:text-xl text-brand-bg/85 mt-5 leading-relaxed">
+              Cadastro grátis pra qualquer advogado. Plano premium por {formatCurrency(PLAN.price)}/mês
+              coloca seu perfil no topo, ativa WhatsApp clicável e atrai cliente direto — sem
+              leilão, sem comissão, sem fidelidade.
             </p>
           </div>
         </div>
       </section>
 
-      <div className="mt-4">
-        <PremiumValueSection />
-      </div>
+      <div className="container-tight py-12">
+        {/* PROBLEMA */}
+        <section className="max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-red-100 text-red-800 border border-red-200 mb-3">
+            <AlertCircle className="w-3.5 h-3.5" aria-hidden />
+            O problema
+          </div>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
+            Muitos advogados dependem apenas de indicação
+          </h2>
+          <p className="text-brand-ink/75 mt-3 text-base md:text-lg leading-relaxed">
+            Quando alguém pesquisa <em>&ldquo;advogado em [sua cidade]&rdquo;</em> no Google,
+            o mapinha mostra 3 escritórios — quase nunca o seu. E mesmo no diretório local,
+            só aparece quem investiu em presença digital. Resultado: o trabalho continua bom,
+            mas o telefone toca menos do que deveria.
+          </p>
+        </section>
 
-      <section className="mt-10 rounded-2xl bg-brand-bg border border-brand-line p-6">
-        <h3 className="font-display text-xl font-bold text-brand-ink mb-3">Perguntas comuns</h3>
-        <dl className="space-y-3 text-sm text-brand-ink/80">
-          <div>
-            <dt className="font-semibold text-brand-ink">Como pago?</dt>
-            <dd className="mt-1">Apenas via Pix. A chave aparece na etapa de pagamento, após o cadastro.</dd>
+        {/* SOLUÇÃO */}
+        <section className="max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-emerald-100 text-emerald-800 border border-emerald-200 mb-3">
+            <Sparkles className="w-3.5 h-3.5" aria-hidden />
+            A solução
           </div>
-          <div>
-            <dt className="font-semibold text-brand-ink">Tem fidelidade?</dt>
-            <dd className="mt-1">Não. O plano é mensal e pode ser cancelado a qualquer momento.</dd>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
+            O AdvAqui organiza sua presença em um diretório por cidade e especialidade
+          </h2>
+          <p className="text-brand-ink/75 mt-3 text-base md:text-lg leading-relaxed">
+            Quando o cliente pesquisa &ldquo;advogado trabalhista em Belo Horizonte&rdquo;, sua ficha
+            aparece organizada — nome, OAB, foto, áreas, contato direto. Sem leilão de lances,
+            sem comissão sobre causa, sem intermediário. Você fala direto com quem te procurou.
+          </p>
+          <p className="text-brand-ink/75 mt-2 text-base md:text-lg leading-relaxed">
+            O plano premium <strong>multiplica essa visibilidade</strong> — seu perfil sobe pro
+            topo da cidade, ganha WhatsApp clicável, foto destacada e selo de OAB verificada.
+          </p>
+        </section>
+
+        {/* BENEFÍCIOS */}
+        <section className="mb-14">
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-brand-accent text-brand-ink mb-3">
+              <TrendingUp className="w-3.5 h-3.5" aria-hidden />
+              O que muda com o premium
+            </div>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink">
+              Por {formatCurrency(PLAN.price)}/mês (R$ {dailyCost}/dia), você ganha:
+            </h2>
           </div>
-          <div>
-            <dt className="font-semibold text-brand-ink">Quanto tempo para ativar?</dt>
-            <dd className="mt-1">Até {PLAN.activationHours} horas após sinalização do pagamento.</dd>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            <BenefitCard
+              Icon={TrendingUp}
+              title="Topo da cidade"
+              text="Seu perfil aparece em primeiro lugar quando alguém busca advogado na sua cidade ou especialidade."
+            />
+            <BenefitCard
+              Icon={MessageCircle}
+              title="WhatsApp clicável"
+              text="Botão verde com mensagem pré-preenchida. Cliente fala com você em 1 clique, sem digitar."
+            />
+            <BenefitCard
+              Icon={ShieldCheck}
+              title="Selo OAB verificada"
+              text="Sinal claro de credibilidade — após validação do nosso time. Mais confiança = mais contratação."
+            />
+            <BenefitCard
+              Icon={Camera}
+              title="Foto de destaque"
+              text="Card maior, borda dourada, foto no destaque visual. Conversão de busca para clique sobe MUITO com foto."
+            />
+            <BenefitCard
+              Icon={MapPin}
+              title="9 cidades adicionais"
+              text="Atende em mais de uma comarca? Adicione até 9 cidades extras — apareça nas buscas de cada uma."
+            />
+            <BenefitCard
+              Icon={Clock}
+              title="Horários visíveis"
+              text="Mostre quando você atende. Cliente não desiste por achar que você está fechado fora do comercial."
+            />
+            <BenefitCard
+              Icon={Globe}
+              title="Site, Insta, LinkedIn"
+              text="Links pras suas redes e site profissional direto no perfil. Cliente conhece você antes de ligar."
+            />
+            <BenefitCard
+              Icon={Sparkles}
+              title="Sem fidelidade"
+              text="Pix mensal. Cancela quando quiser, sem multa, sem letra miúda, sem permanência."
+            />
           </div>
-          <div>
-            <dt className="font-semibold text-brand-ink">Funciona em qualquer cidade?</dt>
-            <dd className="mt-1">Sim. Mesmo cidades pequenas. Se a sua não estiver listada, o cadastro cria automaticamente.</dd>
+        </section>
+
+        {/* CARDS DE PLANO */}
+        <section className="grid md:grid-cols-2 gap-6 mb-14 max-w-5xl mx-auto">
+          {/* Gratuito */}
+          <div className="rounded-2xl border-2 border-brand-line bg-white p-6 flex flex-col">
+            <div className="mb-4">
+              <h2 className="font-display text-2xl font-bold text-brand-ink">Cadastro gratuito</h2>
+              <p className="text-3xl font-extrabold text-brand-deep mt-2">R$ 0</p>
+              <p className="text-sm text-brand-ink/60">Sem cartão, sem cobrança, sempre</p>
+            </div>
+            <ul className="space-y-2.5 mb-6 flex-1 text-sm">
+              <FreeItem text="Perfil listado no diretório da sua cidade" />
+              <FreeItem text="Nome, OAB e cidade visíveis" />
+              <FreeItem text="Foto de perfil" />
+              <FreeItem text="Telefone clicável (tel:)" />
+              <FreeItem text="Bio até 200 caracteres" />
+              <FreeItem text="Até 5 áreas de atuação" />
+              <FreeItem text="Aparece em buscas por especialidade" />
+            </ul>
+            <PlanosCTAFree />
           </div>
-        </dl>
-      </section>
+
+          {/* Premium */}
+          <div className="rounded-2xl border-2 border-brand-accent bg-gradient-to-br from-brand-ink to-brand-deep text-white p-6 shadow-cardHover relative overflow-hidden flex flex-col">
+            <div
+              aria-hidden
+              className="absolute -top-px left-6 right-6 h-1 bg-gradient-to-r from-brand-accent2 via-brand-accent to-brand-accent2 rounded-b"
+            />
+            <span className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold bg-brand-accent text-brand-ink uppercase tracking-wide">
+              Mais escolhido
+            </span>
+            <div className="mb-4">
+              <h2 className="font-display text-2xl font-bold">Premium</h2>
+              <p className="text-3xl font-extrabold mt-2">
+                {formatCurrency(PLAN.price)}
+                <span className="text-base font-normal text-brand-bg/70">/mês</span>
+              </p>
+              <p className="text-sm text-brand-bg/70">
+                R$ {dailyCost}/dia · Pix manual · Sem fidelidade
+              </p>
+            </div>
+            <ul className="space-y-2.5 mb-6 flex-1 text-sm">
+              <PremiumItem text="Tudo do cadastro gratuito" />
+              <PremiumItem text="Topo da página da sua cidade" highlight />
+              <PremiumItem text="Selo dourado de Destaque" highlight />
+              <PremiumItem text="Botão WhatsApp clicável" highlight />
+              <PremiumItem text="Selo OAB verificada" />
+              <PremiumItem text="Card maior + foto destacada" />
+              <PremiumItem text="Bio até 500 caracteres" />
+              <PremiumItem text="Até 8 áreas de atuação" />
+              <PremiumItem text="Endereço completo + região" />
+              <PremiumItem text="9 cidades adicionais de atuação" highlight />
+              <PremiumItem text="Horários de atendimento visíveis" />
+              <PremiumItem text="Link site + Instagram + LinkedIn" />
+              <PremiumItem text="Suporte prioritário (48h)" />
+            </ul>
+            <PlanosCTAPremium />
+          </div>
+        </section>
+
+        {/* COMPARAÇÃO COMPLETA */}
+        <section className="mb-14">
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink">
+              Comparação completa, item por item
+            </h2>
+            <p className="text-brand-ink/65 mt-2">
+              Nada escondido. Cada funcionalidade dos dois planos, lado a lado.
+            </p>
+          </div>
+
+          <div className="overflow-x-auto rounded-2xl border border-brand-line bg-white">
+            <table className="w-full border-collapse min-w-[600px]">
+              <thead>
+                <tr className="bg-brand-bg border-b border-brand-line">
+                  <th className="text-left p-4 text-sm font-bold text-brand-ink uppercase tracking-wide">
+                    Funcionalidade
+                  </th>
+                  <th className="text-center p-4 text-sm font-bold text-brand-ink/70 uppercase tracking-wide w-32">
+                    Grátis
+                  </th>
+                  <th className="text-center p-4 text-sm font-bold uppercase tracking-wide w-32 bg-brand-accent/10 text-brand-deep border-l border-brand-line">
+                    <span className="inline-flex items-center gap-1">
+                      <Star className="w-4 h-4 text-brand-accent fill-brand-accent" aria-hidden />
+                      Premium
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {COMPARISON.map((group) => (
+                  <>
+                    <tr key={`g-${group.group}`} className="bg-brand-bg/40">
+                      <td
+                        colSpan={3}
+                        className="px-4 py-2 text-xs font-bold text-brand-deep uppercase tracking-wider border-b border-brand-line"
+                      >
+                        {group.group}
+                      </td>
+                    </tr>
+                    {group.rows.map((row, i) => (
+                      <tr
+                        key={`r-${group.group}-${i}`}
+                        className="border-b border-brand-line/70 last:border-0 hover:bg-brand-bg/30"
+                      >
+                        <td className="p-4 text-sm text-brand-ink">{row.feature}</td>
+                        <td className="text-center p-4">{renderCell(row.free, "free")}</td>
+                        <td className="text-center p-4 bg-brand-accent/5 border-l border-brand-line">
+                          {renderCell(row.premium, "premium")}
+                        </td>
+                      </tr>
+                    ))}
+                  </>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* CTA FINAL */}
+        <section className="mb-14 rounded-3xl bg-gradient-to-br from-brand-deep to-brand-ink text-white p-8 md:p-12 relative overflow-hidden">
+          <div
+            aria-hidden
+            className="absolute -top-1/4 -right-1/4 w-1/2 aspect-square rounded-full bg-brand-accent/20 blur-3xl"
+          />
+          <div className="relative grid md:grid-cols-3 gap-6 items-center">
+            <div className="md:col-span-2">
+              <h2 className="font-display text-2xl md:text-3xl font-bold leading-tight">
+                Não é mais uma assinatura. É um diferencial.
+              </h2>
+              <p className="text-brand-bg/85 mt-3 text-sm md:text-base leading-relaxed">
+                Pelo preço de um café por dia, seu perfil aparece antes dos outros, com
+                WhatsApp pronto, foto destacada e selo de verificação. O cliente já chega
+                em você decidido — você só atende e fecha.
+              </p>
+              <p className="text-brand-bg/75 mt-2 text-xs">
+                Ativação em até {PLAN.activationHours}h após o Pix · Sem fidelidade · Cancela
+                quando quiser
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Link
+                href="/cadastro"
+                className="btn-accent w-full justify-center inline-flex items-center gap-2"
+              >
+                Começar grátis agora
+                <ArrowRight className="w-4 h-4" aria-hidden />
+              </Link>
+              <Link
+                href="/painel/pagamento"
+                className="btn-ghost text-white border border-white/20 hover:bg-white/10 w-full justify-center inline-flex items-center gap-2"
+              >
+                Já tenho conta — ativar premium
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="max-w-3xl mx-auto rounded-2xl bg-brand-bg border border-brand-line p-6 md:p-8">
+          <h3 className="font-display text-xl md:text-2xl font-bold text-brand-ink mb-4">
+            Perguntas frequentes
+          </h3>
+          <dl className="space-y-4 text-sm md:text-base text-brand-ink/85">
+            <FaqItem
+              question="Como funciona o pagamento?"
+              answer="Apenas via Pix. Você gera o QR ou copia a chave na etapa de pagamento, faz o Pix do valor exato e sinaliza no painel que pagou. Em até 48h ativamos manualmente."
+            />
+            <FaqItem
+              question="Tem fidelidade ou multa de cancelamento?"
+              answer="Não. O plano é mensal, sem fidelidade. Você cancela direto no painel a qualquer momento e o perfil volta pro plano gratuito automaticamente."
+            />
+            <FaqItem
+              question="Em quanto tempo aparece o destaque?"
+              answer={`Após sinalizar o Pix, ativamos em até ${PLAN.activationHours} horas. Em horário comercial costuma sair em menos de 6 horas.`}
+            />
+            <FaqItem
+              question="Funciona para advogado de cidade pequena?"
+              answer="Sim — e é onde o efeito é maior. Em cidade pequena, raramente há mais de 5 advogados cadastrados, então o premium garante visibilidade quase exclusiva nas buscas por aquela cidade."
+            />
+            <FaqItem
+              question="O AdvAqui cobra comissão sobre causas que eu fecho?"
+              answer="Não. Zero comissão. O que combinar com seu cliente é entre você e ele — não passa pela plataforma."
+            />
+            <FaqItem
+              question="Posso testar sem pagar?"
+              answer="Sim. Cadastro gratuito é permanente e nunca vira pago automaticamente. Você só ativa o premium quando quiser, fazendo o Pix manualmente."
+            />
+          </dl>
+        </section>
+      </div>
+    </>
+  );
+}
+
+function BenefitCard({
+  Icon,
+  title,
+  text
+}: {
+  Icon: LucideIcon;
+  title: string;
+  text: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-brand-line bg-white p-5 hover:shadow-cardHover transition">
+      <div className="w-11 h-11 rounded-xl bg-brand-accent/15 flex items-center justify-center mb-3">
+        <Icon className="w-5 h-5 text-brand-accent2" aria-hidden />
+      </div>
+      <h3 className="font-display text-base font-bold text-brand-ink mb-1.5">{title}</h3>
+      <p className="text-sm text-brand-ink/65 leading-relaxed">{text}</p>
+    </div>
+  );
+}
+
+function FreeItem({ text }: { text: string }) {
+  return (
+    <li className="flex items-start gap-2 text-brand-ink/80">
+      <Check className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" aria-hidden />
+      {text}
+    </li>
+  );
+}
+
+function PremiumItem({ text, highlight }: { text: string; highlight?: boolean }) {
+  return (
+    <li className={`flex items-start gap-2 ${highlight ? "text-white font-semibold" : "text-brand-bg/90"}`}>
+      <Star className="w-4 h-4 text-brand-accent fill-brand-accent mt-0.5 flex-shrink-0" aria-hidden />
+      {text}
+    </li>
+  );
+}
+
+function FaqItem({ question, answer }: { question: string; answer: string }) {
+  return (
+    <div className="border-b border-brand-line last:border-0 pb-4 last:pb-0">
+      <dt className="font-semibold text-brand-ink">{question}</dt>
+      <dd className="mt-1.5 text-brand-ink/75 leading-relaxed">{answer}</dd>
     </div>
   );
 }

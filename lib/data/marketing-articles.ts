@@ -148,7 +148,7 @@ export const MARKETING_ARTICLES: MktArticle[] = [
   // 2
   {
     slug: "como-aparecer-em-buscas-locais",
-    title: "Como aparecer em buscas locais do Google (advogado em [sua cidade])",
+    title: "Como aparecer em buscas locais do Google",
     excerpt:
       "SEO local para advogado: como entrar no mapinha do Google, conseguir avaliações verdadeiras e dominar buscas geo-localizadas na sua região.",
     readingMinutes: 10,
