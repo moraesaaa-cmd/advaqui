@@ -5,7 +5,10 @@ import {
   MapPin,
   Briefcase,
   BookOpen,
-  FileText
+  FileText,
+  Target,
+  Sparkles,
+  Download
 } from "lucide-react";
 import { SearchBox } from "@/components/SearchBox";
 import { STATES } from "@/lib/data/states";
@@ -13,11 +16,13 @@ import { SPECIALTIES } from "@/lib/data/specialties";
 import { SITE } from "@/lib/config";
 import { PremiumValueSection } from "@/components/PremiumValueSection";
 import { getAllArticles } from "@/lib/data/articles";
+import { getAllMarketingArticles } from "@/lib/data/marketing-articles";
 
 export const revalidate = 600;
 
 export default async function HomePage() {
   const latestArticles = getAllArticles().slice(0, 3);
+  const latestMkt = getAllMarketingArticles().slice(0, 3);
 
   return (
     <>
@@ -217,6 +222,87 @@ export default async function HomePage() {
                 className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-deep hover:text-brand-accent2"
               >
                 Ver os 20 modelos →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Bloco "Para advogados" — Marketing jurídico + Checklist isca */}
+      <section className="bg-brand-bg py-16">
+        <div className="container-tight">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-accent text-brand-ink mb-3">
+              <Target className="w-3.5 h-3.5" aria-hidden />
+              Conteúdo para advogados
+            </div>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-ink leading-tight">
+              Material gratuito para você crescer
+            </h2>
+            <p className="text-brand-ink/65 mt-3 text-base md:text-lg">
+              O AdvAqui não é só diretório — é parceiro de crescimento. Veja os guias
+              de marketing jurídico e baixe o checklist de presença digital.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Card isca: checklist */}
+            <div className="md:col-span-1 rounded-2xl bg-gradient-to-br from-brand-accent2/20 via-white to-brand-accent/10 border-2 border-brand-accent p-6 shadow-cardHover relative overflow-hidden">
+              <div
+                aria-hidden
+                className="absolute -top-px left-4 right-4 h-1 bg-gradient-to-r from-brand-accent2 via-brand-accent to-brand-accent2 rounded-b"
+              />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide bg-brand-accent text-brand-ink mb-3">
+                <Sparkles className="w-3 h-3" aria-hidden />
+                Material grátis
+              </span>
+              <h3 className="font-display text-xl font-bold text-brand-ink leading-snug">
+                Checklist: Como melhorar sua presença digital jurídica
+              </h3>
+              <p className="text-sm text-brand-ink/70 mt-3 leading-relaxed">
+                21 itens práticos pra aplicar em uma manhã. Google Business, diretórios,
+                WhatsApp, bio e conteúdo. Download .txt liberado após cadastro grátis.
+              </p>
+              <Link
+                href="/checklist"
+                className="mt-5 btn-accent w-full justify-center inline-flex items-center gap-2"
+              >
+                <Download className="w-4 h-4" aria-hidden />
+                Pegar o checklist
+              </Link>
+            </div>
+
+            {/* Cards de marketing jurídico */}
+            <div className="md:col-span-2 grid sm:grid-cols-2 gap-4">
+              {latestMkt.map((a, idx) => (
+                <Link
+                  key={a.slug}
+                  href={`/marketing-juridico/${a.slug}`}
+                  className="rounded-2xl border border-brand-line bg-white p-5 hover:border-brand-accent transition shadow-card hover:shadow-cardHover group"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-accent/15 text-brand-deep text-xs font-bold">
+                      {idx + 1}
+                    </span>
+                    <span className="text-xs text-brand-ink/55">{a.readingMinutes} min</span>
+                  </div>
+                  <h3 className="font-display text-base font-bold text-brand-ink group-hover:text-brand-deep leading-snug">
+                    {a.title}
+                  </h3>
+                  <p className="text-xs text-brand-ink/65 mt-2 line-clamp-2">
+                    {a.excerpt}
+                  </p>
+                  <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-brand-deep group-hover:text-brand-accent2">
+                    Ler guia →
+                  </span>
+                </Link>
+              ))}
+              <Link
+                href="/marketing-juridico"
+                className="sm:col-span-2 rounded-2xl border-2 border-dashed border-brand-line bg-white hover:border-brand-accent hover:bg-brand-accent/5 transition p-5 inline-flex items-center justify-center gap-2 text-sm font-semibold text-brand-deep"
+              >
+                <Target className="w-4 h-4" aria-hidden />
+                Ver todos os 5 guias de marketing jurídico
               </Link>
             </div>
           </div>

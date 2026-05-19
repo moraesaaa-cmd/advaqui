@@ -6,6 +6,7 @@ import { SPECIALTIES } from "@/lib/data/specialties";
 import { getAllLawyerSlugs } from "@/lib/data/lawyers";
 import { getAllArticleSlugs } from "@/lib/data/articles";
 import { getAllTemplateSlugs } from "@/lib/data/templates-docs";
+import { getAllMarketingArticleSlugs } from "@/lib/data/marketing-articles";
 
 /**
  * Sitemap principal. Inclui:
@@ -31,6 +32,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/advogados`, changeFrequency: "daily", priority: 0.9, lastModified: now },
     { url: `${base}/blog`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
     { url: `${base}/modelos`, changeFrequency: "monthly", priority: 0.8, lastModified: now },
+    { url: `${base}/marketing-juridico`, changeFrequency: "weekly", priority: 0.7, lastModified: now },
+    { url: `${base}/checklist`, changeFrequency: "monthly", priority: 0.6, lastModified: now },
     { url: `${base}/planos`, changeFrequency: "monthly", priority: 0.7, lastModified: now },
     { url: `${base}/sobre`, changeFrequency: "yearly", priority: 0.4, lastModified: now },
     { url: `${base}/faq`, changeFrequency: "monthly", priority: 0.5, lastModified: now },
@@ -90,12 +93,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now
   }));
 
+  const mktRoutes: MetadataRoute.Sitemap = getAllMarketingArticleSlugs().map((slug) => ({
+    url: `${base}/marketing-juridico/${slug}`,
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: now
+  }));
+
   return [
     ...staticRoutes,
     ...stateRoutes,
     ...capitalSpecRoutes,
     ...articleRoutes,
     ...templateRoutes,
+    ...mktRoutes,
     ...profileRoutes
   ];
 }

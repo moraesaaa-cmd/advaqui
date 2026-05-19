@@ -12,6 +12,7 @@ import { STATES } from "@/lib/data/states";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { getAllArticles } from "@/lib/data/articles";
 import { getAllTemplates, TEMPLATE_CATEGORIES } from "@/lib/data/templates-docs";
+import { getAllMarketingArticles } from "@/lib/data/marketing-articles";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { buildMetadata } from "@/lib/seo/metadata";
 
@@ -27,6 +28,7 @@ export const metadata = buildMetadata({
 export default function SitemapHtmlPage() {
   const articles = getAllArticles();
   const templates = getAllTemplates();
+  const mktArticles = getAllMarketingArticles();
 
   return (
     <div className="container-tight py-10">
@@ -81,6 +83,20 @@ export default function SitemapHtmlPage() {
             ...articles.map((a) => ({
               label: a.title,
               href: `/blog/${a.slug}`
+            }))
+          ]}
+        />
+
+        {/* Marketing jurídico */}
+        <SitemapBlock
+          Icon={BookOpen}
+          title="Marketing jurídico (para advogados)"
+          links={[
+            { label: "Todos os guias", href: "/marketing-juridico" },
+            { label: "Checklist presença digital", href: "/checklist" },
+            ...mktArticles.map((a) => ({
+              label: a.title,
+              href: `/marketing-juridico/${a.slug}`
             }))
           ]}
         />

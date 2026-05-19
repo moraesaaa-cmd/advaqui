@@ -8,12 +8,11 @@ import { Logo } from "./Logo";
 import { createClient } from "@/lib/supabase/client";
 
 const NAV = [
-  { href: "/", label: "Início" },
   { href: "/advogados", label: "Diretório" },
   { href: "/blog", label: "Blog" },
   { href: "/modelos", label: "Modelos" },
-  { href: "/planos", label: "Planos" },
-  { href: "/faq", label: "FAQ" }
+  { href: "/marketing-juridico", label: "Marketing" },
+  { href: "/planos", label: "Planos" }
 ];
 
 type SessionState =

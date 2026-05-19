@@ -33,8 +33,10 @@ export function Footer() {
           <ul className="space-y-2 text-sm text-brand-bg/80">
             <li><Link href="/blog" className="hover:text-brand-accent">Blog jurídico</Link></li>
             <li><Link href="/modelos" className="hover:text-brand-accent">Modelos gratuitos</Link></li>
+            <li><Link href="/marketing-juridico" className="hover:text-brand-accent">Marketing jurídico</Link></li>
+            <li><Link href="/checklist" className="hover:text-brand-accent">Checklist presença digital</Link></li>
             <li><Link href="/sobre" className="hover:text-brand-accent">Sobre o AdvAqui</Link></li>
-            <li><Link href="/faq" className="hover:text-brand-accent">Perguntas frequentes</Link></li>
+            <li><Link href="/faq" className="hover:text-brand-accent">FAQ</Link></li>
             <li><Link href="/contato" className="hover:text-brand-accent">Contato</Link></li>
           </ul>
         </div>

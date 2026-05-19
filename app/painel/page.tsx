@@ -5,13 +5,18 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   AlertCircle,
+  BookOpen,
   CheckCircle,
+  CheckSquare,
   Clock,
   Edit3,
   ExternalLink,
+  FileText,
   LogOut,
   MessageSquare,
+  Sparkles,
   Star,
+  Target,
   TrendingUp
 } from "lucide-react";
 import { PlanBadge } from "@/components/PlanBadge";
@@ -745,6 +750,73 @@ export default function PainelPage() {
             <p className="text-xs text-brand-ink/70 mt-1 leading-relaxed">
               Perfis com telefone, WhatsApp, bio e areas de atuacao bem preenchidas tendem a converter melhor.
             </p>
+          </div>
+
+          {/* Materiais e recursos — exclusivos para advogados logados.
+              Como o painel inteiro só renderiza com sessão válida, qualquer
+              link aqui já está "atrás do gate". */}
+          <div className="rounded-2xl bg-gradient-to-br from-brand-accent2/15 to-brand-accent/5 border-2 border-brand-accent p-5 relative overflow-hidden">
+            <div
+              aria-hidden
+              className="absolute -top-px left-4 right-4 h-1 bg-gradient-to-r from-brand-accent2 via-brand-accent to-brand-accent2 rounded-b"
+            />
+            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-brand-accent text-brand-ink mb-3">
+              <Sparkles className="w-3 h-3" aria-hidden />
+              Materiais liberados
+            </div>
+            <p className="text-sm font-semibold text-brand-ink mb-3">
+              Recursos para você crescer
+            </p>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link
+                  href="/checklist"
+                  className="flex items-start gap-2 text-brand-ink hover:text-brand-deep transition group"
+                >
+                  <CheckSquare className="w-4 h-4 text-brand-deep mt-0.5 flex-shrink-0 group-hover:scale-110 transition" aria-hidden />
+                  <span>
+                    <span className="font-semibold block">Checklist presença digital</span>
+                    <span className="text-xs text-brand-ink/60">21 itens práticos · .txt</span>
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/modelos"
+                  className="flex items-start gap-2 text-brand-ink hover:text-brand-deep transition group"
+                >
+                  <FileText className="w-4 h-4 text-brand-deep mt-0.5 flex-shrink-0 group-hover:scale-110 transition" aria-hidden />
+                  <span>
+                    <span className="font-semibold block">20 modelos de documentos</span>
+                    <span className="text-xs text-brand-ink/60">Procuração, contratos, recibos</span>
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/marketing-juridico"
+                  className="flex items-start gap-2 text-brand-ink hover:text-brand-deep transition group"
+                >
+                  <Target className="w-4 h-4 text-brand-deep mt-0.5 flex-shrink-0 group-hover:scale-110 transition" aria-hidden />
+                  <span>
+                    <span className="font-semibold block">Marketing jurídico</span>
+                    <span className="text-xs text-brand-ink/60">5 guias completos</span>
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/blog"
+                  className="flex items-start gap-2 text-brand-ink hover:text-brand-deep transition group"
+                >
+                  <BookOpen className="w-4 h-4 text-brand-deep mt-0.5 flex-shrink-0 group-hover:scale-110 transition" aria-hidden />
+                  <span>
+                    <span className="font-semibold block">Blog jurídico</span>
+                    <span className="text-xs text-brand-ink/60">10 artigos por área</span>
+                  </span>
+                </Link>
+              </li>
+            </ul>
           </div>
         </aside>
       </div>

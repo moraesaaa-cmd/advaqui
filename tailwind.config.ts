@@ -13,14 +13,15 @@ const config: Config = {
           ink: "#0F1B2D",
           deep: "#1B3A5C",
           primary: "#264E70",
-          // Dourado modernizado (Maio/2026):
-          //  - accent     antes #C9A24C (mostarda envelhecida) -> #D4A017 (dourado vivo)
-          //  - accent2    antes #E8B856 (bege amarelado)       -> #F2C94C (amarelo champagne)
-          //  Mantemos contraste >= 4.5:1 com brand-ink em texto, e legibilidade
-          //  em CTAs principais. A faixa "destaque" e selos premium ficam mais
-          //  vibrantes, sinalizando premium sem virar circo.
-          accent: "#D4A017",
-          accent2: "#F2C94C",
+          // Amber-500 vívido (segunda iteração Maio/2026):
+          //  - accent     -> #F59E0B (Tailwind amber-500, dourado pop usado em
+          //                 Stripe/Vercel — quente, vibrante, NÃO é mostarda)
+          //  - accent2    -> #FBBF24 (Tailwind amber-400, amarelo solar claro)
+          //  O dourado #D4A017 ficou apagado contra fundos creme — o amber-500
+          //  resolve com mais saturação. Mantemos contraste >= 4.5:1 com
+          //  brand-ink em texto preto sobre o amber (CTAs principais).
+          accent: "#F59E0B",
+          accent2: "#FBBF24",
           bg: "#FBF9F4",
           line: "#E6E1D6"
         }
