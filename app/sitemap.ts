@@ -4,6 +4,8 @@ import { STATES } from "@/lib/data/states";
 import { getAllCities } from "@/lib/data/cities";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { getAllLawyerSlugs } from "@/lib/data/lawyers";
+import { getAllArticleSlugs } from "@/lib/data/articles";
+import { getAllTemplateSlugs } from "@/lib/data/templates-docs";
 
 /**
  * Sitemap principal. Inclui:
@@ -27,6 +29,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${base}/`, changeFrequency: "daily", priority: 1.0, lastModified: now },
     { url: `${base}/advogados`, changeFrequency: "daily", priority: 0.9, lastModified: now },
+    { url: `${base}/blog`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
+    { url: `${base}/modelos`, changeFrequency: "monthly", priority: 0.8, lastModified: now },
     { url: `${base}/planos`, changeFrequency: "monthly", priority: 0.7, lastModified: now },
     { url: `${base}/sobre`, changeFrequency: "yearly", priority: 0.4, lastModified: now },
     { url: `${base}/faq`, changeFrequency: "monthly", priority: 0.5, lastModified: now },
@@ -35,7 +39,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/privacidade`, changeFrequency: "yearly", priority: 0.3, lastModified: now },
     { url: `${base}/aviso-legal`, changeFrequency: "yearly", priority: 0.3, lastModified: now },
     { url: `${base}/cadastro`, changeFrequency: "monthly", priority: 0.5, lastModified: now },
-    { url: `${base}/login`, changeFrequency: "yearly", priority: 0.2, lastModified: now }
+    { url: `${base}/login`, changeFrequency: "yearly", priority: 0.2, lastModified: now },
+    { url: `${base}/sitemap-html`, changeFrequency: "monthly", priority: 0.3, lastModified: now }
   ];
 
   const stateRoutes: MetadataRoute.Sitemap = STATES.map((s) => ({
@@ -71,5 +76,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  return [...staticRoutes, ...stateRoutes, ...capitalSpecRoutes, ...profileRoutes];
+  const articleRoutes: MetadataRoute.Sitemap = getAllArticleSlugs().map((slug) => ({
+    url: `${base}/blog/${slug}`,
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: now
+  }));
+
+  const templateRoutes: MetadataRoute.Sitemap = getAllTemplateSlugs().map((slug) => ({
+    url: `${base}/modelos/${slug}`,
+    changeFrequency: "monthly",
+    priority: 0.6,
+    lastModified: now
+  }));
+
+  return [
+    ...staticRoutes,
+    ...stateRoutes,
+    ...capitalSpecRoutes,
+    ...articleRoutes,
+    ...templateRoutes,
+    ...profileRoutes
+  ];
 }

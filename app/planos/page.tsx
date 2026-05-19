@@ -3,6 +3,7 @@ import { PLAN } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { PlanosCTAFree, PlanosCTAPremium } from "@/components/PlanosCTAs";
+import { PremiumValueSection } from "@/components/PremiumValueSection";
 
 export const metadata = buildMetadata({
   title: "Planos",
@@ -129,6 +130,10 @@ export default function PlanosPage() {
           </div>
         </div>
       </section>
+
+      <div className="mt-4">
+        <PremiumValueSection />
+      </div>
 
       <section className="mt-10 rounded-2xl bg-brand-bg border border-brand-line p-6">
         <h3 className="font-display text-xl font-bold text-brand-ink mb-3">Perguntas comuns</h3>

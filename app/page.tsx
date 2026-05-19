@@ -2,21 +2,23 @@ import Link from "next/link";
 import {
   Search,
   ShieldCheck,
-  Sparkles,
   MapPin,
   Briefcase,
-  CreditCard,
-  Eye
+  BookOpen,
+  FileText
 } from "lucide-react";
 import { SearchBox } from "@/components/SearchBox";
 import { STATES } from "@/lib/data/states";
 import { SPECIALTIES } from "@/lib/data/specialties";
-import { SITE, PLAN } from "@/lib/config";
-import { formatCurrency } from "@/lib/utils/format";
+import { SITE } from "@/lib/config";
+import { PremiumValueSection } from "@/components/PremiumValueSection";
+import { getAllArticles } from "@/lib/data/articles";
 
 export const revalidate = 600;
 
 export default async function HomePage() {
+  const latestArticles = getAllArticles().slice(0, 3);
+
   return (
     <>
       <section className="relative bg-gradient-to-br from-brand-ink via-brand-deep to-brand-primary text-white">
@@ -137,40 +139,85 @@ export default async function HomePage() {
         </p>
       </section>
 
-      <section className="bg-brand-ink text-white py-20">
+      <PremiumValueSection />
+
+      {/* Blog + Modelos: bloco duplo de conteúdo / autoridade (E-E-A-T) */}
+      <section className="bg-white border-y border-brand-line py-16">
         <div className="container-tight">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-10">
             <div>
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-brand-accent text-brand-ink mb-4">
-                Para advogados
-              </span>
-              <h2 className="font-display text-3xl md:text-4xl font-bold leading-tight">
-                Apareça no topo das buscas da sua cidade
-              </h2>
-              <p className="mt-4 text-brand-bg/85 text-lg">
-                Plano premium por {formatCurrency(PLAN.price)} ao mês. Sem fidelidade.
-                Pagamento via Pix, ativação manual em até {PLAN.activationHours} horas.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link href="/planos" className="btn-accent">Ver o plano premium</Link>
-                <Link href="/cadastro" className="btn-ghost text-white hover:bg-white/10">
-                  Cadastrar gratuitamente
-                </Link>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-accent/15 text-brand-deep border border-brand-accent/30 mb-3">
+                <BookOpen className="w-3.5 h-3.5" aria-hidden />
+                Blog jurídico
               </div>
+              <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
+                Seus direitos explicados sem juridiquês
+              </h2>
+              <p className="text-brand-ink/65 mt-2">
+                10 guias práticos sobre as situações mais comuns — rescisão,
+                divórcio, pensão, INSS, dívida indevida, despejo e mais.
+              </p>
+              <ul className="mt-4 space-y-2.5">
+                {latestArticles.map((a) => (
+                  <li key={a.slug}>
+                    <Link
+                      href={`/blog/${a.slug}`}
+                      className="block group hover:bg-brand-line/40 -mx-2 px-2 py-1.5 rounded-lg transition"
+                    >
+                      <span className="text-xs text-brand-ink/55 uppercase tracking-wide">
+                        {a.category} · {a.readingMinutes} min
+                      </span>
+                      <p className="text-sm font-semibold text-brand-ink group-hover:text-brand-deep leading-snug">
+                        {a.title}
+                      </p>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/blog"
+                className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-deep hover:text-brand-accent2"
+              >
+                Ver todos os artigos →
+              </Link>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { Icon: Eye, title: "Visibilidade", text: "Topo das buscas da sua cidade" },
-                { Icon: Sparkles, title: "Destaque visual", text: "Selo dourado no diretório" },
-                { Icon: Briefcase, title: "Perfil completo", text: "Bio, áreas, WhatsApp, endereço" },
-                { Icon: CreditCard, title: "Sem fidelidade", text: "Cancele quando quiser" }
-              ].map(({ Icon, title, text }, idx) => (
-                <div key={idx} className="bg-white/5 rounded-2xl p-4 border border-white/10">
-                  <Icon className="w-6 h-6 text-brand-accent mb-2" aria-hidden />
-                  <p className="font-semibold">{title}</p>
-                  <p className="text-sm text-brand-bg/70 mt-1">{text}</p>
-                </div>
-              ))}
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-accent/15 text-brand-deep border border-brand-accent/30 mb-3">
+                <FileText className="w-3.5 h-3.5" aria-hidden />
+                Modelos gratuitos
+              </div>
+              <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
+                20 modelos prontos pra baixar
+              </h2>
+              <p className="text-brand-ink/65 mt-2">
+                Procuração, contrato de locação, recibo, distrato, declaração
+                de união estável, autorização de viagem — preencha os campos
+                entre colchetes e use.
+              </p>
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                {[
+                  { slug: "procuracao-particular-geral", label: "Procuração particular" },
+                  { slug: "contrato-de-locacao-residencial-simples", label: "Contrato de locação" },
+                  { slug: "recibo-pagamento-quitacao", label: "Recibo de pagamento" },
+                  { slug: "declaracao-de-uniao-estavel", label: "União estável" },
+                  { slug: "autorizacao-viagem-menor-nacional", label: "Autorização de viagem" },
+                  { slug: "notificacao-extrajudicial-cobranca", label: "Notificação de cobrança" }
+                ].map((t) => (
+                  <Link
+                    key={t.slug}
+                    href={`/modelos/${t.slug}`}
+                    className="text-sm text-brand-ink/85 hover:text-brand-deep hover:bg-brand-line/40 px-2 py-1.5 rounded-lg border border-brand-line transition"
+                  >
+                    {t.label}
+                  </Link>
+                ))}
+              </div>
+              <Link
+                href="/modelos"
+                className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-deep hover:text-brand-accent2"
+              >
+                Ver os 20 modelos →
+              </Link>
             </div>
           </div>
         </div>

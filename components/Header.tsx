@@ -10,10 +10,10 @@ import { createClient } from "@/lib/supabase/client";
 const NAV = [
   { href: "/", label: "Início" },
   { href: "/advogados", label: "Diretório" },
+  { href: "/blog", label: "Blog" },
+  { href: "/modelos", label: "Modelos" },
   { href: "/planos", label: "Planos" },
-  { href: "/sobre", label: "Sobre" },
-  { href: "/faq", label: "Perguntas" },
-  { href: "/contato", label: "Contato" }
+  { href: "/faq", label: "FAQ" }
 ];
 
 type SessionState =
