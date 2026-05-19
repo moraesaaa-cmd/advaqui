@@ -1,10 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin";
-import type { LawyerRow, PublicLawyer, PlanStatus } from "@/lib/supabase/types";
-import {
-  type Lawyer,
-  mapLawyerRow,
-  PUBLIC_COLUMNS
-} from "@/lib/data/lawyer-mapper";
+import type { LawyerRow, PublicLawyer } from "@/lib/supabase/types";
+import { type Lawyer, mapLawyerRow } from "@/lib/data/lawyer-mapper";
 
 /**
  * Funções server-side de acesso a `public.lawyers`.
@@ -61,9 +57,14 @@ export async function getLawyersForCity(
   //   1. uf + city_slug = cidade principal do cadastro
   //   2. target_uf + target_city = cidade adicional legada (campos antigos)
   //   3. extra_cities[i] = { uf, slug } match exato em alguma entrada
+  // SELECT * — não SELECT(PUBLIC_COLUMNS) — pra suportar tanto o estado pré
+  // migration 0005 quanto pós. Migration adiciona photo_url, website, etc.;
+  // se ainda não foi aplicada, PUBLIC_COLUMNS pediria coluna inexistente
+  // e quebraria TODOS os cards. Com "*", o Supabase retorna o que tem.
+  // O mapper já trata os campos novos como opcionais.
   const { data, error } = await supabase
     .from("lawyers")
-    .select(PUBLIC_COLUMNS)
+    .select("*")
     .or(`uf.eq.${ufUpper},target_uf.eq.${ufUpper}`);
 
   if (error) {
@@ -128,7 +129,7 @@ export async function getLawyersForState(uf: string): Promise<Lawyer[]> {
   const ufUpper = uf.toUpperCase();
   const { data, error } = await supabase
     .from("lawyers")
-    .select(PUBLIC_COLUMNS)
+    .select("*") // ver comentário em getLawyersForCity
     .eq("uf", ufUpper)
     .order("name", { ascending: true });
 
@@ -146,7 +147,7 @@ export async function findLawyerBySlug(slug: string): Promise<Lawyer | null> {
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("lawyers")
-    .select(PUBLIC_COLUMNS)
+    .select("*") // ver comentário em getLawyersForCity
     .eq("slug", slug)
     .maybeSingle();
 

@@ -8,6 +8,7 @@ import { Logo } from "./Logo";
 import { createClient } from "@/lib/supabase/client";
 
 const NAV = [
+  { href: "/", label: "Início" },
   { href: "/advogados", label: "Diretório" },
   { href: "/blog", label: "Blog" },
   { href: "/modelos", label: "Modelos" },

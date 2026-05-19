@@ -40,11 +40,14 @@ export async function GET() {
     } = await supabase.auth.getUser();
 
     if (user) {
-      // Busca nome canônico em public.lawyers (mais confiável que user_metadata)
+      // Busca nome canônico + plan_status em public.lawyers (mais confiável
+      // que user_metadata). plan_status alimenta UI que distingue
+      // lawyer-free vs lawyer-premium (ex: CTA "ativar premium" desaparece
+      // quando o user já é premium ativo).
       const admin = createAdminClient();
       const { data } = await admin
         .from("lawyers")
-        .select("name")
+        .select("name,plan_status")
         .eq("id", user.id)
         .maybeSingle();
 
@@ -55,8 +58,15 @@ export async function GET() {
         "Advogado";
       const name = titleCaseNameBR(rawName);
       const firstName = name.trim().split(/\s+/)[0] || "Advogado";
+      const planStatus =
+        (data?.plan_status as string | undefined) || "free";
 
-      return NextResponse.json({ kind: "lawyer", name, firstName });
+      return NextResponse.json({
+        kind: "lawyer",
+        name,
+        firstName,
+        planStatus
+      });
     }
   } catch (err) {
     console.error("[api/auth/me] supabase check failed", err);

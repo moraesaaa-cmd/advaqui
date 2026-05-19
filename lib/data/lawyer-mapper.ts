@@ -115,6 +115,18 @@ export const mapLawyerRow = (
 };
 
 // Colunas seguras para exposição pública (sem CPF).
-// Usado pelos selects do server-side em lawyers.ts.
+//
+// Histórico: chegamos a estender essa lista com `photo_url`, `website`,
+// `instagram`, `linkedin`, `office_hours` (migration 0005). PORÉM, se o app
+// for deployado ANTES da migration ser aplicada no Supabase, o SELECT falha
+// com `column ... does not exist` e TODOS os cards somem do diretório.
+//
+// Solução adotada (Maio/2026, pós-incidente): manter PUBLIC_COLUMNS conservador
+// — apenas as colunas que sempre existem desde migration 0001. As funções
+// que precisam das colunas premium novas (perfil público, painel) usam
+// `select("*")` que retorna o estado atual real do schema sem quebrar.
+//
+// O mapper (mapLawyerRow) já trata os campos novos como opcionais — quando
+// vêm undefined (migration não aplicada), simplesmente não aparecem no Lawyer.
 export const PUBLIC_COLUMNS =
-  "id,slug,name,oab,oab_uf,email,phone,whatsapp,address,city_name,city_slug,uf,specialties,bio,plan_status,plan_start_date,plan_end_date,payment_date,featured,verified_oab,target_city,target_uf,extra_cities,photo_url,website,instagram,linkedin,office_hours,created_at,updated_at";
+  "id,slug,name,oab,oab_uf,email,phone,whatsapp,address,city_name,city_slug,uf,specialties,bio,plan_status,plan_start_date,plan_end_date,payment_date,featured,verified_oab,target_city,target_uf,extra_cities,created_at,updated_at";

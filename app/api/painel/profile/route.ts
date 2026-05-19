@@ -120,12 +120,43 @@ export async function PATCH(req: Request) {
     update.office_hours = null;
   }
 
-  const { data, error } = await current.admin
+  // Tenta o UPDATE completo. Se falhar com "column does not exist" (migration
+  // 0005 ainda não aplicada no banco), refaz sem os campos novos. Isso evita
+  // que o painel inteiro pare de salvar perfil enquanto a migration está
+  // pendente — campos antigos continuam funcionando.
+  const PREMIUM_NEW_COLS: Array<keyof LawyerRow> = [
+    "photo_url",
+    "website",
+    "instagram",
+    "linkedin",
+    "office_hours"
+  ];
+
+  let { data, error } = await current.admin
     .from("lawyers")
     .update(update)
     .eq("id", current.lawyer.id)
     .select("*")
     .maybeSingle();
+
+  if (error && /column .+ does not exist/i.test(error.message)) {
+    console.warn(
+      "[painel] migration 0005 pending — retrying update without new columns",
+      error.message
+    );
+    const safeUpdate: Partial<LawyerRow> = { ...update };
+    for (const col of PREMIUM_NEW_COLS) {
+      delete safeUpdate[col];
+    }
+    const retry = await current.admin
+      .from("lawyers")
+      .update(safeUpdate)
+      .eq("id", current.lawyer.id)
+      .select("*")
+      .maybeSingle();
+    data = retry.data;
+    error = retry.error;
+  }
 
   if (error || !data) {
     console.error("[painel] profile update failed", error);

@@ -69,7 +69,6 @@ const COMPARISON: Array<{
     group: "Administração",
     rows: [
       { feature: "Painel pra editar perfil", free: true, premium: true },
-      { feature: "Estatísticas básicas", free: false, premium: "Em breve" },
       { feature: "Suporte por mensagem", free: "Resposta em 7 dias", premium: "Resposta em 48h" },
       { feature: "Fidelidade", free: "Sem", premium: "Sem (cancela quando quiser)" },
       { feature: "Forma de pagamento", free: "—", premium: "Pix manual" }
@@ -377,10 +376,10 @@ export default function PlanosPage() {
                 <ArrowRight className="w-4 h-4" aria-hidden />
               </Link>
               <Link
-                href="/painel/pagamento"
+                href="/login"
                 className="btn-ghost text-white border border-white/20 hover:bg-white/10 w-full justify-center inline-flex items-center gap-2"
               >
-                Já tenho conta — ativar premium
+                Já tenho conta — entrar
               </Link>
             </div>
           </div>

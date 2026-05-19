@@ -130,7 +130,7 @@ export function PremiumValueSection() {
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
         <ValueCard
           Icon={TrendingUp}
-          title="Mais visualizações"
+          title="Topo da cidade"
           text="Perfis premium aparecem antes dos gratuitos em cada página de cidade — é o primeiro que o cliente vê."
         />
         <ValueCard

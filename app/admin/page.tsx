@@ -53,7 +53,6 @@ Queria te apresentar rapidamente o plano Premium (R$ 59,90/mês, Pix, sem fideli
   • Bio livre até 500 caracteres explicando sua atuação
   • Áreas de atuação com filtro avançado nas buscas
   • Cidade adicional de atendimento (atenda em 2 cidades, não só 1)
-  • Estatísticas básicas de quantas pessoas visualizaram seu perfil
 
 Vale lembrar: o plano é mensal, pago via Pix, sem fidelidade. Você cancela quando quiser, sem multa.
 

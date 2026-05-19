@@ -6,19 +6,20 @@ import { useEffect, useState } from "react";
 type AuthState =
   | { kind: "loading" }
   | { kind: "anonymous" }
-  | { kind: "lawyer"; firstName: string }
+  | { kind: "lawyer"; firstName: string; planStatus: string }
   | { kind: "admin" };
 
 /**
  * Botões da página /planos.
  *
  * Adapta texto e destino conforme o visitante:
- *   - Anonymous     → /cadastro (texto padrão)
- *   - Lawyer logado → /painel (free) | /painel/pagamento (premium)
- *   - Admin         → /admin (neutro)
+ *   - Anonymous           → /cadastro
+ *   - Lawyer free/pending → /painel (free CTA) | /painel/pagamento (premium CTA)
+ *   - Lawyer premium      → /painel (free CTA) | "Você já é premium" (premium CTA)
+ *   - Admin               → /admin (neutro)
  *
- * Resolve o bug em que o user já logado clicava "Cadastrar e ativar premium"
- * e era jogado pro fluxo de cadastro do zero.
+ * Resolve o bug em que premium logado via "Ativar premium agora" — agora
+ * o CTA premium some/troca pra confirmação visual quando o user já é premium.
  *
  * Default "loading" no SSR mostra o texto anonymous (Cadastrar...) pra evitar
  * flicker do botão; o useEffect substitui se houver sessão.
@@ -30,16 +31,26 @@ function useAuthKind(): AuthState {
     let cancelled = false;
     fetch("/api/auth/me", { cache: "no-store" })
       .then((res) => (res.ok ? res.json() : { kind: "anonymous" }))
-      .then((data: { kind?: "admin" | "lawyer" | "anonymous"; firstName?: string }) => {
-        if (cancelled) return;
-        if (data.kind === "admin") {
-          setAuth({ kind: "admin" });
-        } else if (data.kind === "lawyer" && data.firstName) {
-          setAuth({ kind: "lawyer", firstName: data.firstName });
-        } else {
-          setAuth({ kind: "anonymous" });
+      .then(
+        (data: {
+          kind?: "admin" | "lawyer" | "anonymous";
+          firstName?: string;
+          planStatus?: string;
+        }) => {
+          if (cancelled) return;
+          if (data.kind === "admin") {
+            setAuth({ kind: "admin" });
+          } else if (data.kind === "lawyer" && data.firstName) {
+            setAuth({
+              kind: "lawyer",
+              firstName: data.firstName,
+              planStatus: data.planStatus || "free"
+            });
+          } else {
+            setAuth({ kind: "anonymous" });
+          }
         }
-      })
+      )
       .catch(() => {
         if (!cancelled) setAuth({ kind: "anonymous" });
       });
@@ -77,6 +88,29 @@ export function PlanosCTAFree() {
 export function PlanosCTAPremium() {
   const auth = useAuthKind();
   if (auth.kind === "lawyer") {
+    // Premium ATIVO — mostra confirmação em vez de CTA pra ativar
+    if (auth.planStatus === "active") {
+      return (
+        <Link
+          href="/painel"
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 text-white font-bold transition hover:bg-emerald-700 active:scale-[0.98]"
+        >
+          ✓ Você já é premium · Ir ao painel
+        </Link>
+      );
+    }
+    // Pendente — pagamento sinalizado, aguardando ativação
+    if (auth.planStatus === "pending") {
+      return (
+        <Link
+          href="/painel"
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-amber-100 text-amber-900 font-bold transition hover:bg-amber-200 border border-amber-300"
+        >
+          Pagamento em análise · Ver painel
+        </Link>
+      );
+    }
+    // Free ou expired — vai pra ativação
     return (
       <Link href="/painel/pagamento" className="btn-accent justify-center">
         Ativar premium agora

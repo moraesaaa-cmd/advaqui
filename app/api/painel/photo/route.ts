@@ -116,6 +116,26 @@ export async function POST(req: Request) {
     .eq("id", current.lawyer.id);
 
   if (updateError) {
+    // Coluna photo_url ainda não existe (migration 0005 pendente).
+    // A foto FOI subida pro Storage, então damos a URL pra UI mostrar
+    // mesmo sem persistência no banco. Quando migration rodar, próximo
+    // upload persiste normal.
+    const isMissingColumn = /column .+ does not exist/i.test(updateError.message);
+    if (isMissingColumn) {
+      console.warn(
+        "[photo] migration 0005 pending — photo uploaded to storage but not persisted",
+        updateError.message
+      );
+      return NextResponse.json(
+        {
+          ok: false,
+          code: "db_schema_pending",
+          error:
+            "A foto foi enviada, mas a coluna do banco ainda não foi criada. Avise o administrador para rodar a migration 0005."
+        },
+        { status: 503 }
+      );
+    }
     console.error("[photo] db update failed", updateError);
     return NextResponse.json(
       {
