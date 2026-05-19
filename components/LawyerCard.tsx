@@ -94,15 +94,22 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
           <img
             src={lawyer.photoUrl}
             alt={`Foto de ${lawyer.name}`}
-            className={`w-14 h-14 rounded-full object-cover flex-shrink-0 ${
+            loading="eager"
+            decoding="async"
+            className={`${
+              isFeatured ? "w-20 h-20" : "w-16 h-16"
+            } rounded-full object-cover flex-shrink-0 bg-brand-bg ${
               isFeatured
                 ? "ring-2 ring-brand-accent border-2 border-white shadow-card"
                 : "border-2 border-brand-line"
             }`}
+            style={{ imageRendering: "auto" }}
           />
         ) : (
           <div
-            className={`w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 ${
+            className={`${
+              isFeatured ? "w-20 h-20" : "w-16 h-16"
+            } rounded-full flex items-center justify-center flex-shrink-0 ${
               isFeatured
                 ? "bg-brand-accent/20 ring-2 ring-brand-accent/40"
                 : "bg-brand-line"
@@ -110,7 +117,9 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
             aria-hidden
           >
             <User
-              className={`w-6 h-6 ${isFeatured ? "text-brand-accent2" : "text-brand-deep"}`}
+              className={`${isFeatured ? "w-8 h-8" : "w-7 h-7"} ${
+                isFeatured ? "text-brand-accent2" : "text-brand-deep"
+              }`}
               aria-hidden
             />
           </div>

@@ -72,13 +72,16 @@ export default async function ProfilePage({ params }: { params: { slug: string }
             <img
               src={l.photoUrl}
               alt={`Foto de ${l.name}`}
-              className={`w-24 h-24 rounded-2xl object-cover flex-shrink-0 ${
+              loading="eager"
+              decoding="async"
+              className={`w-32 h-32 md:w-36 md:h-36 rounded-2xl object-cover flex-shrink-0 bg-brand-bg ${
                 featured ? "ring-2 ring-brand-accent border-2 border-white shadow-card" : "border-2 border-brand-line"
               }`}
+              style={{ imageRendering: "auto" }}
             />
           ) : (
-            <div className="w-24 h-24 rounded-2xl bg-brand-deep/10 flex items-center justify-center flex-shrink-0" aria-hidden>
-              <User className="w-12 h-12 text-brand-deep" aria-hidden />
+            <div className="w-32 h-32 md:w-36 md:h-36 rounded-2xl bg-brand-deep/10 flex items-center justify-center flex-shrink-0" aria-hidden>
+              <User className="w-16 h-16 text-brand-deep" aria-hidden />
             </div>
           )}
           <div className="flex-1">

@@ -324,10 +324,14 @@ export default function AdminPage() {
     if (value === null) return;
     if (busy) return;
     setBusy(true);
+    const trimmed = value.trim();
+    // Campos opcionais — string vazia vira null no banco.
+    // Importante: o admin pode QUERER esvaziar (ex: limpar Instagram errado).
+    const payload = trimmed === "" ? null : trimmed;
     const r = await callAdmin({
       action: "update-lawyer",
       id,
-      fields: { [fieldKey]: value.trim() }
+      fields: { [fieldKey]: payload }
     });
     setBusy(false);
     if (r.status === 200) {
@@ -335,6 +339,28 @@ export default function AdminPage() {
       await refreshUsers();
     } else {
       toast(r.json.error || "Erro ao atualizar", "error");
+    }
+  };
+
+  /**
+   * Remove a foto do perfil do advogado.
+   * Apaga arquivos do Storage (.jpg/.png/.webp) e zera coluna photo_url.
+   */
+  const removeUserPhoto = async (id: string, name: string) => {
+    const ok = window.confirm(
+      `Remover a foto de perfil de ${name}?\n\n` +
+        "A foto será apagada do storage e o card volta a mostrar as iniciais. " +
+        "O advogado pode subir uma nova quando quiser."
+    );
+    if (!ok || busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "remove-photo", id });
+    setBusy(false);
+    if (r.status === 200) {
+      toast("Foto removida");
+      await refreshUsers();
+    } else {
+      toast(r.json.error || "Erro ao remover foto", "error");
     }
   };
 
@@ -515,11 +541,34 @@ export default function AdminPage() {
             {filteredUsers.map((u) => (
               <article key={u.id} className="card">
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
-                  <div>
-                    <p className="font-display font-bold text-brand-ink">{u.name}</p>
-                    <p className="text-sm text-brand-ink/60">
-                      OAB/{u.oab_uf} {u.oab} — {u.city_name}/{u.uf}
-                    </p>
+                  <div className="flex items-start gap-3">
+                    {/* Avatar do advogado — admin precisa ver a foto enviada.
+                        Mostra a foto real se houver, ou círculo com iniciais. */}
+                    {u.photo_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={u.photo_url}
+                        alt={`Foto de ${u.name}`}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-14 h-14 rounded-full object-cover border-2 border-brand-line bg-brand-bg flex-shrink-0"
+                      />
+                    ) : (
+                      <div className="w-14 h-14 rounded-full bg-brand-deep/10 border-2 border-brand-line flex items-center justify-center flex-shrink-0 font-display font-bold text-brand-deep text-base">
+                        {(u.name || "")
+                          .split(/\s+/)
+                          .filter(Boolean)
+                          .slice(0, 2)
+                          .map((w) => w[0]?.toUpperCase())
+                          .join("") || "?"}
+                      </div>
+                    )}
+                    <div>
+                      <p className="font-display font-bold text-brand-ink">{u.name}</p>
+                      <p className="text-sm text-brand-ink/60">
+                        OAB/{u.oab_uf} {u.oab} — {u.city_name}/{u.uf}
+                      </p>
+                    </div>
                   </div>
                   <PlanBadge status={u.plan_status} />
                 </div>
@@ -670,6 +719,92 @@ export default function AdminPage() {
                   >
                     Editar cidades extras
                   </button>
+                  {/* Campos da migration 0005 — admin com poder pleno */}
+                  <button
+                    onClick={() =>
+                      editLawyerField(
+                        u.id,
+                        "office_hours",
+                        "Horarios de atendimento (ex: Seg-Sex 9h-18h)",
+                        u.office_hours || ""
+                      )
+                    }
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    title="Editar horarios de atendimento (premium)"
+                  >
+                    Editar horários
+                  </button>
+                  <button
+                    onClick={() =>
+                      editLawyerField(
+                        u.id,
+                        "website",
+                        "Site profissional (URL completa)",
+                        u.website || ""
+                      )
+                    }
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    title="Editar URL do site (premium)"
+                  >
+                    Editar site
+                  </button>
+                  <button
+                    onClick={() =>
+                      editLawyerField(
+                        u.id,
+                        "instagram",
+                        "Handle do Instagram (sem @)",
+                        u.instagram || ""
+                      )
+                    }
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    title="Editar Instagram (premium)"
+                  >
+                    Editar Instagram
+                  </button>
+                  <button
+                    onClick={() =>
+                      editLawyerField(
+                        u.id,
+                        "linkedin",
+                        "Handle ou URL do LinkedIn",
+                        u.linkedin || ""
+                      )
+                    }
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    title="Editar LinkedIn (premium)"
+                  >
+                    Editar LinkedIn
+                  </button>
+                  <button
+                    onClick={() =>
+                      editLawyerField(
+                        u.id,
+                        "photo_url",
+                        "URL da foto (Imgur, Drive público, etc)",
+                        u.photo_url || ""
+                      )
+                    }
+                    disabled={busy}
+                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    title="Trocar a URL da foto do advogado"
+                  >
+                    Editar foto (URL)
+                  </button>
+                  {u.photo_url && (
+                    <button
+                      onClick={() => removeUserPhoto(u.id, u.name)}
+                      disabled={busy}
+                      className="px-3 py-1.5 bg-red-50 text-red-700 rounded-lg text-xs font-medium hover:bg-red-100 disabled:opacity-50"
+                      title="Remover foto do perfil (apaga do Storage e zera coluna)"
+                    >
+                      Remover foto
+                    </button>
+                  )}
                   <button
                     onClick={() => viewFullLawyer(u.id)}
                     disabled={busy}

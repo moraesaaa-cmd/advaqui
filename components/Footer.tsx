@@ -46,7 +46,6 @@ export function Footer() {
           </h4>
           <ul className="space-y-2 text-sm text-brand-bg/80">
             <li><Link href="/sitemap-html" className="hover:text-brand-accent">Mapa do site</Link></li>
-            <li><Link href="/sitemap.xml" className="hover:text-brand-accent">Sitemap XML</Link></li>
             <li><Link href="/termos" className="hover:text-brand-accent">Termos de uso</Link></li>
             <li><Link href="/privacidade" className="hover:text-brand-accent">Privacidade</Link></li>
             <li><Link href="/aviso-legal" className="hover:text-brand-accent">Aviso legal</Link></li>

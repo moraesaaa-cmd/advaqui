@@ -7,33 +7,27 @@ import {
   Star,
   Zap,
   Clock,
-  X,
+  Search,
+  Users,
+  Sparkles,
   type LucideIcon
 } from "lucide-react";
 import { PLAN } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
 
 /**
- * Seção "Por que vale pagar pelo premium" — usada na home e em /planos.
- *
- * Comunica valor concreto, não abstrato:
- *   - Posicionamento (topo da lista da cidade)
- *   - Contato direto (WhatsApp + telefone)
- *   - Selo de OAB verificada
- *   - Bio livre 500 chars + cidades extras
- *   - Sem fidelidade, controle total
- *
- * Fontes visuais:
- *   - Mock de card grátis vs premium lado a lado
- *   - "X reais por dia" pra contextualizar o preço
- *   - Comparativo objetivo
+ * Seção "Por que advogados escolhem o plano premium" — usada na home e em
+ * /planos. Refeita em Maio/2026 (3ª iteração) por pedido do produto:
+ * REMOVIDA a comparação grátis x premium dessa seção (continua na /planos).
+ * Aqui o foco é PERSUASÃO — argumentos concretos de por que o premium
+ * compensa: mais clientes, presença em buscas, ROI.
  */
 export function PremiumValueSection() {
   const dailyCost = (PLAN.price / 30).toFixed(2).replace(".", ",");
 
   return (
     <section className="container-tight py-16">
-      <header className="text-center mb-10 max-w-2xl mx-auto">
+      <header className="text-center mb-10 max-w-3xl mx-auto">
         <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-accent/20 text-brand-deep border border-brand-accent/40 mb-4">
           <Star className="w-3.5 h-3.5 fill-brand-accent text-brand-accent" aria-hidden />
           Plano Premium
@@ -48,81 +42,111 @@ export function PremiumValueSection() {
         </p>
       </header>
 
-      {/* Comparativo visual — card grátis vs premium */}
-      <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
-        <div className="rounded-2xl border-2 border-dashed border-brand-line p-5 bg-white">
-          <p className="text-xs uppercase tracking-wider text-brand-ink/50 font-semibold mb-3 inline-flex items-center gap-1.5">
-            <X className="w-3.5 h-3.5" aria-hidden /> Cadastro gratuito
-          </p>
-          <div className="rounded-xl border border-brand-line p-4 bg-brand-bg/50">
-            <p className="font-semibold text-brand-ink/80">Dr. Exemplo Silva</p>
-            <p className="text-xs text-brand-ink/60 mt-1">OAB/MG 123.456</p>
-            <p className="text-xs text-brand-ink/60 mt-3 flex items-center gap-1">
-              <MapPin className="w-3 h-3" aria-hidden /> Belo Horizonte/MG
-            </p>
+      {/* Como funciona — 3 passos do funil de captação premium */}
+      <div className="rounded-3xl bg-gradient-to-br from-brand-bg via-white to-brand-accent/5 border-2 border-brand-accent/30 p-6 md:p-10 mb-12 max-w-5xl mx-auto">
+        <p className="text-xs font-bold uppercase tracking-wider text-brand-deep mb-2 text-center">
+          Como o premium atrai mais clientes pra você
+        </p>
+        <h3 className="font-display text-xl md:text-2xl font-bold text-brand-ink text-center leading-tight mb-8 max-w-2xl mx-auto">
+          Um cliente que precisa de advogado abre o Google. O AdvAqui aparece. Seu perfil é o primeiro.
+        </h3>
+        <div className="grid md:grid-cols-3 gap-6">
+          <FunnelStep
+            n={1}
+            Icon={Search}
+            title="Pessoa pesquisa no Google"
+            text="Buscas como “advogado trabalhista em [sua cidade]” mostram o AdvAqui nos primeiros resultados orgânicos."
+          />
+          <FunnelStep
+            n={2}
+            Icon={TrendingUp}
+            title="Seu perfil premium aparece em 1º"
+            text="Na página da sua cidade e nas páginas por especialidade, perfis premium ocupam o topo. Antes dos demais."
+          />
+          <FunnelStep
+            n={3}
+            Icon={MessageCircle}
+            title="Cliente fala com você direto"
+            text="Botão WhatsApp com mensagem pronta. Sem leilão, sem comissão, sem intermediário. O cliente é seu, do começo ao fim."
+          />
+        </div>
+      </div>
+
+      {/* Argumentos de ROI / mais clientes */}
+      <div className="grid md:grid-cols-2 gap-5 max-w-5xl mx-auto mb-12">
+        <div className="rounded-2xl border-2 border-brand-line bg-white p-6">
+          <div className="flex items-start gap-3 mb-2">
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
+              <Users className="w-5 h-5 text-emerald-700" aria-hidden />
+            </div>
+            <div>
+              <h3 className="font-display text-lg font-bold text-brand-ink">
+                Mais mensagens, mais reuniões agendadas
+              </h3>
+            </div>
           </div>
-          <ul className="mt-4 space-y-1.5 text-xs text-brand-ink/65">
-            <li className="flex items-start gap-1.5">
-              <span className="text-brand-ink/30 mt-0.5">▢</span> Aparece a partir da posição 15+ na cidade
-            </li>
-            <li className="flex items-start gap-1.5">
-              <span className="text-brand-ink/30 mt-0.5">▢</span> Sem botão de WhatsApp clicável
-            </li>
-            <li className="flex items-start gap-1.5">
-              <span className="text-brand-ink/30 mt-0.5">▢</span> Sem selo de OAB verificada
-            </li>
-            <li className="flex items-start gap-1.5">
-              <span className="text-brand-ink/30 mt-0.5">▢</span> Sem bio expandida
-            </li>
-          </ul>
+          <p className="text-sm text-brand-ink/70 leading-relaxed">
+            Perfis premium ficam no topo das páginas de cidade e nas buscas por
+            especialidade. Quanto mais alto na lista, mais cliques recebe — e
+            cada clique vira mensagem pelo WhatsApp ou ligação direta. O custo
+            por novo cliente cai drasticamente quando você está em destaque.
+          </p>
         </div>
 
-        <div className="rounded-2xl border-2 border-brand-accent shadow-cardHover ring-2 ring-brand-accent/30 p-5 bg-white relative">
-          <div
-            aria-hidden
-            className="absolute -top-px left-4 right-4 h-1 bg-gradient-to-r from-brand-accent2 via-brand-accent to-brand-accent2 rounded-b"
-          />
-          <p className="text-xs uppercase tracking-wider font-semibold mb-3 inline-flex items-center gap-1.5 text-brand-accent2">
-            <Star className="w-3.5 h-3.5 fill-brand-accent text-brand-accent" aria-hidden /> Plano Premium
-          </p>
-          <div className="rounded-xl border-2 border-brand-accent p-4 bg-white">
-            <div className="flex items-center gap-2 mb-1 flex-wrap">
-              <p className="font-display font-bold text-brand-deep text-lg">
-                Dr. Exemplo Silva
-              </p>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-brand-accent text-brand-ink">
-                <Star className="w-3 h-3" aria-hidden /> Destaque
-              </span>
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                <ShieldCheck className="w-2.5 h-2.5" aria-hidden /> OAB verificada
-              </span>
+        <div className="rounded-2xl border-2 border-brand-line bg-white p-6">
+          <div className="flex items-start gap-3 mb-2">
+            <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
+              <Search className="w-5 h-5 text-amber-800" aria-hidden />
             </div>
-            <p className="text-xs text-brand-ink/70">OAB/MG 123.456</p>
-            <p className="text-xs text-brand-ink/70 mt-2 flex items-center gap-1">
-              <MapPin className="w-3 h-3 text-brand-ink/40" aria-hidden /> Av. Afonso Pena, 1500 — Belo Horizonte/MG
-            </p>
-            <div className="mt-3 inline-flex items-center gap-1 px-2 py-1 rounded-md bg-emerald-600 text-white text-[10px] font-semibold">
-              <MessageCircle className="w-3 h-3" aria-hidden /> WhatsApp
+            <div>
+              <h3 className="font-display text-lg font-bold text-brand-ink">
+                Presença em buscas de toda a região
+              </h3>
             </div>
           </div>
-          <ul className="mt-4 space-y-1.5 text-xs text-brand-ink/85">
-            <li className="flex items-start gap-1.5">
-              <span className="text-emerald-600 font-bold mt-0.5">✓</span>
-              <strong>Topo da página</strong> da sua cidade
-            </li>
-            <li className="flex items-start gap-1.5">
-              <span className="text-emerald-600 font-bold mt-0.5">✓</span>
-              Botão <strong>WhatsApp direto</strong> com mensagem pronta
-            </li>
-            <li className="flex items-start gap-1.5">
-              <span className="text-emerald-600 font-bold mt-0.5">✓</span>
-              Selo de <strong>OAB verificada</strong> e moldura dourada
-            </li>
-            <li className="flex items-start gap-1.5">
-              <span className="text-emerald-600 font-bold mt-0.5">✓</span>
-              <strong>Bio até 500 chars</strong> e até 8 áreas de atuação
-            </li>
-          </ul>
+          <p className="text-sm text-brand-ink/70 leading-relaxed">
+            Atende em mais de uma cidade? Cadastre cidades adicionais e
+            apareça nas buscas de cada uma delas — sem precisar manter perfis
+            separados. Multiplica seu alcance com um único cadastro premium.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border-2 border-brand-line bg-white p-6">
+          <div className="flex items-start gap-3 mb-2">
+            <div className="w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center flex-shrink-0">
+              <ShieldCheck className="w-5 h-5 text-sky-700" aria-hidden />
+            </div>
+            <div>
+              <h3 className="font-display text-lg font-bold text-brand-ink">
+                Confiança antes do primeiro contato
+              </h3>
+            </div>
+          </div>
+          <p className="text-sm text-brand-ink/70 leading-relaxed">
+            Selos visíveis, foto destacada, bio completa, áreas de atuação,
+            horários, redes sociais e site no seu perfil. O cliente decide
+            contratar antes mesmo de ligar — e quem chega na primeira reunião
+            já está decidido.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border-2 border-brand-line bg-white p-6">
+          <div className="flex items-start gap-3 mb-2">
+            <div className="w-10 h-10 rounded-xl bg-rose-100 flex items-center justify-center flex-shrink-0">
+              <Sparkles className="w-5 h-5 text-rose-700" aria-hidden />
+            </div>
+            <div>
+              <h3 className="font-display text-lg font-bold text-brand-ink">
+                Sem leilão, sem comissão
+              </h3>
+            </div>
+          </div>
+          <p className="text-sm text-brand-ink/70 leading-relaxed">
+            Outros marketplaces jurídicos cobram comissão sobre causas, leiloam
+            seu perfil pra quem dá mais lance, ou intermediam o pagamento. Aqui
+            não. Você paga mensalidade fixa e fica com 100% do que cobrar do
+            cliente.
+          </p>
         </div>
       </div>
 
@@ -139,9 +163,9 @@ export function PremiumValueSection() {
           text="Botão WhatsApp clicável com mensagem pré-preenchida. Cliente fala com você em um clique, sem fricção."
         />
         <ValueCard
-          Icon={ShieldCheck}
-          title="Mais confiança"
-          text="Selo de 'OAB verificada' visível em todos os locais — sinal claro de credibilidade para o cliente."
+          Icon={MapPin}
+          title="Cidades extras"
+          text="Apareça nas buscas de até 10 cidades onde você atende, com um único cadastro premium."
         />
         <ValueCard
           Icon={Zap}
@@ -188,6 +212,33 @@ function ValueCard({
       <h3 className="font-display text-base font-bold text-brand-ink mb-1">
         {title}
       </h3>
+      <p className="text-sm text-brand-ink/65 leading-relaxed">{text}</p>
+    </div>
+  );
+}
+
+function FunnelStep({
+  n,
+  Icon,
+  title,
+  text
+}: {
+  n: number;
+  Icon: LucideIcon;
+  title: string;
+  text: string;
+}) {
+  return (
+    <div className="relative rounded-2xl bg-white border border-brand-line p-5">
+      <span className="absolute -top-3 -left-3 w-9 h-9 rounded-full bg-brand-accent text-brand-ink text-base font-bold flex items-center justify-center shadow-card border-2 border-white">
+        {n}
+      </span>
+      <div className="w-11 h-11 rounded-xl bg-brand-deep/10 flex items-center justify-center mb-3 mt-1">
+        <Icon className="w-5 h-5 text-brand-deep" aria-hidden />
+      </div>
+      <h4 className="font-display text-base font-bold text-brand-ink mb-1.5 leading-snug">
+        {title}
+      </h4>
       <p className="text-sm text-brand-ink/65 leading-relaxed">{text}</p>
     </div>
   );

@@ -70,8 +70,7 @@ const COMPARISON: Array<{
     rows: [
       { feature: "Painel pra editar perfil", free: true, premium: true },
       { feature: "Suporte por mensagem", free: "Resposta em 7 dias", premium: "Resposta em 48h" },
-      { feature: "Fidelidade", free: "Sem", premium: "Sem (cancela quando quiser)" },
-      { feature: "Forma de pagamento", free: "—", premium: "Pix manual" }
+      { feature: "Fidelidade", free: "Sem", premium: "Sem (cancela quando quiser)" }
     ]
   }
 ];
@@ -207,8 +206,8 @@ export default function PlanosPage() {
             />
             <BenefitCard
               Icon={MapPin}
-              title="9 cidades adicionais"
-              text="Atende em mais de uma comarca? Adicione até 9 cidades extras — apareça nas buscas de cada uma."
+              title="+ 10 cidades adicionais"
+              text="Atende em mais de uma comarca? Adicione cidades extras — apareça nas buscas de cada uma delas."
             />
             <BenefitCard
               Icon={Clock}
@@ -265,23 +264,23 @@ export default function PlanosPage() {
                 <span className="text-base font-normal text-brand-bg/70">/mês</span>
               </p>
               <p className="text-sm text-brand-bg/70">
-                R$ {dailyCost}/dia · Pix manual · Sem fidelidade
+                R$ {dailyCost}/dia · Sem fidelidade
               </p>
             </div>
             <ul className="space-y-2.5 mb-6 flex-1 text-sm">
               <PremiumItem text="Tudo do cadastro gratuito" />
-              <PremiumItem text="Topo da página da sua cidade" highlight />
-              <PremiumItem text="Selo dourado de Destaque" highlight />
-              <PremiumItem text="Botão WhatsApp clicável" highlight />
+              <PremiumItem text="Topo da página da sua cidade" />
+              <PremiumItem text="Selo dourado de Destaque" />
+              <PremiumItem text="Botão WhatsApp clicável" />
               <PremiumItem text="Selo OAB verificada" />
               <PremiumItem text="Card maior + foto destacada" />
               <PremiumItem text="Bio até 500 caracteres" />
-              <PremiumItem text="Até 8 áreas de atuação" />
+              <PremiumItem text="+ de 10 áreas de atuação" />
               <PremiumItem text="Endereço completo + região" />
-              <PremiumItem text="9 cidades adicionais de atuação" highlight />
+              <PremiumItem text="+ 10 cidades adicionais de atuação" />
               <PremiumItem text="Horários de atendimento visíveis" />
               <PremiumItem text="Link site + Instagram + LinkedIn" />
-              <PremiumItem text="Suporte prioritário (48h)" />
+              <PremiumItem text="Suporte prioritário" />
             </ul>
             <PlanosCTAPremium />
           </div>

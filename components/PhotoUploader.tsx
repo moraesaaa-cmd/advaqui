@@ -134,31 +134,39 @@ export function PhotoUploader({
       <h3 className="font-display text-base font-bold text-brand-ink mb-1">
         Foto de perfil
       </h3>
-      <p className="text-xs text-brand-ink/60 mb-4">
-        Aparece nos cards do diretório e no seu perfil público. JPG, PNG ou WebP até 2 MB.
+      <p className="text-xs text-brand-ink/60 mb-1">
+        Aparece nos cards do diretório e no seu perfil público.
+      </p>
+      <p className="text-xs text-brand-ink/55 mb-4">
+        <strong className="text-brand-ink/70">Dica:</strong> use uma foto quadrada
+        de pelo menos <strong>600 × 600 pixels</strong> (ideal 800 × 800), enquadramento
+        do peito pra cima, fundo neutro. JPG, PNG ou WebP até 5 MB.
       </p>
 
       <div className="flex items-start gap-4">
-        {/* Preview circular */}
+        {/* Preview circular maior pra mostrar bem a qualidade */}
         <div className="relative flex-shrink-0">
           {photoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={photoUrl}
               alt="Sua foto de perfil"
-              className="w-24 h-24 rounded-full object-cover border-2 border-brand-accent ring-2 ring-brand-accent/20"
+              loading="eager"
+              decoding="async"
+              className="w-32 h-32 rounded-full object-cover border-2 border-brand-accent ring-2 ring-brand-accent/20 bg-brand-bg"
+              style={{ imageRendering: "auto" }}
             />
           ) : (
             <div
-              className="w-24 h-24 rounded-full bg-brand-deep/10 flex items-center justify-center font-display text-2xl font-bold text-brand-deep border-2 border-brand-line"
+              className="w-32 h-32 rounded-full bg-brand-deep/10 flex items-center justify-center font-display text-3xl font-bold text-brand-deep border-2 border-brand-line"
               aria-label={`Sem foto — iniciais ${initials}`}
             >
-              {initials || <User className="w-10 h-10 text-brand-deep/60" aria-hidden />}
+              {initials || <User className="w-14 h-14 text-brand-deep/60" aria-hidden />}
             </div>
           )}
           {busy && (
             <div className="absolute inset-0 rounded-full bg-white/70 flex items-center justify-center">
-              <Loader2 className="w-6 h-6 text-brand-deep animate-spin" aria-hidden />
+              <Loader2 className="w-7 h-7 text-brand-deep animate-spin" aria-hidden />
             </div>
           )}
         </div>

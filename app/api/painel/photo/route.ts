@@ -40,14 +40,14 @@ export async function POST(req: Request) {
     );
   }
 
-  // Validação de tamanho — 2MB max.
-  const MAX_BYTES = 2 * 1024 * 1024;
+  // Validação de tamanho — 5MB max (permite fotos de boa resolução, ~800-1200px).
+  const MAX_BYTES = 5 * 1024 * 1024;
   if (file.size > MAX_BYTES) {
     return NextResponse.json(
       {
         ok: false,
         code: "too_large",
-        error: "Arquivo muito grande. Máximo 2MB."
+        error: "Arquivo muito grande. Máximo 5 MB."
       },
       { status: 400 }
     );

@@ -310,16 +310,24 @@ export async function POST(req: Request) {
       // Whitelist tipada de campos editaveis pelo admin (evita inject de
       // plan_status etc). Usar `keyof LawyerRow` garante que o filtro casa
       // com `Partial<LawyerRow>` que o supabase-js 2.106 espera no update.
+      //
+      // Em Maio/2026 (migration 0005) foram adicionados: photo_url, website,
+      // instagram, linkedin, office_hours. Admin precisa de poder pleno.
       const ALLOWED: ReadonlyArray<keyof LawyerRow> = [
         "name", "phone", "whatsapp", "address", "city_name", "city_slug",
         "uf", "oab", "oab_uf", "bio", "specialties", "target_city",
-        "target_uf", "extra_cities", "verified_oab", "featured"
+        "target_uf", "extra_cities", "verified_oab", "featured",
+        "photo_url", "website", "instagram", "linkedin", "office_hours"
+      ];
+      // Campos da migration 0005 — caso migration não esteja aplicada,
+      // descartamos esses campos no retry abaixo (mesma estratégia do
+      // /api/painel/profile).
+      const PREMIUM_NEW_COLS: ReadonlyArray<keyof LawyerRow> = [
+        "photo_url", "website", "instagram", "linkedin", "office_hours"
       ];
       const filtered: Partial<LawyerRow> = {};
       for (const key of ALLOWED) {
         if (key in body.fields) {
-          // O valor vem como `unknown` do JSON, mas confiamos no caller
-          // (admin autenticado) e tipamos via cast pro campo certo.
           (filtered as Record<string, unknown>)[key] = body.fields[key];
         }
       }
@@ -327,10 +335,30 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: false, error: "Nenhum campo valido" }, { status: 400 });
       }
       const admin = createAdminClient();
-      const { error } = await admin
+      let { error } = await admin
         .from("lawyers")
         .update(filtered)
         .eq("id", body.id);
+
+      if (error && /column .+ does not exist/i.test(error.message)) {
+        console.warn("[admin] migration 0005 pending — retrying without new cols");
+        const safeUpdate: Partial<LawyerRow> = { ...filtered };
+        for (const col of PREMIUM_NEW_COLS) {
+          delete safeUpdate[col];
+        }
+        if (Object.keys(safeUpdate).length === 0) {
+          return NextResponse.json({
+            ok: false,
+            error: "Migration 0005 ainda não foi aplicada. Aplique no Supabase para editar foto/redes/horarios."
+          }, { status: 503 });
+        }
+        const retry = await admin
+          .from("lawyers")
+          .update(safeUpdate)
+          .eq("id", body.id);
+        error = retry.error;
+      }
+
       if (error) {
         return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       }
@@ -344,6 +372,27 @@ export async function POST(req: Request) {
           console.warn("[admin] auth metadata sync failed", err);
         }
       }
+      await revalidateLawyerPages(body.id);
+      return NextResponse.json({ ok: true });
+    }
+    case "remove-photo": {
+      if (!body.id) return NextResponse.json({ ok: false, error: "ID obrigatorio" }, { status: 400 });
+      const admin = createAdminClient();
+      // Apaga arquivos no Storage (qualquer extensão que possa existir)
+      const possible = [`${body.id}.jpg`, `${body.id}.png`, `${body.id}.webp`];
+      await admin.storage.from("avatars").remove(possible).catch(() => {
+        // ignora — pode não existir bucket ou arquivos
+      });
+      // Zera coluna photo_url
+      const { error } = await admin
+        .from("lawyers")
+        .update({ photo_url: null } as Partial<LawyerRow>)
+        .eq("id", body.id);
+      if (error && /column .+ does not exist/i.test(error.message)) {
+        // Migration pendente — não há nada a fazer no banco
+        return NextResponse.json({ ok: true });
+      }
+      if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       await revalidateLawyerPages(body.id);
       return NextResponse.json({ ok: true });
     }

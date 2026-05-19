@@ -55,10 +55,6 @@ export default async function HomePage() {
                 <MapPin className="w-4 h-4 text-brand-accent" aria-hidden />
                 Todas as regiões do Brasil
               </span>
-              <span className="inline-flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-brand-accent" aria-hidden />
-                OAB verificada
-              </span>
             </div>
           </div>
         </div>
