@@ -246,6 +246,19 @@ export default function AdminPage() {
     }
   };
 
+  const setPlanStatus = async (id: string, status: PlanStatus) => {
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "set-plan-status", id, status });
+    setBusy(false);
+    if (r.status === 200) {
+      toast(`Status alterado para "${status}"`);
+      await refreshUsers();
+    } else {
+      toast(r.json.error || "Erro ao alterar status", "error");
+    }
+  };
+
   const toggleFeatured = async (id: string, current: boolean) => {
     if (busy) return;
     setBusy(true);
@@ -716,6 +729,27 @@ export default function AdminPage() {
                       Desativar premium
                     </button>
                   )}
+                  {/* Seletor manual de status — Fase 5.
+                      Permite admin forçar gratuito/pendente/ativo/vencido/cancelado
+                      independente dos botões Ativar/Desativar (que mexem em datas). */}
+                  <label className="inline-flex items-center gap-1 px-2 py-1 bg-brand-line/50 rounded-lg text-xs">
+                    <span className="text-brand-ink/70">Status:</span>
+                    <select
+                      aria-label={`Status do plano de ${u.name}`}
+                      value={u.plan_status}
+                      disabled={busy}
+                      onChange={(e) =>
+                        setPlanStatus(u.id, e.target.value as PlanStatus)
+                      }
+                      className="bg-white border border-brand-line rounded-md px-1.5 py-0.5 text-xs font-medium text-brand-ink focus:outline-none focus:border-brand-deep disabled:opacity-50"
+                    >
+                      <option value="free">Gratuito</option>
+                      <option value="pending">Aguardando ativação</option>
+                      <option value="active">Premium ativo</option>
+                      <option value="expired">Vencido</option>
+                      <option value="cancelled">Cancelado</option>
+                    </select>
+                  </label>
                   <button
                     onClick={() => toggleFeatured(u.id, u.featured)}
                     disabled={busy}

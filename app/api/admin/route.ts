@@ -109,6 +109,8 @@ type Payload = {
   email?: string;
   password?: string;
   fields?: Record<string, unknown>;
+  /** Para action "set-plan-status": free | pending | active | expired | cancelled. */
+  status?: string;
 };
 
 export async function POST(req: Request) {
@@ -151,6 +153,33 @@ export async function POST(req: Request) {
       const result = await adminDeactivatePremium(body.id);
       if (result.ok) await revalidateLawyerPages(body.id);
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
+    }
+    case "set-plan-status": {
+      // Permite admin alterar plan_status diretamente sem mexer em datas.
+      // Use com cuidado: 'active' sem plan_end_date faz o card sair do
+      // destaque automaticamente. Pra ativação completa, use activate-premium.
+      if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
+      const status = typeof body.status === "string" ? body.status.trim() : "";
+      const VALID_STATUS = ["free", "pending", "active", "expired", "cancelled"] as const;
+      if (!(VALID_STATUS as ReadonlyArray<string>).includes(status)) {
+        return NextResponse.json(
+          { ok: false, error: "Status inválido. Use free, pending, active, expired ou cancelled." },
+          { status: 400 }
+        );
+      }
+      const admin = createAdminClient();
+      const { error } = await admin
+        .from("lawyers")
+        .update({ plan_status: status } as Partial<LawyerRow>)
+        .eq("id", body.id);
+      if (error) {
+        return NextResponse.json(
+          { ok: false, error: error.message || "Erro ao atualizar status." },
+          { status: 500 }
+        );
+      }
+      await revalidateLawyerPages(body.id);
+      return NextResponse.json({ ok: true });
     }
     case "toggle-featured": {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });

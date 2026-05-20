@@ -35,20 +35,35 @@ export const runtime = "nodejs";
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const q = (url.searchParams.get("q") || "").trim();
-  const limit = Math.min(20, Math.max(1, Number(url.searchParams.get("limit")) || 8));
+  const ufFilter = (url.searchParams.get("uf") || "").trim().toUpperCase();
+  const limit = Math.min(50, Math.max(1, Number(url.searchParams.get("limit")) || 8));
 
-  if (q.length < 2) {
+  // Quando vem UF mas q vazio, retorna até `limit` cidades do estado
+  // (usado por seletores admin).
+  if (q.length < 2 && !ufFilter) {
     return NextResponse.json([], {
       headers: { "Cache-Control": "public, max-age=300" }
     });
   }
 
-  const term = normalize(q);
+  const term = q.length >= 2 ? normalize(q) : "";
   const cities = getAllCities();
   const results: Array<{ name: string; slug: string; uf: string; isCapital: boolean }> = [];
 
+  const matchesUf = (c: { uf: string }) => !ufFilter || c.uf === ufFilter;
+
+  if (!term) {
+    // Sem termo de busca, só filtra por UF e devolve até limit (alfabético).
+    const filtered = cities.filter(matchesUf).slice(0, limit);
+    return NextResponse.json(
+      filtered.map((c) => ({ name: c.name, slug: c.slug, uf: c.uf, isCapital: c.isCapital })),
+      { headers: { "Cache-Control": "public, max-age=3600, s-maxage=3600" } }
+    );
+  }
+
   // Prefere matches do início da palavra (mais relevantes), depois infix.
   for (const c of cities) {
+    if (!matchesUf(c)) continue;
     if (normalize(c.name).startsWith(term)) {
       results.push({ name: c.name, slug: c.slug, uf: c.uf, isCapital: c.isCapital });
       if (results.length >= limit) break;
@@ -56,6 +71,7 @@ export async function GET(req: Request) {
   }
   if (results.length < limit) {
     for (const c of cities) {
+      if (!matchesUf(c)) continue;
       const n = normalize(c.name);
       if (!n.startsWith(term) && n.includes(term)) {
         results.push({ name: c.name, slug: c.slug, uf: c.uf, isCapital: c.isCapital });

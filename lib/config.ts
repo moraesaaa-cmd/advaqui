@@ -3,8 +3,8 @@
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://advaqui.com",
   description:
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||
-    "Encontre o advogado certo na sua cidade. Diretório verificado em todas as regiões do Brasil.",
-  tagline: "Seu advogado, perto de você",
+    "Pesquise advogados por cidade, área de atuação, OAB e canais de contato. Encontre perfis profissionais e fale diretamente com o advogado.",
+  tagline: "Encontre advogados por cidade e área de atuação",
   // Email em lowercase — convenção universal e evita problemas em filtros
   // de email que normalizam o domínio.
   email: "contato@advaqui.com.br",

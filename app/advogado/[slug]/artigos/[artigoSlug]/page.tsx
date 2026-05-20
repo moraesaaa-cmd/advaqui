@@ -78,10 +78,15 @@ export async function generateMetadata({
   const a = await fetchPublishedArticle(l.id, params.artigoSlug);
   if (!a) return buildMetadata({ title: "Artigo", description: "Não encontrado", noIndex: true });
 
+  // Template Fase 5 — [Título do Artigo] | [Nome do Advogado] | AdvAqui
+  // (buildMetadata adiciona "— AdvAqui" no fim automaticamente, então passamos
+  // só "Título — Nome" pra evitar duplicação)
+  const title = `${a.title} — ${l.name}`;
   return buildMetadata({
-    title: a.title,
+    title,
     description:
-      a.summary || a.body.slice(0, 160).replace(/\s+\S*$/, "") + "...",
+      a.summary ||
+      `Leia conteúdo informativo sobre ${a.title.toLowerCase()}, publicado por ${l.name} no ${SITE.name}.`,
     path: `/advogado/${l.slug}/artigos/${a.slug}`
   });
 }

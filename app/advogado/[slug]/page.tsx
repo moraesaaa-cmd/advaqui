@@ -82,17 +82,31 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       noIndex: true
     });
   }
-  const mainArea = l.specialties[0]
-    ? SPECIALTIES.find((s) => s.slug === l.specialties[0])?.name
+  // Title — usa área principal (1º item de primarySpecialties se houver, senão
+  // 1º slug de specialties) pra ficar Advogado [Área] em [Cidade]/[UF].
+  const primarySlug =
+    Array.isArray(l.primarySpecialties) && l.primarySpecialties[0]
+      ? l.primarySpecialties[0]
+      : l.specialties[0];
+  const mainArea = primarySlug
+    ? SPECIALTIES.find((s) => s.slug === primarySlug)?.name
     : undefined;
+  // Feminino quando nome do advogado termina em "a"
+  const isFem = l.name.toLowerCase().endsWith("a");
   const titleArea = mainArea
-    ? `Advogad${l.name.toLowerCase().endsWith("a") ? "a" : "o"} de ${mainArea}`
-    : "Advogado";
+    ? `Advogad${isFem ? "a" : "o"} ${mainArea}`
+    : `Advogad${isFem ? "a" : "o"}`;
+  const title = `${l.name} — ${titleArea} em ${l.cityName}/${l.uf}`;
+  // Description — usa shortSummary se houver, senão bio, senão template.
+  const description =
+    l.shortSummary ||
+    l.bio ||
+    `Perfil profissional de ${l.name}, OAB/${l.oabUf} ${l.oab}, com atuação em ${
+      mainArea || "Direito"
+    } em ${l.cityName}/${l.uf} e região.`;
   return buildMetadata({
-    title: `${l.name} — ${titleArea} em ${l.cityName}, ${l.uf}`,
-    description:
-      l.bio ||
-      `Perfil profissional de ${l.name}, OAB/${l.oabUf} ${l.oab}. Atuação em ${l.cityName}/${l.uf}.`,
+    title,
+    description,
     path: `/advogado/${l.slug}`,
     noIndex
   });

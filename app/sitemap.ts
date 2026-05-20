@@ -7,6 +7,7 @@ import { getAllLawyerSlugs } from "@/lib/data/lawyers";
 import { getAllArticleSlugs } from "@/lib/data/articles";
 import { getAllTemplateSlugs } from "@/lib/data/templates-docs";
 import { getAllMarketingArticleSlugs } from "@/lib/data/marketing-articles";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
  * Sitemap principal. Inclui:
@@ -100,6 +101,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now
   }));
 
+  // Artigos próprios dos advogados (Fase 3 — migration 0006).
+  // Defensive: se tabela ainda não existe ou banco offline, retorna lista vazia
+  // — sitemap não pode quebrar o build.
+  const lawyerArticleRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const admin = createAdminClient();
+    const { data, error } = await admin
+      .from("lawyer_articles")
+      .select("slug, lawyer_id, updated_at, lawyers!inner(slug)")
+      .eq("status", "published")
+      .limit(5000);
+    if (!error && Array.isArray(data)) {
+      for (const r of data as Array<{
+        slug: string;
+        updated_at: string;
+        lawyers: { slug: string } | { slug: string }[];
+      }>) {
+        const lawyer = Array.isArray(r.lawyers) ? r.lawyers[0] : r.lawyers;
+        if (!lawyer?.slug) continue;
+        lawyerArticleRoutes.push({
+          url: `${base}/advogado/${lawyer.slug}/artigos/${r.slug}`,
+          changeFrequency: "monthly",
+          priority: 0.5,
+          lastModified: r.updated_at ? new Date(r.updated_at) : now
+        });
+      }
+    }
+  } catch {
+    // Banco offline ou tabela inexistente — sitemap segue sem esses URLs.
+  }
+
   return [
     ...staticRoutes,
     ...stateRoutes,
@@ -107,6 +139,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...articleRoutes,
     ...templateRoutes,
     ...mktRoutes,
-    ...profileRoutes
+    ...profileRoutes,
+    ...lawyerArticleRoutes
   ];
 }
