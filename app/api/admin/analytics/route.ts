@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { isAdminRequest } from "@/lib/auth/adminSession";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
@@ -25,10 +25,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const isAdmin = (): boolean => {
-  const c = cookies().get("advaqui_admin");
-  return c?.value === "1";
-};
+// Auth via cookie HMAC compartilhado com /api/admin (lib/auth/adminSession).
 
 const emptyResponse = {
   ok: true,
@@ -51,7 +48,7 @@ const emptyResponse = {
 };
 
 export async function GET() {
-  if (!isAdmin()) {
+  if (!isAdminRequest()) {
     return NextResponse.json(
       { ok: false, error: "Não autorizado" },
       { status: 401 }
