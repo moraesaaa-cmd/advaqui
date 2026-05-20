@@ -12,6 +12,10 @@ import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
+import {
+  capitalsForArticle,
+  relatedTemplatesForArticle
+} from "@/lib/seo/internal-links";
 
 export const dynamicParams = false;
 export const revalidate = 3600;
@@ -264,6 +268,60 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
             </div>
           </section>
         )}
+
+        {/* Interlinking SEO — capitais com a especialidade do artigo */}
+        {(() => {
+          const caps = capitalsForArticle(article, 6);
+          if (caps.length === 0) return null;
+          const spec = caps[0].specialty;
+          return (
+            <section className="mt-12">
+              <h2 className="font-display text-2xl font-bold text-brand-ink mb-4">
+                Encontre advogado {spec.name.toLowerCase()} nas principais capitais
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {caps.map((c) => (
+                  <Link
+                    key={`${c.state.uf}-${c.city.slug}`}
+                    href={`/advogados/${c.state.uf.toLowerCase()}/${c.city.slug}/${c.specialty.slug}`}
+                    className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
+                  >
+                    {c.city.name}/{c.state.uf}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
+
+        {/* Interlinking SEO — modelos relacionados ao tema do artigo */}
+        {(() => {
+          const tmpls = relatedTemplatesForArticle(article, 3);
+          if (tmpls.length === 0) return null;
+          return (
+            <section className="mt-10">
+              <h2 className="font-display text-2xl font-bold text-brand-ink mb-4">
+                Modelos prontos relacionados a este tema
+              </h2>
+              <div className="grid sm:grid-cols-3 gap-3">
+                {tmpls.map((t) => (
+                  <Link
+                    key={t.slug}
+                    href={`/modelos/${t.slug}`}
+                    className="card hover:border-brand-accent transition group"
+                  >
+                    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-800 mb-2">
+                      Modelo
+                    </span>
+                    <h3 className="font-display text-sm md:text-base font-bold text-brand-ink group-hover:text-brand-deep leading-snug">
+                      {t.title}
+                    </h3>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
 
         <div className="mt-10">
           <Link

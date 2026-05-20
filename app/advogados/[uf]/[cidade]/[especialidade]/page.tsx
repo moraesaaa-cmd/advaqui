@@ -13,6 +13,7 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
 import { citySpecialtyIntro } from "@/lib/data/templates";
 import { PLAN } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
+import { relatedCapitalsForSpecialty } from "@/lib/seo/internal-links";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -135,6 +136,29 @@ export default async function CitySpecialtyPage({
               className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
             >
               {s.name}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Interlinking SEO — capitais de outros estados com a MESMA
+          especialidade. Ajuda o Google a entender que essa especialidade
+          é uma rede de páginas e melhora ranking. */}
+      <section className="mt-10 card">
+        <h2 className="font-display text-xl font-bold text-brand-ink mb-2">
+          Advogado {sp.name.toLowerCase()} em outras capitais
+        </h2>
+        <p className="text-sm text-brand-ink/60 mb-3">
+          Encontre profissionais da mesma especialidade nas principais cidades do Brasil.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {relatedCapitalsForSpecialty(sp, st.uf, 9).map(({ city: cap, state: ostate }) => (
+            <Link
+              key={`${ostate.uf}-${cap.slug}`}
+              href={`/advogados/${ostate.uf.toLowerCase()}/${cap.slug}/${sp.slug}`}
+              className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
+            >
+              {cap.name}/{ostate.uf}
             </Link>
           ))}
         </div>

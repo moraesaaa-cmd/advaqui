@@ -21,6 +21,7 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
 import { TemplateDownloadButton } from "@/components/TemplateDownloadButton";
 import { ContentGate } from "@/components/ContentGate";
 import { TemplateBody } from "@/components/TemplateBody";
+import { relatedArticlesForTemplate } from "@/lib/seo/internal-links";
 
 export const dynamicParams = false;
 export const revalidate = 3600;
@@ -188,6 +189,39 @@ export default function TemplatePage({ params }: { params: { slug: string } }) {
                 </ul>
               </section>
             )}
+
+            {/* Interlinking SEO — artigos do blog relacionados ao tema do modelo */}
+            {(() => {
+              const arts = relatedArticlesForTemplate(template, 3);
+              if (arts.length === 0) return null;
+              return (
+                <section className="mt-10">
+                  <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-brand-deep" aria-hidden />
+                    Aprofunde no tema
+                  </h2>
+                  <div className="grid sm:grid-cols-3 gap-3">
+                    {arts.map((a) => (
+                      <Link
+                        key={a.slug}
+                        href={`/blog/${a.slug}`}
+                        className="card hover:border-brand-accent transition group"
+                      >
+                        <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-brand-line/40 text-brand-ink/70 mb-2">
+                          {a.category}
+                        </span>
+                        <h3 className="font-display text-sm font-bold text-brand-ink group-hover:text-brand-deep leading-snug">
+                          {a.title}
+                        </h3>
+                        <p className="text-xs text-brand-ink/55 mt-1">
+                          {a.readingMinutes} min
+                        </p>
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              );
+            })()}
 
             <div className="mt-8">
               <Link

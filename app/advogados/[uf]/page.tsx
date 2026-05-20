@@ -11,6 +11,8 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
 import { stateIntro } from "@/lib/data/templates";
 import { PLAN } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
+import { topCitiesForState } from "@/lib/seo/internal-links";
+import { SPECIALTIES } from "@/lib/data/specialties";
 
 // dynamicParams: true permite gerar a rota on-demand caso o build estatico
 // nao tenha incluido aquela UF (ISR fallback). Com false, qualquer UF que
@@ -92,6 +94,67 @@ export default async function StatePage({ params }: { params: { uf: string } }) 
                 {lawyerCounts[capital.slug] || 0} profissional(is) cadastrado(s)
               </p>
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* Interlinking SEO — cidades principais + capital com link
+          pra páginas de cidade e às especialidades nelas */}
+      {(() => {
+        const topCities = topCitiesForState(st, 9);
+        if (topCities.length === 0) return null;
+        return (
+          <section className="mt-8">
+            <h2 className="font-display text-2xl font-bold text-brand-deep mb-3">
+              Principais cidades de {st.name}
+            </h2>
+            <p className="text-sm text-brand-ink/60 mb-4">
+              As cidades com maior demanda por advogados na região. Acesse direto.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              {topCities.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/advogados/${st.uf.toLowerCase()}/${c.slug}`}
+                  className="rounded-xl border border-brand-line bg-white px-4 py-3 hover:border-brand-accent transition shadow-card"
+                >
+                  <p className="font-display text-base font-bold text-brand-ink">
+                    {c.name}
+                    {c.isCapital && (
+                      <span className="ml-1.5 text-xs text-brand-accent2">capital</span>
+                    )}
+                  </p>
+                  <p className="text-xs text-brand-ink/55 mt-0.5">
+                    {lawyerCounts[c.slug] || 0} advogado(s) cadastrado(s)
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* Interlinking SEO — link rápido pras especialidades NA CAPITAL.
+          Estado → capital × especialidade vira matriz hub-spoke valiosa
+          para o Google. */}
+      {capital && (
+        <section className="mt-8 card">
+          <h2 className="font-display text-lg font-bold text-brand-deep mb-2">
+            Advogados em {capital.name} por especialidade
+          </h2>
+          <p className="text-sm text-brand-ink/60 mb-3">
+            Quer encontrar profissional em uma área específica na capital? Use os atalhos abaixo.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {SPECIALTIES.map((sp) => (
+              <Link
+                key={sp.slug}
+                href={`/advogados/${st.uf.toLowerCase()}/${capital.slug}/${sp.slug}`}
+                className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
+              >
+                {sp.name}
+              </Link>
+            ))}
           </div>
         </section>
       )}

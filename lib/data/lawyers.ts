@@ -41,39 +41,56 @@ export async function getLawyersForCity(
   const supabase = createAdminClient();
   const ufUpper = uf.toUpperCase();
 
-  // Match em 3 lugares — fazemos uma query simples por UF (índice
-  // lawyers_uf_idx) e filtramos no aplicativo. Motivo:
+  // Match em 3 lugares — uf principal, target_uf legado e extra_cities[i].uf.
   //
-  //   • A versão anterior usava .contains('extra_cities', [{uf,slug}]) que,
-  //     com supabase-js 2.106 + PostgREST, não estava casando consistemente
-  //     em produção (bug reportado: advogado Rude com Itaobim/MG em
-  //     extra_cities, mas /advogados/mg/itaobim retornava vazio).
-  //   • Cada UF tem no máximo centenas de advogados (cidades grandes têm 50
-  //     em média). Filter em memória é O(N) com N pequeno — performático.
-  //   • Robusto contra qualquer variação futura no jsonb (acentuação,
-  //     diferença de tipos).
+  // BUG CRÍTICO RESOLVIDO (Maio/2026):
+  // A versão anterior usava .or(`uf.eq.${ufUpper},target_uf.eq.${ufUpper}`)
+  // que NUNCA trazia lawyers cuja cidade principal está em OUTRA UF mas
+  // que tem extra_cities apontando pra essa UF. Exemplo: Kellsons (Almenara/MG)
+  // adicionou Vitória da Conquista/BA como extra — a query buscava
+  // "uf=BA OR target_uf=BA" e Kellsons (uf=MG) NÃO era retornado, então o
+  // filter JS dos extras nem rodava nele. Resultado: a página
+  // /advogados/ba/vitoria-da-conquista mostrava "Nenhum advogado".
   //
-  // Match positivo:
-  //   1. uf + city_slug = cidade principal do cadastro
-  //   2. target_uf + target_city = cidade adicional legada (campos antigos)
-  //   3. extra_cities[i] = { uf, slug } match exato em alguma entrada
-  // SELECT * — não SELECT(PUBLIC_COLUMNS) — pra suportar tanto o estado pré
-  // migration 0005 quanto pós. Migration adiciona photo_url, website, etc.;
-  // se ainda não foi aplicada, PUBLIC_COLUMNS pediria coluna inexistente
-  // e quebraria TODOS os cards. Com "*", o Supabase retorna o que tem.
-  // O mapper já trata os campos novos como opcionais.
-  const { data, error } = await supabase
-    .from("lawyers")
-    .select("*")
-    .or(`uf.eq.${ufUpper},target_uf.eq.${ufUpper}`);
+  // Solução: fazer 2 queries paralelas:
+  //   Q1) uf.eq OR target_uf.eq — cidade principal/target
+  //   Q2) lawyers com extra_cities não vazio — vamos filtrar em JS pelos
+  //       que têm essa UF nos extras (operador @> do jsonb era instável
+  //       com supabase-js 2.106; pegar todos com extras populados e filtrar
+  //       em JS é robusto e performático — N de lawyers premium é pequeno)
+  // Merge dos resultados (deduplicado por id) e filter JS final por (uf,slug).
+  //
+  // SELECT * — pra tolerar tanto pré quanto pós migration 0005.
 
-  if (error) {
-    console.error("getLawyersForCity error:", error.message);
-    return [];
+  const [primaryRes, extrasRes] = await Promise.all([
+    supabase
+      .from("lawyers")
+      .select("*")
+      .or(`uf.eq.${ufUpper},target_uf.eq.${ufUpper}`),
+    supabase
+      .from("lawyers")
+      .select("*")
+      .not("extra_cities", "is", null)
+  ]);
+
+  if (primaryRes.error) {
+    console.error("getLawyersForCity primary query error:", primaryRes.error.message);
+  }
+  if (extrasRes.error) {
+    console.error("getLawyersForCity extras query error:", extrasRes.error.message);
+  }
+
+  // Merge dedup por id
+  const byId = new Map<string, PublicLawyer>();
+  for (const row of (primaryRes.data || []) as PublicLawyer[]) {
+    byId.set(row.id, row);
+  }
+  for (const row of (extrasRes.data || []) as PublicLawyer[]) {
+    if (!byId.has(row.id)) byId.set(row.id, row);
   }
 
   const matched: Lawyer[] = [];
-  for (const row of (data || []) as PublicLawyer[]) {
+  for (const row of byId.values()) {
     // 1) cidade principal
     if (row.uf === ufUpper && row.city_slug === citySlug) {
       matched.push(mapLawyerRow(row));
@@ -123,21 +140,50 @@ export async function getLawyersBySpecialty(
 
 /**
  * Lista todos os advogados de um estado (qualquer cidade).
+ *
+ * Inclui lawyers cuja UF principal OU target_uf OU qualquer extra_cities.uf
+ * é o estado pedido (mesmo bug do getLawyersForCity — Maio/2026).
  */
 export async function getLawyersForState(uf: string): Promise<Lawyer[]> {
   const supabase = createAdminClient();
   const ufUpper = uf.toUpperCase();
-  const { data, error } = await supabase
-    .from("lawyers")
-    .select("*") // ver comentário em getLawyersForCity
-    .eq("uf", ufUpper)
-    .order("name", { ascending: true });
 
-  if (error) {
-    console.error("getLawyersForState error:", error.message);
-    return [];
+  const [primaryRes, extrasRes] = await Promise.all([
+    supabase
+      .from("lawyers")
+      .select("*")
+      .or(`uf.eq.${ufUpper},target_uf.eq.${ufUpper}`)
+      .order("name", { ascending: true }),
+    supabase
+      .from("lawyers")
+      .select("*")
+      .not("extra_cities", "is", null)
+  ]);
+
+  if (primaryRes.error) {
+    console.error("getLawyersForState primary error:", primaryRes.error.message);
   }
-  return (data || []).map((r) => mapLawyerRow(r as PublicLawyer));
+  if (extrasRes.error) {
+    console.error("getLawyersForState extras error:", extrasRes.error.message);
+  }
+
+  const byId = new Map<string, PublicLawyer>();
+  for (const row of (primaryRes.data || []) as PublicLawyer[]) {
+    byId.set(row.id, row);
+  }
+  for (const row of (extrasRes.data || []) as PublicLawyer[]) {
+    if (byId.has(row.id)) continue;
+    // Só inclui se algum extra_city tem essa UF
+    const extras = Array.isArray(row.extra_cities) ? row.extra_cities : [];
+    const matches = extras.some(
+      (c) => c && typeof c.uf === "string" && c.uf.toUpperCase() === ufUpper
+    );
+    if (matches) byId.set(row.id, row);
+  }
+
+  return Array.from(byId.values())
+    .map((r) => mapLawyerRow(r))
+    .sort((a, b) => a.name.localeCompare(b.name, "pt-BR"));
 }
 
 /**
@@ -194,31 +240,43 @@ export async function getLawyerCount(): Promise<number> {
 
 /**
  * Retorna um mapa { uf: count } com a quantidade de advogados por estado.
- * Uma única query no banco, agregado no app — evita 27 queries separadas
- * pela página /advogados (diretório de estados).
+ * Conta também onde o lawyer aparece via extra_cities (Maio/2026 fix).
  */
 export async function getLawyerCountsByState(): Promise<Record<string, number>> {
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("lawyers")
-    .select("uf");
+    .select("uf,target_uf,extra_cities");
 
   if (error) {
     console.error("getLawyerCountsByState error:", error.message);
     return {};
   }
   const map: Record<string, number> = {};
-  for (const r of data || []) {
-    const uf = (r as { uf: string }).uf;
-    if (uf) map[uf] = (map[uf] || 0) + 1;
+  type Row = {
+    uf?: string;
+    target_uf?: string | null;
+    extra_cities?: Array<{ uf?: string }> | null;
+  };
+  for (const r of (data || []) as Row[]) {
+    const ufs = new Set<string>();
+    if (r.uf) ufs.add(r.uf.toUpperCase());
+    if (r.target_uf) ufs.add(r.target_uf.toUpperCase());
+    if (Array.isArray(r.extra_cities)) {
+      for (const c of r.extra_cities) {
+        if (c && typeof c.uf === "string") ufs.add(c.uf.toUpperCase());
+      }
+    }
+    for (const u of ufs) {
+      map[u] = (map[u] || 0) + 1;
+    }
   }
   return map;
 }
 
 /**
  * Retorna um mapa { citySlug: count } com a quantidade de advogados por cidade
- * de um estado. Usado pela página /advogados/[uf] que lista 100+ cidades.
- * Uma única query, agregado no app — evita N+1.
+ * de um estado. Inclui também extra_cities (Maio/2026 fix).
  */
 export async function getLawyerCountsByCity(
   uf: string
@@ -227,17 +285,46 @@ export async function getLawyerCountsByCity(
   const ufUpper = uf.toUpperCase();
   const { data, error } = await supabase
     .from("lawyers")
-    .select("city_slug")
-    .eq("uf", ufUpper);
+    .select("city_slug,uf,target_city,target_uf,extra_cities");
 
   if (error) {
     console.error("getLawyerCountsByCity error:", error.message);
     return {};
   }
   const map: Record<string, number> = {};
-  for (const r of data || []) {
-    const slug = (r as { city_slug: string }).city_slug;
-    if (slug) map[slug] = (map[slug] || 0) + 1;
+  type Row = {
+    city_slug?: string;
+    uf?: string;
+    target_city?: string | null;
+    target_uf?: string | null;
+    extra_cities?: Array<{ uf?: string; slug?: string }> | null;
+  };
+  for (const r of (data || []) as Row[]) {
+    // Coleta cidades únicas (por slug) onde esse lawyer aparece NESSE estado.
+    // Set garante que o lawyer não é contado 2x na mesma cidade (caso
+    // tenha um duplicado em extra_cities).
+    const slugsInThisUf = new Set<string>();
+    if (r.uf && r.uf.toUpperCase() === ufUpper && r.city_slug) {
+      slugsInThisUf.add(r.city_slug);
+    }
+    if (r.target_uf && r.target_uf.toUpperCase() === ufUpper && r.target_city) {
+      slugsInThisUf.add(r.target_city);
+    }
+    if (Array.isArray(r.extra_cities)) {
+      for (const c of r.extra_cities) {
+        if (
+          c &&
+          typeof c.uf === "string" &&
+          c.uf.toUpperCase() === ufUpper &&
+          typeof c.slug === "string"
+        ) {
+          slugsInThisUf.add(c.slug);
+        }
+      }
+    }
+    for (const s of slugsInThisUf) {
+      map[s] = (map[s] || 0) + 1;
+    }
   }
   return map;
 }
