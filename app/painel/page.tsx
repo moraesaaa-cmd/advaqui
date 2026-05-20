@@ -577,7 +577,7 @@ export default function PainelPage() {
                           )
                           .slice(0, 3)
                           .join(", ");
-                        const cidade = draft.cityName || "[sua cidade]";
+                        const cidade = draft.cityName || "sua cidade";
                         const uf = draft.uf || "";
                         const modalidade =
                           (draft.serviceModalities || []).includes("in_person") &&
@@ -586,7 +586,7 @@ export default function PainelPage() {
                             : (draft.serviceModalities || []).includes("online")
                             ? "online"
                             : "presencial";
-                        const template = `${draft.name} atua em ${areas || "[áreas de atuação]"}, com atendimento em ${cidade}${uf ? "/" + uf : ""}${draft.serviceRegion ? " e região (" + draft.serviceRegion + ")" : ""}. Sua atuação é voltada a [tipos de demandas], oferecendo orientação jurídica de forma ${modalidade}, conforme as necessidades de cada caso.`;
+                        const template = `${draft.name} atua em ${areas || "suas áreas de atuação"}, com atendimento em ${cidade}${uf ? "/" + uf : ""}${draft.serviceRegion ? " e região (" + draft.serviceRegion + ")" : ""}. Sua atuação é voltada às demandas dos clientes da região, oferecendo orientação jurídica de forma ${modalidade}, conforme as necessidades de cada caso.`;
                         if (
                           draft.bio &&
                           !window.confirm(

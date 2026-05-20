@@ -125,12 +125,12 @@ export const CHECKLIST_SECTIONS: ChecklistSection[] = [
       {
         title: "Horário comercial configurado",
         description:
-          "Mensagem automática fora do horário com prazo de retorno: 'Recebi sua mensagem, retorno até [hora] no próximo dia útil.'"
+          "Mensagem automática fora do horário com prazo de retorno: 'Recebi sua mensagem, retorno até as 10h do próximo dia útil.'"
       },
       {
         title: "Mensagem de saudação inicial",
         description:
-          "'Olá! Recebi sua mensagem. Sou Dr(a). [Nome], advogado(a) em [Cidade]. Em que posso ajudar?'"
+          "'Olá! Recebi sua mensagem. Sou o Dr. João Silva, advogado em Belo Horizonte/MG. Em que posso ajudar?'"
       },
       {
         title: "Etiquetas configuradas",
@@ -174,7 +174,7 @@ export const CHECKLIST_SECTIONS: ChecklistSection[] = [
       {
         title: "1 artigo no blog do seu perfil ou site (1.200-1.500 palavras)",
         description:
-          "Tema: dúvida real que cliente pergunta. Exemplo: 'Como funciona a pensão alimentícia em [sua cidade]'."
+          "Tema: dúvida real que cliente pergunta. Exemplo: 'Como funciona a pensão alimentícia em Belo Horizonte/MG'."
       },
       {
         title: "3-5 posts no Instagram (foto + texto explicativo)",

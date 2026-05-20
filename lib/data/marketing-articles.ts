@@ -60,7 +60,7 @@ export const MARKETING_ARTICLES: MktArticle[] = [
       { type: "h2", text: "Passo 1 — Google Meu Negócio (GBP)" },
       {
         type: "p",
-        text: "É o passo de maior ROI e o mais negligenciado. Quem aparece no \"mapinha\" do Google quando alguém pesquisa \"advogado em [sua cidade]\" tem 3-5x mais cliques que o orgânico tradicional. Setup leva 30 minutos e dura para sempre."
+        text: "É o passo de maior ROI e o mais negligenciado. Quem aparece no \"mapinha\" do Google quando alguém pesquisa \"advogado em Belo Horizonte\" tem 3-5x mais cliques que o orgânico tradicional. Setup leva 30 minutos e dura para sempre."
       },
       {
         type: "ol",
@@ -111,7 +111,7 @@ export const MARKETING_ARTICLES: MktArticle[] = [
       { type: "h2", text: "Anúncios pagos — quando começar" },
       {
         type: "p",
-        text: "Só comece anúncios DEPOIS de ter os 4 fundamentos (GBP + diretório + WhatsApp + algum conteúdo). Anúncio em terreno mal preparado queima dinheiro. Quando estiver pronto, comece com Google Ads (search) com R$ 5-15/dia em palavras-chave \"advogado [especialidade] [cidade]\" — mensure conversão e escale só o que funciona."
+        text: "Só comece anúncios DEPOIS de ter os 4 fundamentos (GBP + diretório + WhatsApp + algum conteúdo). Anúncio em terreno mal preparado queima dinheiro. Quando estiver pronto, comece com Google Ads (search) com R$ 5-15/dia em palavras-chave como \"advogado trabalhista São Paulo\" ou \"advogado de família Belo Horizonte\" — mensure conversão e escale só o que funciona."
       },
       { type: "h2", text: "Métricas que importam" },
       {
@@ -161,7 +161,7 @@ export const MARKETING_ARTICLES: MktArticle[] = [
       { type: "h2", text: "O que é o Local Pack" },
       {
         type: "p",
-        text: "É o bloco de três resultados com mapa que aparece para qualquer busca com intenção local — \"advogado trabalhista em [cidade]\", \"escritório de advocacia perto de mim\". Pesquisa do BrightLocal (2024) mostra que 92% dos cliques de busca local vão para o Local Pack, não para o orgânico abaixo."
+        text: "É o bloco de três resultados com mapa que aparece para qualquer busca com intenção local — \"advogado trabalhista em Belo Horizonte\", \"escritório de advocacia perto de mim\". Pesquisa do BrightLocal (2024) mostra que 92% dos cliques de busca local vão para o Local Pack, não para o orgânico abaixo."
       },
       { type: "h2", text: "Os três fatores que decidem ranking local" },
       {
@@ -222,7 +222,7 @@ export const MARKETING_ARTICLES: MktArticle[] = [
       { type: "h2", text: "Conteúdo geo-localizado no site" },
       {
         type: "p",
-        text: "Se você tem site próprio, crie páginas separadas pra cada cidade onde atua. Não COPIE o conteúdo — varie 70%+ do texto e cite especificidades reais (tribunal local, lei municipal, particularidades da região). Estrutura típica: /cidade/[nome-da-cidade]/ com H1 \"Advogado [especialidade] em [cidade]\", texto único, fotos do local."
+        text: "Se você tem site próprio, crie páginas separadas pra cada cidade onde atua. Não COPIE o conteúdo — varie 70%+ do texto e cite especificidades reais (tribunal local, lei municipal, particularidades da região). Estrutura típica: /cidade/belo-horizonte/ com H1 \"Advogado de Família em Belo Horizonte\", texto único, fotos do local."
       },
       { type: "h2", text: "Avaliação negativa — como lidar" },
       {
@@ -519,7 +519,7 @@ export const MARKETING_ARTICLES: MktArticle[] = [
       },
       {
         type: "callout",
-        text: "Use mensagem automática inicial pra ganhar tempo: \"Olá [nome], recebi sua mensagem e respondo até [hora]. Em caso de urgência [prisão, audiência marcada para hoje], ligue [número].\" Isso compra 4-6 horas sem o cliente sentir abandono."
+        text: "Use mensagem automática inicial pra ganhar tempo: \"Olá Maria, recebi sua mensagem e respondo até 18h. Em caso de urgência (prisão, audiência marcada para hoje), ligue para (31) 99999-9999.\" Isso compra 4-6 horas sem o cliente sentir abandono."
       },
       { type: "h2", text: "Estruturando o atendimento sem virar 24/7" },
       {

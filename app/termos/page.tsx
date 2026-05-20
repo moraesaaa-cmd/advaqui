@@ -26,9 +26,9 @@ export default function TermosPage() {
         </p>
         <p>
           <strong>3. Do plano premium.</strong> O plano premium confere destaque ao perfil na página
-          da cidade por período mensal. O pagamento é feito via Pix e a ativação ocorre manualmente
-          em até 48 horas. Não há fidelidade ou renovação automática. O cancelamento pode ser
-          solicitado a qualquer tempo, mantendo o destaque até o término do mês pago.
+          da cidade por período mensal. A ativação ocorre manualmente em até 48 horas após a
+          confirmação do pagamento. Não há fidelidade ou renovação automática. O cancelamento pode
+          ser solicitado a qualquer tempo, mantendo o destaque até o término do mês pago.
         </p>
         <p>
           <strong>4. Da responsabilidade.</strong> O {SITE.name} não se responsabiliza pela

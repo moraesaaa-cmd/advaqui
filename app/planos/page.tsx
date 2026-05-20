@@ -23,7 +23,7 @@ import { PlanosCTAFree, PlanosCTAPremium } from "@/components/PlanosCTAs";
 export const metadata = buildMetadata({
   title: "Planos — apareça primeiro na sua cidade",
   description:
-    "Plano premium do AdvAqui por R$ 59,90/mês via Pix. Apareça no topo das buscas da sua cidade, WhatsApp clicável, foto destacada, OAB verificada. Sem fidelidade.",
+    "Plano premium do AdvAqui por R$ 59,90/mês. Apareça no topo das buscas da sua cidade, WhatsApp clicável, foto destacada, OAB verificada. Sem fidelidade.",
   path: "/planos"
 });
 
@@ -144,7 +144,7 @@ export default function PlanosPage() {
             Muitos advogados dependem apenas de indicação
           </h2>
           <p className="text-brand-ink/75 mt-3 text-base md:text-lg leading-relaxed">
-            Quando alguém pesquisa <em>&ldquo;advogado em [sua cidade]&rdquo;</em> no Google,
+            Quando alguém pesquisa <em>&ldquo;advogado em Belo Horizonte&rdquo;</em> no Google,
             o mapinha mostra 3 escritórios — quase nunca o seu. E mesmo no diretório local,
             só aparece quem investiu em presença digital. Resultado: o trabalho continua bom,
             mas o telefone toca menos do que deveria.
@@ -222,7 +222,7 @@ export default function PlanosPage() {
             <BenefitCard
               Icon={Sparkles}
               title="Sem fidelidade"
-              text="Pix mensal. Cancela quando quiser, sem multa, sem letra miúda, sem permanência."
+              text="Plano mensal. Cancela quando quiser, sem multa, sem letra miúda, sem permanência."
             />
           </div>
         </section>
@@ -362,8 +362,8 @@ export default function PlanosPage() {
                 em você decidido — você só atende e fecha.
               </p>
               <p className="text-brand-bg/75 mt-2 text-xs">
-                Ativação em até {PLAN.activationHours}h após o Pix · Sem fidelidade · Cancela
-                quando quiser
+                Ativação em até {PLAN.activationHours}h após confirmação · Sem fidelidade ·
+                Cancela quando quiser
               </p>
             </div>
             <div className="space-y-2">
@@ -384,38 +384,6 @@ export default function PlanosPage() {
           </div>
         </section>
 
-        {/* FAQ */}
-        <section className="max-w-3xl mx-auto rounded-2xl bg-brand-bg border border-brand-line p-6 md:p-8">
-          <h3 className="font-display text-xl md:text-2xl font-bold text-brand-ink mb-4">
-            Perguntas frequentes
-          </h3>
-          <dl className="space-y-4 text-sm md:text-base text-brand-ink/85">
-            <FaqItem
-              question="Como funciona o pagamento?"
-              answer="Apenas via Pix. Você gera o QR ou copia a chave na etapa de pagamento, faz o Pix do valor exato e sinaliza no painel que pagou. Em até 48h ativamos manualmente."
-            />
-            <FaqItem
-              question="Tem fidelidade ou multa de cancelamento?"
-              answer="Não. O plano é mensal, sem fidelidade. Você cancela direto no painel a qualquer momento e o perfil volta pro plano gratuito automaticamente."
-            />
-            <FaqItem
-              question="Em quanto tempo aparece o destaque?"
-              answer={`Após sinalizar o Pix, ativamos em até ${PLAN.activationHours} horas. Em horário comercial costuma sair em menos de 6 horas.`}
-            />
-            <FaqItem
-              question="Funciona para advogado de cidade pequena?"
-              answer="Sim — e é onde o efeito é maior. Em cidade pequena, raramente há mais de 5 advogados cadastrados, então o premium garante visibilidade quase exclusiva nas buscas por aquela cidade."
-            />
-            <FaqItem
-              question="O AdvAqui cobra comissão sobre causas que eu fecho?"
-              answer="Não. Zero comissão. O que combinar com seu cliente é entre você e ele — não passa pela plataforma."
-            />
-            <FaqItem
-              question="Posso testar sem pagar?"
-              answer="Sim. Cadastro gratuito é permanente e nunca vira pago automaticamente. Você só ativa o premium quando quiser, fazendo o Pix manualmente."
-            />
-          </dl>
-        </section>
       </div>
     </>
   );
@@ -459,11 +427,3 @@ function PremiumItem({ text, highlight }: { text: string; highlight?: boolean })
   );
 }
 
-function FaqItem({ question, answer }: { question: string; answer: string }) {
-  return (
-    <div className="border-b border-brand-line last:border-0 pb-4 last:pb-0">
-      <dt className="font-semibold text-brand-ink">{question}</dt>
-      <dd className="mt-1.5 text-brand-ink/75 leading-relaxed">{answer}</dd>
-    </div>
-  );
-}

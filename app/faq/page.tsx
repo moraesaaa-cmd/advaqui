@@ -7,7 +7,7 @@ import { JsonLd } from "@/components/JsonLd";
 export const metadata = buildMetadata({
   title: "Perguntas frequentes",
   description:
-    "Tire dúvidas sobre cadastro, plano premium, pagamento via Pix, suporte e validação de OAB no AdvAqui.",
+    "Tire dúvidas sobre cadastro, plano premium, ativação, suporte e validação de OAB no AdvAqui.",
   path: "/faq"
 });
 
@@ -23,8 +23,8 @@ const FAQS: Array<[string, string]> = [
     )} por mês, sem fidelidade.`
   ],
   [
-    "Como funciona o pagamento?",
-    `O pagamento é feito via Pix. Após o cadastro, ao optar pelo premium, você recebe a chave Pix e o QR Code. A ativação é manual e ocorre em até ${PLAN.activationHours} horas após a sinalização.`
+    "Como funciona a ativação do premium?",
+    `Após optar pelo premium no painel, você recebe as instruções de confirmação. A ativação é manual e ocorre em até ${PLAN.activationHours} horas após a sinalização.`
   ],
   [
     "Posso cancelar a qualquer momento?",

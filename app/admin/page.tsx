@@ -11,16 +11,24 @@ import {
   Trash2,
   Star,
   Reply,
-  Mail
+  Mail,
+  Activity,
+  Globe,
+  MapPin,
+  TrendingUp,
+  RefreshCw
 } from "lucide-react";
 import { PlanBadge } from "@/components/PlanBadge";
 import { formatDate } from "@/lib/utils/format";
 import { toast } from "@/components/Toast";
+import { AdminExtraCitiesModal } from "@/components/AdminExtraCitiesModal";
+import type { ExtraCity } from "@/components/AdminExtraCitiesModal";
 import type { LawyerRow, MessageRow, PlanStatus } from "@/lib/supabase/types";
 
 const TABS = [
   { id: "users", label: "Cadastros", Icon: Users },
   { id: "messages", label: "Mensagens", Icon: MessageSquare },
+  { id: "visits", label: "Visitas", Icon: Activity },
   { id: "stats", label: "Resumo", Icon: BarChart3 }
 ] as const;
 
@@ -54,7 +62,7 @@ Queria te apresentar rapidamente o plano Premium (R$ 59,90/mês, Pix, sem fideli
   • Áreas de atuação com filtro avançado nas buscas
   • Cidade adicional de atendimento (atenda em 2 cidades, não só 1)
 
-Vale lembrar: o plano é mensal, pago via Pix, sem fidelidade. Você cancela quando quiser, sem multa.
+Vale lembrar: o plano é mensal, sem fidelidade. Você cancela quando quiser, sem multa.
 
 Para ativar, é só acessar:
 https://advaqui.com/painel/pagamento
@@ -90,6 +98,63 @@ export default function AdminPage() {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
   const [busy, setBusy] = useState(false);
+
+  // Modal de edição de cidades adicionais (Fase 4 — substitui window.prompt).
+  const [extraCitiesModal, setExtraCitiesModal] = useState<{
+    id: string;
+    name: string;
+    initial: ExtraCity[];
+  } | null>(null);
+
+  // Analytics em tempo real (Fase 4 — aba Visitas).
+  type Analytics = {
+    last24h: number;
+    last48h: number;
+    last7d: number;
+    activeNow: number;
+    topPaths: Array<{ path: string; count: number }>;
+    topCountries: Array<{ country: string; count: number }>;
+    topRegions: Array<{ region: string; count: number }>;
+    topCities: Array<{ city: string; count: number }>;
+    recent: Array<{
+      path: string;
+      country: string | null;
+      region: string | null;
+      city: string | null;
+      visited_at: string;
+    }>;
+    migrationPending: boolean;
+  };
+  const [analytics, setAnalytics] = useState<Analytics | null>(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
+
+  const loadAnalytics = async () => {
+    setAnalyticsLoading(true);
+    try {
+      const r = await fetch("/api/admin/analytics", { cache: "no-store" });
+      const j = await r.json();
+      if (j.ok) {
+        setAnalytics(j as Analytics);
+      } else {
+        toast(j.error || "Erro ao carregar analytics", "error");
+      }
+    } catch (err) {
+      console.error("[admin:analytics] load failed", err);
+    } finally {
+      setAnalyticsLoading(false);
+    }
+  };
+
+  // Auto-load analytics quando a aba "Visitas" é aberta + polling a cada 15s.
+  useEffect(() => {
+    if (tab !== "visits") return;
+    void loadAnalytics();
+    const interval = window.setInterval(() => {
+      void loadAnalytics();
+    }, 15000);
+    return () => window.clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab]);
 
   // Verifica autenticação admin e carrega dados iniciais
   useEffect(() => {
@@ -430,64 +495,49 @@ export default function AdminPage() {
   };
 
   /**
-   * Editor de cidades adicionais (extra_cities) do lawyer.
+   * Abre o modal de edição de cidades adicionais (Fase 4 — UX melhorada).
    *
-   * Formato esperado pelo banco: array JSON com até 9 entradas, cada uma
-   * { name, slug, uf }. Aqui o admin edita via texto multilinha simples:
-   * uma cidade por linha no formato "UF,nome-com-slug,Nome Apresentavel".
-   *
-   * Exemplo:
-   *   MG,belo-horizonte,Belo Horizonte
-   *   SP,sao-paulo,São Paulo
-   *
-   * Validações: o handler server-side ainda passa pelo normalizeExtraCities
-   * que valida cada entrada e aplica title-case no nome.
+   * Substitui o antigo `window.prompt` multilinha por um modal proper com
+   * campos individuais (UF select, nome do município, remover botão).
+   * O slug é calculado automaticamente a partir do nome.
    */
-  const editExtraCities = async (
+  const editExtraCities = (
     id: string,
     name: string,
     current: unknown
   ) => {
     const list = Array.isArray(current) ? current : [];
-    const currentText = list
+    const initial: ExtraCity[] = list
       .map((c) => {
         const item = c as { uf?: string; slug?: string; name?: string };
-        return `${item.uf || ""},${item.slug || ""},${item.name || ""}`;
+        return {
+          uf: typeof item.uf === "string" ? item.uf.toUpperCase() : "MG",
+          slug: typeof item.slug === "string" ? item.slug : "",
+          name: typeof item.name === "string" ? item.name : ""
+        };
       })
-      .join("\n");
-    const text = window.prompt(
-      `Cidades adicionais de ${name} (uma por linha):\n` +
-        "Formato: UF,slug-da-cidade,Nome Apresentavel\n" +
-        "Exemplo: MG,belo-horizonte,Belo Horizonte\n\n" +
-        "(deixe vazio pra remover todas)",
-      currentText
-    );
-    if (text === null) return;
+      .filter((c) => c.name && c.slug && /^[A-Z]{2}$/.test(c.uf));
+    setExtraCitiesModal({ id, name, initial });
+  };
 
-    const parsed: Array<{ name: string; slug: string; uf: string }> = [];
-    for (const line of text.split("\n")) {
-      const parts = line.split(",").map((p) => p.trim());
-      if (parts.length < 3) continue;
-      const [uf, slug, cityName] = parts;
-      if (!uf || !slug || !cityName) continue;
-      parsed.push({ uf: uf.toUpperCase(), slug: slug.toLowerCase(), name: cityName });
-      if (parsed.length >= 9) break;
-    }
-
-    if (busy) return;
+  /**
+   * Persiste o array de cidades adicionais editado no modal.
+   */
+  const saveExtraCities = async (cities: ExtraCity[]) => {
+    if (!extraCitiesModal) return;
+    const id = extraCitiesModal.id;
     setBusy(true);
     const r = await callAdmin({
       action: "update-lawyer",
       id,
-      fields: { extra_cities: parsed }
+      fields: { extra_cities: cities }
     });
     setBusy(false);
     if (r.status === 200) {
-      toast(`Cidades adicionais atualizadas (${parsed.length})`);
+      toast(`Cidades adicionais atualizadas (${cities.length})`);
+      setExtraCitiesModal(null);
       await refreshUsers();
-      // Se estiver vendo detalhes desse user, refresh do JSON
       if (expandedId === id) {
-        await viewFullLawyer(id);
         await viewFullLawyer(id);
       }
     } else {
@@ -1026,6 +1076,235 @@ export default function AdminPage() {
         </div>
       )}
 
+      {tab === "visits" && (
+        <div className="space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 className="font-display text-xl font-bold text-brand-ink">
+                Visitas em tempo real
+              </h2>
+              <p className="text-xs text-brand-ink/65 mt-0.5">
+                Atualiza automaticamente a cada 15s. IP truncado, sem cookies,
+                sem fingerprint.
+              </p>
+            </div>
+            <button
+              onClick={() => void loadAnalytics()}
+              disabled={analyticsLoading}
+              className="btn-ghost border border-brand-line text-sm inline-flex items-center gap-2"
+            >
+              <RefreshCw
+                className={`w-4 h-4 ${analyticsLoading ? "animate-spin" : ""}`}
+                aria-hidden
+              />
+              {analyticsLoading ? "Atualizando..." : "Atualizar agora"}
+            </button>
+          </div>
+
+          {analytics?.migrationPending && (
+            <div className="card border-amber-200 bg-amber-50">
+              <p className="text-sm text-amber-900">
+                <strong>Migration 0007 pendente.</strong> Aplique o SQL{" "}
+                <code>supabase/migrations/0007_site_analytics.sql</code> no
+                Supabase para começar a coletar visitas.
+              </p>
+            </div>
+          )}
+
+          {analytics && !analytics.migrationPending && (
+            <>
+              {/* KPI cards */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="card text-center">
+                  <Activity className="w-6 h-6 text-emerald-600 mx-auto mb-2" aria-hidden />
+                  <p className="text-3xl font-bold text-brand-ink font-display">
+                    {analytics.activeNow}
+                  </p>
+                  <p className="text-xs text-brand-ink/60 mt-1">
+                    Online agora
+                    <span className="block text-[10px] text-brand-ink/45 mt-0.5">
+                      (últimos 5 min)
+                    </span>
+                  </p>
+                </div>
+                <div className="card text-center">
+                  <TrendingUp className="w-6 h-6 text-brand-deep mx-auto mb-2" aria-hidden />
+                  <p className="text-3xl font-bold text-brand-ink font-display">
+                    {analytics.last24h}
+                  </p>
+                  <p className="text-xs text-brand-ink/60 mt-1">Visitas 24h</p>
+                </div>
+                <div className="card text-center">
+                  <BarChart3 className="w-6 h-6 text-brand-deep mx-auto mb-2" aria-hidden />
+                  <p className="text-3xl font-bold text-brand-ink font-display">
+                    {analytics.last48h}
+                  </p>
+                  <p className="text-xs text-brand-ink/60 mt-1">Visitas 48h</p>
+                </div>
+                <div className="card text-center">
+                  <BarChart3 className="w-6 h-6 text-brand-ink/40 mx-auto mb-2" aria-hidden />
+                  <p className="text-3xl font-bold text-brand-ink font-display">
+                    {analytics.last7d}
+                  </p>
+                  <p className="text-xs text-brand-ink/60 mt-1">Visitas 7d</p>
+                </div>
+              </div>
+
+              {/* Top páginas + Top países lado a lado */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <section className="card">
+                  <h3 className="font-display text-base font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+                    <Activity className="w-4 h-4 text-brand-deep" aria-hidden />
+                    Páginas mais visitadas (24h)
+                  </h3>
+                  {analytics.topPaths.length === 0 ? (
+                    <p className="text-xs text-brand-ink/55 italic">Sem dados ainda.</p>
+                  ) : (
+                    <ul className="space-y-1.5 text-xs">
+                      {analytics.topPaths.map((p) => (
+                        <li
+                          key={p.path}
+                          className="flex items-center justify-between gap-2 py-1 border-b border-brand-line/60 last:border-0"
+                        >
+                          <span className="font-mono truncate text-brand-deep">
+                            {p.path}
+                          </span>
+                          <span className="font-bold text-brand-ink whitespace-nowrap">
+                            {p.count}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </section>
+
+                <section className="card">
+                  <h3 className="font-display text-base font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+                    <Globe className="w-4 h-4 text-brand-deep" aria-hidden />
+                    De onde vêm os visitantes (24h)
+                  </h3>
+                  {analytics.topCountries.length === 0 &&
+                  analytics.topRegions.length === 0 ? (
+                    <p className="text-xs text-brand-ink/55 italic">
+                      Sem geolocalização disponível ainda. Configure o reverse
+                      proxy pra enviar headers CF-IPCountry/X-Geo-Region.
+                    </p>
+                  ) : (
+                    <div className="space-y-3">
+                      {analytics.topCountries.length > 0 && (
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-wide text-brand-ink/55 mb-1.5">
+                            Países
+                          </p>
+                          <ul className="space-y-1 text-xs">
+                            {analytics.topCountries.map((c) => (
+                              <li
+                                key={c.country}
+                                className="flex items-center justify-between gap-2"
+                              >
+                                <span className="text-brand-ink/85">
+                                  {c.country}
+                                </span>
+                                <span className="font-bold text-brand-ink">
+                                  {c.count}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {analytics.topRegions.length > 0 && (
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-wide text-brand-ink/55 mb-1.5">
+                            Estados / Regiões
+                          </p>
+                          <ul className="space-y-1 text-xs">
+                            {analytics.topRegions.map((r) => (
+                              <li
+                                key={r.region}
+                                className="flex items-center justify-between gap-2"
+                              >
+                                <span className="text-brand-ink/85">{r.region}</span>
+                                <span className="font-bold text-brand-ink">
+                                  {r.count}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {analytics.topCities.length > 0 && (
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-wide text-brand-ink/55 mb-1.5">
+                            Cidades
+                          </p>
+                          <ul className="space-y-1 text-xs">
+                            {analytics.topCities.map((c) => (
+                              <li
+                                key={c.city}
+                                className="flex items-center justify-between gap-2"
+                              >
+                                <span className="text-brand-ink/85">{c.city}</span>
+                                <span className="font-bold text-brand-ink">
+                                  {c.count}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </section>
+              </div>
+
+              {/* Últimas visitas — ao vivo */}
+              <section className="card">
+                <h3 className="font-display text-base font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-brand-deep" aria-hidden />
+                  Últimas visitas
+                </h3>
+                {analytics.recent.length === 0 ? (
+                  <p className="text-xs text-brand-ink/55 italic">
+                    Ainda sem visitas registradas.
+                  </p>
+                ) : (
+                  <ul className="space-y-1.5 text-xs divide-y divide-brand-line/60">
+                    {analytics.recent.map((r, i) => {
+                      const when = new Date(r.visited_at);
+                      const ago = Math.floor((Date.now() - when.getTime()) / 1000);
+                      const agoLabel =
+                        ago < 60
+                          ? `${ago}s atrás`
+                          : ago < 3600
+                          ? `${Math.floor(ago / 60)}min atrás`
+                          : `${Math.floor(ago / 3600)}h atrás`;
+                      const place = [r.city, r.region, r.country]
+                        .filter(Boolean)
+                        .join(", ");
+                      return (
+                        <li
+                          key={`${r.visited_at}-${i}`}
+                          className="flex flex-wrap items-center gap-x-3 gap-y-0.5 py-1.5"
+                        >
+                          <span className="font-mono text-brand-deep truncate max-w-md">
+                            {r.path}
+                          </span>
+                          <span className="text-brand-ink/55">{place || "—"}</span>
+                          <span className="text-brand-ink/45 ml-auto whitespace-nowrap">
+                            {agoLabel}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </section>
+            </>
+          )}
+        </div>
+      )}
+
       {tab === "stats" && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {(
@@ -1051,6 +1330,17 @@ export default function AdminPage() {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Modal de edição de cidades adicionais (Fase 4) */}
+      {extraCitiesModal && (
+        <AdminExtraCitiesModal
+          lawyerName={extraCitiesModal.name}
+          initialValue={extraCitiesModal.initial}
+          busy={busy}
+          onSave={saveExtraCities}
+          onClose={() => setExtraCitiesModal(null)}
+        />
       )}
     </div>
   );

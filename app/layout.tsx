@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Fraunces } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Toaster } from "@/components/Toast";
 import { JsonLd } from "@/components/JsonLd";
+import { PageViewTracker } from "@/components/PageViewTracker";
 import { orgSchema, websiteSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 
@@ -77,6 +79,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Toaster />
         <JsonLd data={orgSchema()} />
         <JsonLd data={websiteSchema()} />
+        {/* Analytics próprio — registra pageviews sem cookies, com IP truncado.
+            Em Suspense porque PageViewTracker usa useSearchParams (App Router). */}
+        <Suspense fallback={null}>
+          <PageViewTracker />
+        </Suspense>
       </body>
     </html>
   );

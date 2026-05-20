@@ -337,10 +337,37 @@ export async function POST(req: Request) {
       const PREMIUM_NEW_COLS: ReadonlyArray<keyof LawyerRow> = [
         "photo_url", "website", "instagram", "linkedin", "office_hours"
       ];
+      // Normaliza URLs (website) — auto-prepende https:// se ausente,
+      // rejeita protocolos perigosos. Espelha lógica de /api/painel/profile.
+      const normalizeUrl = (raw: unknown): string | null => {
+        if (typeof raw !== "string") return null;
+        const t = raw.trim().slice(0, 250);
+        if (!t) return null;
+        const lower = t.toLowerCase();
+        if (lower.startsWith("javascript:") || lower.startsWith("data:")) return null;
+        if (!/^https?:\/\//i.test(t)) return `https://${t}`;
+        return t;
+      };
+
+      // Normaliza handle Instagram/LinkedIn — remove @ e URL.
+      const normalizeHandle = (raw: unknown, max: number): string | null => {
+        if (typeof raw !== "string") return null;
+        const t = raw.trim().slice(0, max);
+        if (!t) return null;
+        const m = t.match(/(?:instagram\.com|linkedin\.com\/in)\/([^/?#]+)/i);
+        if (m) return m[1].replace(/^@/, "").trim() || null;
+        return t.replace(/^@/, "").trim() || null;
+      };
+
       const filtered: Partial<LawyerRow> = {};
       for (const key of ALLOWED) {
         if (key in body.fields) {
-          (filtered as Record<string, unknown>)[key] = body.fields[key];
+          let v = body.fields[key];
+          // Normalização defensiva conforme o tipo do campo
+          if (key === "website") v = normalizeUrl(v);
+          else if (key === "instagram") v = normalizeHandle(v, 60);
+          else if (key === "linkedin") v = normalizeHandle(v, 100);
+          (filtered as Record<string, unknown>)[key] = v;
         }
       }
       if (Object.keys(filtered).length === 0) {

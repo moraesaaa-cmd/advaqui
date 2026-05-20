@@ -198,6 +198,23 @@ export type LawyerFaqRow = {
   updated_at: string;
 };
 
+// ---------------------------------------------------------------------------
+// Fase 4 — Site analytics (migration 0007)
+// ---------------------------------------------------------------------------
+export type SiteVisitRow = {
+  id: number;
+  visited_at: string;
+  session_id: string | null;
+  path: string;
+  referer: string | null;
+  country: string | null;
+  region: string | null;
+  city: string | null;
+  user_agent_short: string | null;
+  ip_trunc: string | null;
+  is_bot: boolean;
+};
+
 /**
  * Versão pública de um perfil de advogado, sem CPF.
  * Use sempre que renderizar dados publicamente (diretório, perfil).
@@ -275,6 +292,14 @@ export type Database = {
           answer: string;
         };
         Update: Partial<LawyerFaqRow>;
+        Relationships: [];
+      };
+      site_visits: {
+        Row: SiteVisitRow;
+        Insert: Partial<SiteVisitRow> & {
+          path: string;
+        };
+        Update: Partial<SiteVisitRow>;
         Relationships: [];
       };
     };

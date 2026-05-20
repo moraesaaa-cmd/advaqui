@@ -55,7 +55,7 @@ export function PremiumValueSection() {
             n={1}
             Icon={Search}
             title="Pessoa pesquisa no Google"
-            text="Buscas como “advogado trabalhista em [sua cidade]” mostram o AdvAqui nos primeiros resultados orgânicos."
+            text="Buscas como “advogado trabalhista em São Paulo” ou “advogado de família em Belo Horizonte” mostram o AdvAqui nos primeiros resultados orgânicos."
           />
           <FunnelStep
             n={2}
@@ -170,14 +170,14 @@ export function PremiumValueSection() {
         <ValueCard
           Icon={Zap}
           title="Sem fidelidade"
-          text="Mensal, R$ 59,90 via Pix. Cancela quando quiser, sem multa, sem letra miúda, sem permanência."
+          text="Mensal, R$ 59,90. Cancela quando quiser, sem multa, sem letra miúda, sem permanência."
         />
       </div>
 
       <div className="mt-10 max-w-3xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 text-sm text-brand-ink/70 mb-4">
           <Clock className="w-4 h-4 text-brand-accent2" aria-hidden />
-          Ativação em até {PLAN.activationHours}h após o Pix
+          Ativação em até {PLAN.activationHours}h após confirmação
         </div>
         <div className="flex flex-wrap gap-3 justify-center">
           <Link href="/planos" className="btn-accent text-base">
