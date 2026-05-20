@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getCurrentLawyer } from "@/lib/painel/server";
+import { revalidatePath } from "next/cache";
+import { getCurrentLawyer, revalidateLawyerPages } from "@/lib/painel/server";
 import { slugify } from "@/lib/utils/slug";
 
 /**
@@ -165,6 +166,20 @@ export async function POST(req: Request) {
           { status: 500 }
         );
       }
+      // Bug F6: revalidar páginas se o artigo já nasceu publicado, senão o
+      // SSG cached da Página Profissional (revalidate=3600) não mostra o
+      // artigo recém-criado por até 1h.
+      if (retry.data.status === "published") {
+        revalidateLawyerPages(current.lawyer);
+        // Página individual do artigo (revalidate=600) — força pré-geração
+        try {
+          revalidatePath(
+            `/advogado/${current.lawyer.slug}/artigos/${retry.data.slug}`
+          );
+        } catch (err) {
+          console.warn("[painel:articles POST] revalidatePath retry failed", err);
+        }
+      }
       return NextResponse.json({ ok: true, article: retry.data });
     }
     console.error("[painel:articles POST] failed", error);
@@ -172,6 +187,20 @@ export async function POST(req: Request) {
       { ok: false, code: "create_failed", error: error.message || "Erro ao criar artigo." },
       { status: 500 }
     );
+  }
+
+  // Bug F6: revalidar páginas se o artigo já nasceu publicado, senão o
+  // SSG cached da Página Profissional (revalidate=3600) não mostra o
+  // artigo recém-criado por até 1h.
+  if (data && data.status === "published") {
+    revalidateLawyerPages(current.lawyer);
+    try {
+      revalidatePath(
+        `/advogado/${current.lawyer.slug}/artigos/${data.slug}`
+      );
+    } catch (err) {
+      console.warn("[painel:articles POST] revalidatePath failed", err);
+    }
   }
 
   return NextResponse.json({ ok: true, article: data });

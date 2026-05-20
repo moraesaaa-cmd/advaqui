@@ -104,28 +104,50 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Artigos próprios dos advogados (Fase 3 — migration 0006).
   // Defensive: se tabela ainda não existe ou banco offline, retorna lista vazia
   // — sitemap não pode quebrar o build.
+  //
+  // Estratégia em 2 queries (em vez de JOIN) pra evitar problema de tipagem
+  // do Supabase com relations que requerem alias diferente:
+  //   1. Pega todos os artigos published com lawyer_id + slug + updated_at
+  //   2. Mapeia lawyer_id → slug usando os perfis já carregados via getAllLawyerSlugs
+  //      ou um lookup adicional. Pra evitar custo, vamos buscar { id, slug } em
+  //      lookup separado.
   const lawyerArticleRoutes: MetadataRoute.Sitemap = [];
   try {
     const admin = createAdminClient();
-    const { data, error } = await admin
+    const { data: articles, error: artErr } = await admin
       .from("lawyer_articles")
-      .select("slug, lawyer_id, updated_at, lawyers!inner(slug)")
+      .select("slug, lawyer_id, updated_at")
       .eq("status", "published")
       .limit(5000);
-    if (!error && Array.isArray(data)) {
-      for (const r of data as Array<{
-        slug: string;
-        updated_at: string;
-        lawyers: { slug: string } | { slug: string }[];
-      }>) {
-        const lawyer = Array.isArray(r.lawyers) ? r.lawyers[0] : r.lawyers;
-        if (!lawyer?.slug) continue;
-        lawyerArticleRoutes.push({
-          url: `${base}/advogado/${lawyer.slug}/artigos/${r.slug}`,
-          changeFrequency: "monthly",
-          priority: 0.5,
-          lastModified: r.updated_at ? new Date(r.updated_at) : now
-        });
+
+    if (!artErr && Array.isArray(articles) && articles.length > 0) {
+      const lawyerIds = Array.from(
+        new Set(articles.map((a: { lawyer_id: string }) => a.lawyer_id))
+      );
+      const { data: lawyersData, error: lawyerErr } = await admin
+        .from("lawyers")
+        .select("id, slug")
+        .in("id", lawyerIds);
+
+      if (!lawyerErr && Array.isArray(lawyersData)) {
+        const slugById = new Map<string, string>();
+        for (const l of lawyersData as Array<{ id: string; slug: string }>) {
+          slugById.set(l.id, l.slug);
+        }
+        for (const a of articles as Array<{
+          slug: string;
+          lawyer_id: string;
+          updated_at: string;
+        }>) {
+          const lawyerSlug = slugById.get(a.lawyer_id);
+          if (!lawyerSlug) continue;
+          lawyerArticleRoutes.push({
+            url: `${base}/advogado/${lawyerSlug}/artigos/${a.slug}`,
+            changeFrequency: "monthly",
+            priority: 0.5,
+            lastModified: a.updated_at ? new Date(a.updated_at) : now
+          });
+        }
       }
     }
   } catch {

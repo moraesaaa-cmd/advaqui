@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getCurrentLawyer, revalidateLawyerPages } from "@/lib/painel/server";
 
 /**
@@ -114,6 +115,16 @@ export async function PATCH(
 
   // Revalida a página pública do advogado pra refletir mudança.
   revalidateLawyerPages(current.lawyer);
+  // Revalida também a página individual do artigo (Bug F6).
+  try {
+    if (data && data.slug) {
+      revalidatePath(
+        `/advogado/${current.lawyer.slug}/artigos/${data.slug}`
+      );
+    }
+  } catch (err) {
+    console.warn("[painel:articles PATCH] revalidatePath failed", err);
+  }
 
   return NextResponse.json({ ok: true, article: data });
 }
@@ -124,6 +135,15 @@ export async function DELETE(
 ) {
   const current = await getCurrentLawyer();
   if (!current.ok) return NextResponse.json(current, { status: current.status });
+
+  // Busca slug antes do delete pra revalidar a página individual depois.
+  const beforeDelete = await current.admin
+    .from("lawyer_articles")
+    .select("slug")
+    .eq("id", params.id)
+    .eq("lawyer_id", current.lawyer.id)
+    .maybeSingle();
+  const deletedSlug = (beforeDelete.data as { slug: string } | null)?.slug;
 
   const { error } = await current.admin
     .from("lawyer_articles")
@@ -141,6 +161,13 @@ export async function DELETE(
   }
 
   revalidateLawyerPages(current.lawyer);
+  if (deletedSlug) {
+    try {
+      revalidatePath(`/advogado/${current.lawyer.slug}/artigos/${deletedSlug}`);
+    } catch (err) {
+      console.warn("[painel:articles DELETE] revalidatePath failed", err);
+    }
+  }
 
   return NextResponse.json({ ok: true });
 }
