@@ -150,6 +150,8 @@ export function revalidateLawyerPages(
   paths.add(`/advogado/${lawyer.slug}`);
   paths.add(`/p/${lawyer.slug}`);
   paths.add("/advogados");
+  // Sitemap principal — força regeneração pra Google/Bing verem artigos novos
+  paths.add("/sitemap.xml");
 
   const specs = Array.isArray(lawyer.specialties) ? lawyer.specialties : [];
 
