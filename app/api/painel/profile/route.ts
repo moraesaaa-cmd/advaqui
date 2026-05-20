@@ -115,6 +115,39 @@ export async function PATCH(req: Request) {
     update.photo_url = optionalText(body.photoUrl, 500);
   }
 
+  // ----- Fase 3 — campos de apresentação (aceitos só pra premium) ---------
+
+  /** Normaliza array de strings, dedup, limita por count. */
+  const normalizeStringArray = (
+    value: unknown,
+    allowed?: ReadonlyArray<string>,
+    maxItems = 3
+  ): string[] | null => {
+    if (!Array.isArray(value)) return null;
+    const out: string[] = [];
+    const seen = new Set<string>();
+    for (const v of value) {
+      if (typeof v !== "string") continue;
+      const trimmed = v.trim();
+      if (!trimmed) continue;
+      if (allowed && !allowed.includes(trimmed)) continue;
+      if (seen.has(trimmed)) continue;
+      seen.add(trimmed);
+      out.push(trimmed);
+      if (out.length >= maxItems) break;
+    }
+    return out;
+  };
+
+  const ALLOWED_MODALITIES = ["in_person", "online"] as const;
+  const ALLOWED_CONTACT = ["whatsapp", "phone", "email"] as const;
+  const ALLOWED_ACCENT = ["amber", "emerald", "blue", "rose", "slate"] as const;
+  const ALLOWED_HEADER = ["compact", "expanded"] as const;
+
+  /** Boolean coerce — só atualiza se vier explícito como bool. */
+  const optionalBool = (value: unknown): boolean | undefined =>
+    typeof value === "boolean" ? value : undefined;
+
   if (isPremium) {
     if ("targetCity" in body) update.target_city = optionalText(body.targetCity, 120);
     if ("targetUf" in body)
@@ -124,6 +157,73 @@ export async function PATCH(req: Request) {
     if ("instagram" in body) update.instagram = normalizeHandle(body.instagram, 60);
     if ("linkedin" in body) update.linkedin = normalizeHandle(body.linkedin, 100);
     if ("officeHours" in body) update.office_hours = optionalText(body.officeHours, 200);
+
+    // ----- Fase 3 -----
+    if ("shortSummary" in body)
+      (update as Record<string, unknown>).short_summary = optionalText(body.shortSummary, 160);
+    if ("primarySpecialties" in body)
+      (update as Record<string, unknown>).primary_specialties =
+        normalizeStringArray(body.primarySpecialties, undefined, 3) || [];
+    if ("serviceModalities" in body)
+      (update as Record<string, unknown>).service_modalities =
+        normalizeStringArray(body.serviceModalities, ALLOWED_MODALITIES, 2) || [];
+    if ("serviceRegion" in body)
+      (update as Record<string, unknown>).service_region = optionalText(body.serviceRegion, 200);
+    if ("preferredContact" in body) {
+      const pc = typeof body.preferredContact === "string" ? body.preferredContact.trim() : "";
+      (update as Record<string, unknown>).preferred_contact =
+        pc && (ALLOWED_CONTACT as ReadonlyArray<string>).includes(pc) ? pc : null;
+    }
+    if ("showAddress" in body) {
+      const b = optionalBool(body.showAddress);
+      if (b !== undefined) (update as Record<string, unknown>).show_address = b;
+    }
+    if ("showAddressFull" in body) {
+      const b = optionalBool(body.showAddressFull);
+      if (b !== undefined) (update as Record<string, unknown>).show_address_full = b;
+    }
+    if ("showEmail" in body) {
+      const b = optionalBool(body.showEmail);
+      if (b !== undefined) (update as Record<string, unknown>).show_email = b;
+    }
+    if ("showPhone" in body) {
+      const b = optionalBool(body.showPhone);
+      if (b !== undefined) (update as Record<string, unknown>).show_phone = b;
+    }
+    if ("showExtraCities" in body) {
+      const b = optionalBool(body.showExtraCities);
+      if (b !== undefined) (update as Record<string, unknown>).show_extra_cities = b;
+    }
+    if ("showUsefulDocs" in body) {
+      const b = optionalBool(body.showUsefulDocs);
+      if (b !== undefined) (update as Record<string, unknown>).show_useful_docs = b;
+    }
+    if ("showArticles" in body) {
+      const b = optionalBool(body.showArticles);
+      if (b !== undefined) (update as Record<string, unknown>).show_articles = b;
+    }
+    if ("showQuestions" in body) {
+      const b = optionalBool(body.showQuestions);
+      if (b !== undefined) (update as Record<string, unknown>).show_questions = b;
+    }
+    if ("showFaqs" in body) {
+      const b = optionalBool(body.showFaqs);
+      if (b !== undefined) (update as Record<string, unknown>).show_faqs = b;
+    }
+    if ("allowQuestions" in body) {
+      const b = optionalBool(body.allowQuestions);
+      if (b !== undefined) (update as Record<string, unknown>).allow_questions = b;
+    }
+    if ("accentColor" in body) {
+      const c = typeof body.accentColor === "string" ? body.accentColor.trim() : "";
+      if (c && (ALLOWED_ACCENT as ReadonlyArray<string>).includes(c))
+        (update as Record<string, unknown>).accent_color = c;
+    }
+    if ("headerLayout" in body) {
+      const c = typeof body.headerLayout === "string" ? body.headerLayout.trim() : "";
+      if (c && (ALLOWED_HEADER as ReadonlyArray<string>).includes(c))
+        (update as Record<string, unknown>).header_layout = c;
+    }
   } else {
     // Quando o user perde o premium, zeramos os campos premium UMA VEZ.
     // Mas só se vier explicit no body (evita zerar a cada PATCH sem necessidade).
@@ -140,12 +240,33 @@ export async function PATCH(req: Request) {
   // 0005 ainda não aplicada no banco), refaz sem os campos novos. Isso evita
   // que o painel inteiro pare de salvar perfil enquanto a migration está
   // pendente — campos antigos continuam funcionando.
-  const PREMIUM_NEW_COLS: Array<keyof LawyerRow> = [
+  // Colunas que podem não existir se a migration ainda não foi aplicada.
+  // Em produção, se o UPDATE falhar com "column does not exist", removemos
+  // essas e refazemos o UPDATE com o que restou — assim o painel não trava.
+  const PREMIUM_NEW_COLS: string[] = [
     "photo_url",
     "website",
     "instagram",
     "linkedin",
-    "office_hours"
+    "office_hours",
+    // Fase 3 — migration 0006
+    "short_summary",
+    "primary_specialties",
+    "service_modalities",
+    "service_region",
+    "preferred_contact",
+    "show_address",
+    "show_address_full",
+    "show_email",
+    "show_phone",
+    "show_extra_cities",
+    "show_useful_docs",
+    "show_articles",
+    "show_questions",
+    "show_faqs",
+    "allow_questions",
+    "accent_color",
+    "header_layout"
   ];
 
   let { data, error } = await current.admin
@@ -160,13 +281,13 @@ export async function PATCH(req: Request) {
       "[painel] migration 0005 pending — retrying update without new columns",
       error.message
     );
-    const safeUpdate: Partial<LawyerRow> = { ...update };
+    const safeUpdate: Record<string, unknown> = { ...(update as Record<string, unknown>) };
     for (const col of PREMIUM_NEW_COLS) {
       delete safeUpdate[col];
     }
     const retry = await current.admin
       .from("lawyers")
-      .update(safeUpdate)
+      .update(safeUpdate as Record<string, unknown> as never)
       .eq("id", current.lawyer.id)
       .select("*")
       .maybeSingle();

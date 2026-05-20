@@ -15,6 +15,20 @@ import { titleCaseNameBR } from "@/lib/utils/format";
 // Tipo público usado pelos componentes (camelCase, sem CPF).
 export type ExtraCity = { name: string; slug: string; uf: string };
 
+export type PageStatus =
+  | "not_configured"
+  | "incomplete"
+  | "draft"
+  | "published"
+  | "paused"
+  | "review"
+  | "suspended";
+
+export type ServiceModality = "in_person" | "online";
+export type PreferredContact = "whatsapp" | "phone" | "email";
+export type AccentColor = "amber" | "emerald" | "blue" | "rose" | "slate";
+export type HeaderLayout = "compact" | "expanded";
+
 export type Lawyer = {
   id: string;
   slug: string;
@@ -54,6 +68,43 @@ export type Lawyer = {
   /** Última atualização do perfil — usado pelo card "Central da Página
    *  Profissional" pra mostrar "última atualização há X dias". */
   updatedAt?: string;
+
+  // ----- Fase 3 — controle de publicação (migration 0006) ----------------
+  /** Status detalhado da Página Profissional. Pode vir undefined pré-migration. */
+  pageStatus?: PageStatus;
+  isIndexable?: boolean;
+  isPublic?: boolean;
+  lastPublishedAt?: string;
+  lastUnpublishedAt?: string;
+  pausedAt?: string;
+  pausedReason?: string;
+  suspensionReason?: string;
+
+  // ----- Fase 3 — conteúdo profissional ---------------------------------
+  /** Resumo curto exibido no topo da página (160 chars). */
+  shortSummary?: string;
+  /** Slugs das áreas principais — exibidas em destaque (até 3). */
+  primarySpecialties?: string[];
+  /** Modalidades de atendimento — in_person/online ou ambos. */
+  serviceModalities?: ServiceModality[];
+  /** Região atendida em texto livre — "Almenara/MG e região". */
+  serviceRegion?: string;
+  /** Canal preferencial de primeiro contato. */
+  preferredContact?: PreferredContact;
+
+  // ----- Fase 3 — display preferences -----------------------------------
+  showAddress?: boolean;
+  showAddressFull?: boolean;
+  showEmail?: boolean;
+  showPhone?: boolean;
+  showExtraCities?: boolean;
+  showUsefulDocs?: boolean;
+  showArticles?: boolean;
+  showQuestions?: boolean;
+  showFaqs?: boolean;
+  allowQuestions?: boolean;
+  accentColor?: AccentColor;
+  headerLayout?: HeaderLayout;
 };
 
 export const mapLawyerRow = (
@@ -114,7 +165,43 @@ export const mapLawyerRow = (
     linkedin: (row as { linkedin?: string | null }).linkedin || undefined,
     officeHours: (row as { office_hours?: string | null }).office_hours || undefined,
     createdAt: row.created_at,
-    updatedAt: (row as { updated_at?: string }).updated_at
+    updatedAt: (row as { updated_at?: string }).updated_at,
+
+    // ----- Fase 3 — controle de publicação (defensive — vem undefined se migration 0006 não foi aplicada) -----
+    pageStatus: (row as { page_status?: PageStatus | null }).page_status || undefined,
+    isIndexable: (row as { is_indexable?: boolean | null }).is_indexable ?? undefined,
+    isPublic: (row as { is_public?: boolean | null }).is_public ?? undefined,
+    lastPublishedAt: (row as { last_published_at?: string | null }).last_published_at || undefined,
+    lastUnpublishedAt: (row as { last_unpublished_at?: string | null }).last_unpublished_at || undefined,
+    pausedAt: (row as { paused_at?: string | null }).paused_at || undefined,
+    pausedReason: (row as { paused_reason?: string | null }).paused_reason || undefined,
+    suspensionReason: (row as { suspension_reason?: string | null }).suspension_reason || undefined,
+
+    // ----- Fase 3 — conteúdo profissional -----
+    shortSummary: (row as { short_summary?: string | null }).short_summary || undefined,
+    primarySpecialties: Array.isArray((row as { primary_specialties?: unknown }).primary_specialties)
+      ? ((row as { primary_specialties: unknown[] }).primary_specialties as string[])
+      : undefined,
+    serviceModalities: Array.isArray((row as { service_modalities?: unknown }).service_modalities)
+      ? ((row as { service_modalities: unknown[] }).service_modalities as ServiceModality[])
+      : undefined,
+    serviceRegion: (row as { service_region?: string | null }).service_region || undefined,
+    preferredContact:
+      (row as { preferred_contact?: PreferredContact | null }).preferred_contact || undefined,
+
+    // ----- Fase 3 — display preferences -----
+    showAddress: (row as { show_address?: boolean | null }).show_address ?? undefined,
+    showAddressFull: (row as { show_address_full?: boolean | null }).show_address_full ?? undefined,
+    showEmail: (row as { show_email?: boolean | null }).show_email ?? undefined,
+    showPhone: (row as { show_phone?: boolean | null }).show_phone ?? undefined,
+    showExtraCities: (row as { show_extra_cities?: boolean | null }).show_extra_cities ?? undefined,
+    showUsefulDocs: (row as { show_useful_docs?: boolean | null }).show_useful_docs ?? undefined,
+    showArticles: (row as { show_articles?: boolean | null }).show_articles ?? undefined,
+    showQuestions: (row as { show_questions?: boolean | null }).show_questions ?? undefined,
+    showFaqs: (row as { show_faqs?: boolean | null }).show_faqs ?? undefined,
+    allowQuestions: (row as { allow_questions?: boolean | null }).allow_questions ?? undefined,
+    accentColor: (row as { accent_color?: AccentColor | null }).accent_color || undefined,
+    headerLayout: (row as { header_layout?: HeaderLayout | null }).header_layout || undefined
   };
 };
 

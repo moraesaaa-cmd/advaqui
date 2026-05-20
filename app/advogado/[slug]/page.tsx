@@ -19,14 +19,18 @@ import {
   Building2
 } from "lucide-react";
 import { findLawyerBySlug, getAllLawyerSlugs } from "@/lib/data/lawyers";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import {
   getSpecialtyDescription,
   getUsefulDocsForSpecialties
 } from "@/lib/data/specialty-descriptions";
+import { DEFAULT_FAQS } from "@/lib/data/default-faqs";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { ShareLinkButton } from "@/components/ShareLinkButton";
+import { ExtraCitiesGroupedByUF } from "@/components/ExtraCitiesGroupedByUF";
+import { ReaderQuestionForm } from "@/components/ReaderQuestionForm";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, lawyerSchema } from "@/lib/seo/schema";
 import { whatsappLink, telLink, formatDate } from "@/lib/utils/format";
@@ -67,6 +71,17 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       description: "Página não encontrada",
       noIndex: true
     });
+  // Quando pausada/não-indexável, mostra título genérico e marca noindex.
+  const isPaused = l.pageStatus === "paused" || l.isPublic === false;
+  const noIndex = isPaused || l.isIndexable === false;
+  if (isPaused) {
+    return buildMetadata({
+      title: "Página Profissional indisponível",
+      description: "Esta Página Profissional não está disponível no momento.",
+      path: `/advogado/${l.slug}`,
+      noIndex: true
+    });
+  }
   const mainArea = l.specialties[0]
     ? SPECIALTIES.find((s) => s.slug === l.specialties[0])?.name
     : undefined;
@@ -78,12 +93,73 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     description:
       l.bio ||
       `Perfil profissional de ${l.name}, OAB/${l.oabUf} ${l.oab}. Atuação em ${l.cityName}/${l.uf}.`,
-    path: `/advogado/${l.slug}`
+    path: `/advogado/${l.slug}`,
+    noIndex
   });
 }
 
 const labelOf = (slug: string) =>
   SPECIALTIES.find((s) => s.slug === slug)?.name || slug;
+
+/**
+ * Busca artigos publicados pelo advogado. Defensive: se a tabela
+ * lawyer_articles ainda não existe (migration 0006 pendente), retorna [].
+ */
+type PublicArticle = {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string | null;
+  specialty_slug: string | null;
+  published_at: string | null;
+  read_time_minutes: number | null;
+};
+async function fetchPublishedArticles(lawyerId: string): Promise<PublicArticle[]> {
+  try {
+    const admin = createAdminClient();
+    const { data, error } = await admin
+      .from("lawyer_articles")
+      .select("id,slug,title,summary,specialty_slug,published_at,read_time_minutes")
+      .eq("lawyer_id", lawyerId)
+      .eq("status", "published")
+      .order("published_at", { ascending: false })
+      .limit(20);
+    if (error) {
+      // Tabela ainda não existe? Trate como lista vazia.
+      return [];
+    }
+    return (data as PublicArticle[]) || [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Busca perguntas respondidas pelo advogado (status='answered'). Defensive
+ * igual ao fetch de artigos.
+ */
+type PublicQuestion = {
+  id: string;
+  question: string;
+  answer: string;
+  answered_at: string | null;
+};
+async function fetchAnsweredQuestions(lawyerId: string): Promise<PublicQuestion[]> {
+  try {
+    const admin = createAdminClient();
+    const { data, error } = await admin
+      .from("lawyer_questions")
+      .select("id,question,answer,answered_at")
+      .eq("lawyer_id", lawyerId)
+      .eq("status", "answered")
+      .order("answered_at", { ascending: false })
+      .limit(10);
+    if (error) return [];
+    return (data as PublicQuestion[]) || [];
+  } catch {
+    return [];
+  }
+}
 
 export default async function ProfessionalPage({
   params
@@ -93,6 +169,40 @@ export default async function ProfessionalPage({
   const l = await findLawyerBySlug(params.slug);
   if (!l) notFound();
 
+  // Página pausada / não-pública → mensagem neutra e fim. Sem dados pessoais
+  // expostos, sem schema de LegalService. Defensive: usa pageStatus se a
+  // migration 0006 foi aplicada, senão respeita is_public como fallback.
+  const isPaused = l.pageStatus === "paused" || l.isPublic === false;
+  if (isPaused) {
+    return (
+      <div className="container-narrow py-16">
+        <article className="card text-center">
+          <h1 className="font-display text-2xl md:text-3xl font-bold text-brand-ink mb-3">
+            Página Profissional indisponível
+          </h1>
+          <p className="text-sm md:text-base text-brand-ink/75 max-w-md mx-auto">
+            Esta Página Profissional não está disponível no momento. Volte mais
+            tarde ou utilize o diretório para encontrar outros profissionais.
+          </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            <Link
+              href="/advogados"
+              className="btn-accent text-sm inline-flex items-center gap-2"
+            >
+              Ver diretório
+            </Link>
+            <Link
+              href="/"
+              className="btn-ghost border border-brand-line text-sm"
+            >
+              Voltar para a home
+            </Link>
+          </div>
+        </article>
+      </div>
+    );
+  }
+
   const featured = l.planStatus === "active" || l.featured;
   const wa = whatsappLink(
     l.whatsapp || l.phone,
@@ -100,12 +210,40 @@ export default async function ProfessionalPage({
   );
   const tel = telLink(l.phone);
   const publicUrl = `${SITE.url}/advogado/${l.slug}`;
-  const usefulDocs = getUsefulDocsForSpecialties(l.specialties, 8);
+
+  // ----- Defaults pra display preferences -----
+  // Premium-only respeitam as flags do banco. Quando vêm undefined (migration
+  // 0006 não aplicada ou advogado free), tudo aparece (default true).
+  const showAddress = l.showAddress ?? true;
+  const showAddressFull = l.showAddressFull ?? true;
+  const showEmail = l.showEmail ?? true;
+  const showPhone = l.showPhone ?? true;
+  const showExtraCities = l.showExtraCities ?? true;
+  const showUsefulDocs = l.showUsefulDocs ?? true;
+
+  const usefulDocs = showUsefulDocs
+    ? getUsefulDocsForSpecialties(l.specialties, 8)
+    : [];
+
+  // ----- Separação áreas principais (até 3) × outras áreas -----
+  const primaryList =
+    Array.isArray(l.primarySpecialties) && l.primarySpecialties.length > 0
+      ? l.primarySpecialties.filter((s) => l.specialties.includes(s)).slice(0, 3)
+      : l.specialties.slice(0, 3);
+  const otherList = l.specialties.filter((s) => !primaryList.includes(s));
 
   // Linguagem do título da área principal usado em h2
-  const mainArea = l.specialties[0]
-    ? SPECIALTIES.find((s) => s.slug === l.specialties[0])?.name
+  const mainAreaSlug = primaryList[0] || l.specialties[0];
+  const mainArea = mainAreaSlug
+    ? SPECIALTIES.find((s) => s.slug === mainAreaSlug)?.name
     : null;
+
+  // Conteúdo dinâmico (Fase 3) — busca em paralelo para não atrasar SSG.
+  // Sem await Promise.all pra manter código simples; o Next.js otimiza.
+  const articles =
+    featured && (l.showArticles ?? true) ? await fetchPublishedArticles(l.id) : [];
+  const answeredQuestions =
+    featured && (l.showQuestions ?? true) ? await fetchAnsweredQuestions(l.id) : [];
 
   return (
     <div className="container-narrow py-10">
@@ -160,6 +298,27 @@ export default async function ProfessionalPage({
                 </span>
               )}
             </p>
+
+            {/* Resumo profissional curto (Fase 3) */}
+            {l.shortSummary && (
+              <p className="text-sm text-brand-ink/85 mt-2 leading-relaxed max-w-prose">
+                {l.shortSummary}
+              </p>
+            )}
+
+            {/* Áreas principais em destaque (chips de até 3) */}
+            {primaryList.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {primaryList.map((slug) => (
+                  <span
+                    key={`primary-${slug}`}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-brand-deep/10 text-brand-deep border border-brand-deep/15"
+                  >
+                    {labelOf(slug)}
+                  </span>
+                ))}
+              </div>
+            )}
             <p className="text-sm text-brand-ink/65 mt-1 inline-flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5" aria-hidden />
               {l.cityName}/{l.uf}
@@ -209,14 +368,16 @@ export default async function ProfessionalPage({
             Contato e endereço
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-            <div className="flex items-center gap-3 rounded-xl border border-brand-line p-3">
-              <MapPin className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
-              <span>
-                {l.address ? `${l.address} — ` : ""}
-                {l.cityName}/{l.uf}
-              </span>
-            </div>
-            {tel && (
+            {showAddress && (
+              <div className="flex items-center gap-3 rounded-xl border border-brand-line p-3">
+                <MapPin className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
+                <span>
+                  {l.address && showAddressFull ? `${l.address} — ` : ""}
+                  {l.cityName}/{l.uf}
+                </span>
+              </div>
+            )}
+            {showPhone && tel && (
               <a
                 href={tel}
                 className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition"
@@ -225,7 +386,7 @@ export default async function ProfessionalPage({
                 <span>{l.phone}</span>
               </a>
             )}
-            {featured && (
+            {showEmail && featured && (
               <a
                 href={`mailto:${l.email}`}
                 className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition"
@@ -259,11 +420,24 @@ export default async function ProfessionalPage({
             profissional poderá avaliar as informações iniciais e, se
             necessário, combinar uma consulta ou orientação jurídica.
           </p>
-          <p className="text-sm text-brand-ink/70 leading-relaxed mt-2">
-            O contato inicial não implica contratação automática de serviços
-            jurídicos. Honorários, formas de pagamento e procedimentos serão
-            esclarecidos diretamente com o profissional, se for o caso.
-          </p>
+
+          {/* CTA intermediário */}
+          {featured && wa && (
+            <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <p className="text-sm font-semibold text-emerald-900">
+                Deseja enviar uma mensagem ao profissional?
+              </p>
+              <a
+                href={wa}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-500 transition whitespace-nowrap"
+              >
+                <MessageCircle className="w-4 h-4" aria-hidden />
+                Falar pelo WhatsApp
+              </a>
+            </div>
+          )}
         </section>
 
         {/* ===== 5. UPSELL PARA NÃO-PREMIUM (mantido) ===== */}
@@ -288,62 +462,100 @@ export default async function ProfessionalPage({
           <section className="mt-8 pt-6 border-t border-brand-line">
             <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
               <Briefcase className="w-5 h-5 text-brand-deep" aria-hidden />
-              Áreas de atuação
+              Principais áreas de atendimento
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {l.specialties.map((s) => (
+              {primaryList.map((s) => (
                 <article
                   key={s}
-                  className="rounded-xl border border-brand-line bg-white p-4 hover:border-brand-accent transition"
+                  className="rounded-xl border-2 border-brand-deep/15 bg-brand-deep/5 p-4"
                 >
                   <h3 className="font-display text-sm md:text-base font-bold text-brand-ink mb-1">
                     {labelOf(s)}
                   </h3>
-                  <p className="text-xs md:text-sm text-brand-ink/70 leading-relaxed">
+                  <p className="text-xs md:text-sm text-brand-ink/80 leading-relaxed">
                     {getSpecialtyDescription(s)}
                   </p>
-                  <Link
-                    href={`/advogados/${l.uf.toLowerCase()}/${l.citySlug}/${s}`}
-                    className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-brand-deep hover:text-brand-accent2"
-                  >
-                    Ver mais advogados desta área →
-                  </Link>
                 </article>
               ))}
             </div>
+
+            {/* Outras áreas informadas (chips) */}
+            {otherList.length > 0 && (
+              <div className="mt-5">
+                <h3 className="text-sm font-semibold text-brand-ink/75 mb-2">
+                  Outras áreas informadas
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {otherList.map((s) => (
+                    <span
+                      key={`other-${s}`}
+                      className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-white border border-brand-line text-brand-ink/80"
+                    >
+                      {labelOf(s)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </section>
         )}
 
-        {/* ===== 7. REGIÃO DE ATENDIMENTO ===== */}
-        {(featured && (l.officeHours || (l.extraCities && l.extraCities.length > 0))) && (
+        {/* ===== 7. ATENDIMENTO ===== */}
+        {featured && (
           <section className="mt-8 pt-6 border-t border-brand-line">
             <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
               <Building2 className="w-5 h-5 text-brand-deep" aria-hidden />
-              Região de atendimento
+              Atendimento
             </h2>
 
             <div className="rounded-xl border border-brand-line bg-brand-bg/30 p-4 space-y-3">
+              {/* Modalidade — premium pode marcar in_person/online */}
+              {Array.isArray(l.serviceModalities) && l.serviceModalities.length > 0 && (
+                <p className="text-sm text-brand-ink/85">
+                  <span className="font-semibold text-brand-ink">Modalidade:</span>{" "}
+                  {l.serviceModalities.includes("in_person") &&
+                    l.serviceModalities.includes("online")
+                    ? "Atendimento presencial e online"
+                    : l.serviceModalities.includes("online")
+                    ? "Atendimento online"
+                    : "Atendimento presencial"}
+                </p>
+              )}
+
               <p className="text-sm text-brand-ink/85">
-                <span className="font-semibold text-brand-ink">Cidade principal:</span>{" "}
+                <span className="font-semibold text-brand-ink">Cidade base:</span>{" "}
                 {l.cityName}/{l.uf}
               </p>
 
-              {l.extraCities && l.extraCities.length > 0 && (
+              {l.serviceRegion && (
+                <p className="text-sm text-brand-ink/85">
+                  <span className="font-semibold text-brand-ink">Região atendida:</span>{" "}
+                  {l.serviceRegion}
+                </p>
+              )}
+
+              {showExtraCities && l.extraCities && l.extraCities.length > 0 && (
                 <div>
                   <p className="text-sm font-semibold text-brand-ink mb-2">
                     Também atende em:
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    {l.extraCities.map((c) => (
-                      <Link
-                        key={`${c.uf}-${c.slug}`}
-                        href={`/advogados/${c.uf.toLowerCase()}/${c.slug}`}
-                        className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
-                      >
-                        {c.name}/{c.uf}
-                      </Link>
-                    ))}
-                  </div>
+                  {/* Agrupado por UF quando houver muitas cidades (>= 5) */}
+                  {l.extraCities.length >= 5 ? (
+                    <ExtraCitiesGroupedByUF cities={l.extraCities} />
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {l.extraCities.map((c) => (
+                        <Link
+                          key={`${c.uf}-${c.slug}`}
+                          href={`/advogados/${c.uf.toLowerCase()}/${c.slug}`}
+                          className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
+                        >
+                          {c.name}/{c.uf}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -358,9 +570,36 @@ export default async function ProfessionalPage({
                   </p>
                 </div>
               )}
+
+              {l.preferredContact && (
+                <p className="text-sm text-brand-ink/85">
+                  <span className="font-semibold text-brand-ink">
+                    Canal preferencial de contato:
+                  </span>{" "}
+                  {l.preferredContact === "whatsapp"
+                    ? "WhatsApp"
+                    : l.preferredContact === "phone"
+                    ? "Telefone"
+                    : "E-mail"}
+                </p>
+              )}
             </div>
           </section>
         )}
+
+        {/* ===== 7b. ANTES DE ENTRAR EM CONTATO ===== */}
+        <section className="mt-8 pt-6 border-t border-brand-line">
+          <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+            <HelpCircle className="w-5 h-5 text-brand-deep" aria-hidden />
+            Antes de entrar em contato
+          </h2>
+          <p className="text-sm text-brand-ink/85 leading-relaxed">
+            Para facilitar o primeiro atendimento, envie uma mensagem objetiva
+            com seu nome, cidade, área do assunto e um breve resumo da
+            situação. Evite enviar dados sensíveis ou documentos antes de
+            orientação individual do profissional.
+          </p>
+        </section>
 
         {/* ===== 8. DOCUMENTOS ÚTEIS PARA O PRIMEIRO CONTATO ===== */}
         {usefulDocs.length > 0 && l.specialties.length > 0 && (
@@ -386,6 +625,128 @@ export default async function ProfessionalPage({
               completo, comprovantes bancários, fotos pessoais) antes de
               orientação individual do profissional.
             </p>
+          </section>
+        )}
+
+        {/* ===== 8a. ARTIGOS DO ADVOGADO ===== */}
+        {featured && (l.showArticles ?? true) && articles.length > 0 && (
+          <section className="mt-8 pt-6 border-t border-brand-line">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+              <FileText className="w-5 h-5 text-brand-deep" aria-hidden />
+              Artigos informativos
+            </h2>
+            <p className="text-sm text-brand-ink/65 mb-4">
+              Conteúdo informativo publicado por {l.name.split(" ")[0]}. Caráter
+              exclusivamente educativo.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {articles.map((a) => (
+                <Link
+                  key={a.id}
+                  href={`/advogado/${l.slug}/artigos/${a.slug}`}
+                  className="block rounded-xl border border-brand-line bg-white p-4 hover:border-brand-deep transition group"
+                >
+                  {a.specialty_slug && (
+                    <span className="inline-block text-[10px] font-bold uppercase tracking-wide text-brand-deep mb-1.5">
+                      {SPECIALTIES.find((s) => s.slug === a.specialty_slug)?.name ||
+                        a.specialty_slug}
+                    </span>
+                  )}
+                  <h3 className="font-display text-sm md:text-base font-bold text-brand-ink group-hover:text-brand-deep transition">
+                    {a.title}
+                  </h3>
+                  {a.summary && (
+                    <p className="text-xs md:text-sm text-brand-ink/70 leading-relaxed mt-1 line-clamp-3">
+                      {a.summary}
+                    </p>
+                  )}
+                  <p className="text-xs text-brand-ink/55 mt-2">
+                    {a.read_time_minutes ? `${a.read_time_minutes} min de leitura` : ""}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ===== 8b. PERGUNTAS FREQUENTES ===== */}
+        {featured && (l.showFaqs ?? true) && (
+          <section className="mt-8 pt-6 border-t border-brand-line">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-brand-deep" aria-hidden />
+              Perguntas frequentes
+            </h2>
+            <div className="space-y-3">
+              {DEFAULT_FAQS.map((faq, idx) => (
+                <details
+                  key={`faq-${idx}`}
+                  className="group rounded-xl border border-brand-line bg-white p-4 open:border-brand-deep/30 open:bg-brand-bg/30"
+                >
+                  <summary className="cursor-pointer font-semibold text-sm md:text-base text-brand-ink list-none flex items-center justify-between gap-2">
+                    {faq.question}
+                    <span
+                      aria-hidden
+                      className="text-brand-deep text-lg leading-none group-open:rotate-45 transition-transform"
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-2 text-sm text-brand-ink/80 leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ===== 8c. PERGUNTAS DE LEITORES (respondidas + form) ===== */}
+        {featured && (l.showQuestions ?? true) && (
+          <section className="mt-8 pt-6 border-t border-brand-line">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-brand-deep" aria-hidden />
+              Perguntas de leitores
+            </h2>
+            <p className="text-sm text-brand-ink/65 mb-4">
+              Perguntas informativas respondidas pelo profissional. Os
+              esclarecimentos têm caráter educativo e não substituem consulta
+              jurídica individual.
+            </p>
+
+            {/* Lista de respondidas */}
+            {answeredQuestions.length > 0 && (
+              <div className="space-y-3 mb-5">
+                {answeredQuestions.map((q) => (
+                  <article
+                    key={q.id}
+                    className="rounded-xl border border-brand-line bg-white p-4"
+                  >
+                    <p className="font-semibold text-brand-ink text-sm md:text-base">
+                      {q.question}
+                    </p>
+                    <p className="mt-2 text-sm text-brand-ink/80 whitespace-pre-line leading-relaxed">
+                      {q.answer}
+                    </p>
+                    {q.answered_at && (
+                      <p className="text-[11px] text-brand-ink/50 mt-2">
+                        Respondida em{" "}
+                        {new Date(q.answered_at).toLocaleDateString("pt-BR")}
+                      </p>
+                    )}
+                  </article>
+                ))}
+              </div>
+            )}
+
+            {/* Formulário pra novas perguntas */}
+            {l.allowQuestions !== false && (
+              <>
+                <h3 className="font-semibold text-sm md:text-base text-brand-ink mb-2">
+                  Enviar uma pergunta
+                </h3>
+                <ReaderQuestionForm lawyerSlug={l.slug} />
+              </>
+            )}
           </section>
         )}
 
@@ -437,7 +798,27 @@ export default async function ProfessionalPage({
           </section>
         )}
 
-        {/* ===== 10. AVISO ÉTICO OBRIGATÓRIO ===== */}
+        {/* ===== 10. CTA FINAL ===== */}
+        {featured && wa && (
+          <section className="mt-8 pt-6 border-t border-brand-line">
+            <div className="rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-200 p-5 md:p-6 text-center">
+              <p className="text-base md:text-lg font-semibold text-emerald-900 mb-3">
+                Precisa de orientação sobre alguma dessas áreas?
+              </p>
+              <a
+                href={wa}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 text-white font-bold text-sm md:text-base hover:bg-emerald-500 transition shadow-sm"
+              >
+                <MessageCircle className="w-5 h-5" aria-hidden />
+                Falar pelo WhatsApp
+              </a>
+            </div>
+          </section>
+        )}
+
+        {/* ===== 11. AVISO ÉTICO OBRIGATÓRIO ===== */}
         <aside
           className="mt-8 rounded-xl border-l-4 border-amber-400 bg-amber-50 p-4 text-xs md:text-sm text-amber-900 leading-relaxed"
           role="note"
@@ -453,7 +834,7 @@ export default async function ProfessionalPage({
           </p>
         </aside>
 
-        {/* ===== 11. RODAPÉ INSTITUCIONAL ===== */}
+        {/* ===== 12. RODAPÉ INSTITUCIONAL ===== */}
         <footer className="mt-6 pt-4 border-t border-brand-line">
           <p className="text-xs text-brand-ink/60 mb-3">
             Perfil cadastrado em {formatDate(l.createdAt)}.
@@ -500,6 +881,23 @@ export default async function ProfessionalPage({
         ])}
       />
       <JsonLd data={lawyerSchema(l)} />
+      {/* FAQ schema — só quando exibimos perguntas frequentes na página */}
+      {featured && (l.showFaqs ?? true) && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: DEFAULT_FAQS.map((f) => ({
+              "@type": "Question",
+              name: f.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: f.answer
+              }
+            }))
+          }}
+        />
+      )}
     </div>
   );
 }

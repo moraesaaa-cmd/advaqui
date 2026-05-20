@@ -14,7 +14,10 @@ import {
   Globe,
   EyeOff,
   CheckCircle2,
-  Clock
+  Clock,
+  Pause,
+  Play,
+  Eye
 } from "lucide-react";
 import { SITE } from "@/lib/config";
 import type { Lawyer } from "@/lib/data/lawyer-mapper";
@@ -36,7 +39,13 @@ import type { Lawyer } from "@/lib/data/lawyer-mapper";
  * paused_at) — ficam pra próxima rodada quando a migration estiver aplicada.
  */
 
-type Status = "publicada" | "incompleta" | "pending" | "free" | "expired";
+type Status =
+  | "publicada"
+  | "incompleta"
+  | "pending"
+  | "free"
+  | "expired"
+  | "pausada";
 type Visibility =
   | "online_indexable"
   | "online_not_indexable"
@@ -47,6 +56,8 @@ function computeStatus(lawyer: Lawyer): Status {
   if (lawyer.planStatus === "pending") return "pending";
   if (lawyer.planStatus === "expired") return "expired";
   if (lawyer.planStatus !== "active") return "free";
+  // Pausa voluntária toma precedência (Fase 3 — migration 0006).
+  if (lawyer.pageStatus === "paused") return "pausada";
   const hasWhatsapp = Boolean(
     (lawyer.whatsapp && lawyer.whatsapp.trim()) ||
       (lawyer.phone && lawyer.phone.trim())
@@ -56,7 +67,9 @@ function computeStatus(lawyer: Lawyer): Status {
   return "publicada";
 }
 
-function computeVisibility(status: Status): Visibility {
+function computeVisibility(status: Status, lawyer: Lawyer): Visibility {
+  // Defensive: usa flags do banco se a migration foi aplicada, senão deriva.
+  if (lawyer.isPublic === false || status === "pausada") return "offline";
   if (status === "publicada") return "online_indexable";
   if (status === "incompleta") return "draft_only";
   if (status === "pending") return "draft_only";
@@ -164,6 +177,8 @@ function visibilityLabel(v: Visibility): { text: string; tone: string } {
 function statusLabel(s: Status): { text: string; tone: string } {
   if (s === "publicada")
     return { text: "Publicada", tone: "bg-emerald-100 text-emerald-800 border-emerald-200" };
+  if (s === "pausada")
+    return { text: "Pausada", tone: "bg-slate-200 text-slate-800 border-slate-300" };
   if (s === "incompleta")
     return { text: "Incompleta", tone: "bg-amber-100 text-amber-900 border-amber-300" };
   if (s === "pending")
@@ -190,11 +205,47 @@ function timeAgoBR(iso?: string): string {
 
 export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
   const status = computeStatus(lawyer);
-  const visibility = computeVisibility(status);
+  const visibility = computeVisibility(status, lawyer);
   const strength = computeStrength(lawyer);
   const publicUrl = `${SITE.url}/advogado/${lawyer.slug}`;
   const [copied, setCopied] = useState(false);
   const [showQr, setShowQr] = useState(false);
+  const [actioning, setActioning] = useState<"pause" | "republish" | null>(null);
+
+  const callPageAction = async (action: "pause" | "republish") => {
+    if (actioning) return;
+    if (action === "pause") {
+      const ok = window.confirm(
+        "Confirma pausar sua Página Profissional?\n\n" +
+          "Enquanto pausada, ela sai do diretório público, não aparece em buscas e mostra uma mensagem neutra para quem acessar o link direto. Você pode republicar a qualquer momento."
+      );
+      if (!ok) return;
+    }
+    setActioning(action);
+    try {
+      const res = await fetch("/api/painel/page-action", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.ok === false) {
+        const msg =
+          (data as { error?: string }).error ||
+          "Não foi possível atualizar agora. Tente novamente.";
+        window.alert(msg);
+      } else {
+        // Recarrega o painel pra ler o novo estado do servidor sem
+        // ter que sincronizar manualmente todo o lawyer.
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error("[MyProfessionalPageCard] page-action failed", err);
+      window.alert("Erro de conexão. Tente novamente em alguns segundos.");
+    } finally {
+      setActioning(null);
+    }
+  };
 
   const copyLink = async () => {
     try {
@@ -216,11 +267,17 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
     }
   };
 
-  // ---- variante: PUBLICADA ou INCOMPLETA (premium ativo) ----
-  if (status === "publicada" || status === "incompleta" || status === "pending") {
+  // ---- variante: PUBLICADA / PAUSADA / INCOMPLETA / PENDING (premium ativo) ----
+  if (
+    status === "publicada" ||
+    status === "incompleta" ||
+    status === "pending" ||
+    status === "pausada"
+  ) {
     const stLabel = statusLabel(status);
     const visLabel = visibilityLabel(visibility);
     const isPublishable = status === "publicada";
+    const isPaused = status === "pausada";
 
     return (
       <>
@@ -256,12 +313,13 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
                   className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold border ${stLabel.tone}`}
                 >
                   {isPublishable && <CheckCircle2 className="w-3 h-3" aria-hidden />}
-                  {!isPublishable && status === "incompleta" && (
+                  {status === "incompleta" && (
                     <AlertCircle className="w-3 h-3" aria-hidden />
                   )}
-                  {!isPublishable && status === "pending" && (
+                  {status === "pending" && (
                     <Clock className="w-3 h-3" aria-hidden />
                   )}
+                  {isPaused && <Pause className="w-3 h-3" aria-hidden />}
                   {stLabel.text}
                 </span>
               </dd>
@@ -299,8 +357,8 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
             </div>
           </dl>
 
-          {/* URL pública */}
-          {isPublishable && (
+          {/* URL pública — só mostra se está no ar */}
+          {(isPublishable || isPaused) && (
             <div className="rounded-xl bg-white border border-brand-line px-3 py-2.5 mb-3 break-all text-sm font-mono text-brand-deep">
               {publicUrl}
             </div>
@@ -319,6 +377,16 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
             <p className="text-sm text-blue-900 bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
               Pagamento em análise — sua página será publicada em até 48h
               após confirmação.
+            </p>
+          )}
+
+          {/* Aviso quando pausada */}
+          {isPaused && (
+            <p className="text-sm text-slate-800 bg-slate-100 border border-slate-200 rounded-lg p-3 mb-3">
+              Sua Página Profissional está <strong>pausada</strong>. Ela não
+              aparece em buscas nem no diretório público. Quem acessar o link
+              direto vê uma mensagem neutra. Republique a qualquer momento pra
+              voltar ao ar.
             </p>
           )}
 
@@ -377,6 +445,16 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
                 Ver página pública
               </Link>
             )}
+            {(isPaused || status === "incompleta") && (
+              <Link
+                href={`/advogado/${lawyer.slug}?preview=1`}
+                target="_blank"
+                className="btn-ghost border border-brand-line text-sm inline-flex items-center gap-2"
+              >
+                <Eye className="w-4 h-4" aria-hidden />
+                Ver prévia privada
+              </Link>
+            )}
             <a
               href="#meu-perfil"
               className="btn-ghost border border-brand-line text-sm inline-flex items-center gap-2"
@@ -384,7 +462,7 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
               <Edit3 className="w-4 h-4" aria-hidden />
               Editar página
             </a>
-            {isPublishable && (
+            {(isPublishable || isPaused) && (
               <button
                 type="button"
                 onClick={copyLink}
@@ -403,7 +481,7 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
                 )}
               </button>
             )}
-            {isPublishable && (
+            {(isPublishable || isPaused) && (
               <button
                 type="button"
                 onClick={() => setShowQr(true)}
@@ -413,18 +491,36 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
                 Gerar QR Code
               </button>
             )}
+
+            {/* Pausar / Republicar */}
+            {isPublishable && (
+              <button
+                type="button"
+                onClick={() => callPageAction("pause")}
+                disabled={actioning !== null}
+                className="btn-ghost border border-slate-300 text-slate-800 text-sm inline-flex items-center gap-2 ml-auto disabled:opacity-50"
+              >
+                <Pause className="w-4 h-4" aria-hidden />
+                {actioning === "pause" ? "Pausando..." : "Pausar página"}
+              </button>
+            )}
+            {isPaused && (
+              <button
+                type="button"
+                onClick={() => callPageAction("republish")}
+                disabled={actioning !== null}
+                className="text-sm inline-flex items-center gap-2 ml-auto px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition disabled:opacity-50"
+              >
+                <Play className="w-4 h-4" aria-hidden />
+                {actioning === "republish" ? "Republicando..." : "Republicar página"}
+              </button>
+            )}
           </div>
 
-          {/* Aviso sobre recursos em construção (Fase 2/3 do produto) */}
-          <p className="text-[11px] text-brand-ink/45 mt-4 italic">
-            Pausar/Republicar, Artigos próprios, Perguntas de Leitores e
-            Métricas detalhadas estão em desenvolvimento e serão liberados em
-            breve, sem custo adicional.
-          </p>
         </section>
 
         {showQr && (
-          <QrModal url={publicUrl} onClose={() => setShowQr(false)} />
+          <QrModal url={publicUrl} lawyer={lawyer} onClose={() => setShowQr(false)} />
         )}
       </>
     );
@@ -490,11 +586,44 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
 }
 
 /**
- * Modal simples com o QR Code da Página Profissional.
+ * Modal com o QR Code da Página Profissional + Cartão digital
+ * (texto de apresentação pronto pra copiar e usar em WhatsApp, e-mail etc.).
  */
-function QrModal({ url, onClose }: { url: string; onClose: () => void }) {
+function QrModal({
+  url,
+  lawyer,
+  onClose
+}: {
+  url: string;
+  lawyer: Lawyer;
+  onClose: () => void;
+}) {
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=10&data=${encodeURIComponent(url)}`;
   const downloadName = `qrcode-${url.split("/").pop() || "perfil"}.png`;
+  const [copiedCard, setCopiedCard] = useState(false);
+
+  const cardText = `Olá, este é meu perfil profissional no AdvAqui, com minhas áreas de atuação, região de atendimento e canais de contato: ${url}`;
+
+  const copyCardText = async () => {
+    try {
+      await navigator.clipboard.writeText(cardText);
+      setCopiedCard(true);
+      setTimeout(() => setCopiedCard(false), 2000);
+    } catch {
+      // Fallback
+      const el = document.createElement("textarea");
+      el.value = cardText;
+      document.body.appendChild(el);
+      el.select();
+      try {
+        document.execCommand("copy");
+        setCopiedCard(true);
+        setTimeout(() => setCopiedCard(false), 2000);
+      } finally {
+        document.body.removeChild(el);
+      }
+    }
+  };
 
   return (
     <div
@@ -517,17 +646,16 @@ function QrModal({ url, onClose }: { url: string; onClose: () => void }) {
           <X className="w-4 h-4 text-brand-ink/60" aria-hidden />
         </button>
         <h3 className="font-display text-lg font-bold text-brand-ink mb-1">
-          QR Code da sua Página Profissional
+          Cartão digital
         </h3>
         <p className="text-xs text-brand-ink/65 mb-4">
-          Imprima em cartões, panfletos ou cole na assinatura — quem escanear
-          chega direto na sua página.
+          {lawyer.name} · OAB/{lawyer.oabUf} {lawyer.oab} · {lawyer.cityName}/{lawyer.uf}
         </p>
         <div className="rounded-xl border-2 border-brand-line bg-white p-3 flex items-center justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={qrSrc}
-            alt="QR Code"
+            alt="QR Code da Página Profissional"
             className="w-full h-auto max-w-[300px]"
             loading="eager"
           />
@@ -541,6 +669,23 @@ function QrModal({ url, onClose }: { url: string; onClose: () => void }) {
         >
           Baixar QR Code (PNG)
         </a>
+        <button
+          type="button"
+          onClick={copyCardText}
+          className="btn-ghost border border-brand-line w-full justify-center mt-2 text-sm inline-flex items-center gap-2"
+        >
+          {copiedCard ? (
+            <>
+              <Check className="w-4 h-4 text-emerald-600" aria-hidden />
+              Texto copiado
+            </>
+          ) : (
+            <>
+              <Copy className="w-4 h-4" aria-hidden />
+              Copiar texto de apresentação
+            </>
+          )}
+        </button>
         <p className="text-[10px] text-brand-ink/50 mt-3 text-center break-all">
           {url}
         </p>

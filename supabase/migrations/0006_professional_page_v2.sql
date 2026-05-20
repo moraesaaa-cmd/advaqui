@@ -16,9 +16,10 @@
 -- =============================================================================
 
 -- =====================================================================
--- 1) Novas colunas em public.lawyers (controle de publicação)
+-- 1) Novas colunas em public.lawyers (controle de publicação + apresentação)
 -- =====================================================================
 ALTER TABLE public.lawyers
+  -- Controle de publicação
   ADD COLUMN IF NOT EXISTS page_status text NOT NULL DEFAULT 'not_configured'
     CHECK (page_status IN (
       'not_configured',  -- usuário ainda não preencheu nada
@@ -35,18 +36,46 @@ ALTER TABLE public.lawyers
   ADD COLUMN IF NOT EXISTS last_unpublished_at timestamptz,
   ADD COLUMN IF NOT EXISTS paused_at timestamptz,
   ADD COLUMN IF NOT EXISTS paused_reason text,
-  ADD COLUMN IF NOT EXISTS suspension_reason text;
+  ADD COLUMN IF NOT EXISTS suspension_reason text,
+  -- Conteúdo profissional
+  ADD COLUMN IF NOT EXISTS short_summary text,           -- 160 chars no topo
+  ADD COLUMN IF NOT EXISTS primary_specialties text[] NOT NULL DEFAULT '{}', -- até 3
+  ADD COLUMN IF NOT EXISTS service_modalities text[] NOT NULL DEFAULT '{}',  -- ['in_person','online']
+  ADD COLUMN IF NOT EXISTS service_region text,          -- "Almenara/MG e região"
+  ADD COLUMN IF NOT EXISTS preferred_contact text
+    CHECK (preferred_contact IS NULL OR preferred_contact IN ('whatsapp','phone','email')),
+  -- Aparência / display preferences
+  ADD COLUMN IF NOT EXISTS show_address boolean NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS show_address_full boolean NOT NULL DEFAULT true, -- false = só cidade
+  ADD COLUMN IF NOT EXISTS show_email boolean NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS show_phone boolean NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS show_extra_cities boolean NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS show_useful_docs boolean NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS show_articles boolean NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS show_questions boolean NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS show_faqs boolean NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS allow_questions boolean NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS accent_color text NOT NULL DEFAULT 'amber'
+    CHECK (accent_color IN ('amber','emerald','blue','rose','slate')),
+  ADD COLUMN IF NOT EXISTS header_layout text NOT NULL DEFAULT 'expanded'
+    CHECK (header_layout IN ('compact','expanded'));
 
 COMMENT ON COLUMN public.lawyers.page_status IS
   'Status detalhado da Página Profissional. Diferente de plan_status (que controla cobrança). Default not_configured pra cadastros novos.';
 COMMENT ON COLUMN public.lawyers.is_indexable IS
   'Quando false, a página é renderizada com noindex (não aparece em buscadores). Útil pra premium pausado.';
 COMMENT ON COLUMN public.lawyers.is_public IS
-  'Quando false, a página retorna 404 pra visitantes não-autenticados. Usado em rascunho e suspensão.';
+  'Quando false, a página retorna 404/mensagem neutra pra visitantes não-autenticados. Usado em rascunho/pausa/suspensão.';
 COMMENT ON COLUMN public.lawyers.paused_at IS
   'Timestamp da última pausa voluntária. Null quando a página não está pausada.';
-COMMENT ON COLUMN public.lawyers.paused_reason IS
-  'Motivo declarado pelo advogado pra pausa (opcional, texto livre até 500 chars).';
+COMMENT ON COLUMN public.lawyers.short_summary IS
+  'Resumo profissional curto, até 160 caracteres. Aparece no topo da Página Profissional, abaixo do nome/OAB.';
+COMMENT ON COLUMN public.lawyers.primary_specialties IS
+  'Slugs das áreas principais de atuação (até 3). Mostradas em destaque na seção Principais áreas. Demais áreas vão pra Outras áreas informadas.';
+COMMENT ON COLUMN public.lawyers.service_modalities IS
+  'Modalidades de atendimento — array com in_person e/ou online. Exibido em Atendimento.';
+COMMENT ON COLUMN public.lawyers.preferred_contact IS
+  'Canal preferencial pra primeiro contato. Mostrado em destaque na seção Atendimento.';
 
 -- =====================================================================
 -- 2) Tabela: lawyer_articles (artigos próprios do advogado)
@@ -224,6 +253,41 @@ CREATE POLICY "lawyer_metrics_service_update"
   USING (auth.role() = 'service_role');
 
 -- =====================================================================
+-- 4b) Tabela: lawyer_faqs (perguntas frequentes editáveis pelo advogado)
+-- =====================================================================
+-- Cada FAQ é uma dupla pergunta+resposta. O sistema sempre exibe um set
+-- mínimo de FAQs padrão (server-side) + o que o advogado cadastrar aqui.
+CREATE TABLE IF NOT EXISTS public.lawyer_faqs (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  lawyer_id uuid NOT NULL REFERENCES public.lawyers(id) ON DELETE CASCADE,
+  question text NOT NULL,
+  answer text NOT NULL,
+  position int NOT NULL DEFAULT 0,
+  visible boolean NOT NULL DEFAULT true,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS lawyer_faqs_lawyer_idx
+  ON public.lawyer_faqs (lawyer_id, position);
+
+COMMENT ON TABLE public.lawyer_faqs IS
+  'FAQs editáveis pelo advogado, exibidas em ordem de position. Visible=false esconde sem deletar.';
+
+ALTER TABLE public.lawyer_faqs ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "lawyer_faqs_public_read" ON public.lawyer_faqs;
+CREATE POLICY "lawyer_faqs_public_read"
+  ON public.lawyer_faqs FOR SELECT
+  USING (visible = true);
+
+DROP POLICY IF EXISTS "lawyer_faqs_owner_all" ON public.lawyer_faqs;
+CREATE POLICY "lawyer_faqs_owner_all"
+  ON public.lawyer_faqs FOR ALL
+  USING (auth.uid() = lawyer_id)
+  WITH CHECK (auth.uid() = lawyer_id);
+
+-- =====================================================================
 -- 5) Trigger pra manter updated_at automaticamente nas novas tabelas
 -- =====================================================================
 -- Reusa função existente (se foi criada em migration anterior) ou cria.
@@ -248,6 +312,11 @@ CREATE TRIGGER lawyer_questions_set_updated_at
 DROP TRIGGER IF EXISTS lawyer_metrics_set_updated_at ON public.lawyer_metrics;
 CREATE TRIGGER lawyer_metrics_set_updated_at
   BEFORE UPDATE ON public.lawyer_metrics
+  FOR EACH ROW EXECUTE FUNCTION public.set_updated_at_timestamp();
+
+DROP TRIGGER IF EXISTS lawyer_faqs_set_updated_at ON public.lawyer_faqs;
+CREATE TRIGGER lawyer_faqs_set_updated_at
+  BEFORE UPDATE ON public.lawyer_faqs
   FOR EACH ROW EXECUTE FUNCTION public.set_updated_at_timestamp();
 
 -- =====================================================================
@@ -276,6 +345,16 @@ UPDATE public.lawyers
 SET page_status = 'review'
 WHERE plan_status = 'pending'
   AND page_status = 'not_configured';
+
+-- Backfill primary_specialties — pega as 3 primeiras de specialties
+UPDATE public.lawyers
+SET primary_specialties = (
+  SELECT array_agg(s) FROM (
+    SELECT unnest(specialties) AS s LIMIT 3
+  ) sub
+)
+WHERE primary_specialties = '{}'::text[]
+  AND array_length(specialties, 1) > 0;
 
 -- =============================================================================
 -- FIM da migration 0006.

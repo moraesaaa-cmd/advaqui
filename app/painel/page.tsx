@@ -11,8 +11,10 @@ import {
   Edit3,
   ExternalLink,
   FileText,
+  HelpCircle,
   LogOut,
   MessageSquare,
+  Palette,
   Sparkles,
   Star,
   Target,
@@ -227,7 +229,13 @@ export default function PainelPage() {
             website: draft.website,
             instagram: draft.instagram,
             linkedin: draft.linkedin,
-            officeHours: draft.officeHours
+            officeHours: draft.officeHours,
+            // Fase 3 — campos novos
+            shortSummary: draft.shortSummary,
+            primarySpecialties: draft.primarySpecialties,
+            serviceModalities: draft.serviceModalities,
+            serviceRegion: draft.serviceRegion,
+            preferredContact: draft.preferredContact
           })
         },
         12000
@@ -453,6 +461,49 @@ export default function PainelPage() {
               upsell pra free/expired. */}
           <MyProfessionalPageCard lawyer={user} />
 
+          {/* Atalhos rápidos para módulos da Página Profissional (Fase 3).
+              Só pra premium ativo. Quando a migration 0006 está pendente,
+              cada página individual mostra aviso amigável. */}
+          {status === "active" && (
+            <section className="card">
+              <h2 className="font-display text-lg font-bold text-brand-ink mb-3">
+                Conteúdo da Página Profissional
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <Link
+                  href="/painel/artigos"
+                  className="group rounded-xl border border-brand-line bg-white p-4 hover:border-brand-deep transition"
+                >
+                  <FileText className="w-5 h-5 text-brand-deep mb-2 group-hover:scale-110 transition" aria-hidden />
+                  <p className="font-semibold text-sm text-brand-ink">Artigos próprios</p>
+                  <p className="text-xs text-brand-ink/65 mt-0.5">
+                    Publique conteúdo informativo nas suas áreas.
+                  </p>
+                </Link>
+                <Link
+                  href="/painel/perguntas"
+                  className="group rounded-xl border border-brand-line bg-white p-4 hover:border-brand-deep transition"
+                >
+                  <HelpCircle className="w-5 h-5 text-brand-deep mb-2 group-hover:scale-110 transition" aria-hidden />
+                  <p className="font-semibold text-sm text-brand-ink">Perguntas de leitores</p>
+                  <p className="text-xs text-brand-ink/65 mt-0.5">
+                    Modere e responda as dúvidas recebidas.
+                  </p>
+                </Link>
+                <Link
+                  href="/painel/aparencia"
+                  className="group rounded-xl border border-brand-line bg-white p-4 hover:border-brand-deep transition"
+                >
+                  <Palette className="w-5 h-5 text-brand-deep mb-2 group-hover:scale-110 transition" aria-hidden />
+                  <p className="font-semibold text-sm text-brand-ink">Aparência</p>
+                  <p className="text-xs text-brand-ink/65 mt-0.5">
+                    Controle o que aparece na sua Página Profissional.
+                  </p>
+                </Link>
+              </div>
+            </section>
+          )}
+
           {/* Foto de perfil — disponível pra qualquer plano. Endpoint
               /api/painel/photo trata upload via Supabase Storage. */}
           <PhotoUploader
@@ -508,7 +559,49 @@ export default function PainelPage() {
                   />
                 </div>
                 <div>
-                  <label className="label">Bio (ate 500 caracteres)</label>
+                  <div className="flex items-center justify-between">
+                    <label className="label">Bio (até 500 caracteres)</label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        // Assistente de Bio — preenche um esqueleto editável
+                        // baseado no perfil atual. O advogado completa.
+                        const areas = (
+                          draft.primarySpecialties && draft.primarySpecialties.length > 0
+                            ? draft.primarySpecialties
+                            : draft.specialties
+                        )
+                          .map(
+                            (slug) =>
+                              SPECIALTIES.find((s) => s.slug === slug)?.name || slug
+                          )
+                          .slice(0, 3)
+                          .join(", ");
+                        const cidade = draft.cityName || "[sua cidade]";
+                        const uf = draft.uf || "";
+                        const modalidade =
+                          (draft.serviceModalities || []).includes("in_person") &&
+                          (draft.serviceModalities || []).includes("online")
+                            ? "presencial e online"
+                            : (draft.serviceModalities || []).includes("online")
+                            ? "online"
+                            : "presencial";
+                        const template = `${draft.name} atua em ${areas || "[áreas de atuação]"}, com atendimento em ${cidade}${uf ? "/" + uf : ""}${draft.serviceRegion ? " e região (" + draft.serviceRegion + ")" : ""}. Sua atuação é voltada a [tipos de demandas], oferecendo orientação jurídica de forma ${modalidade}, conforme as necessidades de cada caso.`;
+                        if (
+                          draft.bio &&
+                          !window.confirm(
+                            "Já existe uma bio escrita. Substituir pelo modelo do assistente?"
+                          )
+                        ) {
+                          return;
+                        }
+                        setDraft({ ...draft, bio: template.slice(0, 500) });
+                      }}
+                      className="text-xs text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline"
+                    >
+                      Usar assistente
+                    </button>
+                  </div>
                   <textarea
                     className="input min-h-24"
                     value={draft.bio || ""}
@@ -517,8 +610,30 @@ export default function PainelPage() {
                   />
                 </div>
 
+                {/* Resumo profissional curto — Fase 3 */}
+                {status === "active" && (
+                  <div>
+                    <label className="label">
+                      Resumo profissional curto (até 160 caracteres)
+                    </label>
+                    <textarea
+                      className="input min-h-16"
+                      value={draft.shortSummary || ""}
+                      maxLength={160}
+                      placeholder="Ex.: Atuação em Direito Civil, Família e Previdenciário em Almenara/MG e região, com atendimento presencial e online."
+                      onChange={(e) =>
+                        setDraft({ ...draft, shortSummary: e.target.value })
+                      }
+                    />
+                    <p className="text-[11px] text-brand-ink/55 mt-1">
+                      Aparece no topo da sua Página Profissional, abaixo do nome/OAB.
+                      {(draft.shortSummary || "").length} / 160 caracteres
+                    </p>
+                  </div>
+                )}
+
                 <div>
-                  <label className="label">Areas de atuacao</label>
+                  <label className="label">Áreas de atuação</label>
                   <div className="flex flex-wrap gap-2">
                     {SPECIALTIES.map((specialty) => {
                       const active = draft.specialties.includes(specialty.slug);
@@ -539,6 +654,120 @@ export default function PainelPage() {
                     })}
                   </div>
                 </div>
+
+                {/* Áreas principais (até 3) — Fase 3 */}
+                {status === "active" && draft.specialties.length > 0 && (
+                  <div>
+                    <label className="label">
+                      Áreas principais (escolha até 3 para destacar)
+                    </label>
+                    <p className="text-xs text-brand-ink/60 mb-2">
+                      As áreas marcadas aqui aparecem em destaque no topo. As
+                      demais ficam em &quot;Outras áreas informadas&quot;.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {draft.specialties.map((slug) => {
+                        const active = (draft.primarySpecialties || []).includes(slug);
+                        const reachedLimit =
+                          !active && (draft.primarySpecialties || []).length >= 3;
+                        return (
+                          <button
+                            key={`primary-${slug}`}
+                            type="button"
+                            disabled={reachedLimit}
+                            onClick={() => {
+                              const current = draft.primarySpecialties || [];
+                              const next = active
+                                ? current.filter((s) => s !== slug)
+                                : [...current, slug].slice(0, 3);
+                              setDraft({ ...draft, primarySpecialties: next });
+                            }}
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium border transition ${
+                              active
+                                ? "bg-brand-accent2 text-white border-brand-accent2"
+                                : reachedLimit
+                                ? "bg-brand-line/30 text-brand-ink/40 border-brand-line cursor-not-allowed"
+                                : "bg-white text-brand-ink border-brand-line hover:border-brand-accent2"
+                            }`}
+                          >
+                            {SPECIALTIES.find((s) => s.slug === slug)?.name || slug}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Atendimento — Fase 3 */}
+                {status === "active" && (
+                  <div className="rounded-xl border border-brand-line bg-brand-bg/30 p-4 space-y-3">
+                    <p className="text-xs font-semibold text-brand-ink">
+                      Atendimento (Página Profissional)
+                    </p>
+                    <div>
+                      <label className="label">Modalidade</label>
+                      <div className="flex flex-wrap gap-2">
+                        {(["in_person", "online"] as const).map((mod) => {
+                          const active = (draft.serviceModalities || []).includes(mod);
+                          const label =
+                            mod === "in_person" ? "Presencial" : "Online";
+                          return (
+                            <button
+                              key={mod}
+                              type="button"
+                              onClick={() => {
+                                const cur = draft.serviceModalities || [];
+                                const next = active
+                                  ? cur.filter((m) => m !== mod)
+                                  : [...cur, mod];
+                                setDraft({ ...draft, serviceModalities: next });
+                              }}
+                              className={`px-3 py-1.5 rounded-full text-xs font-medium border transition ${
+                                active
+                                  ? "bg-brand-deep text-white border-brand-deep"
+                                  : "bg-white text-brand-ink border-brand-line hover:border-brand-deep"
+                              }`}
+                            >
+                              {label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="label">Região atendida (texto livre)</label>
+                      <input
+                        className="input text-sm"
+                        placeholder="Ex.: Almenara/MG e região do Vale do Jequitinhonha"
+                        maxLength={200}
+                        value={draft.serviceRegion || ""}
+                        onChange={(e) =>
+                          setDraft({ ...draft, serviceRegion: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div>
+                      <label className="label">Canal preferencial de contato</label>
+                      <select
+                        className="input text-sm"
+                        value={draft.preferredContact || ""}
+                        onChange={(e) =>
+                          setDraft({
+                            ...draft,
+                            preferredContact:
+                              (e.target.value as "whatsapp" | "phone" | "email") ||
+                              undefined
+                          })
+                        }
+                      >
+                        <option value="">— Sem preferência declarada —</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="phone">Telefone</option>
+                        <option value="email">E-mail</option>
+                      </select>
+                    </div>
+                  </div>
+                )}
 
                 <div className="rounded-xl border border-brand-line bg-brand-bg p-4">
                   <div className="flex items-start justify-between gap-3 mb-2">
