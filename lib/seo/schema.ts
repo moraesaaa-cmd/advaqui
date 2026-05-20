@@ -63,7 +63,7 @@ export const lawyerSchema = (lawyer: Lawyer) => ({
   description: lawyer.bio,
   telephone: lawyer.phone,
   email: lawyer.email,
-  url: `${SITE.url}/p/${lawyer.slug}`,
+  url: `${SITE.url}/advogado/${lawyer.slug}`,
   areaServed: {
     "@type": "City",
     name: lawyer.cityName,

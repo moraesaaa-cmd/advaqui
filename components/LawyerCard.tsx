@@ -70,7 +70,7 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
                 isFeatured ? "text-xl text-brand-deep" : "text-lg text-brand-ink"
               } font-bold`}
             >
-              <Link href={`/p/${lawyer.slug}`} className="hover:underline underline-offset-2">
+              <Link href={`/advogado/${lawyer.slug}`} className="hover:underline underline-offset-2">
                 {lawyer.name}
               </Link>
             </h3>
@@ -159,7 +159,7 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
 
       <div className="flex flex-wrap gap-2 mt-4">
         <Link
-          href={`/p/${lawyer.slug}`}
+          href={`/advogado/${lawyer.slug}`}
           className="btn-primary text-sm py-2 px-4"
         >
           Ver perfil completo

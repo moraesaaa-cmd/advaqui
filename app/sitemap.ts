@@ -55,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const slugs = await getAllLawyerSlugs();
   const profileRoutes: MetadataRoute.Sitemap = slugs.map((slug) => ({
-    url: `${base}/p/${slug}`,
+    url: `${base}/advogado/${slug}`,
     changeFrequency: "weekly",
     priority: 0.5,
     lastModified: now

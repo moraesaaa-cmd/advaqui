@@ -23,6 +23,7 @@ import { PlanBadge } from "@/components/PlanBadge";
 import { ExtraCityField } from "@/components/ExtraCityField";
 import { PhotoUploader } from "@/components/PhotoUploader";
 import { OfficeHoursEditor } from "@/components/OfficeHoursEditor";
+import { MyProfessionalPageCard } from "@/components/MyProfessionalPageCard";
 import { PLAN } from "@/lib/config";
 import { daysUntil, formatCurrency, formatDate } from "@/lib/utils/format";
 import { SPECIALTIES } from "@/lib/data/specialties";
@@ -406,7 +407,7 @@ export default function PainelPage() {
         </div>
         <div className="flex items-center gap-2">
           <Link
-            href={`/p/${user.slug}`}
+            href={`/advogado/${user.slug}`}
             target="_blank"
             className="btn-ghost border border-brand-line text-sm"
           >
@@ -461,6 +462,11 @@ export default function PainelPage() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
+          {/* Página Profissional AdvAqui — recurso Premium (Maio/2026).
+              Card adapta automaticamente: publicada / incompleta / pending /
+              upsell pra free/expired. */}
+          <MyProfessionalPageCard lawyer={user} />
+
           {/* Foto de perfil — disponível pra qualquer plano. Endpoint
               /api/painel/photo trata upload via Supabase Storage. */}
           <PhotoUploader
@@ -469,7 +475,7 @@ export default function PainelPage() {
             onChange={(url) => setUser({ ...user, photoUrl: url || undefined })}
           />
 
-          <section className="card">
+          <section id="meu-perfil" className="card scroll-mt-24">
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-display text-xl font-bold text-brand-ink">Meu perfil</h2>
               {!editing && (

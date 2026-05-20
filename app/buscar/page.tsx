@@ -115,7 +115,7 @@ function ResultsInner() {
             {lawyers.map((l) => (
               <li key={l.id}>
                 <Link
-                  href={`/p/${l.slug}`}
+                  href={`/advogado/${l.slug}`}
                   className="card flex items-center justify-between hover:border-brand-accent transition group"
                 >
                   <div>

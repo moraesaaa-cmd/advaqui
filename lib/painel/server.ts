@@ -146,6 +146,8 @@ export function revalidateLawyerPages(
 ): void {
   const paths = new Set<string>();
   paths.add("/");
+  // URL canônica nova (Maio/2026) + URL legada que ainda faz redirect 301
+  paths.add(`/advogado/${lawyer.slug}`);
   paths.add(`/p/${lawyer.slug}`);
   paths.add("/advogados");
 

@@ -51,6 +51,7 @@ export async function POST() {
   // 3. Revalida todas as rotas onde o perfil aparece
   const paths = new Set<string>();
   paths.add("/");
+  paths.add(`/advogado/${lawyer.slug}`);
   paths.add(`/p/${lawyer.slug}`);
 
   const ufLower = (lawyer.uf as string).toLowerCase();

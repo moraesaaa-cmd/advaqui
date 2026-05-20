@@ -36,6 +36,7 @@ async function revalidateLawyerPages(lawyerId: string): Promise<void> {
     if (!data) return;
     const paths = new Set<string>();
     paths.add("/");
+    paths.add(`/advogado/${data.slug}`);
     paths.add(`/p/${data.slug}`);
     paths.add("/advogados");
 
