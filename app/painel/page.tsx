@@ -22,6 +22,7 @@ import {
 import { PlanBadge } from "@/components/PlanBadge";
 import { ExtraCityField } from "@/components/ExtraCityField";
 import { PhotoUploader } from "@/components/PhotoUploader";
+import { OfficeHoursEditor } from "@/components/OfficeHoursEditor";
 import { PLAN } from "@/lib/config";
 import { daysUntil, formatCurrency, formatDate } from "@/lib/utils/format";
 import { SPECIALTIES } from "@/lib/data/specialties";
@@ -623,14 +624,9 @@ export default function PainelPage() {
                   <div className="space-y-3">
                     <div>
                       <label className="label">Horários de atendimento</label>
-                      <input
-                        className="input"
-                        placeholder="Seg-Sex 9h-18h, Sáb 9h-12h"
-                        maxLength={200}
+                      <OfficeHoursEditor
                         value={draft.officeHours || ""}
-                        onChange={(event) =>
-                          setDraft({ ...draft, officeHours: event.target.value })
-                        }
+                        onChange={(next) => setDraft({ ...draft, officeHours: next })}
                       />
                     </div>
                     <div className="grid sm:grid-cols-3 gap-3">

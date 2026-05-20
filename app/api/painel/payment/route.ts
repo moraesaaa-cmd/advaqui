@@ -35,13 +35,39 @@ export async function POST() {
     );
   }
 
-  const { error: historyError } = await current.admin.from("plan_history").insert({
-    lawyer_id: current.lawyer.id,
-    amount: PLAN.price,
-    status: "pending",
-    payment_date: now,
-    txid: `AdvAqui${current.lawyer.id.slice(0, 6).toUpperCase()}`
-  });
+  // BUG FIX (Maio/2026): antes, cada clique do user em "Já paguei" criava UM
+  // novo registro em plan_history. Resultado: histórico inchava com dezenas
+  // de entries pending se o user clicasse várias vezes.
+  //
+  // Solução: se já existe um registro pending pra esse lawyer nas últimas
+  // 48h, ATUALIZA esse registro em vez de criar novo. Cada CICLO de pagamento
+  // tem só 1 entry no histórico (que vira "confirmed" quando admin ativa).
+  const { data: existingPending } = await current.admin
+    .from("plan_history")
+    .select("id")
+    .eq("lawyer_id", current.lawyer.id)
+    .eq("status", "pending")
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  let historyError: { message?: string } | null = null;
+  if (existingPending?.id) {
+    const res = await current.admin
+      .from("plan_history")
+      .update({ payment_date: now })
+      .eq("id", existingPending.id);
+    historyError = res.error;
+  } else {
+    const res = await current.admin.from("plan_history").insert({
+      lawyer_id: current.lawyer.id,
+      amount: PLAN.price,
+      status: "pending",
+      payment_date: now,
+      txid: `AdvAqui${current.lawyer.id.slice(0, 6).toUpperCase()}`
+    });
+    historyError = res.error;
+  }
 
   if (historyError) {
     console.error("[painel] payment history insert failed", historyError);

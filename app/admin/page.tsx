@@ -343,6 +343,71 @@ export default function AdminPage() {
   };
 
   /**
+   * Editar cidade PRINCIPAL do advogado de uma vez (UF + nome + slug).
+   *
+   * O botão antigo "Editar cidade" só mudava city_name, deixando city_slug
+   * desatualizado — resultado: o card ficava em /advogados/MG/<slug-antigo>
+   * mas mostrava o nome novo. Esse handler edita os 3 campos sincronizados.
+   *
+   * Slug é gerado automaticamente a partir do nome (lowercase, sem acentos,
+   * hífen no lugar de espaços).
+   */
+  const editMainCity = async (
+    id: string,
+    currentUf: string,
+    currentName: string
+  ) => {
+    const uf = window.prompt(
+      `UF da cidade principal (2 letras, ex: MG, SP):`,
+      currentUf || ""
+    );
+    if (uf === null) return;
+    const ufClean = uf.trim().toUpperCase();
+    if (!/^[A-Z]{2}$/.test(ufClean)) {
+      toast("UF inválida (precisa ter 2 letras maiúsculas)", "error");
+      return;
+    }
+    const name = window.prompt(
+      `Nome da cidade (sem UF, ex: Belo Horizonte):`,
+      currentName || ""
+    );
+    if (name === null) return;
+    const nameClean = name.trim();
+    if (nameClean.length < 2) {
+      toast("Nome de cidade inválido", "error");
+      return;
+    }
+    const slug = nameClean
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    if (!slug) {
+      toast("Nome gerou slug vazio — tente outro nome", "error");
+      return;
+    }
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({
+      action: "update-lawyer",
+      id,
+      fields: {
+        uf: ufClean,
+        city_name: nameClean,
+        city_slug: slug
+      }
+    });
+    setBusy(false);
+    if (r.status === 200) {
+      toast(`Cidade principal atualizada para ${nameClean}/${ufClean}`);
+      await refreshUsers();
+    } else {
+      toast(r.json.error || "Erro ao atualizar cidade", "error");
+    }
+  };
+
+  /**
    * Remove a foto do perfil do advogado.
    * Apaga arquivos do Storage (.jpg/.png/.webp) e zera coluna photo_url.
    */
@@ -674,14 +739,12 @@ export default function AdminPage() {
                     Editar telefone
                   </button>
                   <button
-                    onClick={() =>
-                      editLawyerField(u.id, "city_name", "Nova cidade (nome completo)", u.city_name)
-                    }
+                    onClick={() => editMainCity(u.id, u.uf, u.city_name)}
                     disabled={busy}
                     className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
-                    title="Editar cidade do advogado"
+                    title="Editar cidade principal (UF + nome + slug juntos)"
                   >
-                    Editar cidade
+                    Editar cidade principal
                   </button>
                   <button
                     onClick={() => editLawyerField(u.id, "oab", "Novo numero OAB", u.oab)}

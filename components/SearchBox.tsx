@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Search, MapPin, ChevronRight, Loader2 } from "lucide-react";
 
 type Hit = { name: string; slug: string; uf: string; isCapital: boolean };
@@ -9,8 +10,17 @@ type Hit = { name: string; slug: string; uf: string; isCapital: boolean };
 /**
  * SearchBox usa endpoint /api/cities para não injetar 5.571 cidades
  * no bundle JavaScript do cliente. Debounce de 200ms reduz requests.
+ *
+ * Comportamento ao apertar Enter (form submit) — Maio/2026:
+ *   1. Se há resultado(s) no autocomplete → navega pro primeiro
+ *   2. Se não há resultado mas tem termo → /buscar?q=<termo>
+ *   3. Se termo vazio → não faz nada
+ *
+ * Resolve o bug em que apertar Enter no input não disparava nada (o user
+ * tinha que clicar no item do dropdown ou no botão Buscar).
  */
 export function SearchBox() {
+  const router = useRouter();
   const [q, setQ] = useState("");
   const [hits, setHits] = useState<Hit[]>([]);
   const [loading, setLoading] = useState(false);
@@ -42,8 +52,24 @@ export function SearchBox() {
     };
   }, [q]);
 
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const term = q.trim();
+    if (!term) return;
+    // Se há sugestão → navega pro primeiro hit (match mais relevante)
+    if (hits.length > 0) {
+      const first = hits[0];
+      router.push(`/advogados/${first.uf.toLowerCase()}/${first.slug}`);
+      setOpen(false);
+      return;
+    }
+    // Sem sugestão exata → vai pra busca interna
+    router.push(`/buscar?q=${encodeURIComponent(term)}`);
+    setOpen(false);
+  };
+
   return (
-    <div className="w-full">
+    <form onSubmit={handleSubmit} className="w-full" role="search">
       <div className="flex bg-white rounded-2xl overflow-hidden shadow-cardHover">
         <label htmlFor="search-city" className="sr-only">
           Buscar cidade
@@ -67,7 +93,7 @@ export function SearchBox() {
         <button
           className="px-6 bg-brand-accent text-brand-ink font-bold flex items-center gap-2"
           aria-label="Buscar"
-          type="button"
+          type="submit"
         >
           {loading ? (
             <Loader2 className="w-5 h-5 animate-spin" aria-hidden />
@@ -107,6 +133,6 @@ export function SearchBox() {
           Nenhuma cidade encontrada com &quot;{q}&quot;. Tente outro nome.
         </div>
       )}
-    </div>
+    </form>
   );
 }

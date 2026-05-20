@@ -89,35 +89,51 @@ export async function PATCH(req: Request) {
     return t.replace(/^@/, "").trim() || null;
   };
 
+  // BUG CRÍTICO RESOLVIDO (Maio/2026): antes, qualquer PATCH /api/painel/profile
+  // setava photo_url = optionalText(body.photoUrl, 500), o que devolvia null
+  // quando o painel não incluía esse campo no body (ex: user clica "Salvar
+  // alterações" depois de editar só nome ou bio). Resultado: a FOTO ERA
+  // APAGADA toda vez que o user salvava qualquer outra alteração.
+  //
+  // Solução: para os campos opcionais (foto + premium), só incluir no UPDATE
+  // se a CHAVE estiver presente no body. Se o painel não mandou photoUrl, a
+  // foto fica intacta no banco. Idem pra website, instagram, linkedin,
+  // office_hours, target_city, target_uf, extra_cities — só atualiza quando
+  // o cliente explicitamente envia.
   const update: Partial<LawyerRow> = {
     name,
     phone: optionalText(body.phone, 30),
     whatsapp: optionalText(body.whatsapp, 30),
     address: optionalText(body.address, 250),
     bio: optionalText(body.bio, 500),
-    specialties: normalizeSpecialties(body.specialties),
-    // photo_url é aceito de qualquer plano — foto é direito básico do perfil.
-    // Aceita tanto path do bucket (avatars/xxx.jpg) quanto URL externa.
-    photo_url: optionalText(body.photoUrl, 500)
+    specialties: normalizeSpecialties(body.specialties)
   };
 
+  // photo_url só é alterado se o cliente explicitamente enviou a key.
+  // Aceita string vazia/null como "limpar a foto" (UX: PhotoUploader > Remover).
+  if ("photoUrl" in body) {
+    update.photo_url = optionalText(body.photoUrl, 500);
+  }
+
   if (isPremium) {
-    update.target_city = optionalText(body.targetCity, 120);
-    update.target_uf = optionalText(body.targetUf, 2)?.toUpperCase() || null;
-    update.extra_cities = normalizeExtraCities(body.extraCities);
-    // Premium-only fields:
-    update.website = optionalUrl(body.website, 250);
-    update.instagram = normalizeHandle(body.instagram, 60);
-    update.linkedin = normalizeHandle(body.linkedin, 100);
-    update.office_hours = optionalText(body.officeHours, 200);
+    if ("targetCity" in body) update.target_city = optionalText(body.targetCity, 120);
+    if ("targetUf" in body)
+      update.target_uf = optionalText(body.targetUf, 2)?.toUpperCase() || null;
+    if ("extraCities" in body) update.extra_cities = normalizeExtraCities(body.extraCities);
+    if ("website" in body) update.website = optionalUrl(body.website, 250);
+    if ("instagram" in body) update.instagram = normalizeHandle(body.instagram, 60);
+    if ("linkedin" in body) update.linkedin = normalizeHandle(body.linkedin, 100);
+    if ("officeHours" in body) update.office_hours = optionalText(body.officeHours, 200);
   } else {
-    update.target_city = null;
-    update.target_uf = null;
-    update.extra_cities = [];
-    update.website = null;
-    update.instagram = null;
-    update.linkedin = null;
-    update.office_hours = null;
+    // Quando o user perde o premium, zeramos os campos premium UMA VEZ.
+    // Mas só se vier explicit no body (evita zerar a cada PATCH sem necessidade).
+    if ("targetCity" in body) update.target_city = null;
+    if ("targetUf" in body) update.target_uf = null;
+    if ("extraCities" in body) update.extra_cities = [];
+    if ("website" in body) update.website = null;
+    if ("instagram" in body) update.instagram = null;
+    if ("linkedin" in body) update.linkedin = null;
+    if ("officeHours" in body) update.office_hours = null;
   }
 
   // Tenta o UPDATE completo. Se falhar com "column does not exist" (migration

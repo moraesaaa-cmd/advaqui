@@ -287,14 +287,41 @@ export async function adminActivatePremium(
 
   if (error) return { ok: false, error: error.message };
 
-  // Registra no histórico
-  await admin.from("plan_history").insert({
-    lawyer_id: lawyerId,
-    amount: 59.9,
-    status: "confirmed",
-    payment_date: now.toISOString(),
-    expires_at: expires.toISOString()
-  });
+  // BUG FIX (Maio/2026): antes, cada activatePremium criava NOVO registro
+  // confirmed — o histórico ficava lotado de duplicatas quando o admin
+  // clicava "Ativar" mais de uma vez por engano ou ao reativar.
+  //
+  // Solução: se existe entry pending nas últimas 7 dias, ATUALIZA esse
+  // (pending → confirmed + expires_at preenchido). Caso contrário, cria
+  // novo. Garante 1 entry por ciclo de pagamento.
+  const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const { data: pendingHist } = await admin
+    .from("plan_history")
+    .select("id")
+    .eq("lawyer_id", lawyerId)
+    .eq("status", "pending")
+    .gte("created_at", sevenDaysAgo)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (pendingHist?.id) {
+    await admin
+      .from("plan_history")
+      .update({
+        status: "confirmed",
+        expires_at: expires.toISOString()
+      })
+      .eq("id", pendingHist.id);
+  } else {
+    await admin.from("plan_history").insert({
+      lawyer_id: lawyerId,
+      amount: 59.9,
+      status: "confirmed",
+      payment_date: now.toISOString(),
+      expires_at: expires.toISOString()
+    });
+  }
 
   return { ok: true };
 }

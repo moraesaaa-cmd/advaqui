@@ -30,31 +30,42 @@ async function revalidateLawyerPages(lawyerId: string): Promise<void> {
     const supabase = createAdminClient();
     const { data } = await supabase
       .from("lawyers")
-      .select("slug,uf,city_slug,target_uf,target_city,extra_cities")
+      .select("slug,uf,city_slug,target_uf,target_city,extra_cities,specialties")
       .eq("id", lawyerId)
       .maybeSingle();
     if (!data) return;
     const paths = new Set<string>();
     paths.add("/");
     paths.add(`/p/${data.slug}`);
+    paths.add("/advogados");
 
-    const uf = (data.uf as string).toLowerCase();
-    paths.add(`/advogados/${uf}`);
-    paths.add(`/advogados/${uf}/${data.city_slug}`);
+    const specs = Array.isArray(data.specialties)
+      ? (data.specialties as string[])
+      : [];
 
+    // Coleta TODAS as cidades onde o lawyer aparece (principal, target, extras)
+    type CityPair = { uf: string; slug: string };
+    const cityPairs: CityPair[] = [];
+    cityPairs.push({ uf: data.uf as string, slug: data.city_slug as string });
     if (data.target_uf && data.target_city) {
-      const tuf = (data.target_uf as string).toLowerCase();
-      paths.add(`/advogados/${tuf}`);
-      paths.add(`/advogados/${tuf}/${data.target_city}`);
+      cityPairs.push({ uf: data.target_uf as string, slug: data.target_city as string });
     }
-
-    // Inclui extra_cities (até 9 entradas)
     const extras = Array.isArray(data.extra_cities) ? data.extra_cities : [];
     for (const c of extras as Array<{ uf?: string; slug?: string }>) {
       if (c && typeof c.uf === "string" && typeof c.slug === "string") {
-        const tuf = c.uf.toLowerCase();
-        paths.add(`/advogados/${tuf}`);
-        paths.add(`/advogados/${tuf}/${c.slug}`);
+        cityPairs.push({ uf: c.uf, slug: c.slug });
+      }
+    }
+
+    // Para cada cidade: índice + página + especialidades do user
+    for (const pair of cityPairs) {
+      const ufLower = pair.uf.toLowerCase();
+      paths.add(`/advogados/${ufLower}`);
+      paths.add(`/advogados/${ufLower}/${pair.slug}`);
+      for (const sp of specs) {
+        if (typeof sp === "string" && sp) {
+          paths.add(`/advogados/${ufLower}/${pair.slug}/${sp}`);
+        }
       }
     }
 

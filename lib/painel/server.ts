@@ -132,30 +132,55 @@ export function normalizeExtraCities(input: unknown): ExtraCityRow[] {
   return normalized;
 }
 
-export function revalidateLawyerPages(lawyer: Pick<
-  LawyerRow,
-  "slug" | "uf" | "city_slug" | "target_uf" | "target_city" | "extra_cities"
->): void {
+export function revalidateLawyerPages(
+  lawyer: Pick<
+    LawyerRow,
+    | "slug"
+    | "uf"
+    | "city_slug"
+    | "target_uf"
+    | "target_city"
+    | "extra_cities"
+    | "specialties"
+  >
+): void {
   const paths = new Set<string>();
   paths.add("/");
   paths.add(`/p/${lawyer.slug}`);
+  paths.add("/advogados");
 
-  const ufLower = lawyer.uf.toLowerCase();
-  paths.add(`/advogados/${ufLower}`);
-  paths.add(`/advogados/${ufLower}/${lawyer.city_slug}`);
+  const specs = Array.isArray(lawyer.specialties) ? lawyer.specialties : [];
 
+  /**
+   * Coleta todas as (uf, citySlug) onde o lawyer aparece: cidade principal,
+   * target legado e cidades adicionais. Para cada uma, revalidamos a página
+   * da cidade + uma página por especialidade do user (não todas as 15+
+   * especialidades, só as relevantes — economiza ~90% das chamadas).
+   */
+  type CityPair = { uf: string; slug: string };
+  const cityPairs: CityPair[] = [];
+  cityPairs.push({ uf: lawyer.uf, slug: lawyer.city_slug });
   if (lawyer.target_uf && lawyer.target_city) {
-    const targetUf = lawyer.target_uf.toLowerCase();
-    paths.add(`/advogados/${targetUf}`);
-    paths.add(`/advogados/${targetUf}/${lawyer.target_city}`);
+    cityPairs.push({ uf: lawyer.target_uf, slug: lawyer.target_city });
   }
-
   const extras = Array.isArray(lawyer.extra_cities) ? lawyer.extra_cities : [];
   for (const city of extras) {
     if (city?.uf && city?.slug) {
-      const extraUf = city.uf.toLowerCase();
-      paths.add(`/advogados/${extraUf}`);
-      paths.add(`/advogados/${extraUf}/${city.slug}`);
+      cityPairs.push({ uf: city.uf, slug: city.slug });
+    }
+  }
+
+  for (const pair of cityPairs) {
+    const ufLower = pair.uf.toLowerCase();
+    // Página do estado (índice de cidades)
+    paths.add(`/advogados/${ufLower}`);
+    // Página da cidade
+    paths.add(`/advogados/${ufLower}/${pair.slug}`);
+    // Páginas por especialidade dessa cidade — só as que o user atua
+    for (const sp of specs) {
+      if (typeof sp === "string" && sp) {
+        paths.add(`/advogados/${ufLower}/${pair.slug}/${sp}`);
+      }
     }
   }
 
