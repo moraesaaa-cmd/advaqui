@@ -6,7 +6,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   AlertCircle,
   BookOpen,
-  CheckCircle,
   CheckSquare,
   Clock,
   Edit3,
@@ -113,24 +112,12 @@ const planMessage = (status: PlanStatus, daysLeft: number | null): string => {
   return "Cadastro gratuito ativo";
 };
 
-const completeness = (lawyer: Lawyer): { pct: number; missing: string[] } => {
-  const checks: Array<[boolean, string]> = [
-    [!!lawyer.name, "Nome"],
-    [!!lawyer.oab && !!lawyer.oabUf, "OAB"],
-    [!!lawyer.email, "E-mail"],
-    [!!lawyer.phone, "Telefone"],
-    [!!lawyer.whatsapp, "WhatsApp"],
-    [!!lawyer.address, "Endereco profissional"],
-    [!!lawyer.photoUrl, "Foto de perfil"],
-    [!!lawyer.bio && lawyer.bio.length > 30, "Bio com pelo menos 30 caracteres"],
-    [lawyer.specialties.length >= 2, "Pelo menos 2 areas de atuacao"]
-  ];
-  const done = checks.filter(([ok]) => ok).length;
-  return {
-    pct: Math.round((done / checks.length) * 100),
-    missing: checks.filter(([ok]) => !ok).map(([, label]) => label)
-  };
-};
+/**
+ * Cálculo de completude/força do perfil agora vive dentro do
+ * MyProfessionalPageCard (Central da Página Profissional). Mantivemos a
+ * lógica centralizada lá pra evitar duplicar regras de produto e dois
+ * widgets mostrando a mesma coisa no painel.
+ */
 
 export default function PainelPage() {
   const router = useRouter();
@@ -170,7 +157,6 @@ export default function PainelPage() {
 
   const daysLeft = useMemo(() => daysUntil(user?.planEndDate), [user?.planEndDate]);
   const status = user?.planStatus || "free";
-  const comp = useMemo(() => (user ? completeness(user) : { pct: 0, missing: [] }), [user]);
 
   const startEdit = () => {
     if (!user) return;
@@ -816,30 +802,6 @@ export default function PainelPage() {
               <Link href="/painel/pagamento" className="btn-accent w-full mt-4 text-sm">
                 {status === "expired" ? "Renovar premium" : "Ativar premium"}
               </Link>
-            )}
-          </div>
-
-          <div className="card">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-sm font-semibold text-brand-ink">Perfil</p>
-              <span className="text-sm font-bold text-brand-deep">{comp.pct}%</span>
-            </div>
-            <div className="h-2 bg-brand-line rounded-full overflow-hidden mb-3">
-              <div className="h-full bg-brand-deep transition-all" style={{ width: `${comp.pct}%` }} />
-            </div>
-            {comp.missing.length > 0 ? (
-              <>
-                <p className="text-xs text-brand-ink/70 mb-2">Falta preencher:</p>
-                <ul className="text-xs text-brand-ink/70 space-y-1 list-disc list-inside">
-                  {comp.missing.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <div className="inline-flex items-center gap-1 text-emerald-700 text-xs font-medium">
-                <CheckCircle className="w-3.5 h-3.5" aria-hidden /> Perfil completo
-              </div>
             )}
           </div>
 

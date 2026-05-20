@@ -9,36 +9,44 @@ import {
   Check,
   Sparkles,
   AlertCircle,
-  X
+  X,
+  Edit3,
+  Globe,
+  EyeOff,
+  CheckCircle2,
+  Clock
 } from "lucide-react";
 import { SITE } from "@/lib/config";
 import type { Lawyer } from "@/lib/data/lawyer-mapper";
 
 /**
- * Card "Minha Página Profissional" — exibido no topo do painel do advogado.
+ * Central da Página Profissional — bloco principal do dashboard do advogado
+ * (Maio/2026, segunda iteração do recurso).
  *
- * Maio/2026 — Fase 1 (MVP) do recurso "Página Profissional AdvAqui".
+ * Renomeado de "Minha Página Profissional" pra "Central da Página
+ * Profissional" — agora consolida em um só lugar:
+ *   • Status atual (Não configurada / Incompleta / Publicada / Em análise)
+ *   • Visibilidade (Online e indexável / Disponível como rascunho privado)
+ *   • URL pública
+ *   • Última atualização
+ *   • Percentual de completude
+ *   • Botões de ação (Ver pública, Editar, Copiar link, QR Code)
  *
- * Comportamento por status:
- *   • Premium ATIVO + dados obrigatórios completos → mostra "Publicada":
- *     URL, Acessar, Copiar link, Gerar QR Code.
- *   • Premium ATIVO + dados incompletos (sem WhatsApp/área/bio) → mostra
- *     "Incompleta": link para Editar perfil.
- *   • Premium PENDING → mostra "Em análise" + link painel/pagamento.
- *   • Plano FREE/EXPIRED → mostra card de upsell pra ativar Premium.
- *
- * Linguagem sóbria conforme Provimento OAB 205/2021 — sem promessa de
- * resultado nem "contrate agora".
+ * Pausar/Republicar e Métricas dependem de migration 0006 (page_status,
+ * paused_at) — ficam pra próxima rodada quando a migration estiver aplicada.
  */
 
 type Status = "publicada" | "incompleta" | "pending" | "free" | "expired";
+type Visibility =
+  | "online_indexable"
+  | "online_not_indexable"
+  | "offline"
+  | "draft_only";
 
 function computeStatus(lawyer: Lawyer): Status {
   if (lawyer.planStatus === "pending") return "pending";
   if (lawyer.planStatus === "expired") return "expired";
   if (lawyer.planStatus !== "active") return "free";
-
-  // Premium ativo. Checa dados mínimos obrigatórios pra publicar.
   const hasWhatsapp = Boolean(
     (lawyer.whatsapp && lawyer.whatsapp.trim()) ||
       (lawyer.phone && lawyer.phone.trim())
@@ -48,8 +56,142 @@ function computeStatus(lawyer: Lawyer): Status {
   return "publicada";
 }
 
+function computeVisibility(status: Status): Visibility {
+  if (status === "publicada") return "online_indexable";
+  if (status === "incompleta") return "draft_only";
+  if (status === "pending") return "draft_only";
+  return "offline";
+}
+
+/**
+ * Calcula força/completude da Página Profissional baseado em 11 itens
+ * (alinhado com o pedido do produto, F2 — "Força da Página Profissional").
+ * Retorna pct (0-100) + lista do que falta.
+ */
+function computeStrength(lawyer: Lawyer): {
+  pct: number;
+  total: number;
+  done: number;
+  next: { label: string; action?: string } | null;
+} {
+  const checks: Array<{
+    ok: boolean;
+    label: string;
+    action: string;
+  }> = [
+    {
+      ok: !!lawyer.photoUrl,
+      label: "Foto profissional",
+      action:
+        "Adicione uma foto profissional para aumentar a confiança do visitante."
+    },
+    {
+      ok: !!lawyer.bio && lawyer.bio.length >= 300,
+      label: "Bio com 300+ caracteres",
+      action: "Escreva uma bio com pelo menos 300 caracteres."
+    },
+    {
+      ok: !!lawyer.whatsapp || !!lawyer.phone,
+      label: "WhatsApp ou telefone",
+      action: "Cadastre seu WhatsApp ou telefone profissional."
+    },
+    {
+      ok: !!lawyer.cityName && !!lawyer.uf,
+      label: "Cidade principal",
+      action: "Confirme sua cidade principal de atuação."
+    },
+    {
+      ok: lawyer.specialties.length >= 2,
+      label: "Pelo menos 2 áreas de atuação",
+      action: "Adicione pelo menos 2 áreas de atuação."
+    },
+    {
+      ok: !!lawyer.officeHours,
+      label: "Horários de atendimento",
+      action: "Cadastre seus horários de atendimento."
+    },
+    {
+      ok: !!lawyer.address,
+      label: "Endereço profissional",
+      action: "Adicione seu endereço profissional."
+    },
+    {
+      ok: (lawyer.extraCities || []).length > 0,
+      label: "Cidades adicionais",
+      action:
+        "Indique cidades adicionais onde você atende — multiplica seu alcance."
+    },
+    {
+      ok: !!(lawyer.website || lawyer.instagram || lawyer.linkedin),
+      label: "Link de site, Instagram ou LinkedIn",
+      action:
+        "Conecte ao menos uma rede social (Instagram ou LinkedIn) ou seu site."
+    },
+    {
+      ok: lawyer.verifiedOab === true,
+      label: "OAB verificada pelo admin",
+      action:
+        "A verificação de OAB é feita pelo nosso time — entre em contato pelo suporte."
+    },
+    {
+      ok: !!lawyer.email,
+      label: "E-mail profissional",
+      action: "Confirme seu e-mail profissional."
+    }
+  ];
+
+  const done = checks.filter((c) => c.ok).length;
+  const pct = Math.round((done / checks.length) * 100);
+  const next = checks.find((c) => !c.ok) || null;
+  return {
+    pct,
+    total: checks.length,
+    done,
+    next: next ? { label: next.label, action: next.action } : null
+  };
+}
+
+function visibilityLabel(v: Visibility): { text: string; tone: string } {
+  if (v === "online_indexable")
+    return { text: "Online e indexável", tone: "text-emerald-700 bg-emerald-50 border-emerald-200" };
+  if (v === "online_not_indexable")
+    return { text: "Online, mas não indexável", tone: "text-amber-800 bg-amber-50 border-amber-200" };
+  if (v === "draft_only")
+    return { text: "Disponível apenas como rascunho", tone: "text-brand-deep bg-brand-line/30 border-brand-line" };
+  return { text: "Fora do ar", tone: "text-brand-ink/60 bg-brand-bg border-brand-line" };
+}
+
+function statusLabel(s: Status): { text: string; tone: string } {
+  if (s === "publicada")
+    return { text: "Publicada", tone: "bg-emerald-100 text-emerald-800 border-emerald-200" };
+  if (s === "incompleta")
+    return { text: "Incompleta", tone: "bg-amber-100 text-amber-900 border-amber-300" };
+  if (s === "pending")
+    return { text: "Em revisão", tone: "bg-blue-100 text-blue-800 border-blue-200" };
+  return { text: "Não configurada", tone: "bg-brand-line/40 text-brand-ink/70 border-brand-line" };
+}
+
+function timeAgoBR(iso?: string): string {
+  if (!iso) return "—";
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return "—";
+  const diffMs = Date.now() - then;
+  const min = Math.floor(diffMs / 60000);
+  if (min < 1) return "agora";
+  if (min < 60) return `há ${min} min`;
+  const h = Math.floor(min / 60);
+  if (h < 24) return `há ${h} hora${h > 1 ? "s" : ""}`;
+  const d = Math.floor(h / 24);
+  if (d < 30) return `há ${d} dia${d > 1 ? "s" : ""}`;
+  const months = Math.floor(d / 30);
+  if (months < 12) return `há ${months} mês${months > 1 ? "es" : ""}`;
+  return new Date(iso).toLocaleDateString("pt-BR");
+}
+
 export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
   const status = computeStatus(lawyer);
+  const visibility = computeVisibility(status);
+  const strength = computeStrength(lawyer);
   const publicUrl = `${SITE.url}/advogado/${lawyer.slug}`;
   const [copied, setCopied] = useState(false);
   const [showQr, setShowQr] = useState(false);
@@ -60,7 +202,6 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback antigo
       const el = document.createElement("textarea");
       el.value = publicUrl;
       document.body.appendChild(el);
@@ -75,8 +216,12 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
     }
   };
 
-  // ---- variante: PUBLICADA ----
-  if (status === "publicada") {
+  // ---- variante: PUBLICADA ou INCOMPLETA (premium ativo) ----
+  if (status === "publicada" || status === "incompleta" || status === "pending") {
+    const stLabel = statusLabel(status);
+    const visLabel = visibilityLabel(visibility);
+    const isPublishable = status === "publicada";
+
     return (
       <>
         <section className="rounded-2xl border-2 border-brand-accent bg-gradient-to-br from-brand-accent2/10 via-white to-brand-accent/10 p-5 md:p-6 shadow-card relative overflow-hidden">
@@ -84,123 +229,204 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
             aria-hidden
             className="absolute -top-px left-4 right-4 h-1 bg-gradient-to-r from-brand-accent2 via-brand-accent to-brand-accent2 rounded-b"
           />
-          <div className="flex items-start gap-3 mb-3">
+
+          {/* Header */}
+          <div className="flex items-start gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-brand-accent flex items-center justify-center flex-shrink-0">
               <Sparkles className="w-5 h-5 text-brand-ink" aria-hidden />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <h2 className="font-display text-lg md:text-xl font-bold text-brand-ink">
-                Minha Página Profissional
+                Central da Página Profissional
               </h2>
-              <p className="text-xs md:text-sm text-brand-ink/70 mt-0.5">
-                Publicada · pronta pra compartilhar em WhatsApp, Instagram,
-                cartão digital, assinatura de e-mail.
+              <p className="text-xs md:text-sm text-brand-ink/65 mt-0.5">
+                Controle e acompanhe sua presença pública no AdvAqui.
               </p>
             </div>
-            <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-              <Check className="w-3 h-3" aria-hidden /> Publicada
-            </span>
           </div>
 
-          <div className="rounded-xl bg-white border border-brand-line px-3 py-2.5 mb-3 break-all text-sm font-mono text-brand-deep">
-            {publicUrl}
+          {/* Status + Visibilidade + Atualizações */}
+          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4 text-xs">
+            <div className="rounded-lg bg-white border border-brand-line p-3">
+              <dt className="text-brand-ink/55 uppercase tracking-wide font-semibold mb-1">
+                Status
+              </dt>
+              <dd>
+                <span
+                  className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold border ${stLabel.tone}`}
+                >
+                  {isPublishable && <CheckCircle2 className="w-3 h-3" aria-hidden />}
+                  {!isPublishable && status === "incompleta" && (
+                    <AlertCircle className="w-3 h-3" aria-hidden />
+                  )}
+                  {!isPublishable && status === "pending" && (
+                    <Clock className="w-3 h-3" aria-hidden />
+                  )}
+                  {stLabel.text}
+                </span>
+              </dd>
+            </div>
+            <div className="rounded-lg bg-white border border-brand-line p-3">
+              <dt className="text-brand-ink/55 uppercase tracking-wide font-semibold mb-1">
+                Visibilidade
+              </dt>
+              <dd>
+                <span
+                  className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium border ${visLabel.tone}`}
+                >
+                  {visibility === "online_indexable" ? (
+                    <Globe className="w-3 h-3" aria-hidden />
+                  ) : (
+                    <EyeOff className="w-3 h-3" aria-hidden />
+                  )}
+                  {visLabel.text}
+                </span>
+              </dd>
+            </div>
+            <div className="rounded-lg bg-white border border-brand-line p-3">
+              <dt className="text-brand-ink/55 uppercase tracking-wide font-semibold mb-1">
+                Última atualização
+              </dt>
+              <dd className="text-brand-ink/85">{timeAgoBR(lawyer.updatedAt)}</dd>
+            </div>
+            <div className="rounded-lg bg-white border border-brand-line p-3">
+              <dt className="text-brand-ink/55 uppercase tracking-wide font-semibold mb-1">
+                Última publicação
+              </dt>
+              <dd className="text-brand-ink/85">
+                {isPublishable ? timeAgoBR(lawyer.updatedAt) : "—"}
+              </dd>
+            </div>
+          </dl>
+
+          {/* URL pública */}
+          {isPublishable && (
+            <div className="rounded-xl bg-white border border-brand-line px-3 py-2.5 mb-3 break-all text-sm font-mono text-brand-deep">
+              {publicUrl}
+            </div>
+          )}
+
+          {/* Aviso quando incompleta */}
+          {status === "incompleta" && (
+            <p className="text-sm text-amber-900 bg-amber-50 border border-amber-200 rounded-lg p-3 mb-3">
+              Complete os dados obrigatórios para publicar sua página
+              (WhatsApp ou telefone + ao menos uma área de atuação).
+            </p>
+          )}
+
+          {/* Aviso quando pending */}
+          {status === "pending" && (
+            <p className="text-sm text-blue-900 bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
+              Pagamento em análise — sua página será publicada em até 48h
+              após confirmação.
+            </p>
+          )}
+
+          {/* Completude */}
+          <div className="mb-3">
+            <div className="flex items-center justify-between text-xs mb-1.5">
+              <span className="font-semibold text-brand-ink">
+                Força da Página Profissional
+              </span>
+              <span className="font-bold text-brand-deep">
+                {strength.pct}% completa
+              </span>
+            </div>
+            <div className="h-2 bg-brand-line rounded-full overflow-hidden">
+              <div
+                className={`h-full transition-all ${
+                  strength.pct >= 80
+                    ? "bg-emerald-500"
+                    : strength.pct >= 50
+                    ? "bg-brand-accent"
+                    : "bg-amber-500"
+                }`}
+                style={{ width: `${strength.pct}%` }}
+              />
+            </div>
+            <p className="text-xs text-brand-ink/55 mt-1">
+              {strength.done} de {strength.total} itens preenchidos
+            </p>
           </div>
 
+          {/* Próxima ação recomendada */}
+          {strength.next && (
+            <div className="rounded-xl bg-brand-deep/5 border border-brand-deep/15 p-3 mb-4">
+              <p className="text-xs uppercase tracking-wider text-brand-deep font-bold mb-1">
+                Próxima ação recomendada
+              </p>
+              <p className="text-sm text-brand-ink/85">{strength.next.action}</p>
+              <a
+                href="#meu-perfil"
+                className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-brand-deep hover:text-brand-accent2"
+              >
+                Ir agora →
+              </a>
+            </div>
+          )}
+
+          {/* Botões de ação */}
           <div className="flex flex-wrap gap-2">
-            <Link
-              href={`/advogado/${lawyer.slug}`}
-              target="_blank"
-              className="btn-accent text-sm inline-flex items-center gap-2"
-            >
-              <ExternalLink className="w-4 h-4" aria-hidden />
-              Acessar minha Página
-            </Link>
-            <button
-              type="button"
-              onClick={copyLink}
+            {isPublishable && (
+              <Link
+                href={`/advogado/${lawyer.slug}`}
+                target="_blank"
+                className="btn-accent text-sm inline-flex items-center gap-2"
+              >
+                <ExternalLink className="w-4 h-4" aria-hidden />
+                Ver página pública
+              </Link>
+            )}
+            <a
+              href="#meu-perfil"
               className="btn-ghost border border-brand-line text-sm inline-flex items-center gap-2"
             >
-              {copied ? (
-                <>
-                  <Check className="w-4 h-4" aria-hidden />
-                  Copiado
-                </>
-              ) : (
-                <>
-                  <Copy className="w-4 h-4" aria-hidden />
-                  Copiar link
-                </>
-              )}
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowQr(true)}
-              className="btn-ghost border border-brand-line text-sm inline-flex items-center gap-2"
-            >
-              <QrCode className="w-4 h-4" aria-hidden />
-              Gerar QR Code
-            </button>
+              <Edit3 className="w-4 h-4" aria-hidden />
+              Editar página
+            </a>
+            {isPublishable && (
+              <button
+                type="button"
+                onClick={copyLink}
+                className="btn-ghost border border-brand-line text-sm inline-flex items-center gap-2"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-4 h-4" aria-hidden />
+                    Copiado
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4" aria-hidden />
+                    Copiar link
+                  </>
+                )}
+              </button>
+            )}
+            {isPublishable && (
+              <button
+                type="button"
+                onClick={() => setShowQr(true)}
+                className="btn-ghost border border-brand-line text-sm inline-flex items-center gap-2"
+              >
+                <QrCode className="w-4 h-4" aria-hidden />
+                Gerar QR Code
+              </button>
+            )}
           </div>
+
+          {/* Aviso sobre recursos em construção (Fase 2/3 do produto) */}
+          <p className="text-[11px] text-brand-ink/45 mt-4 italic">
+            Pausar/Republicar, Artigos próprios, Perguntas de Leitores e
+            Métricas detalhadas estão em desenvolvimento e serão liberados em
+            breve, sem custo adicional.
+          </p>
         </section>
 
         {showQr && (
           <QrModal url={publicUrl} onClose={() => setShowQr(false)} />
         )}
       </>
-    );
-  }
-
-  // ---- variante: INCOMPLETA (premium ativo mas falta WhatsApp ou área) ----
-  if (status === "incompleta") {
-    const faltam: string[] = [];
-    if (!lawyer.whatsapp && !lawyer.phone) faltam.push("WhatsApp ou telefone");
-    if (lawyer.specialties.length === 0) faltam.push("ao menos uma área de atuação");
-
-    return (
-      <section className="rounded-2xl border-2 border-amber-300 bg-amber-50/60 p-5 md:p-6">
-        <div className="flex items-start gap-3 mb-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-200 flex items-center justify-center flex-shrink-0">
-            <AlertCircle className="w-5 h-5 text-amber-800" aria-hidden />
-          </div>
-          <div className="flex-1">
-            <h2 className="font-display text-lg md:text-xl font-bold text-amber-950">
-              Minha Página Profissional
-            </h2>
-            <p className="text-xs md:text-sm text-amber-900/85 mt-0.5">
-              Sua página ainda não está completa. Complete os dados obrigatórios
-              para publicar.
-            </p>
-          </div>
-        </div>
-        {faltam.length > 0 && (
-          <ul className="text-sm text-amber-950 space-y-1 mb-3 list-disc list-inside">
-            {faltam.map((f) => (
-              <li key={f}>Falta: {f}</li>
-            ))}
-          </ul>
-        )}
-        <a
-          href="#meu-perfil"
-          className="btn-accent text-sm inline-flex items-center gap-2"
-        >
-          Configurar Página Profissional
-        </a>
-      </section>
-    );
-  }
-
-  // ---- variante: pending (pagamento em análise) ----
-  if (status === "pending") {
-    return (
-      <section className="rounded-2xl border border-brand-line bg-brand-bg/40 p-5">
-        <h2 className="font-display text-lg font-bold text-brand-ink mb-1">
-          Minha Página Profissional
-        </h2>
-        <p className="text-sm text-brand-ink/70">
-          Pagamento em análise. Sua Página Profissional será liberada após a
-          confirmação (em até 48h).
-        </p>
-      </section>
     );
   }
 
@@ -251,10 +477,11 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
             Ativar Premium
           </Link>
           <Link
-            href="/exemplo-pagina-profissional"
+            href={`/advogado/${lawyer.slug}`}
+            target="_blank"
             className="btn-ghost text-white border border-white/20 hover:bg-white/10 text-sm inline-flex items-center gap-2"
           >
-            Ver exemplo
+            Ver minha página atual
           </Link>
         </div>
       </div>
@@ -264,9 +491,6 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
 
 /**
  * Modal simples com o QR Code da Página Profissional.
- * QR é gerado por um serviço público (api.qrserver.com) — não precisa
- * instalar lib adicional. Funciona offline-first com fallback de imagem
- * pequena se serviço externo cair.
  */
 function QrModal({ url, onClose }: { url: string; onClose: () => void }) {
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=10&data=${encodeURIComponent(url)}`;

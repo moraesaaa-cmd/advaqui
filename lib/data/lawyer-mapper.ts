@@ -51,6 +51,9 @@ export type Lawyer = {
   /** Horários de atendimento. */
   officeHours?: string;
   createdAt: string;
+  /** Última atualização do perfil — usado pelo card "Central da Página
+   *  Profissional" pra mostrar "última atualização há X dias". */
+  updatedAt?: string;
 };
 
 export const mapLawyerRow = (
@@ -110,7 +113,8 @@ export const mapLawyerRow = (
     instagram: (row as { instagram?: string | null }).instagram || undefined,
     linkedin: (row as { linkedin?: string | null }).linkedin || undefined,
     officeHours: (row as { office_hours?: string | null }).office_hours || undefined,
-    createdAt: row.created_at
+    createdAt: row.created_at,
+    updatedAt: (row as { updated_at?: string }).updated_at
   };
 };
 

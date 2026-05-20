@@ -12,35 +12,44 @@ import {
   Instagram,
   Linkedin,
   Clock,
-  AlertCircle
+  AlertCircle,
+  FileText,
+  HelpCircle,
+  Briefcase,
+  Building2
 } from "lucide-react";
 import { findLawyerBySlug, getAllLawyerSlugs } from "@/lib/data/lawyers";
 import { SPECIALTIES } from "@/lib/data/specialties";
+import {
+  getSpecialtyDescription,
+  getUsefulDocsForSpecialties
+} from "@/lib/data/specialty-descriptions";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
+import { ShareLinkButton } from "@/components/ShareLinkButton";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, lawyerSchema } from "@/lib/seo/schema";
 import { whatsappLink, telLink, formatDate } from "@/lib/utils/format";
 import { SITE } from "@/lib/config";
 
 /**
- * Página Profissional AdvAqui — URL canônica `/advogado/[slug]` (Maio/2026).
+ * Página Profissional AdvAqui — URL canônica `/advogado/[slug]` (Maio/2026 v2).
  *
- * Esta é a página pública individual do advogado, projetada como recurso
- * Premium para apresentação profissional. URL anterior `/p/[slug]` continua
- * funcionando via redirect 301.
+ * Versão expandida (Fase 2 do produto). Agora estruturada em seções:
+ *   1. Cabeçalho profissional
+ *   2. Sobre o profissional (bio)
+ *   3. Como funciona o contato inicial (orientação ética)
+ *   4. Áreas de atuação em cards com descrição
+ *   5. Região de atendimento
+ *   6. Documentos úteis para o primeiro contato
+ *   7. Aviso ético
+ *   8. Rodapé institucional
  *
- * Características-chave do MVP (Fase 1 do pedido do produto):
- *   - URL limpa, compartilhável e indexável
- *   - Foto, nome, OAB, cidade, áreas, bio, contatos
- *   - CTA WhatsApp sóbrio ("Falar pelo WhatsApp", não "contrate agora")
- *   - Selo "OAB verificada" só quando validado, senão omitido
- *   - Aviso ético no rodapé (caráter informativo)
- *   - Schema markup LegalService + BreadcrumbList
- *   - Open Graph e Twitter Card via buildMetadata
+ * Linguagem sóbria conforme Provimento OAB 205/2021.
  *
- * Linguagem sóbria conforme Provimento OAB 205/2021 — sem promessa de
- * resultado, sem ranking, sem expressões comerciais agressivas.
+ * SEO básico: title, meta description, canonical, Open Graph, breadcrumbs,
+ * LegalService schema. FAQ Schema fica pra rodada que liberar FAQs próprios
+ * do advogado (depende de migration 0006).
  */
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -61,7 +70,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const mainArea = l.specialties[0]
     ? SPECIALTIES.find((s) => s.slug === l.specialties[0])?.name
     : undefined;
-  const titleArea = mainArea ? `Advogad${l.name.toLowerCase().endsWith("a") ? "a" : "o"} de ${mainArea}` : "Advogado";
+  const titleArea = mainArea
+    ? `Advogad${l.name.toLowerCase().endsWith("a") ? "a" : "o"} de ${mainArea}`
+    : "Advogado";
   return buildMetadata({
     title: `${l.name} — ${titleArea} em ${l.cityName}, ${l.uf}`,
     description:
@@ -88,6 +99,13 @@ export default async function ProfessionalPage({
     `Olá ${l.name}, encontrei seu perfil no ${SITE.name} e gostaria de conversar.`
   );
   const tel = telLink(l.phone);
+  const publicUrl = `${SITE.url}/advogado/${l.slug}`;
+  const usefulDocs = getUsefulDocsForSpecialties(l.specialties, 8);
+
+  // Linguagem do título da área principal usado em h2
+  const mainArea = l.specialties[0]
+    ? SPECIALTIES.find((s) => s.slug === l.specialties[0])?.name
+    : null;
 
   return (
     <div className="container-narrow py-10">
@@ -100,6 +118,7 @@ export default async function ProfessionalPage({
         ]}
       />
 
+      {/* ===== 1. CABEÇALHO PROFISSIONAL ===== */}
       <article className="card">
         <header className="flex flex-col sm:flex-row items-start gap-5">
           {l.photoUrl ? (
@@ -127,11 +146,6 @@ export default async function ProfessionalPage({
                   <Star className="w-3.5 h-3.5" aria-hidden /> Destaque
                 </span>
               )}
-              {/* Selo "OAB verificada" só quando admin confirmou no banco
-                  (verified_oab=true). Pra perfis sem essa validação, exibimos
-                  apenas o número da OAB sem selo verde, conforme orientação
-                  ética: "OAB informada pelo profissional" em vez de prometer
-                  verificação que não houve. */}
               {featured && l.verifiedOab && (
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                   <ShieldCheck className="w-3.5 h-3.5" aria-hidden /> OAB verificada
@@ -146,49 +160,113 @@ export default async function ProfessionalPage({
                 </span>
               )}
             </p>
-            {l.bio && <p className="text-brand-ink/85 mt-3 leading-relaxed">{l.bio}</p>}
+            <p className="text-sm text-brand-ink/65 mt-1 inline-flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5" aria-hidden />
+              {l.cityName}/{l.uf}
+              {mainArea && (
+                <>
+                  <span className="text-brand-ink/30">·</span>
+                  <span>{mainArea}</span>
+                </>
+              )}
+            </p>
+
+            {/* Botões de ação principais */}
+            <div className="mt-4 flex flex-wrap gap-2">
+              {featured && wa && (
+                <a
+                  href={wa}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-500 transition"
+                >
+                  <MessageCircle className="w-4 h-4" aria-hidden />
+                  Falar pelo WhatsApp
+                </a>
+              )}
+              <ShareLinkButton url={publicUrl} title={`Perfil de ${l.name}`} />
+            </div>
           </div>
         </header>
 
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-          <div className="flex items-center gap-3 rounded-xl border border-brand-line p-3">
-            <MapPin className="w-4 h-4 text-brand-ink/50" aria-hidden />
-            <span>
-              {l.address ? `${l.address} — ` : ""}
-              {l.cityName}/{l.uf}
-            </span>
-          </div>
-          {tel && (
-            <a
-              href={tel}
-              className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition"
-            >
-              <Phone className="w-4 h-4 text-brand-ink/50" aria-hidden />
-              <span>{l.phone}</span>
-            </a>
-          )}
-          {featured && (
-            <a
-              href={`mailto:${l.email}`}
-              className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition"
-            >
-              <Mail className="w-4 h-4 text-brand-ink/50" aria-hidden />
-              <span className="break-all">{l.email}</span>
-            </a>
-          )}
-          {featured && wa && (
-            <a
-              href={wa}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-3 hover:bg-emerald-100 transition text-emerald-900"
-            >
-              <MessageCircle className="w-4 h-4" aria-hidden />
-              <span className="font-semibold">Falar pelo WhatsApp</span>
-            </a>
-          )}
-        </div>
+        {/* ===== 2. SOBRE O PROFISSIONAL ===== */}
+        {l.bio && (
+          <section className="mt-8 pt-6 border-t border-brand-line">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+              <User className="w-5 h-5 text-brand-deep" aria-hidden />
+              Sobre o profissional
+            </h2>
+            <p className="text-brand-ink/85 leading-relaxed whitespace-pre-line">
+              {l.bio}
+            </p>
+          </section>
+        )}
 
+        {/* ===== 3. CONTATO E ENDEREÇO ===== */}
+        <section className="mt-8 pt-6 border-t border-brand-line">
+          <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+            <Phone className="w-5 h-5 text-brand-deep" aria-hidden />
+            Contato e endereço
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            <div className="flex items-center gap-3 rounded-xl border border-brand-line p-3">
+              <MapPin className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
+              <span>
+                {l.address ? `${l.address} — ` : ""}
+                {l.cityName}/{l.uf}
+              </span>
+            </div>
+            {tel && (
+              <a
+                href={tel}
+                className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition"
+              >
+                <Phone className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
+                <span>{l.phone}</span>
+              </a>
+            )}
+            {featured && (
+              <a
+                href={`mailto:${l.email}`}
+                className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition"
+              >
+                <Mail className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
+                <span className="break-all">{l.email}</span>
+              </a>
+            )}
+            {featured && wa && (
+              <a
+                href={wa}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-3 hover:bg-emerald-100 transition text-emerald-900"
+              >
+                <MessageCircle className="w-4 h-4 flex-shrink-0" aria-hidden />
+                <span className="font-semibold">Falar pelo WhatsApp</span>
+              </a>
+            )}
+          </div>
+        </section>
+
+        {/* ===== 4. COMO FUNCIONA O CONTATO INICIAL ===== */}
+        <section className="mt-8 pt-6 border-t border-brand-line">
+          <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+            <HelpCircle className="w-5 h-5 text-brand-deep" aria-hidden />
+            Como funciona o contato inicial
+          </h2>
+          <p className="text-sm text-brand-ink/85 leading-relaxed">
+            Você pode enviar uma mensagem pelo canal informado nesta página. O
+            profissional poderá avaliar as informações iniciais e, se
+            necessário, combinar uma consulta ou orientação jurídica.
+          </p>
+          <p className="text-sm text-brand-ink/70 leading-relaxed mt-2">
+            O contato inicial não implica contratação automática de serviços
+            jurídicos. Honorários, formas de pagamento e procedimentos serão
+            esclarecidos diretamente com o profissional, se for o caso.
+          </p>
+        </section>
+
+        {/* ===== 5. UPSELL PARA NÃO-PREMIUM (mantido) ===== */}
         {!featured && (
           <div className="mt-6 rounded-2xl border border-brand-accent/40 bg-brand-accent/5 p-5">
             <p className="text-sm font-semibold text-brand-ink">
@@ -205,63 +283,116 @@ export default async function ProfessionalPage({
           </div>
         )}
 
+        {/* ===== 6. ÁREAS DE ATUAÇÃO (CARDS COM DESCRIÇÃO) ===== */}
         {l.specialties.length > 0 && (
-          <section className="mt-6">
-            <h2 className="font-display text-lg font-bold text-brand-ink mb-2">
+          <section className="mt-8 pt-6 border-t border-brand-line">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+              <Briefcase className="w-5 h-5 text-brand-deep" aria-hidden />
               Áreas de atuação
             </h2>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {l.specialties.map((s) => (
-                <Link
+                <article
                   key={s}
-                  href={`/advogados/${l.uf.toLowerCase()}/${l.citySlug}/${s}`}
-                  className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
+                  className="rounded-xl border border-brand-line bg-white p-4 hover:border-brand-accent transition"
                 >
-                  {labelOf(s)}
-                </Link>
+                  <h3 className="font-display text-sm md:text-base font-bold text-brand-ink mb-1">
+                    {labelOf(s)}
+                  </h3>
+                  <p className="text-xs md:text-sm text-brand-ink/70 leading-relaxed">
+                    {getSpecialtyDescription(s)}
+                  </p>
+                  <Link
+                    href={`/advogados/${l.uf.toLowerCase()}/${l.citySlug}/${s}`}
+                    className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-brand-deep hover:text-brand-accent2"
+                  >
+                    Ver mais advogados desta área →
+                  </Link>
+                </article>
               ))}
             </div>
           </section>
         )}
 
-        {/* Horários de atendimento — exclusivo premium */}
-        {featured && l.officeHours && (
-          <section className="mt-6 rounded-2xl border border-brand-line bg-brand-bg/40 p-4">
-            <h2 className="font-display text-lg font-bold text-brand-ink mb-2 inline-flex items-center gap-2">
-              <Clock className="w-4 h-4 text-brand-accent2" aria-hidden />
-              Horário de atendimento
+        {/* ===== 7. REGIÃO DE ATENDIMENTO ===== */}
+        {(featured && (l.officeHours || (l.extraCities && l.extraCities.length > 0))) && (
+          <section className="mt-8 pt-6 border-t border-brand-line">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+              <Building2 className="w-5 h-5 text-brand-deep" aria-hidden />
+              Região de atendimento
             </h2>
-            <p className="text-sm text-brand-ink/85 leading-relaxed whitespace-pre-line">
-              {l.officeHours}
+
+            <div className="rounded-xl border border-brand-line bg-brand-bg/30 p-4 space-y-3">
+              <p className="text-sm text-brand-ink/85">
+                <span className="font-semibold text-brand-ink">Cidade principal:</span>{" "}
+                {l.cityName}/{l.uf}
+              </p>
+
+              {l.extraCities && l.extraCities.length > 0 && (
+                <div>
+                  <p className="text-sm font-semibold text-brand-ink mb-2">
+                    Também atende em:
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {l.extraCities.map((c) => (
+                      <Link
+                        key={`${c.uf}-${c.slug}`}
+                        href={`/advogados/${c.uf.toLowerCase()}/${c.slug}`}
+                        className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
+                      >
+                        {c.name}/{c.uf}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {l.officeHours && (
+                <div>
+                  <p className="text-sm font-semibold text-brand-ink mb-1 inline-flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-brand-deep" aria-hidden />
+                    Horário de atendimento:
+                  </p>
+                  <p className="text-sm text-brand-ink/85 whitespace-pre-line">
+                    {l.officeHours}
+                  </p>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* ===== 8. DOCUMENTOS ÚTEIS PARA O PRIMEIRO CONTATO ===== */}
+        {usefulDocs.length > 0 && l.specialties.length > 0 && (
+          <section className="mt-8 pt-6 border-t border-brand-line">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-2 inline-flex items-center gap-2">
+              <FileText className="w-5 h-5 text-brand-deep" aria-hidden />
+              Documentos úteis para o primeiro contato
+            </h2>
+            <p className="text-sm text-brand-ink/65 mb-3">
+              Lista informativa de documentos comuns nos casos das áreas em que
+              este profissional atua. Pode variar conforme o caso específico.
+            </p>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
+              {usefulDocs.map((doc) => (
+                <li key={doc} className="text-sm text-brand-ink/85 flex items-start gap-2">
+                  <span className="text-brand-accent2 mt-0.5">•</span>
+                  <span>{doc}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-amber-900 bg-amber-50 border border-amber-200 rounded-lg p-3">
+              <strong>Atenção:</strong> evite enviar dados sensíveis (CPF
+              completo, comprovantes bancários, fotos pessoais) antes de
+              orientação individual do profissional.
             </p>
           </section>
         )}
 
-        {/* Cidades adicionais (premium) — região de atendimento ampliada */}
-        {featured && l.extraCities && l.extraCities.length > 0 && (
-          <section className="mt-6">
-            <h2 className="font-display text-lg font-bold text-brand-ink mb-2 inline-flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-brand-accent2" aria-hidden />
-              Também atendo em
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {l.extraCities.map((c) => (
-                <Link
-                  key={`${c.uf}-${c.slug}`}
-                  href={`/advogados/${c.uf.toLowerCase()}/${c.slug}`}
-                  className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
-                >
-                  {c.name}/{c.uf}
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Links sociais — exclusivos premium */}
+        {/* ===== 9. PRESENÇA DIGITAL (Premium) ===== */}
         {featured && (l.website || l.instagram || l.linkedin) && (
-          <section className="mt-6">
-            <h2 className="font-display text-lg font-bold text-brand-ink mb-2">
+          <section className="mt-8 pt-6 border-t border-brand-line">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3">
               Presença digital
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -306,7 +437,7 @@ export default async function ProfessionalPage({
           </section>
         )}
 
-        {/* Aviso ético obrigatório no rodapé da Página Profissional */}
+        {/* ===== 10. AVISO ÉTICO OBRIGATÓRIO ===== */}
         <aside
           className="mt-8 rounded-xl border-l-4 border-amber-400 bg-amber-50 p-4 text-xs md:text-sm text-amber-900 leading-relaxed"
           role="note"
@@ -322,14 +453,40 @@ export default async function ProfessionalPage({
           </p>
         </aside>
 
-        <footer className="mt-6 pt-4 border-t border-brand-line text-xs text-brand-ink/60 flex flex-wrap items-center justify-between gap-2">
-          <span>Perfil cadastrado em {formatDate(l.createdAt)}.</span>
-          <Link
-            href="/contato"
-            className="text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline"
-          >
-            Corrigir ou denunciar informação
-          </Link>
+        {/* ===== 11. RODAPÉ INSTITUCIONAL ===== */}
+        <footer className="mt-6 pt-4 border-t border-brand-line">
+          <p className="text-xs text-brand-ink/60 mb-3">
+            Perfil cadastrado em {formatDate(l.createdAt)}.
+            {l.updatedAt && l.updatedAt !== l.createdAt && (
+              <> Última atualização em {formatDate(l.updatedAt)}.</>
+            )}
+          </p>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+            <Link
+              href="/contato"
+              className="text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline"
+            >
+              Corrigir ou denunciar informação
+            </Link>
+            <Link
+              href="/termos"
+              className="text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline"
+            >
+              Termos de uso
+            </Link>
+            <Link
+              href="/privacidade"
+              className="text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline"
+            >
+              Política de privacidade
+            </Link>
+            <Link
+              href="/"
+              className="text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline"
+            >
+              Sobre o AdvAqui
+            </Link>
+          </div>
         </footer>
       </article>
 
