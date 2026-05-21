@@ -18,6 +18,7 @@ export default function robots(): MetadataRoute.Robots {
     sitemaps.push(`${base}/sitemap-cidades/sitemap/${i}.xml`);
     sitemaps.push(`${base}/sitemap-especialidades/sitemap/${i}.xml`);
   }
+  sitemaps.push(`${base}/sitemap-jurisprudencia.xml`);
 
   return {
     rules: [

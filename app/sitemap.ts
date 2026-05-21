@@ -44,7 +44,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/aviso-legal`, changeFrequency: "yearly", priority: 0.3, lastModified: now },
     { url: `${base}/cadastro`, changeFrequency: "monthly", priority: 0.5, lastModified: now },
     { url: `${base}/login`, changeFrequency: "yearly", priority: 0.2, lastModified: now },
-    { url: `${base}/sitemap-html`, changeFrequency: "monthly", priority: 0.3, lastModified: now }
+    { url: `${base}/sitemap-html`, changeFrequency: "monthly", priority: 0.3, lastModified: now },
+    { url: `${base}/jurisprudencia`, changeFrequency: "daily", priority: 0.8, lastModified: now },
+    { url: `${base}/jurisprudencia/stf`, changeFrequency: "daily", priority: 0.8, lastModified: now },
+    { url: `${base}/jurisprudencia/stj`, changeFrequency: "daily", priority: 0.8, lastModified: now }
   ];
 
   const stateRoutes: MetadataRoute.Sitemap = STATES.map((s) => ({
