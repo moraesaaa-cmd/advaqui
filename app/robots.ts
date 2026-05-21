@@ -24,13 +24,13 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
-        disallow: ["/admin", "/painel", "/api/"]
+        allow: ["/", "/jurisprudencia/"],
+        disallow: ["/admin", "/painel", "/api/", "/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"]
       },
       {
         userAgent: "Googlebot",
-        allow: "/",
-        disallow: ["/admin", "/painel", "/api/"]
+        allow: ["/", "/jurisprudencia/"],
+        disallow: ["/admin", "/painel", "/api/", "/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"]
       }
     ],
     sitemap: sitemaps,
