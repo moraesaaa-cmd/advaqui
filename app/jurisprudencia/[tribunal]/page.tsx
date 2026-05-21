@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Scale, AlertCircle, BookOpen } from "lucide-react";
+import { Scale, AlertCircle, BookOpen, ChevronRight } from "lucide-react";
 import { getRecentByTribunal } from "@/lib/data/jurisprudencia";
 import type { Tribunal } from "@/lib/data/jurisprudencia";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { OfficialSourceBox } from "@/components/jurisprudencia/OfficialSourceBox";
 
 /**
  * /jurisprudencia/[tribunal] — Página fixa por tribunal (STF ou STJ).
@@ -153,42 +154,72 @@ export default async function TribunalPage({
             </p>
           </div>
         ) : (
-          <ul className="space-y-3">
+          <ul className="space-y-4">
             {recentes.map((d) => {
-              const cardText =
-                (d.resumo_decisao && d.resumo_decisao.trim()) ||
-                (d.resumo_entendimento && d.resumo_entendimento.trim()) ||
-                d.ementa.trim().slice(0, 250);
+              const tema = d.resumo_tema || null;
+              const ementaParcial = (() => {
+                const e = (d.ementa || "").trim();
+                if (e.length <= 600) return { text: e, truncated: false };
+                const cut = e.slice(0, 600);
+                const lastDot = cut.lastIndexOf(". ");
+                const trim = lastDot > 350 ? cut.slice(0, lastDot + 1) : cut;
+                return { text: trim, truncated: true };
+              })();
+              const dataPubFmt = d.data_publicacao
+                ? new Date(d.data_publicacao).toLocaleDateString("pt-BR")
+                : null;
+              const detalheUrl = `/jurisprudencia/${d.tribunal.toLowerCase()}/${d.slug}`;
               return (
                 <li key={d.id}>
-                  <Link
-                    href={`/jurisprudencia/${d.tribunal.toLowerCase()}/${d.slug}`}
-                    className="block rounded-xl border border-brand-line bg-white p-4 hover:border-brand-deep transition"
-                  >
-                    <div className="flex flex-wrap items-center gap-2 mb-1 text-xs">
+                  <article className="rounded-xl border border-brand-line bg-white p-5 hover:border-brand-deep/40 hover:shadow-card transition">
+                    <header className="flex flex-wrap items-center gap-2 mb-2 text-xs">
                       {d.classe && (
                         <span className="font-semibold text-brand-deep">
-                          {d.classe} {d.numero}
+                          {d.classe}
                         </span>
                       )}
-                      {d.relator && (
-                        <span className="text-brand-ink/55">— Rel. {d.relator}</span>
-                      )}
-                      {d.data_julgamento && (
+                      <span className="text-brand-ink/55">·</span>
+                      <span className="text-brand-ink/70 font-mono">
+                        {d.numero}
+                      </span>
+                      {dataPubFmt && (
                         <span className="ml-auto text-brand-ink/45">
-                          {new Date(d.data_julgamento).toLocaleDateString("pt-BR")}
+                          Publicado em {dataPubFmt}
                         </span>
                       )}
-                    </div>
-                    {d.resumo_tema && (
-                      <p className="text-xs text-brand-deep font-semibold mb-1 line-clamp-1">
-                        {d.resumo_tema}
+                    </header>
+                    {tema && (
+                      <p className="text-sm text-brand-deep font-semibold leading-snug mb-2">
+                        {tema}
                       </p>
                     )}
-                    <p className="text-sm text-brand-ink/85 line-clamp-2">
-                      {cardText}
+                    <p className="text-sm text-brand-ink/85 leading-relaxed">
+                      {ementaParcial.text}
+                      {ementaParcial.truncated && (
+                        <span className="text-brand-ink/45"> …</span>
+                      )}
                     </p>
-                  </Link>
+                    {d.relator && (
+                      <p className="text-xs text-brand-ink/55 mt-2">
+                        Relator: <span className="text-brand-ink/80">{d.relator}</span>
+                      </p>
+                    )}
+                    <div className="pt-3 mt-3 border-t border-brand-line flex flex-wrap items-center justify-between gap-2">
+                      <OfficialSourceBox
+                        source_portal={d.source_portal}
+                        dataset_url={d.dataset_url}
+                        tribunal={d.tribunal}
+                        variant="compact"
+                      />
+                      <Link
+                        href={detalheUrl}
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-brand-deep text-white hover:bg-brand-deep/90 transition"
+                      >
+                        Ver decisão
+                        <ChevronRight className="w-3.5 h-3.5" aria-hidden />
+                      </Link>
+                    </div>
+                  </article>
                 </li>
               );
             })}

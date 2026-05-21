@@ -1,11 +1,20 @@
 import Link from "next/link";
-import { Scale, Search, BookOpen, AlertCircle, Users, FileText } from "lucide-react";
+import {
+  Scale,
+  Search,
+  BookOpen,
+  AlertCircle,
+  Users,
+  FileText,
+  ChevronRight,
+} from "lucide-react";
 import { searchDecisoes } from "@/lib/data/jurisprudencia";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
+import { OfficialSourceBox } from "@/components/jurisprudencia/OfficialSourceBox";
 
 /**
  * /jurisprudencia — Hub do módulo.
@@ -186,63 +195,127 @@ export default async function JurisprudenciaIndexPage({
       )}
 
       {items.length > 0 ? (
-        <ul className="space-y-3 mb-8">
+        <ul className="space-y-4 mb-8">
           {items.map((d) => {
-            // Card mais limpo: prioriza resumo conservador, fallback pra ementa
-            const cardText =
-              (d.resumo_decisao && d.resumo_decisao.trim()) ||
-              (d.resumo_entendimento && d.resumo_entendimento.trim()) ||
-              d.ementa.trim().slice(0, 280);
             const tema = d.resumo_tema || null;
+            // Ementa parcial limitada a ~700 chars com corte elegante
+            const ementaParcial = (() => {
+              const e = (d.ementa || "").trim();
+              if (e.length <= 700) return { text: e, truncated: false };
+              // Corte preferencialmente no ponto mais próximo até 700 chars
+              const cut = e.slice(0, 700);
+              const lastDot = cut.lastIndexOf(". ");
+              const trim = lastDot > 400 ? cut.slice(0, lastDot + 1) : cut;
+              return { text: trim, truncated: true };
+            })();
+            const dataPubFmt = d.data_publicacao
+              ? new Date(d.data_publicacao).toLocaleDateString("pt-BR")
+              : null;
+            const dataJulgFmt = d.data_julgamento
+              ? new Date(d.data_julgamento).toLocaleDateString("pt-BR")
+              : null;
+            const detalheUrl = `/jurisprudencia/${d.tribunal.toLowerCase()}/${d.slug}`;
             return (
               <li key={d.id}>
-                <Link
-                  href={`/jurisprudencia/${d.tribunal.toLowerCase()}/${d.slug}`}
-                  className="block card hover:border-brand-deep transition group"
-                >
-                  <div className="flex flex-wrap items-center gap-2 mb-1.5 text-xs">
+                <article className="rounded-2xl bg-white border border-brand-line p-5 md:p-6 hover:border-brand-deep/40 hover:shadow-card transition">
+                  {/* CABEÇALHO */}
+                  <header className="flex flex-wrap items-center gap-2 mb-3 text-xs">
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-deep/10 text-brand-deep font-bold">
                       {d.tribunal}
                     </span>
                     {d.classe && (
-                      <span className="text-brand-ink/70">
-                        {d.classe} {d.numero}
+                      <span className="text-brand-ink/80 font-medium">
+                        {d.classe}
                       </span>
                     )}
-                    {d.relator && (
-                      <span className="text-brand-ink/55">— Rel. {d.relator}</span>
-                    )}
-                    {d.data_julgamento && (
-                      <span className="ml-auto text-brand-ink/45">
-                        Julg.{" "}
-                        {new Date(d.data_julgamento).toLocaleDateString("pt-BR")}
+                    <span className="text-brand-ink/55">·</span>
+                    <span className="text-brand-ink/70 font-mono">
+                      {d.numero}
+                    </span>
+                    {dataPubFmt && (
+                      <span className="ml-auto text-brand-ink/55">
+                        Publicado em {dataPubFmt}
                       </span>
                     )}
-                  </div>
+                  </header>
+
+                  {/* TEMA */}
                   {tema && (
-                    <p className="text-xs text-brand-deep font-semibold mb-1 line-clamp-1">
-                      {tema}
-                    </p>
+                    <div className="mb-3">
+                      <p className="text-[10px] uppercase tracking-wide text-brand-ink/55 font-semibold mb-0.5">
+                        Tema
+                      </p>
+                      <p className="text-sm text-brand-deep font-semibold leading-snug">
+                        {tema}
+                      </p>
+                    </div>
                   )}
-                  <p className="text-sm text-brand-ink/85 line-clamp-3 leading-relaxed">
-                    {cardText}
-                  </p>
-                  <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[10px] text-brand-ink/55">
-                    <span>Fonte: Portal de Dados Abertos do STJ</span>
-                    {d.temas && d.temas.length > 0 && (
-                      <div className="flex flex-wrap gap-1">
-                        {d.temas.slice(0, 3).map((t) => (
-                          <span
-                            key={t}
-                            className="px-2 py-0.5 rounded-full bg-brand-bg border border-brand-line text-brand-ink/70"
-                          >
-                            {t}
-                          </span>
-                        ))}
-                      </div>
+
+                  {/* EMENTA OFICIAL PARCIAL */}
+                  <div className="mb-3">
+                    <p className="text-[10px] uppercase tracking-wide text-brand-ink/55 font-semibold mb-1">
+                      Ementa oficial
+                    </p>
+                    <p className="text-sm text-brand-ink/85 leading-relaxed">
+                      {ementaParcial.text}
+                      {ementaParcial.truncated && (
+                        <span className="text-brand-ink/45"> …</span>
+                      )}
+                    </p>
+                    {ementaParcial.truncated && (
+                      <Link
+                        href={detalheUrl}
+                        className="inline-flex items-center gap-1 mt-2 text-xs font-semibold text-brand-deep hover:underline"
+                      >
+                        Ler ementa completa
+                        <ChevronRight className="w-3 h-3" aria-hidden />
+                      </Link>
                     )}
                   </div>
-                </Link>
+
+                  {/* METADADOS RESUMIDOS — só mostra campos que existem */}
+                  {(d.relator ||
+                    d.orgao_julgador ||
+                    dataJulgFmt) && (
+                    <dl className="text-xs text-brand-ink/65 flex flex-wrap gap-x-4 gap-y-1 mb-3">
+                      {d.relator && (
+                        <div className="flex items-baseline gap-1">
+                          <dt className="text-brand-ink/45">Relator:</dt>
+                          <dd>{d.relator}</dd>
+                        </div>
+                      )}
+                      {d.orgao_julgador && (
+                        <div className="flex items-baseline gap-1">
+                          <dt className="text-brand-ink/45">Órgão:</dt>
+                          <dd>{d.orgao_julgador}</dd>
+                        </div>
+                      )}
+                      {dataJulgFmt && (
+                        <div className="flex items-baseline gap-1">
+                          <dt className="text-brand-ink/45">Julgamento:</dt>
+                          <dd>{dataJulgFmt}</dd>
+                        </div>
+                      )}
+                    </dl>
+                  )}
+
+                  {/* FONTE AMIGÁVEL + BOTÕES */}
+                  <div className="pt-3 border-t border-brand-line flex flex-wrap items-center justify-between gap-3">
+                    <OfficialSourceBox
+                      source_portal={d.source_portal}
+                      dataset_url={d.dataset_url}
+                      tribunal={d.tribunal}
+                      variant="compact"
+                    />
+                    <Link
+                      href={detalheUrl}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-1.5 rounded-xl bg-brand-deep text-white hover:bg-brand-deep/90 transition"
+                    >
+                      Ver decisão
+                      <ChevronRight className="w-4 h-4" aria-hidden />
+                    </Link>
+                  </div>
+                </article>
               </li>
             );
           })}

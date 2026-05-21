@@ -38,6 +38,9 @@ export type DecisaoCard = {
   resumo_decisao?: string | null;
   resumo_entendimento?: string | null;
   resumo_status?: string | null;
+  // Fase 14 — fonte amigável também na listagem
+  source_portal?: string | null;
+  dataset_url?: string | null;
 };
 
 export type DecisaoDetail = DecisaoCard & {
@@ -61,7 +64,8 @@ const DECISOES_PUBLIC_COLS =
   "id,tribunal,classe,numero,processo,relator,orgao_julgador," +
   "data_julgamento,data_publicacao,ementa,temas,area_relacionada," +
   "url_origem,slug,seo_title,seo_description," +
-  "resumo_tema,resumo_decisao,resumo_entendimento,resumo_status";
+  "resumo_tema,resumo_decisao,resumo_entendimento,resumo_status," +
+  "source_portal,dataset_url";
 
 const DECISOES_DETAIL_COLS =
   DECISOES_PUBLIC_COLS +

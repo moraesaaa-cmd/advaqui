@@ -20,6 +20,8 @@ import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
+import { OfficialSourceBox } from "@/components/jurisprudencia/OfficialSourceBox";
+import { CopyButton } from "@/components/jurisprudencia/CopyButton";
 
 /**
  * /jurisprudencia/[tribunal]/[slug] — Página de detalhe de uma decisão.
@@ -284,20 +286,9 @@ export default async function DecisaoDetailPage({
                 </dd>
               </div>
             )}
-            <div className="sm:col-span-2">
-              <dt className="text-brand-ink/55 text-xs uppercase tracking-wide inline-flex items-center gap-1">
-                <ExternalLink className="w-3 h-3" aria-hidden /> Fonte oficial
-              </dt>
-              <dd className="mt-0.5">
-                <a
-                  href={decisao.url_origem}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-brand-deep underline break-all text-xs"
-                >
-                  {decisao.url_origem}
-                </a>
-              </dd>
+            <div className="sm:col-span-2 text-xs text-brand-ink/55 italic mt-1">
+              Os detalhes da fonte oficial estão no bloco{" "}
+              <span className="font-medium">&ldquo;Fonte oficial dos dados&rdquo;</span> abaixo.
             </div>
           </dl>
         </section>
@@ -377,13 +368,38 @@ export default async function DecisaoDetailPage({
 
         {/* EMENTA OFICIAL */}
         <section className="card mb-6">
-          <h2 className="font-display text-xl font-bold text-brand-ink mb-1">
-            Ementa oficial
-          </h2>
-          <p className="text-xs text-brand-ink/55 mb-3">
-            Ementa extraída dos dados públicos disponibilizados pelo {tribunal}.
-          </p>
-          <div className="prose prose-sm max-w-none text-brand-ink/85 leading-relaxed whitespace-pre-line">
+          <div className="flex flex-wrap items-start justify-between gap-3 mb-1">
+            <div>
+              <h2 className="font-display text-xl font-bold text-brand-ink">
+                Ementa oficial
+              </h2>
+              <p className="text-xs text-brand-ink/55 mt-1">
+                Ementa extraída dos dados públicos disponibilizados pelo {tribunal}.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <CopyButton
+                text={decisao.ementa}
+                label="Copiar ementa"
+                copiedLabel="Ementa copiada!"
+                variant="ghost"
+              />
+              <CopyButton
+                text={`${decisao.classe ?? ""} ${decisao.numero}`.trim() +
+                  (decisao.relator ? `, Rel. ${decisao.relator}` : "") +
+                  (decisao.orgao_julgador ? `, ${decisao.orgao_julgador}` : "") +
+                  `, ${tribunal}` +
+                  (decisao.data_julgamento
+                    ? `, julg. ${formatDate(decisao.data_julgamento)}`
+                    : "") +
+                  ` (${SITE.url}/jurisprudencia/${slug}/${decisao.slug})`}
+                label="Copiar referência"
+                copiedLabel="Referência copiada!"
+                variant="ghost"
+              />
+            </div>
+          </div>
+          <div className="prose prose-sm max-w-none text-brand-ink/85 leading-relaxed whitespace-pre-line mt-3">
             {decisao.ementa}
           </div>
           {decisao.tese && (
@@ -440,8 +456,8 @@ export default async function DecisaoDetailPage({
           </section>
         )}
 
-        {/* FONTE OFICIAL DOS DADOS — substitui "Inteiro teor".
-            JSON NÃO é chamado de inteiro teor. É arquivo oficial de dados. */}
+        {/* FONTE OFICIAL DOS DADOS — componente reutilizável. JSON nunca é
+            chamado de inteiro teor. URL técnica ficou só nos hrefs. */}
         <section className="card mb-6">
           <div className="flex items-start gap-3">
             <FileText
@@ -452,82 +468,22 @@ export default async function DecisaoDetailPage({
               <h2 className="font-display text-base font-bold text-brand-ink mb-1">
                 Fonte oficial dos dados
               </h2>
-              <p className="text-xs text-brand-ink/65 leading-relaxed mb-3">
+              <p className="text-xs text-brand-ink/65 leading-relaxed mb-4">
                 Esta decisão foi extraída de arquivo público disponibilizado
                 pelo {tribunal} no Portal de Dados Abertos. Para conferência
                 oficial, consulte a fonte indicada abaixo.
               </p>
-
-              <dl className="text-xs space-y-1.5 mb-4">
-                {decisao.source_portal && (
-                  <div className="flex flex-wrap gap-1">
-                    <dt className="text-brand-ink/55 font-semibold uppercase tracking-wide">
-                      Fonte dos dados:
-                    </dt>
-                    <dd className="text-brand-ink/90">{decisao.source_portal}</dd>
-                  </div>
-                )}
-                {decisao.dataset_name && (
-                  <div className="flex flex-wrap gap-1">
-                    <dt className="text-brand-ink/55 font-semibold uppercase tracking-wide">
-                      Conjunto:
-                    </dt>
-                    <dd className="text-brand-ink/90">{decisao.dataset_name}</dd>
-                  </div>
-                )}
-                {decisao.resource_name && (
-                  <div className="flex flex-wrap gap-1">
-                    <dt className="text-brand-ink/55 font-semibold uppercase tracking-wide">
-                      Arquivo:
-                    </dt>
-                    <dd className="text-brand-ink/90 font-mono">
-                      {decisao.resource_name}
-                    </dd>
-                  </div>
-                )}
-                {decisao.source_format && (
-                  <div className="flex flex-wrap gap-1">
-                    <dt className="text-brand-ink/55 font-semibold uppercase tracking-wide">
-                      Formato:
-                    </dt>
-                    <dd className="text-brand-ink/90">{decisao.source_format}</dd>
-                  </div>
-                )}
-              </dl>
-
-              <div className="flex flex-wrap gap-2">
-                {decisao.dataset_url && (
-                  <a
-                    href={decisao.dataset_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-xl border border-brand-deep text-brand-deep hover:bg-brand-deep hover:text-white transition"
-                  >
-                    <ExternalLink className="w-4 h-4" aria-hidden />
-                    Ver conjunto de dados
-                  </a>
-                )}
-                {decisao.resource_url && (
-                  <a
-                    href={decisao.resource_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-xl border border-brand-line text-brand-ink hover:border-brand-deep transition"
-                  >
-                    <FileText className="w-4 h-4" aria-hidden />
-                    Baixar {decisao.source_format || "JSON"} oficial
-                  </a>
-                )}
-                <a
-                  href="https://www.stj.jus.br/sites/portalp/Paginas/Sob-medida/Advogado/Jurisprudencia/Pesquisa-de-Jurisprudencia.aspx"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-xl border border-brand-line text-brand-ink hover:border-brand-deep transition"
-                >
-                  <ExternalLink className="w-4 h-4" aria-hidden />
-                  Pesquisar no site do {tribunal}
-                </a>
-              </div>
+              <OfficialSourceBox
+                source_portal={decisao.source_portal}
+                dataset_name={decisao.dataset_name}
+                dataset_url={decisao.dataset_url}
+                resource_name={decisao.resource_name}
+                resource_url={decisao.resource_url}
+                source_format={decisao.source_format}
+                tribunal={tribunal}
+                variant="full"
+                copyReference={decisao.url_origem}
+              />
             </div>
           </div>
         </section>
