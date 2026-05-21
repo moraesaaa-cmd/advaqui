@@ -30,13 +30,33 @@ scripts/jurisprudencia/
 
 ## Modo de operação
 
-O coletor suporta 3 modos via env `JURIS_MODE`:
+O coletor lê `JURIS_MODE` do `.env`:
 
-- **`fixtures`** (padrão em dev): usa decisões sintéticas locais. Não chama
-  STF/STJ. Útil pra validar pipeline end-to-end sem dependência externa.
-- **`real-stf`** / **`real-stj`**: ativa scraping real dos portais oficiais.
-  Respeita 1 req/seg, User-Agent honesto, backoff exponencial em 429/5xx.
-- **`hybrid`**: usa fixtures + tenta real, conta erros sem travar.
+- **`disabled`** (DEFAULT EM PRODUÇÃO — SEGURO): o `main.py` retorna
+  imediatamente sem coletar nada. Estado padrão até a coleta real ser
+  validada manualmente.
+- **`fixtures`**: gera decisões sintéticas com marcador `AMOSTRA AdvAqui`
+  e domínio `example.invalid`. **NUNCA ATIVAR EM PRODUÇÃO.** Esses dados
+  são filtrados em runtime mas poluem o banco.
+- **`real-stf`** / **`real-stj`**: ativa scraping real dos portais oficiais
+  (1 req/seg, User-Agent honesto, backoff exponencial). **Coletor real
+  ainda em scaffolding — atualmente delega para o fixture e loga aviso.**
+- **`real`**: equivalente a coletar `real-stf` + `real-stj`.
+
+### Ativando coleta real
+
+Quando o coletor real estiver implementado:
+
+```bash
+# .env do scripts/jurisprudencia
+JURIS_MODE=real
+JURIS_IMPORT_BATCH_SIZE=100
+JURIS_CONTACT_EMAIL=contato@advaqui.com.br
+
+# Testar manualmente uma execução antes de ativar via cron
+source .venv/bin/activate
+python3 main.py
+```
 
 ## Princípio de armazenamento
 
@@ -72,11 +92,20 @@ python3 -c "from services.storage_report import print_report; print_report()"
 ## Cron (instalar com `crontab -e` no VPS como root)
 
 ```cron
-# Coleta diária às 2h
-0 2 * * * /var/www/advaqui/scripts/jurisprudencia/.venv/bin/python3 /var/www/advaqui/scripts/jurisprudencia/main.py >> /var/www/advaqui/scripts/jurisprudencia/logs/cron.log 2>&1
+# Coleta diária às 2h (no-op se JURIS_MODE=disabled — estado padrão)
+0 2 * * * cd /var/www/advaqui/scripts/jurisprudencia && /var/www/advaqui/scripts/jurisprudencia/.venv/bin/python3 main.py >> /var/log/juris-coleta.log 2>&1
 
-# Limpeza diária às 3h
-0 3 * * * /var/www/advaqui/scripts/jurisprudencia/.venv/bin/python3 /var/www/advaqui/scripts/jurisprudencia/cleanup_cache.py >> /var/www/advaqui/scripts/jurisprudencia/logs/cleanup.log 2>&1
+# Limpeza de cache de inteiro teor às 3h
+0 3 * * * cd /var/www/advaqui/scripts/jurisprudencia && /var/www/advaqui/scripts/jurisprudencia/.venv/bin/python3 cleanup_cache.py >> /var/log/juris-cleanup.log 2>&1
+
+# Auditoria de dados às 4h (detecta fixtures/AMOSTRA/example.invalid em produção)
+0 4 * * * cd /var/www/advaqui/scripts/jurisprudencia && /var/www/advaqui/scripts/jurisprudencia/.venv/bin/python3 audit_jurisprudencia.py >> /var/log/juris-audit.log 2>&1
+
+# Health check das fontes às 4h30
+30 4 * * * cd /var/www/advaqui/scripts/jurisprudencia && /var/www/advaqui/scripts/jurisprudencia/.venv/bin/python3 source_health_check.py >> /var/log/juris-source-health.log 2>&1
+
+# Validador de sitemap às 5h
+0 5 * * * cd /var/www/advaqui/scripts/jurisprudencia && /var/www/advaqui/scripts/jurisprudencia/.venv/bin/python3 sitemap_validator.py >> /var/log/juris-sitemap.log 2>&1
 ```
 
 ## Compliance

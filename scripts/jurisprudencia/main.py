@@ -4,12 +4,24 @@
 Lê config do .env, instancia coletores, busca decisões, normaliza, gera
 slugs/SEO, salva no Supabase via UPSERT (idempotente), registra logs.
 
+IMPORTANTE — PRODUÇÃO (estado padrão):
+  JURIS_MODE=disabled  → o coletor NÃO faz nada. É o estado seguro.
+  JURIS_MODE=fixtures  → APENAS para desenvolvimento/teste local.
+                         NUNCA usar em produção: gera dados sintéticos
+                         que aparecem como AMOSTRA/example.invalid.
+  JURIS_MODE=real-stf  → ativa coleta real do STF (quando disponível).
+  JURIS_MODE=real-stj  → ativa coleta real do STJ (quando disponível).
+  JURIS_MODE=real      → ativa coleta real do STF e STJ.
+
+Para ativar coleta real, configure no .env e teste manualmente antes
+de habilitar via cron.
+
 Uso:
   # No VPS, com .venv ativo e .env configurado:
   python3 main.py
 
 Variáveis de env relevantes (ver .env.example):
-  JURIS_MODE                 fixtures | real-stf | real-stj | hybrid
+  JURIS_MODE                 disabled (default) | fixtures | real-stf | real-stj | real
   JURIS_IMPORT_BATCH_SIZE    Quantidade por tribunal (default 100)
   JURIS_CONTACT_EMAIL        E-mail no User-Agent
 """
@@ -48,12 +60,21 @@ logger = logging.getLogger("main")
 
 
 def _collect_for_tribunal(tribunal: str, batch_size: int, mode: str, contact_email: str) -> list[DecisaoBruta]:
-    """Decide qual coletor usar baseado no modo + tribunal."""
+    """Decide qual coletor usar baseado no modo + tribunal.
+
+    Modo "disabled" (default em produção) sempre retorna lista vazia.
+    Modo "fixtures" gera dados SINTÉTICOS — usar APENAS em desenvolvimento,
+    nunca rodar contra o banco de produção.
+    """
+    if mode == "disabled":
+        return []
     if mode == "fixtures":
+        logger.warning(
+            "JURIS_MODE=fixtures — dados sintéticos gerados. NÃO use em produção."
+        )
         return FixturesCollector(tribunal=tribunal).collect(batch_size)
-    if mode == "hybrid":
-        return FixturesCollector(tribunal=tribunal).collect(batch_size)
-    if mode == f"real-{tribunal.lower()}":
+    # Modo "real" (sem sufixo) ativa ambos tribunais
+    if mode == "real" or mode == f"real-{tribunal.lower()}":
         if tribunal == "STF":
             return STFCollector(contact_email=contact_email).collect(batch_size)
         if tribunal == "STJ":
@@ -99,11 +120,19 @@ def _to_payload(d: DecisaoBruta, existing_slugs: set[str]) -> tuple[dict, set[st
 
 
 def run() -> int:
-    mode = os.environ.get("JURIS_MODE", "fixtures")
+    # Default em "disabled" — produção precisa ativar explicitamente.
+    mode = os.environ.get("JURIS_MODE", "disabled").lower().strip()
     batch_size = int(os.environ.get("JURIS_IMPORT_BATCH_SIZE", "100"))
     contact_email = os.environ.get("JURIS_CONTACT_EMAIL", "contato@advaqui.com.br")
 
     logger.info("Início da coleta — modo=%s, batch_size=%d", mode, batch_size)
+
+    if mode == "disabled":
+        logger.info(
+            "JURIS_MODE=disabled — coletor inativo. "
+            "Para ativar coleta real, configure JURIS_MODE=real no .env."
+        )
+        return 0
 
     try:
         client = SupabaseClient()

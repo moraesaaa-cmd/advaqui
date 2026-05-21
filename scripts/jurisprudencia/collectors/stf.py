@@ -34,11 +34,12 @@ class STFCollector(BaseCollector):
     def collect(self, batch_size: int) -> list[DecisaoBruta]:
         logger.warning(
             "STFCollector.collect chamado com batch_size=%d, mas a integração real "
-            "com portal.stf.jus.br ainda não está implementada. Usando modo fixtures "
-            "em vez disso. Veja docs em scripts/jurisprudencia/README.md.",
+            "com portal.stf.jus.br ainda não está implementada. "
+            "Retornando lista vazia (seguro pra produção). "
+            "Veja docs em scripts/jurisprudencia/README.md.",
             batch_size,
         )
-        # Delega pra fixtures pra não quebrar pipeline em produção até que
-        # integração real seja construída e validada.
-        from .fixtures import FixturesCollector
-        return FixturesCollector(tribunal="STF").collect(batch_size)
+        # IMPORTANTE: NÃO delegar pra fixtures aqui. Em produção (JURIS_MODE=real),
+        # delegar pra fixtures geraria dados falsos com AMOSTRA/example.invalid.
+        # Retornamos lista vazia até o coletor real ser implementado.
+        return []

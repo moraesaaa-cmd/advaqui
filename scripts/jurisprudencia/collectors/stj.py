@@ -32,9 +32,11 @@ class STJCollector(BaseCollector):
     def collect(self, batch_size: int) -> list[DecisaoBruta]:
         logger.warning(
             "STJCollector.collect chamado com batch_size=%d, mas a integração real "
-            "com scon.stj.jus.br ainda não está implementada. Usando modo fixtures "
-            "em vez disso. Veja docs em scripts/jurisprudencia/README.md.",
+            "com scon.stj.jus.br ainda não está implementada. "
+            "Retornando lista vazia (seguro pra produção). "
+            "Veja docs em scripts/jurisprudencia/README.md.",
             batch_size,
         )
-        from .fixtures import FixturesCollector
-        return FixturesCollector(tribunal="STJ").collect(batch_size)
+        # NÃO delegar pra fixtures: geraria dados falsos com AMOSTRA/example.invalid.
+        # Retornamos lista vazia até o coletor real ser implementado.
+        return []

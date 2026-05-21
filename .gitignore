@@ -12,3 +12,6 @@ build
 .vscode
 next-env.d.ts
 .turbo
+__pycache__/
+*.pyc
+.venv/
