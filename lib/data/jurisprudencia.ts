@@ -4,8 +4,15 @@
  * Lê do Supabase usando o admin client server-side. Sempre defensivo:
  * se a tabela ainda não existe (migration 0008 pendente), retorna lista
  * vazia em vez de quebrar o build/SSG.
+ *
+ * Defesa em profundidade: além do filtro `status = 'publicado'` no banco,
+ * todo resultado passa por `isPubliclyDisplayable` (valida fonte oficial,
+ * detecta marcadores AMOSTRA/fixture/example.invalid e dados sensíveis).
+ * Se um registro lixo escapar da limpeza do banco, ele ainda é filtrado
+ * antes de chegar na UI.
  */
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isPubliclyDisplayable } from "@/lib/data/jurisprudencia-validators";
 
 export type Tribunal = "STF" | "STJ";
 
@@ -103,9 +110,15 @@ export async function searchDecisoes(opts: {
       // Tabela ainda não existe (migration pendente) ou outra falha
       return { items: [], count: 0 };
     }
+    // Defesa em profundidade: filtra qualquer registro com marcador
+    // AMOSTRA/fixture/example.invalid mesmo que tenha escapado do banco.
+    const raw = (data as unknown as DecisaoCard[]) || [];
+    const items = raw.filter((d) => isPubliclyDisplayable(d).ok);
     return {
-      items: (data as unknown as DecisaoCard[]) || [],
-      count: count ?? ((data as unknown as DecisaoCard[] | null)?.length ?? 0),
+      items,
+      // Quando o filtro derruba itens, preferimos retornar o count após
+      // o filtro pra evitar paginação inconsistente.
+      count: items.length === raw.length ? (count ?? items.length) : items.length,
     };
   } catch {
     return { items: [], count: 0 };
@@ -127,7 +140,11 @@ export async function getDecisaoBySlug(
       .eq("status", "publicado")
       .maybeSingle();
     if (error || !data) return null;
-    return data as unknown as DecisaoDetail;
+    const detail = data as unknown as DecisaoDetail;
+    // Defesa em profundidade: se ainda passar pelo banco algo com
+    // AMOSTRA/example.invalid/sigilo, recusa antes da página renderizar.
+    if (!isPubliclyDisplayable(detail).ok) return null;
+    return detail;
   } catch {
     return null;
   }
@@ -158,7 +175,8 @@ export async function getRelatedDecisoes(
 
     const { data, error } = await query;
     if (error || !data) return [];
-    return data as unknown as DecisaoCard[];
+    const raw = data as unknown as DecisaoCard[];
+    return raw.filter((d) => isPubliclyDisplayable(d).ok);
   } catch {
     return [];
   }
@@ -170,9 +188,14 @@ export async function getIndexableDecisoesForSitemap(limit = 5000): Promise<
   const admin = safeAdmin();
   if (!admin) return [];
   try {
+    // Selecionamos também os campos necessários pro isPubliclyDisplayable.
+    // Apesar do banco já filtrar status=publicado + indexavel=true, queremos
+    // garantir que nenhuma URL de AMOSTRA/example.invalid escape ao sitemap.
     const { data, error } = await admin
       .from("jurisprudencia_decisoes")
-      .select("tribunal,slug,atualizado_em")
+      .select(
+        "tribunal,slug,atualizado_em,ementa,relator,seo_title,url_origem,temas"
+      )
       .eq("status", "publicado")
       .eq("indexavel", true)
       .order("atualizado_em", { ascending: false })
@@ -182,12 +205,19 @@ export async function getIndexableDecisoesForSitemap(limit = 5000): Promise<
       tribunal: string;
       slug: string;
       atualizado_em: string | null;
+      ementa: string | null;
+      relator: string | null;
+      seo_title: string | null;
+      url_origem: string | null;
+      temas: string[] | null;
     }>;
-    return rows.map((d) => ({
-      tribunal: d.tribunal as Tribunal,
-      slug: d.slug,
-      updated_at: d.atualizado_em ?? undefined,
-    }));
+    return rows
+      .filter((d) => isPubliclyDisplayable(d).ok)
+      .map((d) => ({
+        tribunal: d.tribunal as Tribunal,
+        slug: d.slug,
+        updated_at: d.atualizado_em ?? undefined,
+      }));
   } catch {
     return [];
   }
