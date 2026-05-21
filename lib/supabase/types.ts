@@ -215,6 +215,65 @@ export type SiteVisitRow = {
   is_bot: boolean;
 };
 
+// ---------------------------------------------------------------------------
+// Fase 9 — Módulo Jurisprudência (migration 0008)
+// ---------------------------------------------------------------------------
+export type JurisprudenciaDecisaoRow = {
+  id: number;
+  tribunal: "STF" | "STJ";
+  classe: string | null;
+  numero: string;
+  processo: string | null;
+  relator: string | null;
+  orgao_julgador: string | null;
+  data_julgamento: string | null;
+  data_publicacao: string | null;
+  ementa: string;
+  tese: string | null;
+  resumo_informativo: string | null;
+  temas: string[];
+  palavras_chave: string[];
+  area_relacionada: string | null;
+  url_origem: string;
+  slug: string;
+  hash_conteudo: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  status: string;
+  indexavel: boolean;
+  motivo_noindex: string | null;
+  criado_em: string;
+  atualizado_em: string;
+};
+
+export type JurisprudenciaInteiroTeorCacheRow = {
+  id: number;
+  decisao_id: number;
+  inteiro_teor: string;
+  fonte_url: string;
+  baixado_em: string;
+  ultimo_acesso: string;
+  total_acessos: number;
+  expira_em: string;
+  status: "ativo" | "expirado" | "falha";
+  tamanho_bytes: number | null;
+  hash_inteiro_teor: string | null;
+  criado_em: string;
+  atualizado_em: string;
+};
+
+export type JurisprudenciaTemaRow = {
+  id: number;
+  slug: string;
+  nome: string;
+  descricao: string | null;
+  area_relacionada: string | null;
+  termos_busca: string[];
+  indexavel: boolean;
+  criado_em: string;
+  atualizado_em: string;
+};
+
 /**
  * Versão pública de um perfil de advogado, sem CPF.
  * Use sempre que renderizar dados publicamente (diretório, perfil).
@@ -300,6 +359,38 @@ export type Database = {
           path: string;
         };
         Update: Partial<SiteVisitRow>;
+        Relationships: [];
+      };
+      // Fase 9 — Módulo Jurisprudência (migration 0008)
+      jurisprudencia_decisoes: {
+        Row: JurisprudenciaDecisaoRow;
+        Insert: Partial<JurisprudenciaDecisaoRow> & {
+          tribunal: "STF" | "STJ";
+          numero: string;
+          ementa: string;
+          url_origem: string;
+          slug: string;
+        };
+        Update: Partial<JurisprudenciaDecisaoRow>;
+        Relationships: [];
+      };
+      jurisprudencia_inteiro_teor_cache: {
+        Row: JurisprudenciaInteiroTeorCacheRow;
+        Insert: Partial<JurisprudenciaInteiroTeorCacheRow> & {
+          decisao_id: number;
+          inteiro_teor: string;
+          fonte_url: string;
+        };
+        Update: Partial<JurisprudenciaInteiroTeorCacheRow>;
+        Relationships: [];
+      };
+      jurisprudencia_temas: {
+        Row: JurisprudenciaTemaRow;
+        Insert: Partial<JurisprudenciaTemaRow> & {
+          slug: string;
+          nome: string;
+        };
+        Update: Partial<JurisprudenciaTemaRow>;
         Relationships: [];
       };
     };
