@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Scale, Search, ChevronRight, BookOpen, AlertCircle } from "lucide-react";
+import { Scale, Search, BookOpen, AlertCircle, Users, FileText } from "lucide-react";
 import { searchDecisoes } from "@/lib/data/jurisprudencia";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
@@ -8,12 +8,17 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 
 /**
- * /jurisprudencia — Hub do módulo. Busca, filtros, decisões recentes.
+ * /jurisprudencia — Hub do módulo.
  *
- * SSR (não SSG) porque depende de query params da busca. Quando vier sem
- * busca, mostra decisões recentes (cached por 5 min via revalidate).
- * Quando vier com `?busca=...`, lista os matches — essa página com query
- * é noindex (evita combinatorial explosion no Google).
+ * Estratégia honesta:
+ *  - Quando NÃO HÁ decisões reais cadastradas no banco, mostramos um
+ *    estado vazio explícito ("módulo sendo preparado") em vez de cards
+ *    de amostras.
+ *  - Quando houver decisões reais, listamos. O filtro defensivo em
+ *    lib/data/jurisprudencia já remove qualquer registro com marcadores
+ *    AMOSTRA/fixture/example.invalid mesmo se algum escapar do banco.
+ *  - Buscas com query string (?busca=…) são noindex pra evitar
+ *    combinatorial explosion no Google.
  */
 
 export const dynamic = "force-dynamic";
@@ -28,7 +33,6 @@ export async function generateMetadata({
   searchParams: { busca?: string; tribunal?: string };
 }) {
   const hasQuery = Boolean(searchParams.busca || searchParams.tribunal);
-  // Busca com query string → noindex pra evitar páginas fracas indexadas
   return buildMetadata({
     title: PAGE_TITLE,
     description: PAGE_DESC,
@@ -37,34 +41,31 @@ export async function generateMetadata({
   });
 }
 
-const TEMAS_DESTAQUE = [
-  { slug: "dano-moral", nome: "Dano moral" },
-  { slug: "plano-de-saude", nome: "Plano de saúde" },
-  { slug: "prisao-preventiva", nome: "Prisão preventiva" },
-  { slug: "pensao-alimenticia", nome: "Pensão alimentícia" },
-  { slug: "aposentadoria", nome: "Aposentadoria" },
-  { slug: "habeas-corpus", nome: "Habeas corpus" },
-  { slug: "rescisao-indireta", nome: "Rescisão indireta" },
-  { slug: "repercussao-geral", nome: "Repercussão geral" },
-];
-
 const FAQ = [
   {
-    pergunta: "Como funciona a busca de jurisprudência no AdvAqui?",
+    pergunta: "O que é jurisprudência?",
     resposta:
-      "Você pesquisa por palavras-chave (tema, relator, classe ou número de processo) e o sistema retorna decisões organizadas por relevância. Sempre exibimos a fonte oficial e link pra consulta direta.",
+      "Jurisprudência é o conjunto de decisões judiciais sobre determinados temas, usado como referência para compreender entendimentos adotados pelos tribunais.",
   },
   {
-    pergunta: "As decisões são oficiais?",
+    pergunta: "As decisões exibidas no AdvAqui são oficiais?",
     resposta:
-      "Os metadados e ementas são extraídos de fontes públicas. Para fins oficiais, consulte sempre a versão disponível na fonte original, indicada em cada decisão.",
+      "O AdvAqui organiza informações extraídas de fontes públicas e sempre exibe link para a fonte oficial. Para fins oficiais, consulte a página do tribunal responsável.",
   },
   {
-    pergunta: "Posso consultar o inteiro teor?",
+    pergunta: "Quais tribunais estão disponíveis?",
     resposta:
-      "Sim. O AdvAqui carrega o inteiro teor sob demanda, com cache temporário, sempre apontando para a fonte oficial.",
+      "Nesta primeira fase, o módulo reúne decisões do STF e do STJ.",
+  },
+  {
+    pergunta: "Posso usar uma decisão encontrada aqui em uma petição?",
+    resposta:
+      "A decisão pode servir como referência inicial de pesquisa, mas deve ser conferida na fonte oficial e analisada pelo profissional responsável.",
   },
 ];
+
+const EMPTY_STATE_TEXT =
+  "O módulo de jurisprudência do AdvAqui está sendo preparado para exibir decisões extraídas de fontes oficiais. Em breve, você poderá pesquisar decisões do STF e STJ por tema, classe, relator, número do processo e palavras da ementa.";
 
 export default async function JurisprudenciaIndexPage({
   searchParams,
@@ -77,9 +78,11 @@ export default async function JurisprudenciaIndexPage({
   };
 }) {
   const busca = (searchParams.busca || "").trim();
-  const tribunal = (searchParams.tribunal === "STF" || searchParams.tribunal === "STJ"
-    ? searchParams.tribunal
-    : "ALL") as "STF" | "STJ" | "ALL";
+  const tribunalParam =
+    searchParams.tribunal === "STF" || searchParams.tribunal === "STJ"
+      ? searchParams.tribunal
+      : "ALL";
+  const tribunal = tribunalParam as "STF" | "STJ" | "ALL";
   const relator = (searchParams.relator || "").trim();
   const page = Math.max(1, Number(searchParams.page) || 1);
   const limit = 20;
@@ -95,6 +98,7 @@ export default async function JurisprudenciaIndexPage({
 
   const totalPages = Math.max(1, Math.ceil(count / limit));
   const hasFilter = Boolean(busca || relator || tribunal !== "ALL");
+  const hasDataInModule = items.length > 0 || hasFilter;
 
   return (
     <div className="container-narrow py-10">
@@ -120,18 +124,23 @@ export default async function JurisprudenciaIndexPage({
           </div>
         </div>
 
-        {/* Busca */}
         <form
           action="/jurisprudencia"
           method="get"
           className="mt-5 grid grid-cols-1 md:grid-cols-12 gap-2"
+          role="search"
+          aria-label="Busca de jurisprudência"
         >
           <div className="md:col-span-7 relative">
             <Search
               className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-ink/40"
               aria-hidden
             />
+            <label htmlFor="busca-jurisprudencia" className="sr-only">
+              Buscar por tema, relator, classe, número do processo ou palavras da ementa
+            </label>
             <input
+              id="busca-jurisprudencia"
               type="text"
               name="busca"
               defaultValue={busca}
@@ -157,6 +166,7 @@ export default async function JurisprudenciaIndexPage({
             placeholder="Relator (opcional)"
             className="input md:col-span-2"
             maxLength={80}
+            aria-label="Relator"
           />
           <button type="submit" className="btn-accent md:col-span-1 justify-center">
             Buscar
@@ -164,7 +174,7 @@ export default async function JurisprudenciaIndexPage({
         </form>
       </header>
 
-      {/* Resultados */}
+      {/* Resultados — só renderizamos cards reais. Nada de amostras. */}
       {hasFilter && (
         <p className="text-sm text-brand-ink/65 mb-3">
           {count > 0
@@ -175,13 +185,7 @@ export default async function JurisprudenciaIndexPage({
         </p>
       )}
 
-      {items.length === 0 && !hasFilter && (
-        <p className="text-sm text-brand-ink/65 mb-3 italic">
-          Sem decisões cadastradas ainda. Em breve teremos conteúdo coletado das fontes oficiais.
-        </p>
-      )}
-
-      {items.length > 0 && (
+      {items.length > 0 ? (
         <ul className="space-y-3 mb-8">
           {items.map((d) => (
             <li key={d.id}>
@@ -194,7 +198,9 @@ export default async function JurisprudenciaIndexPage({
                     {d.tribunal}
                   </span>
                   {d.classe && (
-                    <span className="text-brand-ink/70">{d.classe} {d.numero}</span>
+                    <span className="text-brand-ink/70">
+                      {d.classe} {d.numero}
+                    </span>
                   )}
                   {d.relator && (
                     <span className="text-brand-ink/55">— Rel. {d.relator}</span>
@@ -224,11 +230,38 @@ export default async function JurisprudenciaIndexPage({
             </li>
           ))}
         </ul>
+      ) : (
+        // Estado vazio honesto — apenas quando NÃO houve filtro (busca sem
+        // resultado mostra mensagem específica acima).
+        !hasFilter && (
+          <section
+            className="card mb-8 bg-brand-bg/40"
+            aria-label="Módulo em preparação"
+          >
+            <div className="flex items-start gap-3">
+              <BookOpen
+                className="w-5 h-5 text-brand-deep flex-shrink-0 mt-0.5"
+                aria-hidden
+              />
+              <div>
+                <h2 className="font-display text-lg font-bold text-brand-ink mb-2">
+                  Módulo sendo preparado
+                </h2>
+                <p className="text-sm md:text-base text-brand-ink/80 leading-relaxed">
+                  {EMPTY_STATE_TEXT}
+                </p>
+              </div>
+            </div>
+          </section>
+        )
       )}
 
       {/* Paginação simples */}
       {totalPages > 1 && (
-        <nav className="flex items-center justify-center gap-2 mb-8" aria-label="Paginação">
+        <nav
+          className="flex items-center justify-center gap-2 mb-8"
+          aria-label="Paginação"
+        >
           {page > 1 && (
             <Link
               href={{
@@ -257,48 +290,80 @@ export default async function JurisprudenciaIndexPage({
         </nav>
       )}
 
-      {/* Atalhos pra tribunais e temas */}
-      {!hasFilter && items.length === 0 && (
-        <div className="grid md:grid-cols-2 gap-4 mb-8">
-          <Link href="/jurisprudencia/stf" className="card hover:border-brand-deep transition">
-            <h3 className="font-display text-lg font-bold text-brand-ink inline-flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-brand-deep" aria-hidden />
-              Jurisprudência do STF
-            </h3>
-            <p className="text-xs text-brand-ink/65 mt-1">
-              Decisões, ementas e teses do Supremo Tribunal Federal.
-            </p>
-          </Link>
-          <Link href="/jurisprudencia/stj" className="card hover:border-brand-deep transition">
-            <h3 className="font-display text-lg font-bold text-brand-ink inline-flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-brand-deep" aria-hidden />
-              Jurisprudência do STJ
-            </h3>
-            <p className="text-xs text-brand-ink/65 mt-1">
-              Decisões, ementas e teses do Superior Tribunal de Justiça.
-            </p>
-          </Link>
-        </div>
-      )}
+      {/* Atalhos pra páginas dos tribunais — só quando tem ou pode ter dados.
+          Mantemos visível mesmo no estado vazio porque /jurisprudencia/stf
+          e /stj também mostram estado vazio honesto. */}
+      <div className="grid md:grid-cols-2 gap-4 mb-8">
+        <Link
+          href="/jurisprudencia/stf"
+          className="card hover:border-brand-deep transition"
+        >
+          <h3 className="font-display text-lg font-bold text-brand-ink inline-flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-brand-deep" aria-hidden />
+            Jurisprudência do STF
+          </h3>
+          <p className="text-xs text-brand-ink/65 mt-1">
+            Decisões, ementas e teses do Supremo Tribunal Federal.
+          </p>
+        </Link>
+        <Link
+          href="/jurisprudencia/stj"
+          className="card hover:border-brand-deep transition"
+        >
+          <h3 className="font-display text-lg font-bold text-brand-ink inline-flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-brand-deep" aria-hidden />
+            Jurisprudência do STJ
+          </h3>
+          <p className="text-xs text-brand-ink/65 mt-1">
+            Decisões, ementas e teses do Superior Tribunal de Justiça.
+          </p>
+        </Link>
+      </div>
 
-      {!hasFilter && (
-        <section className="card mb-8">
-          <h2 className="font-display text-xl font-bold text-brand-ink mb-3">
-            Temas frequentes
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {TEMAS_DESTAQUE.map((t) => (
-              <Link
-                key={t.slug}
-                href={{ pathname: "/jurisprudencia", query: { busca: t.nome } }}
-                className="text-sm px-3 py-1.5 rounded-full bg-brand-bg border border-brand-line text-brand-ink hover:border-brand-deep hover:text-brand-deep transition"
-              >
-                {t.nome}
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
+      {/* Links internos úteis */}
+      <section className="card mb-8">
+        <h2 className="font-display text-lg font-bold text-brand-ink mb-3">
+          Continue navegando
+        </h2>
+        <ul className="grid sm:grid-cols-2 gap-3 text-sm">
+          <li>
+            <Link
+              href="/advogados"
+              className="inline-flex items-center gap-2 text-brand-deep hover:underline"
+            >
+              <Users className="w-4 h-4" aria-hidden />
+              Encontrar advogados por cidade
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-brand-deep hover:underline"
+            >
+              <BookOpen className="w-4 h-4" aria-hidden />
+              Blog jurídico
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/modelos"
+              className="inline-flex items-center gap-2 text-brand-deep hover:underline"
+            >
+              <FileText className="w-4 h-4" aria-hidden />
+              Modelos gratuitos
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/marketing-juridico"
+              className="inline-flex items-center gap-2 text-brand-deep hover:underline"
+            >
+              <BookOpen className="w-4 h-4" aria-hidden />
+              Marketing jurídico
+            </Link>
+          </li>
+        </ul>
+      </section>
 
       {/* FAQ */}
       <section className="card mb-6">
@@ -321,7 +386,9 @@ export default async function JurisprudenciaIndexPage({
                   +
                 </span>
               </summary>
-              <p className="mt-2 text-sm text-brand-ink/80 leading-relaxed">{f.resposta}</p>
+              <p className="mt-2 text-sm text-brand-ink/80 leading-relaxed">
+                {f.resposta}
+              </p>
             </details>
           ))}
         </div>
@@ -333,8 +400,9 @@ export default async function JurisprudenciaIndexPage({
       >
         <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" aria-hidden />
         <span>
-          Conteúdo extraído de fontes públicas. Para fins oficiais, consulte
-          sempre a versão disponível na fonte original.
+          O AdvAqui não é órgão público nem substitui consulta jurídica. Conteúdo
+          extraído de fontes públicas do STF e STJ — para fins oficiais, consulte
+          sempre a fonte original indicada em cada decisão.
         </span>
       </aside>
 
@@ -369,6 +437,9 @@ export default async function JurisprudenciaIndexPage({
           })),
         }}
       />
+      {/* Sinalizamos hasDataInModule pro server saber que módulo está vazio
+          — útil pra futuras métricas de health check. */}
+      <span hidden data-module-status={hasDataInModule ? "active" : "empty"} />
     </div>
   );
 }

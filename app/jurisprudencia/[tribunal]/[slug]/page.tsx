@@ -1,11 +1,20 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Scale, AlertCircle, FileText, Calendar, User, Tag, ExternalLink } from "lucide-react";
+import {
+  Scale,
+  AlertCircle,
+  FileText,
+  Calendar,
+  User,
+  Tag,
+  ExternalLink,
+} from "lucide-react";
 import {
   getDecisaoBySlug,
   getRelatedDecisoes,
 } from "@/lib/data/jurisprudencia";
 import type { Tribunal } from "@/lib/data/jurisprudencia";
+import { isOfficialSource } from "@/lib/data/jurisprudencia-validators";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -15,20 +24,25 @@ import { SITE } from "@/lib/config";
 /**
  * /jurisprudencia/[tribunal]/[slug] — Página de detalhe de uma decisão.
  *
- * SSG com revalidate 6h. Indexável apenas quando a decisão tem
- * `indexavel = true` (controlado pelo coletor com base em qualidade da
- * ementa, presença de tese, classe canônica, etc.).
+ * Camadas de defesa:
+ *  - getDecisaoBySlug já rejeita registros com marcadores AMOSTRA/fixture
+ *    e fontes não-oficiais (validador centralizado).
+ *  - Aqui re-checamos isOfficialSource e indexabilidade pra escolher o
+ *    fluxo: 404 (não existe), noindex (existe mas suspeito) ou render
+ *    normal (real).
+ *  - O botão "ver inteiro teor" abre a FONTE OFICIAL em nova aba. Sem
+ *    inventar conteúdo. O endpoint /api/jurisprudencia/inteiro-teor já
+ *    serve cache quando existir, ou redireciona pra fonte.
  */
 
 export const revalidate = 21600; // 6h
-export const dynamicParams = true; // gera sob demanda decisões novas
+export const dynamicParams = true;
 
 const VALID_TRIBUNALS = ["stf", "stj"] as const;
 type TribunalSlug = (typeof VALID_TRIBUNALS)[number];
 
 export async function generateStaticParams() {
-  // SSG inicial vazio — decisões são geradas sob demanda quando
-  // visitadas pela primeira vez, e cacheadas após.
+  // SSG vazio. Decisões reais geradas sob demanda + cacheadas.
   return [];
 }
 
@@ -55,22 +69,38 @@ export async function generateMetadata({
     });
   }
 
-  const title =
+  // Title padrão pedido: [Classe] [Número] — [Tema] | [Tribunal] | AdvAqui
+  const temaPrincipal = decisao.temas?.[0];
+  const baseTitle =
     decisao.seo_title ||
-    `${decisao.classe ?? ""} ${decisao.numero} — ${tribunal}`.trim();
+    [
+      `${decisao.classe ?? ""} ${decisao.numero}`.trim(),
+      temaPrincipal,
+      tribunal,
+    ]
+      .filter(Boolean)
+      .join(" — ");
+
   const description =
     decisao.seo_description ||
-    decisao.ementa.slice(0, 158);
+    `Consulte ementa e dados da decisão ${decisao.classe ?? ""} ${decisao.numero} do ${tribunal}${decisao.relator ? `, com relatoria de ${decisao.relator}` : ""}, data de julgamento e link para a fonte oficial.`
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 158);
 
   return buildMetadata({
-    title,
+    title: baseTitle,
     description,
     path: `/jurisprudencia/${slug}/${decisao.slug}`,
-    noIndex: false, // controlado por indexavel/motivo_noindex abaixo no JSX (meta robots adicional)
+    // noIndex se url_origem não for oficial — defesa extra
+    noIndex: !isOfficialSource(decisao.url_origem),
   });
 }
 
-const TRIBUNAL_META: Record<TribunalSlug, { name: string; fullName: string; fonte: string }> = {
+const TRIBUNAL_META: Record<
+  TribunalSlug,
+  { name: string; fullName: string; fonte: string }
+> = {
   stf: {
     name: "STF",
     fullName: "Supremo Tribunal Federal",
@@ -104,12 +134,21 @@ export default async function DecisaoDetailPage({
   const decisao = await getDecisaoBySlug(tribunal, params.slug);
   if (!decisao) notFound();
 
+  // Re-check defensivo: se fonte não for oficial, devolvemos 404 público.
+  // Banco já remove status=removido, mas aqui é a última barreira.
+  if (!isOfficialSource(decisao.url_origem)) {
+    notFound();
+  }
+
   const meta = TRIBUNAL_META[slug];
   const related = await getRelatedDecisoes(decisao, 5);
 
+  const temaPrincipal = decisao.temas?.[0];
   const h1 =
     decisao.seo_title ||
-    `${decisao.classe ?? ""} ${decisao.numero}`.trim();
+    [`${decisao.classe ?? ""} ${decisao.numero}`.trim(), temaPrincipal]
+      .filter(Boolean)
+      .join(" — ");
 
   return (
     <div className="container-narrow py-10">
@@ -125,7 +164,10 @@ export default async function DecisaoDetailPage({
       <article>
         <header className="card mb-6">
           <div className="flex items-start gap-3">
-            <Scale className="w-7 h-7 text-brand-deep flex-shrink-0 mt-1" aria-hidden />
+            <Scale
+              className="w-7 h-7 text-brand-deep flex-shrink-0 mt-1"
+              aria-hidden
+            />
             <div className="min-w-0 flex-1">
               <p className="text-xs uppercase tracking-wide text-brand-deep font-semibold mb-1">
                 {meta.name} — {meta.fullName}
@@ -135,7 +177,8 @@ export default async function DecisaoDetailPage({
               </h1>
               {decisao.relator && (
                 <p className="text-sm text-brand-ink/55 mt-2">
-                  Relator: <span className="text-brand-ink/85">{decisao.relator}</span>
+                  Relator:{" "}
+                  <span className="text-brand-ink/85">{decisao.relator}</span>
                 </p>
               )}
             </div>
@@ -149,29 +192,45 @@ export default async function DecisaoDetailPage({
           </h2>
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
             <div>
-              <dt className="text-brand-ink/55 text-xs uppercase tracking-wide">Tribunal</dt>
+              <dt className="text-brand-ink/55 text-xs uppercase tracking-wide">
+                Tribunal
+              </dt>
               <dd className="text-brand-ink/90 mt-0.5">{decisao.tribunal}</dd>
             </div>
             {decisao.classe && (
               <div>
-                <dt className="text-brand-ink/55 text-xs uppercase tracking-wide">Classe</dt>
+                <dt className="text-brand-ink/55 text-xs uppercase tracking-wide">
+                  Classe
+                </dt>
                 <dd className="text-brand-ink/90 mt-0.5">{decisao.classe}</dd>
               </div>
             )}
             <div>
-              <dt className="text-brand-ink/55 text-xs uppercase tracking-wide">Número</dt>
-              <dd className="text-brand-ink/90 mt-0.5 font-mono text-xs">{decisao.numero}</dd>
+              <dt className="text-brand-ink/55 text-xs uppercase tracking-wide">
+                Número
+              </dt>
+              <dd className="text-brand-ink/90 mt-0.5 font-mono text-xs">
+                {decisao.numero}
+              </dd>
             </div>
             {decisao.processo && (
               <div>
-                <dt className="text-brand-ink/55 text-xs uppercase tracking-wide">Processo</dt>
-                <dd className="text-brand-ink/90 mt-0.5 font-mono text-xs">{decisao.processo}</dd>
+                <dt className="text-brand-ink/55 text-xs uppercase tracking-wide">
+                  Processo
+                </dt>
+                <dd className="text-brand-ink/90 mt-0.5 font-mono text-xs">
+                  {decisao.processo}
+                </dd>
               </div>
             )}
             {decisao.orgao_julgador && (
               <div>
-                <dt className="text-brand-ink/55 text-xs uppercase tracking-wide">Órgão julgador</dt>
-                <dd className="text-brand-ink/90 mt-0.5">{decisao.orgao_julgador}</dd>
+                <dt className="text-brand-ink/55 text-xs uppercase tracking-wide">
+                  Órgão julgador
+                </dt>
+                <dd className="text-brand-ink/90 mt-0.5">
+                  {decisao.orgao_julgador}
+                </dd>
               </div>
             )}
             {decisao.relator && (
@@ -185,17 +244,23 @@ export default async function DecisaoDetailPage({
             {decisao.data_julgamento && (
               <div>
                 <dt className="text-brand-ink/55 text-xs uppercase tracking-wide inline-flex items-center gap-1">
-                  <Calendar className="w-3 h-3" aria-hidden /> Data de julgamento
+                  <Calendar className="w-3 h-3" aria-hidden /> Data de
+                  julgamento
                 </dt>
-                <dd className="text-brand-ink/90 mt-0.5">{formatDate(decisao.data_julgamento)}</dd>
+                <dd className="text-brand-ink/90 mt-0.5">
+                  {formatDate(decisao.data_julgamento)}
+                </dd>
               </div>
             )}
             {decisao.data_publicacao && (
               <div>
                 <dt className="text-brand-ink/55 text-xs uppercase tracking-wide inline-flex items-center gap-1">
-                  <Calendar className="w-3 h-3" aria-hidden /> Data de publicação
+                  <Calendar className="w-3 h-3" aria-hidden /> Data de
+                  publicação
                 </dt>
-                <dd className="text-brand-ink/90 mt-0.5">{formatDate(decisao.data_publicacao)}</dd>
+                <dd className="text-brand-ink/90 mt-0.5">
+                  {formatDate(decisao.data_publicacao)}
+                </dd>
               </div>
             )}
             <div className="sm:col-span-2">
@@ -217,7 +282,9 @@ export default async function DecisaoDetailPage({
         </section>
 
         <section className="card mb-6">
-          <h2 className="font-display text-xl font-bold text-brand-ink mb-3">Ementa</h2>
+          <h2 className="font-display text-xl font-bold text-brand-ink mb-3">
+            Ementa
+          </h2>
           <div className="prose prose-sm max-w-none text-brand-ink/85 leading-relaxed whitespace-pre-line">
             {decisao.ementa}
           </div>
@@ -234,7 +301,7 @@ export default async function DecisaoDetailPage({
           {decisao.resumo_informativo && (
             <div className="mt-4 rounded-xl border border-brand-line bg-brand-canvas/40 p-4">
               <p className="text-xs uppercase tracking-wide text-brand-ink/55 font-semibold mb-1">
-                Resumo informativo
+                Resumo informativo (organizado pelo AdvAqui)
               </p>
               <p className="text-sm text-brand-ink/80 leading-relaxed">
                 {decisao.resumo_informativo}
@@ -270,26 +337,33 @@ export default async function DecisaoDetailPage({
           </section>
         )}
 
+        {/* Inteiro teor — link direto pra fonte oficial em nova aba.
+            Honesto: não simulamos conteúdo nem alucinamos texto.
+            O Googlebot indexa o que está no HTML acima (ementa + tese). */}
         <section className="card mb-6">
           <div className="flex items-start gap-3">
-            <FileText className="w-5 h-5 text-brand-deep flex-shrink-0 mt-0.5" aria-hidden />
+            <FileText
+              className="w-5 h-5 text-brand-deep flex-shrink-0 mt-0.5"
+              aria-hidden
+            />
             <div className="flex-1">
               <h2 className="font-display text-base font-bold text-brand-ink mb-1">
                 Inteiro teor
               </h2>
               <p className="text-xs text-brand-ink/65 leading-relaxed mb-3">
-                O inteiro teor é obtido sob demanda na fonte oficial do tribunal e
-                mantido em cache temporário (até 7 dias). Para uso oficial,
-                consulte sempre o link da fonte logo acima.
+                O inteiro teor é mantido pelo próprio tribunal. Para consultá-lo
+                na íntegra, acesse a fonte oficial em nova aba. Se o link não
+                abrir, consulte diretamente o portal de jurisprudência do
+                tribunal.
               </p>
               <a
-                href={`/api/jurisprudencia/inteiro-teor/${decisao.id}`}
+                href={decisao.url_origem}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-xl border border-brand-deep text-brand-deep hover:bg-brand-deep hover:text-white transition"
               >
-                <FileText className="w-4 h-4" aria-hidden />
-                Ver inteiro teor (fonte oficial)
+                <ExternalLink className="w-4 h-4" aria-hidden />
+                Ver inteiro teor na fonte oficial
               </a>
             </div>
           </div>
@@ -330,7 +404,9 @@ export default async function DecisaoDetailPage({
                         </span>
                       )}
                       {r.relator && (
-                        <span className="text-brand-ink/55">— Rel. {r.relator}</span>
+                        <span className="text-brand-ink/55">
+                          — Rel. {r.relator}
+                        </span>
                       )}
                       {r.data_julgamento && (
                         <span className="ml-auto text-brand-ink/45">
@@ -338,13 +414,41 @@ export default async function DecisaoDetailPage({
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-brand-ink/85 line-clamp-2">{r.ementa}</p>
+                    <p className="text-sm text-brand-ink/85 line-clamp-2">
+                      {r.ementa}
+                    </p>
                   </Link>
                 </li>
               ))}
             </ul>
           </section>
         )}
+
+        {/* Bloco discreto de cross-linking para o diretório de advogados */}
+        <section className="card mb-6 bg-brand-bg/40">
+          <h2 className="font-display text-base font-bold text-brand-ink mb-2">
+            Precisa encontrar advogados relacionados a este tema?
+          </h2>
+          <p className="text-sm text-brand-ink/75 mb-3 leading-relaxed">
+            O AdvAqui organiza perfis de advogados por cidade e área de atuação.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href="/advogados"
+              className="text-sm px-4 py-2 rounded-xl border border-brand-deep text-brand-deep hover:bg-brand-deep hover:text-white transition"
+            >
+              Buscar advogados por cidade
+            </Link>
+            {decisao.area_relacionada && (
+              <Link
+                href={`/advogados`}
+                className="text-sm px-4 py-2 rounded-xl border border-brand-line text-brand-ink hover:border-brand-deep transition"
+              >
+                Ver advogados da área relacionada
+              </Link>
+            )}
+          </div>
+        </section>
 
         <section className="card">
           <h2 className="font-display text-base font-bold text-brand-ink mb-3">
@@ -360,13 +464,16 @@ export default async function DecisaoDetailPage({
               </Link>
             </li>
             <li>
-              <Link href="/jurisprudencia" className="underline hover:text-brand-ink">
+              <Link
+                href="/jurisprudencia"
+                className="underline hover:text-brand-ink"
+              >
                 Hub geral de jurisprudência
               </Link>
             </li>
             <li>
-              <Link href="/advogados" className="underline hover:text-brand-ink">
-                Encontrar advogado por cidade ou especialidade
+              <Link href="/blog" className="underline hover:text-brand-ink">
+                Blog jurídico
               </Link>
             </li>
           </ul>
@@ -389,9 +496,12 @@ export default async function DecisaoDetailPage({
           "@context": "https://schema.org",
           "@type": "Article",
           headline: h1,
-          description: decisao.seo_description || decisao.ementa.slice(0, 158),
-          datePublished: decisao.data_publicacao || decisao.data_julgamento || undefined,
-          dateModified: decisao.data_publicacao || decisao.data_julgamento || undefined,
+          description:
+            decisao.seo_description || decisao.ementa.slice(0, 158),
+          datePublished:
+            decisao.data_publicacao || decisao.data_julgamento || undefined,
+          dateModified:
+            decisao.data_publicacao || decisao.data_julgamento || undefined,
           inLanguage: "pt-BR",
           author: {
             "@type": "Organization",
@@ -406,7 +516,10 @@ export default async function DecisaoDetailPage({
             "@type": "WebPage",
             "@id": `${SITE.url}/jurisprudencia/${slug}/${decisao.slug}`,
           },
-          keywords: [...(decisao.temas || []), ...(decisao.palavras_chave || [])].join(", "),
+          keywords: [
+            ...(decisao.temas || []),
+            ...(decisao.palavras_chave || []),
+          ].join(", "),
           isBasedOn: decisao.url_origem,
         }}
       />
