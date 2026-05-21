@@ -155,9 +155,19 @@ export async function POST(req: Request) {
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
     }
     case "set-plan-status": {
-      // Permite admin alterar plan_status diretamente sem mexer em datas.
-      // Use com cuidado: 'active' sem plan_end_date faz o card sair do
-      // destaque automaticamente. Pra ativação completa, use activate-premium.
+      // Altera plan_status do user e aplica regras de negócio coerentes
+      // (Fase 8 — Maio/2026):
+      //   • 'active'                      → reusa adminActivatePremium
+      //                                     (seta plan_start_date, plan_end_date
+      //                                      e cria/atualiza plan_history)
+      //   • 'free' | 'expired' | 'cancelled' → reusa adminDeactivatePremium e
+      //                                     ajusta plan_status final
+      //                                     (zera datas e featured=false)
+      //   • 'pending'                     → só atualiza plan_status, mantém
+      //                                     datas e featured (aguardando ativação)
+      //
+      // Resultado: ao mudar pra free, o user perde benefícios premium
+      // imediatamente (sai do TOPO, perde selo dourado, etc).
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
       const status = typeof body.status === "string" ? body.status.trim() : "";
       const VALID_STATUS = ["free", "pending", "active", "expired", "cancelled"] as const;
@@ -167,6 +177,42 @@ export async function POST(req: Request) {
           { status: 400 }
         );
       }
+
+      if (status === "active") {
+        const result = await adminActivatePremium(body.id);
+        if (!result.ok) {
+          return NextResponse.json(result, { status: 500 });
+        }
+        await revalidateLawyerPages(body.id);
+        return NextResponse.json({ ok: true });
+      }
+
+      if (status === "free" || status === "expired" || status === "cancelled") {
+        // Reusa lógica de desativação (zera datas + featured) e, se o destino
+        // for diferente de 'free', sobreescreve plan_status pra refletir a
+        // intenção do admin (expired/cancelled).
+        const result = await adminDeactivatePremium(body.id);
+        if (!result.ok) {
+          return NextResponse.json(result, { status: 500 });
+        }
+        if (status !== "free") {
+          const admin = createAdminClient();
+          const { error } = await admin
+            .from("lawyers")
+            .update({ plan_status: status } as Partial<LawyerRow>)
+            .eq("id", body.id);
+          if (error) {
+            return NextResponse.json(
+              { ok: false, error: error.message || "Erro ao atualizar status." },
+              { status: 500 }
+            );
+          }
+        }
+        await revalidateLawyerPages(body.id);
+        return NextResponse.json({ ok: true });
+      }
+
+      // status === "pending" — só atualiza plan_status (aguardando ativação).
       const admin = createAdminClient();
       const { error } = await admin
         .from("lawyers")
