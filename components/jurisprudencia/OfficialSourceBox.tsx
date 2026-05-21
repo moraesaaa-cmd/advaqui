@@ -59,7 +59,6 @@ export function OfficialSourceBox({
             href={dataset_url}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
             className="inline-flex items-center gap-1 text-brand-deep hover:underline"
           >
             <ExternalLink className="w-3 h-3" aria-hidden />
