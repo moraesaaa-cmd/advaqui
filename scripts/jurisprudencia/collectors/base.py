@@ -25,6 +25,10 @@ class DecisaoBruta:
     url_origem: str = ""
     # Inteiro teor opcional — se vier, vai pro CACHE, não pra decisões
     inteiro_teor_opcional: str | None = field(default=None, repr=False)
+    # Metadados extras (ex.: stj_id, numero_registro, decisao_resumo, etc.).
+    # Coletores podem encher livremente; main.py copia chaves específicas
+    # pro payload Supabase (resumo_informativo, etc.).
+    extra: dict | None = field(default=None, repr=False)
 
 
 class BaseCollector(ABC):

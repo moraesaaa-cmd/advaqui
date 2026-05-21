@@ -1,31 +1,37 @@
 #!/usr/bin/env python3
 """Orquestrador da coleta de jurisprudência.
 
-Lê config do .env, instancia coletores, busca decisões, normaliza, gera
-slugs/SEO, salva no Supabase via UPSERT (idempotente), registra logs.
+Lê config do .env e/ou CLI args, instancia coletores, busca decisões reais,
+normaliza, gera slugs/SEO, salva no Supabase via UPSERT (idempotente),
+registra logs.
 
-IMPORTANTE — PRODUÇÃO (estado padrão):
-  JURIS_MODE=disabled  → o coletor NÃO faz nada. É o estado seguro.
-  JURIS_MODE=fixtures  → APENAS para desenvolvimento/teste local.
-                         NUNCA usar em produção: gera dados sintéticos
-                         que aparecem como AMOSTRA/example.invalid.
-  JURIS_MODE=real-stf  → ativa coleta real do STF (quando disponível).
-  JURIS_MODE=real-stj  → ativa coleta real do STJ (quando disponível).
-  JURIS_MODE=real      → ativa coleta real do STF e STJ.
+USO MAIS COMUM:
 
-Para ativar coleta real, configure no .env e teste manualmente antes
-de habilitar via cron.
+  # Coleta real do STJ via Portal de Dados Abertos:
+  python3 main.py --source=stj-ckan --mode=main --limit=200
 
-Uso:
-  # No VPS, com .venv ativo e .env configurado:
-  python3 main.py
+  # Modo teste (limit pequeno, apenas conta):
+  python3 main.py --source=stj-ckan --mode=test --limit=20 --force
 
-Variáveis de env relevantes (ver .env.example):
-  JURIS_MODE                 disabled (default) | fixtures | real-stf | real-stj | real
-  JURIS_IMPORT_BATCH_SIZE    Quantidade por tribunal (default 100)
+CLI args:
+  --source   stj-ckan | stf | all  (default: stj-ckan)
+  --mode     main | afternoon | test    (default: main)
+  --limit    Quantas decisões por execução (default: 200)
+  --force    Ignora JURIS_MODE=disabled (default: false)
+
+Variáveis env relevantes (ver .env.example):
+  JURIS_MODE                 disabled (default) | enabled
   JURIS_CONTACT_EMAIL        E-mail no User-Agent
+  STJ_CKAN_DATASETS          (opcional) lista separada por vírgula
+
+Princípios:
+  - Sem dados sintéticos. Coletores só publicam dados reais oficiais.
+  - Em produção, o padrão é JURIS_MODE=disabled. Coletor só roda quando
+    explicitamente habilitado OU com --force.
 """
 from __future__ import annotations
+
+import argparse
 import logging
 import os
 import sys
@@ -33,9 +39,7 @@ import traceback
 from datetime import datetime, timezone
 
 from collectors.base import DecisaoBruta
-from collectors.fixtures import FixturesCollector
-from collectors.stf import STFCollector
-from collectors.stj import STJCollector
+from collectors.stj_ckan import STJCkanCollector
 
 from services.slug_service import build_slug, ensure_unique
 from services.seo_service import build_seo_title, build_seo_description
@@ -44,7 +48,7 @@ from services.topic_extractor import extract_topics, compute_content_hash
 from services.supabase_client import SupabaseClient
 
 
-# Carrega .env se presente (dotenv é opcional — em produção pode usar env do sistema)
+# Carrega .env se presente
 try:
     from dotenv import load_dotenv  # type: ignore
     load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
@@ -59,41 +63,71 @@ logging.basicConfig(
 logger = logging.getLogger("main")
 
 
-def _collect_for_tribunal(tribunal: str, batch_size: int, mode: str, contact_email: str) -> list[DecisaoBruta]:
-    """Decide qual coletor usar baseado no modo + tribunal.
+# ---------------------------------------------------------------------------
+# Detecção de conteúdo sensível (mesma lista que o validador do front)
+# ---------------------------------------------------------------------------
+import re
 
-    Modo "disabled" (default em produção) sempre retorna lista vazia.
-    Modo "fixtures" gera dados SINTÉTICOS — usar APENAS em desenvolvimento,
-    nunca rodar contra o banco de produção.
-    """
-    if mode == "disabled":
-        return []
-    if mode == "fixtures":
+_SENSITIVE_RE = re.compile(
+    r"\bsegredo\s+de\s+justi[çc]a\b"
+    r"|\bsigilo(so)?\b"
+    r"|\btramita[çc][ãa]o\s+sigilosa\b"
+    r"|\bprocesso\s+sigiloso\b"
+    r"|\beca\b|\bestatuto\s+da\s+crian[çc]a\s+e\s+do\s+adolescente\b"
+    r"|\bviol[êe]ncia\s+sexual\b|\babuso\s+sexual\b"
+    r"|\bestupro\s+de\s+vulner[áa]vel\b"
+    r"|\bcrime\s+sexual\s+contra\s+menor\b"
+    r"|\bado[çc][ãa]o\s+(sigilosa|de\s+menor)\b"
+    r"|\bguarda\s+de\s+menor\b"
+    r"|\bdesti(t|tuiç)[ãa]o\s+do\s+poder\s+familiar\b",
+    re.IGNORECASE,
+)
+
+
+def _is_sensitive(d: DecisaoBruta) -> bool:
+    haystack = " ".join([
+        d.ementa or "",
+        d.tese or "",
+        d.relator or "",
+        d.orgao_julgador or "",
+    ])
+    return bool(_SENSITIVE_RE.search(haystack))
+
+
+# ---------------------------------------------------------------------------
+# Coletor dispatch
+# ---------------------------------------------------------------------------
+def _collect(source: str, batch_size: int, contact_email: str) -> list[DecisaoBruta]:
+    if source == "stj-ckan":
+        return STJCkanCollector(contact_email=contact_email).collect(batch_size)
+    if source == "stf":
         logger.warning(
-            "JURIS_MODE=fixtures — dados sintéticos gerados. NÃO use em produção."
+            "Coletor STF não implementado (portal protegido por AWS WAF). "
+            "Veja docs/stf-jurisprudencia-fontes.md para roadmap."
         )
-        return FixturesCollector(tribunal=tribunal).collect(batch_size)
-    # Modo "real" (sem sufixo) ativa ambos tribunais
-    if mode == "real" or mode == f"real-{tribunal.lower()}":
-        if tribunal == "STF":
-            return STFCollector(contact_email=contact_email).collect(batch_size)
-        if tribunal == "STJ":
-            return STJCollector(contact_email=contact_email).collect(batch_size)
+        return []
+    if source == "all":
+        out = STJCkanCollector(contact_email=contact_email).collect(batch_size)
+        # STF retornaria aqui se implementado
+        return out
+    logger.error("Source desconhecido: %s", source)
     return []
 
 
+# ---------------------------------------------------------------------------
+# Conversão DecisaoBruta → payload Supabase
+# ---------------------------------------------------------------------------
 def _to_payload(d: DecisaoBruta, existing_slugs: set[str]) -> tuple[dict, set[str]]:
-    """Converte DecisaoBruta + slugs existentes em payload pra Supabase.
-
-    Retorna (payload_dict, slugs_atualizado).
-    """
     ementa_clean = clean_ementa(d.ementa)
     temas, palavras, area = extract_topics(ementa_clean, d.tese)
     slug_base = build_slug(d.classe, d.numero, temas, ementa_clean)
     slug = ensure_unique(slug_base, existing_slugs)
     existing_slugs.add(slug)
     seo_title = build_seo_title(d.tribunal, d.classe, d.numero, temas)
-    seo_desc = build_seo_description(d.tribunal, d.classe, d.relator, temas, ementa_clean)
+    seo_desc = build_seo_description(
+        d.tribunal, d.classe, d.relator, temas, ementa_clean
+    )
+    extra = d.extra or {}
     payload = {
         "tribunal": d.tribunal,
         "classe": d.classe,
@@ -105,6 +139,7 @@ def _to_payload(d: DecisaoBruta, existing_slugs: set[str]) -> tuple[dict, set[st
         "data_publicacao": d.data_publicacao.isoformat() if d.data_publicacao else None,
         "ementa": ementa_clean,
         "tese": d.tese,
+        "resumo_informativo": extra.get("decisao_resumo"),
         "temas": temas,
         "palavras_chave": palavras,
         "area_relacionada": area,
@@ -119,18 +154,52 @@ def _to_payload(d: DecisaoBruta, existing_slugs: set[str]) -> tuple[dict, set[st
     return payload, existing_slugs
 
 
+# ---------------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------------
+def _parse_args() -> argparse.Namespace:
+    p = argparse.ArgumentParser(description="Coletor de jurisprudência AdvAqui")
+    p.add_argument(
+        "--source",
+        choices=["stj-ckan", "stf", "all"],
+        default="stj-ckan",
+        help="Fonte da coleta",
+    )
+    p.add_argument(
+        "--mode",
+        choices=["main", "afternoon", "test"],
+        default="main",
+        help="Modo: main (coleta+grava), afternoon (mesma coisa, log marcado), test (não grava)",
+    )
+    p.add_argument(
+        "--limit",
+        type=int,
+        default=200,
+        help="Quantidade máxima de decisões a coletar nesta execução",
+    )
+    p.add_argument(
+        "--force",
+        action="store_true",
+        help="Ignora JURIS_MODE=disabled (só pra execução manual)",
+    )
+    return p.parse_args()
+
+
 def run() -> int:
-    # Default em "disabled" — produção precisa ativar explicitamente.
-    mode = os.environ.get("JURIS_MODE", "disabled").lower().strip()
-    batch_size = int(os.environ.get("JURIS_IMPORT_BATCH_SIZE", "100"))
+    args = _parse_args()
+    juris_mode = (os.environ.get("JURIS_MODE", "disabled") or "disabled").lower().strip()
     contact_email = os.environ.get("JURIS_CONTACT_EMAIL", "contato@advaqui.com.br")
 
-    logger.info("Início da coleta — modo=%s, batch_size=%d", mode, batch_size)
+    logger.info(
+        "Início — source=%s mode=%s limit=%d JURIS_MODE=%s force=%s",
+        args.source, args.mode, args.limit, juris_mode, args.force,
+    )
 
-    if mode == "disabled":
+    if juris_mode == "disabled" and not args.force:
         logger.info(
-            "JURIS_MODE=disabled — coletor inativo. "
-            "Para ativar coleta real, configure JURIS_MODE=real no .env."
+            "JURIS_MODE=disabled. Coletor inativo. "
+            "Para ativar coleta automática diária, defina JURIS_MODE=enabled no .env. "
+            "Para executar manualmente, use --force."
         )
         return 0
 
@@ -140,88 +209,157 @@ def run() -> int:
         logger.error("Supabase não configurado: %s", e)
         return 2
 
-    # Slugs existentes pra evitar colisão
+    started_at = datetime.now(timezone.utc).isoformat()
+
+    # Slugs existentes (deduplicação)
     try:
         existing = client.select(
             "jurisprudencia_decisoes",
             columns="slug",
-            limit=10000,
+            limit=20000,
         )
         existing_slugs = {row.get("slug") for row in existing if row.get("slug")}
         logger.info("Slugs já no banco: %d", len(existing_slugs))
     except Exception as e:
-        logger.warning("Não consegui carregar slugs existentes: %s. Seguindo vazio.", e)
+        logger.warning("Falha carregando slugs existentes: %s", e)
         existing_slugs = set()
 
-    total_inserido = 0
-    total_erro = 0
+    # URLs já existentes (deduplicação por url_origem)
+    try:
+        existing_urls_rows = client.select(
+            "jurisprudencia_decisoes",
+            columns="url_origem",
+            limit=20000,
+        )
+        existing_urls = {
+            row.get("url_origem")
+            for row in existing_urls_rows
+            if row.get("url_origem")
+        }
+        logger.info("URLs já no banco: %d", len(existing_urls))
+    except Exception as e:
+        logger.warning("Falha carregando url_origens: %s", e)
+        existing_urls = set()
 
-    for tribunal in ("STF", "STJ"):
-        started_at = datetime.now(timezone.utc).isoformat()
+    # -------------------------------------------------------
+    # Coleta
+    # -------------------------------------------------------
+    decisoes = _collect(args.source, args.limit, contact_email)
+    encontradas = len(decisoes)
+    logger.info("Decisões coletadas (cruas): %d", encontradas)
+
+    # -------------------------------------------------------
+    # Validação + filtros (sensibilidade, deduplicação)
+    # -------------------------------------------------------
+    validas: list[DecisaoBruta] = []
+    rejeitadas_sensiveis = 0
+    rejeitadas_sem_ementa = 0
+    duplicadas = 0
+
+    for d in decisoes:
+        if not d.ementa or len(d.ementa.strip()) < 50:
+            rejeitadas_sem_ementa += 1
+            continue
+        if _is_sensitive(d):
+            rejeitadas_sensiveis += 1
+            continue
+        if d.url_origem in existing_urls:
+            duplicadas += 1
+            continue
+        validas.append(d)
+
+    logger.info(
+        "Filtro: %d válidas | %d sem ementa | %d sensíveis | %d duplicadas",
+        len(validas), rejeitadas_sem_ementa, rejeitadas_sensiveis, duplicadas,
+    )
+
+    if args.mode == "test":
+        logger.info("MODE=test → não gravando no Supabase.")
+        if validas[:3]:
+            logger.info("Amostra das 3 primeiras válidas:")
+            for d in validas[:3]:
+                logger.info(
+                    "  - [%s] %s %s | rel=%s | ementa=%s",
+                    d.tribunal, d.classe, d.numero,
+                    (d.relator or "—")[:40],
+                    (d.ementa or "")[:100],
+                )
+        return 0
+
+    # -------------------------------------------------------
+    # Build payloads + UPSERT
+    # -------------------------------------------------------
+    payloads: list[dict] = []
+    erros_payload = 0
+    for d in validas:
         try:
-            decisoes = _collect_for_tribunal(tribunal, batch_size, mode, contact_email)
-            logger.info("Coletor %s retornou %d decisões", tribunal, len(decisoes))
+            payload, existing_slugs = _to_payload(d, existing_slugs)
+            payloads.append(payload)
+        except Exception as ex:
+            erros_payload += 1
+            logger.warning("Falha convertendo %s/%s: %s", d.classe, d.numero, ex)
 
-            payloads: list[dict] = []
-            for d in decisoes:
-                try:
-                    payload, existing_slugs = _to_payload(d, existing_slugs)
-                    payloads.append(payload)
-                except Exception as ex:
-                    total_erro += 1
-                    logger.warning("Falha convertendo decisão %s: %s", d.numero, ex)
-
-            inseridos = 0
-            if payloads:
-                # Upsert em lotes de 50 pra não estourar payload HTTP
-                for i in range(0, len(payloads), 50):
-                    chunk = payloads[i:i + 50]
-                    try:
-                        result = client.upsert("jurisprudencia_decisoes", chunk, on_conflict="url_origem")
-                        inseridos += len(result)
-                    except Exception as ex:
-                        total_erro += len(chunk)
-                        logger.error("Falha no upsert lote %d-%d: %s", i, i + len(chunk), ex)
-            total_inserido += inseridos
-
-            # Log de coleta
+    inseridas = 0
+    erros_upsert = 0
+    if payloads:
+        for i in range(0, len(payloads), 50):
+            chunk = payloads[i:i + 50]
             try:
-                client.insert("jurisprudencia_coleta_logs", [{
-                    "fonte": f"{mode}/{tribunal.lower()}",
-                    "tribunal": tribunal,
-                    "status": "sucesso" if inseridos == len(payloads) else "parcial",
-                    "mensagem": f"Coleta {tribunal} concluída",
-                    "quantidade_encontrada": len(decisoes),
-                    "quantidade_inserida": inseridos,
-                    "quantidade_atualizada": 0,
-                    "quantidade_erro": len(decisoes) - inseridos,
-                    "iniciado_em": started_at,
-                    "finalizado_em": datetime.now(timezone.utc).isoformat(),
-                }])
+                result = client.upsert(
+                    "jurisprudencia_decisoes",
+                    chunk,
+                    on_conflict="url_origem",
+                )
+                inseridas += len(result)
             except Exception as ex:
-                logger.warning("Falha ao registrar log de coleta: %s", ex)
+                erros_upsert += len(chunk)
+                logger.error(
+                    "UPSERT lote %d-%d falhou: %s",
+                    i, i + len(chunk), ex,
+                )
 
-        except Exception:
-            total_erro += 1
-            logger.exception("Erro fatal coletando %s", tribunal)
-            try:
-                client.insert("jurisprudencia_coleta_logs", [{
-                    "fonte": f"{mode}/{tribunal.lower()}",
-                    "tribunal": tribunal,
-                    "status": "erro",
-                    "mensagem": traceback.format_exc()[:500],
-                    "quantidade_encontrada": 0,
-                    "quantidade_inserida": 0,
-                    "quantidade_atualizada": 0,
-                    "quantidade_erro": 1,
-                    "iniciado_em": started_at,
-                    "finalizado_em": datetime.now(timezone.utc).isoformat(),
-                }])
-            except Exception:
-                pass
+    # Log de coleta
+    try:
+        client.insert("jurisprudencia_coleta_logs", [{
+            "fonte": f"{args.source}/{args.mode}",
+            "tribunal": "STJ" if args.source == "stj-ckan" else "STF",
+            "status": "sucesso" if (erros_payload + erros_upsert) == 0 else "parcial",
+            "mensagem": (
+                f"source={args.source} mode={args.mode} limit={args.limit} "
+                f"encontradas={encontradas} validas={len(validas)} "
+                f"inseridas={inseridas} sem_ementa={rejeitadas_sem_ementa} "
+                f"sensiveis={rejeitadas_sensiveis} duplicadas={duplicadas}"
+            )[:480],
+            "quantidade_encontrada": encontradas,
+            "quantidade_inserida": inseridas,
+            "quantidade_atualizada": 0,
+            "quantidade_erro": erros_payload + erros_upsert,
+            "iniciado_em": started_at,
+            "finalizado_em": datetime.now(timezone.utc).isoformat(),
+        }])
+    except Exception as ex:
+        logger.warning("Falha ao registrar log de coleta: %s", ex)
 
-    logger.info("Concluído. Inseridas/atualizadas: %d. Erros: %d.", total_inserido, total_erro)
-    return 0 if total_erro == 0 else 1
+    # -------------------------------------------------------
+    # Relatório
+    # -------------------------------------------------------
+    print("=" * 60)
+    print("COLETA — Jurisprudência AdvAqui")
+    print("=" * 60)
+    print(f"Source:               {args.source}")
+    print(f"Mode:                 {args.mode}")
+    print(f"Limit:                {args.limit}")
+    print(f"Encontradas (cruas):  {encontradas}")
+    print(f"Válidas:              {len(validas)}")
+    print(f"Rejeitadas s/ ementa: {rejeitadas_sem_ementa}")
+    print(f"Rejeitadas sensíveis: {rejeitadas_sensiveis}")
+    print(f"Duplicadas:           {duplicadas}")
+    print(f"Inseridas/upserted:   {inseridas}")
+    print(f"Erros payload:        {erros_payload}")
+    print(f"Erros upsert:         {erros_upsert}")
+    print("=" * 60)
+
+    return 0 if (erros_payload + erros_upsert) == 0 else 1
 
 
 if __name__ == "__main__":

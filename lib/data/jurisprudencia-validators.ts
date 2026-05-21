@@ -27,9 +27,12 @@ const OFFICIAL_HOSTS = new Set<string>([
   "redir.stf.jus.br",
   "jurisprudencia.stf.jus.br",
   "stj.jus.br",
+  "www.stj.jus.br",
   "processo.stj.jus.br",
   "scon.stj.jus.br",
   "ww2.stj.jus.br",
+  // Portal de Dados Abertos do STJ — fonte oficial dos "Espelhos de Acórdãos"
+  "dadosabertos.web.stj.jus.br",
   "cnj.jus.br",
   "www.cnj.jus.br",
 ]);

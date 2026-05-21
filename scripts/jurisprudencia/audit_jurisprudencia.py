@@ -46,9 +46,11 @@ OFFICIAL_HOSTS = {
     "redir.stf.jus.br",
     "jurisprudencia.stf.jus.br",
     "stj.jus.br",
+    "www.stj.jus.br",
     "processo.stj.jus.br",
     "scon.stj.jus.br",
     "ww2.stj.jus.br",
+    "dadosabertos.web.stj.jus.br",
     "cnj.jus.br",
     "www.cnj.jus.br",
 }
