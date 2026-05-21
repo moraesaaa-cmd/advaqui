@@ -10,6 +10,7 @@ import { createClient } from "@/lib/supabase/client";
 const NAV = [
   { href: "/", label: "Início" },
   { href: "/advogados", label: "Diretório" },
+  { href: "/jurisprudencia", label: "Jurisprudência" },
   { href: "/blog", label: "Blog" },
   { href: "/modelos", label: "Modelos" },
   { href: "/marketing-juridico", label: "Marketing" },

@@ -31,6 +31,7 @@ export function Footer() {
             Conteúdo
           </h4>
           <ul className="space-y-2 text-sm text-brand-bg/80">
+            <li><Link href="/jurisprudencia" className="hover:text-brand-accent">Jurisprudência STF e STJ</Link></li>
             <li><Link href="/blog" className="hover:text-brand-accent">Blog jurídico</Link></li>
             <li><Link href="/modelos" className="hover:text-brand-accent">Modelos gratuitos</Link></li>
             <li><Link href="/marketing-juridico" className="hover:text-brand-accent">Marketing jurídico</Link></li>

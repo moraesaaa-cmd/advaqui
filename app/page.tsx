@@ -8,7 +8,8 @@ import {
   FileText,
   Target,
   Sparkles,
-  Download
+  Download,
+  Scale
 } from "lucide-react";
 import { SearchBox } from "@/components/SearchBox";
 import { STATES } from "@/lib/data/states";
@@ -141,6 +142,36 @@ export default async function HomePage() {
       </section>
 
       <PremiumValueSection />
+
+      {/* Jurisprudência STF e STJ — acesso público ao módulo */}
+      <section className="bg-white border-y border-brand-line py-14">
+        <div className="container-tight">
+          <div className="rounded-2xl bg-brand-bg border border-brand-line p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-6">
+            <div className="flex items-start gap-4 flex-1">
+              <div className="w-12 h-12 rounded-xl bg-brand-deep/10 flex items-center justify-center flex-shrink-0">
+                <Scale className="w-6 h-6 text-brand-deep" aria-hidden />
+              </div>
+              <div>
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
+                  Pesquise jurisprudência STF e STJ
+                </h2>
+                <p className="text-brand-ink/70 mt-2 text-sm md:text-base leading-relaxed max-w-2xl">
+                  Consulte decisões judiciais por tema, tribunal, relator, classe,
+                  número do processo e palavras da ementa, sempre com link para
+                  a fonte oficial.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/jurisprudencia"
+              className="btn-primary inline-flex items-center gap-2 whitespace-nowrap"
+            >
+              Acessar jurisprudência
+              <span aria-hidden>→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Blog + Modelos: bloco duplo de conteúdo / autoridade (E-E-A-T) */}
       <section className="bg-white border-y border-brand-line py-16">
