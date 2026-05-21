@@ -33,20 +33,41 @@ export type DecisaoCard = {
   slug: string;
   seo_title: string | null;
   seo_description: string | null;
+  // Fase 13 — resumo conservador (opcional, banco pode estar pré-0009)
+  resumo_tema?: string | null;
+  resumo_decisao?: string | null;
+  resumo_entendimento?: string | null;
+  resumo_status?: string | null;
 };
 
 export type DecisaoDetail = DecisaoCard & {
   tese: string | null;
   resumo_informativo: string | null;
   palavras_chave: string[];
+  // Fase 13 — extras do resumo
+  resumo_pontos?: string[] | null;
+  resumo_gerado_em?: string | null;
+  resumo_versao?: string | null;
+  // Fase 13 — fonte oficial detalhada
+  source_portal?: string | null;
+  dataset_name?: string | null;
+  dataset_url?: string | null;
+  resource_name?: string | null;
+  resource_url?: string | null;
+  source_format?: string | null;
 };
 
 const DECISOES_PUBLIC_COLS =
   "id,tribunal,classe,numero,processo,relator,orgao_julgador," +
   "data_julgamento,data_publicacao,ementa,temas,area_relacionada," +
-  "url_origem,slug,seo_title,seo_description";
+  "url_origem,slug,seo_title,seo_description," +
+  "resumo_tema,resumo_decisao,resumo_entendimento,resumo_status";
 
-const DECISOES_DETAIL_COLS = DECISOES_PUBLIC_COLS + ",tese,resumo_informativo,palavras_chave";
+const DECISOES_DETAIL_COLS =
+  DECISOES_PUBLIC_COLS +
+  ",tese,resumo_informativo,palavras_chave," +
+  "resumo_pontos,resumo_gerado_em,resumo_versao," +
+  "source_portal,dataset_name,dataset_url,resource_name,resource_url,source_format";
 
 function safeAdmin() {
   try {

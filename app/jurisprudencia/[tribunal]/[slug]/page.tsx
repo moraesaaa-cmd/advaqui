@@ -69,10 +69,11 @@ export async function generateMetadata({
     });
   }
 
-  // Title padrão pedido: [Classe] [Número] — [Tema] | [Tribunal] | AdvAqui
-  const temaPrincipal = decisao.temas?.[0];
+  // Title pedido: [Classe] [Número] — [Tema] | [Tribunal] | AdvAqui
+  // Prioriza resumo_tema (conservador, vindo dos dados oficiais)
+  const temaPrincipal =
+    decisao.resumo_tema || decisao.temas?.[0];
   const baseTitle =
-    decisao.seo_title ||
     [
       `${decisao.classe ?? ""} ${decisao.numero}`.trim(),
       temaPrincipal,
@@ -81,12 +82,18 @@ export async function generateMetadata({
       .filter(Boolean)
       .join(" — ");
 
-  const description =
-    decisao.seo_description ||
-    `Consulte ementa e dados da decisão ${decisao.classe ?? ""} ${decisao.numero} do ${tribunal}${decisao.relator ? `, com relatoria de ${decisao.relator}` : ""}, data de julgamento e link para a fonte oficial.`
+  // Meta pedida: "[Classe] [Número] no STJ. Tema: [...]. Consulte ementa..."
+  const description = (() => {
+    const head = `${decisao.classe ?? ""} ${decisao.numero} no ${tribunal}`.replace(
+      /\s+/g,
+      " "
+    ).trim();
+    const temaTxt = temaPrincipal ? ` Tema: ${temaPrincipal}.` : "";
+    return (head + "." + temaTxt + " Consulte ementa, metadados e fonte oficial no AdvAqui.")
       .replace(/\s+/g, " ")
       .trim()
       .slice(0, 158);
+  })();
 
   return buildMetadata({
     title: baseTitle,
@@ -143,12 +150,26 @@ export default async function DecisaoDetailPage({
   const meta = TRIBUNAL_META[slug];
   const related = await getRelatedDecisoes(decisao, 5);
 
-  const temaPrincipal = decisao.temas?.[0];
-  const h1 =
-    decisao.seo_title ||
-    [`${decisao.classe ?? ""} ${decisao.numero}`.trim(), temaPrincipal]
-      .filter(Boolean)
-      .join(" — ");
+  const temaPrincipal =
+    decisao.resumo_tema || decisao.temas?.[0];
+  const h1 = [
+    `${decisao.classe ?? ""} ${decisao.numero}`.trim(),
+    temaPrincipal,
+  ]
+    .filter(Boolean)
+    .join(" — ");
+
+  // Detecta se o `resumo_informativo` (campo `decisao` original do JSON oficial)
+  // tem conteúdo útil. Fórmula genérica "Vistos e relatados..." sem nada
+  // a mais é considerada inútil e fica oculta.
+  const rawDecisao = (decisao.resumo_informativo || "").trim();
+  const decisaoTextUseful = (() => {
+    if (!rawDecisao || rawDecisao.length < 60) return null;
+    // Se só tem a fórmula clássica + nada substantivo, ignora
+    const isOnlyBoilerplate = /^vistos\s+e\s+relatados/i.test(rawDecisao) && rawDecisao.length < 250;
+    if (isOnlyBoilerplate) return null;
+    return rawDecisao;
+  })();
 
   return (
     <div className="container-narrow py-10">
@@ -281,10 +302,87 @@ export default async function DecisaoDetailPage({
           </dl>
         </section>
 
+        {/* RESUMO INFORMATIVO DO ENTENDIMENTO — vem ANTES da ementa.
+            Aviso explícito: organizado pelo AdvAqui, não substitui leitura
+            da ementa oficial. Só aparece se resumo_status = 'gerado'. */}
+        {decisao.resumo_status === "gerado" &&
+          (decisao.resumo_tema ||
+            decisao.resumo_decisao ||
+            decisao.resumo_entendimento ||
+            (decisao.resumo_pontos && decisao.resumo_pontos.length > 0)) && (
+            <section
+              className="card mb-6 border-l-4 border-brand-deep/40"
+              aria-label="Resumo informativo do entendimento"
+            >
+              <h2 className="font-display text-xl font-bold text-brand-ink mb-1">
+                Resumo informativo do entendimento
+              </h2>
+              <p className="text-xs text-brand-ink/55 italic mb-4">
+                Resumo organizado pelo AdvAqui a partir da ementa e dos
+                metadados oficiais. Não substitui a leitura da decisão na
+                fonte oficial.
+              </p>
+              <dl className="space-y-4 text-sm leading-relaxed">
+                {decisao.resumo_tema && (
+                  <div>
+                    <dt className="text-xs uppercase tracking-wide text-brand-deep font-semibold mb-1">
+                      Tema principal
+                    </dt>
+                    <dd className="text-brand-ink/90">{decisao.resumo_tema}</dd>
+                  </div>
+                )}
+                {decisao.resumo_decisao && (
+                  <div>
+                    <dt className="text-xs uppercase tracking-wide text-brand-deep font-semibold mb-1">
+                      O que foi decidido
+                    </dt>
+                    <dd className="text-brand-ink/85">{decisao.resumo_decisao}</dd>
+                  </div>
+                )}
+                {decisao.resumo_entendimento && (
+                  <div>
+                    <dt className="text-xs uppercase tracking-wide text-brand-deep font-semibold mb-1">
+                      Entendimento extraído da ementa
+                    </dt>
+                    <dd className="text-brand-ink/85">{decisao.resumo_entendimento}</dd>
+                  </div>
+                )}
+                {decisao.resumo_pontos &&
+                  decisao.resumo_pontos.length > 0 && (
+                    <div>
+                      <dt className="text-xs uppercase tracking-wide text-brand-deep font-semibold mb-1">
+                        Pontos relevantes
+                      </dt>
+                      <dd>
+                        <ul className="list-disc list-inside space-y-1 text-brand-ink/85">
+                          {decisao.resumo_pontos.slice(0, 5).map((p) => (
+                            <li key={p}>{p}</li>
+                          ))}
+                        </ul>
+                      </dd>
+                    </div>
+                  )}
+              </dl>
+            </section>
+          )}
+
+        {decisao.resumo_status === "indisponivel" && (
+          <section className="card mb-6 bg-brand-bg/40">
+            <p className="text-sm text-brand-ink/65 italic">
+              Resumo informativo indisponível para esta decisão. Consulte a
+              ementa oficial abaixo.
+            </p>
+          </section>
+        )}
+
+        {/* EMENTA OFICIAL */}
         <section className="card mb-6">
-          <h2 className="font-display text-xl font-bold text-brand-ink mb-3">
-            Ementa
+          <h2 className="font-display text-xl font-bold text-brand-ink mb-1">
+            Ementa oficial
           </h2>
+          <p className="text-xs text-brand-ink/55 mb-3">
+            Ementa extraída dos dados públicos disponibilizados pelo {tribunal}.
+          </p>
           <div className="prose prose-sm max-w-none text-brand-ink/85 leading-relaxed whitespace-pre-line">
             {decisao.ementa}
           </div>
@@ -298,17 +396,22 @@ export default async function DecisaoDetailPage({
               </p>
             </div>
           )}
-          {decisao.resumo_informativo && (
-            <div className="mt-4 rounded-xl border border-brand-line bg-brand-canvas/40 p-4">
-              <p className="text-xs uppercase tracking-wide text-brand-ink/55 font-semibold mb-1">
-                Resumo informativo (organizado pelo AdvAqui)
-              </p>
-              <p className="text-sm text-brand-ink/80 leading-relaxed">
-                {decisao.resumo_informativo}
-              </p>
-            </div>
-          )}
         </section>
+
+        {/* DECISÃO — só quando tem conteúdo útil (não fórmula vazia) */}
+        {decisaoTextUseful && (
+          <section className="card mb-6">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-1">
+              Decisão
+            </h2>
+            <p className="text-xs text-brand-ink/55 mb-3">
+              Conteúdo do campo &quot;decisao&quot; nos dados oficiais do {tribunal}.
+            </p>
+            <p className="text-sm text-brand-ink/85 leading-relaxed whitespace-pre-line">
+              {decisaoTextUseful}
+            </p>
+          </section>
+        )}
 
         {(decisao.temas?.length > 0 || decisao.palavras_chave?.length > 0) && (
           <section className="card mb-6">
@@ -337,9 +440,8 @@ export default async function DecisaoDetailPage({
           </section>
         )}
 
-        {/* Inteiro teor — link direto pra fonte oficial em nova aba.
-            Honesto: não simulamos conteúdo nem alucinamos texto.
-            O Googlebot indexa o que está no HTML acima (ementa + tese). */}
+        {/* FONTE OFICIAL DOS DADOS — substitui "Inteiro teor".
+            JSON NÃO é chamado de inteiro teor. É arquivo oficial de dados. */}
         <section className="card mb-6">
           <div className="flex items-start gap-3">
             <FileText
@@ -348,23 +450,84 @@ export default async function DecisaoDetailPage({
             />
             <div className="flex-1">
               <h2 className="font-display text-base font-bold text-brand-ink mb-1">
-                Inteiro teor
+                Fonte oficial dos dados
               </h2>
               <p className="text-xs text-brand-ink/65 leading-relaxed mb-3">
-                O inteiro teor é mantido pelo próprio tribunal. Para consultá-lo
-                na íntegra, acesse a fonte oficial em nova aba. Se o link não
-                abrir, consulte diretamente o portal de jurisprudência do
-                tribunal.
+                Esta decisão foi extraída de arquivo público disponibilizado
+                pelo {tribunal} no Portal de Dados Abertos. Para conferência
+                oficial, consulte a fonte indicada abaixo.
               </p>
-              <a
-                href={decisao.url_origem}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-xl border border-brand-deep text-brand-deep hover:bg-brand-deep hover:text-white transition"
-              >
-                <ExternalLink className="w-4 h-4" aria-hidden />
-                Ver inteiro teor na fonte oficial
-              </a>
+
+              <dl className="text-xs space-y-1.5 mb-4">
+                {decisao.source_portal && (
+                  <div className="flex flex-wrap gap-1">
+                    <dt className="text-brand-ink/55 font-semibold uppercase tracking-wide">
+                      Fonte dos dados:
+                    </dt>
+                    <dd className="text-brand-ink/90">{decisao.source_portal}</dd>
+                  </div>
+                )}
+                {decisao.dataset_name && (
+                  <div className="flex flex-wrap gap-1">
+                    <dt className="text-brand-ink/55 font-semibold uppercase tracking-wide">
+                      Conjunto:
+                    </dt>
+                    <dd className="text-brand-ink/90">{decisao.dataset_name}</dd>
+                  </div>
+                )}
+                {decisao.resource_name && (
+                  <div className="flex flex-wrap gap-1">
+                    <dt className="text-brand-ink/55 font-semibold uppercase tracking-wide">
+                      Arquivo:
+                    </dt>
+                    <dd className="text-brand-ink/90 font-mono">
+                      {decisao.resource_name}
+                    </dd>
+                  </div>
+                )}
+                {decisao.source_format && (
+                  <div className="flex flex-wrap gap-1">
+                    <dt className="text-brand-ink/55 font-semibold uppercase tracking-wide">
+                      Formato:
+                    </dt>
+                    <dd className="text-brand-ink/90">{decisao.source_format}</dd>
+                  </div>
+                )}
+              </dl>
+
+              <div className="flex flex-wrap gap-2">
+                {decisao.dataset_url && (
+                  <a
+                    href={decisao.dataset_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-xl border border-brand-deep text-brand-deep hover:bg-brand-deep hover:text-white transition"
+                  >
+                    <ExternalLink className="w-4 h-4" aria-hidden />
+                    Ver conjunto de dados
+                  </a>
+                )}
+                {decisao.resource_url && (
+                  <a
+                    href={decisao.resource_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-xl border border-brand-line text-brand-ink hover:border-brand-deep transition"
+                  >
+                    <FileText className="w-4 h-4" aria-hidden />
+                    Baixar {decisao.source_format || "JSON"} oficial
+                  </a>
+                )}
+                <a
+                  href="https://www.stj.jus.br/sites/portalp/Paginas/Sob-medida/Advogado/Jurisprudencia/Pesquisa-de-Jurisprudencia.aspx"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-xl border border-brand-line text-brand-ink hover:border-brand-deep transition"
+                >
+                  <ExternalLink className="w-4 h-4" aria-hidden />
+                  Pesquisar no site do {tribunal}
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -388,38 +551,51 @@ export default async function DecisaoDetailPage({
               Decisões relacionadas
             </h2>
             <ul className="space-y-3">
-              {related.map((r) => (
-                <li key={r.id}>
-                  <Link
-                    href={`/jurisprudencia/${r.tribunal.toLowerCase()}/${r.slug}`}
-                    className="block rounded-xl border border-brand-line bg-white p-4 hover:border-brand-deep transition"
-                  >
-                    <div className="flex flex-wrap items-center gap-2 mb-1 text-xs">
-                      <span className="font-semibold text-brand-deep">
-                        {r.tribunal}
-                      </span>
-                      {r.classe && (
-                        <span className="text-brand-ink/85">
-                          {r.classe} {r.numero}
+              {related.map((r) => {
+                const compact =
+                  (r.resumo_decisao && r.resumo_decisao.trim()) ||
+                  (r.resumo_entendimento && r.resumo_entendimento.trim()) ||
+                  r.ementa.trim().slice(0, 180);
+                return (
+                  <li key={r.id}>
+                    <Link
+                      href={`/jurisprudencia/${r.tribunal.toLowerCase()}/${r.slug}`}
+                      className="block rounded-xl border border-brand-line bg-white p-4 hover:border-brand-deep transition"
+                    >
+                      <div className="flex flex-wrap items-center gap-2 mb-1 text-xs">
+                        <span className="font-semibold text-brand-deep">
+                          {r.tribunal}
                         </span>
+                        {r.classe && (
+                          <span className="text-brand-ink/85">
+                            {r.classe} {r.numero}
+                          </span>
+                        )}
+                        {r.relator && (
+                          <span className="text-brand-ink/55">
+                            — Rel. {r.relator}
+                          </span>
+                        )}
+                        {r.data_julgamento && (
+                          <span className="ml-auto text-brand-ink/45">
+                            {formatDate(r.data_julgamento)}
+                          </span>
+                        )}
+                      </div>
+                      {r.resumo_tema && (
+                        <p className="text-xs text-brand-deep/85 font-semibold mb-1 line-clamp-1">
+                          {r.resumo_tema}
+                        </p>
                       )}
-                      {r.relator && (
-                        <span className="text-brand-ink/55">
-                          — Rel. {r.relator}
-                        </span>
-                      )}
-                      {r.data_julgamento && (
-                        <span className="ml-auto text-brand-ink/45">
-                          {formatDate(r.data_julgamento)}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-sm text-brand-ink/85 line-clamp-2">
-                      {r.ementa}
-                    </p>
-                  </Link>
-                </li>
-              ))}
+                      <p className="text-sm text-brand-ink/85 line-clamp-2">
+                        {compact.length > 180
+                          ? compact.slice(0, 180) + "…"
+                          : compact}
+                      </p>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </section>
         )}

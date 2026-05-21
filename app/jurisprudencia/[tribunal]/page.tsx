@@ -154,33 +154,44 @@ export default async function TribunalPage({
           </div>
         ) : (
           <ul className="space-y-3">
-            {recentes.map((d) => (
-              <li key={d.id}>
-                <Link
-                  href={`/jurisprudencia/${d.tribunal.toLowerCase()}/${d.slug}`}
-                  className="block rounded-xl border border-brand-line bg-white p-4 hover:border-brand-deep transition"
-                >
-                  <div className="flex flex-wrap items-center gap-2 mb-1 text-xs">
-                    {d.classe && (
-                      <span className="font-semibold text-brand-deep">
-                        {d.classe} {d.numero}
-                      </span>
+            {recentes.map((d) => {
+              const cardText =
+                (d.resumo_decisao && d.resumo_decisao.trim()) ||
+                (d.resumo_entendimento && d.resumo_entendimento.trim()) ||
+                d.ementa.trim().slice(0, 250);
+              return (
+                <li key={d.id}>
+                  <Link
+                    href={`/jurisprudencia/${d.tribunal.toLowerCase()}/${d.slug}`}
+                    className="block rounded-xl border border-brand-line bg-white p-4 hover:border-brand-deep transition"
+                  >
+                    <div className="flex flex-wrap items-center gap-2 mb-1 text-xs">
+                      {d.classe && (
+                        <span className="font-semibold text-brand-deep">
+                          {d.classe} {d.numero}
+                        </span>
+                      )}
+                      {d.relator && (
+                        <span className="text-brand-ink/55">— Rel. {d.relator}</span>
+                      )}
+                      {d.data_julgamento && (
+                        <span className="ml-auto text-brand-ink/45">
+                          {new Date(d.data_julgamento).toLocaleDateString("pt-BR")}
+                        </span>
+                      )}
+                    </div>
+                    {d.resumo_tema && (
+                      <p className="text-xs text-brand-deep font-semibold mb-1 line-clamp-1">
+                        {d.resumo_tema}
+                      </p>
                     )}
-                    {d.relator && (
-                      <span className="text-brand-ink/55">— Rel. {d.relator}</span>
-                    )}
-                    {d.data_julgamento && (
-                      <span className="ml-auto text-brand-ink/45">
-                        {new Date(d.data_julgamento).toLocaleDateString("pt-BR")}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-brand-ink/85 line-clamp-2">
-                    {d.ementa}
-                  </p>
-                </Link>
-              </li>
-            ))}
+                    <p className="text-sm text-brand-ink/85 line-clamp-2">
+                      {cardText}
+                    </p>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         )}
       </section>

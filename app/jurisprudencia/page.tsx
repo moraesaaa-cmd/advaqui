@@ -187,48 +187,65 @@ export default async function JurisprudenciaIndexPage({
 
       {items.length > 0 ? (
         <ul className="space-y-3 mb-8">
-          {items.map((d) => (
-            <li key={d.id}>
-              <Link
-                href={`/jurisprudencia/${d.tribunal.toLowerCase()}/${d.slug}`}
-                className="block card hover:border-brand-deep transition group"
-              >
-                <div className="flex flex-wrap items-center gap-2 mb-1.5 text-xs">
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-deep/10 text-brand-deep font-bold">
-                    {d.tribunal}
-                  </span>
-                  {d.classe && (
-                    <span className="text-brand-ink/70">
-                      {d.classe} {d.numero}
+          {items.map((d) => {
+            // Card mais limpo: prioriza resumo conservador, fallback pra ementa
+            const cardText =
+              (d.resumo_decisao && d.resumo_decisao.trim()) ||
+              (d.resumo_entendimento && d.resumo_entendimento.trim()) ||
+              d.ementa.trim().slice(0, 280);
+            const tema = d.resumo_tema || null;
+            return (
+              <li key={d.id}>
+                <Link
+                  href={`/jurisprudencia/${d.tribunal.toLowerCase()}/${d.slug}`}
+                  className="block card hover:border-brand-deep transition group"
+                >
+                  <div className="flex flex-wrap items-center gap-2 mb-1.5 text-xs">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-deep/10 text-brand-deep font-bold">
+                      {d.tribunal}
                     </span>
-                  )}
-                  {d.relator && (
-                    <span className="text-brand-ink/55">— Rel. {d.relator}</span>
-                  )}
-                  {d.data_julgamento && (
-                    <span className="ml-auto text-brand-ink/45">
-                      Julg. {new Date(d.data_julgamento).toLocaleDateString("pt-BR")}
-                    </span>
-                  )}
-                </div>
-                <p className="text-sm md:text-base text-brand-ink/85 line-clamp-3 leading-relaxed">
-                  {d.ementa}
-                </p>
-                {d.temas && d.temas.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 mt-2">
-                    {d.temas.slice(0, 4).map((tema) => (
-                      <span
-                        key={tema}
-                        className="text-[10px] px-2 py-0.5 rounded-full bg-brand-bg border border-brand-line text-brand-ink/70"
-                      >
-                        {tema}
+                    {d.classe && (
+                      <span className="text-brand-ink/70">
+                        {d.classe} {d.numero}
                       </span>
-                    ))}
+                    )}
+                    {d.relator && (
+                      <span className="text-brand-ink/55">— Rel. {d.relator}</span>
+                    )}
+                    {d.data_julgamento && (
+                      <span className="ml-auto text-brand-ink/45">
+                        Julg.{" "}
+                        {new Date(d.data_julgamento).toLocaleDateString("pt-BR")}
+                      </span>
+                    )}
                   </div>
-                )}
-              </Link>
-            </li>
-          ))}
+                  {tema && (
+                    <p className="text-xs text-brand-deep font-semibold mb-1 line-clamp-1">
+                      {tema}
+                    </p>
+                  )}
+                  <p className="text-sm text-brand-ink/85 line-clamp-3 leading-relaxed">
+                    {cardText}
+                  </p>
+                  <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[10px] text-brand-ink/55">
+                    <span>Fonte: Portal de Dados Abertos do STJ</span>
+                    {d.temas && d.temas.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        {d.temas.slice(0, 3).map((t) => (
+                          <span
+                            key={t}
+                            className="px-2 py-0.5 rounded-full bg-brand-bg border border-brand-line text-brand-ink/70"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       ) : (
         // Estado vazio honesto — apenas quando NÃO houve filtro (busca sem

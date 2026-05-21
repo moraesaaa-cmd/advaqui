@@ -46,6 +46,7 @@ from services.seo_service import build_seo_title, build_seo_description
 from services.text_cleaner import clean_ementa
 from services.topic_extractor import extract_topics, compute_content_hash
 from services.supabase_client import SupabaseClient
+from services.summary_generator import generate_jurisprudencia_summary
 
 
 # Carrega .env se presente
@@ -128,6 +129,24 @@ def _to_payload(d: DecisaoBruta, existing_slugs: set[str]) -> tuple[dict, set[st
         d.tribunal, d.classe, d.relator, temas, ementa_clean
     )
     extra = d.extra or {}
+
+    # Resumo informativo conservador a partir da própria ementa+tese
+    resumo = generate_jurisprudencia_summary({
+        "ementa": ementa_clean,
+        "tese": d.tese,
+        "classe": d.classe,
+        "orgao_julgador": d.orgao_julgador,
+        "relator": d.relator,
+    })
+
+    # Nome do conjunto pra exibição amigável
+    dataset_id = extra.get("dataset_id") or ""
+    if dataset_id.startswith("espelhos-de-acordaos-"):
+        suffix = dataset_id.replace("espelhos-de-acordaos-", "").replace("-", " ").title()
+        dataset_name = f"Espelhos de acórdãos - {suffix}"
+    else:
+        dataset_name = dataset_id or None
+
     payload = {
         "tribunal": d.tribunal,
         "classe": d.classe,
@@ -139,6 +158,7 @@ def _to_payload(d: DecisaoBruta, existing_slugs: set[str]) -> tuple[dict, set[st
         "data_publicacao": d.data_publicacao.isoformat() if d.data_publicacao else None,
         "ementa": ementa_clean,
         "tese": d.tese,
+        # decisao_resumo (texto oficial do "decisao" do JSON) → resumo_informativo
         "resumo_informativo": extra.get("decisao_resumo"),
         "temas": temas,
         "palavras_chave": palavras,
@@ -150,6 +170,21 @@ def _to_payload(d: DecisaoBruta, existing_slugs: set[str]) -> tuple[dict, set[st
         "seo_description": seo_desc,
         "status": "publicado",
         "indexavel": True,
+        # Campos de fonte (migration 0009)
+        "source_portal": "Portal de Dados Abertos do STJ" if d.tribunal == "STJ" else None,
+        "dataset_name": dataset_name,
+        "dataset_url": extra.get("dataset_url"),
+        "resource_name": extra.get("resource_name"),
+        "resource_url": extra.get("resource_url"),
+        "source_format": "JSON" if extra.get("resource_url") else None,
+        # Campos de resumo (migration 0009)
+        "resumo_tema": resumo.get("resumo_tema"),
+        "resumo_decisao": resumo.get("resumo_decisao"),
+        "resumo_entendimento": resumo.get("resumo_entendimento"),
+        "resumo_pontos": resumo.get("resumo_pontos") or [],
+        "resumo_gerado_em": resumo.get("resumo_gerado_em"),
+        "resumo_versao": resumo.get("resumo_versao"),
+        "resumo_status": resumo.get("resumo_status"),
     }
     return payload, existing_slugs
 

@@ -244,6 +244,21 @@ export type JurisprudenciaDecisaoRow = {
   motivo_noindex: string | null;
   criado_em: string;
   atualizado_em: string;
+  // Fase 13 — resumo conservador (migration 0009)
+  resumo_tema?: string | null;
+  resumo_decisao?: string | null;
+  resumo_entendimento?: string | null;
+  resumo_pontos?: string[] | null;
+  resumo_gerado_em?: string | null;
+  resumo_versao?: string | null;
+  resumo_status?: "gerado" | "indisponivel" | "revisar" | "erro" | null;
+  // Fase 13 — fonte oficial detalhada (migration 0009)
+  source_portal?: string | null;
+  dataset_name?: string | null;
+  dataset_url?: string | null;
+  resource_name?: string | null;
+  resource_url?: string | null;
+  source_format?: string | null;
 };
 
 export type JurisprudenciaInteiroTeorCacheRow = {
