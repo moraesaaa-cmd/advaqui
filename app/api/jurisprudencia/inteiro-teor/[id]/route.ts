@@ -91,7 +91,7 @@ export async function GET(
     );
   }
 
-  let admin;
+  let admin: ReturnType<typeof createAdminClient>;
   try {
     admin = createAdminClient();
   } catch {
@@ -129,7 +129,14 @@ export async function GET(
         { status: 404 }
       );
     }
-    if ((data as { status?: string }).status !== "publicado") {
+    const row = data as unknown as {
+      id: number;
+      tribunal: string;
+      slug: string;
+      url_origem: string;
+      status?: string;
+    };
+    if (row.status !== "publicado") {
       return NextResponse.json(
         {
           ok: false,
@@ -139,13 +146,25 @@ export async function GET(
         { status: 403 }
       );
     }
-    decisao = data as {
-      id: number;
-      tribunal: string;
-      slug: string;
-      url_origem: string;
+    decisao = {
+      id: row.id,
+      tribunal: row.tribunal,
+      slug: row.slug,
+      url_origem: row.url_origem,
     };
   } catch {
+    return NextResponse.json(
+      {
+        ok: false,
+        code: "lookup_failed",
+        error: "Não foi possível consultar a decisão agora.",
+      },
+      { status: 500 }
+    );
+  }
+
+  // Após try/catch, TS não consegue narrow do let — guarda defensiva.
+  if (!decisao) {
     return NextResponse.json(
       {
         ok: false,

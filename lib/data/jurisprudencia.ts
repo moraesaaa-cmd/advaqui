@@ -104,8 +104,8 @@ export async function searchDecisoes(opts: {
       return { items: [], count: 0 };
     }
     return {
-      items: (data as DecisaoCard[]) || [],
-      count: count ?? (data?.length ?? 0),
+      items: (data as unknown as DecisaoCard[]) || [],
+      count: count ?? ((data as unknown as DecisaoCard[] | null)?.length ?? 0),
     };
   } catch {
     return { items: [], count: 0 };
@@ -127,7 +127,7 @@ export async function getDecisaoBySlug(
       .eq("status", "publicado")
       .maybeSingle();
     if (error || !data) return null;
-    return data as DecisaoDetail;
+    return data as unknown as DecisaoDetail;
   } catch {
     return null;
   }
@@ -158,7 +158,7 @@ export async function getRelatedDecisoes(
 
     const { data, error } = await query;
     if (error || !data) return [];
-    return data as DecisaoCard[];
+    return data as unknown as DecisaoCard[];
   } catch {
     return [];
   }
@@ -178,10 +178,15 @@ export async function getIndexableDecisoesForSitemap(limit = 5000): Promise<
       .order("atualizado_em", { ascending: false })
       .limit(limit);
     if (error || !data) return [];
-    return data.map((d) => ({
+    const rows = data as unknown as Array<{
+      tribunal: string;
+      slug: string;
+      atualizado_em: string | null;
+    }>;
+    return rows.map((d) => ({
       tribunal: d.tribunal as Tribunal,
-      slug: d.slug as string,
-      updated_at: d.atualizado_em as string | undefined,
+      slug: d.slug,
+      updated_at: d.atualizado_em ?? undefined,
     }));
   } catch {
     return [];
@@ -211,8 +216,15 @@ export async function getCachedInteiroTeor(decisaoId: number): Promise<{
       .eq("decisao_id", decisaoId)
       .maybeSingle();
     if (error || !data) return { found: false };
-    if ((data as { status: string }).status !== "ativo") return { found: false };
-    const exp = new Date((data as { expira_em: string }).expira_em);
+    const row = data as unknown as {
+      id: number;
+      inteiro_teor: string;
+      fonte_url: string;
+      expira_em: string;
+      status: string;
+    };
+    if (row.status !== "ativo") return { found: false };
+    const exp = new Date(row.expira_em);
     if (exp.getTime() < Date.now()) return { found: false };
 
     // Renova TTL e contabiliza acesso
@@ -225,7 +237,7 @@ export async function getCachedInteiroTeor(decisaoId: number): Promise<{
           ultimo_acesso: new Date().toISOString(),
           expira_em: novoExp,
         })
-        .eq("id", (data as { id: number }).id);
+        .eq("id", row.id);
       // Incrementa via SQL RPC seria ideal — aqui é um SELECT+UPDATE rápido
     } catch {
       // ignora — cache continua válido
@@ -233,8 +245,8 @@ export async function getCachedInteiroTeor(decisaoId: number): Promise<{
 
     return {
       found: true,
-      inteiro_teor: (data as { inteiro_teor: string }).inteiro_teor,
-      fonte_url: (data as { fonte_url: string }).fonte_url,
+      inteiro_teor: row.inteiro_teor,
+      fonte_url: row.fonte_url,
     };
   } catch {
     return { found: false };
