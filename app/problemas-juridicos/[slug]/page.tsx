@@ -8,7 +8,8 @@ import {
   CheckSquare,
   FileText,
   BookOpen,
-  Scale
+  Scale,
+  MapPin
 } from "lucide-react";
 import {
   PROBLEMAS,
@@ -19,6 +20,7 @@ import { findGlossarioTermo } from "@/lib/data/glossario";
 import { findTemaStj } from "@/lib/data/jurisprudencia-temas";
 import { findGuiaByArea } from "@/lib/data/guias";
 import { SPECIALTIES } from "@/lib/data/specialties";
+import { getCidadesPrioritarias } from "@/lib/data/cidades-prioritarias";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -290,6 +292,29 @@ export default function ProblemaPage({ params }: { params: { slug: string } }) {
             </ul>
           </div>
         )}
+      </section>
+
+      {/* Encontre ajuda na sua cidade — links para as 50 cidades prioritárias */}
+      <section className="card mb-6">
+        <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+          <MapPin className="w-5 h-5 text-brand-deep" aria-hidden />
+          {p.titulo.replace(/\?$/, "").replace(/\.$/, "")} na sua cidade
+        </h2>
+        <p className="text-sm text-brand-ink/75 mb-3 leading-relaxed">
+          Veja o conteúdo aplicado à sua cidade, com advogados que atendem ali.
+        </p>
+        <ul className="grid gap-1.5 sm:grid-cols-2 md:grid-cols-3 text-sm">
+          {getCidadesPrioritarias().map((c) => (
+            <li key={`${c.uf}-${c.slug}`}>
+              <Link
+                href={`/problemas-juridicos/${p.slug}/em/${c.slug}-${c.uf.toLowerCase()}`}
+                className="block px-2 py-1.5 rounded-md text-brand-ink hover:bg-brand-bg/40 hover:text-brand-deep transition"
+              >
+                <span aria-hidden>→</span> {c.nome_completo}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* Outros problemas relacionados */}
