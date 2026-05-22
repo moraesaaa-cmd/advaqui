@@ -69,18 +69,20 @@ export default function robots(): MetadataRoute.Robots {
   for (let i = 0; i < CUSTOS.length; i++) {
     sitemaps.push(`${base}/sitemap-quanto-custa-cidades/sitemap/${i}.xml`);
   }
+  // Tribunais por cidade — 5571 URLs em 1 sitemap (F22-E onda 4)
+  sitemaps.push(`${base}/sitemap-tribunais-cidades.xml`);
   sitemaps.push(`${base}/sitemap-jurisprudencia.xml`);
 
   return {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/", "/modelos/", "/quanto-custa/"],
+        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/", "/modelos/", "/quanto-custa/", "/tribunais/"],
         disallow: ["/admin", "/painel", "/api/", "/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"]
       },
       {
         userAgent: "Googlebot",
-        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/", "/modelos/", "/quanto-custa/"],
+        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/", "/modelos/", "/quanto-custa/", "/tribunais/"],
         disallow: ["/admin", "/painel", "/api/", "/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"]
       }
     ],
