@@ -296,7 +296,7 @@ export default async function ArticleCidadePage({
 
         {/* Artigo base completo */}
         <div className="prose-content">
-          {article.sections.map((sec, idx) => renderSection(sec, idx))}
+          {article.body.map((sec, idx) => renderSection(sec, idx))}
         </div>
 
         {/* FAQ */}
