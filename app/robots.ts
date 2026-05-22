@@ -6,6 +6,8 @@ import { SPECIALTIES } from "@/lib/data/specialties";
 import { TEMAS_STJ } from "@/lib/data/jurisprudencia-temas";
 import { GLOSSARIO } from "@/lib/data/glossario";
 import { GUIAS } from "@/lib/data/guias";
+import { getAllTemplates } from "@/lib/data/templates-docs";
+import { CUSTOS } from "@/lib/data/custos-juridicos";
 import { getArtigosLocalizaveis } from "@/lib/data/articles-cidades";
 
 /**
@@ -58,18 +60,27 @@ export default function robots(): MetadataRoute.Robots {
   for (let i = 0; i < GUIAS.length; i++) {
     sitemaps.push(`${base}/sitemap-guias-cidades/sitemap/${i}.xml`);
   }
+  // Cauda longa local: modelo × cidade (F22-E onda 2) — 1 sitemap por template
+  const templates = getAllTemplates();
+  for (let i = 0; i < templates.length; i++) {
+    sitemaps.push(`${base}/sitemap-modelos-cidades/sitemap/${i}.xml`);
+  }
+  // Cauda longa local: quanto-custa × cidade (F22-E onda 3) — 1 sitemap por serviço
+  for (let i = 0; i < CUSTOS.length; i++) {
+    sitemaps.push(`${base}/sitemap-quanto-custa-cidades/sitemap/${i}.xml`);
+  }
   sitemaps.push(`${base}/sitemap-jurisprudencia.xml`);
 
   return {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/"],
+        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/", "/modelos/", "/quanto-custa/"],
         disallow: ["/admin", "/painel", "/api/", "/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"]
       },
       {
         userAgent: "Googlebot",
-        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/"],
+        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/", "/modelos/", "/quanto-custa/"],
         disallow: ["/admin", "/painel", "/api/", "/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"]
       }
     ],

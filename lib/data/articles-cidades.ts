@@ -27,7 +27,15 @@ import { getAllArticles, getArticleBySlug } from "./articles";
  */
 export const ARTIGOS_LOCALIZAVEIS_SLUGS: string[] = [
   "como-pedir-divorcio",
-  "como-pedir-pensao-alimenticia"
+  "como-pedir-pensao-alimenticia",
+  "fui-demitido-sem-justa-causa",
+  "banco-cobrou-taxa-indevida",
+  "inss-negou-beneficio-o-que-fazer",
+  "como-fazer-inventario",
+  "multa-de-transito-como-recorrer",
+  "como-entrar-com-acao-no-juizado-do-consumidor",
+  "acordo-trabalhista-vale-a-pena",
+  "acao-de-despejo-como-funciona"
 ];
 
 /**
