@@ -11,7 +11,6 @@ import { GLOSSARIO } from "@/lib/data/glossario";
 import { PROBLEMAS } from "@/lib/data/problemas-juridicos";
 import { GUIAS } from "@/lib/data/guias";
 import { TEMAS_STJ } from "@/lib/data/jurisprudencia-temas";
-import { getCidadesPrioritarias } from "@/lib/data/cidades-prioritarias";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
@@ -90,21 +89,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: t.atualizado_em ? new Date(t.atualizado_em) : now
   }));
 
-  // Problema × cidade — 20 problemas × 50 cidades prioritárias = 1000 URLs
-  // cauda longa com conteúdo local. Lastmod do problema (mais recente).
-  const problemaCidadeRoutes: MetadataRoute.Sitemap = [];
-  const cidadesPrio = getCidadesPrioritarias();
-  for (const p of PROBLEMAS) {
-    const lastMod = p.atualizado_em ? new Date(p.atualizado_em) : now;
-    for (const c of cidadesPrio) {
-      problemaCidadeRoutes.push({
-        url: `${base}/problemas-juridicos/${p.slug}/em/${c.slug}-${c.uf.toLowerCase()}`,
-        changeFrequency: "monthly",
-        priority: 0.75,
-        lastModified: lastMod
-      });
-    }
-  }
+  // Combinações cauda longa (problema/área/tema/glossário × 5571 cidades)
+  // estão agora em sitemaps secundários, listados em app/robots.ts.
+  // Aqui mantemos apenas o sitemap raiz enxuto.
 
   const stateRoutes: MetadataRoute.Sitemap = STATES.map((s) => ({
     url: `${base}/advogados/${s.uf.toLowerCase()}`,
@@ -225,7 +212,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...glossarioRoutes,
     ...problemaRoutes,
     ...guiaRoutes,
-    ...temaStjRoutes,
-    ...problemaCidadeRoutes
+    ...temaStjRoutes
   ];
 }

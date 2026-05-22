@@ -18,7 +18,6 @@ import {
 } from "@/lib/data/problemas-juridicos";
 import {
   getCidadesPrioritarias,
-  getCidadePrioritaria,
   cidadesPrioritariasMesmaRegiao
 } from "@/lib/data/cidades-prioritarias";
 import { findCity } from "@/lib/data/cities";
@@ -37,7 +36,13 @@ import { SITE } from "@/lib/config";
 /**
  * /problemas-juridicos/[slug]/em/[cidade] — combinação problema × cidade.
  *
- * 20 problemas × 50 cidades = 1000 URLs cauda longa indexáveis.
+ * 20 problemas × 5571 cidades IBGE = 111.420 URLs cauda longa indexáveis.
+ *
+ * Estratégia híbrida:
+ *  - SSG nas 50 cidades prioritárias × 20 problemas (1000 pré-geradas)
+ *  - ISR (dynamicParams = true) nas 5521 cidades restantes — geradas
+ *    sob demanda no primeiro acesso e cacheadas com revalidate=24h
+ *  - notFound() se a "cidade-uf" não existir na base IBGE — evita lixo
  *
  * Conteúdo único por combinação:
  *  - H1, title, description e intro contextualizam o problema na cidade
@@ -48,7 +53,8 @@ import { SITE } from "@/lib/config";
  */
 
 export const revalidate = 86400; // 24h
-export const dynamicParams = false;
+// dynamicParams = true permite ISR pras 5521 cidades não pré-geradas
+export const dynamicParams = true;
 
 const PROBLEMA_SLUGS = PROBLEMAS.map((p) => p.slug);
 
@@ -66,7 +72,8 @@ export function generateStaticParams() {
   return params;
 }
 
-/** Resolve "cidade-uf" → { uf, citySlug } com defesa */
+/** Resolve "cidade-uf" → { uf, citySlug } com defesa.
+ *  Aceita qualquer cidade do IBGE (não só prioritárias) — usado pra ISR. */
 function parseCidadeParam(
   param: string
 ): { uf: string; citySlug: string; cidadeNome: string } | null {
@@ -75,8 +82,6 @@ function parseCidadeParam(
   if (!m) return null;
   const citySlug = m[1].toLowerCase();
   const uf = m[2].toUpperCase();
-  const prio = getCidadePrioritaria(uf, citySlug);
-  if (!prio) return null;
   const city = findCity(uf, citySlug);
   if (!city) return null;
   return { uf, citySlug, cidadeNome: city.name };
