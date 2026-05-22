@@ -16,6 +16,11 @@ import {
   capitalsForArticle,
   relatedTemplatesForArticle
 } from "@/lib/seo/internal-links";
+import {
+  isArtigoLocalizavel
+} from "@/lib/data/articles-cidades";
+import { getCidadesPrioritarias } from "@/lib/data/cidades-prioritarias";
+import { MapPin } from "lucide-react";
 
 export const dynamicParams = false;
 export const revalidate = 3600;
@@ -266,6 +271,37 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
                 </Link>
               ))}
             </div>
+          </section>
+        )}
+
+        {/* Versões localizadas — só pra artigos da allow-list */}
+        {isArtigoLocalizavel(article.slug) && (
+          <section className="mt-12 rounded-2xl border border-brand-line bg-brand-bg/30 p-5 md:p-6">
+            <h2 className="font-display text-2xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-brand-deep" aria-hidden />
+              Este guia aplicado à sua cidade
+            </h2>
+            <p className="text-sm text-brand-ink/75 mb-4 leading-relaxed">
+              Veja como este conteúdo se aplica na sua cidade — com advogados
+              que atuam lá e particularidades do foro local.
+            </p>
+            <ul className="grid gap-1.5 sm:grid-cols-2 md:grid-cols-3 text-sm">
+              {getCidadesPrioritarias().map((c) => (
+                <li key={`${c.uf}-${c.slug}`}>
+                  <Link
+                    href={`/blog/${article.slug}/em/${c.slug}-${c.uf.toLowerCase()}`}
+                    className="block px-2 py-1.5 rounded-md text-brand-ink hover:bg-white hover:text-brand-deep transition"
+                  >
+                    <span aria-hidden>→</span> {c.nome_completo}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-xs text-brand-ink/60">
+              Sua cidade não está na lista? O conteúdo está disponível para
+              todas as 5571 cidades brasileiras — basta acessar direto
+              /blog/{article.slug}/em/sua-cidade-uf.
+            </p>
           </section>
         )}
 

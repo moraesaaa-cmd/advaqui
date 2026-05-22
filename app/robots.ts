@@ -5,6 +5,7 @@ import { PROBLEMAS } from "@/lib/data/problemas-juridicos";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { TEMAS_STJ } from "@/lib/data/jurisprudencia-temas";
 import { GLOSSARIO } from "@/lib/data/glossario";
+import { getArtigosLocalizaveis } from "@/lib/data/articles-cidades";
 
 /**
  * Robots.txt — Permite crawling de todas as páginas públicas (cidades, estados,
@@ -46,6 +47,11 @@ export default function robots(): MetadataRoute.Robots {
   // Cauda longa local: glossário × cidade — 1 sitemap por termo
   for (let i = 0; i < GLOSSARIO.length; i++) {
     sitemaps.push(`${base}/sitemap-glossario-cidades/sitemap/${i}.xml`);
+  }
+  // Cauda longa local: blog × cidade — 1 sitemap por artigo localizável
+  const artigosLocalizaveis = getArtigosLocalizaveis();
+  for (let i = 0; i < artigosLocalizaveis.length; i++) {
+    sitemaps.push(`${base}/sitemap-blog-cidades/sitemap/${i}.xml`);
   }
   sitemaps.push(`${base}/sitemap-jurisprudencia.xml`);
 
