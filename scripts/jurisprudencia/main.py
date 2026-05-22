@@ -40,6 +40,7 @@ from datetime import datetime, timezone
 
 from collectors.base import DecisaoBruta
 from collectors.stj_ckan import STJCkanCollector
+from collectors.stf import STFCollector
 
 from services.slug_service import build_slug, ensure_unique
 from services.seo_service import build_seo_title, build_seo_description
@@ -102,14 +103,21 @@ def _collect(source: str, batch_size: int, contact_email: str) -> list[DecisaoBr
     if source == "stj-ckan":
         return STJCkanCollector(contact_email=contact_email).collect(batch_size)
     if source == "stf":
-        logger.warning(
-            "Coletor STF não implementado (portal protegido por AWS WAF). "
-            "Veja docs/stf-jurisprudencia-fontes.md para roadmap."
-        )
-        return []
+        # F21: coletor real via Elasticsearch interno da SPA STF
+        return STFCollector(contact_email=contact_email).collect(batch_size)
     if source == "all":
-        out = STJCkanCollector(contact_email=contact_email).collect(batch_size)
-        # STF retornaria aqui se implementado
+        # Divide o batch entre STJ e STF (metade pra cada).
+        # Se um falhar, o outro continua — exceções loggadas individualmente.
+        out: list[DecisaoBruta] = []
+        half = max(1, batch_size // 2)
+        try:
+            out.extend(STJCkanCollector(contact_email=contact_email).collect(half))
+        except Exception as exc:  # noqa: BLE001
+            logger.exception("STJCkanCollector falhou em mode=all: %s", exc)
+        try:
+            out.extend(STFCollector(contact_email=contact_email).collect(batch_size - len(out)))
+        except Exception as exc:  # noqa: BLE001
+            logger.exception("STFCollector falhou em mode=all: %s", exc)
         return out
     logger.error("Source desconhecido: %s", source)
     return []
