@@ -10,7 +10,16 @@ import { getAllTemplates } from "@/lib/data/templates-docs";
 import { CUSTOS } from "@/lib/data/custos-juridicos";
 import { TEMAS_STF } from "@/lib/data/jurisprudencia-temas-stf";
 import { CALCULADORAS } from "@/lib/data/calculadoras";
-import { getArtigosLocalizaveis } from "@/lib/data/articles-cidades";
+import {
+  MODALIDADES_ATENDIMENTO,
+  CALCULADORA_TIPOS,
+  GUIA_PUBLICOS,
+  GLOSSARIO_USOS,
+  MODELO_USOS,
+  BLOG_SITUACOES,
+  JURIS_ASPECTOS
+} from "@/lib/data/modalidades";
+import { ARTIGOS_LOCALIZAVEIS_SLUGS, getArtigosLocalizaveis } from "@/lib/data/articles-cidades";
 
 /**
  * Robots.txt — Permite crawling de todas as páginas públicas (cidades, estados,
@@ -81,6 +90,47 @@ export default function robots(): MetadataRoute.Robots {
   for (let i = 0; i < CALCULADORAS.length; i++) {
     sitemaps.push(`${base}/sitemap-calculadoras-cidades/sitemap/${i}.xml`);
   }
+  // === F22-E ondas 9-18 — cruzamentos 3D (sitemaps × cidade × modalidade) ===
+  // problemas × área × cidade (~222k)
+  for (let i = 0; i < PROBLEMAS.length; i++)
+    sitemaps.push(`${base}/sitemap-problemas-areas-cidades/sitemap/${i}.xml`);
+  // quanto-custa × modalidade × cidade (~250k)
+  for (let ci = 0; ci < CUSTOS.length; ci++)
+    for (let mi = 0; mi < MODALIDADES_ATENDIMENTO.length; mi++)
+      sitemaps.push(`${base}/sitemap-quanto-custa-modalidades-cidades/sitemap/${ci * 10 + mi}.xml`);
+  // calculadora × tipo × cidade (~134k)
+  for (let ci = 0; ci < CALCULADORAS.length; ci++)
+    for (let ti = 0; ti < CALCULADORA_TIPOS.length; ti++)
+      sitemaps.push(`${base}/sitemap-calculadoras-tipos-cidades/sitemap/${ci * 10 + ti}.xml`);
+  // guia × público × cidade (~111k)
+  for (let gi = 0; gi < GUIAS.length; gi++)
+    for (let pi = 0; pi < GUIA_PUBLICOS.length; pi++)
+      sitemaps.push(`${base}/sitemap-guias-publicos-cidades/sitemap/${gi * 10 + pi}.xml`);
+  // glossário × uso × cidade (~334k)
+  for (let gi = 0; gi < GLOSSARIO.length; gi++)
+    for (let ui = 0; ui < GLOSSARIO_USOS.length; ui++)
+      sitemaps.push(`${base}/sitemap-glossario-usos-cidades/sitemap/${gi * 10 + ui}.xml`);
+  // modelo × uso × cidade (~334k)
+  const _tpls = getAllTemplates();
+  for (let ti = 0; ti < _tpls.length; ti++)
+    for (let ui = 0; ui < MODELO_USOS.length; ui++)
+      sitemaps.push(`${base}/sitemap-modelos-usos-cidades/sitemap/${ti * 10 + ui}.xml`);
+  // blog × situação × cidade (~223k)
+  for (let ai = 0; ai < ARTIGOS_LOCALIZAVEIS_SLUGS.length; ai++)
+    for (let si = 0; si < BLOG_SITUACOES.length; si++)
+      sitemaps.push(`${base}/sitemap-blog-situacoes-cidades/sitemap/${ai * 10 + si}.xml`);
+  // STJ tema × área × cidade (~167k) — pode ter noindex se < 3 decisões
+  for (let i = 0; i < TEMAS_STJ.length; i++)
+    sitemaps.push(`${base}/sitemap-stj-areas-cidades/sitemap/${i}.xml`);
+  // STF tema × aspecto × cidade (~167k) — noindex até banco STF povoar
+  for (let ti = 0; ti < TEMAS_STF.length; ti++)
+    for (let ai = 0; ai < JURIS_ASPECTOS.length; ai++)
+      sitemaps.push(`${base}/sitemap-stf-aspectos-cidades/sitemap/${ti * 10 + ai}.xml`);
+  // advogado × modalidade × cidade (~250k)
+  for (let si = 0; si < SPECIALTIES.length; si++)
+    for (let mi = 0; mi < MODALIDADES_ATENDIMENTO.length; mi++)
+      sitemaps.push(`${base}/sitemap-advogados-modalidades-cidades/sitemap/${si * 10 + mi}.xml`);
+
   sitemaps.push(`${base}/sitemap-jurisprudencia.xml`);
 
   return {
