@@ -5,6 +5,7 @@ import { PROBLEMAS } from "@/lib/data/problemas-juridicos";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { TEMAS_STJ } from "@/lib/data/jurisprudencia-temas";
 import { GLOSSARIO } from "@/lib/data/glossario";
+import { GUIAS } from "@/lib/data/guias";
 import { getArtigosLocalizaveis } from "@/lib/data/articles-cidades";
 
 /**
@@ -52,6 +53,10 @@ export default function robots(): MetadataRoute.Robots {
   const artigosLocalizaveis = getArtigosLocalizaveis();
   for (let i = 0; i < artigosLocalizaveis.length; i++) {
     sitemaps.push(`${base}/sitemap-blog-cidades/sitemap/${i}.xml`);
+  }
+  // Cauda longa local: guia × cidade — 1 sitemap por guia (F22-E onda 1)
+  for (let i = 0; i < GUIAS.length; i++) {
+    sitemaps.push(`${base}/sitemap-guias-cidades/sitemap/${i}.xml`);
   }
   sitemaps.push(`${base}/sitemap-jurisprudencia.xml`);
 
