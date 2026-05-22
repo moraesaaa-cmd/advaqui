@@ -21,6 +21,11 @@ import {
 } from "@/lib/data/articles-cidades";
 import { getCidadesPrioritarias } from "@/lib/data/cidades-prioritarias";
 import { MapPin } from "lucide-react";
+import {
+  getFluxogramaForSlug,
+  getComparativoForSlug
+} from "@/lib/data/fluxogramas";
+import { Fluxograma, QuadroComparativo } from "@/components/Fluxograma";
 
 export const dynamicParams = false;
 export const revalidate = 3600;
@@ -195,6 +200,25 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
             </span>
           </div>
         </header>
+
+        {/* Fluxograma e quadro comparativo visuais, quando disponíveis */}
+        {(() => {
+          const fluxo = getFluxogramaForSlug(article.slug);
+          const comp = getComparativoForSlug(article.slug);
+          return (
+            <>
+              {fluxo && <Fluxograma steps={fluxo.steps} titulo={fluxo.titulo} />}
+              {comp && (
+                <QuadroComparativo
+                  titulo={comp.titulo}
+                  colunaEsquerda={comp.colunaEsquerda}
+                  colunaDireita={comp.colunaDireita}
+                  rows={comp.rows}
+                />
+              )}
+            </>
+          );
+        })()}
 
         <div className="prose prose-lg max-w-none">
           {article.body.map(renderSection)}
