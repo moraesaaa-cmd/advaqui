@@ -230,6 +230,146 @@ export const FLUXOGRAMAS_POR_ARTIGO: Record<string, FluxogramaArtigo> = {
           "Pagar com 20% de desconto NÃO impede o recurso, mas pagar a multa sem recorrer extingue o direito ao recurso."
       }
     ]
+  },
+  "banco-cobrou-taxa-indevida": {
+    titulo: "Banco cobrou taxa indevida — fluxograma de recuperação",
+    steps: [
+      {
+        titulo: "Identifique a cobrança",
+        texto:
+          "Confira o extrato — tarifas não pactuadas, contas sem movimentação cobradas, anuidade não combinada, juros acima do contratado."
+      },
+      {
+        titulo: "Tente solução amigável",
+        texto:
+          "Procure o gerente. Bancos retornam taxas indevidas com mais facilidade do que enfrentam processo. Documente a tentativa por e-mail ou app."
+      },
+      {
+        titulo: "Reclame no Procon e Banco Central",
+        texto:
+          "Procon — registro local. BCB — Registro de Demandas do Consumidor (RDR). O banco tem 10 dias úteis pra responder."
+      },
+      {
+        titulo: "Junte provas",
+        texto:
+          "Extratos com a cobrança, contrato (se houver), prints do app, e-mails trocados com o banco."
+      },
+      {
+        titulo: "Ajuíze no Juizado Especial Cível",
+        texto:
+          "Até 20 SM (~R$ 30.000), sem advogado. De 20 a 40 SM, com advogado. Pedido — devolução em dobro (CDC art. 42) + dano moral."
+      },
+      {
+        titulo: "Audiência de conciliação e sentença",
+        texto:
+          "30-60 dias até a conciliação. Bancos costumam acordar antes da sentença pra evitar registro. Se não, sentença em 6-12 meses."
+      }
+    ]
+  },
+  "como-entrar-com-acao-no-juizado-do-consumidor": {
+    titulo: "Ação no Juizado do Consumidor — passo a passo",
+    steps: [
+      {
+        titulo: "Verifique se cabe no juizado",
+        texto:
+          "Até 20 salários mínimos sem advogado. De 20 a 40 SM com advogado. Acima de 40 SM, vara cível comum. Excluídos — alimentos, fiscal, falência."
+      },
+      {
+        titulo: "Junte as provas",
+        texto:
+          "Nota fiscal, contrato, mensagens, prints, fotos, e-mails. No CDC, inversão do ônus da prova é regra — mas começa com o que tem."
+      },
+      {
+        titulo: "Tente solução com a empresa",
+        texto:
+          "SAC, ouvidoria, Procon. Anote protocolo, data, conteúdo da reclamação. Isso conta como tentativa amigável e endurece o pleito de dano moral."
+      },
+      {
+        titulo: "Acesse o JEC",
+        texto:
+          "Pessoalmente no Fórum, pelo site do TJ local ou pelo app E-Proc. Petição em linguagem simples — não precisa formato técnico."
+      },
+      {
+        titulo: "Audiência de conciliação (obrigatória)",
+        texto:
+          "30 a 60 dias. Muitas vezes a empresa propõe acordo. Não obrigatório aceitar — vale calcular o valor do pedido vs proposta."
+      },
+      {
+        titulo: "Audiência de instrução e sentença",
+        texto:
+          "Se não houver acordo, instrução em 60-120 dias após a conciliação. Sentença em 30-60 dias da instrução. Cumprimento — depende da empresa."
+      }
+    ]
+  },
+  "acordo-trabalhista-vale-a-pena": {
+    titulo: "Acordo trabalhista — fluxograma de decisão",
+    steps: [
+      {
+        titulo: "Avalie os valores da ação",
+        texto:
+          "Some todas as verbas pleiteadas — horas extras, adicional noturno, FGTS, multas, danos morais. Esse é o teto que a Justiça pode reconhecer."
+      },
+      {
+        titulo: "Considere o tempo",
+        texto:
+          "Reclamação trabalhista costuma durar 6 a 24 meses em 1º grau, mais 12-24 em recurso. Acordo encerra agora."
+      },
+      {
+        titulo: "Receba a proposta do empregador",
+        texto:
+          "Geralmente 30-60% do valor pleiteado. Verifique se inclui FGTS, seguro-desemprego (quando aplicável) e quitação geral."
+      },
+      {
+        titulo: "Cuidado com o termo de quitação",
+        texto:
+          "Acordo no MTE ou Vara dá quitação ampla — depois você não pode rediscutir. Quitação específica (só do objeto) é melhor pro empregado."
+      },
+      {
+        titulo: "Calcule o valor presente",
+        texto:
+          "R$ 10.000 agora ≠ R$ 15.000 em 18 meses. Se precisa do dinheiro logo, acordo de 60% pode valer mais. Se pode esperar, sentença pode ser melhor."
+      },
+      {
+        titulo: "Decida e formalize",
+        texto:
+          "Se aceitar, audiência rápida pra homologar. Empregador deposita conforme combinado, em prazo certo. Se inadimplir, execução imediata."
+      }
+    ]
+  },
+  "acao-de-despejo-como-funciona": {
+    titulo: "Ação de despejo por falta de pagamento — fluxograma",
+    steps: [
+      {
+        titulo: "Verifique a situação contratual",
+        texto:
+          "Contrato escrito com prazo? Há fiador, seguro-fiança ou caução? Quantos meses em atraso? Quanto deve, incluindo correção?"
+      },
+      {
+        titulo: "Notifique extrajudicialmente",
+        texto:
+          "Carta com aviso de recebimento ou notificação por cartório. Dá ao inquilino chance de pagar e evita gastos judiciais."
+      },
+      {
+        titulo: "Ajuíze a ação de despejo",
+        texto:
+          "Vara Cível da cidade do imóvel. Custas em torno de 1% sobre 12 vezes o aluguel. Pedido — despejo + cobrança dos aluguéis atrasados."
+      },
+      {
+        titulo: "Liminar de desocupação (Lei 8.245/91 art. 59)",
+        texto:
+          "Se o débito é de aluguel + encargos e não há contrato escrito ou houve denúncia vazia, o juiz pode conceder liminar de desocupação em 15 dias com caução."
+      },
+      {
+        titulo: "Inquilino pode purgar a mora",
+        texto:
+          "Pagamento de todo o débito (aluguel atrasado + multa + juros + custas + honorários) extingue a ação. Direito que se exerce uma vez a cada 24 meses."
+      },
+      {
+        titulo: "Sentença e execução de desocupação",
+        texto:
+          "6-12 meses até a sentença em casos simples. Desocupação voluntária em 30 dias após sentença. Se não desocupar, oficial de justiça + reforço policial."
+      }
+    ]
   }
 };
 
