@@ -65,6 +65,55 @@ export default function ImportSTFPage() {
     })();
   }, [router]);
 
+  // postMessage bridge — recebe dados do tab STF (cross-origin via window.open)
+  // STF tab faz: const t = window.open('/admin/import-stf'); t.postMessage({type:'stf-data', data: [...]}, 'https://advaqui.com')
+  // Esta página: escuta, popula textarea, opcionalmente auto-importa.
+  useEffect(() => {
+    if (!ready) return;
+
+    const handler = (ev: MessageEvent) => {
+      // Aceita só origin oficial do STF (sem permitir injection arbitrária)
+      if (ev.origin !== "https://jurisprudencia.stf.jus.br") return;
+      const data = ev.data;
+      if (!data || typeof data !== "object") return;
+      if (data.type !== "stf-data" || !Array.isArray(data.data)) return;
+
+      try {
+        const json = JSON.stringify(data.data, null, 2);
+        setJsonText(json);
+        // ack pro opener pra ele saber que recebemos
+        if (ev.source && "postMessage" in ev.source) {
+          (ev.source as Window).postMessage(
+            { type: "stf-ack", received: data.data.length },
+            ev.origin
+          );
+        }
+        toast(
+          `Recebido ${data.data.length} decisões do STF via postMessage`,
+          "success"
+        );
+      } catch (e) {
+        toast(`Falha ao receber dados — ${(e as Error).message}`, "error");
+      }
+    };
+
+    window.addEventListener("message", handler);
+
+    // Avisa o opener que estamos prontos
+    if (window.opener) {
+      try {
+        window.opener.postMessage(
+          { type: "stf-bridge-ready" },
+          "https://jurisprudencia.stf.jus.br"
+        );
+      } catch {
+        // opener pode estar em outro domínio — silencia
+      }
+    }
+
+    return () => window.removeEventListener("message", handler);
+  }, [ready]);
+
   const previewCount = (): { count: number; err: string | null } => {
     if (!jsonText.trim()) return { count: 0, err: null };
     try {
