@@ -8,6 +8,8 @@ import { GLOSSARIO } from "@/lib/data/glossario";
 import { GUIAS } from "@/lib/data/guias";
 import { getAllTemplates } from "@/lib/data/templates-docs";
 import { CUSTOS } from "@/lib/data/custos-juridicos";
+import { TEMAS_STF } from "@/lib/data/jurisprudencia-temas-stf";
+import { CALCULADORAS } from "@/lib/data/calculadoras";
 import { getArtigosLocalizaveis } from "@/lib/data/articles-cidades";
 
 /**
@@ -71,18 +73,26 @@ export default function robots(): MetadataRoute.Robots {
   }
   // Tribunais por cidade — 5571 URLs em 1 sitemap (F22-E onda 4)
   sitemaps.push(`${base}/sitemap-tribunais-cidades.xml`);
+  // STF temas × cidade (F22-E onda 5)
+  for (let i = 0; i < TEMAS_STF.length; i++) {
+    sitemaps.push(`${base}/sitemap-temas-stf-cidades/sitemap/${i}.xml`);
+  }
+  // Calculadoras × cidade (F22-E onda 8)
+  for (let i = 0; i < CALCULADORAS.length; i++) {
+    sitemaps.push(`${base}/sitemap-calculadoras-cidades/sitemap/${i}.xml`);
+  }
   sitemaps.push(`${base}/sitemap-jurisprudencia.xml`);
 
   return {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/", "/modelos/", "/quanto-custa/", "/tribunais/"],
+        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/", "/modelos/", "/quanto-custa/", "/tribunais/", "/calculadoras/"],
         disallow: ["/admin", "/painel", "/api/", "/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"]
       },
       {
         userAgent: "Googlebot",
-        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/", "/modelos/", "/quanto-custa/", "/tribunais/"],
+        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/", "/modelos/", "/quanto-custa/", "/tribunais/", "/calculadoras/"],
         disallow: ["/admin", "/painel", "/api/", "/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"]
       }
     ],
