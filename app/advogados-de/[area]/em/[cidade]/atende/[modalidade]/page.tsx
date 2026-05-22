@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: { area: string; cid
   return buildMetadata({
     title: `Advogado de ${a.name} em ${ci.cidadeNome}, ${ci.uf} — ${m.nome}`,
     description: `Profissionais de ${a.name.toLowerCase()} em ${ci.cidadeNome}/${ci.uf} com ${m.nome}.`.slice(0, 160),
-    path: `/advogados-de/${a.slug}/em/${params.cidade}/atende-${m.slug}`
+    path: `/advogados-de/${a.slug}/em/${params.cidade}/atende/${m.slug}`
   });
 }
 
@@ -98,7 +98,7 @@ export default async function Page({ params }: { params: { area: string; cidade:
           <h2 className="font-display text-lg font-bold text-brand-ink mb-3 inline-flex items-center gap-2"><MapPin className="w-5 h-5 text-brand-deep" aria-hidden />{m.nome} nas cidades vizinhas</h2>
           <div className="flex flex-wrap gap-2">
             {vizinhas.map(v => (
-              <Link key={v.slug} href={`/advogados-de/${a.slug}/em/${v.slug}-${v.uf.toLowerCase()}/atende-${m.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
+              <Link key={v.slug} href={`/advogados-de/${a.slug}/em/${v.slug}-${v.uf.toLowerCase()}/atende/${m.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
             ))}
           </div>
         </section>
@@ -109,7 +109,7 @@ export default async function Page({ params }: { params: { area: string; cidade:
         { name: "Advogados", url: "/advogados" },
         { name: a.name, url: `/advogados/${a.slug}` },
         { name: `${ci.cidadeNome}, ${ci.uf}`, url: `/advogados-de/${a.slug}/em/${params.cidade}` },
-        { name: m.nome, url: `/advogados-de/${a.slug}/em/${params.cidade}/atende-${m.slug}` }
+        { name: m.nome, url: `/advogados-de/${a.slug}/em/${params.cidade}/atende/${m.slug}` }
       ])} />
     </div>
   );

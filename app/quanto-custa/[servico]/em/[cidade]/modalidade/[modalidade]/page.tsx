@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: { servico: string; 
   return buildMetadata({
     title: `${c.titulo} em ${ci.cidadeNome}, ${ci.uf} — ${m.nome}`,
     description: `Faixa de honorário em ${ci.cidadeNome}/${ci.uf} com ${m.nome}. ${formatFaixa(c.faixa_min, c.faixa_max)}.`.slice(0, 160),
-    path: `/quanto-custa/${c.slug}/em/${params.cidade}/modalidade-${m.slug}`
+    path: `/quanto-custa/${c.slug}/em/${params.cidade}/modalidade/${m.slug}`
   });
 }
 
@@ -112,7 +112,7 @@ export default function Page({ params }: { params: { servico: string; cidade: st
           <h2 className="font-display text-lg font-bold text-brand-ink mb-3 inline-flex items-center gap-2"><MapPin className="w-5 h-5 text-brand-deep" aria-hidden />Mesma faixa nas cidades vizinhas ({m.nome})</h2>
           <div className="flex flex-wrap gap-2">
             {vizinhas.map(v => (
-              <Link key={v.slug} href={`/quanto-custa/${c.slug}/em/${v.slug}-${v.uf.toLowerCase()}/modalidade-${m.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
+              <Link key={v.slug} href={`/quanto-custa/${c.slug}/em/${v.slug}-${v.uf.toLowerCase()}/modalidade/${m.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
             ))}
           </div>
         </section>
@@ -123,7 +123,7 @@ export default function Page({ params }: { params: { servico: string; cidade: st
         { name: "Quanto custa", url: "/quanto-custa" },
         { name: c.titulo, url: `/quanto-custa/${c.slug}` },
         { name: `${ci.cidadeNome}, ${ci.uf}`, url: `/quanto-custa/${c.slug}/em/${params.cidade}` },
-        { name: m.nome, url: `/quanto-custa/${c.slug}/em/${params.cidade}/modalidade-${m.slug}` }
+        { name: m.nome, url: `/quanto-custa/${c.slug}/em/${params.cidade}/modalidade/${m.slug}` }
       ])} />
     </div>
   );

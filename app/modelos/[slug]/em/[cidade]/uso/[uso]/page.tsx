@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: { slug: string; cid
   return buildMetadata({
     title: `${t.title} — ${u.nome} em ${ci.cidadeNome}, ${ci.uf}`,
     description: `Modelo de ${t.title.toLowerCase()} para ${u.nome} em ${ci.cidadeNome}/${ci.uf}.`.slice(0, 160),
-    path: `/modelos/${t.slug}/em/${params.cidade}/uso-${u.slug}`
+    path: `/modelos/${t.slug}/em/${params.cidade}/uso/${u.slug}`
   });
 }
 
@@ -80,7 +80,7 @@ export default function Page({ params }: { params: { slug: string; cidade: strin
           <h2 className="font-display text-lg font-bold text-brand-ink mb-3 inline-flex items-center gap-2"><MapPin className="w-5 h-5 text-brand-deep" aria-hidden />Mesmo modelo {u.nome} nas cidades vizinhas</h2>
           <div className="flex flex-wrap gap-2">
             {vizinhas.map(v => (
-              <Link key={v.slug} href={`/modelos/${t.slug}/em/${v.slug}-${v.uf.toLowerCase()}/uso-${u.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
+              <Link key={v.slug} href={`/modelos/${t.slug}/em/${v.slug}-${v.uf.toLowerCase()}/uso/${u.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
             ))}
           </div>
         </section>
@@ -91,7 +91,7 @@ export default function Page({ params }: { params: { slug: string; cidade: strin
         { name: "Modelos", url: "/modelos" },
         { name: t.title, url: `/modelos/${t.slug}` },
         { name: `${ci.cidadeNome}, ${ci.uf}`, url: `/modelos/${t.slug}/em/${params.cidade}` },
-        { name: u.nome, url: `/modelos/${t.slug}/em/${params.cidade}/uso-${u.slug}` }
+        { name: u.nome, url: `/modelos/${t.slug}/em/${params.cidade}/uso/${u.slug}` }
       ])} />
     </div>
   );

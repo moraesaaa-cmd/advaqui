@@ -14,7 +14,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   const u = GLOSSARIO_USOS[id % 10];
   if (!t || !u) return [];
   return getAllCities().slice(0, 50000).map(c => ({
-    url: `${base}/glossario/${t.slug}/em/${c.slug}-${c.uf.toLowerCase()}/uso-${u.slug}`,
+    url: `${base}/glossario/${t.slug}/em/${c.slug}-${c.uf.toLowerCase()}/uso/${u.slug}`,
     changeFrequency: "monthly",
     priority: c.isCapital ? 0.55 : 0.4,
     lastModified: new Date()

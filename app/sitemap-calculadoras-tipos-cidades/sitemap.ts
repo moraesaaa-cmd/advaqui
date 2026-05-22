@@ -15,7 +15,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   const t = CALCULADORA_TIPOS[id % 10];
   if (!c || !t) return [];
   return getAllCities().slice(0, 50000).map(city => ({
-    url: `${base}/calculadoras/${c.slug}/em/${city.slug}-${city.uf.toLowerCase()}/tipo-${t.slug}`,
+    url: `${base}/calculadoras/${c.slug}/em/${city.slug}-${city.uf.toLowerCase()}/tipo/${t.slug}`,
     changeFrequency: "monthly",
     priority: city.isCapital ? 0.55 : 0.4,
     lastModified: new Date()

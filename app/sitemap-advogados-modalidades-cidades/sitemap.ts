@@ -14,7 +14,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   const m = MODALIDADES_ATENDIMENTO[id % 10];
   if (!sp || !m) return [];
   return getAllCities().slice(0, 50000).map(c => ({
-    url: `${base}/advogados-de/${sp.slug}/em/${c.slug}-${c.uf.toLowerCase()}/atende-${m.slug}`,
+    url: `${base}/advogados-de/${sp.slug}/em/${c.slug}-${c.uf.toLowerCase()}/atende/${m.slug}`,
     changeFrequency: "monthly",
     priority: c.isCapital ? 0.55 : 0.4,
     lastModified: new Date()

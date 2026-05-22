@@ -18,7 +18,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   if (!c || !m) return [];
   const cities = getAllCities();
   return cities.slice(0, 50000).map(city => ({
-    url: `${base}/quanto-custa/${c.slug}/em/${city.slug}-${city.uf.toLowerCase()}/modalidade-${m.slug}`,
+    url: `${base}/quanto-custa/${c.slug}/em/${city.slug}-${city.uf.toLowerCase()}/modalidade/${m.slug}`,
     changeFrequency: "monthly",
     priority: city.isCapital ? 0.55 : 0.4,
     lastModified: new Date()
