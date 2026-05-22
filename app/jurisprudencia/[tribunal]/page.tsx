@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Scale, AlertCircle, BookOpen, ChevronRight } from "lucide-react";
+import { Scale, AlertCircle, BookOpen, ChevronRight, Layers } from "lucide-react";
 import { getRecentByTribunal } from "@/lib/data/jurisprudencia";
 import type { Tribunal } from "@/lib/data/jurisprudencia";
+import { TEMAS_STJ } from "@/lib/data/jurisprudencia-temas";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -226,6 +227,36 @@ export default async function TribunalPage({
           </ul>
         )}
       </section>
+
+      {slug === "stj" && (
+        <section className="card mb-6">
+          <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+            <Layers className="w-5 h-5 text-brand-deep" aria-hidden />
+            Temas frequentes
+          </h2>
+          <p className="text-sm text-brand-ink/75 leading-relaxed mb-4">
+            Veja decisões reais do STJ organizadas por tema — clique em qualquer
+            tópico para ver os casos relacionados.
+          </p>
+          <ul className="grid gap-2 sm:grid-cols-2">
+            {TEMAS_STJ.map((t) => (
+              <li key={t.slug}>
+                <Link
+                  href={`/jurisprudencia/stj/tema/${t.slug}`}
+                  className="block group rounded-lg border border-brand-line p-3 hover:border-brand-deep/40 hover:bg-brand-bg/30 transition"
+                >
+                  <p className="font-semibold text-sm text-brand-ink group-hover:text-brand-deep transition">
+                    {t.titulo}
+                  </p>
+                  <p className="text-xs text-brand-ink/65 mt-0.5 leading-snug">
+                    {t.descricao}
+                  </p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="card mb-6">
         <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">

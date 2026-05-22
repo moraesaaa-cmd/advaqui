@@ -7,6 +7,10 @@ import { getAllLawyerSlugs } from "@/lib/data/lawyers";
 import { getAllArticleSlugs } from "@/lib/data/articles";
 import { getAllTemplateSlugs } from "@/lib/data/templates-docs";
 import { getAllMarketingArticleSlugs } from "@/lib/data/marketing-articles";
+import { GLOSSARIO } from "@/lib/data/glossario";
+import { PROBLEMAS } from "@/lib/data/problemas-juridicos";
+import { GUIAS } from "@/lib/data/guias";
+import { TEMAS_STJ } from "@/lib/data/jurisprudencia-temas";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
@@ -47,8 +51,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/sitemap-html`, changeFrequency: "monthly", priority: 0.3, lastModified: now },
     { url: `${base}/jurisprudencia`, changeFrequency: "daily", priority: 0.8, lastModified: now },
     { url: `${base}/jurisprudencia/stf`, changeFrequency: "daily", priority: 0.8, lastModified: now },
-    { url: `${base}/jurisprudencia/stj`, changeFrequency: "daily", priority: 0.8, lastModified: now }
+    { url: `${base}/jurisprudencia/stj`, changeFrequency: "daily", priority: 0.8, lastModified: now },
+    { url: `${base}/glossario`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
+    { url: `${base}/problemas-juridicos`, changeFrequency: "weekly", priority: 0.9, lastModified: now },
+    { url: `${base}/guias`, changeFrequency: "weekly", priority: 0.8, lastModified: now }
   ];
+
+  // Glossário — termos individuais
+  const glossarioRoutes: MetadataRoute.Sitemap = GLOSSARIO.map((t) => ({
+    url: `${base}/glossario/${t.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: t.atualizado_em ? new Date(t.atualizado_em) : now
+  }));
+
+  // Problemas jurídicos individuais
+  const problemaRoutes: MetadataRoute.Sitemap = PROBLEMAS.map((p) => ({
+    url: `${base}/problemas-juridicos/${p.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: p.atualizado_em ? new Date(p.atualizado_em) : now
+  }));
+
+  // Guias por área
+  const guiaRoutes: MetadataRoute.Sitemap = GUIAS.map((g) => ({
+    url: `${base}/guias/${g.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: g.atualizado_em ? new Date(g.atualizado_em) : now
+  }));
+
+  // Hubs temáticos de jurisprudência STJ
+  const temaStjRoutes: MetadataRoute.Sitemap = TEMAS_STJ.map((t) => ({
+    url: `${base}/jurisprudencia/stj/tema/${t.slug}`,
+    changeFrequency: "weekly",
+    priority: 0.7,
+    lastModified: t.atualizado_em ? new Date(t.atualizado_em) : now
+  }));
 
   const stateRoutes: MetadataRoute.Sitemap = STATES.map((s) => ({
     url: `${base}/advogados/${s.uf.toLowerCase()}`,
@@ -165,6 +204,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...templateRoutes,
     ...mktRoutes,
     ...profileRoutes,
-    ...lawyerArticleRoutes
+    ...lawyerArticleRoutes,
+    ...glossarioRoutes,
+    ...problemaRoutes,
+    ...guiaRoutes,
+    ...temaStjRoutes
   ];
 }

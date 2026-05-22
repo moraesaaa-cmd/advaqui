@@ -24,12 +24,12 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/jurisprudencia/"],
+        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/"],
         disallow: ["/admin", "/painel", "/api/", "/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"]
       },
       {
         userAgent: "Googlebot",
-        allow: ["/", "/jurisprudencia/"],
+        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/"],
         disallow: ["/admin", "/painel", "/api/", "/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"]
       }
     ],

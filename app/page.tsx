@@ -9,7 +9,9 @@ import {
   Target,
   Sparkles,
   Download,
-  Scale
+  Scale,
+  Compass,
+  HelpCircle
 } from "lucide-react";
 import { SearchBox } from "@/components/SearchBox";
 import { STATES } from "@/lib/data/states";
@@ -168,6 +170,68 @@ export default async function HomePage() {
             >
               Acessar jurisprudência
               <span aria-hidden>→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Hub de conteúdo educativo — Glossário, Problemas, Guias */}
+      <section className="bg-brand-bg py-14">
+        <div className="container-tight">
+          <div className="text-center mb-8">
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
+              Entenda seus direitos sem juridiquês
+            </h2>
+            <p className="text-brand-ink/70 mt-2 text-sm md:text-base max-w-2xl mx-auto">
+              Glossário, problemas jurídicos do dia a dia e guias pilar
+              conectados a decisões reais do STJ. Tudo em linguagem clara.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Link
+              href="/problemas-juridicos"
+              className="group rounded-2xl bg-white border border-brand-line p-6 hover:border-brand-deep/40 hover:shadow-card transition"
+            >
+              <div className="w-10 h-10 rounded-xl bg-brand-deep/10 flex items-center justify-center mb-3">
+                <HelpCircle className="w-5 h-5 text-brand-deep" aria-hidden />
+              </div>
+              <h3 className="font-display text-lg font-bold text-brand-ink group-hover:text-brand-deep transition">
+                Problemas jurídicos
+              </h3>
+              <p className="text-sm text-brand-ink/70 mt-1 leading-relaxed">
+                Divórcio, pensão, demissão, plano de saúde e mais — passo a
+                passo do que fazer.
+              </p>
+            </Link>
+            <Link
+              href="/guias"
+              className="group rounded-2xl bg-white border border-brand-line p-6 hover:border-brand-deep/40 hover:shadow-card transition"
+            >
+              <div className="w-10 h-10 rounded-xl bg-brand-deep/10 flex items-center justify-center mb-3">
+                <Compass className="w-5 h-5 text-brand-deep" aria-hidden />
+              </div>
+              <h3 className="font-display text-lg font-bold text-brand-ink group-hover:text-brand-deep transition">
+                Guias por área
+              </h3>
+              <p className="text-sm text-brand-ink/70 mt-1 leading-relaxed">
+                Direito do consumidor, família, trabalho, INSS, civil, criminal
+                e mais — visão geral por ramo.
+              </p>
+            </Link>
+            <Link
+              href="/glossario"
+              className="group rounded-2xl bg-white border border-brand-line p-6 hover:border-brand-deep/40 hover:shadow-card transition"
+            >
+              <div className="w-10 h-10 rounded-xl bg-brand-deep/10 flex items-center justify-center mb-3">
+                <BookOpen className="w-5 h-5 text-brand-deep" aria-hidden />
+              </div>
+              <h3 className="font-display text-lg font-bold text-brand-ink group-hover:text-brand-deep transition">
+                Glossário jurídico
+              </h3>
+              <p className="text-sm text-brand-ink/70 mt-1 leading-relaxed">
+                Dano moral, prescrição, usucapião, inventário — termos
+                jurídicos em linguagem clara.
+              </p>
             </Link>
           </div>
         </div>
