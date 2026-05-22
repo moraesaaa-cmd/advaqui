@@ -174,16 +174,19 @@ export async function POST(req: Request) {
     const seo_title = `${item.classe_sigla || "Decisão"} ${item.numero} | STF | AdvAqui`.slice(0, 200);
     const seo_description = (item.ementa_texto || "").slice(0, 160);
 
+    // validate() já garantiu numero e ementa, mas TS precisa do hint explícito
+    const numero = item.numero!;
+    const ementa = item.ementa_texto!;
     const payload = {
       tribunal: "STF" as const,
       classe: item.classe_sigla || null,
-      numero: item.numero,
-      processo: item.numero,
+      numero,
+      processo: numero,
       relator: item.relator || null,
       orgao_julgador: item.orgao_julgador || null,
       data_julgamento: parseDate(item.julgamento_data),
       data_publicacao: parseDate(item.publicacao_data),
-      ementa: item.ementa_texto || "",
+      ementa,
       url_origem,
       slug,
       seo_title,
