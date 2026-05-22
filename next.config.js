@@ -18,6 +18,14 @@ const nextConfig = {
         ]
       }
     ];
+  },
+  async redirects() {
+    // URLs antigas / variações comuns redirecionadas pro destino canônico.
+    // Evita 404 em links históricos e ajuda link equity SEO.
+    return [
+      { source: "/diretorio", destination: "/advogados", permanent: true },
+      { source: "/diretorio/:path*", destination: "/advogados/:path*", permanent: true }
+    ];
   }
 };
 

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Award, Users, MapPin } from "lucide-react";
+import { Award, Users, MapPin, ArrowRight } from "lucide-react";
 import { findState } from "@/lib/data/states";
 import { findCity, getSsgCityParams, nearbyCities, findCapital } from "@/lib/data/cities";
-import { getLawyersForCity, sortLawyers } from "@/lib/data/lawyers";
+import { getLawyersForCity, sortLawyers, getLawyerCountsByCity } from "@/lib/data/lawyers";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { LawyerCard } from "@/components/LawyerCard";
@@ -13,6 +13,7 @@ import { breadcrumbSchema, cityServiceSchema } from "@/lib/seo/schema";
 import { cityIntro } from "@/lib/data/templates";
 import { PLAN, SITE } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
+import { topCitiesForState } from "@/lib/seo/internal-links";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -54,6 +55,18 @@ export default async function CityPage({
 
   const neighbors = nearbyCities(city, 6);
   const capital = findCapital(st.uf);
+
+  // Quando a cidade está vazia, sugerimos cidades vizinhas MAIORES (top cities
+  // do estado) que tenham advogados cadastrados. Isso substitui o estado vazio
+  // por uma ação concreta: "Veja advogados em [cidade vizinha maior]".
+  const lawyerCounts = isEmpty ? await getLawyerCountsByCity(st.uf) : {};
+  const fallbackSuggestions = isEmpty
+    ? topCitiesForState(st, 12)
+        .filter(
+          (c) => c.slug !== city.slug && (lawyerCounts[c.slug] || 0) > 0
+        )
+        .slice(0, 6)
+    : [];
 
   return (
     <div className="container-tight py-10">
@@ -125,25 +138,74 @@ export default async function CityPage({
         <section className="mt-10 card">
           <Users className="w-10 h-10 text-brand-ink/30 mb-3" aria-hidden />
           <h2 className="font-display text-2xl font-bold text-brand-ink mb-2">
-            Ainda não temos advogados cadastrados em {city.name}
+            Ainda não temos advogados em {city.name}/{st.uf}
           </h2>
-          <p className="text-brand-ink/70 mb-4 max-w-2xl">
-            Esta página existe para que pessoas que procuram advogado em {city.name}/{st.uf}{" "}
-            encontrem o {SITE.name}. À medida que profissionais da sua região se cadastram, eles aparecem aqui.
-            Você pode consultar advogados em cidades próximas ou voltar em alguns dias.
+          <p className="text-brand-ink/70 mb-5 max-w-2xl">
+            Estamos expandindo a cobertura no interior. Enquanto isso, veja
+            profissionais que atendem em cidades maiores próximas — muitos
+            recebem clientes de toda a região.
           </p>
-          <div className="flex flex-wrap gap-3 mt-4">
+
+          {fallbackSuggestions.length > 0 ? (
+            <div className="mb-6">
+              <h3 className="text-sm font-semibold text-brand-deep mb-3 uppercase tracking-wide">
+                Veja advogados que atendem nesta região
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {fallbackSuggestions.map((c) => (
+                  <Link
+                    key={c.slug}
+                    href={`/advogados/${st.uf.toLowerCase()}/${c.slug}`}
+                    className="group flex items-center justify-between rounded-xl border border-brand-line bg-white px-4 py-3 hover:border-brand-accent hover:shadow-card transition"
+                  >
+                    <div>
+                      <p className="font-display text-base font-bold text-brand-ink">
+                        Advogados em {c.name}
+                        {c.isCapital && (
+                          <span className="ml-1.5 text-xs text-brand-accent2 font-normal">
+                            capital
+                          </span>
+                        )}
+                      </p>
+                      <p className="text-xs text-brand-ink/55 mt-0.5">
+                        {c.region || st.name}
+                      </p>
+                    </div>
+                    <ArrowRight
+                      className="w-5 h-5 text-brand-ink/40 group-hover:text-brand-accent transition flex-shrink-0"
+                      aria-hidden
+                    />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : capital && capital.slug !== city.slug ? (
+            <div className="mb-6">
+              <Link
+                href={`/advogados/${st.uf.toLowerCase()}/${capital.slug}`}
+                className="group inline-flex items-center gap-2 rounded-xl border border-brand-line bg-white px-5 py-3 hover:border-brand-accent hover:shadow-card transition"
+              >
+                <span className="font-display font-bold text-brand-ink">
+                  Ver advogados em {capital.name}
+                </span>
+                <ArrowRight
+                  className="w-4 h-4 text-brand-ink/40 group-hover:text-brand-accent transition"
+                  aria-hidden
+                />
+              </Link>
+            </div>
+          ) : null}
+
+          <div className="flex flex-wrap gap-3 pt-2 border-t border-brand-line">
             <Link href="/cadastro" className="btn-accent">
               É advogado em {city.name}? Cadastre-se grátis
             </Link>
-            {capital && capital.slug !== city.slug && (
-              <Link
-                href={`/advogados/${st.uf.toLowerCase()}/${capital.slug}`}
-                className="btn-ghost border border-brand-line"
-              >
-                Ver advogados em {capital.name}
-              </Link>
-            )}
+            <Link
+              href={`/advogados/${st.uf.toLowerCase()}`}
+              className="btn-ghost border border-brand-line"
+            >
+              Ver todas as cidades de {st.name}
+            </Link>
           </div>
         </section>
       )}

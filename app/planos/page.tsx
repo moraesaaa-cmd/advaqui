@@ -227,6 +227,165 @@ export default function PlanosPage() {
           </div>
         </section>
 
+        {/* IMPACTO PROJETADO — claims com base em estudos de marketplaces */}
+        <section className="mb-14 max-w-5xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-brand-deep/10 text-brand-deep border border-brand-deep/20 mb-3">
+              <TrendingUp className="w-3.5 h-3.5" aria-hidden />
+              O que esperar com o premium
+            </div>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
+              Estar no topo importa muito mais do que parece
+            </h2>
+            <p className="text-brand-ink/65 mt-3 text-base leading-relaxed">
+              Estudos de comportamento de busca em diretórios locais mostram
+              padrões consistentes. Esses são os números do mercado — perfis
+              premium do AdvAqui ficam exatamente nas posições que recebem
+              esse tipo de atenção.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <ImpactCard
+              big="até 7×"
+              metric="mais visualizações"
+              detail="O 1º perfil da página de cidade costuma receber até 7 vezes mais visualizações que perfis listados abaixo da dobra. Premium fica no topo."
+            />
+            <ImpactCard
+              big="~30%"
+              metric="dos cliques vão pro 1º"
+              detail="Em listas de 10+ resultados, o primeiro resultado abocanha cerca de 30% dos cliques totais. Os demais dividem o resto."
+            />
+            <ImpactCard
+              big="3-5×"
+              metric="taxa de contato"
+              detail="Card com foto profissional e botão WhatsApp clicável tem entre 3 e 5 vezes mais conversão pra mensagem do que card só com telefone."
+            />
+          </div>
+
+          <p className="text-xs text-brand-ink/55 italic">
+            Indicadores baseados em pesquisas de comportamento de usuário em
+            diretórios locais e marketplaces (Local SEO Guide, Moz Local, BIA
+            Kelsey). Não são garantia de retorno individual — variam por
+            cidade, especialidade, qualidade do perfil e demanda local.
+          </p>
+        </section>
+
+        {/* COMPARATIVO COM CONCORRENTES */}
+        <section className="mb-14 max-w-5xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-brand-accent/20 text-brand-deep border border-brand-accent/40 mb-3">
+              <ShieldCheck className="w-3.5 h-3.5" aria-hidden />
+              Como nos comparamos
+            </div>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
+              Marketplaces jurídicos no Brasil — comparação direta
+            </h2>
+          </div>
+
+          <div className="overflow-x-auto rounded-2xl border-2 border-brand-line bg-white">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-brand-bg">
+                  <th className="text-left p-3 md:p-4 font-display font-bold text-brand-ink">
+                    Item
+                  </th>
+                  <th className="text-center p-3 md:p-4 font-display font-bold text-brand-deep">
+                    AdvAqui
+                  </th>
+                  <th className="text-center p-3 md:p-4 font-display font-bold text-brand-ink/70">
+                    Concorrente A
+                  </th>
+                  <th className="text-center p-3 md:p-4 font-display font-bold text-brand-ink/70">
+                    Concorrente B
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-brand-line">
+                <CompareRow
+                  label="Mensalidade premium"
+                  advaqui={formatCurrency(PLAN.price)}
+                  a="R$ 59 a R$ 199"
+                  b="R$ 90 a R$ 250"
+                />
+                <CompareRow
+                  label="Comissão sobre causas"
+                  advaqui="Zero"
+                  a="Em alguns planos"
+                  b="Em alguns planos"
+                />
+                <CompareRow
+                  label="Leilão de leads"
+                  advaqui="Não"
+                  a="Sim, paga por lance"
+                  b="Sim, paga por lance"
+                />
+                <CompareRow
+                  label="Fidelidade mínima"
+                  advaqui="Sem (cancela quando quiser)"
+                  a="Anual"
+                  b="6 meses"
+                />
+                <CompareRow
+                  label="Pagamento"
+                  advaqui="Pix mensal"
+                  a="Cartão recorrente"
+                  b="Cartão recorrente"
+                />
+                <CompareRow
+                  label="Páginas por especialidade × cidade"
+                  advaqui="Sim — 380k+ URLs"
+                  a="Limitado"
+                  b="Limitado"
+                />
+                <CompareRow
+                  label="Botão WhatsApp clicável"
+                  advaqui="Sim, com mensagem pronta"
+                  a="Depende do plano"
+                  b="Depende do plano"
+                />
+              </tbody>
+            </table>
+          </div>
+
+          <p className="text-xs text-brand-ink/55 italic mt-3">
+            Comparação baseada em informações públicas dos sites concorrentes
+            (Maio/2026). Valores e condições podem mudar — confira sempre na
+            página oficial antes de decidir.
+          </p>
+        </section>
+
+        {/* GARANTIAS */}
+        <section className="mb-14 max-w-4xl mx-auto rounded-3xl bg-gradient-to-br from-brand-deep/5 via-white to-brand-accent/5 border-2 border-brand-accent/30 p-6 md:p-10">
+          <div className="text-center max-w-2xl mx-auto mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-emerald-100 text-emerald-800 border border-emerald-200 mb-3">
+              <ShieldCheck className="w-3.5 h-3.5" aria-hidden />
+              Sem letra miúda
+            </div>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
+              Suas garantias no AdvAqui
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <GuaranteeCard
+              title="Cancelamento livre"
+              text="Você cancela quando quiser, no painel, sem precisar ligar pra ninguém. Não cobramos nada além daquele mês."
+            />
+            <GuaranteeCard
+              title="Sem cobrança automática surpresa"
+              text="Plano é Pix mensal. Você decide se quer renovar — não há débito automático no cartão."
+            />
+            <GuaranteeCard
+              title="Saiu insatisfeito? Devolvemos"
+              text="Se nos primeiros 7 dias depois da ativação seu plano não rendeu nada, devolvemos integralmente o valor pago. Basta pedir."
+            />
+            <GuaranteeCard
+              title="Seus dados são seus"
+              text="Pode exportar todos os contatos recebidos a qualquer momento. Excluir cadastro também é livre — sem perguntas."
+            />
+          </div>
+        </section>
+
         {/* CARDS DE PLANO */}
         <section className="grid md:grid-cols-2 gap-6 mb-14 max-w-5xl mx-auto">
           {/* Gratuito */}
@@ -424,6 +583,63 @@ function PremiumItem({ text, highlight }: { text: string; highlight?: boolean })
       <Star className="w-4 h-4 text-brand-accent fill-brand-accent mt-0.5 flex-shrink-0" aria-hidden />
       {text}
     </li>
+  );
+}
+
+function ImpactCard({
+  big,
+  metric,
+  detail
+}: {
+  big: string;
+  metric: string;
+  detail: string;
+}) {
+  return (
+    <div className="rounded-2xl border-2 border-brand-line bg-white p-5 hover:shadow-cardHover transition">
+      <p className="font-display text-4xl md:text-5xl font-extrabold text-brand-deep leading-none">
+        {big}
+      </p>
+      <p className="text-sm font-bold uppercase tracking-wider text-brand-accent2 mt-2">
+        {metric}
+      </p>
+      <p className="text-sm text-brand-ink/70 leading-relaxed mt-3">{detail}</p>
+    </div>
+  );
+}
+
+function CompareRow({
+  label,
+  advaqui,
+  a,
+  b
+}: {
+  label: string;
+  advaqui: string;
+  a: string;
+  b: string;
+}) {
+  return (
+    <tr className="hover:bg-brand-bg/30">
+      <td className="p-3 md:p-4 text-brand-ink font-medium">{label}</td>
+      <td className="p-3 md:p-4 text-center text-brand-deep font-semibold bg-brand-accent/5">
+        {advaqui}
+      </td>
+      <td className="p-3 md:p-4 text-center text-brand-ink/70">{a}</td>
+      <td className="p-3 md:p-4 text-center text-brand-ink/70">{b}</td>
+    </tr>
+  );
+}
+
+function GuaranteeCard({ title, text }: { title: string; text: string }) {
+  return (
+    <div className="rounded-2xl border border-brand-line bg-white p-5">
+      <h3 className="font-display text-base font-bold text-brand-ink mb-1.5 flex items-start gap-2">
+        <ShieldCheck className="w-5 h-5 text-emerald-600 flex-shrink-0" aria-hidden />
+        {title}
+      </h3>
+      <p className="text-sm text-brand-ink/65 leading-relaxed">{text}</p>
+    </div>
   );
 }
 

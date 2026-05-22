@@ -251,7 +251,7 @@ export default async function AdvogadoAreaCidadePage({
           <>
             <p className="text-sm text-brand-ink/75 mb-3 leading-relaxed">
               {lawyersDaArea.length > 0
-                ? `${lawyersDaArea.length} profissional(is) cadastrado(s) em ${cidadeInfo.cidadeNome} com atuação na área.`
+                ? `Profissionais com atuação na área em ${cidadeInfo.cidadeNome}. Veja perfis, áreas de atuação e canais de contato direto.`
                 : `Profissionais cadastrados em ${cidadeInfo.cidadeNome}. Confirme a atuação na área antes da consulta.`}
             </p>
             <div className="grid gap-3 sm:grid-cols-2">

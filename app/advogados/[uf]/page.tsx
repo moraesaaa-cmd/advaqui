@@ -51,8 +51,10 @@ export default async function StatePage({ params }: { params: { uf: string } }) 
   const st = findState(params.uf);
   if (!st) notFound();
   const cities = citiesByUf(st.uf);
+  // Contagens reservadas para uso interno (ordenação, top cities) — não exibimos
+  // número de advogados pro público porque, em base pequena, parece pouco atrativo
+  // e diminui a percepção de autoridade. Mostramos cidades, mas não headcount.
   const lawyerCounts = await getLawyerCountsByCity(st.uf);
-  const totalLawyers = Object.values(lawyerCounts).reduce((a, b) => a + b, 0);
   const capital = findCapital(st.uf);
   const grouped = groupCitiesByLetter(cities);
 
@@ -73,9 +75,7 @@ export default async function StatePage({ params }: { params: { uf: string } }) 
         <MapPin className="w-4 h-4" aria-hidden />
         Capital — {st.capital}
         <span className="opacity-50">·</span>
-        {cities.length.toLocaleString("pt-BR")} cidade(s)
-        <span className="opacity-50">·</span>
-        {totalLawyers} advogado(s) cadastrado(s)
+        {cities.length.toLocaleString("pt-BR")} cidade(s) cobertas
       </div>
 
       {capital && (
@@ -91,7 +91,7 @@ export default async function StatePage({ params }: { params: { uf: string } }) 
                 Advogados em {capital.name}
               </Link>
               <p className="text-sm text-brand-ink/60 mt-1">
-                {lawyerCounts[capital.slug] || 0} profissional(is) cadastrado(s)
+                Capital de {st.name} — escolha a área de atuação e fale direto com o profissional.
               </p>
             </div>
           </div>
@@ -125,7 +125,7 @@ export default async function StatePage({ params }: { params: { uf: string } }) 
                     )}
                   </p>
                   <p className="text-xs text-brand-ink/55 mt-0.5">
-                    {lawyerCounts[c.slug] || 0} advogado(s) cadastrado(s)
+                    {c.region || st.name} — clique para ver perfis e áreas de atuação.
                   </p>
                 </Link>
               ))}
@@ -175,7 +175,7 @@ export default async function StatePage({ params }: { params: { uf: string } }) 
             </h3>
             <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-1.5">
               {list.map((c) => {
-                const count = lawyerCounts[c.slug] || 0;
+                const hasLawyers = (lawyerCounts[c.slug] || 0) > 0;
                 return (
                   <li key={c.slug}>
                     <Link
@@ -183,8 +183,12 @@ export default async function StatePage({ params }: { params: { uf: string } }) 
                       className="text-sm text-brand-ink hover:text-brand-deep transition inline-flex items-center gap-1.5 py-1"
                     >
                       <span>{c.name}</span>
-                      {count > 0 && (
-                        <span className="text-xs font-medium text-brand-accent2">({count})</span>
+                      {hasLawyers && (
+                        <span
+                          className="w-1.5 h-1.5 rounded-full bg-brand-accent inline-block"
+                          aria-label="Tem profissionais cadastrados"
+                          title="Tem profissionais cadastrados"
+                        />
                       )}
                     </Link>
                   </li>
