@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: { params: { slug: string; cid
   return buildMetadata({
     title: `${p.titulo.replace(/[?.]$/, "")} em ${ci.cidadeNome}, ${ci.uf} — ângulo ${a.name}`,
     description: `${p.resumo} Veja o aspecto de ${a.name.toLowerCase()} para casos em ${ci.cidadeNome}/${ci.uf}.`.slice(0, 160),
-    path: `/problemas-juridicos/${p.slug}/em/${params.cidade}/area/${a.slug}`
+    path: `/problemas-juridicos/${p.slug}/em/${params.cidade}/area-${a.slug}`
   });
 }
 
@@ -138,7 +138,7 @@ export default async function ProblemaAreaCidadePage({ params }: { params: { slu
           <h2 className="font-display text-lg font-bold text-brand-ink mb-3 inline-flex items-center gap-2"><MapPin className="w-5 h-5 text-brand-deep" aria-hidden />Mesmo problema nas cidades vizinhas</h2>
           <div className="flex flex-wrap gap-2">
             {vizinhas.map(c => (
-              <Link key={c.slug} href={`/problemas-juridicos/${p.slug}/em/${c.slug}-${c.uf.toLowerCase()}/area/${a.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{c.nome_completo}</Link>
+              <Link key={c.slug} href={`/problemas-juridicos/${p.slug}/em/${c.slug}-${c.uf.toLowerCase()}/area-${a.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{c.nome_completo}</Link>
             ))}
           </div>
         </section>
@@ -149,7 +149,7 @@ export default async function ProblemaAreaCidadePage({ params }: { params: { slu
         { name: "Problemas jurídicos", url: "/problemas-juridicos" },
         { name: p.titulo, url: `/problemas-juridicos/${p.slug}` },
         { name: `${ci.cidadeNome}, ${ci.uf}`, url: `/problemas-juridicos/${p.slug}/em/${params.cidade}` },
-        { name: a.name, url: `/problemas-juridicos/${p.slug}/em/${params.cidade}/area/${a.slug}` }
+        { name: a.name, url: `/problemas-juridicos/${p.slug}/em/${params.cidade}/area-${a.slug}` }
       ])} />
     </div>
   );

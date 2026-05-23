@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: { slug: string; cid
   return buildMetadata({
     title: `${art.title} — ${s.nome} em ${ci.cidadeNome}, ${ci.uf}`,
     description: `${art.excerpt} Caso ${s.nome}.`.slice(0, 160),
-    path: `/blog/${art.slug}/em/${params.cidade}/situacao/${s.slug}`
+    path: `/blog/${art.slug}/em/${params.cidade}/situacao-${s.slug}`
   });
 }
 
@@ -82,7 +82,7 @@ export default function Page({ params }: { params: { slug: string; cidade: strin
           <h2 className="font-display text-lg font-bold text-brand-ink mb-3 inline-flex items-center gap-2"><MapPin className="w-5 h-5 text-brand-deep" aria-hidden />{s.nome} — nas cidades vizinhas</h2>
           <div className="flex flex-wrap gap-2">
             {vizinhas.map(v => (
-              <Link key={v.slug} href={`/blog/${art.slug}/em/${v.slug}-${v.uf.toLowerCase()}/situacao/${s.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
+              <Link key={v.slug} href={`/blog/${art.slug}/em/${v.slug}-${v.uf.toLowerCase()}/situacao-${s.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
             ))}
           </div>
         </section>
@@ -93,7 +93,7 @@ export default function Page({ params }: { params: { slug: string; cidade: strin
         { name: "Blog", url: "/blog" },
         { name: art.title, url: `/blog/${art.slug}` },
         { name: `${ci.cidadeNome}, ${ci.uf}`, url: `/blog/${art.slug}/em/${params.cidade}` },
-        { name: s.nome, url: `/blog/${art.slug}/em/${params.cidade}/situacao/${s.slug}` }
+        { name: s.nome, url: `/blog/${art.slug}/em/${params.cidade}/situacao-${s.slug}` }
       ])} />
     </div>
   );

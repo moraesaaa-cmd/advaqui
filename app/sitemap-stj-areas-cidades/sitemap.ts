@@ -16,7 +16,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   for (const a of t.areas) {
     for (const c of cities) {
       out.push({
-        url: `${base}/jurisprudencia/stj/tema/${t.slug}/em/${c.slug}-${c.uf.toLowerCase()}/area/${a}`,
+        url: `${base}/jurisprudencia/stj/tema/${t.slug}/em/${c.slug}-${c.uf.toLowerCase()}/area-${a}`,
         changeFrequency: "monthly",
         priority: c.isCapital ? 0.45 : 0.35,
         lastModified: new Date()

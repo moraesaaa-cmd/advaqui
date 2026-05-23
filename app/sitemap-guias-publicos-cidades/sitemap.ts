@@ -14,7 +14,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   const p = GUIA_PUBLICOS[id % 10];
   if (!g || !p) return [];
   return getAllCities().slice(0, 50000).map(c => ({
-    url: `${base}/guias/${g.slug}/em/${c.slug}-${c.uf.toLowerCase()}/publico/${p.slug}`,
+    url: `${base}/guias/${g.slug}/em/${c.slug}-${c.uf.toLowerCase()}/publico-${p.slug}`,
     changeFrequency: "monthly",
     priority: c.isCapital ? 0.55 : 0.4,
     lastModified: new Date()

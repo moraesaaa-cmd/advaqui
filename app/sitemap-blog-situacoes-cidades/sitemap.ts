@@ -14,7 +14,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   const s = BLOG_SITUACOES[id % 10];
   if (!slug || !s) return [];
   return getAllCities().slice(0, 50000).map(c => ({
-    url: `${base}/blog/${slug}/em/${c.slug}-${c.uf.toLowerCase()}/situacao/${s.slug}`,
+    url: `${base}/blog/${slug}/em/${c.slug}-${c.uf.toLowerCase()}/situacao-${s.slug}`,
     changeFrequency: "monthly",
     priority: c.isCapital ? 0.55 : 0.4,
     lastModified: new Date()

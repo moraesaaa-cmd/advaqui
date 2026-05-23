@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: { slug: string; cid
   return buildMetadata({
     title: `STJ — ${t.titulo} (${a.name}) em ${ci.cidadeNome}, ${ci.uf}`,
     description: `${t.descricao} Aplicação na área de ${a.name.toLowerCase()} em ${ci.cidadeNome}/${ci.uf}.`.slice(0, 160),
-    path: `/jurisprudencia/stj/tema/${t.slug}/em/${params.cidade}/area/${a.slug}`,
+    path: `/jurisprudencia/stj/tema/${t.slug}/em/${params.cidade}/area-${a.slug}`,
     noIndex: true // até banco STJ ter >=3 decisões por tema; controlado por cron
   });
 }
@@ -86,7 +86,7 @@ export default function Page({ params }: { params: { slug: string; cidade: strin
           <h2 className="font-display text-lg font-bold text-brand-ink mb-3 inline-flex items-center gap-2"><MapPin className="w-5 h-5 text-brand-deep" aria-hidden />Mesmo ângulo nas cidades vizinhas</h2>
           <div className="flex flex-wrap gap-2">
             {vizinhas.map(v => (
-              <Link key={v.slug} href={`/jurisprudencia/stj/tema/${t.slug}/em/${v.slug}-${v.uf.toLowerCase()}/area/${a.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
+              <Link key={v.slug} href={`/jurisprudencia/stj/tema/${t.slug}/em/${v.slug}-${v.uf.toLowerCase()}/area-${a.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
             ))}
           </div>
         </section>
@@ -98,7 +98,7 @@ export default function Page({ params }: { params: { slug: string; cidade: strin
         { name: "STJ", url: "/jurisprudencia/stj" },
         { name: t.titulo, url: `/jurisprudencia/stj/tema/${t.slug}` },
         { name: `${ci.cidadeNome}, ${ci.uf}`, url: `/jurisprudencia/stj/tema/${t.slug}/em/${params.cidade}` },
-        { name: a.name, url: `/jurisprudencia/stj/tema/${t.slug}/em/${params.cidade}/area/${a.slug}` }
+        { name: a.name, url: `/jurisprudencia/stj/tema/${t.slug}/em/${params.cidade}/area-${a.slug}` }
       ])} />
     </div>
   );

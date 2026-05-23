@@ -14,7 +14,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   const a = JURIS_ASPECTOS[id % 10];
   if (!t || !a) return [];
   return getAllCities().slice(0, 50000).map(c => ({
-    url: `${base}/jurisprudencia/stf/tema/${t.slug}/em/${c.slug}-${c.uf.toLowerCase()}/aspecto/${a.slug}`,
+    url: `${base}/jurisprudencia/stf/tema/${t.slug}/em/${c.slug}-${c.uf.toLowerCase()}/aspecto-${a.slug}`,
     changeFrequency: "monthly",
     priority: c.isCapital ? 0.45 : 0.35,
     lastModified: new Date()

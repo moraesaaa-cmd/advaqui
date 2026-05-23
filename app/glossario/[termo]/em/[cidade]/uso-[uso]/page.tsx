@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: { termo: string; ci
   return buildMetadata({
     title: `${t.termo} — ${u.nome} em ${ci.cidadeNome}, ${ci.uf}`,
     description: `O que significa ${t.termo.toLowerCase()} no ${u.nome.toLowerCase()}, com exemplos práticos em ${ci.cidadeNome}/${ci.uf}.`.slice(0, 160),
-    path: `/glossario/${t.slug}/em/${params.cidade}/uso/${u.slug}`
+    path: `/glossario/${t.slug}/em/${params.cidade}/uso-${u.slug}`
   });
 }
 
@@ -86,7 +86,7 @@ export default function Page({ params }: { params: { termo: string; cidade: stri
           <h2 className="font-display text-lg font-bold text-brand-ink mb-3 inline-flex items-center gap-2"><MapPin className="w-5 h-5 text-brand-deep" aria-hidden />Mesmo termo, mesmo uso, cidades vizinhas</h2>
           <div className="flex flex-wrap gap-2">
             {vizinhas.map(v => (
-              <Link key={v.slug} href={`/glossario/${t.slug}/em/${v.slug}-${v.uf.toLowerCase()}/uso/${u.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
+              <Link key={v.slug} href={`/glossario/${t.slug}/em/${v.slug}-${v.uf.toLowerCase()}/uso-${u.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
             ))}
           </div>
         </section>
@@ -97,7 +97,7 @@ export default function Page({ params }: { params: { termo: string; cidade: stri
         { name: "Glossário", url: "/glossario" },
         { name: t.termo, url: `/glossario/${t.slug}` },
         { name: `${ci.cidadeNome}, ${ci.uf}`, url: `/glossario/${t.slug}/em/${params.cidade}` },
-        { name: u.nome, url: `/glossario/${t.slug}/em/${params.cidade}/uso/${u.slug}` }
+        { name: u.nome, url: `/glossario/${t.slug}/em/${params.cidade}/uso-${u.slug}` }
       ])} />
     </div>
   );

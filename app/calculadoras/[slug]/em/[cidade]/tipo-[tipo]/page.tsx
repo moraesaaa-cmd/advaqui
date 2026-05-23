@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: { slug: string; cid
   return buildMetadata({
     title: `${c.titulo} ${t.nome} em ${ci.cidadeNome}, ${ci.uf}`,
     description: `${c.resumo} Adaptação ${t.nome} em ${ci.cidadeNome}/${ci.uf}.`.slice(0, 160),
-    path: `/calculadoras/${c.slug}/em/${params.cidade}/tipo/${t.slug}`
+    path: `/calculadoras/${c.slug}/em/${params.cidade}/tipo-${t.slug}`
   });
 }
 
@@ -101,7 +101,7 @@ export default function Page({ params }: { params: { slug: string; cidade: strin
           <h2 className="font-display text-lg font-bold text-brand-ink mb-3 inline-flex items-center gap-2"><MapPin className="w-5 h-5 text-brand-deep" aria-hidden />Mesmo cálculo nas cidades vizinhas ({t.nome})</h2>
           <div className="flex flex-wrap gap-2">
             {vizinhas.map(v => (
-              <Link key={v.slug} href={`/calculadoras/${c.slug}/em/${v.slug}-${v.uf.toLowerCase()}/tipo/${t.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
+              <Link key={v.slug} href={`/calculadoras/${c.slug}/em/${v.slug}-${v.uf.toLowerCase()}/tipo-${t.slug}`} className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition text-xs">{v.nome_completo}</Link>
             ))}
           </div>
         </section>
@@ -112,7 +112,7 @@ export default function Page({ params }: { params: { slug: string; cidade: strin
         { name: "Calculadoras", url: "/calculadoras" },
         { name: c.titulo, url: `/calculadoras/${c.slug}` },
         { name: `${ci.cidadeNome}, ${ci.uf}`, url: `/calculadoras/${c.slug}/em/${params.cidade}` },
-        { name: t.nome, url: `/calculadoras/${c.slug}/em/${params.cidade}/tipo/${t.slug}` }
+        { name: t.nome, url: `/calculadoras/${c.slug}/em/${params.cidade}/tipo-${t.slug}` }
       ])} />
     </div>
   );
