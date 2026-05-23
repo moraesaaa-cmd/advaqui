@@ -15,9 +15,9 @@ export const dynamicParams = true;
 
 export function generateStaticParams() {
   const cidades = getCidadesPrioritarias().slice(0, 15);
-  const params: Array<{ slug: string; cidade: string; uso: string }> = [];
+  const params: Array<{ termo: string; cidade: string; uso: string }> = [];
   for (const t of GLOSSARIO) for (const u of GLOSSARIO_USOS) for (const c of cidades)
-    params.push({ slug: t.slug, cidade: `${c.slug}-${c.uf.toLowerCase()}`, uso: u.slug });
+    params.push({ termo: t.slug, cidade: `${c.slug}-${c.uf.toLowerCase()}`, uso: u.slug });
   return params;
 }
 
@@ -28,8 +28,8 @@ function parseCidade(s: string) {
   return c ? { uf: m[2].toUpperCase(), citySlug: m[1].toLowerCase(), cidadeNome: c.name } : null;
 }
 
-export async function generateMetadata({ params }: { params: { slug: string; cidade: string; uso: string } }) {
-  const t = findGlossarioTermo(params.slug);
+export async function generateMetadata({ params }: { params: { termo: string; cidade: string; uso: string } }) {
+  const t = findGlossarioTermo(params.termo);
   const ci = parseCidade(params.cidade);
   const u = GLOSSARIO_USOS.find(x => x.slug === params.uso);
   if (!t || !ci || !u) return buildMetadata({ title: "Não encontrado", description: "", noIndex: true });
@@ -40,8 +40,8 @@ export async function generateMetadata({ params }: { params: { slug: string; cid
   });
 }
 
-export default function Page({ params }: { params: { slug: string; cidade: string; uso: string } }) {
-  const t = findGlossarioTermo(params.slug);
+export default function Page({ params }: { params: { termo: string; cidade: string; uso: string } }) {
+  const t = findGlossarioTermo(params.termo);
   const ci = parseCidade(params.cidade);
   const u = GLOSSARIO_USOS.find(x => x.slug === params.uso);
   if (!t || !ci || !u) notFound();
