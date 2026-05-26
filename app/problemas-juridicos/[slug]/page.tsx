@@ -23,6 +23,7 @@ import { SPECIALTIES } from "@/lib/data/specialties";
 import { getCidadesPrioritarias } from "@/lib/data/cidades-prioritarias";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
+import { CTAFinal } from "@/components/CTAFinal";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -361,7 +362,9 @@ export default function ProblemaPage({ params }: { params: { slug: string } }) {
         </p>
       </aside>
 
-      <p className="text-sm text-brand-ink/65">
+      <CTAFinal areaSlug={areasObj[0]?.slug} problemSlug={p.slug} />
+
+      <p className="text-sm text-brand-ink/65 mt-6">
         <Link
           href="/problemas-juridicos"
           className="text-brand-deep hover:underline"

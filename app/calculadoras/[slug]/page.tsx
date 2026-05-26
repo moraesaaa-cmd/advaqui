@@ -18,6 +18,7 @@ import { getCidadesPrioritarias } from "@/lib/data/cidades-prioritarias";
 import { findSpecialty } from "@/lib/data/specialties";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
+import { CTAFinal } from "@/components/CTAFinal";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 
@@ -193,6 +194,8 @@ export default function CalculadoraPage({
           </ul>
         </section>
       )}
+
+      <CTAFinal areaSlug={calc.area_slug} />
 
       <JsonLd
         data={breadcrumbSchema([

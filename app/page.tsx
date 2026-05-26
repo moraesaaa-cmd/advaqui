@@ -18,6 +18,7 @@ import { STATES } from "@/lib/data/states";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { SITE } from "@/lib/config";
 import { PremiumValueSection } from "@/components/PremiumValueSection";
+import { ProvaSocialHome } from "@/components/ProvaSocialHome";
 import { getAllArticles } from "@/lib/data/articles";
 import { getAllMarketingArticles } from "@/lib/data/marketing-articles";
 
@@ -142,6 +143,8 @@ export default async function HomePage() {
           Os exemplos apontam para São Paulo. Em cada cidade existe uma página por especialidade.
         </p>
       </section>
+
+      <ProvaSocialHome />
 
       <PremiumValueSection />
 

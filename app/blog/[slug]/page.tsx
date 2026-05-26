@@ -9,6 +9,7 @@ import {
 } from "@/lib/data/articles";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
+import { CTAFinal } from "@/components/CTAFinal";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -383,7 +384,9 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
           );
         })()}
 
-        <div className="mt-10">
+        <CTAFinal areaSlug={article.relatedSpecialty} />
+
+        <div className="mt-6">
           <Link
             href="/blog"
             className="inline-flex items-center gap-2 text-sm text-brand-deep hover:text-brand-accent2"

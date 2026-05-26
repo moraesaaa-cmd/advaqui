@@ -17,6 +17,7 @@ import { findTemaStj } from "@/lib/data/jurisprudencia-temas";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
+import { CTAFinal } from "@/components/CTAFinal";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -288,7 +289,9 @@ export default function GuiaPage({ params }: { params: { slug: string } }) {
         </span>
       </aside>
 
-      <p className="text-sm text-brand-ink/65">
+      <CTAFinal areaSlug={g.area_slug} />
+
+      <p className="text-sm text-brand-ink/65 mt-6">
         <Link href="/guias" className="text-brand-deep hover:underline">
           ← Ver todos os guias
         </Link>
