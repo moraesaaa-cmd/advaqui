@@ -83,18 +83,56 @@ export default function robots(): MetadataRoute.Robots {
   }
   sitemaps.push(`${base}/sitemap-jurisprudencia.xml`);
 
+  // Paths permitidos/bloqueados — definidos uma vez e reutilizados por todos
+  // os user-agents, evitando divergência entre regras.
+  const allow = [
+    "/",
+    "/jurisprudencia/",
+    "/glossario/",
+    "/problemas-juridicos/",
+    "/guias/",
+    "/advogados-de/",
+    "/modelos/",
+    "/quanto-custa/",
+    "/tribunais/",
+    "/calculadoras/"
+  ];
+  const disallow = [
+    "/admin",
+    "/painel",
+    "/api/",
+    "/login",
+    "/cadastro",
+    "/recuperar-senha",
+    "/redefinir-senha"
+  ];
+
+  // Crawlers de mecanismos de resposta por IA (LLMs e motores de busca
+  // generativa). Explicitamente bem-vindos no conteúdo público — é assim que
+  // o AdvAqui passa a ser citado em respostas de ChatGPT, Claude, Perplexity,
+  // Gemini, Copilot etc. As áreas privadas seguem bloqueadas para eles também.
+  const aiUserAgents = [
+    "GPTBot",
+    "OAI-SearchBot",
+    "ChatGPT-User",
+    "ClaudeBot",
+    "Claude-Web",
+    "anthropic-ai",
+    "PerplexityBot",
+    "Perplexity-User",
+    "Google-Extended",
+    "Applebot-Extended",
+    "Amazonbot",
+    "Bingbot",
+    "DuckDuckBot",
+    "meta-externalagent"
+  ];
+
   return {
     rules: [
-      {
-        userAgent: "*",
-        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/", "/modelos/", "/quanto-custa/", "/tribunais/", "/calculadoras/"],
-        disallow: ["/admin", "/painel", "/api/", "/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"]
-      },
-      {
-        userAgent: "Googlebot",
-        allow: ["/", "/jurisprudencia/", "/glossario/", "/problemas-juridicos/", "/guias/", "/advogados-de/", "/modelos/", "/quanto-custa/", "/tribunais/", "/calculadoras/"],
-        disallow: ["/admin", "/painel", "/api/", "/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"]
-      }
+      { userAgent: "*", allow, disallow },
+      { userAgent: "Googlebot", allow, disallow },
+      { userAgent: aiUserAgents, allow, disallow }
     ],
     sitemap: sitemaps,
     host: base

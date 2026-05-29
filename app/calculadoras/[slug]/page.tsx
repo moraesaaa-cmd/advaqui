@@ -20,7 +20,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, howToSchema } from "@/lib/seo/schema";
 
 export const revalidate = 86400;
 
@@ -204,6 +204,16 @@ export default function CalculadoraPage({
           { name: calc.titulo, url: `/calculadoras/${calc.slug}` }
         ])}
       />
+      {calc.exemplo?.passos && calc.exemplo.passos.length > 0 && (
+        <JsonLd
+          data={howToSchema(
+            calc.titulo,
+            calc.resumo,
+            calc.exemplo.passos.map((texto) => ({ text: texto })),
+            `/calculadoras/${calc.slug}`
+          )}
+        />
+      )}
     </div>
   );
 }

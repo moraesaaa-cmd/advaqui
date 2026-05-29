@@ -81,6 +81,33 @@ export const lawyerSchema = (lawyer: Lawyer) => ({
   knowsAbout: lawyer.specialties
 });
 
+/**
+ * HowTo — para conteúdo passo a passo (problemas jurídicos, exemplos de cálculo).
+ * Habilita rich results no Google e é uma das estruturas que modelos de IA
+ * mais usam para citar instruções práticas.
+ *
+ * `steps` aceita {name, text} (problemas) ou só texto (exemplos de cálculo).
+ */
+export const howToSchema = (
+  name: string,
+  description: string,
+  steps: Array<{ name?: string; text: string }>,
+  url: string
+) => ({
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name,
+  description,
+  inLanguage: "pt-BR",
+  url: url.startsWith("http") ? url : `${SITE.url}${url}`,
+  step: steps.map((s, i) => ({
+    "@type": "HowToStep",
+    position: i + 1,
+    name: s.name || `Passo ${i + 1}`,
+    text: s.text
+  }))
+});
+
 export const cityServiceSchema = (cityName: string, uf: string, count: number) => ({
   "@context": "https://schema.org",
   "@type": "Service",

@@ -25,7 +25,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, howToSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 
 export const revalidate = 604800;
@@ -408,6 +408,16 @@ export default function ProblemaPage({ params }: { params: { slug: string } }) {
               acceptedAnswer: { "@type": "Answer", text: f.a }
             }))
           }}
+        />
+      )}
+      {p.passos && p.passos.length > 0 && (
+        <JsonLd
+          data={howToSchema(
+            p.titulo,
+            p.resumo,
+            p.passos.map((passo) => ({ name: passo.titulo, text: passo.texto })),
+            `/problemas-juridicos/${p.slug}`
+          )}
         />
       )}
     </div>
