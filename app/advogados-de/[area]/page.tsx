@@ -66,7 +66,7 @@ export default function AreaBasePage({
 
   const info = SPECIALTY_INFO[sp.slug];
   const guia = findGuiaByArea(sp.slug);
-  const problemas = problemasByArea(sp.slug).slice(0, 6);
+  const problemas = (problemasByArea()[sp.slug] || []).slice(0, 6);
   const cidades = getCidadesPrioritarias().slice(0, 16);
 
   return (
