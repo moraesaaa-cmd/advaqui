@@ -19,6 +19,7 @@ import { SPECIALTIES } from "@/lib/data/specialties";
 import { SITE } from "@/lib/config";
 import { PremiumValueSection } from "@/components/PremiumValueSection";
 import { ProvaSocialHome } from "@/components/ProvaSocialHome";
+import { IntentGrid } from "@/components/IntentGrid";
 import { getAllArticles } from "@/lib/data/articles";
 import { getAllMarketingArticles } from "@/lib/data/marketing-articles";
 
@@ -63,6 +64,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <IntentGrid />
 
       <section className="container-tight py-16">
         <div className="text-center mb-10">
