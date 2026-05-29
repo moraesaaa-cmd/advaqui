@@ -19,6 +19,7 @@ import { findSpecialty } from "@/lib/data/specialties";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
+import { CalculadoraWidget } from "@/components/CalculadoraWidget";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, howToSchema } from "@/lib/seo/schema";
 
@@ -85,11 +86,16 @@ export default function CalculadoraPage({
             </p>
           </div>
         </div>
+      </article>
 
-        <section className="mt-6 p-4 rounded-xl bg-brand-deep/5 border border-brand-deep/20">
+      {/* Calculadora interativa de verdade — a pessoa digita e o site calcula */}
+      <CalculadoraWidget slug={calc.slug} />
+
+      <article className="card mb-6">
+        <section className="p-4 rounded-xl bg-brand-deep/5 border border-brand-deep/20">
           <h2 className="font-display text-lg font-bold text-brand-ink mb-2 inline-flex items-center gap-2">
             <Scale className="w-5 h-5 text-brand-deep" aria-hidden />
-            Fórmula
+            Como o cálculo é feito
           </h2>
           <p className="text-sm md:text-base text-brand-ink/85 leading-relaxed">
             {calc.formula}
