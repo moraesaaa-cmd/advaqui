@@ -289,7 +289,7 @@ export default async function HomePage() {
                 Modelos gratuitos
               </div>
               <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
-                20 modelos prontos pra baixar
+                Modelos prontos pra baixar
               </h2>
               <p className="text-brand-ink/65 mt-2">
                 Procuração, contrato de locação, recibo, distrato, declaração
@@ -318,7 +318,7 @@ export default async function HomePage() {
                 href="/modelos"
                 className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-deep hover:text-brand-accent2"
               >
-                Ver os 20 modelos →
+                Ver todos os modelos →
               </Link>
             </div>
           </div>

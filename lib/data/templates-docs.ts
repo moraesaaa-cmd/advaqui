@@ -1,5 +1,5 @@
 /**
- * Biblioteca de 20 modelos extrajudiciais gratuitos — Maio/2026.
+ * Biblioteca de modelos extrajudiciais gratuitos — Maio/2026.
  *
  * Cada modelo é uma minuta editável em texto plano, baseada em redação
  * tradicionalmente usada no Brasil. NÃO substitui revisão de advogado,
@@ -1262,6 +1262,549 @@ TESTEMUNHAS:
       "Reconhecimento de firma é altamente recomendado, principalmente para cessões de valor expressivo",
       "Cessão de direito hereditário deve ser feita por escritura pública (CC, art. 1.793)",
       "A notificação do devedor cedido é essencial — sem ela, o devedor pode pagar legitimamente ao cedente"
+    ]
+  },
+  {
+    slug: "recibo-de-aluguel",
+    title: "Recibo de aluguel",
+    category: "Recibos e quitações",
+    description:
+      "Modelo de recibo de aluguel para o locador comprovar o recebimento mensal e dar quitação ao inquilino, com mês de referência e valor.",
+    legalBase: "Lei 8.245/1991 (Lei do Inquilinato); Código Civil, art. 320 (quitação).",
+    fillingMinutes: 3,
+    whenToUse: [
+      "Para o locador comprovar o recebimento do aluguel do mês",
+      "Para o inquilino guardar prova de pagamento",
+      "Quando o pagamento é feito em dinheiro ou sem comprovante bancário automático"
+    ],
+    howToFill: [
+      "Preencha o valor recebido por extenso e em número",
+      "Indique o mês de referência do aluguel",
+      "Descreva o imóvel locado (endereço)",
+      "Assine como locador (quem recebe)"
+    ],
+    content: `RECIBO DE ALUGUEL
+
+Recebi de [NOME COMPLETO DO INQUILINO], CPF nº [000.000.000-00], a importância de R$ [VALOR] ([VALOR POR EXTENSO]), referente ao aluguel do mês de [MÊS]/[ANO] do imóvel situado à [ENDEREÇO COMPLETO DO IMÓVEL].
+
+Para clareza e por ser verdade, firmo o presente recibo, dando plena, geral e irrevogável quitação do valor referente ao período acima.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+[NOME COMPLETO DO LOCADOR]
+CPF: [000.000.000-00]
+`,
+    notes: [
+      "Guarde uma via assinada; recibos de aluguel comprovam o pagamento em eventual disputa",
+      "Se houver encargos (condomínio, IPTU, água), discrimine os valores separadamente"
+    ]
+  },
+  {
+    slug: "recibo-de-doacao",
+    title: "Recibo de doação",
+    category: "Recibos e quitações",
+    description:
+      "Modelo de recibo de doação para comprovar a entrega gratuita de bem ou valor de uma pessoa a outra.",
+    legalBase: "Código Civil, arts. 538 a 564 (Doação).",
+    fillingMinutes: 4,
+    whenToUse: [
+      "Para registrar a doação de um valor em dinheiro",
+      "Para comprovar a doação de um bem móvel (móveis, equipamentos)",
+      "Como prova para fins de imposto de renda (doador e donatário declaram)"
+    ],
+    howToFill: [
+      "Identifique o doador (quem dá) e o donatário (quem recebe)",
+      "Descreva o bem ou valor doado de forma detalhada",
+      "Indique que a doação é feita de forma gratuita e espontânea",
+      "Assine; reconheça firma se o valor for expressivo"
+    ],
+    content: `RECIBO DE DOAÇÃO
+
+DOADOR: [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+
+DONATÁRIO: [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+
+Pelo presente instrumento, o DOADOR declara que doa, de forma espontânea, gratuita e irrevogável, ao DONATÁRIO, o seguinte: [DESCREVER O BEM OU VALOR — ex.: "a quantia de R$ 10.000,00 (dez mil reais)" ou "o veículo marca/modelo, placa, ano"].
+
+O DONATÁRIO declara aceitar a presente doação.
+
+Esta doação não possui qualquer encargo ou condição.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+DOADOR — [NOME]   CPF: [000.000.000-00]
+
+_____________________________________
+DONATÁRIO — [NOME]   CPF: [000.000.000-00]
+`,
+    notes: [
+      "Doação acima do limite de isenção pode gerar ITCMD (imposto estadual) — confira a alíquota do seu estado",
+      "Doação de imóvel exige escritura pública em cartório de notas (CC, art. 541)",
+      "Doador e donatário devem declarar a doação no imposto de renda"
+    ]
+  },
+  {
+    slug: "recibo-de-sinal-arras",
+    title: "Recibo de sinal (arras)",
+    category: "Recibos e quitações",
+    description:
+      "Modelo de recibo de sinal (arras) para comprovar o pagamento de entrada que confirma um negócio, normalmente de compra e venda.",
+    legalBase: "Código Civil, arts. 417 a 420 (Arras).",
+    fillingMinutes: 4,
+    whenToUse: [
+      "Ao reservar a compra de um imóvel ou veículo com entrada",
+      "Para confirmar um negócio antes do contrato definitivo",
+      "Quando as partes querem fixar consequências para a desistência"
+    ],
+    howToFill: [
+      "Identifique quem paga e quem recebe o sinal",
+      "Indique o valor do sinal e o negócio a que se refere",
+      "Defina se as arras são confirmatórias ou penitenciais (com direito de arrependimento)",
+      "Assine ambas as partes"
+    ],
+    content: `RECIBO DE SINAL (ARRAS)
+
+Recebi de [NOME DE QUEM PAGA], CPF nº [000.000.000-00], a quantia de R$ [VALOR] ([VALOR POR EXTENSO]), a título de SINAL (arras) referente ao negócio de [DESCREVER — ex.: "compra e venda do imóvel situado à ..."], cujo valor total é de R$ [VALOR TOTAL].
+
+As partes ajustam que: ( ) se o comprador desistir, perderá o sinal; ( ) se o vendedor desistir, devolverá o sinal em dobro. (CC, art. 418)
+
+O valor do sinal será [( ) abatido do preço total / ( ) tratado conforme acordo] na conclusão do negócio.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+QUEM RECEBE — [NOME]   CPF: [000.000.000-00]
+
+_____________________________________
+QUEM PAGA — [NOME]   CPF: [000.000.000-00]
+`,
+    notes: [
+      "Arras confirmatórias reforçam o compromisso; arras penitenciais preveem o direito de arrependimento (CC, art. 420)",
+      "Guarde o recibo até a assinatura do contrato definitivo"
+    ]
+  },
+  {
+    slug: "contrato-compra-venda-veiculo",
+    title: "Contrato de compra e venda de veículo",
+    category: "Contratos",
+    description:
+      "Modelo de contrato particular de compra e venda de veículo entre pessoas, com descrição do bem, valor e responsabilidade pela transferência.",
+    legalBase: "Código Civil, arts. 481 a 532 (Compra e venda); CTB (transferência no Detran).",
+    fillingMinutes: 8,
+    whenToUse: [
+      "Venda de carro ou moto entre particulares",
+      "Para registrar valor, condições e data da entrega",
+      "Para definir quem paga a transferência e os débitos pendentes"
+    ],
+    howToFill: [
+      "Preencha os dados de vendedor e comprador",
+      "Descreva o veículo (marca, modelo, ano, placa, RENAVAM, chassi)",
+      "Defina o valor e a forma de pagamento",
+      "Defina prazo para a transferência no Detran e quem arca com os custos"
+    ],
+    content: `CONTRATO PARTICULAR DE COMPRA E VENDA DE VEÍCULO
+
+VENDEDOR: [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+
+COMPRADOR: [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+
+OBJETO: Veículo marca/modelo [MARCA/MODELO], ano [ANO/MODELO], cor [COR], placa [PLACA], RENAVAM nº [RENAVAM], chassi nº [CHASSI].
+
+PREÇO E PAGAMENTO: O preço ajustado é de R$ [VALOR] ([VALOR POR EXTENSO]), pago da seguinte forma: [DESCREVER — à vista / parcelado / com entrada].
+
+ENTREGA E ESTADO: O comprador declara ter vistoriado o veículo e o recebe no estado em que se encontra, ciente de [eventuais avarias, se houver].
+
+TRANSFERÊNCIA: A transferência junto ao DETRAN será providenciada por [VENDEDOR/COMPRADOR] no prazo de [PRAZO] dias, correndo as despesas por conta de [PARTE RESPONSÁVEL].
+
+DÉBITOS: Multas, IPVA, licenciamento e demais débitos até a data desta venda são de responsabilidade do VENDEDOR; após a entrega, do COMPRADOR.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+VENDEDOR — [NOME]   CPF: [000.000.000-00]
+
+_____________________________________
+COMPRADOR — [NOME]   CPF: [000.000.000-00]
+
+TESTEMUNHAS:
+1. _________________________ CPF: _________________
+2. _________________________ CPF: _________________
+`,
+    notes: [
+      "Faça a comunicação de venda ao DETRAN para não responder por multas posteriores",
+      "Reconheça firma das assinaturas; preencha e assine o ATPV-e (CRV digital) para a transferência",
+      "Confira débitos e restrições do veículo antes de assinar"
+    ]
+  },
+  {
+    slug: "contrato-emprestimo-mutuo",
+    title: "Contrato de empréstimo de dinheiro (mútuo)",
+    category: "Contratos",
+    description:
+      "Modelo de contrato de mútuo para registrar empréstimo de dinheiro entre pessoas, com valor, prazo, forma de devolução e juros se houver.",
+    legalBase: "Código Civil, arts. 586 a 592 (Mútuo).",
+    fillingMinutes: 6,
+    whenToUse: [
+      "Empréstimo de dinheiro entre familiares, amigos ou conhecidos",
+      "Para ter prova do valor emprestado e do prazo de devolução",
+      "Para definir juros e correção, se acordados"
+    ],
+    howToFill: [
+      "Identifique o mutuante (quem empresta) e o mutuário (quem recebe)",
+      "Indique o valor emprestado e a data da entrega",
+      "Defina o prazo e a forma de devolução (à vista ou parcelado)",
+      "Defina juros e correção, se houver (deixe claro o percentual)"
+    ],
+    content: `CONTRATO DE MÚTUO (EMPRÉSTIMO DE DINHEIRO)
+
+MUTUANTE (quem empresta): [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+
+MUTUÁRIO (quem recebe): [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+
+VALOR: O MUTUANTE empresta ao MUTUÁRIO a quantia de R$ [VALOR] ([VALOR POR EXTENSO]), entregue nesta data por [forma de entrega — transferência/dinheiro].
+
+DEVOLUÇÃO: O MUTUÁRIO se obriga a devolver o valor em [à vista até DD/MM/AAAA / em [N] parcelas mensais de R$ [VALOR], vencendo a primeira em DD/MM/AAAA].
+
+JUROS E CORREÇÃO: [( ) sem juros / ( ) com juros de [X]% ao mês e correção pelo índice [ÍNDICE]].
+
+INADIMPLEMENTO: Em caso de atraso, incidirá multa de [2%] e juros de mora de [1% ao mês], sem prejuízo da cobrança judicial.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+MUTUANTE — [NOME]   CPF: [000.000.000-00]
+
+_____________________________________
+MUTUÁRIO — [NOME]   CPF: [000.000.000-00]
+
+TESTEMUNHAS:
+1. _________________________ CPF: _________________
+2. _________________________ CPF: _________________
+`,
+    notes: [
+      "Este contrato, assinado por 2 testemunhas, é título executivo extrajudicial (facilita a cobrança)",
+      "Há limites legais para juros entre particulares — evite taxas abusivas",
+      "Guarde o comprovante da transferência do valor emprestado"
+    ]
+  },
+  {
+    slug: "contrato-de-namoro",
+    title: "Contrato de namoro",
+    category: "Contratos",
+    description:
+      "Modelo de contrato de namoro, usado para deixar registrado que a relação é um namoro e não uma união estável, afastando efeitos patrimoniais.",
+    legalBase: "Código Civil, art. 1.723 (união estável) — afasta sua caracterização.",
+    fillingMinutes: 5,
+    whenToUse: [
+      "Quando o casal namora mas não quer constituir união estável",
+      "Para deixar claro que não há intenção de constituir família no momento",
+      "Para evitar discussão patrimonial futura sobre bens adquiridos individualmente"
+    ],
+    howToFill: [
+      "Identifique as duas pessoas",
+      "Declarem que se trata de namoro, sem intenção de constituir família agora",
+      "Declarem que não há patrimônio comum nem dependência econômica",
+      "Assinem; reconhecimento de firma reforça a prova"
+    ],
+    content: `CONTRATO DE NAMORO (DECLARAÇÃO)
+
+[NOME COMPLETO 1], CPF nº [000.000.000-00], e [NOME COMPLETO 2], CPF nº [000.000.000-00], declaram, para os devidos fins, que:
+
+1. Mantêm um relacionamento de NAMORO, pública e socialmente reconhecido como tal;
+
+2. NÃO têm, no presente momento, o objetivo de constituir família nos moldes da união estável (CC, art. 1.723);
+
+3. Cada um conserva seu patrimônio próprio, não havendo bens adquiridos em comum nem intenção de comunhão patrimonial;
+
+4. Não há dependência econômica entre as partes, arcando cada um com suas próprias despesas;
+
+5. Caso a relação evolua para união estável no futuro, firmarão documento próprio a respeito.
+
+Por ser expressão da verdade, assinam o presente.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+[NOME 1]   CPF: [000.000.000-00]
+
+_____________________________________
+[NOME 2]   CPF: [000.000.000-00]
+`,
+    notes: [
+      "O contrato de namoro é um indício, mas não impede que a Justiça reconheça união estável se a convivência tiver, de fato, as características dela",
+      "Reconhecer firma e atualizar o documento periodicamente fortalece a prova"
+    ]
+  },
+  {
+    slug: "notificacao-desocupacao-imovel",
+    title: "Notificação para desocupação de imóvel",
+    category: "Notificações",
+    description:
+      "Modelo de notificação extrajudicial do locador ao inquilino comunicando o fim da locação e solicitando a desocupação do imóvel.",
+    legalBase: "Lei 8.245/1991 (Lei do Inquilinato), arts. 6º, 46 e 47.",
+    fillingMinutes: 6,
+    whenToUse: [
+      "Fim do contrato de locação por prazo determinado",
+      "Locação por prazo indeterminado que o locador deseja encerrar",
+      "Antes de eventual ação de despejo, para constituir o inquilino em mora"
+    ],
+    howToFill: [
+      "Identifique locador e inquilino e o imóvel",
+      "Informe o motivo (fim do prazo, retomada) e a base contratual",
+      "Conceda o prazo de desocupação previsto em lei/contrato (em geral 30 dias)",
+      "Entregue com comprovante (AR, cartório de títulos ou e-mail com confirmação)"
+    ],
+    content: `NOTIFICAÇÃO EXTRAJUDICIAL — DESOCUPAÇÃO DE IMÓVEL
+
+De: [NOME DO LOCADOR], CPF nº [000.000.000-00].
+Para: [NOME DO INQUILINO], CPF nº [000.000.000-00].
+Imóvel: [ENDEREÇO COMPLETO DO IMÓVEL LOCADO].
+
+Prezado(a) Sr.(a),
+
+Na qualidade de locador do imóvel acima, venho NOTIFICÁ-LO de que o contrato de locação firmado em [DATA] [( ) encerrou-se em [DATA] / ( ) será encerrado], razão pela qual solicito a DESOCUPAÇÃO VOLUNTÁRIA do imóvel no prazo de [30 (trinta)] dias a contar do recebimento desta.
+
+A desocupação deverá ocorrer com a entrega das chaves e do imóvel nas condições contratuais, livre de pessoas e bens, com os aluguéis e encargos quitados.
+
+Caso a desocupação não ocorra no prazo, serão adotadas as medidas judiciais cabíveis (ação de despejo), com a responsabilização por aluguéis, encargos e custas.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+[NOME DO LOCADOR]
+CPF: [000.000.000-00]
+`,
+    notes: [
+      "Entregue de forma que gere prova do recebimento (AR dos Correios, cartório de títulos e documentos ou e-mail com confirmação de leitura)",
+      "Os prazos variam conforme o tipo de contrato — confira o seu antes de notificar",
+      "Esta notificação não é a ação de despejo em si; é o passo anterior"
+    ]
+  },
+  {
+    slug: "carta-de-pedido-de-demissao",
+    title: "Carta de pedido de demissão",
+    category: "Declarações",
+    description:
+      "Modelo de carta de pedido de demissão do empregado ao empregador, com a opção de cumprir ou não o aviso prévio.",
+    legalBase: "CLT, art. 487 (aviso prévio).",
+    fillingMinutes: 3,
+    whenToUse: [
+      "Quando o trabalhador decide sair do emprego por vontade própria",
+      "Para formalizar a saída e a opção sobre o aviso prévio",
+      "Para registrar a data do pedido"
+    ],
+    howToFill: [
+      "Identifique o empregado e a empresa",
+      "Informe a data a partir da qual deseja se desligar",
+      "Indique se vai cumprir o aviso prévio ou pede dispensa do cumprimento",
+      "Assine e peça uma via protocolada (recebida) pela empresa"
+    ],
+    content: `CARTA DE PEDIDO DE DEMISSÃO
+
+À empresa [NOME/RAZÃO SOCIAL DA EMPRESA], CNPJ nº [00.000.000/0000-00].
+
+Eu, [NOME COMPLETO DO EMPREGADO], CPF nº [000.000.000-00], ocupante do cargo de [CARGO], venho por meio desta solicitar o meu DESLIGAMENTO da empresa, por iniciativa própria, a partir de [DATA].
+
+Quanto ao aviso prévio:
+( ) Comprometo-me a cumprir o aviso prévio de [30] dias.
+( ) Solicito a DISPENSA do cumprimento do aviso prévio.
+
+Solicito a baixa na CTPS e o pagamento das verbas rescisórias devidas no prazo legal.
+
+Agradeço a oportunidade.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+[NOME COMPLETO DO EMPREGADO]
+CPF: [000.000.000-00]
+
+Recebido pela empresa em ___/___/______  Assinatura: __________________
+`,
+    notes: [
+      "No pedido de demissão você não recebe seguro-desemprego nem multa de 40% do FGTS, e não saca o FGTS (salvo exceções)",
+      "Se a empresa dispensar o cumprimento do aviso, não há desconto; se você não cumprir sem dispensa, pode haver desconto",
+      "Peça uma via protocolada com data e assinatura de quem recebeu"
+    ]
+  },
+  {
+    slug: "autorizacao-viagem-menor-internacional",
+    title: "Autorização de viagem internacional para menor",
+    category: "Autorizações",
+    description:
+      "Modelo de autorização para menor de idade viajar ao exterior desacompanhado ou com apenas um dos pais, conforme exigências do ECA.",
+    legalBase: "ECA (Lei 8.069/1990), arts. 83 a 85; Resolução CNJ nº 295/2019.",
+    fillingMinutes: 6,
+    whenToUse: [
+      "Menor viajando ao exterior sem um ou ambos os pais",
+      "Menor viajando com terceiro autorizado",
+      "Para apresentar na imigração e na companhia aérea"
+    ],
+    howToFill: [
+      "Identifique o menor e os pais/responsáveis",
+      "Indique com quem o menor viaja e o destino",
+      "Para viagem internacional, a firma deve ser reconhecida em cartório",
+      "Leve duas vias originais"
+    ],
+    content: `AUTORIZAÇÃO DE VIAGEM INTERNACIONAL PARA MENOR
+
+Eu/Nós, [NOME DO PAI], CPF nº [000.000.000-00], e [NOME DA MÃE], CPF nº [000.000.000-00], na qualidade de responsáveis legais pelo menor [NOME COMPLETO DO MENOR], nascido em [DATA], portador do documento [RG/Passaporte nº], AUTORIZO(AMOS) o referido menor a:
+
+( ) viajar desacompanhado(a);
+( ) viajar na companhia de [NOME DO ACOMPANHANTE], CPF/Passaporte nº [______], grau de parentesco/relação [______];
+( ) viajar com apenas um dos genitores ([NOME]).
+
+Destino: [PAÍS/CIDADE].  Período: de [DATA] a [DATA] [ou "por prazo indeterminado", conforme o caso].
+
+A presente autorização é concedida para fins de embarque, desembarque e permanência no exterior, nos termos do ECA e da Resolução CNJ nº 295/2019.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+[NOME DO PAI]   CPF: [000.000.000-00]
+
+_____________________________________
+[NOME DA MÃE]   CPF: [000.000.000-00]
+`,
+    notes: [
+      "Para viagem internacional, é OBRIGATÓRIO reconhecer firma por autenticidade em cartório",
+      "Cada país e companhia aérea pode exigir formulário próprio — confira com antecedência",
+      "Em caso de pais separados, em regra ambos precisam autorizar; havendo apenas um responsável legal, comprove com documento"
+    ]
+  },
+  {
+    slug: "procuracao-inss",
+    title: "Procuração para o INSS",
+    category: "Procurações",
+    description:
+      "Modelo de procuração para alguém representar o segurado junto ao INSS — agendar perícia, dar entrada em benefício, acompanhar processo.",
+    legalBase: "Código Civil, arts. 653 a 692 (Mandato); normas de representação do INSS.",
+    fillingMinutes: 5,
+    whenToUse: [
+      "Para um familiar dar entrada em benefício pelo segurado",
+      "Para acompanhar processo administrativo no INSS",
+      "Quando o segurado está impossibilitado de comparecer"
+    ],
+    howToFill: [
+      "Preencha os dados do outorgante (segurado) e do procurador",
+      "Especifique os poderes (requerer benefício, agendar perícia, receber comunicações)",
+      "Anexe cópia dos documentos de ambos",
+      "O INSS pode exigir reconhecimento de firma ou formulário próprio"
+    ],
+    content: `PROCURAÇÃO PARA REPRESENTAÇÃO JUNTO AO INSS
+
+OUTORGANTE (segurado): [NOME COMPLETO], [nacionalidade], [estado civil], CPF nº [000.000.000-00], NIT/PIS nº [00000000000], residente à [ENDEREÇO].
+
+OUTORGADO (procurador): [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+
+PODERES: O outorgante nomeia o outorgado seu procurador para representá-lo perante o Instituto Nacional do Seguro Social (INSS), podendo: requerer e acompanhar benefícios e serviços, agendar e remarcar atendimentos e perícias, apresentar e retirar documentos, prestar e receber informações, interpor recursos administrativos e tomar ciência de decisões.
+
+A presente procuração [não inclui / inclui] poderes para receber valores em nome do outorgante.
+
+Validade: [prazo, ex.: "12 meses"] a contar da assinatura, ou até revogação.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+[NOME DO OUTORGANTE]
+CPF: [000.000.000-00]
+`,
+    notes: [
+      "O INSS costuma disponibilizar formulário próprio de procuração e exigir documentos do outorgante e do procurador",
+      "Procuração para RECEBER o benefício tem regras mais rígidas (procurador/representante legal cadastrado)",
+      "Reconhecimento de firma pode ser exigido"
+    ]
+  },
+  {
+    slug: "declaracao-de-dependente-economico",
+    title: "Declaração de dependência econômica",
+    category: "Declarações",
+    description:
+      "Modelo de declaração de que uma pessoa depende economicamente de outra, usada para fins previdenciários, planos de saúde, imposto de renda e benefícios.",
+    legalBase: "Usada como prova para fins previdenciários, tributários e de benefícios (avaliada caso a caso).",
+    fillingMinutes: 4,
+    whenToUse: [
+      "Comprovar dependência para pensão por morte no INSS",
+      "Incluir dependente em plano de saúde ou imposto de renda",
+      "Comprovar dependência de pais idosos, companheiro(a) ou enteado"
+    ],
+    howToFill: [
+      "Identifique o declarante (mantenedor) e o dependente",
+      "Descreva o vínculo e desde quando há dependência",
+      "Recolha assinatura de 2 testemunhas (reforça a prova)",
+      "Junte documentos que comprovem (comprovantes de despesas, mesma residência)"
+    ],
+    content: `DECLARAÇÃO DE DEPENDÊNCIA ECONÔMICA
+
+Eu, [NOME COMPLETO DO DECLARANTE], CPF nº [000.000.000-00], residente à [ENDEREÇO], DECLARO, sob as penas da lei, que [NOME DO DEPENDENTE], CPF nº [000.000.000-00], [grau de parentesco/relação — ex.: "minha mãe", "meu companheiro"], depende economicamente de mim desde [DATA/PERÍODO], arcando eu com as despesas de [moradia, alimentação, saúde etc.].
+
+Declaro estar ciente de que a falsidade desta declaração configura crime (art. 299 do Código Penal).
+
+Por ser verdade, firmo a presente.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+[NOME DO DECLARANTE]   CPF: [000.000.000-00]
+
+TESTEMUNHAS:
+1. _________________________ Nome: _____________ CPF: _____________
+2. _________________________ Nome: _____________ CPF: _____________
+`,
+    notes: [
+      "Para o INSS, a dependência de cônjuge/companheiro e filhos menores é presumida; para pais e irmãos deve ser comprovada",
+      "A declaração isolada raramente basta — junte provas materiais (contas, comprovantes, mesma residência)",
+      "Declaração falsa é crime"
+    ]
+  },
+  {
+    slug: "notificacao-troca-produto-defeito",
+    title: "Notificação de troca de produto com defeito",
+    category: "Notificações",
+    description:
+      "Modelo de notificação do consumidor ao fornecedor exigindo a solução de produto com defeito — conserto, troca ou devolução do valor.",
+    legalBase: "Código de Defesa do Consumidor (Lei 8.078/1990), arts. 18 e 26.",
+    fillingMinutes: 5,
+    whenToUse: [
+      "Produto com defeito não resolvido pela loja/fabricante",
+      "Para registrar a reclamação e o prazo legal de 30 dias",
+      "Antes de acionar Procon ou Justiça (Juizado Especial)"
+    ],
+    howToFill: [
+      "Identifique o consumidor e o fornecedor (loja/fabricante)",
+      "Descreva o produto, a data da compra e o defeito",
+      "Indique a solução desejada (conserto, troca ou dinheiro de volta)",
+      "Conceda prazo e guarde comprovante de envio"
+    ],
+    content: `NOTIFICAÇÃO — PRODUTO COM DEFEITO (CDC)
+
+De: [NOME DO CONSUMIDOR], CPF nº [000.000.000-00].
+Para: [NOME/RAZÃO SOCIAL DO FORNECEDOR], CNPJ nº [00.000.000/0000-00].
+
+Adquiri em [DATA] o produto [DESCRIÇÃO — marca, modelo], nota fiscal nº [______], no valor de R$ [VALOR]. O produto apresenta o seguinte defeito: [DESCREVER O DEFEITO].
+
+Nos termos do art. 18 do Código de Defesa do Consumidor, o fornecedor tem o prazo de 30 (trinta) dias para sanar o vício. Não sendo resolvido, é meu direito EXIGIR, à minha escolha:
+
+( ) a substituição do produto por outro da mesma espécie em perfeitas condições;
+( ) a restituição imediata da quantia paga, atualizada;
+( ) o abatimento proporcional do preço.
+
+Solicito, portanto, a seguinte solução: [INDICAR A OPÇÃO ESCOLHIDA], no prazo de [PRAZO] dias.
+
+Não atendida esta notificação, adotarei as medidas cabíveis junto ao Procon e ao Poder Judiciário (Juizado Especial), com pedido de devolução e indenização.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+[NOME DO CONSUMIDOR]
+CPF: [000.000.000-00]
+`,
+    notes: [
+      "Prazo para reclamar: 30 dias (produto não durável) ou 90 dias (durável), a contar da entrega ou do aparecimento do defeito oculto",
+      "Guarde nota fiscal, fotos e o protocolo de envio desta notificação",
+      "Defeito que cause dano à saúde/segurança (fato do produto) tem regras próprias e prazo de 5 anos"
     ]
   }
 ];

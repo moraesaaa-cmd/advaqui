@@ -24,7 +24,7 @@ export const revalidate = 3600;
 export const metadata = buildMetadata({
   title: "Modelos gratuitos de documentos",
   description:
-    "20 modelos extrajudiciais prontos para uso: procurações, contratos, recibos, declarações, notificações e autorizações. Cadastre-se grátis para baixar e usar.",
+    "Modelos extrajudiciais prontos para uso: procurações, contratos, recibos, declarações, notificações e autorizações. Cadastre-se grátis para baixar e usar.",
   path: "/modelos"
 });
 
@@ -117,7 +117,7 @@ export default function ModelosPage() {
               Biblioteca jurídica gratuita
             </div>
             <h1 className="font-display text-4xl md:text-6xl font-bold leading-tight text-balance">
-              20 modelos prontos para usar
+              Modelos prontos para usar
             </h1>
             <p className="text-lg md:text-xl text-brand-bg/85 mt-5 leading-relaxed">
               Procurações, contratos, recibos, declarações e notificações com base legal

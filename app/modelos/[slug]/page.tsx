@@ -267,7 +267,7 @@ export default function TemplatePage({ params }: { params: { slug: string } }) {
               </h3>
               <div className="space-y-1.5 text-sm">
                 <Link href="/modelos" className="block text-brand-deep hover:text-brand-accent2">
-                  → Ver os 20 modelos
+                  → Ver todos os modelos
                 </Link>
                 <Link href="/blog" className="block text-brand-deep hover:text-brand-accent2">
                   → Blog jurídico

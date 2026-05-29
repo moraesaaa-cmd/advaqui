@@ -208,7 +208,7 @@ export default function MktArticlePage({ params }: { params: { slug: string } })
           {lockedSections.length > 0 && (
             <ContentGate
               title="Continuar lendo este guia"
-              description="Cadastro grátis em 2 minutos libera este guia completo + os outros 4 guias de marketing jurídico + 20 modelos de documentos + checklist de presença digital."
+              description="Cadastro grátis em 2 minutos libera este guia completo + os outros guias de marketing jurídico + a biblioteca de modelos de documentos + checklist de presença digital."
               ctaLabel="Cadastrar grátis para liberar"
               previewLines={18}
             >

@@ -1077,7 +1077,7 @@ export default function PainelPage() {
                 >
                   <FileText className="w-4 h-4 text-brand-deep mt-0.5 flex-shrink-0 group-hover:scale-110 transition" aria-hidden />
                   <span>
-                    <span className="font-semibold block">20 modelos de documentos</span>
+                    <span className="font-semibold block">Modelos de documentos</span>
                     <span className="text-xs text-brand-ink/60">Procuração, contratos, recibos</span>
                   </span>
                 </Link>

@@ -76,7 +76,7 @@ export function CTAFinal({
     {
       href: modeloHref,
       label: "Gerar um documento",
-      desc: "Procurações, contratos, notificações, declarações — 20 modelos prontos."
+      desc: "Procurações, contratos, notificações, declarações — modelos prontos pra usar."
     } as CTAAction & { Icon?: LucideIcon },
     {
       href: calculadoraHref,
