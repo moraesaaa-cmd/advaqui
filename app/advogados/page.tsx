@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { STATES } from "@/lib/data/states";
 import { citiesByUf, totalCityCount } from "@/lib/data/cities";
-import { getLawyerCountsByState } from "@/lib/data/lawyers";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { Breadcrumb } from "@/components/Breadcrumb";
 
@@ -23,7 +22,6 @@ export default async function DiretorioPage() {
     states: STATES.filter((s) => s.region === r)
   }));
   const total = totalCityCount();
-  const lawyerCountsByState = await getLawyerCountsByState();
 
   return (
     <div className="container-tight py-10">
@@ -45,7 +43,6 @@ export default async function DiretorioPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {states.map((st) => {
               const cityCount = citiesByUf(st.uf).length;
-              const lawCount = lawyerCountsByState[st.uf] || 0;
               return (
                 <Link
                   key={st.uf}
@@ -57,7 +54,7 @@ export default async function DiretorioPage() {
                       {st.name} ({st.uf})
                     </p>
                     <p className="text-xs text-brand-ink/60 mt-1">
-                      {cityCount} cidade(s) · {lawCount} advogado(s)
+                      {cityCount} cidade(s)
                     </p>
                   </div>
                   <ChevronRight className="w-5 h-5 text-brand-ink/30 group-hover:text-brand-accent" aria-hidden />

@@ -11,6 +11,7 @@ import { GLOSSARIO } from "@/lib/data/glossario";
 import { PROBLEMAS } from "@/lib/data/problemas-juridicos";
 import { GUIAS } from "@/lib/data/guias";
 import { TEMAS_STJ } from "@/lib/data/jurisprudencia-temas";
+import { CUSTOS } from "@/lib/data/custos-juridicos";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
@@ -54,7 +55,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/jurisprudencia/stj`, changeFrequency: "daily", priority: 0.8, lastModified: now },
     { url: `${base}/glossario`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
     { url: `${base}/problemas-juridicos`, changeFrequency: "weekly", priority: 0.9, lastModified: now },
-    { url: `${base}/guias`, changeFrequency: "weekly", priority: 0.8, lastModified: now }
+    { url: `${base}/guias`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
+    { url: `${base}/central`, changeFrequency: "weekly", priority: 0.7, lastModified: now },
+    { url: `${base}/advogados-de`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
+    { url: `${base}/quanto-custa`, changeFrequency: "weekly", priority: 0.8, lastModified: now }
   ];
 
   // Glossário — termos individuais
@@ -87,6 +91,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "weekly",
     priority: 0.7,
     lastModified: t.atualizado_em ? new Date(t.atualizado_em) : now
+  }));
+
+  // Páginas-base de custo (quanto custa cada serviço)
+  const custoRoutes: MetadataRoute.Sitemap = CUSTOS.map((c) => ({
+    url: `${base}/quanto-custa/${c.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: now
+  }));
+
+  // Páginas-base de área de atuação
+  const areaRoutes: MetadataRoute.Sitemap = SPECIALTIES.map((sp) => ({
+    url: `${base}/advogados-de/${sp.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: now
   }));
 
   // Combinações cauda longa (problema/área/tema/glossário × 5571 cidades)
@@ -212,6 +232,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...glossarioRoutes,
     ...problemaRoutes,
     ...guiaRoutes,
-    ...temaStjRoutes
+    ...temaStjRoutes,
+    ...custoRoutes,
+    ...areaRoutes
   ];
 }

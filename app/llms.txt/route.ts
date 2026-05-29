@@ -52,6 +52,8 @@ export function GET() {
   lines.push("## Páginas principais");
   lines.push("");
   lines.push(`- [Início](${abs("/")}): busca de advogados por cidade e área de atuação.`);
+  lines.push(`- [Central](${abs("/central")}): mapa do site organizado por objetivo.`);
+  lines.push(`- [Áreas de atuação](${abs("/advogados-de")}): o que cada área do direito cobre e quando procurar.`);
   lines.push(
     `- [Problemas jurídicos](${abs("/problemas-juridicos")}): o que fazer em situações concretas, passo a passo.`
   );

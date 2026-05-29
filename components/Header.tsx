@@ -7,13 +7,48 @@ import { Menu, X, User as UserIcon, LogOut, LayoutDashboard, ChevronDown, Shield
 import { Logo } from "./Logo";
 import { createClient } from "@/lib/supabase/client";
 
-const NAV = [
-  { href: "/", label: "Início" },
-  { href: "/advogados", label: "Diretório" },
-  { href: "/jurisprudencia", label: "Jurisprudência" },
-  { href: "/blog", label: "Blog" },
-  { href: "/modelos", label: "Modelos" },
-  { href: "/marketing-juridico", label: "Marketing" },
+/**
+ * Navegação agrupada por intenção do visitante (em vez de uma lista solta).
+ * Conteúdos do mesmo gênero ficam juntos:
+ *  - Resolver problema: problemas, guias, áreas, glossário, jurisprudência
+ *  - Ferramentas: calculadoras, quanto custa, modelos, tribunais
+ *  - Conteúdo: blog, marketing, checklist
+ */
+const PRIMARY: Array<{ href: string; label: string }> = [
+  { href: "/advogados", label: "Encontrar advogado" }
+];
+
+const GROUPS: Array<{ label: string; items: Array<{ href: string; label: string }> }> = [
+  {
+    label: "Resolver problema",
+    items: [
+      { href: "/problemas-juridicos", label: "Problemas jurídicos" },
+      { href: "/guias", label: "Guias por área" },
+      { href: "/advogados-de", label: "Áreas de atuação" },
+      { href: "/glossario", label: "Glossário jurídico" },
+      { href: "/jurisprudencia", label: "Jurisprudência (STF/STJ)" }
+    ]
+  },
+  {
+    label: "Ferramentas",
+    items: [
+      { href: "/calculadoras", label: "Calculadoras" },
+      { href: "/quanto-custa", label: "Quanto custa" },
+      { href: "/modelos", label: "Modelos de documentos" },
+      { href: "/tribunais", label: "Tribunais por cidade" }
+    ]
+  },
+  {
+    label: "Conteúdo",
+    items: [
+      { href: "/blog", label: "Blog jurídico" },
+      { href: "/marketing-juridico", label: "Marketing (advogados)" },
+      { href: "/checklist", label: "Checklist de presença digital" }
+    ]
+  }
+];
+
+const TRAILING: Array<{ href: string; label: string }> = [
   { href: "/planos", label: "Planos" }
 ];
 
@@ -27,9 +62,17 @@ export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  // Qual grupo de navegação (dropdown desktop) está aberto, se algum.
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
   // Default ANÔNIMO desde o primeiro render — evita flicker do header sem
   // botões Entrar/Cadastrar enquanto a API valida quem é o visitante.
   const [session, setSession] = useState<SessionState>({ status: "anonymous" });
+
+  // Fecha dropdowns ao navegar entre páginas.
+  useEffect(() => {
+    setOpenGroup(null);
+    setOpen(false);
+  }, [pathname]);
 
   // Detecta auth via /api/auth/me — endpoint server-side que sabe se é admin
   // (cookie HMAC), advogado (sessão Supabase) ou anônimo. Mais confiável que
@@ -102,22 +145,75 @@ export function Header() {
     router.refresh();
   };
 
+  const linkClass =
+    "px-3 py-2 rounded-lg text-sm font-medium text-brand-ink hover:bg-brand-line/60 transition";
+
   return (
     <header className="sticky top-0 z-40 bg-brand-bg/95 backdrop-blur border-b border-brand-line">
       <div className="container-tight flex items-center justify-between h-16">
         <Link href="/" className="flex items-center" aria-label="AdvAqui — página inicial">
           <Logo />
         </Link>
+
         <nav className="hidden md:flex items-center gap-1" aria-label="Principal">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="px-3 py-2 rounded-lg text-sm font-medium text-brand-ink hover:bg-brand-line/60 transition"
-            >
+          {PRIMARY.map((item) => (
+            <Link key={item.href} href={item.href} className={linkClass}>
               {item.label}
             </Link>
           ))}
+
+          {GROUPS.map((group) => (
+            <div key={group.label} className="relative">
+              <button
+                type="button"
+                onClick={() =>
+                  setOpenGroup((cur) => (cur === group.label ? null : group.label))
+                }
+                aria-expanded={openGroup === group.label}
+                aria-haspopup="menu"
+                className={`${linkClass} inline-flex items-center gap-1`}
+              >
+                {group.label}
+                <ChevronDown
+                  className={`w-3.5 h-3.5 transition-transform ${openGroup === group.label ? "rotate-180" : ""}`}
+                  aria-hidden
+                />
+              </button>
+              {openGroup === group.label && (
+                <>
+                  <button
+                    type="button"
+                    aria-label="Fechar menu"
+                    onClick={() => setOpenGroup(null)}
+                    className="fixed inset-0 z-30 cursor-default"
+                  />
+                  <div
+                    role="menu"
+                    className="absolute left-0 mt-2 z-40 w-64 rounded-xl bg-white border border-brand-line shadow-cardHover overflow-hidden py-1"
+                  >
+                    {group.items.map((item) => (
+                      <Link
+                        key={item.href}
+                        role="menuitem"
+                        href={item.href}
+                        onClick={() => setOpenGroup(null)}
+                        className="block px-4 py-2.5 text-sm text-brand-ink hover:bg-brand-line/40 hover:text-brand-deep transition"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+
+          {TRAILING.map((item) => (
+            <Link key={item.href} href={item.href} className={linkClass}>
+              {item.label}
+            </Link>
+          ))}
+
           <div className="ml-2 flex items-center gap-2">
             {session.status === "lawyer" || session.status === "admin" ? (
               <div className="relative">
@@ -189,6 +285,7 @@ export function Header() {
             )}
           </div>
         </nav>
+
         <button
           className="md:hidden p-2 -mr-2"
           aria-label={open ? "Fechar menu" : "Abrir menu"}
@@ -198,19 +295,50 @@ export function Header() {
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
+
       {open && (
-        <div className="md:hidden border-t border-brand-line bg-brand-bg">
+        <div className="md:hidden border-t border-brand-line bg-brand-bg max-h-[calc(100vh-4rem)] overflow-y-auto">
           <div className="container-tight py-3 space-y-1">
-            {NAV.map((item) => (
+            {PRIMARY.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="block px-3 py-3 rounded-lg text-base font-medium text-brand-ink hover:bg-brand-line/60"
+                className="block px-3 py-3 rounded-lg text-base font-semibold text-brand-ink hover:bg-brand-line/60"
               >
                 {item.label}
               </Link>
             ))}
+
+            {GROUPS.map((group) => (
+              <div key={group.label} className="pt-2">
+                <p className="px-3 pb-1 text-xs font-bold uppercase tracking-wide text-brand-ink/50">
+                  {group.label}
+                </p>
+                {group.items.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className="block px-3 py-2.5 rounded-lg text-base font-medium text-brand-ink hover:bg-brand-line/60"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            ))}
+
+            {TRAILING.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className="block px-3 py-3 rounded-lg text-base font-semibold text-brand-ink hover:bg-brand-line/60 mt-2"
+              >
+                {item.label}
+              </Link>
+            ))}
+
             <div className="pt-2 flex flex-col gap-2 border-t border-brand-line mt-2">
               {session.status === "lawyer" || session.status === "admin" ? (
                 <>
