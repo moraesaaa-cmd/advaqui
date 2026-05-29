@@ -453,6 +453,703 @@ export const GLOSSARIO: GlossarioTermo[] = [
     ver_tambem: ["dano-moral", "dano-material"],
     tema_jurisprudencia: "responsabilidade-civil",
     atualizado_em: "2026-05-21"
+  },
+  {
+    slug: "mandado-de-seguranca",
+    termo: "Mandado de segurança",
+    variacoes: ["MS", "mandado de segurança individual"],
+    definicao_curta:
+      "Ação para proteger direito líquido e certo violado por ato ilegal de autoridade pública.",
+    explicacao: [
+      "O mandado de segurança é uma ação constitucional usada quando uma autoridade pública (ou quem age no exercício de função pública) pratica ato ilegal ou abusivo que fere direito líquido e certo — ou seja, um direito que pode ser comprovado de plano, por documentos, sem necessidade de produção de prova complexa.",
+      "Serve, por exemplo, contra negativa indevida de matrícula, recusa de expedição de documento, exigência ilegal em concurso ou cobrança de tributo claramente indevido. Há prazo legal para impetrar contado do ato impugnado, e por isso convém procurar orientação rapidamente.",
+      "Não substitui outras ações quando o direito depende de provas a serem produzidas. Nesses casos, o caminho costuma ser uma ação ordinária."
+    ],
+    exemplos: [
+      "Candidato aprovado em concurso que tem a nomeação negada sem fundamento",
+      "Servidor que sofre desconto ilegal e quer suspendê-lo de imediato",
+      "Empresa autuada com base em exigência tributária sem amparo em lei"
+    ],
+    areas: ["administrativo", "tributario", "civil"],
+    ver_tambem: ["habeas-corpus", "tutela-de-urgencia"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "habeas-data",
+    termo: "Habeas data",
+    definicao_curta:
+      "Ação para acessar ou corrigir informações sobre a própria pessoa em bancos de dados públicos.",
+    explicacao: [
+      "O habeas data garante a qualquer pessoa o direito de conhecer as informações que órgãos públicos ou entidades de caráter público mantêm a seu respeito, e de pedir a correção de dados errados.",
+      "É diferente de pedir indenização: o foco é o acesso e a retificação da informação. Normalmente exige tentativa prévia de obter os dados pela via administrativa antes de ir ao Judiciário.",
+      "Com a LGPD, muitos pedidos de acesso e correção também podem ser feitos diretamente ao controlador dos dados, mas o habeas data segue válido contra bases de caráter público."
+    ],
+    exemplos: [
+      "Cidadão que quer ver o que consta sobre ele em cadastro de órgão público",
+      "Pessoa que descobre dado incorreto em sistema governamental e quer corrigir"
+    ],
+    areas: ["administrativo", "digital", "civil"],
+    ver_tambem: ["mandado-de-seguranca"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "coisa-julgada",
+    termo: "Coisa julgada",
+    variacoes: ["res judicata"],
+    definicao_curta:
+      "Qualidade da decisão judicial contra a qual não cabe mais recurso, tornando-a definitiva.",
+    explicacao: [
+      "Quando uma decisão não pode mais ser alterada por recurso, diz-se que houve coisa julgada. A partir daí, em regra, a mesma questão não pode ser rediscutida entre as mesmas partes.",
+      "Ela traz segurança jurídica: o conflito tem um fim. Existem exceções estreitas, como a ação rescisória, cabível em hipóteses específicas e com prazo próprio.",
+      "Coisa julgada material impede nova discussão do mérito; a formal impede recurso apenas naquele processo."
+    ],
+    exemplos: [
+      "Sentença de divórcio que não teve recurso e se torna definitiva",
+      "Ação de cobrança julgada e sem recurso, impedindo novo processo idêntico"
+    ],
+    areas: ["civil", "criminal"],
+    ver_tambem: ["transito-em-julgado", "prescricao"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "transito-em-julgado",
+    termo: "Trânsito em julgado",
+    definicao_curta:
+      "Momento em que a decisão judicial não admite mais recurso e passa a produzir efeitos definitivos.",
+    explicacao: [
+      "Uma decisão transita em julgado quando se esgotam os prazos de recurso sem que nenhum seja interposto, ou quando todos os recursos cabíveis já foram julgados.",
+      "É a partir do trânsito em julgado que se inicia, por exemplo, a fase de cumprimento de sentença, e que se conta o prazo para eventual ação rescisória.",
+      "Saber a data exata do trânsito em julgado é importante porque vários prazos dependem dela."
+    ],
+    exemplos: [
+      "Fim do prazo de apelação sem recurso, tornando a sentença definitiva",
+      "Última decisão de recurso no tribunal superior encerrando o processo"
+    ],
+    areas: ["civil", "criminal"],
+    ver_tambem: ["coisa-julgada", "apelacao"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "usufruto",
+    termo: "Usufruto",
+    definicao_curta:
+      "Direito de usar e usufruir de um bem de outra pessoa, sem ser dono dele.",
+    explicacao: [
+      "No usufruto, uma pessoa (usufrutuário) pode usar o bem e receber seus frutos — como morar no imóvel ou receber aluguéis — enquanto a propriedade continua com o dono (nu-proprietário).",
+      "É comum em planejamento familiar: pais doam um imóvel aos filhos, mas reservam o usufruto para si, garantindo moradia ou renda enquanto viverem.",
+      "O usufruto pode ser vitalício ou por prazo determinado, e em regra se extingue com a morte do usufrutuário."
+    ],
+    exemplos: [
+      "Mãe que doa a casa ao filho, mas mantém o direito de morar nela até falecer",
+      "Usufruto de um imóvel alugado, em que o usufrutuário recebe os aluguéis"
+    ],
+    areas: ["civil", "imobiliario", "familia"],
+    ver_tambem: ["testamento", "bem-de-familia"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "testamento",
+    termo: "Testamento",
+    definicao_curta:
+      "Documento em que a pessoa define como seus bens serão divididos após a morte, dentro dos limites legais.",
+    explicacao: [
+      "O testamento permite organizar a sucessão e destinar a parte disponível do patrimônio. No Brasil, havendo herdeiros necessários (descendentes, ascendentes e cônjuge), metade da herança — a legítima — é reservada a eles e não pode ser afastada por testamento.",
+      "Há formas previstas em lei, como o testamento público (feito em cartório) e o particular. Cada forma tem requisitos próprios de validade.",
+      "Vale revisar o testamento ao longo da vida, pois mudanças familiares e patrimoniais podem torná-lo desatualizado."
+    ],
+    exemplos: [
+      "Pessoa sem filhos que destina seus bens a um sobrinho por testamento",
+      "Avô que deixa a parte disponível da herança para um neto específico"
+    ],
+    areas: ["civil", "familia"],
+    ver_tambem: ["inventario", "espolio", "partilha-de-bens"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "espolio",
+    termo: "Espólio",
+    definicao_curta:
+      "Conjunto de bens, direitos e dívidas deixados por uma pessoa falecida, até a partilha.",
+    explicacao: [
+      "Espólio é o patrimônio do falecido considerado como um todo, antes de ser dividido entre os herdeiros. Durante o inventário, o espólio é representado pelo inventariante.",
+      "As dívidas do falecido são pagas pelo espólio, no limite das forças da herança — ou seja, os herdeiros não respondem com seu próprio patrimônio além do que receberam.",
+      "Enquanto não há partilha, atos como vender um imóvel do falecido dependem de autorização no inventário."
+    ],
+    exemplos: [
+      "Conta bancária do falecido que fica em nome do espólio até o inventário",
+      "Dívida do falecido quitada com os próprios bens deixados"
+    ],
+    areas: ["civil", "familia"],
+    ver_tambem: ["inventario", "partilha-de-bens", "testamento"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "partilha-de-bens",
+    termo: "Partilha de bens",
+    variacoes: ["partilha", "divisão de bens"],
+    definicao_curta:
+      "Divisão do patrimônio entre herdeiros (na herança) ou entre o casal (no divórcio).",
+    explicacao: [
+      "A partilha define quem fica com o quê. Na sucessão, divide a herança entre os herdeiros; no divórcio, separa os bens conforme o regime de casamento.",
+      "Pode ser consensual, quando todos concordam, o que agiliza o processo e reduz custos, ou litigiosa, quando há disputa e o juiz decide.",
+      "Bens, dívidas e até participações em empresas entram na conta. Avaliação correta evita injustiças e conflitos futuros."
+    ],
+    exemplos: [
+      "Divórcio em que o casal divide o imóvel comprado na constância do casamento",
+      "Herdeiros que dividem entre si os imóveis e o saldo bancário do falecido"
+    ],
+    areas: ["familia", "civil"],
+    ver_tambem: ["inventario", "divorcio", "espolio"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "uniao-estavel",
+    termo: "União estável",
+    definicao_curta:
+      "Convivência pública, contínua e duradoura entre duas pessoas com intenção de formar família.",
+    explicacao: [
+      "A união estável é reconhecida como entidade familiar e gera direitos e deveres semelhantes aos do casamento, como pensão e partilha de bens, conforme o regime aplicável.",
+      "Não exige tempo mínimo fixo nem documento formal, mas pode ser formalizada por escritura pública, o que facilita a prova e o planejamento patrimonial.",
+      "Em regra, aplica-se o regime de comunhão parcial de bens, salvo contrato escrito em sentido diverso."
+    ],
+    exemplos: [
+      "Casal que mora junto há anos e quer formalizar a relação em cartório",
+      "Companheiro que busca pensão por morte do parceiro junto ao INSS"
+    ],
+    areas: ["familia"],
+    ver_tambem: ["divorcio", "partilha-de-bens", "pensao-alimenticia"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "guarda-compartilhada",
+    termo: "Guarda compartilhada",
+    definicao_curta:
+      "Modelo em que ambos os pais dividem decisões e responsabilidades sobre os filhos.",
+    explicacao: [
+      "Na guarda compartilhada, pai e mãe participam das decisões importantes da vida dos filhos — escola, saúde, viagens — mesmo morando em casas diferentes. É a regra preferencial na lei brasileira quando ambos têm condições.",
+      "Compartilhar a guarda não significa dividir o tempo pela metade: define-se uma residência de referência e um regime de convivência que atenda ao melhor interesse da criança.",
+      "A guarda compartilhada não afasta, por si só, o pagamento de pensão alimentícia."
+    ],
+    exemplos: [
+      "Pais separados que decidem juntos a escola e o plano de saúde do filho",
+      "Definição de finais de semana alternados com residência principal na mãe"
+    ],
+    areas: ["familia"],
+    ver_tambem: ["guarda", "pensao-alimenticia", "alienacao-parental"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "alienacao-parental",
+    termo: "Alienação parental",
+    definicao_curta:
+      "Conduta de um responsável para afastar ou prejudicar o vínculo da criança com o outro genitor.",
+    explicacao: [
+      "Ocorre quando um dos pais (ou outro responsável) manipula a criança para rejeitar o outro genitor — desqualificando-o, criando obstáculos à convivência ou fazendo falsas acusações.",
+      "A lei prevê medidas que vão de advertência a alteração da guarda, conforme a gravidade, sempre com foco na proteção da criança.",
+      "Identificar e tratar cedo é importante: o vínculo afetivo prejudicado pode ter efeitos duradouros."
+    ],
+    exemplos: [
+      "Genitor que impede sistematicamente as visitas combinadas",
+      "Responsável que denigre o outro pai na frente da criança"
+    ],
+    areas: ["familia"],
+    ver_tambem: ["guarda-compartilhada", "guarda"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "justa-causa",
+    termo: "Justa causa",
+    definicao_curta:
+      "Demissão por falta grave do empregado, sem direito a parte das verbas rescisórias.",
+    explicacao: [
+      "A justa causa é a punição máxima na relação de trabalho. A lei lista hipóteses como ato de improbidade, indisciplina, abandono de emprego e agressão. A empresa precisa provar a falta.",
+      "Na justa causa, o trabalhador perde aviso prévio, multa de 40% do FGTS e o saque do FGTS, mas mantém saldo de salário e férias vencidas.",
+      "Aplicação exige proporcionalidade e imediatidade — punir logo após o fato. Justa causa duvidosa pode ser revertida na Justiça do Trabalho."
+    ],
+    exemplos: [
+      "Empregado flagrado desviando mercadoria da empresa",
+      "Faltas reiteradas e sem justificativa caracterizando abandono"
+    ],
+    areas: ["trabalhista"],
+    ver_tambem: ["rescisao", "aviso-previo", "fgts"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "aviso-previo",
+    termo: "Aviso prévio",
+    definicao_curta:
+      "Comunicação antecipada do fim do contrato de trabalho, com prazo e efeitos definidos em lei.",
+    explicacao: [
+      "Quando a empresa dispensa sem justa causa, ou o empregado pede demissão, a parte que encerra deve avisar com antecedência. O aviso pode ser trabalhado ou indenizado.",
+      "O prazo é de 30 dias, acrescido de 3 dias por ano trabalhado na mesma empresa, até o limite previsto em lei. No aviso trabalhado, há redução de jornada ou faltas para procurar emprego.",
+      "No pedido de demissão, se o empregado não cumpre o aviso, a empresa pode descontar o valor correspondente."
+    ],
+    exemplos: [
+      "Empregado dispensado que recebe o aviso prévio indenizado na rescisão",
+      "Trabalhador com 5 anos de casa que tem direito a aviso prévio maior que 30 dias"
+    ],
+    areas: ["trabalhista"],
+    ver_tambem: ["rescisao", "justa-causa"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "estabilidade-gestante",
+    termo: "Estabilidade da gestante",
+    variacoes: ["estabilidade provisória", "garantia de emprego da gestante"],
+    definicao_curta:
+      "Garantia de emprego à gestante desde a confirmação da gravidez até meses após o parto.",
+    explicacao: [
+      "A empregada gestante não pode ser dispensada sem justa causa desde a confirmação da gravidez até cinco meses após o parto, conforme a Constituição.",
+      "A estabilidade vale mesmo que a empresa não soubesse da gravidez no momento da dispensa. Reconhecida a violação, a trabalhadora pode pedir reintegração ou indenização do período.",
+      "Existem outras estabilidades, como a do cipeiro e a do acidentado, cada uma com regras próprias."
+    ],
+    exemplos: [
+      "Gestante dispensada sem justa causa que pede reintegração",
+      "Trabalhadora que descobre a gravidez após a demissão e busca seus direitos"
+    ],
+    areas: ["trabalhista"],
+    ver_tambem: ["rescisao", "justa-causa"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "assedio-moral",
+    termo: "Assédio moral no trabalho",
+    definicao_curta:
+      "Conduta abusiva e repetitiva que humilha ou constrange o trabalhador no ambiente de trabalho.",
+    explicacao: [
+      "O assédio moral se caracteriza pela repetição de atitudes que expõem o trabalhador a situações humilhantes — perseguição, isolamento, metas impossíveis usadas como punição, ofensas.",
+      "Pode gerar direito a indenização por dano moral e, em casos graves, embasar a rescisão indireta (quando o empregado encerra o contrato por falta grave do empregador).",
+      "Reunir provas — mensagens, testemunhas, registros médicos — é decisivo para demonstrar o assédio."
+    ],
+    exemplos: [
+      "Chefe que expõe o funcionário a humilhações diárias na frente da equipe",
+      "Trabalhador isolado e sobrecarregado de propósito para forçar o pedido de demissão"
+    ],
+    areas: ["trabalhista", "civil"],
+    ver_tambem: ["dano-moral", "rescisao"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "acidente-de-trabalho",
+    termo: "Acidente de trabalho",
+    definicao_curta:
+      "Lesão ou doença decorrente do trabalho que pode gerar direitos previdenciários e trabalhistas.",
+    explicacao: [
+      "Acidente de trabalho é o que ocorre no exercício da atividade e causa lesão ou perda da capacidade. Inclui doenças ocupacionais e, em certas situações, o acidente de trajeto.",
+      "A empresa deve emitir a CAT (Comunicação de Acidente de Trabalho). O trabalhador pode ter direito a benefício do INSS e, conforme o caso, a estabilidade e indenização.",
+      "O nexo entre a lesão e o trabalho costuma ser avaliado por perícia médica."
+    ],
+    exemplos: [
+      "Operador que sofre lesão por esforço repetitivo reconhecida como ocupacional",
+      "Funcionário acidentado com máquina sem proteção adequada"
+    ],
+    areas: ["trabalhista", "previdenciario"],
+    ver_tambem: ["auxilio-doenca", "auxilio-acidente", "estabilidade-gestante"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "auxilio-acidente",
+    termo: "Auxílio-acidente",
+    definicao_curta:
+      "Indenização mensal do INSS a quem fica com sequela que reduz a capacidade de trabalho.",
+    explicacao: [
+      "O auxílio-acidente é um benefício indenizatório pago quando, após consolidação das lesões, restam sequelas que reduzem a capacidade para a atividade habitual.",
+      "Ele não impede o trabalhador de continuar trabalhando — diferentemente do auxílio por incapacidade temporária — e é pago como complemento.",
+      "Depende de avaliação pericial que reconheça a redução da capacidade e o nexo com o acidente ou doença."
+    ],
+    exemplos: [
+      "Trabalhador que perde parte dos movimentos da mão após acidente",
+      "Segurado com sequela auditiva que reduz a capacidade laboral"
+    ],
+    areas: ["previdenciario", "trabalhista"],
+    ver_tambem: ["auxilio-doenca", "acidente-de-trabalho", "aposentadoria"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "seguro-desemprego",
+    termo: "Seguro-desemprego",
+    definicao_curta:
+      "Benefício temporário pago ao trabalhador dispensado sem justa causa que cumpre os requisitos.",
+    explicacao: [
+      "O seguro-desemprego é pago em parcelas a quem foi dispensado sem justa causa, conforme tempo de trabalho e número de solicitações anteriores.",
+      "Há requisitos de carência (tempo mínimo de vínculo) e prazos para requerer após a dispensa. O número de parcelas varia conforme as regras vigentes.",
+      "Existem modalidades específicas, como a do empregado doméstico e a do trabalhador resgatado de condição análoga à escravidão."
+    ],
+    exemplos: [
+      "Trabalhador demitido sem justa causa que solicita o benefício no prazo",
+      "Empregado doméstico com FGTS que requer a modalidade própria"
+    ],
+    areas: ["trabalhista"],
+    ver_tambem: ["rescisao", "fgts", "aviso-previo"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "bpc-loas",
+    termo: "BPC (LOAS)",
+    variacoes: ["benefício de prestação continuada", "amparo assistencial"],
+    definicao_curta:
+      "Benefício assistencial de um salário mínimo ao idoso ou à pessoa com deficiência em situação de baixa renda.",
+    explicacao: [
+      "O BPC, previsto na LOAS, garante um salário mínimo mensal ao idoso (a partir da idade prevista em lei) ou à pessoa com deficiência que comprove baixa renda familiar.",
+      "Não é aposentadoria: não exige contribuição ao INSS e não gera 13º nem pensão por morte. O foco é assistencial.",
+      "A análise considera a renda por pessoa da família e, no caso da deficiência, avaliação médica e social."
+    ],
+    exemplos: [
+      "Idoso sem aposentadoria e de baixa renda que requer o benefício",
+      "Pessoa com deficiência incapacitante em família de baixa renda"
+    ],
+    areas: ["previdenciario"],
+    ver_tambem: ["aposentadoria", "auxilio-doenca"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "direito-de-arrependimento",
+    termo: "Direito de arrependimento",
+    variacoes: ["arrependimento de compra", "prazo de 7 dias"],
+    definicao_curta:
+      "Direito de desistir de compra feita fora da loja física, como pela internet, em até 7 dias.",
+    explicacao: [
+      "Em compras feitas fora do estabelecimento — internet, telefone, catálogo — o consumidor pode se arrepender em até 7 dias corridos a contar do recebimento ou da assinatura do contrato.",
+      "Ao exercer o direito, o consumidor deve receber de volta os valores pagos, atualizados, sem custo pela devolução.",
+      "Esse direito é diferente da troca por defeito: aqui não é preciso justificar o motivo da desistência."
+    ],
+    exemplos: [
+      "Cliente que recebe um produto comprado online e desiste em 3 dias",
+      "Assinatura contratada por telefone cancelada dentro do prazo legal"
+    ],
+    areas: ["consumidor"],
+    ver_tambem: ["vicio-do-produto", "garantia-legal"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "vicio-do-produto",
+    termo: "Vício do produto",
+    variacoes: ["produto com defeito", "vício de qualidade"],
+    definicao_curta:
+      "Defeito que torna o produto impróprio ou diminui seu valor, gerando direito a conserto, troca ou devolução.",
+    explicacao: [
+      "Vício é o problema de qualidade ou quantidade do produto. Constatado o vício, o fornecedor tem prazo legal para sanar; não resolvido, o consumidor pode escolher troca, devolução do valor ou abatimento do preço.",
+      "Os prazos para reclamar variam entre produtos não duráveis e duráveis, contados da entrega ou do surgimento do defeito oculto.",
+      "Difere do fato do produto, que é quando o defeito causa dano à saúde ou segurança."
+    ],
+    exemplos: [
+      "Celular novo que não liga e a loja não troca no prazo",
+      "Eletrodoméstico que apresenta defeito recorrente dentro da garantia"
+    ],
+    areas: ["consumidor"],
+    ver_tambem: ["garantia-legal", "fato-do-produto", "direito-de-arrependimento"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "fato-do-produto",
+    termo: "Fato do produto",
+    variacoes: ["acidente de consumo", "defeito que causa dano"],
+    definicao_curta:
+      "Defeito que vai além do produto e causa dano à saúde, segurança ou patrimônio do consumidor.",
+    explicacao: [
+      "Enquanto o vício afeta o próprio produto, o fato do produto é o defeito que provoca um dano maior — uma lesão, um incêndio, um acidente. A responsabilidade do fornecedor é objetiva.",
+      "O consumidor pode pedir reparação pelos danos materiais e morais sofridos, comprovando o defeito e o prejuízo.",
+      "Há prazo próprio para essa pretensão, contado a partir do conhecimento do dano e de sua autoria."
+    ],
+    exemplos: [
+      "Alimento estragado que causa intoxicação ao consumidor",
+      "Aparelho que explode e provoca queimaduras"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["vicio-do-produto", "responsabilidade-civil", "dano-moral"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "garantia-legal",
+    termo: "Garantia legal",
+    definicao_curta:
+      "Proteção mínima garantida por lei a todo consumidor, independentemente de garantia contratual.",
+    explicacao: [
+      "A garantia legal é assegurada pelo Código de Defesa do Consumidor e existe mesmo que o produto não tenha garantia de fábrica ou da loja. Cobre vícios constatados dentro dos prazos previstos.",
+      "A garantia contratual, oferecida pelo fornecedor, soma-se à legal — não a substitui. Por isso o consumidor não fica desprotegido quando a garantia da loja acaba.",
+      "Em vício oculto, o prazo começa a contar do momento em que o defeito aparece."
+    ],
+    exemplos: [
+      "Defeito que surge logo após o fim da garantia de fábrica, ainda coberto pela lei",
+      "Vício oculto descoberto meses depois, dentro do prazo legal"
+    ],
+    areas: ["consumidor"],
+    ver_tambem: ["vicio-do-produto", "direito-de-arrependimento"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "protesto-de-titulo",
+    termo: "Protesto de título",
+    definicao_curta:
+      "Registro em cartório de que uma dívida representada por documento não foi paga.",
+    explicacao: [
+      "O protesto é feito em cartório para comprovar publicamente o não pagamento de um título — duplicata, cheque, nota promissória. Ele pressiona o devedor e pode afetar o crédito.",
+      "O devedor pode pagar e pedir a baixa, ou questionar protesto indevido — quando a dívida não existe, já foi paga ou o título é irregular —, situação que pode gerar indenização.",
+      "Cancelar o protesto após o pagamento costuma exigir a apresentação da quitação no cartório."
+    ],
+    exemplos: [
+      "Fornecedor que protesta duplicata não paga pelo cliente",
+      "Consumidor protestado por dívida já quitada, com direito a baixa e reparação"
+    ],
+    areas: ["civil", "empresarial", "consumidor"],
+    ver_tambem: ["negativacao-indevida", "juros-de-mora"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "busca-e-apreensao",
+    termo: "Busca e apreensão",
+    definicao_curta:
+      "Medida para retomar bem dado em garantia (como carro financiado) quando o devedor deixa de pagar.",
+    explicacao: [
+      "Na alienação fiduciária — comum em financiamento de veículos —, o bem fica em garantia até a quitação. Em caso de inadimplência, o credor pode pedir a busca e apreensão do bem.",
+      "Em regra, o devedor é notificado e tem oportunidade de pagar o que está em atraso para manter o bem. Discutir abusos no contrato pode ser cabível em paralelo.",
+      "Procurar orientação cedo, ao primeiro atraso, costuma ampliar as opções de acordo."
+    ],
+    exemplos: [
+      "Banco que pede a apreensão de carro financiado com parcelas atrasadas",
+      "Devedor que regulariza o atraso e evita perder o veículo"
+    ],
+    areas: ["civil", "consumidor"],
+    ver_tambem: ["juros-de-mora", "clausula-penal"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "despejo",
+    termo: "Despejo",
+    definicao_curta:
+      "Ação para retomar imóvel alugado, principalmente por falta de pagamento ou fim do contrato.",
+    explicacao: [
+      "O despejo é o meio pelo qual o locador busca a desocupação do imóvel. A causa mais comum é a falta de pagamento, mas há outras, como o término do prazo e o descumprimento do contrato.",
+      "Na falta de pagamento, o inquilino normalmente pode purgar a mora — pagar o que deve, com encargos, dentro do prazo — e evitar a saída, observados os limites legais.",
+      "O rito e os prazos variam conforme o motivo e a existência de garantia locatícia."
+    ],
+    exemplos: [
+      "Locador que ajuíza despejo por três meses de aluguel atrasado",
+      "Fim do contrato sem renovação, com pedido de retomada do imóvel"
+    ],
+    areas: ["imobiliario", "civil"],
+    ver_tambem: ["distrato", "arras", "clausula-penal"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "arras",
+    termo: "Arras (sinal)",
+    variacoes: ["sinal", "arras confirmatórias", "arras penitenciais"],
+    definicao_curta:
+      "Valor pago como sinal em um contrato, normalmente de compra e venda de imóvel.",
+    explicacao: [
+      "Arras é o valor entregue por uma parte à outra para confirmar o negócio. Se quem pagou desistir, em regra perde o sinal; se quem recebeu desistir, costuma devolver em dobro.",
+      "Existem arras confirmatórias (reforçam o compromisso) e penitenciais (preveem expressamente o direito de arrependimento). A diferença muda os efeitos da desistência.",
+      "Ler com atenção a cláusula de arras antes de assinar evita perdas inesperadas."
+    ],
+    exemplos: [
+      "Comprador que dá sinal na reserva de um apartamento e depois desiste",
+      "Vendedor que recebe sinal, desiste e precisa devolver em dobro"
+    ],
+    areas: ["civil", "imobiliario"],
+    ver_tambem: ["clausula-penal", "distrato", "despejo"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "clausula-penal",
+    termo: "Cláusula penal",
+    variacoes: ["multa contratual"],
+    definicao_curta:
+      "Multa prevista no contrato para o caso de descumprimento por uma das partes.",
+    explicacao: [
+      "A cláusula penal fixa de antemão a consequência do descumprimento — total ou de uma obrigação específica. Serve para reforçar o cumprimento e prefixar perdas e danos.",
+      "O valor não pode ultrapassar o da obrigação principal, e o juiz pode reduzir multa manifestamente excessiva ou quando a obrigação foi cumprida em parte.",
+      "Distingue-se das arras, embora ambas tratem de consequências de descumprimento."
+    ],
+    exemplos: [
+      "Multa por rescisão antecipada em contrato de prestação de serviços",
+      "Penalidade por atraso na entrega de uma obra"
+    ],
+    areas: ["civil", "empresarial"],
+    ver_tambem: ["arras", "distrato", "juros-de-mora"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "distrato",
+    termo: "Distrato",
+    variacoes: ["rescisão contratual amigável"],
+    definicao_curta:
+      "Acordo entre as partes para encerrar um contrato antes do previsto, definindo as condições da saída.",
+    explicacao: [
+      "Distrato é o desfazimento do contrato por consenso. As partes ajustam como ficam valores já pagos, eventuais multas e a devolução de bens.",
+      "Formalizar por escrito, com quitação clara, evita cobranças futuras e discussões sobre o que foi combinado.",
+      "Em contratos de consumo, cláusulas de devolução abusivas podem ser questionadas."
+    ],
+    exemplos: [
+      "Casal que faz distrato de contrato de prestação de serviços de festa",
+      "Comprador e construtora que encerram a compra e ajustam a devolução"
+    ],
+    areas: ["civil", "consumidor", "imobiliario"],
+    ver_tambem: ["clausula-penal", "arras", "despejo"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "juros-de-mora",
+    termo: "Juros de mora",
+    definicao_curta:
+      "Acréscimo cobrado pelo atraso no pagamento de uma dívida, como compensação pela demora.",
+    explicacao: [
+      "Os juros de mora incidem a partir do atraso e remuneram o credor pelo tempo que ficou sem receber. Podem decorrer do contrato ou da lei.",
+      "São diferentes da correção monetária, que apenas recompõe o valor frente à inflação, sem ser um ganho. Em cobranças, os dois costumam aparecer juntos.",
+      "Taxas e formas de cálculo dependem do tipo de dívida e do que prevê o contrato e a lei aplicável."
+    ],
+    exemplos: [
+      "Aluguel pago com atraso, somando multa e juros de mora",
+      "Dívida judicial atualizada com juros de mora a partir da citação"
+    ],
+    areas: ["civil", "consumidor"],
+    ver_tambem: ["correcao-monetaria", "clausula-penal", "protesto-de-titulo"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "correcao-monetaria",
+    termo: "Correção monetária",
+    definicao_curta:
+      "Atualização de um valor pela inflação, para que não perca poder de compra com o tempo.",
+    explicacao: [
+      "A correção monetária recompõe o valor de uma quantia ao longo do tempo, usando índices oficiais. Não é ganho: apenas mantém o valor real.",
+      "Aparece em dívidas, condenações judiciais, aluguéis e no próprio FGTS. O índice aplicável depende do contrato, da lei e da decisão judicial.",
+      "Soma-se aos juros, que sim representam remuneração pelo atraso ou pelo capital."
+    ],
+    exemplos: [
+      "Condenação judicial corrigida da data do dano até o pagamento",
+      "Saldo de FGTS atualizado por índice de correção"
+    ],
+    areas: ["civil", "trabalhista"],
+    ver_tambem: ["juros-de-mora", "fgts"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "penhora",
+    termo: "Penhora",
+    definicao_curta:
+      "Ato judicial que separa bens do devedor para garantir o pagamento de uma dívida cobrada na Justiça.",
+    explicacao: [
+      "Na execução, o juiz pode determinar a penhora de bens ou valores do devedor — conta bancária, veículo, imóvel — para satisfazer o credor.",
+      "A lei protege certos bens da penhora, como o bem de família e, em regra, salários, salvo exceções previstas. Penhora indevida pode ser questionada.",
+      "Acordos de parcelamento, mesmo após iniciada a execução, costumam ser possíveis."
+    ],
+    exemplos: [
+      "Bloqueio de valores em conta para pagar dívida executada",
+      "Penhora de veículo para garantir o cumprimento da sentença"
+    ],
+    areas: ["civil"],
+    ver_tambem: ["bem-de-familia", "execucao-fiscal"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "bem-de-familia",
+    termo: "Bem de família",
+    definicao_curta:
+      "Imóvel residencial protegido contra penhora na maioria das dívidas.",
+    explicacao: [
+      "O imóvel usado como residência da família é, em regra, impenhorável — não pode ser tomado para pagar a maioria das dívidas. A proteção é automática para o único imóvel residencial.",
+      "Há exceções previstas em lei, como dívidas do próprio imóvel (financiamento, condomínio, IPTU) e certas obrigações específicas.",
+      "Também existe o bem de família voluntário, instituído por escritura, com regras próprias."
+    ],
+    exemplos: [
+      "Casa única da família preservada da penhora por dívida comum",
+      "Exceção: penhora do imóvel por falta de pagamento do próprio financiamento"
+    ],
+    areas: ["civil", "familia", "imobiliario"],
+    ver_tambem: ["penhora", "usufruto"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "execucao-fiscal",
+    termo: "Execução fiscal",
+    definicao_curta:
+      "Cobrança judicial de dívidas tributárias e outras devidas ao poder público.",
+    explicacao: [
+      "É o processo pelo qual União, estados e municípios cobram judicialmente dívidas inscritas em dívida ativa — impostos, taxas, multas.",
+      "O devedor pode discutir a cobrança por meio de defesa própria, apontando pagamento, prescrição ou erro. Parcelamentos administrativos podem suspender a cobrança.",
+      "Bens podem ser penhorados para garantir o débito, observadas as proteções legais."
+    ],
+    exemplos: [
+      "Município que executa IPTU atrasado de anos anteriores",
+      "Contribuinte que alega prescrição de parte da dívida cobrada"
+    ],
+    areas: ["tributario", "administrativo"],
+    ver_tambem: ["penhora", "prescricao"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "tutela-de-urgencia",
+    termo: "Tutela de urgência (liminar)",
+    variacoes: ["liminar", "tutela provisória"],
+    definicao_curta:
+      "Decisão rápida do juiz, antes do fim do processo, para evitar dano grave e urgente.",
+    explicacao: [
+      "Quando há urgência e probabilidade do direito, o juiz pode conceder uma medida imediata — como suspender uma cobrança ou determinar um tratamento — antes de julgar o mérito.",
+      "É provisória: pode ser confirmada ou revista na sentença. Por isso costuma exigir demonstração clara do risco e do direito.",
+      "É instrumento comum em saúde, contratos e questões de família que não podem esperar."
+    ],
+    exemplos: [
+      "Liminar que obriga o plano de saúde a autorizar cirurgia urgente",
+      "Decisão que suspende protesto enquanto a dívida é discutida"
+    ],
+    areas: ["civil", "consumidor"],
+    ver_tambem: ["mandado-de-seguranca", "plano-de-saude"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "revelia",
+    termo: "Revelia",
+    definicao_curta:
+      "Situação do réu que, citado, não apresenta defesa no prazo, com possíveis efeitos contra ele.",
+    explicacao: [
+      "Se o réu é regularmente citado e não contesta no prazo, ocorre a revelia. Um de seus efeitos é a presunção de veracidade dos fatos alegados pelo autor, com exceções previstas em lei.",
+      "A revelia não garante automaticamente a vitória do autor: o juiz ainda analisa o direito. E o réu pode ingressar no processo depois, recebendo-o no estado em que estiver.",
+      "Por isso, ignorar uma citação é arriscado — responder no prazo preserva direitos."
+    ],
+    exemplos: [
+      "Réu que não contesta ação de cobrança e sofre os efeitos da revelia",
+      "Citado que comparece tardiamente e assume o processo como está"
+    ],
+    areas: ["civil"],
+    ver_tambem: ["citacao", "apelacao"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "citacao",
+    termo: "Citação",
+    definicao_curta:
+      "Ato que comunica oficialmente a pessoa de que há um processo contra ela, abrindo prazo para defesa.",
+    explicacao: [
+      "A citação é o chamamento formal do réu para integrar o processo e se defender. Pode ocorrer pelos correios, por oficial de justiça, por edital ou por meio eletrônico, conforme o caso.",
+      "É a partir da citação válida que começam prazos importantes, como o de contestação. Citação irregular pode anular atos do processo.",
+      "Não comparecer ou ignorar a citação pode levar à revelia."
+    ],
+    exemplos: [
+      "Réu citado por carta para responder a uma ação de cobrança",
+      "Citação por oficial de justiça quando o réu não é localizado pelos correios"
+    ],
+    areas: ["civil"],
+    ver_tambem: ["revelia", "transito-em-julgado"],
+    atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "apelacao",
+    termo: "Apelação",
+    definicao_curta:
+      "Recurso contra a sentença, levando a causa para reanálise pelo tribunal.",
+    explicacao: [
+      "A apelação é o recurso típico contra a sentença que encerra o processo na primeira instância. O tribunal reexamina os pontos questionados e pode manter, reformar ou anular a decisão.",
+      "Há prazo para apelar e, em regra, exige-se o preparo (custas), salvo isenções como a justiça gratuita.",
+      "Diferencia-se de recursos dirigidos aos tribunais superiores, como o recurso especial (STJ) e o extraordinário (STF)."
+    ],
+    exemplos: [
+      "Parte que perde a ação e apela para tentar reverter no tribunal",
+      "Recurso que pede a redução do valor fixado na sentença"
+    ],
+    areas: ["civil", "criminal"],
+    ver_tambem: ["recurso-especial", "recurso-extraordinario", "transito-em-julgado"],
+    atualizado_em: "2026-05-29"
   }
 ];
 

@@ -358,6 +358,207 @@ export const CUSTOS: CustoJuridico[] = [
       "Honorários sobre eventuais danos morais — 20% a 30%"
     ],
     tempo_estimado: "1 a 6 meses (liminar) + 12 a 24 meses (mérito)"
+  },
+  {
+    slug: "reclamacao-trabalhista",
+    titulo: "Quanto custa entrar com uma reclamação trabalhista",
+    area_slug: "trabalhista",
+    faixa_min: 0,
+    faixa_max: 0,
+    tipo_cobranca: "percentual_causa",
+    inclui: [
+      "Análise do caso e cálculo das verbas",
+      "Petição inicial e acompanhamento das audiências",
+      "Tentativa de acordo e, se preciso, instrução do processo"
+    ],
+    exclui: [
+      "Honorários de sucumbência fixados pelo juiz à parte contrária",
+      "Eventuais perícias (insalubridade, periculosidade)"
+    ],
+    quando_gratis: [
+      "O trabalhador, em regra, não paga custas iniciais para ajuizar",
+      "Honorários do advogado costumam ser cobrados só sobre o êxito (20% a 30%)",
+      "Sindicato da categoria muitas vezes oferece assistência jurídica gratuita"
+    ],
+    tempo_estimado: "6 a 24 meses até a sentença",
+    observacoes: [
+      "Na Justiça do Trabalho o empregado normalmente não adianta custas. O combinado mais comum é honorário por êxito — percentual sobre o que for efetivamente recebido. Confirme as condições por escrito antes de assinar."
+    ]
+  },
+  {
+    slug: "acao-revisional-bancaria",
+    titulo: "Quanto custa uma ação revisional de contrato bancário",
+    area_slug: "consumidor",
+    faixa_min: 1500,
+    faixa_max: 6000,
+    tipo_cobranca: "misto",
+    inclui: [
+      "Análise do contrato e dos encargos cobrados",
+      "Cálculo do que seria devido sem abusos",
+      "Petição inicial e acompanhamento"
+    ],
+    exclui: [
+      "Custas judiciais",
+      "Honorários periciais contábeis, quando houver perícia"
+    ],
+    quando_gratis: [
+      "Quem tem direito à justiça gratuita não paga custas",
+      "Defensoria pública pode atender em casos de baixa renda"
+    ],
+    tempo_estimado: "12 a 36 meses",
+    observacoes: [
+      "Revisar contrato bancário nem sempre gera redução — depende de o juiz reconhecer abuso concreto. Desconfie de promessa de resultado garantido."
+    ]
+  },
+  {
+    slug: "acao-guarda",
+    titulo: "Quanto custa uma ação de guarda de filhos",
+    area_slug: "familia",
+    faixa_min: 1500,
+    faixa_max: 6000,
+    tipo_cobranca: "honorario_fixo",
+    inclui: [
+      "Reunião inicial e orientação sobre o melhor interesse da criança",
+      "Petição inicial e pedidos de convivência",
+      "Acompanhamento de audiências e do estudo psicossocial"
+    ],
+    exclui: [
+      "Custas judiciais",
+      "Eventual estudo social/psicológico particular"
+    ],
+    quando_gratis: [
+      "Justiça gratuita para quem comprova baixa renda",
+      "Defensoria pública atende questões de guarda"
+    ],
+    tempo_estimado: "6 a 24 meses",
+    observacoes: [
+      "Guarda compartilhada é a regra preferencial na lei. O valor varia conforme haver acordo ou disputa."
+    ]
+  },
+  {
+    slug: "reconhecimento-uniao-estavel",
+    titulo: "Quanto custa reconhecer ou dissolver união estável",
+    area_slug: "familia",
+    faixa_min: 1200,
+    faixa_max: 5000,
+    tipo_cobranca: "honorario_fixo",
+    inclui: [
+      "Análise da convivência e dos bens envolvidos",
+      "Escritura declaratória (via extrajudicial) ou petição (via judicial)",
+      "Orientação sobre regime de bens e efeitos patrimoniais"
+    ],
+    exclui: [
+      "Emolumentos do cartório de notas",
+      "Custas judiciais quando a via é litigiosa"
+    ],
+    quando_gratis: [
+      "Justiça gratuita para baixa renda",
+      "Defensoria pública atende reconhecimento e dissolução"
+    ],
+    tempo_estimado: "Dias a semanas (consensual) ou meses (litigioso)",
+    observacoes: [
+      "Quando há consenso e não há filhos menores, a via extrajudicial em cartório costuma ser mais rápida e barata."
+    ]
+  },
+  {
+    slug: "acao-indenizacao-dano-moral",
+    titulo: "Quanto custa entrar com ação de indenização por dano moral",
+    area_slug: "civil",
+    faixa_min: 1000,
+    faixa_max: 5000,
+    tipo_cobranca: "misto",
+    inclui: [
+      "Análise das provas e do cabimento do dano moral",
+      "Petição inicial com pedido indenizatório",
+      "Acompanhamento até a sentença"
+    ],
+    exclui: [
+      "Custas judiciais",
+      "Honorários de sucumbência da parte contrária, se perder"
+    ],
+    quando_gratis: [
+      "Justiça gratuita para quem comprova baixa renda",
+      "Honorários costumam ser combinados como percentual sobre a indenização (20% a 30%)"
+    ],
+    tempo_estimado: "12 a 36 meses",
+    observacoes: [
+      "O valor da indenização é arbitrado pelo juiz — não há tabela fixa. Nem todo aborrecimento gera dano moral."
+    ]
+  },
+  {
+    slug: "inventario-judicial",
+    titulo: "Quanto custa um inventário judicial",
+    area_slug: "familia",
+    faixa_min: 3000,
+    faixa_max: 15000,
+    tipo_cobranca: "misto",
+    inclui: [
+      "Abertura do inventário e nomeação do inventariante",
+      "Levantamento de bens, dívidas e herdeiros",
+      "Acompanhamento até a partilha e a expedição dos formais"
+    ],
+    exclui: [
+      "ITCMD (imposto estadual de transmissão)",
+      "Custas judiciais e emolumentos de registro"
+    ],
+    quando_gratis: [
+      "Justiça gratuita para herdeiros de baixa renda",
+      "Defensoria pública atende inventários quando há hipossuficiência"
+    ],
+    tempo_estimado: "12 a 48 meses",
+    observacoes: [
+      "O inventário judicial é necessário quando há herdeiro menor, incapaz, testamento ou disputa. Sem isso, a via extrajudicial (cartório) é mais rápida. Honorários às vezes são fixados como percentual do espólio."
+    ]
+  },
+  {
+    slug: "embargos-execucao-fiscal",
+    titulo: "Quanto custa se defender de uma execução fiscal",
+    area_slug: "tributario",
+    faixa_min: 2000,
+    faixa_max: 10000,
+    tipo_cobranca: "misto",
+    inclui: [
+      "Análise da certidão de dívida ativa e dos prazos",
+      "Defesa cabível (embargos ou exceção de pré-executividade)",
+      "Acompanhamento e tentativa de parcelamento"
+    ],
+    exclui: [
+      "O valor do tributo em si",
+      "Custas e eventual garantia do juízo"
+    ],
+    quando_gratis: [
+      "Justiça gratuita para quem comprova baixa renda",
+      "Programas de parcelamento administrativo podem dispensar a via judicial"
+    ],
+    tempo_estimado: "12 a 48 meses",
+    observacoes: [
+      "Vale verificar prescrição e erros na cobrança. Em muitos casos, o parcelamento administrativo resolve sem litígio."
+    ]
+  },
+  {
+    slug: "regularizacao-imovel",
+    titulo: "Quanto custa regularizar um imóvel",
+    area_slug: "imobiliario",
+    faixa_min: 2000,
+    faixa_max: 12000,
+    tipo_cobranca: "honorario_fixo",
+    inclui: [
+      "Diagnóstico da situação registral do imóvel",
+      "Providências para retificação, averbação ou regularização",
+      "Acompanhamento junto a cartório e órgãos competentes"
+    ],
+    exclui: [
+      "Emolumentos de cartório de registro de imóveis",
+      "Taxas municipais e eventuais tributos em atraso"
+    ],
+    quando_gratis: [
+      "Programas municipais e estaduais de regularização fundiária (Reurb) podem reduzir ou isentar custos",
+      "Defensoria pública atende casos de baixa renda"
+    ],
+    tempo_estimado: "Meses a alguns anos, conforme a complexidade",
+    observacoes: [
+      "Os custos variam muito conforme o tipo de irregularidade (falta de averbação de construção, inventário pendente, usucapião). Um diagnóstico inicial define o caminho mais barato."
+    ]
   }
 ];
 
