@@ -17,56 +17,12 @@ import { SPECIALTIES } from "@/lib/data/specialties";
 import { SITE } from "@/lib/config";
 import { IntentGrid } from "@/components/IntentGrid";
 import { getAllArticles } from "@/lib/data/articles";
-import { PROBLEMAS } from "@/lib/data/problemas-juridicos";
-import { ResolverAgora } from "@/components/ResolverAgora";
 import { HomeFaq } from "@/components/HomeFaq";
 
 export const revalidate = 600;
 
-// Sinônimos em linguagem leiga para reforçar o match do classificador de caso.
-const PROBLEMA_KEYWORDS: Record<string, string> = {
-  "nome-negativado-indevidamente":
-    "spc serasa nome sujo divida negativado restricao credito protesto",
-  "fui-vitima-de-golpe-do-pix":
-    "golpe pix fraude estorno transferencia banco roubo enganado",
-  "fui-demitido-sem-receber-direitos":
-    "demitido demissao mandado embora rescisao verbas fgts aviso previo trabalho emprego patrao acerto",
-  "beneficio-do-inss-foi-negado":
-    "inss aposentadoria auxilio doenca beneficio negado pericia loas bpc previdencia",
-  "plano-de-saude-negou-cirurgia":
-    "plano saude convenio negou cirurgia tratamento exame medicamento carencia",
-  "quero-me-divorciar": "divorcio separacao casamento separar guarda partilha",
-  "pai-nao-paga-pensao":
-    "pensao alimenticia filho nao paga atraso alimentos sustento",
-  "comprei-produto-com-defeito":
-    "produto defeito troca garantia comprei loja consumidor quebrado vicio",
-  "fui-cobrado-juros-abusivos":
-    "juros abusivos banco cartao financiamento divida emprestimo cobranca",
-  "fui-vitima-de-acidente-de-transito":
-    "acidente transito carro batida indenizacao seguro dpvat colisao"
-};
-
 export default async function HomePage() {
   const latestArticles = getAllArticles().slice(0, 3);
-
-  // Índice leve dos problemas (texto normalizado no servidor) para o
-  // classificador de caso interativo da home (ResolverAgora).
-  const normalizeHay = (s: string) =>
-    s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-  const problemaIndex = PROBLEMAS.map((p) => ({
-    slug: p.slug,
-    titulo: p.titulo,
-    intencao: p.intencao_curta,
-    hay: normalizeHay(
-      [
-        p.titulo,
-        p.intencao_curta,
-        p.resumo,
-        p.areas.join(" "),
-        PROBLEMA_KEYWORDS[p.slug] || ""
-      ].join(" ")
-    )
-  }));
 
   return (
     <>
@@ -103,8 +59,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      <ResolverAgora items={problemaIndex} />
 
       <IntentGrid />
 
@@ -326,7 +280,7 @@ export default async function HomePage() {
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-accent/15 text-brand-deep border border-brand-accent/30 mb-3">
                 <FileText className="w-3.5 h-3.5" aria-hidden />
-                Modelos gratuitos
+                Modelos de documentos
               </div>
               <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
                 Modelos prontos pra baixar

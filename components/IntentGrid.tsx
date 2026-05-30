@@ -10,7 +10,6 @@ import {
   ShoppingBag,
   Landmark,
   Car,
-  Search,
   ArrowRight,
   type LucideIcon
 } from "lucide-react";
@@ -122,30 +121,6 @@ export function IntentGrid() {
           </Link>
         ))}
       </div>
-
-      {/* Card destacado: quem já sabe que quer um advogado vai direto ao diretório */}
-      <Link
-        href="/advogados"
-        className="mt-4 group flex items-center justify-between gap-4 rounded-2xl border-2 border-brand-accent bg-gradient-to-br from-brand-accent/15 to-brand-accent2/10 p-5 hover:shadow-cardHover transition"
-      >
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="w-11 h-11 rounded-xl bg-brand-accent/30 flex items-center justify-center flex-shrink-0">
-            <Search className="w-5 h-5 text-brand-deep" aria-hidden />
-          </div>
-          <div className="min-w-0">
-            <p className="font-display text-base font-bold text-brand-ink leading-snug">
-              Já sei: estou procurando um advogado
-            </p>
-            <p className="text-sm text-brand-ink/65 leading-snug">
-              Encontre um advogado na sua cidade e fale direto pelo WhatsApp.
-            </p>
-          </div>
-        </div>
-        <span className="inline-flex items-center gap-1 text-sm font-bold text-brand-deep group-hover:text-brand-accent2 whitespace-nowrap">
-          Encontrar
-          <ArrowRight className="w-4 h-4" aria-hidden />
-        </span>
-      </Link>
 
       <div className="mt-6 text-center">
         <Link
