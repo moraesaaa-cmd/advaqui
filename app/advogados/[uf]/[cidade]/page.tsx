@@ -14,6 +14,7 @@ import { cityIntro } from "@/lib/data/templates";
 import { PLAN, SITE } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
 import { topCitiesForState } from "@/lib/seo/internal-links";
+import { CidadeRecursos } from "@/components/CidadeRecursos";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -228,6 +229,13 @@ export default async function CityPage({
           </div>
         </section>
       )}
+
+      <CidadeRecursos
+        cityName={city.name}
+        uf={st.uf}
+        citySlug={city.slug}
+        region={city.region}
+      />
 
       <section className="mt-12 rounded-2xl bg-brand-ink text-white p-6">
         <h2 className="font-display text-xl font-bold mb-2">
