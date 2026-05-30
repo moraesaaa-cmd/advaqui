@@ -6,6 +6,7 @@ import {
   Phone,
   Globe,
   Clock,
+  Info,
   ArrowRight
 } from "lucide-react";
 
@@ -19,7 +20,13 @@ import {
  */
 export function PerfilAntesDepois() {
   return (
-    <div className="grid md:grid-cols-2 gap-5 items-start">
+    <div className="relative rounded-3xl border-2 border-dashed border-brand-accent/60 bg-brand-bg/40 px-4 pb-5 pt-10 md:px-6 md:pb-6">
+      {/* Selo: deixa explícito que se trata de um exemplo fictício */}
+      <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-brand-ink shadow-sm">
+        <Info className="w-3.5 h-3.5" aria-hidden />
+        Exemplo ilustrativo
+      </span>
+      <div className="grid md:grid-cols-2 gap-5 items-start">
       {/* ANTES — perfil gratuito */}
       <div>
         <p className="text-xs font-bold uppercase tracking-wider text-brand-ink/50 mb-2 text-center">
@@ -67,8 +74,39 @@ export function PerfilAntesDepois() {
             Destaque
           </span>
           <div className="flex items-center gap-3.5">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-deep to-brand-primary flex items-center justify-center text-white text-xl font-bold flex-shrink-0 ring-2 ring-brand-accent">
-              HC
+            <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-brand-accent shadow-sm">
+              <svg
+                viewBox="0 0 64 64"
+                className="h-full w-full"
+                role="img"
+                aria-label="Foto ilustrativa de exemplo"
+              >
+                <defs>
+                  <linearGradient id="hcAvatarBg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stopColor="#FCE9C6" />
+                    <stop offset="1" stopColor="#F4D08C" />
+                  </linearGradient>
+                </defs>
+                <rect width="64" height="64" fill="url(#hcAvatarBg)" />
+                <ellipse cx="32" cy="30" rx="16" ry="17" fill="#4a2f1d" />
+                <path d="M11 64c0-12 9.5-18 21-18s21 6 21 18z" fill="#1e3a5f" />
+                <path d="M27 47l5 7 5-7z" fill="#f6f1e7" />
+                <rect x="28" y="41" width="8" height="9" rx="3.5" fill="#e8b48f" />
+                <circle cx="32" cy="30" r="11.5" fill="#f3c6a2" />
+                <path
+                  d="M20.5 29c0-9 5-13.5 11.5-13.5S43.5 20 43.5 29c-1.5-4-4.5-5.5-7.5-5-2.5-2.5-5.5-2.5-8 0-3-0.5-6 1-7.5 5z"
+                  fill="#4a2f1d"
+                />
+                <circle cx="27.6" cy="30" r="1.5" fill="#3a2a1a" />
+                <circle cx="36.4" cy="30" r="1.5" fill="#3a2a1a" />
+                <path
+                  d="M28.5 35 Q32 37.6 35.5 35"
+                  stroke="#bf6a4e"
+                  strokeWidth="1.5"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+              </svg>
             </div>
             <div className="min-w-0">
               <p className="font-display font-bold text-lg text-brand-ink leading-tight">
@@ -125,6 +163,11 @@ export function PerfilAntesDepois() {
           </p>
         </div>
       </div>
+      </div>
+      <p className="mt-4 text-center text-[11px] leading-snug text-brand-ink/45">
+        Exemplo fictício para demonstração — Dra. Helena Costa, OAB/MG 000.000,
+        não representa pessoa real. Foto meramente ilustrativa.
+      </p>
     </div>
   );
 }
