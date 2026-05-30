@@ -1271,6 +1271,299 @@ export const PROBLEMAS: ProblemaJuridico[] = [
     termos_glossario: ["dano-moral", "rescisao", "responsabilidade-civil"],
     modelos: ["procuracao-ad-judicia"],
     atualizado_em: "2026-05-21"
+  },
+  {
+    slug: "empresa-nao-pagou-meu-salario",
+    titulo: "A empresa não pagou meu salário. Quais são meus direitos?",
+    intencao_curta: "Trabalhador ficou sem receber o salário do mês.",
+    resumo:
+      "O salário tem data certa para ser pago (até o 5º dia útil do mês seguinte). Atraso ou falta de pagamento é descumprimento do contrato e pode dar direito até à rescisão indireta, com as mesmas verbas de uma demissão sem justa causa.",
+    areas: ["trabalhista"],
+    situacao: [
+      "Você trabalhou, mas o salário não caiu na data ou veio incompleto. Pode ser um mês isolado ou um atraso que vem se repetindo.",
+      "O salário deve ser pago até o 5º dia útil do mês seguinte ao trabalhado. Atraso reiterado é falta grave do empregador."
+    ],
+    passos: [
+      { titulo: "Reúna a prova do que é devido", texto: "Contracheques, registro de ponto, mensagens e o contrato. Some o que está em aberto." },
+      { titulo: "Cobre formalmente", texto: "Registre a cobrança por escrito (e-mail, mensagem) e guarde a resposta. Isso documenta o atraso." },
+      { titulo: "Avalie a rescisão indireta", texto: "Atraso reiterado permite pedir a saída na Justiça recebendo como demissão sem justa causa." },
+      { titulo: "Procure a Justiça do Trabalho", texto: "É possível cobrar os valores atrasados dos últimos 5 anos, dentro de 2 anos após a saída." }
+    ],
+    direitos: [
+      "Receber o salário em atraso com correção",
+      "Rescisão indireta em caso de atraso reiterado",
+      "Verbas rescisórias como em demissão sem justa causa",
+      "Multa do art. 477 quando o acerto atrasa"
+    ],
+    quando_urgente:
+      "Quando os atrasos se repetem ou comprometem seu sustento. Não convém demorar para registrar a cobrança e buscar orientação.",
+    documentos: ["Contracheques", "Carteira de trabalho", "Registro de ponto", "Mensagens cobrando o pagamento"],
+    termos_glossario: ["rescisao", "fgts"],
+    modelos: ["notificacao-extrajudicial"],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "trabalhei-sem-carteira-assinada",
+    titulo: "Trabalhei sem carteira assinada. Como provar o vínculo?",
+    intencao_curta: "Trabalhador prestou serviço sem registro e quer garantir direitos.",
+    resumo:
+      "Mesmo sem registro, se houver pessoalidade, habitualidade, subordinação e salário, existe vínculo de emprego. A Justiça reconhece o vínculo e garante carteira assinada com efeitos retroativos e todas as verbas.",
+    areas: ["trabalhista"],
+    situacao: [
+      "Você trabalhou de forma contínua, cumprindo ordens e horários, mas a empresa nunca assinou sua carteira.",
+      "A falta de registro não apaga os direitos. O que vale é a realidade: se era emprego, o vínculo pode ser reconhecido."
+    ],
+    passos: [
+      { titulo: "Junte provas do trabalho", texto: "Mensagens, escala, fardamento, crachá, comprovantes de pagamento (Pix, depósito), fotos no local." },
+      { titulo: "Liste testemunhas", texto: "Colegas e clientes que possam confirmar que você trabalhava ali com regularidade." },
+      { titulo: "Calcule o período e as verbas", texto: "Tempo de casa, salário combinado e o que deixou de receber (férias, 13º, FGTS)." },
+      { titulo: "Ajuíze o reconhecimento de vínculo", texto: "A Justiça do Trabalho pode determinar o registro e o pagamento de todas as verbas do período." }
+    ],
+    direitos: [
+      "Reconhecimento do vínculo e registro retroativo",
+      "Férias, 13º e FGTS do período trabalhado",
+      "Recolhimento das contribuições ao INSS",
+      "Verbas rescisórias se houve dispensa"
+    ],
+    quando_urgente:
+      "Quando o trabalho terminou recentemente — há prazo de 2 anos para entrar com a ação. Provas também somem com o tempo.",
+    documentos: ["Comprovantes de pagamento", "Mensagens e escalas", "Fotos no local de trabalho", "Lista de testemunhas"],
+    termos_glossario: ["fgts", "rescisao"],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "sofri-acidente-de-trabalho",
+    titulo: "Sofri um acidente de trabalho. Tenho direito a indenização?",
+    intencao_curta: "Trabalhador se acidentou no serviço ou no trajeto.",
+    resumo:
+      "Acidente de trabalho gera estabilidade no emprego por 12 meses após a alta, benefício do INSS e, quando há culpa da empresa, indenização. A emissão da CAT (Comunicação de Acidente de Trabalho) é essencial.",
+    areas: ["trabalhista", "previdenciario"],
+    situacao: [
+      "Você se machucou durante o trabalho, no trajeto casa-trabalho ou desenvolveu uma doença ligada à atividade.",
+      "Existem direitos previdenciários (benefício e estabilidade) e, quando a empresa falhou em segurança, direito a indenização."
+    ],
+    passos: [
+      { titulo: "Garanta atendimento e a CAT", texto: "Busque atendimento médico e exija que a empresa emita a CAT. Se ela não emitir, você, o sindicato ou o médico podem emitir." },
+      { titulo: "Guarde laudos e exames", texto: "Toda a documentação médica prova o acidente, o afastamento e as sequelas." },
+      { titulo: "Acompanhe o benefício no INSS", texto: "O afastamento por mais de 15 dias gera benefício por incapacidade de natureza acidentária." },
+      { titulo: "Avalie indenização", texto: "Se houve falha de segurança (EPI, treinamento), cabe ação por danos morais e materiais contra a empresa." }
+    ],
+    direitos: [
+      "Estabilidade de 12 meses após a alta",
+      "Benefício por incapacidade acidentário",
+      "Indenização por dano moral e material quando há culpa",
+      "Recolhimento do FGTS durante o afastamento"
+    ],
+    quando_urgente:
+      "Imediatamente após o acidente — a CAT e o atendimento devem ser registrados logo. Procure orientação se a empresa se recusar a emitir a CAT.",
+    documentos: ["CAT", "Laudos e exames médicos", "Comprovante do afastamento", "Provas das condições de trabalho"],
+    termos_glossario: ["dano-moral", "responsabilidade-civil"],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "fui-demitida-gravida",
+    titulo: "Fui demitida grávida. A empresa pode fazer isso?",
+    intencao_curta: "Gestante foi dispensada e quer saber sobre estabilidade.",
+    resumo:
+      "A gestante tem estabilidade desde a confirmação da gravidez até 5 meses após o parto. A dispensa sem justa causa nesse período é inválida — cabe reintegração ou indenização do período, mesmo que a empresa não soubesse da gravidez.",
+    areas: ["trabalhista"],
+    situacao: [
+      "Você foi demitida sem justa causa e estava grávida na data da dispensa, mesmo que ainda não soubesse.",
+      "A estabilidade da gestante é garantida pela Constituição e não depende de a empresa ter sido avisada."
+    ],
+    passos: [
+      { titulo: "Comprove a gravidez na data da dispensa", texto: "Exame ou laudo que mostre que a concepção foi anterior à demissão." },
+      { titulo: "Comunique a empresa", texto: "Informe formalmente e peça a reintegração. Guarde o protocolo da comunicação." },
+      { titulo: "Decida entre voltar ou ser indenizada", texto: "Você pode pedir a reintegração ao emprego ou a indenização dos salários do período de estabilidade." },
+      { titulo: "Procure a Justiça do Trabalho", texto: "Se a empresa não reintegrar nem indenizar, a ação garante o direito." }
+    ],
+    direitos: [
+      "Estabilidade da confirmação da gravidez até 5 meses após o parto",
+      "Reintegração ao emprego",
+      "Indenização dos salários do período de estabilidade",
+      "Recolhimento de FGTS e demais verbas do período"
+    ],
+    quando_urgente:
+      "Logo após a dispensa — a reintegração é mais simples quanto antes. Há prazo de 2 anos para a ação.",
+    documentos: ["Exame de gravidez", "Termo de rescisão", "Carteira de trabalho", "Comunicação enviada à empresa"],
+    termos_glossario: ["rescisao", "fgts"],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "inquilino-nao-paga-aluguel",
+    titulo: "O inquilino não paga o aluguel. O que o proprietário pode fazer?",
+    intencao_curta: "Proprietário enfrenta inadimplência do locatário.",
+    resumo:
+      "A Lei do Inquilinato permite cobrar os aluguéis atrasados e pedir o despejo por falta de pagamento. O inquilino pode evitar o despejo pagando o que deve (purgação da mora) dentro do prazo legal.",
+    areas: ["imobiliario", "civil"],
+    situacao: [
+      "Seu inquilino parou de pagar o aluguel ou os encargos (condomínio, IPTU) e o acordo não está sendo cumprido.",
+      "O proprietário pode cobrar a dívida e, se necessário, pedir a retomada do imóvel pela Justiça."
+    ],
+    passos: [
+      { titulo: "Reúna o contrato e os comprovantes", texto: "Contrato de locação, recibos e o cálculo do que está em aberto, com encargos e multa." },
+      { titulo: "Notifique o inquilino", texto: "Uma notificação extrajudicial cobrando a dívida abre prazo e registra a tentativa de acordo." },
+      { titulo: "Ação de despejo por falta de pagamento", texto: "Permite retomar o imóvel e cobrar os valores. O inquilino pode purgar a mora dentro do prazo." },
+      { titulo: "Execute a garantia", texto: "Fiador, caução ou seguro-fiança respondem pela dívida, conforme o contrato." }
+    ],
+    direitos: [
+      "Receber os aluguéis e encargos atrasados, com multa",
+      "Pedir o despejo por falta de pagamento",
+      "Acionar fiador ou a garantia contratada",
+      "Cobrar danos ao imóvel comprovados na vistoria"
+    ],
+    quando_urgente:
+      "Quando o atraso se acumula. Quanto antes a cobrança formal e a ação, menor o prejuízo.",
+    documentos: ["Contrato de locação", "Recibos e extrato da dívida", "Vistoria de entrada", "Dados do fiador ou da garantia"],
+    termos_glossario: ["prescricao"],
+    modelos: ["notificacao-extrajudicial", "contrato-de-locacao-residencial-simples"],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "fui-despejado",
+    titulo: "Recebi aviso de despejo. Quais são meus direitos como inquilino?",
+    intencao_curta: "Inquilino foi notificado para desocupar o imóvel.",
+    resumo:
+      "Despejo segue regras da Lei do Inquilinato e, em geral, depende de ação judicial — ninguém pode ser tirado de casa por conta própria. Conforme o motivo, há prazos para sair e, na falta de pagamento, a chance de quitar a dívida e ficar.",
+    areas: ["imobiliario"],
+    situacao: [
+      "Você recebeu um aviso para desocupar o imóvel — por falta de pagamento, fim do contrato ou pedido do proprietário.",
+      "O despejo precisa respeitar a lei e prazos. Você tem o direito de saber o motivo e, em muitos casos, de regularizar a situação."
+    ],
+    passos: [
+      { titulo: "Entenda o motivo", texto: "Falta de pagamento, fim do prazo, uso próprio do dono ou venda mudam seus direitos e prazos." },
+      { titulo: "Verifique o contrato e os prazos", texto: "Confira a vigência, a garantia e o prazo de desocupação que a lei concede em cada caso." },
+      { titulo: "Na falta de pagamento, avalie purgar a mora", texto: "Pagando o que deve dentro do prazo, é possível evitar o despejo." },
+      { titulo: "Procure orientação antes de sair", texto: "Despejo sem ordem judicial é irregular. Um advogado verifica se o procedimento está correto." }
+    ],
+    direitos: [
+      "Não ser retirado sem ordem judicial (salvo acordo)",
+      "Prazo legal para desocupar conforme o motivo",
+      "Purgar a mora e permanecer, na falta de pagamento",
+      "Devolução da caução e benfeitorias, quando cabível"
+    ],
+    quando_urgente:
+      "Assim que receber o aviso ou a citação — os prazos para responder e para purgar a mora são curtos.",
+    documentos: ["Contrato de locação", "Comprovantes de pagamento do aluguel", "Aviso ou citação recebida", "Comprovante de caução"],
+    termos_glossario: ["prescricao"],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "voo-cancelado-ou-atrasado",
+    titulo: "Meu voo foi cancelado ou atrasou muito. Tenho direito a indenização?",
+    intencao_curta: "Passageiro teve voo cancelado, atrasado ou foi impedido de embarcar.",
+    resumo:
+      "Cancelamento, atraso longo e overbooking dão direito a assistência (comunicação, alimentação, hospedagem), reacomodação ou reembolso e, conforme o caso, indenização por danos morais e materiais. As regras da ANAC e o CDC protegem o passageiro.",
+    areas: ["consumidor"],
+    situacao: [
+      "Seu voo foi cancelado, atrasou várias horas, ou você foi impedido de embarcar por excesso de passageiros (overbooking).",
+      "A companhia tem deveres de assistência e de reacomodar ou reembolsar — e pode responder pelos prejuízos causados."
+    ],
+    passos: [
+      { titulo: "Guarde tudo da viagem", texto: "Bilhete, cartão de embarque, comunicados da companhia, comprovantes de gastos extras (transporte, hotel, alimentação)." },
+      { titulo: "Exija a assistência na hora", texto: "A partir de certo tempo de espera, a empresa deve oferecer comunicação, alimentação e, se for o caso, hospedagem." },
+      { titulo: "Escolha reembolso ou reacomodação", texto: "Você decide entre ser remarcado, reacomodado em outro voo ou receber o valor de volta." },
+      { titulo: "Reclame e, se preciso, acione a Justiça", texto: "Registre no consumidor.gov.br e na ANAC. No Juizado Especial é possível pedir indenização." }
+    ],
+    direitos: [
+      "Assistência material durante a espera",
+      "Reacomodação em outro voo ou reembolso integral",
+      "Indenização por danos materiais comprovados",
+      "Indenização por dano moral conforme o caso"
+    ],
+    quando_urgente:
+      "Quando o prejuízo é grande (compromisso perdido, gastos altos) ou a companhia se recusa a dar assistência.",
+    documentos: ["Bilhete e cartão de embarque", "Comunicados da companhia", "Comprovantes de gastos extras"],
+    termos_glossario: ["dano-moral", "dano-material"],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "compra-pela-internet-nao-chegou",
+    titulo: "Comprei pela internet e o produto não chegou. O que fazer?",
+    intencao_curta: "Consumidor pagou em loja online e não recebeu o produto.",
+    resumo:
+      "A loja é responsável pela entrega no prazo prometido. Atraso ou não entrega dá direito a exigir a entrega imediata, trocar o pedido ou receber o dinheiro de volta corrigido. Em compras pela internet também existe o direito de arrependimento em 7 dias.",
+    areas: ["consumidor"],
+    situacao: [
+      "Você comprou em uma loja online, pagou, mas o produto não chegou no prazo — ou nunca chegou.",
+      "A responsabilidade pela entrega é da loja, mesmo que o atraso seja dos Correios ou da transportadora contratada por ela."
+    ],
+    passos: [
+      { titulo: "Junte as provas da compra", texto: "Pedido, comprovante de pagamento, prazo de entrega prometido e prints de conversas." },
+      { titulo: "Cobre a loja por escrito", texto: "Use o SAC e guarde o protocolo. Dê um prazo e exija a entrega, a troca ou o reembolso." },
+      { titulo: "Registre no consumidor.gov.br", texto: "Plataforma oficial e gratuita; as lojas costumam responder em poucos dias." },
+      { titulo: "Juizado Especial se não resolver", texto: "Causas de até 20 salários mínimos podem ser ajuizadas sem advogado." }
+    ],
+    direitos: [
+      "Entrega imediata, troca ou reembolso corrigido",
+      "Direito de arrependimento em 7 dias na compra online",
+      "Devolução em dobro de valor cobrado indevidamente",
+      "Indenização por dano moral em casos de descaso"
+    ],
+    quando_urgente:
+      "Quando o valor é alto, há suspeita de golpe ou a loja some. Aja rápido para preservar provas.",
+    documentos: ["Pedido e comprovante de pagamento", "Prazo de entrega prometido", "Protocolos de atendimento"],
+    termos_glossario: ["dano-moral"],
+    modelos: ["notificacao-extrajudicial"],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "auxilio-doenca-foi-negado",
+    titulo: "O auxílio por incapacidade foi negado. Como recorrer?",
+    intencao_curta: "Segurado teve o auxílio-doença indeferido pelo INSS.",
+    resumo:
+      "Negativa do auxílio por incapacidade (antigo auxílio-doença) costuma ocorrer por perícia desfavorável ou falta de documento. Cabe recurso administrativo em 30 dias e, se necessário, ação na Justiça Federal com laudos atualizados.",
+    areas: ["previdenciario"],
+    situacao: [
+      "Você está incapaz de trabalhar por doença ou lesão, pediu o benefício e o INSS negou — em geral após a perícia.",
+      "A negativa não é o fim: muitos casos são revertidos quando a documentação médica é bem apresentada."
+    ],
+    passos: [
+      { titulo: "Pegue a carta de indeferimento", texto: "Pelo Meu INSS, baixe a decisão e veja o motivo exato da negativa." },
+      { titulo: "Reúna laudos atualizados", texto: "Relatórios, exames e receitas que comprovem a incapacidade e o período." },
+      { titulo: "Recorra em até 30 dias", texto: "O recurso ao Conselho de Recursos da Previdência não exige advogado e permite juntar novos documentos." },
+      { titulo: "Avalie a ação judicial", texto: "Se o recurso falhar, a Justiça Federal pode conceder o benefício com perícia judicial." }
+    ],
+    direitos: [
+      "Recurso administrativo gratuito em 30 dias",
+      "Perícia judicial na ação, quando necessária",
+      "Pagamento retroativo desde a data do direito",
+      "Conversão em aposentadoria por incapacidade se for permanente"
+    ],
+    quando_urgente:
+      "Quando você está sem renda e sem condições de trabalhar. O prazo de 30 dias para recorrer é curto.",
+    documentos: ["Carta de indeferimento", "Laudos e exames médicos", "CNIS (histórico de contribuições)", "Comprovantes de contribuição"],
+    termos_glossario: ["prescricao"],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "como-pedir-aposentadoria",
+    titulo: "Como pedir aposentadoria pelo INSS?",
+    intencao_curta: "Segurado quer entender requisitos e como dar entrada na aposentadoria.",
+    resumo:
+      "A aposentadoria depende de idade e tempo de contribuição, conforme as regras atuais e de transição. Antes de pedir, vale conferir o CNIS, somar o tempo e simular — às vezes esperar ou acertar o histórico aumenta bastante o valor.",
+    areas: ["previdenciario"],
+    situacao: [
+      "Você quer se aposentar e tem dúvida sobre os requisitos, o melhor momento e como dar entrada.",
+      "Pedir cedo demais, com o CNIS errado, pode resultar em valor menor ou negativa. Planejar faz diferença."
+    ],
+    passos: [
+      { titulo: "Confira seu CNIS", texto: "No Meu INSS, baixe o extrato e verifique se todos os vínculos e contribuições estão corretos." },
+      { titulo: "Some idade e tempo de contribuição", texto: "Compare com as regras de transição para ver em qual você se encaixa e quando completa os requisitos." },
+      { titulo: "Reúna documentos que faltam", texto: "Carteiras antigas, carnês e comprovantes de períodos não registrados no CNIS." },
+      { titulo: "Dê entrada e acompanhe", texto: "O pedido é feito pelo Meu INSS. Negado ou com valor baixo, cabe recurso ou revisão." }
+    ],
+    direitos: [
+      "Aposentadoria ao cumprir os requisitos da sua regra",
+      "Contagem de tempo de períodos não registrados, com prova",
+      "Revisão do benefício concedido com erro",
+      "Pagamento retroativo conforme o caso"
+    ],
+    quando_urgente:
+      "Quando há dúvida sobre a melhor regra ou valor — um erro no momento de pedir pode custar caro a vida toda.",
+    documentos: ["CNIS", "Carteiras de trabalho", "Carnês e comprovantes de contribuição", "Documentos de tempo especial ou rural, se houver"],
+    termos_glossario: ["prescricao"],
+    atualizado_em: "2026-05-30"
   }
 ];
 

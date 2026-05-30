@@ -13,12 +13,14 @@ import {
   Sparkles,
   ArrowRight,
   AlertCircle,
+  Search,
   type LucideIcon
 } from "lucide-react";
 import { PLAN } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { PlanosCTAFree, PlanosCTAPremium } from "@/components/PlanosCTAs";
+import { PerfilAntesDepois } from "@/components/PerfilAntesDepois";
 
 export const metadata = buildMetadata({
   title: "Planos — apareça primeiro na sua cidade",
@@ -117,17 +119,29 @@ export default function PlanosPage() {
         />
         <div className="relative container-tight py-14 md:py-20">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-accent text-brand-ink mb-4">
-              <Star className="w-3.5 h-3.5 fill-current" aria-hidden />
-              Planos AdvAqui
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white/15 text-white">
+                <Star className="w-3.5 h-3.5 fill-current" aria-hidden />
+                Planos AdvAqui
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-brand-accent text-brand-ink ring-2 ring-brand-accent2/70 shadow">
+                ★ Cadastro grátis pra qualquer advogado
+              </span>
             </div>
-            <h1 className="font-display text-4xl md:text-6xl font-bold leading-tight text-balance">
-              Apareça primeiro na sua cidade,<br className="hidden md:inline" /> sem precisar fazer nada
+            <h1 className="font-display text-3xl md:text-5xl font-bold leading-tight text-balance">
+              Quando alguém procura advogado na sua cidade, você aparece ou desaparece?
             </h1>
             <p className="text-lg md:text-xl text-brand-bg/85 mt-5 leading-relaxed">
-              Cadastro grátis pra qualquer advogado. Plano premium por {formatCurrency(PLAN.price)}/mês
-              coloca seu perfil no topo, ativa WhatsApp clicável e atrai cliente direto — sem
+              O AdvAqui organiza buscas por cidade e especialidade. Enquanto outros
+              advogados esperam indicação, você aparece onde o cliente procura — sem
               leilão, sem comissão, sem fidelidade.
+            </p>
+            <p className="mt-5 inline-flex items-start gap-2 text-sm md:text-base text-brand-bg/90 bg-white/10 rounded-xl px-4 py-2.5 border border-brand-accent/30">
+              <ShieldCheck className="w-5 h-5 text-brand-accent flex-shrink-0 mt-0.5" aria-hidden />
+              <span>
+                <strong className="text-brand-accent">Teste o Premium por 7 dias.</strong>{" "}
+                Se não fizer sentido para você, devolvemos seu dinheiro.
+              </span>
             </p>
           </div>
         </div>
@@ -227,48 +241,40 @@ export default function PlanosPage() {
           </div>
         </section>
 
-        {/* IMPACTO PROJETADO — claims com base em estudos de marketplaces */}
+        {/* DEMANDA — onde o cliente procura (sem números) */}
         <section className="mb-14 max-w-5xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-brand-deep/10 text-brand-deep border border-brand-deep/20 mb-3">
-              <TrendingUp className="w-3.5 h-3.5" aria-hidden />
-              O que esperar com o premium
+              <Search className="w-3.5 h-3.5" aria-hidden />
+              Onde está a demanda
             </div>
             <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
-              Estar no topo importa muito mais do que parece
+              Tem gente procurando advogado na sua cidade agora
             </h2>
             <p className="text-brand-ink/65 mt-3 text-base leading-relaxed">
-              Estudos de comportamento de busca em diretórios locais mostram
-              padrões consistentes. Esses são os números do mercado — perfis
-              premium do AdvAqui ficam exatamente nas posições que recebem
-              esse tipo de atenção.
+              O AdvAqui cria uma página para cada cidade e cada especialidade. A
+              pergunta não é se existe procura — é se vai ser o seu perfil a
+              aparecer quando ela acontecer.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4 mb-6">
-            <ImpactCard
-              big="até 7×"
-              metric="mais visualizações"
-              detail="O 1º perfil da página de cidade costuma receber até 7 vezes mais visualizações que perfis listados abaixo da dobra. Premium fica no topo."
+          <div className="grid md:grid-cols-3 gap-4">
+            <DemandaCard
+              Icon={Search}
+              title="Áreas com mais procura"
+              text="Trabalhista, família, consumidor, INSS e criminal estão entre as buscas mais frequentes do cidadão — e cada uma tem sua própria página por cidade no AdvAqui."
             />
-            <ImpactCard
-              big="~30%"
-              metric="dos cliques vão pro 1º"
-              detail="Em listas de 10+ resultados, o primeiro resultado abocanha cerca de 30% dos cliques totais. Os demais dividem o resto."
+            <DemandaCard
+              Icon={TrendingUp}
+              title="Espaço aberto no topo"
+              text="Na maioria das cidades, a primeira posição ainda está livre. O premium ocupa esse lugar — antes que outro advogado da sua região ocupe."
             />
-            <ImpactCard
-              big="3-5×"
-              metric="taxa de contato"
-              detail="Card com foto profissional e botão WhatsApp clicável tem entre 3 e 5 vezes mais conversão pra mensagem do que card só com telefone."
+            <DemandaCard
+              Icon={MessageCircle}
+              title="O cliente chega pelo Google"
+              text="Alguém pesquisa 'advogado trabalhista na minha cidade', encontra seu perfil organizado e fala com você pelo WhatsApp. Direto, sem intermediário."
             />
           </div>
-
-          <p className="text-xs text-brand-ink/55 italic">
-            Indicadores baseados em pesquisas de comportamento de usuário em
-            diretórios locais e marketplaces (Local SEO Guide, Moz Local, BIA
-            Kelsey). Não são garantia de retorno individual — variam por
-            cidade, especialidade, qualidade do perfil e demanda local.
-          </p>
         </section>
 
         {/* COMPARATIVO COM CONCORRENTES */}
@@ -333,8 +339,8 @@ export default function PlanosPage() {
                   b="Cartão recorrente"
                 />
                 <CompareRow
-                  label="Páginas por especialidade × cidade"
-                  advaqui="Sim — 380k+ URLs"
+                  label="Páginas por especialidade e cidade"
+                  advaqui="Sim, por todo o Brasil"
                   a="Limitado"
                   b="Limitado"
                 />
@@ -386,6 +392,33 @@ export default function PlanosPage() {
           </div>
         </section>
 
+        {/* PROVA VIVA — antes/depois (ver, não ler) */}
+        <section className="mb-14 max-w-4xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-brand-accent/20 text-brand-deep border border-brand-accent/40 mb-3">
+              <Sparkles className="w-3.5 h-3.5" aria-hidden />
+              Veja a diferença
+            </div>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
+              O mesmo advogado, no gratuito e no premium
+            </h2>
+            <p className="text-brand-ink/65 mt-3 text-base leading-relaxed">
+              Não é pra ler — é pra ver. Olhe como o mesmo perfil aparece nos
+              dois planos.
+            </p>
+          </div>
+          <PerfilAntesDepois />
+          <p className="text-center mt-5">
+            <Link
+              href="/exemplo-perfil-premium"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-deep hover:text-brand-accent2"
+            >
+              Ver a página de exemplo completa
+              <ArrowRight className="w-4 h-4" aria-hidden />
+            </Link>
+          </p>
+        </section>
+
         {/* CARDS DE PLANO */}
         <section className="grid md:grid-cols-2 gap-6 mb-14 max-w-5xl mx-auto">
           {/* Gratuito */}
@@ -418,13 +451,23 @@ export default function PlanosPage() {
             </span>
             <div className="mb-4">
               <h2 className="font-display text-2xl font-bold">Premium</h2>
-              <p className="text-3xl font-extrabold mt-2">
+              <p className="text-sm text-brand-bg/80 mt-1">
+                Para advogados que querem mais presença dentro do AdvAqui.
+              </p>
+              <p className="text-3xl font-extrabold mt-3">
                 {formatCurrency(PLAN.price)}
                 <span className="text-base font-normal text-brand-bg/70">/mês</span>
               </p>
               <p className="text-sm text-brand-bg/70">
                 R$ {dailyCost}/dia · Sem fidelidade
               </p>
+              <div className="mt-3 rounded-lg bg-white/10 border border-brand-accent/40 px-3 py-2 text-xs text-brand-bg/90 flex items-start gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-brand-accent flex-shrink-0 mt-0.5" aria-hidden />
+                <span>
+                  <strong className="text-brand-accent">Experimente por 7 dias.</strong>{" "}
+                  Se não fizer sentido para você, seu dinheiro volta.
+                </span>
+              </div>
             </div>
             <ul className="space-y-2.5 mb-6 flex-1 text-sm">
               <PremiumItem text="Tudo do cadastro gratuito" />
@@ -586,24 +629,22 @@ function PremiumItem({ text, highlight }: { text: string; highlight?: boolean })
   );
 }
 
-function ImpactCard({
-  big,
-  metric,
-  detail
+function DemandaCard({
+  Icon,
+  title,
+  text
 }: {
-  big: string;
-  metric: string;
-  detail: string;
+  Icon: LucideIcon;
+  title: string;
+  text: string;
 }) {
   return (
     <div className="rounded-2xl border-2 border-brand-line bg-white p-5 hover:shadow-cardHover transition">
-      <p className="font-display text-4xl md:text-5xl font-extrabold text-brand-deep leading-none">
-        {big}
-      </p>
-      <p className="text-sm font-bold uppercase tracking-wider text-brand-accent2 mt-2">
-        {metric}
-      </p>
-      <p className="text-sm text-brand-ink/70 leading-relaxed mt-3">{detail}</p>
+      <div className="w-11 h-11 rounded-xl bg-brand-accent/15 flex items-center justify-center mb-3">
+        <Icon className="w-5 h-5 text-brand-accent2" aria-hidden />
+      </div>
+      <h3 className="font-display text-base font-bold text-brand-ink mb-1.5">{title}</h3>
+      <p className="text-sm text-brand-ink/70 leading-relaxed">{text}</p>
     </div>
   );
 }

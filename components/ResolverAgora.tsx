@@ -2,22 +2,22 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Sparkles, ArrowRight, Search } from "lucide-react";
+import { Sparkles, ArrowRight, Search, Compass, Users } from "lucide-react";
 
 /**
- * ResolverAgora — classificador de caso interativo na home.
+ * ResolverAgora — classificador de caso interativo e MOTOR da home.
  *
- * O visitante digita, em linguagem própria, o que aconteceu ("fui demitido e
- * não recebi nada") e, ao vivo, vê os problemas jurídicos que mais combinam,
- * com link direto para o passo a passo. É 100% client-side (sem API): recebe
- * um índice leve dos problemas (já normalizado no servidor) e faz matching
- * por palavra-chave. Objetivo: engajar o visitante e levá-lo ao conteúdo certo.
+ * O visitante descreve, em linguagem própria, o que aconteceu. Ao vivo,
+ * mostramos os problemas jurídicos que mais combinam, com link pro passo a
+ * passo. NUNCA deixamos o usuário sem resposta: se nenhum problema casa,
+ * detectamos a ÁREA do direito (ex.: "matei alguém" -> criminal) e oferecemos
+ * o guia da área + encontrar advogado daquela área. Se nem isso, mostramos um
+ * fallback útil (todos os problemas + diretório). 100% client-side.
  */
 export type ProblemaIndexItem = {
   slug: string;
   titulo: string;
   intencao: string;
-  /** Texto de busca já normalizado (minúsculo, sem acento) — feito no servidor. */
   hay: string;
 };
 
@@ -26,7 +26,10 @@ const EXEMPLOS = [
   "meu nome está negativado",
   "o plano de saúde negou minha cirurgia",
   "não recebo a pensão do meu filho",
-  "caí em um golpe do pix"
+  "caí em um golpe do pix",
+  "o INSS negou meu benefício",
+  "comprei um produto com defeito",
+  "quero me divorciar"
 ];
 
 function normalize(s: string): string {
@@ -36,34 +39,90 @@ function normalize(s: string): string {
     .replace(/[̀-ͯ]/g, "");
 }
 
-// Stopwords curtas que não ajudam no match (evita falso positivo com "que", "meu"...).
+// Palavras genéricas que não discriminam intenção (aparecem em quase tudo).
+// "pessoa" era o grande poluidor — a maioria das intenções começa com "Pessoa...".
 const STOP = new Set([
-  "que",
-  "meu",
-  "minha",
-  "uma",
-  "uns",
-  "com",
-  "sem",
-  "por",
-  "para",
-  "nao",
-  "the",
-  "dos",
-  "das",
-  "num",
-  "numa",
-  "foi",
-  "esta",
-  "estou"
+  "que","meu","minha","uma","uns","com","sem","por","para","nao","the","dos","das",
+  "num","numa","foi","esta","estou","pessoa","pessoas","fazer","quero","como","tenho",
+  "agora","sobre","ajuda","preciso","direito","direitos","advogado","advogada","caso",
+  "alguem","gente","posso","sou","sao","tem","ter","fui","mais","aqui","isso","ele","ela"
 ]);
+
+// Detecção de ÁREA por palavra-chave — fallback quando nenhum problema casa.
+type Area = {
+  label: string;
+  guia: string; // slug em /guias
+  esp: string; // slug em /advogados-de
+  urgente?: boolean;
+  kw: string[];
+};
+const AREAS: Area[] = [
+  {
+    label: "Direito Criminal",
+    guia: "direito-criminal",
+    esp: "criminal",
+    urgente: true,
+    kw: ["crime","matei","mat","homicid","assassin","preso","prisa","flagrante","acusad","roub","furt","ameac","agress","agredi","violencia","delegacia","intimac","droga","trafico","estelionato","apreend","audiencia","custodia","b.o","boletim"]
+  },
+  {
+    label: "Direito do Trabalho",
+    guia: "direito-trabalhista",
+    esp: "trabalhista",
+    kw: ["demit","demiss","rescis","salario","fgts","feria","decimo","hora extra","carteira","emprego","patra","chefe","assedio","justa causa","aviso previo","verba","trabalh","mandad embora","dispensad"]
+  },
+  {
+    label: "Direito de Família",
+    guia: "direito-de-familia",
+    esp: "familia",
+    kw: ["divorci","pensa","alimentici","guarda","filho","casament","separ","partilh","uniao estavel","alienac","visita","conjuge","ex-marido","ex-mulher","esposa","marido"]
+  },
+  {
+    label: "Direito Previdenciário (INSS)",
+    guia: "direito-previdenciario",
+    esp: "previdenciario",
+    kw: ["inss","aposentad","auxilio","beneficio","bpc","loas","pericia","previdenc","afastad","invalidez","pensao por morte"]
+  },
+  {
+    label: "Direito do Consumidor",
+    guia: "direito-do-consumidor",
+    esp: "consumidor",
+    kw: ["produto","defeito","loja","compr","cobranc","negativ","spc","serasa","golpe","pix","cartao","banco","juros","reembolso","garantia","procon","plano de saude","convenio","cirurgia","tratament","exame","fraude","estorno"]
+  },
+  {
+    label: "Direito Imobiliário",
+    guia: "direito-imobiliario",
+    esp: "imobiliario",
+    kw: ["aluguel","inquilin","despejo","imovel","condominio","locac","construtora","vizinho","terreno","escritura","financiament imovel"]
+  },
+  {
+    label: "Direito Civil",
+    guia: "direito-civil",
+    esp: "civil",
+    kw: ["divida","contrato","indeniz","danos","heranc","inventario","acidente","testament","emprestimo"]
+  }
+];
+
+function detectArea(query: string): Area | null {
+  let best: Area | null = null;
+  let bestScore = 0;
+  for (const a of AREAS) {
+    let score = 0;
+    for (const k of a.kw) if (query.includes(k)) score += 1;
+    if (score > bestScore) {
+      bestScore = score;
+      best = a;
+    }
+  }
+  return bestScore > 0 ? best : null;
+}
 
 export function ResolverAgora({ items }: { items: ProblemaIndexItem[] }) {
   const [q, setQ] = useState("");
+  const query = normalize(q.trim());
+  const active = query.length >= 3;
 
   const results = useMemo(() => {
-    const query = normalize(q.trim());
-    if (query.length < 3) return [];
+    if (!active) return [];
     const tokens = query
       .split(/[^a-z0-9]+/)
       .filter((t) => t.length >= 3 && !STOP.has(t));
@@ -74,7 +133,7 @@ export function ResolverAgora({ items }: { items: ProblemaIndexItem[] }) {
         let score = 0;
         for (const t of tokens) {
           if (it.hay.includes(t)) score += 1;
-          if (tituloNorm.includes(t)) score += 2; // acerto no título pesa mais
+          if (tituloNorm.includes(t)) score += 2;
         }
         return { it, score };
       })
@@ -82,25 +141,28 @@ export function ResolverAgora({ items }: { items: ProblemaIndexItem[] }) {
       .sort((a, b) => b.score - a.score)
       .slice(0, 3);
     return scored.map((r) => r.it);
-  }, [q, items]);
+  }, [query, active, items]);
 
-  const showEmpty = normalize(q.trim()).length >= 3 && results.length === 0;
+  const area = useMemo(
+    () => (active && results.length === 0 ? detectArea(query) : null),
+    [query, active, results.length]
+  );
 
   return (
-    <section className="container-tight py-12 md:py-16">
-      <div className="rounded-3xl border-2 border-brand-line bg-white p-6 md:p-9 shadow-card">
+    <section id="resolva" className="container-tight py-12 md:py-16">
+      <div className="rounded-3xl border-2 border-brand-accent/40 bg-white p-6 md:p-10 shadow-cardHover">
         <div className="flex items-center gap-2 text-brand-accent2 mb-2">
           <Sparkles className="w-5 h-5" aria-hidden />
           <span className="text-xs font-bold uppercase tracking-wider">
-            Resolva agora
+            Resolva agora · grátis
           </span>
         </div>
-        <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
+        <h2 className="font-display text-2xl md:text-4xl font-bold text-brand-ink leading-tight">
           Conte o que aconteceu — a gente te mostra o caminho
         </h2>
-        <p className="text-brand-ink/65 mt-2 text-base">
+        <p className="text-brand-ink/65 mt-2 text-base md:text-lg">
           Escreva com suas palavras. Em segundos mostramos o passo a passo da
-          sua situação, em linguagem clara.
+          sua situação, em linguagem clara — e onde encontrar um advogado.
         </p>
 
         <div className="mt-5 relative">
@@ -118,12 +180,10 @@ export function ResolverAgora({ items }: { items: ProblemaIndexItem[] }) {
           />
         </div>
 
-        {/* Exemplos clicáveis — nudge para interagir */}
-        {results.length === 0 && !showEmpty && (
+        {/* Exemplos clicáveis */}
+        {!active && (
           <div className="mt-4 flex flex-wrap gap-2">
-            <span className="text-xs text-brand-ink/50 self-center">
-              Tente:
-            </span>
+            <span className="text-xs text-brand-ink/50 self-center">Tente:</span>
             {EXEMPLOS.map((ex) => (
               <button
                 key={ex}
@@ -137,7 +197,7 @@ export function ResolverAgora({ items }: { items: ProblemaIndexItem[] }) {
           </div>
         )}
 
-        {/* Resultados ao vivo */}
+        {/* Resultados — problemas que casaram */}
         {results.length > 0 && (
           <ul className="mt-5 space-y-2.5">
             {results.map((it) => (
@@ -155,10 +215,7 @@ export function ResolverAgora({ items }: { items: ProblemaIndexItem[] }) {
                     </span>
                     <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-accent2 mt-2">
                       Ver o passo a passo
-                      <ArrowRight
-                        className="w-4 h-4 group-hover:translate-x-0.5 transition"
-                        aria-hidden
-                      />
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" aria-hidden />
                     </span>
                   </span>
                 </Link>
@@ -167,25 +224,80 @@ export function ResolverAgora({ items }: { items: ProblemaIndexItem[] }) {
           </ul>
         )}
 
-        {/* Sem correspondência exata */}
-        {showEmpty && (
-          <div className="mt-5 rounded-2xl border border-brand-line bg-brand-bg/40 p-4 text-sm text-brand-ink/80 leading-relaxed">
-            Não encontramos um caso com esse nome.{" "}
+        {/* Fallback por ÁREA — nenhum problema casou, mas identificamos a área */}
+        {active && results.length === 0 && area && (
+          <div className="mt-5 rounded-2xl border-2 border-brand-deep/30 bg-brand-bg/40 p-5">
+            <p className="text-sm text-brand-ink/80 leading-relaxed">
+              Isso parece um caso de <strong className="text-brand-deep">{area.label}</strong>.
+              {area.urgente
+                ? " Em situações assim, procure um advogado o quanto antes — você tem direito a defesa e ao silêncio."
+                : " Veja o guia da área para entender o passo a passo, ou fale com um advogado especializado."}
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2.5">
+              <Link
+                href={`/guias/${area.guia}`}
+                className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl bg-brand-deep text-white hover:bg-brand-deep/90 transition"
+              >
+                <Compass className="w-4 h-4" aria-hidden />
+                Guia de {area.label}
+              </Link>
+              <Link
+                href={`/advogados-de/${area.esp}`}
+                className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl border-2 border-brand-line bg-white text-brand-deep hover:border-brand-accent transition"
+              >
+                <Users className="w-4 h-4" aria-hidden />
+                Advogado de {area.label}
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Fallback genérico — não casou problema nem área. Nunca deixa o usuário sem saída. */}
+        {active && results.length === 0 && !area && (
+          <div className="mt-5 rounded-2xl border border-brand-line bg-brand-bg/40 p-5">
+            <p className="text-sm text-brand-ink/80 leading-relaxed">
+              Não encontramos um caso com esse nome — mas a gente te ajuda a
+              chegar lá. Veja a lista de problemas jurídicos comuns ou encontre
+              um advogado na sua cidade.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2.5">
+              <Link
+                href="/problemas-juridicos"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl bg-brand-deep text-white hover:bg-brand-deep/90 transition"
+              >
+                <Compass className="w-4 h-4" aria-hidden />
+                Ver todos os problemas
+              </Link>
+              <Link
+                href="/advogados"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl border-2 border-brand-line bg-white text-brand-deep hover:border-brand-accent transition"
+              >
+                <Users className="w-4 h-4" aria-hidden />
+                Encontrar advogado
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* CTA persistente — sempre presente quando há busca ativa */}
+        {active && (
+          <p className="mt-4 text-center text-sm text-brand-ink/60">
+            Não é bem isso?{" "}
             <Link
               href="/problemas-juridicos"
               className="font-semibold text-brand-deep hover:text-brand-accent2 underline"
             >
-              Veja todos os problemas jurídicos
+              Ver todos os problemas jurídicos
             </Link>{" "}
             ou{" "}
             <Link
               href="/advogados"
               className="font-semibold text-brand-deep hover:text-brand-accent2 underline"
             >
-              encontre um advogado na sua cidade
+              buscar advogado por cidade
             </Link>
             .
-          </div>
+          </p>
         )}
       </div>
     </section>

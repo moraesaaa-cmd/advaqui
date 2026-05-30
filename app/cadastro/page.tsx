@@ -7,13 +7,12 @@ import { Eye, EyeOff, Check, MapPin } from "lucide-react";
 import { STATES } from "@/lib/data/states";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import {
-  isValidCpf,
   isValidEmail,
   isValidOab,
   isValidPhone,
   isStrongPassword
 } from "@/lib/utils/validation";
-import { formatCpf, formatPhone, formatCep, titleCaseNameBR } from "@/lib/utils/format";
+import { formatPhone, formatCep, titleCaseNameBR } from "@/lib/utils/format";
 import { slugify } from "@/lib/utils/slug";
 import { toast } from "@/components/Toast";
 import { createClient } from "@/lib/supabase/client";
@@ -231,7 +230,6 @@ export default function CadastroPage() {
     const e: Record<string, string> = {};
     if (which >= 0) {
       if (!form.name.trim()) e.name = "Informe seu nome completo";
-      if (!isValidCpf(form.cpf)) e.cpf = "CPF inválido";
       if (!isValidEmail(form.email)) e.email = "E-mail inválido";
       if (!isValidPhone(form.phone)) e.phone = "Telefone inválido (com DDD)";
     }
@@ -435,18 +433,6 @@ export default function CadastroPage() {
               {errors.name && <p className="text-red-600 text-xs mt-1">{errors.name}</p>}
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="r-cpf" className="label">CPF</label>
-                <input
-                  id="r-cpf"
-                  className="input"
-                  value={form.cpf}
-                  onChange={(e) => u("cpf", formatCpf(e.target.value))}
-                  inputMode="numeric"
-                  required
-                />
-                {errors.cpf && <p className="text-red-600 text-xs mt-1">{errors.cpf}</p>}
-              </div>
               <div>
                 <label htmlFor="r-phone" className="label">Telefone</label>
                 <input

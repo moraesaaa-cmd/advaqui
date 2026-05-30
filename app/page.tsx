@@ -11,7 +11,8 @@ import {
   Download,
   Scale,
   Compass,
-  HelpCircle
+  HelpCircle,
+  ArrowRight
 } from "lucide-react";
 import { SearchBox } from "@/components/SearchBox";
 import { STATES } from "@/lib/data/states";
@@ -373,6 +374,41 @@ export default async function HomePage() {
       </section>
 
       <HomeFaq />
+
+      {/* CTA para advogados — "quero aparecer aqui" → planos (sem citar valor) */}
+      <section className="container-tight py-6">
+        <div className="rounded-3xl bg-gradient-to-br from-brand-ink to-brand-deep text-white p-8 md:p-10 relative overflow-hidden">
+          <div
+            aria-hidden
+            className="absolute -top-1/4 -right-1/4 w-1/2 aspect-square rounded-full bg-brand-accent/20 blur-3xl"
+          />
+          <div className="relative max-w-2xl">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-brand-accent text-brand-ink mb-4">
+              <Scale className="w-3.5 h-3.5" aria-hidden />
+              Para advogados
+            </span>
+            <h2 className="font-display text-3xl md:text-4xl font-bold leading-tight">
+              Sou advogado e quero aparecer aqui
+            </h2>
+            <p className="text-brand-bg/85 mt-3 text-base md:text-lg leading-relaxed">
+              Apareça quando alguém procura advogado na sua cidade.{" "}
+              <strong className="text-brand-accent">Leva menos de 30 segundos. Sem pagar nada ao AdvAqui.</strong>
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/planos" className="btn-accent inline-flex items-center gap-2">
+                Quero aparecer no AdvAqui
+                <ArrowRight className="w-4 h-4" aria-hidden />
+              </Link>
+              <Link
+                href="/exemplo-perfil-premium"
+                className="btn-ghost text-white border border-white/25 hover:bg-white/10 inline-flex items-center gap-2"
+              >
+                Ver um perfil de exemplo
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Bloco "Para advogados" — Marketing jurídico + Checklist isca */}
       <section className="bg-brand-bg py-16">
