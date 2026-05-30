@@ -1126,7 +1126,7 @@ export const ARTICLES: Article[] = [
     title:
       "Trocou de advogado depois da pronúncia? O prazo do art. 422 pode reabrir",
     excerpt:
-      "Quando uma nova defesa assume após a pronúncia, surge a dúvida: o prazo do art. 422 do CPP recomeça? Entenda a tese em 4 minutos.",
+      "Quando uma nova defesa assume após a pronúncia, surge a dúvida: o prazo do art. 422 do CPP recomeça? Veja a regra, a exceção que a jurisprudência abriu e como pedir a reabertura.",
     category: "Tribunal do Júri",
     readingMinutes: 7,
     publishedAt: "2026-05-30",
@@ -1248,7 +1248,7 @@ export const ARTICLES: Article[] = [
     title:
       "In dubio pro societate: o brocardo que decide quem vai a júri — e por que está em crise",
     excerpt:
-      "Na dúvida, manda pro júri? O velho brocardo sustenta pronúncias frágeis há décadas. Entenda em 4 minutos por que ele perde força.",
+      "Na dúvida, manda pro júri? O velho brocardo sustentou pronúncias frágeis por décadas — e o STJ vem afastando ele. Entenda a virada e a tese defensiva que está vencendo.",
     category: "Tribunal do Júri",
     readingMinutes: 6,
     publishedAt: "2026-05-29",
@@ -1352,7 +1352,7 @@ export const ARTICLES: Article[] = [
     title:
       "Lei nº 15.358/26 e a nova competência penal: por que se discute a inconstitucionalidade",
     excerpt:
-      "Uma lei pode redesenhar quem julga o quê no processo penal? Entenda em 4 minutos os limites constitucionais no centro do debate.",
+      "A Lei Antifacção tirou certos homicídios do júri. Uma lei ordinária pode fazer isso? Entenda os limites constitucionais — juiz natural, competência do júri e cláusula pétrea.",
     category: "Tribunal do Júri",
     readingMinutes: 6,
     publishedAt: "2026-05-28",
@@ -1461,7 +1461,7 @@ export const ARTICLES: Article[] = [
     title:
       "Júri x crime organizado: a flexibilização de competência da Lei nº 15.358/2026",
     excerpt:
-      "Segurança pública pode flexibilizar a competência do Tribunal do Júri? O choque entre eficiência e garantia, em 5 minutos.",
+      "A Lei Antifacção desloca homicídios de facção do júri para varas colegiadas. Eficiência contra garantia constitucional: entenda o choque e a estratégia de defesa.",
     category: "Tribunal do Júri",
     readingMinutes: 7,
     publishedAt: "2026-05-28",
