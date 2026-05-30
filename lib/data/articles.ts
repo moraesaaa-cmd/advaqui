@@ -1128,18 +1128,18 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Quando uma nova defesa assume após a pronúncia, surge a dúvida: o prazo do art. 422 do CPP recomeça? Entenda a tese em 4 minutos.",
     category: "Tribunal do Júri",
-    readingMinutes: 4,
+    readingMinutes: 7,
     publishedAt: "2026-05-30",
     author: "Equipe AdvAqui",
     authorRole: "Equipe",
     relatedSpecialty: "criminal",
     intro:
-      "A pronúncia encerrou a primeira fase. O juiz abre o prazo do art. 422 do CPP — cinco dias para arrolar testemunhas e pedir diligências para o plenário. Mas e se, nesse intervalo, o réu troca de advogado? A nova defesa herda um prazo que correu sob outra estratégia — ou tem direito a recomeçar?",
+      "A pronúncia virou preclusa, o juiz abriu o prazo do art. 422 do CPP — cinco dias para arrolar testemunhas e requerer diligências para o plenário — e foi exatamente aí que o réu trocou de advogado. A nova defesa encontra um prazo que correu sob a estratégia de outra pessoa. Ela herda esse silêncio, ou tem o direito de recomeçar? A resposta separa uma defesa de plenário viva de uma já condenada na largada.",
     body: [
-      { type: "h2", text: "O que está em jogo no art. 422" },
+      { type: "h2", text: "Cinco dias que desenham o plenário inteiro" },
       {
         type: "p",
-        text: "Depois que a pronúncia se torna preclusa, o art. 422 do CPP abre uma janela curta e decisiva: é nela que a defesa define as testemunhas que falarão diante dos jurados e requer as diligências que podem mudar o veredicto. Perder essa janela é entrar no plenário com a estratégia da fase anterior — nem sempre a que o novo defensor adotaria."
+        text: "O júri tem duas fases. Encerrada a primeira pela pronúncia, abre-se a preparação para o plenário — e o art. 422 do CPP é a porta dela. Naqueles cinco dias, a defesa define quais testemunhas (até cinco) vão falar diante dos jurados, junta documentos e pede diligências. Não é trâmite: é o momento em que a tese que será sustentada no tribunal popular ganha corpo probatório. O que não entrar aqui, dificilmente entra depois."
       },
       {
         type: "tool",
@@ -1149,78 +1149,97 @@ export const ARTICLES: Article[] = [
           {
             termo: "Pronúncia",
             definicao:
-              "Decisão que encerra a primeira fase do júri e admite que o réu seja julgado pelos jurados. A partir dela, o processo caminha para o plenário."
+              "Decisão que encerra a primeira fase e admite o réu a julgamento pelos jurados. Não é condenação — é o juízo de admissibilidade da acusação."
           },
           {
             termo: "Preclusão",
             definicao:
-              "A porta que se fecha: passado o momento ou o prazo, aquela oportunidade processual não volta — salvo exceções."
+              "A porta que se fecha: vencido o prazo ou o momento, a oportunidade processual não volta — salvo exceção fundamentada."
           },
           {
             termo: "Art. 422 do CPP",
             definicao:
-              "Após a preclusão da pronúncia, o juiz intima as partes para, em 5 dias, apresentar rol de testemunhas (até 5), juntar documentos e requerer diligências para o julgamento em plenário."
+              "Após a preclusão da pronúncia, as partes são intimadas para, em 5 dias, arrolar até 5 testemunhas de plenário, juntar documentos e requerer diligências."
+          },
+          {
+            termo: "Plenitude de defesa",
+            definicao:
+              "Garantia específica do júri (art. 5º, XXXVIII, 'a', da Constituição). Vai além da ampla defesa do processo comum: no júri, a defesa precisa ser não só ampla, mas plena — esgotar todos os meios, inclusive os de convencimento dos jurados."
           }
         ]
       },
-      { type: "h2", text: "A tese da reabertura" },
+      { type: "h2", text: "A regra: quem chega, chega com o jogo em andamento" },
       {
         type: "p",
-        text: "A defesa técnica não é uma formalidade — é o coração da ampla defesa. Quando ela é substituída, o novo advogado não conhecia o caso enquanto o prazo corria, e o réu não pode ser penalizado por uma estratégia que não foi sua. Daí a tese: a substituição da defesa, dentro de um intervalo razoável, justifica reabrir o prazo do art. 422, sob pena de esvaziar a ampla defesa no momento mais sensível do rito."
+        text: "Comecemos pelo que os tribunais costumam dizer primeiro. Quando o réu destitui o advogado e constitui outro, o novo defensor, em regra, assume o processo no estado em que ele se encontra. Não pode, só por ter chegado depois, anular atos praticados regularmente nem exigir a reabertura de prazos já encerrados. É a segurança jurídica protegendo o processo contra manobras de reinício infinito."
+      },
+      { type: "h2", text: "A exceção que a jurisprudência foi abrindo" },
+      {
+        type: "p",
+        text: "Mas a rigidez da preclusão cede em duas situações que vêm ganhando força. A primeira: quando o defensor anterior simplesmente abandonou a causa ou se quedou inerte sem qualquer razão tática — intimado para o art. 422, nada arrolou, nada requereu. Aí não há estratégia a respeitar; há vício. A segunda, mais ampla: a substituição da defesa pode reabrir o prazo como corolário lógico da plenitude de defesa, porque a fase do art. 422 é estruturante — define a prova e os contornos da própria linha que irá a plenário."
       },
       {
         type: "callout",
-        text: "O ponto sensível não é o prazo em si — é a efetividade da defesa. Um rol de testemunhas montado às pressas, por quem ainda não dominava os autos, pode comprometer o único julgamento que o réu terá diante dos jurados."
+        text: "A chave não é ter trocado de advogado — é o prejuízo concreto. A nova defesa precisa mostrar ao juiz QUAIS testemunhas deixaram de ser arroladas e por que seriam decisivas. Reabertura se conquista com demonstração, não com pedido genérico de mais tempo."
+      },
+      {
+        type: "p",
+        text: "Essa é a fronteira do debate hoje: de um lado, a preclusão e a segurança do rito; do outro, a plenitude de defesa, que no júri tem estatura constitucional própria. A tendência defensiva é tratar a fase 422 não como prazo qualquer, mas como núcleo da defesa de plenário — e, portanto, reabri-la quando a troca de patrono, somada à demonstração de prejuízo, revela que a defesa real ficou pelo caminho."
       },
       {
         type: "tool",
         tool: "quiz",
         pergunta:
-          "Novo advogado assume 2 dias após a abertura do prazo do art. 422 e alega que não teve tempo de montar a defesa para o plenário. O que melhor sustenta a tese da reabertura?",
+          "O réu troca de advogado logo após a abertura do prazo do art. 422. Qual pedido tem a MAIOR chance de obter a reabertura?",
         opcoes: [
           {
-            texto: "O simples desejo do réu de ter mais tempo",
+            texto: "Pedir mais prazo porque o novo advogado precisa estudar o caso",
             explicacao:
-              "Sozinho, não basta — o pedido precisa de fundamento ligado à efetividade da defesa, não a mera conveniência."
+              "Fraco. É conveniência da defesa, sem demonstrar o que se perdeu. A regra geral (assumir no estado em que está) tende a prevalecer."
           },
           {
-            texto: "A ampla defesa, que exige defesa técnica efetiva e não apenas formal",
+            texto: "Demonstrar que o defensor anterior nada arrolou e indicar testemunhas concretas que mudariam a tese de plenário",
             correta: true,
             explicacao:
-              "Exato. A reabertura se ancora na garantia de uma defesa real — especialmente na fase que define a prova do plenário."
+              "É o caminho. Une desídia/inércia do anterior + plenitude de defesa + prejuízo concreto (testemunhas nominadas e sua relevância). É assim que a preclusão cede."
           },
           {
-            texto: "A nulidade automática de tudo o que foi feito antes",
+            texto: "Arguir nulidade de tudo desde a pronúncia",
             explicacao:
-              "Não há nulidade automática: a pronúncia permanece. Discute-se apenas a oportunidade de a nova defesa exercer o art. 422."
+              "Exagera e enfraquece. A pronúncia não está em discussão; pedir demais costuma fazer o juízo indeferir tudo."
           }
         ]
       },
-      { type: "h2", text: "Por que isso importa para a sua atuação" },
+      { type: "h2", text: "Como levar isso para a sua petição" },
       {
         type: "p",
-        text: "Para quem advoga no júri, registrar desde a habilitação a necessidade de prazo para estruturar a defesa de plenário pode ser a diferença entre uma tese viva e uma preclusão fatal. É um argumento que une garantia constitucional e estratégia concreta — e que merece estar no radar de todo criminalista."
+        text: "Na prática, o criminalista que assume após a pronúncia ganha ao agir cedo e concreto: ao se habilitar, requerer a reabertura do art. 422 fundamentando na plenitude de defesa, apontando a inércia anterior (quando houver) e — o ponto decisivo — nominando as testemunhas e provas que pretende produzir, com a relevância de cada uma para a tese. Genérico, indefere. Concreto, convence. É um tema vivo: a doutrina recente (inclusive análises de 2026) tem sustentado essa leitura constitucional do art. 422."
       },
       {
         type: "p",
-        text: "Este conteúdo é análise doutrinária para estudo e debate, não parecer sobre caso concreto. Cada situação no júri tem particularidades que exigem avaliação individual por um advogado."
+        text: "Conteúdo de análise doutrinária para estudo e debate — não é parecer sobre caso concreto. A admissibilidade do pedido depende das circunstâncias dos autos e da avaliação do juízo; cada júri exige a orientação de um advogado."
       }
     ],
     faq: [
       {
-        question: "A reabertura do art. 422 anula a pronúncia?",
+        question: "Trocar de advogado reabre automaticamente o prazo do art. 422?",
         answer:
-          "Não. A pronúncia permanece. A discussão é apenas se a nova defesa pode exercer integralmente a fase do art. 422 (rol de testemunhas e diligências para o plenário)."
+          "Não. A regra é que o novo defensor assume o processo no estado em que está. A reabertura é exceção: depende de fundamento (plenitude de defesa, inércia do anterior) e de demonstração de prejuízo concreto."
       },
       {
-        question: "Qualquer troca de advogado reabre o prazo?",
+        question: "O que é 'prejuízo concreto' nesse contexto?",
         answer:
-          "Não automaticamente. O pedido precisa de fundamento ligado à efetividade da ampla defesa e a um intervalo razoável — é analisado caso a caso pelo juízo."
+          "É mostrar, de forma específica, o que a defesa perdeu: quais testemunhas deixaram de ser arroladas e por que seriam relevantes para a tese de plenário. Sem isso, o pedido tende a ser indeferido."
       },
       {
-        question: "Onde isso aparece no rito do júri?",
+        question: "Reabrir o art. 422 anula a pronúncia?",
         answer:
-          "Logo após a preclusão da pronúncia e antes da preparação do plenário, momento em que o art. 422 do CPP é aberto às partes."
+          "Não. A pronúncia permanece íntegra. Discute-se apenas a oportunidade de a nova defesa exercer plenamente a fase de preparação do plenário."
+      },
+      {
+        question: "Qual a diferença entre ampla defesa e plenitude de defesa?",
+        answer:
+          "A ampla defesa vale para todo processo. A plenitude de defesa (art. 5º, XXXVIII, 'a') é exclusiva do júri e mais intensa: exige esgotar todos os meios de defesa, o que reforça o argumento de reabertura do art. 422."
       }
     ]
   },
@@ -1231,18 +1250,45 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Na dúvida, manda pro júri? O velho brocardo sustenta pronúncias frágeis há décadas. Entenda em 4 minutos por que ele perde força.",
     category: "Tribunal do Júri",
-    readingMinutes: 4,
+    readingMinutes: 6,
     publishedAt: "2026-05-29",
     author: "Equipe AdvAqui",
     authorRole: "Equipe",
     relatedSpecialty: "criminal",
     intro:
-      "Há uma frase em latim que, sozinha, já mandou muitos réus a júri: in dubio pro societate — na dúvida, a favor da sociedade. Ela vive na fase da pronúncia e sustenta que indícios bastam para levar alguém ao plenário. Mas de onde, exatamente, ela vem na lei? E por que cada vez mais vozes dizem que ela não deveria existir?",
+      "Três palavras em latim já decidiram o destino de milhares de réus: in dubio pro societate — na dúvida, a favor da sociedade. Ela mora na decisão de pronúncia e ensina que basta indício para mandar alguém ao plenário. O detalhe incômodo? Ela não está escrita em lugar nenhum da lei. E o STJ, decisão após decisão, vem dizendo que ela não pode mais sustentar pronúncias frágeis. Entenda a virada — e a tese que está ganhando.",
     body: [
-      { type: "h2", text: "O que o brocardo realmente faz" },
+      { type: "h2", text: "O que o brocardo faz na pronúncia" },
       {
         type: "p",
-        text: "Na decisão de pronúncia, o juiz não condena — apenas decide se o caso vai aos jurados. O in dubio pro societate diz que, nesse momento, a dúvida joga a favor da acusação: havendo indícios suficientes de autoria, pronuncia-se. O problema é que, levado ao extremo, ele transforma indício em passaporte automático para o plenário, mesmo quando a prova é magra."
+        text: "Na pronúncia, o juiz não condena: decide apenas se o caso segue para os jurados. O in dubio pro societate diz que, nesse juízo de admissibilidade, a dúvida pende para a acusação — havendo indícios de autoria, pronuncia-se. Na teoria, faz sentido: quem julga o mérito dos crimes dolosos contra a vida é o Conselho de Sentença, não o juiz togado. Na prática, levado ao automático, o brocardo virou um carimbo: transformou qualquer indício em passaporte para o plenário, mesmo com prova rala."
+      },
+      {
+        type: "tool",
+        tool: "revela",
+        titulo: "Os quatro conceitos que organizam o debate",
+        itens: [
+          {
+            termo: "Pronúncia",
+            definicao:
+              "Juízo de admissibilidade: o juiz verifica se há prova da materialidade e indícios suficientes de autoria para levar o caso ao júri. Não decide culpa."
+          },
+          {
+            termo: "In dubio pro societate",
+            definicao:
+              "Brocardo (não previsto em lei) segundo o qual, na dúvida, pronuncia-se em favor da sociedade. É construção jurisprudencial — e é isso que está sendo contestado."
+          },
+          {
+            termo: "In dubio pro reo",
+            definicao:
+              "Regra constitucional: na dúvida, decide-se a favor do réu. Decorre da presunção de inocência (art. 5º, LVII) e, segundo a crítica, deveria valer também na pronúncia."
+          },
+          {
+            termo: "Standard probatório",
+            definicao:
+              "O 'tanto de prova' exigido para uma decisão. A discussão é qual é o patamar da pronúncia: indício solto basta, ou é preciso preponderância de prova de autoria?"
+          }
+        ]
       },
       {
         type: "tool",
@@ -1251,48 +1297,53 @@ export const ARTICLES: Article[] = [
         ladoA: {
           rotulo: "In dubio pro societate",
           argumento:
-            "A competência para julgar crimes dolosos contra a vida é dos jurados. Havendo indícios, quem deve decidir o mérito é o Conselho de Sentença — não o juiz togado, que estaria invadindo a soberania do júri."
+            "Quem julga crime doloso contra a vida é o júri. Havendo indícios, decidir o mérito é do Conselho de Sentença — impronunciar seria o juiz togado usurpar a soberania dos veredictos."
         },
         ladoB: {
           rotulo: "In dubio pro reo",
           argumento:
-            "Não há regra legal que inverta o ônus na pronúncia. A presunção de inocência é uma só, em todas as fases. Mandar a júri com prova frágil expõe o réu a um julgamento de altíssimo risco sem base mínima."
+            "Não existe lei invertendo o ônus na pronúncia. A presunção de inocência é uma só, em todas as fases. Mandar a júri com prova frágil joga o réu num julgamento de altíssimo risco sem base mínima."
         }
       },
-      { type: "h2", text: "A crise de legitimidade" },
+      { type: "h2", text: "A virada: o STJ desmontando a 'pseudonorma'" },
       {
         type: "p",
-        text: "A crítica é direta: o brocardo não está escrito em lugar nenhum do Código. É construção jurisprudencial. E, enquanto a Constituição consagra a presunção de inocência como regra que atravessa todo o processo, soa contraditório suspendê-la justamente na decisão que expõe o acusado ao júri. Daí falar-se em crise de legitimidade: uma máxima sem base legal sustentando decisões que definem destinos."
+        text: "O cenário mudou. A 6ª Turma do STJ passou a cassar pronúncias apoiadas apenas no brocardo, e a 5ª Turma firmou que o in dubio pro societate não serve para suprir lacuna probatória — é preciso preponderância de provas de autoria sobre as de inocência. Em 2025, o STJ anulou pronúncia baseada só em testemunho indireto ('por ouvir dizer') de policiais. A doutrina garantista vai além e chama o brocardo de pseudonorma: máxima sem base legal ou constitucional, incompatível com a presunção de inocência e o sistema acusatório."
       },
       {
         type: "callout",
-        text: "A defesa que aceita o in dubio pro societate como dogma perde a principal batalha da primeira fase. Questionar a base legal do brocardo é, hoje, uma das teses defensivas mais relevantes na pronúncia."
+        text: "A distinção que vira o jogo: dúvida sobre a autoria, HAVENDO indícios suficientes, é resolvida pelo júri. Mas a dúvida sobre a própria existência de indícios suficientes é do juiz — e essa, sim, se resolve in dubio pro reo, com a impronúncia."
       },
-      { type: "h2", text: "A resistência da jurisprudência" },
+      { type: "h2", text: "A tese defensiva que está vencendo" },
       {
         type: "p",
-        text: "Mesmo com a crítica avançando na doutrina, parte dos tribunais resiste — ora reafirmando o brocardo, ora passando a exigir prova mais robusta para pronunciar. O resultado é um cenário em movimento, em que a tese certa, bem fundamentada, encontra terreno fértil. Para o criminalista, ler esse tensionamento é antecipar para onde o júri caminha."
+        text: "Para a defesa, o caminho deixou de ser apenas filosófico e virou jurisprudencial. Não se trata mais de 'pedir' que o brocardo não se aplique — trata-se de mostrar que o STJ já o afasta quando falta lastro: pronúncia exige prova real da materialidade e indícios concretos de autoria, não suposição. Atacar o testemunho indireto, a ausência de preponderância probatória e a falta de base legal do brocardo é, hoje, uma das teses mais férteis da primeira fase do júri."
       },
       {
         type: "p",
-        text: "Análise doutrinária para estudo e debate. Não substitui a avaliação de um advogado sobre o caso concreto."
+        text: "Análise doutrinária para estudo e debate; não é parecer sobre caso concreto. A aplicação concreta depende dos autos e da avaliação de um advogado."
       }
     ],
     faq: [
       {
         question: "O in dubio pro societate está previsto em lei?",
         answer:
-          "Não expressamente. É construção da jurisprudência aplicada à fase de pronúncia; essa ausência de base legal é justamente o centro da crítica."
+          "Não. É construção jurisprudencial, sem previsão no CPP nem na Constituição. Essa ausência de base legal é o centro da crítica e o fundamento das decisões que vêm afastando o brocardo."
       },
       {
-        question: "Ele se aplica na condenação?",
+        question: "O STJ ainda aplica o brocardo?",
         answer:
-          "Não. Diz respeito à decisão de pronúncia (se o caso vai a júri). Na condenação, vigora a exigência de prova além da dúvida razoável."
+          "Cada vez menos como automatismo. Turmas do STJ têm cassado pronúncias apoiadas só nele, exigindo preponderância de prova de autoria e rejeitando lastros frágeis, como o testemunho indireto."
       },
       {
-        question: "Qual a tese defensiva ligada a isso?",
+        question: "Qual é a distinção decisiva na prática?",
         answer:
-          "Sustentar que a pronúncia exige lastro probatório real e que a presunção de inocência não se suspende, afastando o automatismo do brocardo."
+          "Dúvida sobre autoria, havendo indícios suficientes, vai ao júri. Dúvida sobre a existência desses indícios suficientes é do juiz e se resolve a favor do réu (in dubio pro reo), com impronúncia."
+      },
+      {
+        question: "Isso serve para impronunciar o réu?",
+        answer:
+          "Pode servir. Demonstrando que não há indícios suficientes de autoria — apenas suposição ou prova indireta —, a defesa pede a impronúncia, e não a remessa ao plenário."
       }
     ]
   },
@@ -1303,7 +1354,7 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Uma lei pode redesenhar quem julga o quê no processo penal? Entenda em 4 minutos os limites constitucionais no centro do debate.",
     category: "Tribunal do Júri",
-    readingMinutes: 4,
+    readingMinutes: 6,
     publishedAt: "2026-05-28",
     author: "Equipe AdvAqui",
     authorRole: "Equipe",
@@ -1348,6 +1399,11 @@ export const ARTICLES: Article[] = [
         type: "p",
         text: "A tese da inconstitucionalidade parte de um raciocínio encadeado: se a competência para certos crimes é garantia constitucional, lei ordinária não pode simplesmente subtraí-la ou redesenhá-la a ponto de esvaziá-la. Quando a nova competência toca o núcleo protegido — sobretudo o do júri —, o que está em jogo não é a conveniência da medida, mas o seu limite formal: a Constituição permite isso?"
       },
+      { type: "h2", text: "O argumento mais forte: a natureza do crime, não o perfil do réu" },
+      {
+        type: "p",
+        text: "Aqui está o coração da tese. A competência do júri é fixada pela NATUREZA do fato — crime doloso contra a vida —, não pela identidade de quem o pratica. Um homicídio continua sendo homicídio, seja o autor um cidadão comum ou um integrante de facção. Ao deslocar a competência por uma característica do RÉU (pertencer a organização criminosa), a lei se aproxima de um foro definido pela pessoa, e não pelo crime — exatamente o que o juiz natural proíbe. Há ainda o argumento de hierarquia: se nem emenda constitucional pode abolir o júri (cláusula pétrea), soaria paradoxal que a lei ordinária o esvaziasse por recorte temático."
+      },
       {
         type: "tool",
         tool: "perspectiva",
@@ -1371,6 +1427,11 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text: "Leis assim tendem a ser testadas no controle de constitucionalidade. Para o advogado, o que importa é dominar os argumentos dos dois lados — porque eles reaparecerão em habeas corpus, em questões de competência e na sustentação oral. Conhecer o mapa do debate é estar pronto quando ele bater à porta do seu caso."
+      },
+      { type: "h2", text: "O que a defesa faz hoje" },
+      {
+        type: "p",
+        text: "Na prática, quem discorda do deslocamento suscita a incompetência do juízo colegiado e sustenta a competência do júri — por exceção de incompetência e habeas corpus, pedindo que o caso volte ao tribunal popular. Em paralelo, o tema sobe ao controle concentrado (ADI), onde o art. 2º, § 8º, é discutido em abstrato. Dominar os dois planos, o do seu processo e o da ADI, é o que coloca o criminalista à frente num tema ainda em formação."
       },
       {
         type: "p",
@@ -1402,7 +1463,7 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Segurança pública pode flexibilizar a competência do Tribunal do Júri? O choque entre eficiência e garantia, em 5 minutos.",
     category: "Tribunal do Júri",
-    readingMinutes: 5,
+    readingMinutes: 7,
     publishedAt: "2026-05-28",
     author: "Equipe AdvAqui",
     authorRole: "Equipe",
@@ -1439,6 +1500,11 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text: "A Constituição assegura ao júri a competência para os crimes dolosos contra a vida (art. 5º, XXXVIII, d). Se um homicídio praticado no contexto do crime organizado continua sendo, na essência, um crime doloso contra a vida, a pergunta é inevitável: uma lei pode retirá-lo do júri? Para a tese garantista, não — porque o que define a competência é a natureza do crime, não o perfil do réu. Para a tese da flexibilização, a Constituição comportaria conformação legislativa diante de novas realidades."
+      },
+      { type: "h2", text: "Mais do que competência: a soberania dos veredictos" },
+      {
+        type: "p",
+        text: "O júri não é só um rito — é uma escolha política da Constituição de entregar ao povo o julgamento dos crimes mais graves contra a vida, com soberania dos veredictos. Tirar esses casos do júri não muda apenas QUEM julga; muda a lógica do julgamento, do convencimento de leigos para a fundamentação técnica de juízes togados. É aí que a flexibilização mais incomoda a corrente garantista: ela mexe num arranjo que a Constituição quis, deliberadamente, fora do alcance da conveniência de cada época."
       },
       {
         type: "tool",
