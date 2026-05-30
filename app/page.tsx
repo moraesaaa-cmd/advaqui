@@ -18,11 +18,14 @@ import { SITE } from "@/lib/config";
 import { IntentGrid } from "@/components/IntentGrid";
 import { getAllArticles } from "@/lib/data/articles";
 import { HomeFaq } from "@/components/HomeFaq";
+import { ResolverAgora } from "@/components/ResolverAgora";
+import { getProblemaIndex } from "@/lib/data/problema-index";
 
 export const revalidate = 600;
 
 export default async function HomePage() {
   const latestArticles = getAllArticles().slice(0, 3);
+  const problemaIndex = getProblemaIndex();
 
   return (
     <>
@@ -59,6 +62,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <ResolverAgora items={problemaIndex} />
 
       <IntentGrid />
 
