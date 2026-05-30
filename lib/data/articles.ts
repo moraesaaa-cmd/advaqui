@@ -26,13 +26,42 @@
  *     e cumpre o requisito Google YMYL para conteúdo jurídico.
  */
 
+/**
+ * Ferramentas interativas embutidas no corpo do artigo (renderizadas por
+ * components/ArticleTools.tsx). Servem para prender a atenção e tornar tema
+ * técnico imersivo — sem coletar dados, sem valor estatístico.
+ */
+export type ArticleToolData =
+  | {
+      tool: "perspectiva";
+      pergunta: string;
+      ladoA: { rotulo: string; argumento: string };
+      ladoB: { rotulo: string; argumento: string };
+    }
+  | {
+      tool: "timeline";
+      titulo: string;
+      etapas: Array<{ titulo: string; texto: string }>;
+    }
+  | {
+      tool: "quiz";
+      pergunta: string;
+      opcoes: Array<{ texto: string; correta?: boolean; explicacao: string }>;
+    }
+  | {
+      tool: "revela";
+      titulo: string;
+      itens: Array<{ termo: string; definicao: string }>;
+    };
+
 export type ArticleSection =
   | { type: "p"; text: string }
   | { type: "h2"; text: string }
   | { type: "h3"; text: string }
   | { type: "ul"; items: string[] }
   | { type: "ol"; items: string[] }
-  | { type: "callout"; text: string };
+  | { type: "callout"; text: string }
+  | ({ type: "tool" } & ArticleToolData);
 
 export type ArticleFAQ = { question: string; answer: string };
 
@@ -1089,6 +1118,374 @@ export const ARTICLES: Article[] = [
         question: "O fiador continua respondendo após o vencimento do contrato?",
         answer:
           "Sim, enquanto durar a prorrogação automática, salvo se o fiador notificar formalmente o locador desejando desonerar-se. STJ Súmula 214 e art. 39 da Lei 8.245/91."
+      }
+    ]
+  },
+  {
+    slug: "reabertura-prazo-art-422-cpp-substituicao-defesa-juri",
+    title:
+      "Trocou de advogado depois da pronúncia? O prazo do art. 422 pode reabrir",
+    excerpt:
+      "Quando uma nova defesa assume após a pronúncia, surge a dúvida: o prazo do art. 422 do CPP recomeça? Entenda a tese em 4 minutos.",
+    category: "Tribunal do Júri",
+    readingMinutes: 4,
+    publishedAt: "2026-05-30",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "criminal",
+    intro:
+      "A pronúncia encerrou a primeira fase. O juiz abre o prazo do art. 422 do CPP — cinco dias para arrolar testemunhas e pedir diligências para o plenário. Mas e se, nesse intervalo, o réu troca de advogado? A nova defesa herda um prazo que correu sob outra estratégia — ou tem direito a recomeçar?",
+    body: [
+      { type: "h2", text: "O que está em jogo no art. 422" },
+      {
+        type: "p",
+        text: "Depois que a pronúncia se torna preclusa, o art. 422 do CPP abre uma janela curta e decisiva: é nela que a defesa define as testemunhas que falarão diante dos jurados e requer as diligências que podem mudar o veredicto. Perder essa janela é entrar no plenário com a estratégia da fase anterior — nem sempre a que o novo defensor adotaria."
+      },
+      {
+        type: "tool",
+        tool: "revela",
+        titulo: "Traduzindo o juridiquês",
+        itens: [
+          {
+            termo: "Pronúncia",
+            definicao:
+              "Decisão que encerra a primeira fase do júri e admite que o réu seja julgado pelos jurados. A partir dela, o processo caminha para o plenário."
+          },
+          {
+            termo: "Preclusão",
+            definicao:
+              "A porta que se fecha: passado o momento ou o prazo, aquela oportunidade processual não volta — salvo exceções."
+          },
+          {
+            termo: "Art. 422 do CPP",
+            definicao:
+              "Após a preclusão da pronúncia, o juiz intima as partes para, em 5 dias, apresentar rol de testemunhas (até 5), juntar documentos e requerer diligências para o julgamento em plenário."
+          }
+        ]
+      },
+      { type: "h2", text: "A tese da reabertura" },
+      {
+        type: "p",
+        text: "A defesa técnica não é uma formalidade — é o coração da ampla defesa. Quando ela é substituída, o novo advogado não conhecia o caso enquanto o prazo corria, e o réu não pode ser penalizado por uma estratégia que não foi sua. Daí a tese: a substituição da defesa, dentro de um intervalo razoável, justifica reabrir o prazo do art. 422, sob pena de esvaziar a ampla defesa no momento mais sensível do rito."
+      },
+      {
+        type: "callout",
+        text: "O ponto sensível não é o prazo em si — é a efetividade da defesa. Um rol de testemunhas montado às pressas, por quem ainda não dominava os autos, pode comprometer o único julgamento que o réu terá diante dos jurados."
+      },
+      {
+        type: "tool",
+        tool: "quiz",
+        pergunta:
+          "Novo advogado assume 2 dias após a abertura do prazo do art. 422 e alega que não teve tempo de montar a defesa para o plenário. O que melhor sustenta a tese da reabertura?",
+        opcoes: [
+          {
+            texto: "O simples desejo do réu de ter mais tempo",
+            explicacao:
+              "Sozinho, não basta — o pedido precisa de fundamento ligado à efetividade da defesa, não a mera conveniência."
+          },
+          {
+            texto: "A ampla defesa, que exige defesa técnica efetiva e não apenas formal",
+            correta: true,
+            explicacao:
+              "Exato. A reabertura se ancora na garantia de uma defesa real — especialmente na fase que define a prova do plenário."
+          },
+          {
+            texto: "A nulidade automática de tudo o que foi feito antes",
+            explicacao:
+              "Não há nulidade automática: a pronúncia permanece. Discute-se apenas a oportunidade de a nova defesa exercer o art. 422."
+          }
+        ]
+      },
+      { type: "h2", text: "Por que isso importa para a sua atuação" },
+      {
+        type: "p",
+        text: "Para quem advoga no júri, registrar desde a habilitação a necessidade de prazo para estruturar a defesa de plenário pode ser a diferença entre uma tese viva e uma preclusão fatal. É um argumento que une garantia constitucional e estratégia concreta — e que merece estar no radar de todo criminalista."
+      },
+      {
+        type: "p",
+        text: "Este conteúdo é análise doutrinária para estudo e debate, não parecer sobre caso concreto. Cada situação no júri tem particularidades que exigem avaliação individual por um advogado."
+      }
+    ],
+    faq: [
+      {
+        question: "A reabertura do art. 422 anula a pronúncia?",
+        answer:
+          "Não. A pronúncia permanece. A discussão é apenas se a nova defesa pode exercer integralmente a fase do art. 422 (rol de testemunhas e diligências para o plenário)."
+      },
+      {
+        question: "Qualquer troca de advogado reabre o prazo?",
+        answer:
+          "Não automaticamente. O pedido precisa de fundamento ligado à efetividade da ampla defesa e a um intervalo razoável — é analisado caso a caso pelo juízo."
+      },
+      {
+        question: "Onde isso aparece no rito do júri?",
+        answer:
+          "Logo após a preclusão da pronúncia e antes da preparação do plenário, momento em que o art. 422 do CPP é aberto às partes."
+      }
+    ]
+  },
+  {
+    slug: "standard-probatorio-juri-in-dubio-pro-societate",
+    title:
+      "In dubio pro societate: o brocardo que decide quem vai a júri — e por que está em crise",
+    excerpt:
+      "Na dúvida, manda pro júri? O velho brocardo sustenta pronúncias frágeis há décadas. Entenda em 4 minutos por que ele perde força.",
+    category: "Tribunal do Júri",
+    readingMinutes: 4,
+    publishedAt: "2026-05-29",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "criminal",
+    intro:
+      "Há uma frase em latim que, sozinha, já mandou muitos réus a júri: in dubio pro societate — na dúvida, a favor da sociedade. Ela vive na fase da pronúncia e sustenta que indícios bastam para levar alguém ao plenário. Mas de onde, exatamente, ela vem na lei? E por que cada vez mais vozes dizem que ela não deveria existir?",
+    body: [
+      { type: "h2", text: "O que o brocardo realmente faz" },
+      {
+        type: "p",
+        text: "Na decisão de pronúncia, o juiz não condena — apenas decide se o caso vai aos jurados. O in dubio pro societate diz que, nesse momento, a dúvida joga a favor da acusação: havendo indícios suficientes de autoria, pronuncia-se. O problema é que, levado ao extremo, ele transforma indício em passaporte automático para o plenário, mesmo quando a prova é magra."
+      },
+      {
+        type: "tool",
+        tool: "perspectiva",
+        pergunta: "Na dúvida, ao fim da primeira fase, o caso deve ir ao júri?",
+        ladoA: {
+          rotulo: "In dubio pro societate",
+          argumento:
+            "A competência para julgar crimes dolosos contra a vida é dos jurados. Havendo indícios, quem deve decidir o mérito é o Conselho de Sentença — não o juiz togado, que estaria invadindo a soberania do júri."
+        },
+        ladoB: {
+          rotulo: "In dubio pro reo",
+          argumento:
+            "Não há regra legal que inverta o ônus na pronúncia. A presunção de inocência é uma só, em todas as fases. Mandar a júri com prova frágil expõe o réu a um julgamento de altíssimo risco sem base mínima."
+        }
+      },
+      { type: "h2", text: "A crise de legitimidade" },
+      {
+        type: "p",
+        text: "A crítica é direta: o brocardo não está escrito em lugar nenhum do Código. É construção jurisprudencial. E, enquanto a Constituição consagra a presunção de inocência como regra que atravessa todo o processo, soa contraditório suspendê-la justamente na decisão que expõe o acusado ao júri. Daí falar-se em crise de legitimidade: uma máxima sem base legal sustentando decisões que definem destinos."
+      },
+      {
+        type: "callout",
+        text: "A defesa que aceita o in dubio pro societate como dogma perde a principal batalha da primeira fase. Questionar a base legal do brocardo é, hoje, uma das teses defensivas mais relevantes na pronúncia."
+      },
+      { type: "h2", text: "A resistência da jurisprudência" },
+      {
+        type: "p",
+        text: "Mesmo com a crítica avançando na doutrina, parte dos tribunais resiste — ora reafirmando o brocardo, ora passando a exigir prova mais robusta para pronunciar. O resultado é um cenário em movimento, em que a tese certa, bem fundamentada, encontra terreno fértil. Para o criminalista, ler esse tensionamento é antecipar para onde o júri caminha."
+      },
+      {
+        type: "p",
+        text: "Análise doutrinária para estudo e debate. Não substitui a avaliação de um advogado sobre o caso concreto."
+      }
+    ],
+    faq: [
+      {
+        question: "O in dubio pro societate está previsto em lei?",
+        answer:
+          "Não expressamente. É construção da jurisprudência aplicada à fase de pronúncia; essa ausência de base legal é justamente o centro da crítica."
+      },
+      {
+        question: "Ele se aplica na condenação?",
+        answer:
+          "Não. Diz respeito à decisão de pronúncia (se o caso vai a júri). Na condenação, vigora a exigência de prova além da dúvida razoável."
+      },
+      {
+        question: "Qual a tese defensiva ligada a isso?",
+        answer:
+          "Sustentar que a pronúncia exige lastro probatório real e que a presunção de inocência não se suspende, afastando o automatismo do brocardo."
+      }
+    ]
+  },
+  {
+    slug: "inconstitucionalidade-competencia-penal-lei-15358-26",
+    title:
+      "Lei nº 15.358/26 e a nova competência penal: por que se discute a inconstitucionalidade",
+    excerpt:
+      "Uma lei pode redesenhar quem julga o quê no processo penal? Entenda em 4 minutos os limites constitucionais no centro do debate.",
+    category: "Tribunal do Júri",
+    readingMinutes: 4,
+    publishedAt: "2026-05-28",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "criminal",
+    intro:
+      "Toda vez que uma lei mexe em competência penal — em quem julga o quê — ela esbarra em um terreno sensível: o do juiz natural e das garantias que a Constituição blindou. A Lei nº 15.358/26 reacendeu esse debate, e a pergunta que o organiza é simples: até onde o legislador pode ir sem ferir a Constituição?",
+    body: [
+      { type: "h2", text: "Competência não é detalhe — é garantia" },
+      {
+        type: "p",
+        text: "No processo penal, definir o juízo competente não é burocracia: é garantia do cidadão contra tribunais de exceção e contra a escolha conveniente do julgador. É o princípio do juiz natural. Quando uma lei desloca competências, a primeira pergunta constitucional é se ela respeita esse princípio — ou se cria, na prática, um foro sob medida."
+      },
+      {
+        type: "tool",
+        tool: "revela",
+        titulo: "As balizas constitucionais do debate",
+        itens: [
+          {
+            termo: "Juiz natural",
+            definicao:
+              "Ninguém será processado nem sentenciado senão pela autoridade competente, definida por regras gerais e prévias — não por critério casuístico (art. 5º, LIII, da Constituição)."
+          },
+          {
+            termo: "Competência do júri",
+            definicao:
+              "A Constituição assegura ao Tribunal do Júri a competência para julgar os crimes dolosos contra a vida (art. 5º, XXXVIII, d). É uma garantia, não mera regra de organização."
+          },
+          {
+            termo: "Cláusula pétrea",
+            definicao:
+              "Núcleo da Constituição que nem emenda pode abolir — entre ele, os direitos e garantias individuais. Lei ordinária tem limite ainda mais estreito."
+          }
+        ]
+      },
+      { type: "h2", text: "Onde mora a controvérsia" },
+      {
+        type: "p",
+        text: "A tese da inconstitucionalidade parte de um raciocínio encadeado: se a competência para certos crimes é garantia constitucional, lei ordinária não pode simplesmente subtraí-la ou redesenhá-la a ponto de esvaziá-la. Quando a nova competência toca o núcleo protegido — sobretudo o do júri —, o que está em jogo não é a conveniência da medida, mas o seu limite formal: a Constituição permite isso?"
+      },
+      {
+        type: "tool",
+        tool: "perspectiva",
+        pergunta: "O legislador pode redesenhar a competência penal por lei ordinária?",
+        ladoA: {
+          rotulo: "Pode — é política criminal",
+          argumento:
+            "Definir competência e organizar a Justiça é papel do legislador. Adaptar o sistema a novas realidades criminais é função legítima do Congresso, dentro da sua margem de conformação."
+        },
+        ladoB: {
+          rotulo: "Há um limite intransponível",
+          argumento:
+            "Quando a competência é, ela própria, garantia constitucional (como a do júri), a lei ordinária não pode aboli-la ou esvaziá-la. O limite não é a vontade política — é a Constituição."
+        }
+      },
+      {
+        type: "callout",
+        text: "O debate raramente é tudo ou nada. Costuma girar em torno de até que ponto a lei pode ir antes de tocar o núcleo que a Constituição declarou intocável."
+      },
+      { type: "h2", text: "O que observar daqui pra frente" },
+      {
+        type: "p",
+        text: "Leis assim tendem a ser testadas no controle de constitucionalidade. Para o advogado, o que importa é dominar os argumentos dos dois lados — porque eles reaparecerão em habeas corpus, em questões de competência e na sustentação oral. Conhecer o mapa do debate é estar pronto quando ele bater à porta do seu caso."
+      },
+      {
+        type: "p",
+        text: "Texto de análise doutrinária para estudo e debate; não é parecer sobre caso concreto e não esgota o conteúdo da legislação citada, cuja redação deve ser sempre conferida na fonte oficial."
+      }
+    ],
+    faq: [
+      {
+        question: "A Lei nº 15.358/26 é inconstitucional?",
+        answer:
+          "A constitucionalidade de uma lei só é definida pelo Judiciário, em última instância pelo STF. O que existe é debate doutrinário sobre seus limites diante de garantias como o juiz natural e a competência do júri."
+      },
+      {
+        question: "O que é o princípio do juiz natural?",
+        answer:
+          "É a garantia de ser julgado pela autoridade competente segundo regras gerais e prévias (art. 5º, LIII, da Constituição), o que veda tribunais de exceção e foros escolhidos por conveniência."
+      },
+      {
+        question: "Por que a competência do júri é tão protegida?",
+        answer:
+          "Porque a Constituição a inscreveu entre os direitos e garantias individuais (art. 5º, XXXVIII), o que lhe confere estatura de cláusula pétrea."
+      }
+    ]
+  },
+  {
+    slug: "flexibilizacao-competencia-juri-crime-organizado-lei-15358-26",
+    title:
+      "Júri x crime organizado: a flexibilização de competência da Lei nº 15.358/2026",
+    excerpt:
+      "Segurança pública pode flexibilizar a competência do Tribunal do Júri? O choque entre eficiência e garantia, em 5 minutos.",
+    category: "Tribunal do Júri",
+    readingMinutes: 5,
+    publishedAt: "2026-05-28",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "criminal",
+    intro:
+      "Diante do avanço do crime organizado, ganhou força a ideia de flexibilizar a competência do Tribunal do Júri — deslocando certos julgamentos para juízos especializados. A Lei nº 15.358/2026 colocou o tema na mesa. De um lado, a promessa de eficiência e segurança; de outro, uma garantia que a Constituição tratou como intocável. Quem vence esse cabo de guerra?",
+    body: [
+      { type: "h2", text: "Por que se quer flexibilizar" },
+      {
+        type: "p",
+        text: "O argumento da flexibilização é prático: julgamentos de crimes ligados a organizações criminosas envolvem intimidação de jurados, complexidade probatória e risco à integridade do júri popular. Juízos especializados ou colegiados seriam, nessa visão, mais aptos a julgar com segurança e técnica. A competência cederia em nome da efetividade da Justiça."
+      },
+      {
+        type: "tool",
+        tool: "perspectiva",
+        pergunta: "Crimes ligados ao crime organizado devem sair do júri popular?",
+        ladoA: {
+          rotulo: "Sim — eficiência e segurança",
+          argumento:
+            "Jurados leigos ficam expostos a intimidação e à complexidade desses casos. Um juízo especializado protege o julgamento, os próprios jurados e a sociedade, reduzindo o risco de veredictos pressionados."
+        },
+        ladoB: {
+          rotulo: "Não — é garantia, não opção",
+          argumento:
+            "A competência do júri para crimes dolosos contra a vida é garantia constitucional. Abrir exceções por tipo de réu cria seletividade e abre a porta para esvaziar o júri sempre que for conveniente."
+        }
+      },
+      { type: "h2", text: "O nó constitucional" },
+      {
+        type: "p",
+        text: "A Constituição assegura ao júri a competência para os crimes dolosos contra a vida (art. 5º, XXXVIII, d). Se um homicídio praticado no contexto do crime organizado continua sendo, na essência, um crime doloso contra a vida, a pergunta é inevitável: uma lei pode retirá-lo do júri? Para a tese garantista, não — porque o que define a competência é a natureza do crime, não o perfil do réu. Para a tese da flexibilização, a Constituição comportaria conformação legislativa diante de novas realidades."
+      },
+      {
+        type: "tool",
+        tool: "timeline",
+        titulo: "Como o caso costuma caminhar quando a competência é contestada",
+        etapas: [
+          {
+            titulo: "1. A lei é aplicada",
+            texto:
+              "O caso é deslocado do júri para o juízo indicado pela nova regra de competência."
+          },
+          {
+            titulo: "2. A defesa suscita a questão",
+            texto:
+              "Por exceção de incompetência ou habeas corpus, sustenta-se que o caso deveria permanecer no júri, por força da garantia constitucional."
+          },
+          {
+            titulo: "3. Os tribunais se dividem",
+            texto:
+              "Surgem decisões em sentidos opostos, e o tema amadurece nas instâncias até alcançar as cortes superiores."
+          },
+          {
+            titulo: "4. A palavra final",
+            texto:
+              "Caberá ao Supremo Tribunal Federal, guardião da Constituição, dizer se a flexibilização é compatível com a garantia do júri."
+          }
+        ]
+      },
+      {
+        type: "callout",
+        text: "Repare: o mesmo fato — um homicídio — pode ter destino processual diferente conforme a lei classifica o contexto. É aí que a discussão sai da teoria e vira estratégia de defesa."
+      },
+      { type: "h2", text: "O que o criminalista leva disso" },
+      {
+        type: "p",
+        text: "Esteja de que lado estiver, o advogado que domina os dois argumentos atua melhor: sabe quando suscitar a incompetência, como sustentar a permanência no júri e o que esperar dos tribunais. Em um tema novo e ainda indefinido, sair na frente no domínio da tese é vantagem concreta para o cliente."
+      },
+      {
+        type: "p",
+        text: "Conteúdo de análise doutrinária para estudo e debate. Não é parecer sobre caso concreto e não dispensa a leitura da íntegra da lei na fonte oficial nem a orientação de um advogado."
+      }
+    ],
+    faq: [
+      {
+        question: "A competência do júri pode ser alterada por lei?",
+        answer:
+          "Há intenso debate. A corrente garantista sustenta que, por ser garantia constitucional (art. 5º, XXXVIII), o núcleo da competência do júri não pode ser esvaziado por lei ordinária; outra corrente admite conformação legislativa. A palavra final é do STF."
+      },
+      {
+        question: "O que muda na prática para a defesa?",
+        answer:
+          "Abre-se espaço para discutir a competência (via exceção de incompetência ou habeas corpus), sustentando a permanência do caso no Tribunal do Júri."
+      },
+      {
+        question: "Isso vale para qualquer crime?",
+        answer:
+          "O debate se concentra nos crimes dolosos contra a vida praticados em contexto de organização criminosa — exatamente onde a garantia do júri e a política de segurança se chocam."
       }
     ]
   }

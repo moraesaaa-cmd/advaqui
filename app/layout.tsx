@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { GlobalRecrutaCTA } from "@/components/GlobalRecrutaCTA";
 import { Toaster } from "@/components/Toast";
 import { JsonLd } from "@/components/JsonLd";
 import { PageViewTracker } from "@/components/PageViewTracker";
@@ -75,6 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <Header />
         <main id="main" className="flex-1">{children}</main>
+        <GlobalRecrutaCTA />
         <Footer />
         <Toaster />
         <JsonLd data={orgSchema()} />

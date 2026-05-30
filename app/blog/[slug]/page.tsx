@@ -27,6 +27,7 @@ import {
   getComparativoForSlug
 } from "@/lib/data/fluxogramas";
 import { Fluxograma, QuadroComparativo } from "@/components/Fluxograma";
+import { ArticleTool } from "@/components/ArticleTools";
 
 export const dynamicParams = false;
 export const revalidate = 3600;
@@ -114,6 +115,8 @@ const renderSection = (section: ArticleSection, idx: number) => {
           </p>
         </aside>
       );
+    case "tool":
+      return <ArticleTool key={idx} data={section} />;
     default:
       return null;
   }

@@ -32,7 +32,11 @@ const nextConfig = {
         permanent: true
       },
       { source: "/diretorio", destination: "/advogados", permanent: true },
-      { source: "/diretorio/:path*", destination: "/advogados/:path*", permanent: true }
+      { source: "/diretorio/:path*", destination: "/advogados/:path*", permanent: true },
+      // Raízes de rotas dinâmicas acessadas sem slug -> diretório (evita 404 solto).
+      // O match é exato: não afeta /advogado/[slug] nem /p/[slug].
+      { source: "/advogado", destination: "/advogados", permanent: true },
+      { source: "/p", destination: "/advogados", permanent: true }
     ];
   }
 };
