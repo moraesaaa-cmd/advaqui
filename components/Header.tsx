@@ -9,8 +9,8 @@ import { createClient } from "@/lib/supabase/client";
 
 /**
  * Navegação agrupada por intenção do visitante (em vez de uma lista solta).
- *  - Conteúdo: problemas, guias, áreas, glossário, jurisprudência, blog,
- *    marketing, checklist
+ *  - Conteúdo: blog (hub que reúne artigos, problemas, guias, glossário e
+ *    materiais), jurisprudência, marketing
  *  - Ferramentas: calculadoras, quanto custa, modelos, tribunais
  */
 const PRIMARY: Array<{ href: string; label: string }> = [
@@ -21,14 +21,9 @@ const GROUPS: Array<{ label: string; items: Array<{ href: string; label: string 
   {
     label: "Conteúdo",
     items: [
-      { href: "/problemas-juridicos", label: "Problemas jurídicos" },
-      { href: "/guias", label: "Guias por área" },
-      { href: "/advogados-de", label: "Áreas de atuação" },
-      { href: "/glossario", label: "Glossário jurídico" },
+      { href: "/blog", label: "Blog — artigos, guias, glossário e mais" },
       { href: "/jurisprudencia", label: "Jurisprudência (STF/STJ)" },
-      { href: "/blog", label: "Blog jurídico" },
-      { href: "/marketing-juridico", label: "Marketing (advogados)" },
-      { href: "/checklist", label: "Checklist de presença digital" }
+      { href: "/marketing-juridico", label: "Marketing (para advogados)" }
     ]
   },
   {
