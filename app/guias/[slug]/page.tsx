@@ -8,9 +8,14 @@ import {
   FileText,
   BookOpen,
   Scale,
-  HelpCircle
+  HelpCircle,
+  ListChecks,
+  Clock,
+  Wallet,
+  Ban,
+  Lightbulb
 } from "lucide-react";
-import { GUIAS, findGuia } from "@/lib/data/guias";
+import { GUIAS, findGuia, getGuiaConteudo } from "@/lib/data/guias";
 import { findGlossarioTermo } from "@/lib/data/glossario";
 import { findProblema } from "@/lib/data/problemas-juridicos";
 import { findTemaStj } from "@/lib/data/jurisprudencia-temas";
@@ -63,6 +68,7 @@ export default function GuiaPage({ params }: { params: { slug: string } }) {
   const temasRel = (g.temas_jurisprudencia || [])
     .map((s) => findTemaStj(s))
     .filter(Boolean);
+  const conteudo = getGuiaConteudo(g.slug);
 
   return (
     <div className="container-narrow py-10">
@@ -100,6 +106,23 @@ export default function GuiaPage({ params }: { params: { slug: string } }) {
           ))}
         </section>
 
+        {/* Como funciona na prática */}
+        {conteudo?.como_funciona && conteudo.como_funciona.length > 0 && (
+          <section className="mt-6 space-y-3">
+            <h2 className="font-display text-xl font-bold text-brand-ink">
+              Como funciona na prática
+            </h2>
+            {conteudo.como_funciona.map((p, i) => (
+              <p
+                key={i}
+                className="text-sm md:text-base text-brand-ink/85 leading-relaxed"
+              >
+                {p}
+              </p>
+            ))}
+          </section>
+        )}
+
         {/* Temas centrais */}
         <section className="mt-6">
           <h2 className="font-display text-xl font-bold text-brand-ink mb-3">
@@ -119,6 +142,150 @@ export default function GuiaPage({ params }: { params: { slug: string } }) {
             ))}
           </ul>
         </section>
+
+        {/* Passo a passo */}
+        {conteudo?.passo_a_passo && conteudo.passo_a_passo.length > 0 && (
+          <section className="mt-6">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+              <ListChecks className="w-5 h-5 text-brand-deep" aria-hidden />
+              Passo a passo: o que fazer
+            </h2>
+            <ol className="space-y-3">
+              {conteudo.passo_a_passo.map((p, i) => (
+                <li
+                  key={i}
+                  className="flex gap-3 rounded-xl border border-brand-line bg-white p-4"
+                >
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-brand-deep text-white text-sm font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <p className="font-semibold text-brand-ink">{p.titulo}</p>
+                    <p className="text-sm text-brand-ink/80 mt-1 leading-relaxed">
+                      {p.detalhe}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+
+        {/* Prazos importantes */}
+        {conteudo?.prazos && conteudo.prazos.length > 0 && (
+          <section className="mt-6">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+              <Clock className="w-5 h-5 text-brand-deep" aria-hidden />
+              Prazos que você precisa conhecer
+            </h2>
+            <ul className="space-y-2">
+              {conteudo.prazos.map((p, i) => (
+                <li
+                  key={i}
+                  className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 rounded-xl border border-brand-line bg-white p-4"
+                >
+                  <span className="flex-shrink-0 inline-block w-fit rounded-md bg-brand-deep/10 px-2.5 py-1 text-sm font-bold text-brand-deep">
+                    {p.prazo}
+                  </span>
+                  <span className="text-sm text-brand-ink/80 leading-relaxed">
+                    {p.descricao}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Documentos */}
+        {conteudo?.documentos && conteudo.documentos.length > 0 && (
+          <section className="mt-6">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+              <FileText className="w-5 h-5 text-brand-deep" aria-hidden />
+              Documentos que costumam ser necessários
+            </h2>
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {conteudo.documentos.map((d, i) => (
+                <li
+                  key={i}
+                  className="flex items-start gap-2 text-sm md:text-base text-brand-ink/85 leading-relaxed rounded-lg border border-brand-line bg-white p-3"
+                >
+                  <CheckSquare
+                    className="w-4 h-4 text-brand-deep mt-0.5 flex-shrink-0"
+                    aria-hidden
+                  />
+                  {d}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Custos */}
+        {conteudo?.custos && conteudo.custos.length > 0 && (
+          <section className="mt-6">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+              <Wallet className="w-5 h-5 text-brand-deep" aria-hidden />
+              Quanto custa (e quando é gratuito)
+            </h2>
+            <ul className="space-y-2">
+              {conteudo.custos.map((c, i) => (
+                <li
+                  key={i}
+                  className="text-sm md:text-base text-brand-ink/85 leading-relaxed pl-4 border-l-2 border-brand-line"
+                >
+                  {c}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Erros comuns */}
+        {conteudo?.erros_comuns && conteudo.erros_comuns.length > 0 && (
+          <section className="mt-6">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+              <Ban className="w-5 h-5 text-red-500" aria-hidden />
+              Erros comuns que prejudicam o caso
+            </h2>
+            <ul className="space-y-2">
+              {conteudo.erros_comuns.map((e, i) => (
+                <li
+                  key={i}
+                  className="flex items-start gap-2 text-sm md:text-base text-brand-ink/85 leading-relaxed rounded-lg border border-red-100 bg-red-50/50 p-3"
+                >
+                  <Ban
+                    className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0"
+                    aria-hidden
+                  />
+                  {e}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Direitos-chave */}
+        {conteudo?.direitos_chave && conteudo.direitos_chave.length > 0 && (
+          <section className="mt-6">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+              <Lightbulb className="w-5 h-5 text-brand-accent2" aria-hidden />
+              Direitos que muita gente não conhece
+            </h2>
+            <ul className="space-y-3">
+              {conteudo.direitos_chave.map((d, i) => (
+                <li
+                  key={i}
+                  className="rounded-xl border border-brand-line bg-brand-bg/30 p-4"
+                >
+                  <p className="font-semibold text-brand-ink">{d.titulo}</p>
+                  <p className="text-sm text-brand-ink/80 mt-1 leading-relaxed">
+                    {d.detalhe}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* Quando procurar */}
         <section className="mt-6">
@@ -330,6 +497,23 @@ export default function GuiaPage({ params }: { params: { slug: string } }) {
               "@type": "Question",
               name: f.q,
               acceptedAnswer: { "@type": "Answer", text: f.a }
+            }))
+          }}
+        />
+      )}
+      {conteudo?.passo_a_passo && conteudo.passo_a_passo.length > 0 && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: `${g.titulo}: passo a passo`,
+            description: g.tagline,
+            inLanguage: "pt-BR",
+            step: conteudo.passo_a_passo.map((p, i) => ({
+              "@type": "HowToStep",
+              position: i + 1,
+              name: p.titulo,
+              text: p.detalhe
             }))
           }}
         />
