@@ -13,7 +13,7 @@ const COLUMNS: Array<{ title: string; links: Array<{ href: string; label: string
     ]
   },
   {
-    title: "Resolver problema",
+    title: "Conteúdo",
     links: [
       { href: "/problemas-juridicos", label: "Problemas jurídicos" },
       { href: "/guias", label: "Guias por área" },
