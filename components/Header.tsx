@@ -9,10 +9,9 @@ import { createClient } from "@/lib/supabase/client";
 
 /**
  * Navegação agrupada por intenção do visitante (em vez de uma lista solta).
- * Conteúdos do mesmo gênero ficam juntos:
- *  - Resolver problema: problemas, guias, áreas, glossário, jurisprudência
+ *  - Conteúdo: problemas, guias, áreas, glossário, jurisprudência, blog,
+ *    marketing, checklist
  *  - Ferramentas: calculadoras, quanto custa, modelos, tribunais
- *  - Conteúdo: blog, marketing, checklist
  */
 const PRIMARY: Array<{ href: string; label: string }> = [
   { href: "/advogados", label: "Encontrar advogado" }
@@ -20,13 +19,16 @@ const PRIMARY: Array<{ href: string; label: string }> = [
 
 const GROUPS: Array<{ label: string; items: Array<{ href: string; label: string }> }> = [
   {
-    label: "Resolver problema",
+    label: "Conteúdo",
     items: [
       { href: "/problemas-juridicos", label: "Problemas jurídicos" },
       { href: "/guias", label: "Guias por área" },
       { href: "/advogados-de", label: "Áreas de atuação" },
       { href: "/glossario", label: "Glossário jurídico" },
-      { href: "/jurisprudencia", label: "Jurisprudência (STF/STJ)" }
+      { href: "/jurisprudencia", label: "Jurisprudência (STF/STJ)" },
+      { href: "/blog", label: "Blog jurídico" },
+      { href: "/marketing-juridico", label: "Marketing (advogados)" },
+      { href: "/checklist", label: "Checklist de presença digital" }
     ]
   },
   {
@@ -36,14 +38,6 @@ const GROUPS: Array<{ label: string; items: Array<{ href: string; label: string 
       { href: "/quanto-custa", label: "Quanto custa" },
       { href: "/modelos", label: "Modelos de documentos" },
       { href: "/tribunais", label: "Tribunais por cidade" }
-    ]
-  },
-  {
-    label: "Conteúdo",
-    items: [
-      { href: "/blog", label: "Blog jurídico" },
-      { href: "/marketing-juridico", label: "Marketing (advogados)" },
-      { href: "/checklist", label: "Checklist de presença digital" }
     ]
   }
 ];
