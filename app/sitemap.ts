@@ -41,6 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/marketing-juridico`, changeFrequency: "weekly", priority: 0.7, lastModified: now },
     { url: `${base}/checklist`, changeFrequency: "monthly", priority: 0.6, lastModified: now },
     { url: `${base}/planos`, changeFrequency: "monthly", priority: 0.7, lastModified: now },
+    { url: `${base}/para-advogados`, changeFrequency: "monthly", priority: 0.8, lastModified: now },
     { url: `${base}/sobre`, changeFrequency: "yearly", priority: 0.4, lastModified: now },
     { url: `${base}/faq`, changeFrequency: "monthly", priority: 0.5, lastModified: now },
     { url: `${base}/contato`, changeFrequency: "yearly", priority: 0.4, lastModified: now },

@@ -193,7 +193,7 @@ export default async function HomePage() {
               <strong className="text-brand-accent">Leva menos de 30 segundos. Sem pagar nada ao AdvAqui.</strong>
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/planos" className="btn-accent inline-flex items-center gap-2">
+              <Link href="/para-advogados" className="btn-accent inline-flex items-center gap-2">
                 Quero aparecer no AdvAqui
                 <ArrowRight className="w-4 h-4" aria-hidden />
               </Link>

@@ -23,6 +23,14 @@ const nextConfig = {
     // URLs antigas / variações comuns redirecionadas pro destino canônico.
     // Evita 404 em links históricos e ajuda link equity SEO.
     return [
+      // Consolida o domínio: www -> sem-www (versão canônica). Mata conteúdo
+      // duplicado e concentra os sinais de SEO em um único host.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.advaqui.com" }],
+        destination: "https://advaqui.com/:path*",
+        permanent: true
+      },
       { source: "/diretorio", destination: "/advogados", permanent: true },
       { source: "/diretorio/:path*", destination: "/advogados/:path*", permanent: true }
     ];
