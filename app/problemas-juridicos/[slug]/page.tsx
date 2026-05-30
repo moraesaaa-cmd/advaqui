@@ -24,6 +24,7 @@ import { getCidadesPrioritarias } from "@/lib/data/cidades-prioritarias";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
+import { ProblemaChecklist } from "@/components/ProblemaChecklist";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, howToSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -141,6 +142,14 @@ export default function ProblemaPage({ params }: { params: { slug: string } }) {
             ))}
           </ol>
         </section>
+
+        {/* Ferramenta interativa — monta o caso e calcula o progresso */}
+        <ProblemaChecklist
+          titulo={p.titulo}
+          documentos={p.documentos ?? []}
+          passos={p.passos}
+          advogadosHref="/advogados"
+        />
 
         {/* Direitos básicos */}
         <section className="mt-6">

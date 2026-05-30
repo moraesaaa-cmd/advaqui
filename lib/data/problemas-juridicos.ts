@@ -1564,6 +1564,430 @@ export const PROBLEMAS: ProblemaJuridico[] = [
     documentos: ["CNIS", "Carteiras de trabalho", "Carnês e comprovantes de contribuição", "Documentos de tempo especial ou rural, se houver"],
     termos_glossario: ["prescricao"],
     atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "sofri-assedio-moral-no-trabalho",
+    titulo: "Sofri assédio moral no trabalho. O que fazer?",
+    intencao_curta:
+      "Humilhações repetidas, perseguição ou exposição do trabalhador pelo chefe ou colegas.",
+    resumo:
+      "Assédio moral é a exposição do trabalhador a situações humilhantes e repetitivas. Reunir provas e registrar os fatos é o primeiro passo — em muitos casos cabe indenização e até rescisão indireta.",
+    areas: ["trabalhista"],
+    situacao: [
+      "Assédio moral costuma aparecer como humilhações na frente de colegas, metas impossíveis usadas como punição, isolamento proposital, gritos, ameaças veladas ou cobranças que ultrapassam o razoável — sempre de forma repetida.",
+      "Um episódio isolado e pontual normalmente não configura assédio; o que caracteriza é a conduta abusiva que se repete ao longo do tempo e afeta a dignidade e a saúde de quem trabalha.",
+      "Guardar provas e relatos com datas é decisivo, porque o assédio costuma acontecer sem testemunhas dispostas a falar."
+    ],
+    passos: [
+      { titulo: "Registre tudo com data", texto: "Anote os episódios (o que foi dito, quando, quem presenciou). Guarde mensagens, e-mails, prints e áudios que mostrem a conduta." },
+      { titulo: "Procure apoio e testemunhas", texto: "Converse com colegas que presenciaram, com o RH ou com o sindicato da categoria. Formalize por escrito sempre que possível." },
+      { titulo: "Cuide da sua saúde", texto: "Se houve adoecimento (ansiedade, depressão), busque atendimento médico. O atestado e o laudo são provas importantes do dano." },
+      { titulo: "Avalie com um advogado", texto: "Dependendo da gravidade, cabe ação por dano moral e até rescisão indireta — quando você sai por culpa do empregador, com direito às verbas como se fosse demitido sem justa causa." }
+    ],
+    direitos: [
+      "Ambiente de trabalho saudável e respeito à dignidade do trabalhador",
+      "Indenização por dano moral quando o assédio é comprovado",
+      "Rescisão indireta nos casos graves, com direito às verbas rescisórias",
+      "Benefício previdenciário se houver afastamento por doença ocupacional reconhecida"
+    ],
+    quando_urgente:
+      "Se o assédio está afetando sua saúde, se há ameaça de demissão por retaliação ou se você pensa em pedir as contas, fale com um advogado antes de decidir — a forma de sair muda os seus direitos.",
+    documentos: [
+      "Mensagens, e-mails e prints com as condutas",
+      "Relato dos episódios com datas e nomes de testemunhas",
+      "Atestados e laudos médicos, se houve adoecimento",
+      "Carteira de trabalho e contracheques",
+      "Registro feito no RH ou no sindicato, se houver"
+    ],
+    termos_glossario: ["dano-moral"],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "nao-recebi-horas-extras",
+    titulo: "Faço horas extras e não recebo. O que fazer?",
+    intencao_curta:
+      "Empregado trabalha além da jornada sem o pagamento das extras ou sem o adicional correto.",
+    resumo:
+      "Hora trabalhada além da jornada deve ser paga com adicional. Mesmo sem registro de ponto é possível provar e cobrar — inclusive os reflexos em férias, 13º e FGTS.",
+    areas: ["trabalhista"],
+    situacao: [
+      "A jornada padrão costuma ser de 8 horas por dia e 44 por semana; o que passa disso é hora extra e tem adicional sobre a hora normal, maior ainda em domingos e feriados.",
+      "É comum o empregador não registrar o ponto corretamente, pedir que o funcionário continue após bater o ponto, ou usar banco de horas de forma irregular.",
+      "A falta de controle de ponto não tira o direito: quando a empresa tem muitos empregados e não apresenta os registros, a Justiça pode presumir verdadeira a jornada alegada pelo trabalhador."
+    ],
+    passos: [
+      { titulo: "Reúna provas da jornada", texto: "Guarde prints de ponto, mensagens fora do horário, escalas, fotos e e-mails. Colegas como testemunhas também ajudam." },
+      { titulo: "Estime por alto o que é devido", texto: "Some as horas extras habituais e os reflexos em férias, 13º, descanso semanal e FGTS. Um advogado faz a conta exata." },
+      { titulo: "Cobre a empresa formalmente", texto: "Às vezes a empresa regulariza ao ser cobrada por escrito. Guarde os protocolos." },
+      { titulo: "Avalie a ação trabalhista", texto: "As verbas dos últimos anos podem ser cobradas, mas há prazo (em regra até 2 anos após sair, alcançando os 5 anos anteriores). Não deixe prescrever." }
+    ],
+    direitos: [
+      "Pagamento das horas extras com o adicional legal",
+      "Adicional maior em domingos e feriados, quando for o caso",
+      "Reflexos das horas extras habituais em férias, 13º, descanso semanal e FGTS",
+      "Direito de cobrar mesmo sem cartão de ponto, por outros meios de prova"
+    ],
+    quando_urgente:
+      "Se você já saiu da empresa, atenção ao prazo: em regra há até 2 anos para entrar com a ação. Quanto antes procurar orientação, mais período consegue cobrar.",
+    documentos: [
+      "Cartões de ponto, escalas e espelhos de jornada",
+      "Mensagens e e-mails enviados fora do horário",
+      "Contracheques e carteira de trabalho",
+      "Nomes de colegas que possam testemunhar"
+    ],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "quero-pedir-rescisao-indireta",
+    titulo: "O patrão não cumpre as regras. Posso pedir rescisão indireta?",
+    intencao_curta:
+      "Trabalhador quer sair com os direitos de demitido por causa de falta grave do empregador.",
+    resumo:
+      "Rescisão indireta é a justa causa do empregador: quando a empresa comete falta grave, o trabalhador pode sair e receber as mesmas verbas de uma demissão sem justa causa.",
+    areas: ["trabalhista"],
+    situacao: [
+      "A rescisão indireta cabe quando o empregador descumpre o contrato de forma grave — atraso reiterado de salário, falta de depósito do FGTS, assédio, exigência de tarefas humilhantes ou risco à saúde sem proteção.",
+      "É o contrário da justa causa: a falta é da empresa, e por isso o trabalhador sai com aviso, 13º e férias proporcionais, multa de 40% do FGTS, saque do fundo e seguro-desemprego.",
+      "É uma decisão delicada: enquanto a Justiça não reconhece, o vínculo continua. Por isso convém avaliar as provas antes de simplesmente parar de comparecer."
+    ],
+    passos: [
+      { titulo: "Documente a falta da empresa", texto: "Reúna o extrato do FGTS sem depósitos, comprovantes de salário atrasado, mensagens e laudos. É a base do pedido." },
+      { titulo: "Não abandone o emprego sem orientação", texto: "Abandonar pode virar justa causa contra você. O ideal é avaliar com advogado se já cabe o pedido e como formalizar." },
+      { titulo: "Decida se continua trabalhando", texto: "Em alguns casos dá para pedir e parar de comparecer; em outros, seguir até a decisão. Cada cenário tem risco — analise antes." },
+      { titulo: "Ajuíze a ação", texto: "A rescisão indireta é reconhecida pela Justiça do Trabalho. Com prova boa, costuma equiparar à demissão sem justa causa." }
+    ],
+    direitos: [
+      "Verbas iguais às da demissão sem justa causa (aviso, 13º e férias proporcionais, multa de 40% do FGTS)",
+      "Saque do FGTS e habilitação ao seguro-desemprego",
+      "Indenização adicional se houver dano moral envolvido"
+    ],
+    quando_urgente:
+      "Se a empresa parou de pagar salário ou de recolher o FGTS, aja rápido — quanto mais tempo passa, maior o prejuízo. Um advogado dirá se já é hora de pedir a rescisão indireta.",
+    documentos: [
+      "Extrato do FGTS mostrando a falta de depósitos",
+      "Contracheques e comprovantes de atraso de salário",
+      "Carteira de trabalho",
+      "Mensagens e provas da falta grave da empresa"
+    ],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "quero-revisar-o-valor-da-pensao",
+    titulo: "A pensão ficou alta ou baixa demais. Posso revisar o valor?",
+    intencao_curta:
+      "Quem paga ou quem recebe pensão quer aumentar ou reduzir o valor por mudança na situação.",
+    resumo:
+      "O valor da pensão alimentícia pode ser revisto quando muda a necessidade de quem recebe ou a possibilidade de quem paga. A revisão é feita por acordo ou por ação judicial.",
+    areas: ["familia"],
+    situacao: [
+      "A pensão é fixada conforme dois fatores que se equilibram: a necessidade de quem recebe e a possibilidade de quem paga. Quando algum deles muda de forma relevante, o valor pode ser revisto.",
+      "Quem paga pode pedir redução se perdeu o emprego, teve outro filho ou a renda caiu. Quem recebe pode pedir aumento se as despesas cresceram (escola, saúde) ou se a renda de quem paga subiu.",
+      "Enquanto não houver decisão nova, o valor antigo continua valendo — parar de pagar por conta própria pode gerar dívida e até prisão civil."
+    ],
+    passos: [
+      { titulo: "Junte a prova da mudança", texto: "Comprove o que mudou: rescisão, novos contracheques, novos gastos, nascimento de outro filho, despesas médicas." },
+      { titulo: "Tente acordo primeiro", texto: "Muitas revisões se resolvem por acordo, homologado em cartório (com advogado) ou na Justiça. É mais rápido e barato." },
+      { titulo: "Continue pagando o valor atual", texto: "Até a revisão sair, mantenha o pagamento combinado para não acumular dívida nem risco de prisão." },
+      { titulo: "Ajuíze a ação revisional", texto: "Sem acordo, entra-se com ação de revisão de alimentos. O juiz reavalia necessidade e possibilidade com base nas provas." }
+    ],
+    direitos: [
+      "Revisão do valor quando há mudança comprovada na necessidade ou na possibilidade",
+      "Acordo extrajudicial em cartório quando as partes concordam e há advogado",
+      "Manutenção do valor anterior até a decisão sobre o novo"
+    ],
+    quando_urgente:
+      "Se você perdeu a renda e não consegue pagar, procure orientação antes de atrasar — o atraso pode levar a protesto e prisão civil. A revisão deve ser pedida o quanto antes.",
+    documentos: [
+      "Acordo ou decisão que fixou a pensão",
+      "Comprovantes da mudança de renda (rescisão, novos contracheques)",
+      "Comprovantes de despesas (escola, saúde)",
+      "Documentos dos filhos"
+    ],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "quero-a-guarda-do-meu-filho",
+    titulo: "Quero a guarda do meu filho. Como funciona?",
+    intencao_curta:
+      "Pai ou mãe quer definir ou mudar a guarda e a convivência com a criança.",
+    resumo:
+      "A guarda define com quem a criança mora e como é a convivência. A regra geral hoje é a guarda compartilhada, em que as decisões são divididas entre os pais — sempre no interesse da criança.",
+    areas: ["familia"],
+    situacao: [
+      "Guarda não é posse do filho: é a responsabilidade de cuidar e decidir. A lei prioriza a guarda compartilhada, em que pai e mãe dividem as decisões importantes, mesmo morando em casas diferentes.",
+      "A guarda unilateral (só com um dos pais) é exceção, usada quando o outro não tem condições ou não quer exercer. Mesmo assim, o outro mantém o direito de convivência e de fiscalizar.",
+      "O que orienta toda decisão é o melhor interesse da criança ou do adolescente — não a vitória de um dos pais."
+    ],
+    passos: [
+      { titulo: "Tente o acordo de guarda e convivência", texto: "O melhor caminho é definir em acordo a moradia, a rotina de convivência e a divisão de decisões. Pode ser homologado na Justiça." },
+      { titulo: "Organize as informações da rotina", texto: "Escola, saúde, quem cuida no dia a dia, rede de apoio. Isso ajuda a desenhar o arranjo que funciona para a criança." },
+      { titulo: "Considere a mediação familiar", texto: "A mediação ajuda os pais a chegarem a um acordo com menos desgaste, preservando a criança do conflito." },
+      { titulo: "Ajuíze a ação se não houver acordo", texto: "Sem consenso, o juiz decide ouvindo as partes e, às vezes, equipe técnica. Um advogado conduz o processo." }
+    ],
+    direitos: [
+      "Convivência com os dois pais, salvo risco à criança",
+      "Guarda compartilhada como regra, com decisões divididas",
+      "Direito de fiscalizar a criação mesmo sem a guarda unilateral",
+      "Prioridade absoluta ao interesse da criança e do adolescente"
+    ],
+    quando_urgente:
+      "Se há risco à criança (violência, negligência, ameaça de levar para outra cidade ou país sem combinar), procure um advogado imediatamente — cabe pedido urgente ao juiz.",
+    documentos: [
+      "Certidão de nascimento da criança",
+      "Comprovantes da rotina (escola, médico)",
+      "Documentos dos pais",
+      "Provas de eventual risco, se houver"
+    ],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "preciso-fazer-inventario-e-partilha",
+    titulo: "Um familiar faleceu. Como fazer o inventário e a partilha?",
+    intencao_curta:
+      "Herdeiros precisam regularizar e dividir os bens deixados por quem faleceu.",
+    resumo:
+      "Inventário é o procedimento para apurar e partilhar os bens de quem faleceu. Pode ser feito em cartório, quando todos concordam e são maiores, ou na Justiça nos demais casos.",
+    areas: ["familia", "civil"],
+    situacao: [
+      "Quando alguém falece, os bens (imóveis, contas, veículos) não podem simplesmente ser usados ou vendidos pelos herdeiros: é preciso o inventário para transferir tudo legalmente.",
+      "Se todos os herdeiros são maiores, capazes e estão de acordo, e não há testamento que exija o juiz, o inventário pode ser feito em cartório (extrajudicial), de forma mais rápida.",
+      "Havendo herdeiro menor, incapaz, testamento ou conflito, o inventário corre na Justiça. Em qualquer caso há um imposto estadual (ITCMD) sobre a herança."
+    ],
+    passos: [
+      { titulo: "Levante os bens e os herdeiros", texto: "Liste imóveis, contas, veículos, dívidas e quem são os herdeiros. Reúna as certidões e documentos de cada bem." },
+      { titulo: "Escolha a via correta", texto: "Cartório quando todos concordam, são maiores e não há testamento exigindo juiz; caso contrário, judicial. Advogado é obrigatório nas duas." },
+      { titulo: "Calcule e pague o ITCMD", texto: "O imposto estadual incide sobre a herança e costuma ter prazo a partir do falecimento. O atraso gera multa." },
+      { titulo: "Faça a partilha e transfira os bens", texto: "Definida a divisão, lavra-se a escritura ou expede-se o formal de partilha para passar os bens aos herdeiros." }
+    ],
+    direitos: [
+      "Direito dos herdeiros à parte que lhes cabe na herança",
+      "Reserva da legítima aos herdeiros necessários (descendentes, ascendentes, cônjuge)",
+      "Inventário extrajudicial em cartório quando há consenso e requisitos legais",
+      "Meação do cônjuge ou companheiro, conforme o regime de bens"
+    ],
+    quando_urgente:
+      "Há prazo para abrir o inventário e pagar o ITCMD sem multa (varia por estado, em geral 60 dias). Quanto antes começar, menor o risco de multa e de conflito entre herdeiros.",
+    documentos: [
+      "Certidão de óbito",
+      "Documentos dos herdeiros e do falecido",
+      "Certidões e matrículas dos imóveis",
+      "Documentos de contas, veículos e dívidas",
+      "Testamento, se houver"
+    ],
+    termos_glossario: ["inventario"],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "quero-cancelar-compra-e-ser-reembolsado",
+    titulo: "Comprei e me arrependi. Tenho direito a cancelar e ser reembolsado?",
+    intencao_curta:
+      "Consumidor quer desistir de compra feita pela internet ou fora da loja e receber o dinheiro de volta.",
+    resumo:
+      "Em compras feitas fora da loja física — internet, telefone, catálogo — o consumidor tem direito de arrependimento e pode cancelar em até 7 dias, com devolução integral do valor.",
+    areas: ["consumidor"],
+    situacao: [
+      "O direito de arrependimento vale para compras feitas fora do estabelecimento físico (sites, aplicativos, telefone). Nesses casos você pode desistir em até 7 dias corridos do recebimento, sem precisar justificar.",
+      "Cancelando dentro do prazo, a loja deve devolver tudo o que você pagou, inclusive o frete, de forma imediata e corrigida.",
+      "Em compras na loja física o arrependimento não é automático — depende da política da loja —, mas você continua com direito à troca em caso de defeito."
+    ],
+    passos: [
+      { titulo: "Formalize a desistência por escrito", texto: "Avise a loja dentro dos 7 dias por canal que gere comprovante (e-mail, chat, app). Guarde o protocolo e a data." },
+      { titulo: "Combine a devolução do produto", texto: "A loja deve orientar como devolver. No arrependimento, o custo do envio de retorno é da loja." },
+      { titulo: "Cobre o reembolso integral", texto: "Você tem direito a receber de volta tudo o que pagou, inclusive o frete. Em compra no cartão, o estorno deve aparecer na fatura." },
+      { titulo: "Registre reclamação se travar", texto: "Se a loja não devolver, registre no consumidor.gov.br e no Procon. Persistindo, cabe ação no Juizado Especial." }
+    ],
+    direitos: [
+      "Arrependimento em até 7 dias em compras fora da loja física",
+      "Devolução integral do valor pago, incluindo o frete",
+      "Cancelamento sem precisar justificar o motivo",
+      "Troca garantida em caso de produto com defeito, mesmo na loja física"
+    ],
+    quando_urgente:
+      "O prazo de 7 dias é curto e corre do recebimento. Em dúvida, formalize a desistência logo — depois você resolve os detalhes da devolução.",
+    documentos: [
+      "Comprovante e nota fiscal da compra",
+      "Print da desistência e do protocolo",
+      "Conversas com a loja (e-mail, chat)",
+      "Fatura do cartão, se foi parcelado"
+    ],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "plano-de-saude-reajustou-de-forma-abusiva",
+    titulo: "Meu plano de saúde aumentou demais. O reajuste é abusivo?",
+    intencao_curta:
+      "Beneficiário recebe aumento alto, principalmente por mudança de faixa etária ou em plano coletivo.",
+    resumo:
+      "Reajustes de plano de saúde têm limites e regras. Aumentos por faixa etária e em planos coletivos vêm sendo controlados pela Justiça quando se mostram abusivos ou sem transparência.",
+    areas: ["consumidor", "civil"],
+    situacao: [
+      "Há dois reajustes comuns: o anual (variação de custos) e o por faixa etária (quando você muda de idade). Planos individuais têm teto definido pela ANS; os coletivos seguem o contrato, mas não podem ser abusivos.",
+      "Aumentos muito altos por mudança de faixa etária, sobretudo após os 60 anos, costumam ser questionados — o Estatuto do Idoso e a jurisprudência protegem o consumidor contra reajuste que inviabiliza o plano.",
+      "Em planos coletivos, reajustes elevados e sem demonstração clara dos cálculos também têm sido revistos pela Justiça."
+    ],
+    passos: [
+      { titulo: "Entenda o reajuste aplicado", texto: "Peça à operadora, por escrito, a justificativa e os índices usados. Compare com o histórico dos seus boletos." },
+      { titulo: "Verifique as regras do seu plano", texto: "Confira se é individual ou coletivo e o que diz o contrato. Em plano individual, confira o teto divulgado pela ANS." },
+      { titulo: "Reclame na ANS e no Procon", texto: "A ANS regula o setor e recebe reclamações. O registro pressiona a operadora e serve de prova." },
+      { titulo: "Avalie a ação judicial", texto: "Se o reajuste for abusivo, cabe ação para revisar o valor e, às vezes, devolver o que foi pago a mais. Um advogado analisa contrato e índices." }
+    ],
+    direitos: [
+      "Reajuste dentro dos limites e com transparência nos cálculos",
+      "Proteção reforçada ao consumidor idoso contra aumento que inviabilize o plano",
+      "Revisão judicial de reajuste abusivo, com possível devolução de valores",
+      "Informação clara sobre os índices aplicados"
+    ],
+    quando_urgente:
+      "Se o aumento ameaça fazer você perder o plano em meio a um tratamento, procure um advogado com urgência — cabe pedido de liminar para manter o valor anterior enquanto se discute o reajuste.",
+    documentos: [
+      "Boletos antigos e o novo com o reajuste",
+      "Contrato do plano e carteirinha",
+      "Justificativa do reajuste enviada pela operadora",
+      "Comprovantes de tratamento em curso, se houver"
+    ],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "bpc-loas-foi-negado",
+    titulo: "O INSS negou meu BPC/LOAS. O que fazer?",
+    intencao_curta:
+      "Idoso ou pessoa com deficiência de baixa renda tem o benefício assistencial negado.",
+    resumo:
+      "O BPC/LOAS é um salário mínimo pago a idosos a partir de 65 anos ou a pessoas com deficiência, de baixa renda. A negativa pode ser revertida com recurso administrativo ou ação judicial.",
+    areas: ["previdenciario"],
+    situacao: [
+      "O BPC (Benefício de Prestação Continuada), também chamado de LOAS, não é aposentadoria: é assistência social, não exige contribuição e paga um salário mínimo a quem tem 65 anos ou mais, ou a pessoas com deficiência, desde que a renda da família seja baixa.",
+      "As negativas mais comuns são por critério de renda (a família ficou pouco acima do limite) ou por a perícia não reconhecer a deficiência. Em muitos casos a Justiça analisa a situação real da família e reverte.",
+      "A renda por pessoa da família é o principal critério, mas a Justiça admite avaliar gastos com saúde e a real situação de miserabilidade, além do número seco."
+    ],
+    passos: [
+      { titulo: "Leia o motivo da negativa", texto: "No Meu INSS, veja a carta de indeferimento — ela diz se foi renda ou perícia. Isso define a estratégia." },
+      { titulo: "Reúna provas da renda e da condição", texto: "Comprovantes de renda de todos da casa, despesas com saúde e remédios, laudos médicos da deficiência." },
+      { titulo: "Apresente recurso administrativo", texto: "Cabe recurso no próprio INSS, com prazo a partir da negativa. É gratuito e pode resolver sem ação." },
+      { titulo: "Avalie a ação judicial", texto: "Mantida a negativa, a Justiça (Juizado Especial Federal) costuma reavaliar com perícia e estudo social. Um advogado ou a Defensoria pode atuar." }
+    ],
+    direitos: [
+      "Um salário mínimo mensal a quem cumpre os requisitos de idade ou deficiência e de renda",
+      "Reavaliação da renda considerando gastos com saúde e a real condição da família",
+      "Recurso administrativo gratuito contra a negativa",
+      "Análise judicial com perícia médica e estudo social"
+    ],
+    quando_urgente:
+      "Se a pessoa depende do benefício para remédios e alimentação, não deixe o prazo de recurso passar. Procure orientação logo após a negativa.",
+    documentos: [
+      "Carta de indeferimento do INSS",
+      "Documentos e renda de todos os moradores da casa",
+      "Laudos e relatórios médicos da deficiência",
+      "Comprovantes de despesas com saúde",
+      "Comprovante de residência"
+    ],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "pensao-por-morte-foi-negada",
+    titulo: "O INSS negou a pensão por morte. O que fazer?",
+    intencao_curta:
+      "Dependente tem a pensão por morte de um familiar negada pelo INSS.",
+    resumo:
+      "Pensão por morte é o benefício pago aos dependentes de quem faleceu sendo segurado. A negativa por falta de qualidade de segurado ou de prova de dependência pode ser revertida.",
+    areas: ["previdenciario"],
+    situacao: [
+      "A pensão por morte é paga a dependentes (cônjuge, companheiro, filhos menores e outros, conforme o caso) quando a pessoa falecida ainda mantinha a qualidade de segurada do INSS.",
+      "As negativas comuns são por entender que o falecido perdeu a qualidade de segurado (ficou muito tempo sem contribuir) ou por falta de prova da união estável ou da dependência.",
+      "Em muitos casos é possível comprovar a manutenção da qualidade de segurado ou a união estável com documentos e testemunhas, revertendo a negativa."
+    ],
+    passos: [
+      { titulo: "Veja o motivo no Meu INSS", texto: "A carta de indeferimento aponta se foi qualidade de segurado ou prova de dependência. Isso direciona o que reunir." },
+      { titulo: "Reúna a prova da relação", texto: "Para união estável: conta conjunta, filhos em comum, fotos, mesmo endereço, declarações. Para qualidade de segurado: CNIS e vínculos do falecido." },
+      { titulo: "Apresente recurso ao INSS", texto: "Cabe recurso administrativo gratuito dentro do prazo da negativa, com os novos documentos." },
+      { titulo: "Avalie a via judicial", texto: "Mantida a negativa, a ação na Justiça Federal pode reconhecer a dependência e a qualidade de segurado, inclusive com testemunhas." }
+    ],
+    direitos: [
+      "Pensão aos dependentes quando comprovada a qualidade de segurado do falecido",
+      "Reconhecimento de união estável por documentos e testemunhas",
+      "Recurso administrativo gratuito contra a negativa",
+      "Pagamento retroativo à data do óbito ou do requerimento, conforme o caso"
+    ],
+    quando_urgente:
+      "Pedir a pensão logo após o falecimento garante o pagamento desde a data do óbito (dentro do prazo legal). Demorar pode fazer você perder valores retroativos.",
+    documentos: [
+      "Carta de indeferimento do INSS",
+      "Certidão de óbito",
+      "Provas da união ou do parentesco (certidões, conta conjunta, fotos)",
+      "CNIS e documentos de trabalho do falecido",
+      "Documentos dos dependentes"
+    ],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "comprei-imovel-na-planta-e-atrasou",
+    titulo: "Comprei imóvel na planta e a obra atrasou. Quais são meus direitos?",
+    intencao_curta:
+      "Comprador de imóvel na planta enfrenta atraso na entrega pela construtora.",
+    resumo:
+      "Atraso na entrega de imóvel na planta dá direitos ao comprador — de multa e indenização até o desfazimento do contrato com devolução dos valores, conforme o caso e o contrato.",
+    areas: ["imobiliario", "consumidor"],
+    situacao: [
+      "Contratos de imóvel na planta costumam prever uma data de entrega e um prazo de tolerância (em geral de 180 dias). O atraso dentro da tolerância normalmente não gera penalidade; o que passa disso, sim.",
+      "Passado o prazo de tolerância, o comprador pode ter direito a indenização pelo período sem o imóvel (por exemplo, valor equivalente a aluguel), multa contratual e correção dos valores.",
+      "Em atrasos longos, o comprador pode optar por desfazer o contrato e receber de volta o que pagou, com retenção limitada em favor da construtora, conforme a lei e a jurisprudência."
+    ],
+    passos: [
+      { titulo: "Releia o contrato", texto: "Veja a data prevista, o prazo de tolerância e as cláusulas de multa e de rescisão. É a base de tudo." },
+      { titulo: "Notifique a construtora por escrito", texto: "Cobre formalmente a entrega e registre o atraso. Guarde protocolos — serve de prova e marca a data." },
+      { titulo: "Calcule o prejuízo", texto: "Some o que já pagou, o tempo de atraso e os gastos extras (aluguel que segue pagando, por exemplo)." },
+      { titulo: "Decida entre exigir ou desfazer", texto: "Você pode exigir a entrega com indenização ou rescindir e pedir a devolução. Um advogado indica o melhor caminho." }
+    ],
+    direitos: [
+      "Indenização pelo período de atraso além do prazo de tolerância",
+      "Multa contratual e correção dos valores pagos",
+      "Opção de rescindir o contrato com devolução do que foi pago, com retenção limitada",
+      "Informação clara sobre o andamento da obra"
+    ],
+    quando_urgente:
+      "Se você paga aluguel e prestação ao mesmo tempo, ou se a construtora dá sinais de problema financeiro, procure orientação rápido para proteger o que já pagou.",
+    documentos: [
+      "Contrato de compra e venda e aditivos",
+      "Comprovantes de tudo que foi pago",
+      "Notificações e respostas da construtora",
+      "Comprovantes de gastos extras (aluguel, mudança)"
+    ],
+    atualizado_em: "2026-05-30"
+  },
+  {
+    slug: "sofri-violencia-domestica",
+    titulo: "Sofri violência doméstica. Como me proteger e o que fazer?",
+    intencao_curta:
+      "Pessoa em situação de violência doméstica quer proteção imediata e medidas legais.",
+    resumo:
+      "A Lei Maria da Penha protege quem sofre violência doméstica e familiar. É possível pedir medidas protetivas de urgência, como o afastamento do agressor, de forma rápida, além de registrar o crime.",
+    areas: ["criminal", "familia"],
+    situacao: [
+      "Violência doméstica não é só agressão física: inclui violência psicológica (ameaças, humilhações, controle), moral, patrimonial e sexual, praticada por parceiro, ex-parceiro ou familiar.",
+      "A Lei Maria da Penha permite pedir medidas protetivas de urgência — afastamento do agressor do lar, proibição de aproximação e de contato — que o juiz pode conceder em poucos dias, independentemente de processo criminal.",
+      "Buscar ajuda cedo é proteção: o registro e as provas ajudam a garantir as medidas e a responsabilização."
+    ],
+    passos: [
+      { titulo: "Em perigo agora, ligue 190", texto: "Se há risco imediato, acione a Polícia Militar pelo 190. A Central de Atendimento à Mulher é o 180, que orienta e encaminha." },
+      { titulo: "Registre o boletim de ocorrência", texto: "Vá a uma delegacia, de preferência a Delegacia da Mulher. No registro, peça as medidas protetivas de urgência." },
+      { titulo: "Guarde provas", texto: "Mensagens, áudios, fotos de lesões, laudos e nomes de testemunhas. Tudo ajuda a comprovar a violência." },
+      { titulo: "Procure apoio jurídico e da rede", texto: "Defensoria Pública, advogado, CRAS/CREAS e o Ministério Público podem ajudar. Você não precisa enfrentar isso sozinha." }
+    ],
+    direitos: [
+      "Medidas protetivas de urgência (afastamento do agressor, proibição de aproximação e de contato)",
+      "Atendimento prioritário e proteção pela rede de apoio",
+      "Acompanhamento por advogado ou Defensoria Pública, gratuito a quem precisa",
+      "Responsabilização criminal do agressor, sem custo para a vítima registrar"
+    ],
+    quando_urgente:
+      "Se há ameaça à sua vida ou integridade agora, ligue 190 imediatamente. As medidas protetivas podem ser pedidas na delegacia e concedidas em caráter de urgência — não espere a violência se repetir.",
+    documentos: [
+      "Documento de identidade",
+      "Mensagens, áudios e fotos que comprovem a violência",
+      "Laudos médicos de eventuais lesões",
+      "Nomes e contatos de testemunhas"
+    ],
+    atualizado_em: "2026-05-30"
   }
 ];
 

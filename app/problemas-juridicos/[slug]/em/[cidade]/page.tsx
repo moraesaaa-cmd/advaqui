@@ -27,6 +27,7 @@ import { findGuiaByArea } from "@/lib/data/guias";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { getLawyersForCity } from "@/lib/data/lawyers";
 import { LawyerCard } from "@/components/LawyerCard";
+import { ProblemaChecklist } from "@/components/ProblemaChecklist";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -251,6 +252,14 @@ export default async function ProblemaPorCidadePage({
             ))}
           </ol>
         </section>
+
+        {/* Ferramenta interativa — monta o caso e calcula o progresso */}
+        <ProblemaChecklist
+          titulo={problema.titulo}
+          documentos={problema.documentos ?? []}
+          passos={problema.passos}
+          advogadosHref={`/advogados/${ufLower}/${cidadeInfo.citySlug}`}
+        />
 
         {/* Direitos */}
         <section className="mt-6">
