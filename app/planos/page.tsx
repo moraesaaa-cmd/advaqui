@@ -564,8 +564,7 @@ export default function PlanosPage() {
                 em você decidido — você só atende e fecha.
               </p>
               <p className="text-brand-bg/75 mt-2 text-xs">
-                Ativação em até {PLAN.activationHours}h após confirmação · Sem fidelidade ·
-                Cancela quando quiser
+                Sem fidelidade · Cancela quando quiser
               </p>
             </div>
             <div className="space-y-2">

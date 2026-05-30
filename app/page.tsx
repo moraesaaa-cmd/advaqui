@@ -197,8 +197,6 @@ export default async function HomePage() {
 
       <ProvaSocialHome />
 
-      <PremiumValueSection />
-
       {/* Jurisprudência STF e STJ — acesso público ao módulo */}
       <section className="bg-white border-y border-brand-line py-14">
         <div className="container-tight">
@@ -375,6 +373,22 @@ export default async function HomePage() {
 
       <HomeFaq />
 
+      {/* ===================== ZONA PARA ADVOGADOS ===================== */}
+      <section className="container-tight pt-16 pb-2">
+        <div className="flex items-center gap-4 max-w-3xl mx-auto">
+          <span className="h-px flex-1 bg-brand-line" aria-hidden />
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wide bg-brand-deep text-white">
+            <Scale className="w-4 h-4 text-brand-accent" aria-hidden />
+            Você é advogado?
+          </span>
+          <span className="h-px flex-1 bg-brand-line" aria-hidden />
+        </div>
+        <p className="text-center text-brand-ink/60 mt-4 max-w-xl mx-auto text-sm md:text-base">
+          Tudo acima é para quem busca ajuda jurídica. A partir daqui é a área
+          para profissionais — apareça quando alguém procura advogado na sua cidade.
+        </p>
+      </section>
+
       {/* CTA para advogados — "quero aparecer aqui" → planos (sem citar valor) */}
       <section className="container-tight py-6">
         <div className="rounded-3xl bg-gradient-to-br from-brand-ink to-brand-deep text-white p-8 md:p-10 relative overflow-hidden">
@@ -409,6 +423,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <PremiumValueSection />
 
       {/* Bloco "Para advogados" — Marketing jurídico + Checklist isca */}
       <section className="bg-brand-bg py-16">

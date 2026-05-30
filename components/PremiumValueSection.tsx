@@ -6,7 +6,6 @@ import {
   MessageCircle,
   Star,
   Zap,
-  Clock,
   Search,
   Users,
   Sparkles,
@@ -174,22 +173,23 @@ export function PremiumValueSection() {
         />
       </div>
 
-      <div className="mt-10 max-w-3xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 text-sm text-brand-ink/70 mb-4">
-          <Clock className="w-4 h-4 text-brand-accent2" aria-hidden />
-          Ativação em até {PLAN.activationHours}h após confirmação
+      <div className="mt-10 max-w-2xl mx-auto">
+        <div className="rounded-3xl border-2 border-brand-accent bg-gradient-to-br from-brand-accent/15 via-white to-brand-accent2/10 p-6 md:p-8 shadow-cardHover text-center">
+          <h3 className="font-display text-xl md:text-2xl font-bold text-brand-ink leading-snug">
+            Pronto pra aparecer no topo da sua cidade?
+          </h3>
+          <div className="mt-5 flex flex-wrap gap-3 justify-center">
+            <Link href="/planos" className="btn-accent text-base">
+              Quero o plano premium por {formatCurrency(PLAN.price)}/mês
+            </Link>
+            <Link href="/cadastro" className="btn-ghost text-base">
+              Começar pelo cadastro grátis
+            </Link>
+          </div>
+          <p className="text-xs text-brand-ink/55 mt-3">
+            Você pode começar grátis e ativar o premium quando quiser.
+          </p>
         </div>
-        <div className="flex flex-wrap gap-3 justify-center">
-          <Link href="/planos" className="btn-accent text-base">
-            Quero o plano premium por {formatCurrency(PLAN.price)}/mês
-          </Link>
-          <Link href="/cadastro" className="btn-ghost text-base">
-            Começar pelo cadastro grátis
-          </Link>
-        </div>
-        <p className="text-xs text-brand-ink/55 mt-3">
-          Você pode começar grátis e ativar o premium quando quiser.
-        </p>
       </div>
     </section>
   );
