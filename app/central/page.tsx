@@ -36,7 +36,7 @@ const SECTIONS: Section[] = [
     title: "Encontrar um advogado",
     intro: "Procure por cidade ou por área de atuação e fale direto com o profissional.",
     items: [
-      { href: "/advogados", label: "Diretório por cidade", desc: "Navegue por estado e cidade. Cobertura das 5.571 cidades do Brasil.", Icon: Users },
+      { href: "/advogados", label: "Diretório por cidade", desc: "Navegue por estado e cidade. Cobertura de cidades em todo o Brasil.", Icon: Users },
       { href: "/advogados-de", label: "Áreas de atuação", desc: "Trabalhista, família, consumidor, criminal e mais — entenda cada uma.", Icon: Scale }
     ]
   },

@@ -41,9 +41,9 @@ export default function GlossarioIndexPage() {
               Glossário jurídico
             </h1>
             <p className="text-sm md:text-base text-brand-ink/85 mt-3 leading-relaxed">
-              Termos jurídicos comuns explicados em linguagem clara. {GLOSSARIO.length}{" "}
-              definições organizadas alfabeticamente, com conexão a problemas
-              jurídicos reais, jurisprudência e advogados na sua cidade.
+              Termos jurídicos comuns explicados em linguagem clara, organizados
+              alfabeticamente, com conexão a problemas jurídicos reais,
+              jurisprudência e advogados na sua cidade.
             </p>
           </div>
         </div>

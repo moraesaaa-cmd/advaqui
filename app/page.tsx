@@ -100,7 +100,7 @@ export default async function HomePage() {
               Busque pelo seu estado
             </h2>
             <p className="text-brand-ink/60 mt-2">
-              27 estados, cidades capitais e do interior já cobertas.
+              Capitais e cidades do interior de todo o Brasil já cobertas.
             </p>
           </div>
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-2">
@@ -256,7 +256,7 @@ export default async function HomePage() {
                 Seus direitos explicados sem juridiquês
               </h2>
               <p className="text-brand-ink/65 mt-2">
-                10 guias práticos sobre as situações mais comuns — rescisão,
+                Guias práticos sobre as situações mais comuns — rescisão,
                 divórcio, pensão, INSS, dívida indevida, despejo e mais.
               </p>
               <ul className="mt-4 space-y-2.5">
@@ -399,7 +399,7 @@ export default async function HomePage() {
                 className="sm:col-span-2 rounded-2xl border-2 border-dashed border-brand-line bg-white hover:border-brand-accent hover:bg-brand-accent/5 transition p-5 inline-flex items-center justify-center gap-2 text-sm font-semibold text-brand-deep"
               >
                 <Target className="w-4 h-4" aria-hidden />
-                Ver todos os 5 guias de marketing jurídico
+                Ver todos os guias de marketing jurídico
               </Link>
             </div>
           </div>

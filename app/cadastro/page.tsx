@@ -601,7 +601,7 @@ export default function CadastroPage() {
                   )}
                 </div>
                 <p className="text-xs text-brand-ink/50 mt-1">
-                  Digite apenas o nome (ex.: <strong>Almenara</strong>) e <strong>clique na sugestão</strong>. Aceitamos as 5.571 cidades do IBGE.
+                  Digite apenas o nome (ex.: <strong>Almenara</strong>) e <strong>clique na sugestão</strong>. Aceitamos todas as cidades do IBGE.
                 </p>
 
                 {showSuggestions && form.city.trim().length >= 2 && (

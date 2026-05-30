@@ -44,7 +44,7 @@ const FAQS: Array<[string, string]> = [
   ],
   [
     "E se minha cidade não estiver listada?",
-    "O cadastro aceita qualquer cidade brasileira da base IBGE (5.571 municípios). Se a sua não estiver, fale com o suporte e validamos manualmente."
+    "O cadastro aceita qualquer cidade brasileira da base oficial do IBGE. Se a sua não estiver, fale com o suporte e validamos manualmente."
   ],
   [
     "Como o cliente entra em contato comigo?",

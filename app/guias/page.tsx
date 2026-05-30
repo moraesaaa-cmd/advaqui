@@ -32,9 +32,9 @@ export default function GuiasIndexPage() {
               Guias por área do direito
             </h1>
             <p className="text-sm md:text-base text-brand-ink/85 mt-3 leading-relaxed">
-              {GUIAS.length} guias pilar conectando os principais ramos do
-              direito brasileiro. Cada guia organiza temas centrais, problemas
-              comuns, decisões reais e modelos prontos da área.
+              Guias pilar conectando os principais ramos do direito brasileiro.
+              Cada guia organiza temas centrais, problemas comuns, decisões
+              reais e modelos prontos da área.
             </p>
           </div>
         </div>

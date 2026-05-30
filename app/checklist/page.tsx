@@ -22,10 +22,6 @@ export const metadata = buildMetadata({
 
 export default function ChecklistPage() {
   const txtContent = buildChecklistTxt();
-  const totalItems = CHECKLIST_SECTIONS.reduce(
-    (sum, s) => sum + s.items.length,
-    0
-  );
 
   // Preview: 2 primeiras seções aparecem completas, o resto fica no gate.
   const previewSections = CHECKLIST_SECTIONS.slice(0, 2);
@@ -59,14 +55,14 @@ export default function ChecklistPage() {
               Como melhorar sua presença digital jurídica
             </h1>
             <p className="text-lg md:text-xl text-brand-bg/85 mt-4 leading-relaxed">
-              {totalItems} itens práticos divididos em {CHECKLIST_SECTIONS.length} áreas.
-              Cobre o essencial: Google Business Profile, diretórios, WhatsApp, bio e
-              primeiros passos de conteúdo. Você pode aplicar em uma manhã.
+              Itens práticos divididos por área. Cobre o essencial: Google
+              Business Profile, diretórios, WhatsApp, bio e primeiros passos de
+              conteúdo. Você pode aplicar em uma manhã.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-brand-bg/80">
               <span className="inline-flex items-center gap-2">
                 <CheckSquare className="w-4 h-4 text-brand-accent" aria-hidden />
-                {totalItems} itens acionáveis
+                Itens acionáveis
               </span>
               <span className="inline-flex items-center gap-2">
                 <Target className="w-4 h-4 text-brand-accent" aria-hidden />

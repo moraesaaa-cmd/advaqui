@@ -324,7 +324,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
             </ul>
             <p className="mt-3 text-xs text-brand-ink/60">
               Sua cidade não está na lista? O conteúdo está disponível para
-              todas as 5571 cidades brasileiras — basta acessar direto
+              todas as cidades brasileiras — basta acessar direto
               /blog/{article.slug}/em/sua-cidade-uf.
             </p>
           </section>

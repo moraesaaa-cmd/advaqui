@@ -74,8 +74,6 @@ export default async function StatePage({ params }: { params: { uf: string } }) 
       <div className="mt-3 inline-flex items-center gap-2 text-sm text-brand-ink/60 flex-wrap">
         <MapPin className="w-4 h-4" aria-hidden />
         Capital — {st.capital}
-        <span className="opacity-50">·</span>
-        {cities.length.toLocaleString("pt-BR")} cidade(s) cobertas
       </div>
 
       {capital && (

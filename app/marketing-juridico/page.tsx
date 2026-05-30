@@ -54,7 +54,7 @@ export default function MarketingJuridicoPage() {
             <div className="mt-7 flex flex-wrap items-center gap-4 text-sm text-brand-bg/80">
               <span className="inline-flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-brand-accent" aria-hidden />
-                {articles.length} guias completos
+                Guias completos
               </span>
               <span className="inline-flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-brand-accent" aria-hidden />
@@ -111,7 +111,6 @@ export default function MarketingJuridicoPage() {
                 Material profundo sobre cada etapa do marketing jurídico moderno.
               </p>
             </div>
-            <span className="text-xs text-brand-ink/50">{articles.length} guias</span>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">

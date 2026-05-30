@@ -1090,7 +1090,7 @@ export default function PainelPage() {
                   <Target className="w-4 h-4 text-brand-deep mt-0.5 flex-shrink-0 group-hover:scale-110 transition" aria-hidden />
                   <span>
                     <span className="font-semibold block">Marketing jurídico</span>
-                    <span className="text-xs text-brand-ink/60">5 guias completos</span>
+                    <span className="text-xs text-brand-ink/60">Guias completos</span>
                   </span>
                 </Link>
               </li>
@@ -1102,7 +1102,7 @@ export default function PainelPage() {
                   <BookOpen className="w-4 h-4 text-brand-deep mt-0.5 flex-shrink-0 group-hover:scale-110 transition" aria-hidden />
                   <span>
                     <span className="font-semibold block">Blog jurídico</span>
-                    <span className="text-xs text-brand-ink/60">10 artigos por área</span>
+                    <span className="text-xs text-brand-ink/60">Artigos por área</span>
                   </span>
                 </Link>
               </li>

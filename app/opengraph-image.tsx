@@ -98,7 +98,7 @@ export default async function OpengraphImage() {
         >
           <span>advaqui.com</span>
           <span style={{ opacity: 0.6, fontWeight: 400 }}>
-            5.571 cidades · 27 estados
+            Advogados e conteúdo jurídico por cidade
           </span>
         </div>
       </div>

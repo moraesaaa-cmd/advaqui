@@ -41,9 +41,9 @@ export default function ProblemasIndexPage() {
               Problemas jurídicos comuns
             </h1>
             <p className="text-sm md:text-base text-brand-ink/85 mt-3 leading-relaxed">
-              {PROBLEMAS.length} guias práticos para situações que muita gente
-              enfrenta. Linguagem clara, passos concretos antes de procurar
-              advogado, e como reconhecer quando o caso é urgente.
+              Guias práticos para situações que muita gente enfrenta. Linguagem
+              clara, passos concretos antes de procurar advogado, e como
+              reconhecer quando o caso é urgente.
             </p>
           </div>
         </div>

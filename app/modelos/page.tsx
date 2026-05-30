@@ -157,7 +157,6 @@ export default function ModelosPage() {
                 Documentos com maior demanda real entre brasileiros — comece por aqui.
               </p>
             </div>
-            <span className="text-xs text-brand-ink/50">{top10.length} de {templates.length}</span>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -204,7 +203,7 @@ export default function ModelosPage() {
               <TrendingUp className="w-5 h-5 text-brand-accent2 flex-shrink-0 mt-0.5" aria-hidden />
               <div className="text-sm text-brand-ink/75 leading-relaxed">
                 <strong className="text-brand-ink">Não é só o top 10.</strong>{" "}
-                Temos {rest.length} modelos adicionais organizados por categoria — confidencialidade,
+                Temos modelos adicionais organizados por categoria — confidencialidade,
                 comodato, cessão de direitos, doação e mais. Veja abaixo.
               </div>
             </div>
@@ -220,9 +219,6 @@ export default function ModelosPage() {
                       className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide border ${style.chip}`}
                     >
                       {cat}
-                    </span>
-                    <span className="text-xs text-brand-ink/45">
-                      {items.length} modelo(s)
                     </span>
                   </div>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">

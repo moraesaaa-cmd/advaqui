@@ -8,36 +8,48 @@ import {
   Calculator,
   Compass
 } from "lucide-react";
-import { CITIES } from "@/lib/data/cities";
-import { PROBLEMAS } from "@/lib/data/problemas-juridicos";
-import { GUIAS } from "@/lib/data/guias";
-import { CALCULADORAS } from "@/lib/data/calculadoras";
-import { getAllTemplates } from "@/lib/data/templates-docs";
-import { GLOSSARIO } from "@/lib/data/glossario";
 
 /**
- * Seção de prova social para a home — claims VERIFICÁVEIS contando recursos
- * já existentes no banco (cidades IBGE, problemas curados, modelos, guias,
- * calculadoras, glossário). Sem inventar testimonials, sem "X advogados".
+ * Seção "O que você encontra aqui" — apresenta os TIPOS de conteúdo do site
+ * (diretório por cidade, problemas, guias, calculadoras, modelos, glossário)
+ * de forma qualitativa, SEM exibir contagens numéricas.
  *
- * O objetivo é dar peso à autoridade do site mostrando volume de conteúdo
- * curado em vez de fingir uma base de usuários grande.
+ * Decisão de produto: números pequenos ("8 calculadoras", "10 guias") passam
+ * impressão de pouco conteúdo e prejudicam a credibilidade. Mostramos o valor
+ * pela variedade, não pela quantidade.
  */
 export function ProvaSocialHome() {
-  const cidades = CITIES.length;
-  const problemas = PROBLEMAS.length;
-  const guias = GUIAS.length;
-  const calculadoras = CALCULADORAS.length;
-  const modelos = getAllTemplates().length;
-  const termos = GLOSSARIO.length;
-
-  const stats: Array<{ big: string; label: string; Icon: typeof MapPin }> = [
-    { big: cidades.toLocaleString("pt-BR"), label: "cidades brasileiras cobertas", Icon: MapPin },
-    { big: `${problemas}+`, label: "problemas jurídicos guiados passo a passo", Icon: HelpCircle },
-    { big: `${guias}`, label: "guias por área do direito", Icon: Compass },
-    { big: `${calculadoras}`, label: "calculadoras explicadas", Icon: Calculator },
-    { big: `${modelos}`, label: "modelos gratuitos de documentos", Icon: FileText },
-    { big: `${termos}+`, label: "termos do glossário em linguagem simples", Icon: BookOpen }
+  const features: Array<{ title: string; desc: string; Icon: typeof MapPin }> = [
+    {
+      title: "Diretório por cidade",
+      desc: "Advogados organizados por município e por área de atuação.",
+      Icon: MapPin
+    },
+    {
+      title: "Problemas resolvidos passo a passo",
+      desc: "Situações do dia a dia explicadas em linguagem clara, sem juridiquês.",
+      Icon: HelpCircle
+    },
+    {
+      title: "Guias por área do direito",
+      desc: "O que fazer, prazos, documentos e os direitos de cada área.",
+      Icon: Compass
+    },
+    {
+      title: "Calculadoras explicadas",
+      desc: "Rescisão, FGTS, pensão e mais — com a fórmula explicada e exemplo.",
+      Icon: Calculator
+    },
+    {
+      title: "Modelos de documentos grátis",
+      desc: "Procurações, contratos, recibos e notificações prontos para preencher.",
+      Icon: FileText
+    },
+    {
+      title: "Glossário em linguagem simples",
+      desc: "Termos jurídicos traduzidos para o português do dia a dia.",
+      Icon: BookOpen
+    }
   ];
 
   return (
@@ -56,22 +68,22 @@ export function ProvaSocialHome() {
         </p>
       </header>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-        {stats.map((s) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+        {features.map((f) => (
           <div
-            key={s.label}
+            key={f.title}
             className="rounded-2xl border-2 border-brand-line bg-white p-5 hover:border-brand-accent/40 transition"
           >
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 rounded-xl bg-brand-accent/15 flex items-center justify-center flex-shrink-0">
-                <s.Icon className="w-5 h-5 text-brand-accent2" aria-hidden />
+                <f.Icon className="w-5 h-5 text-brand-accent2" aria-hidden />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-display text-2xl md:text-3xl font-extrabold text-brand-ink leading-none">
-                  {s.big}
+                <p className="font-display text-base md:text-lg font-bold text-brand-ink leading-snug">
+                  {f.title}
                 </p>
                 <p className="text-xs md:text-sm text-brand-ink/65 mt-1 leading-snug">
-                  {s.label}
+                  {f.desc}
                 </p>
               </div>
             </div>
@@ -94,7 +106,7 @@ export function ProvaSocialHome() {
         <GarantiaCard
           Icon={MapPin}
           title="Cobertura nacional"
-          text="Todas as 5.570 cidades brasileiras com página própria. De São Paulo a Almenara."
+          text="Uma página própria para cada cidade brasileira. De São Paulo a Almenara."
         />
         <GarantiaCard
           Icon={FileText}

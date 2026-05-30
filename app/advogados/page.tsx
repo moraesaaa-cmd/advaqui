@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { STATES } from "@/lib/data/states";
-import { citiesByUf, totalCityCount } from "@/lib/data/cities";
+import { citiesByUf } from "@/lib/data/cities";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { Breadcrumb } from "@/components/Breadcrumb";
 
@@ -21,7 +21,6 @@ export default async function DiretorioPage() {
     region: r,
     states: STATES.filter((s) => s.region === r)
   }));
-  const total = totalCityCount();
 
   return (
     <div className="container-tight py-10">
@@ -30,7 +29,7 @@ export default async function DiretorioPage() {
         Diretório de advogados
       </h1>
       <p className="text-brand-ink/70 mt-2 mb-2 max-w-3xl">
-        Diretório com <strong>{total.toLocaleString("pt-BR")} municípios brasileiros</strong> cobertos.
+        Diretório com cobertura de <strong>municípios em todo o Brasil</strong>.
         Selecione um estado para ver as cidades e os advogados cadastrados.
       </p>
       <p className="text-xs text-brand-ink/50 mb-10">
