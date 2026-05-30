@@ -72,7 +72,9 @@ export default function robots(): MetadataRoute.Robots {
     sitemaps.push(`${base}/sitemap-quanto-custa-cidades/sitemap/${i}.xml`);
   }
   // Tribunais por cidade — 5571 URLs em 1 sitemap (F22-E onda 4)
-  sitemaps.push(`${base}/sitemap-tribunais-cidades.xml`);
+  // Rota real é app/sitemap-tribunais-cidades/sitemap.ts → /sitemap-tribunais-cidades/sitemap.xml
+  // (sem generateSitemaps, então é arquivo único, não segmentado em /sitemap/N.xml).
+  sitemaps.push(`${base}/sitemap-tribunais-cidades/sitemap.xml`);
   // STF temas × cidade (F22-E onda 5)
   for (let i = 0; i < TEMAS_STF.length; i++) {
     sitemaps.push(`${base}/sitemap-temas-stf-cidades/sitemap/${i}.xml`);
