@@ -41,12 +41,55 @@ export function GET() {
   );
   lines.push("");
   lines.push(
-    `O ${SITE.name} cobre as 5.571 cidades brasileiras. Todo o conteúdo é informativo, ` +
-      `escrito em português do Brasil, sem promessa de resultado, e sempre orienta a ` +
+    `O ${SITE.name} cobre todas as cidades brasileiras (base oficial do IBGE). Todo o conteúdo ` +
+      `é informativo, escrito em português do Brasil, sem promessa de resultado, e sempre orienta a ` +
       `procurar um advogado para o caso concreto. A jurisprudência citada vem de fontes ` +
       `oficiais (stf.jus.br, stj.jus.br). Para citar, prefira as páginas-pilar abaixo.`
   );
   lines.push("");
+
+  // --- Respostas rápidas (pares pergunta→resposta — alto valor de citação) ---
+  lines.push("## Respostas rápidas");
+  lines.push("");
+  const RESPOSTAS: Array<{ q: string; a: string }> = [
+    {
+      q: "Quanto tempo tenho para entrar com uma ação trabalhista no Brasil?",
+      a: "Em regra, até 2 anos após a saída do emprego. Dentro desse prazo, podem ser cobradas verbas dos últimos 5 anos do contrato (art. 7º, XXIX, da Constituição Federal)."
+    },
+    {
+      q: "O que fazer quando o nome é negativado indevidamente?",
+      a: "Reunir provas, exigir a baixa junto ao credor e ao SPC/Serasa e guardar protocolos. A negativação não pode permanecer por mais de 5 anos e, quando é indevida, costuma haver direito a indenização por dano moral."
+    },
+    {
+      q: "É possível resolver um problema de consumo sem advogado?",
+      a: "Em muitos casos sim. Procon e a plataforma consumidor.gov.br são gratuitos. No Juizado Especial, causas de até 20 salários mínimos podem ser ajuizadas sem advogado."
+    },
+    {
+      q: "Qual o prazo para reclamar de um produto com defeito?",
+      a: "30 dias para produtos ou serviços não duráveis e 90 dias para os duráveis, contados da entrega ou do aparecimento do defeito (art. 26 do Código de Defesa do Consumidor)."
+    },
+    {
+      q: "O que acontece quando a pensão alimentícia não é paga?",
+      a: "O atraso das 3 parcelas mais recentes permite pedir a prisão civil do devedor. Também cabem penhora de bens e desconto direto em folha. O direito de visita e o pagamento são questões separadas."
+    },
+    {
+      q: "O INSS negou meu benefício. É possível reverter?",
+      a: "Sim. Cabe recurso ao Conselho de Recursos da Previdência (CRPS) em até 30 dias e, se necessário, ação na Justiça Federal. Boa parte das negativas decorre de falta de documento ou de perícia."
+    },
+    {
+      q: "Como funciona o divórcio no Brasil?",
+      a: "Sendo consensual e sem filhos menores ou incapazes, pode ser feito em cartório por escritura, com advogado. Havendo disputa ou filhos menores, é judicial. O divórcio é um direito e não depende de tempo mínimo de casamento."
+    },
+    {
+      q: "Quais são as verbas de uma demissão sem justa causa?",
+      a: "Saldo de salário, aviso prévio, 13º proporcional, férias proporcionais acrescidas de 1/3, multa de 40% sobre o FGTS e liberação das guias do seguro-desemprego e do saque do FGTS. O pagamento deve ocorrer em até 10 dias."
+    }
+  ];
+  for (const r of RESPOSTAS) {
+    lines.push(`### ${r.q}`);
+    lines.push(r.a);
+    lines.push("");
+  }
 
   // --- Páginas principais (hubs) ---
   lines.push("## Páginas principais");

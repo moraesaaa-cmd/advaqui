@@ -22,12 +22,57 @@ import { ProvaSocialHome } from "@/components/ProvaSocialHome";
 import { IntentGrid } from "@/components/IntentGrid";
 import { getAllArticles } from "@/lib/data/articles";
 import { getAllMarketingArticles } from "@/lib/data/marketing-articles";
+import { PROBLEMAS } from "@/lib/data/problemas-juridicos";
+import { ResolverAgora } from "@/components/ResolverAgora";
+import { HomeFaq } from "@/components/HomeFaq";
 
 export const revalidate = 600;
+
+// Sinônimos em linguagem leiga para reforçar o match do classificador de caso.
+const PROBLEMA_KEYWORDS: Record<string, string> = {
+  "nome-negativado-indevidamente":
+    "spc serasa nome sujo divida negativado restricao credito protesto",
+  "fui-vitima-de-golpe-do-pix":
+    "golpe pix fraude estorno transferencia banco roubo enganado",
+  "fui-demitido-sem-receber-direitos":
+    "demitido demissao mandado embora rescisao verbas fgts aviso previo trabalho emprego patrao acerto",
+  "beneficio-do-inss-foi-negado":
+    "inss aposentadoria auxilio doenca beneficio negado pericia loas bpc previdencia",
+  "plano-de-saude-negou-cirurgia":
+    "plano saude convenio negou cirurgia tratamento exame medicamento carencia",
+  "quero-me-divorciar": "divorcio separacao casamento separar guarda partilha",
+  "pai-nao-paga-pensao":
+    "pensao alimenticia filho nao paga atraso alimentos sustento",
+  "comprei-produto-com-defeito":
+    "produto defeito troca garantia comprei loja consumidor quebrado vicio",
+  "fui-cobrado-juros-abusivos":
+    "juros abusivos banco cartao financiamento divida emprestimo cobranca",
+  "fui-vitima-de-acidente-de-transito":
+    "acidente transito carro batida indenizacao seguro dpvat colisao"
+};
 
 export default async function HomePage() {
   const latestArticles = getAllArticles().slice(0, 3);
   const latestMkt = getAllMarketingArticles().slice(0, 3);
+
+  // Índice leve dos problemas (texto normalizado no servidor) para o
+  // classificador de caso interativo da home (ResolverAgora).
+  const normalizeHay = (s: string) =>
+    s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  const problemaIndex = PROBLEMAS.map((p) => ({
+    slug: p.slug,
+    titulo: p.titulo,
+    intencao: p.intencao_curta,
+    hay: normalizeHay(
+      [
+        p.titulo,
+        p.intencao_curta,
+        p.resumo,
+        p.areas.join(" "),
+        PROBLEMA_KEYWORDS[p.slug] || ""
+      ].join(" ")
+    )
+  }));
 
   return (
     <>
@@ -65,6 +110,8 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <ResolverAgora items={problemaIndex} />
+
       <IntentGrid />
 
       <section className="container-tight py-16">
@@ -79,7 +126,7 @@ export default async function HomePage() {
         <div className="grid md:grid-cols-3 gap-6">
           {[
             { Icon: Search, title: "Busque por cidade", text: "Digite o nome da sua cidade ou escolha o estado no mapa do Brasil." },
-            { Icon: Briefcase, title: "Filtre por especialidade", text: "Trabalhista, família, previdenciário, criminal, civil — 15 áreas mapeadas." },
+            { Icon: Briefcase, title: "Filtre por especialidade", text: "Trabalhista, família, previdenciário, criminal, civil — as principais áreas do direito." },
             { Icon: ShieldCheck, title: "Fale direto pelo WhatsApp", text: "Cada perfil traz telefone, e-mail e WhatsApp clicável. Sem taxa, sem comissão." }
           ].map(({ Icon, title, text }, idx) => (
             <div key={idx} className="card">
@@ -325,6 +372,8 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <HomeFaq />
+
       {/* Bloco "Para advogados" — Marketing jurídico + Checklist isca */}
       <section className="bg-brand-bg py-16">
         <div className="container-tight">
@@ -357,7 +406,7 @@ export default async function HomePage() {
                 Checklist: Como melhorar sua presença digital jurídica
               </h3>
               <p className="text-sm text-brand-ink/70 mt-3 leading-relaxed">
-                21 itens práticos pra aplicar em uma manhã. Google Business, diretórios,
+                Itens práticos pra aplicar em uma manhã. Google Business, diretórios,
                 WhatsApp, bio e conteúdo. Download .txt liberado após cadastro grátis.
               </p>
               <Link
