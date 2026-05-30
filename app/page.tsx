@@ -7,13 +7,9 @@ import {
   BookOpen,
   FileText,
   Scale,
-  Compass,
-  HelpCircle,
   ArrowRight
 } from "lucide-react";
 import { SearchBox } from "@/components/SearchBox";
-import { STATES } from "@/lib/data/states";
-import { SPECIALTIES } from "@/lib/data/specialties";
 import { SITE } from "@/lib/config";
 import { IntentGrid } from "@/components/IntentGrid";
 import { getAllArticles } from "@/lib/data/articles";
@@ -90,155 +86,6 @@ export default async function HomePage() {
               <p className="text-sm text-brand-ink/70 leading-relaxed">{text}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      <section className="bg-white border-y border-brand-line py-16">
-        <div className="container-tight">
-          <div className="text-center mb-10">
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-ink">
-              Busque pelo seu estado
-            </h2>
-            <p className="text-brand-ink/60 mt-2">
-              Capitais e cidades do interior de todo o Brasil já cobertas.
-            </p>
-          </div>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-2">
-            {STATES.map((st) => (
-              <Link
-                key={st.uf}
-                href={`/advogados/${st.uf.toLowerCase()}`}
-                className="px-3 py-3 rounded-xl bg-brand-bg border border-brand-line hover:border-brand-accent hover:bg-brand-accent/10 transition text-center group"
-              >
-                <span className="block text-lg font-bold text-brand-deep group-hover:text-brand-accent2 transition">
-                  {st.uf}
-                </span>
-                <span className="block text-xs text-brand-ink/60 mt-0.5 truncate">
-                  {st.name}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="container-tight py-16">
-        <div className="text-center mb-10">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-ink">
-            Por especialidade
-          </h2>
-          <p className="text-brand-ink/60 mt-2">
-            Encontre profissionais com atuação declarada na área que você precisa.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2 justify-center">
-          {SPECIALTIES.map((sp) => (
-            <Link
-              key={sp.slug}
-              href={`/advogados-de/${sp.slug}`}
-              className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
-            >
-              {sp.name}
-            </Link>
-          ))}
-        </div>
-        <div className="mt-8 max-w-xl mx-auto">
-          <p className="text-center text-sm text-brand-ink/60 mb-3">
-            Já sabe a área? Busque a sua cidade para ver advogados que atuam nela.
-          </p>
-          <SearchBox />
-        </div>
-      </section>
-
-      {/* Jurisprudência STF e STJ — acesso público ao módulo */}
-      <section className="bg-white border-y border-brand-line py-14">
-        <div className="container-tight">
-          <div className="rounded-2xl bg-brand-bg border border-brand-line p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div className="flex items-start gap-4 flex-1">
-              <div className="w-12 h-12 rounded-xl bg-brand-deep/10 flex items-center justify-center flex-shrink-0">
-                <Scale className="w-6 h-6 text-brand-deep" aria-hidden />
-              </div>
-              <div>
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
-                  Pesquise jurisprudência STF e STJ
-                </h2>
-                <p className="text-brand-ink/70 mt-2 text-sm md:text-base leading-relaxed max-w-2xl">
-                  Consulte decisões judiciais por tema, tribunal, relator, classe,
-                  número do processo e palavras da ementa, sempre com link para
-                  a fonte oficial.
-                </p>
-              </div>
-            </div>
-            <Link
-              href="/jurisprudencia"
-              className="btn-primary inline-flex items-center gap-2 whitespace-nowrap"
-            >
-              Acessar jurisprudência
-              <span aria-hidden>→</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Hub de conteúdo educativo — Glossário, Problemas, Guias */}
-      <section className="bg-brand-bg py-14">
-        <div className="container-tight">
-          <div className="text-center mb-8">
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
-              Entenda seus direitos sem juridiquês
-            </h2>
-            <p className="text-brand-ink/70 mt-2 text-sm md:text-base max-w-2xl mx-auto">
-              Glossário, problemas jurídicos do dia a dia e guias pilar
-              conectados a decisões reais do STJ. Tudo em linguagem clara.
-            </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Link
-              href="/problemas-juridicos"
-              className="group rounded-2xl bg-white border border-brand-line p-6 hover:border-brand-deep/40 hover:shadow-card transition"
-            >
-              <div className="w-10 h-10 rounded-xl bg-brand-deep/10 flex items-center justify-center mb-3">
-                <HelpCircle className="w-5 h-5 text-brand-deep" aria-hidden />
-              </div>
-              <h3 className="font-display text-lg font-bold text-brand-ink group-hover:text-brand-deep transition">
-                Problemas jurídicos
-              </h3>
-              <p className="text-sm text-brand-ink/70 mt-1 leading-relaxed">
-                Divórcio, pensão, demissão, plano de saúde e mais — passo a
-                passo do que fazer.
-              </p>
-            </Link>
-            <Link
-              href="/guias"
-              className="group rounded-2xl bg-white border border-brand-line p-6 hover:border-brand-deep/40 hover:shadow-card transition"
-            >
-              <div className="w-10 h-10 rounded-xl bg-brand-deep/10 flex items-center justify-center mb-3">
-                <Compass className="w-5 h-5 text-brand-deep" aria-hidden />
-              </div>
-              <h3 className="font-display text-lg font-bold text-brand-ink group-hover:text-brand-deep transition">
-                Guias por área
-              </h3>
-              <p className="text-sm text-brand-ink/70 mt-1 leading-relaxed">
-                Direito do consumidor, família, trabalho, INSS, civil, criminal
-                e mais — visão geral por ramo.
-              </p>
-            </Link>
-            <Link
-              href="/glossario"
-              className="group rounded-2xl bg-white border border-brand-line p-6 hover:border-brand-deep/40 hover:shadow-card transition"
-            >
-              <div className="w-10 h-10 rounded-xl bg-brand-deep/10 flex items-center justify-center mb-3">
-                <BookOpen className="w-5 h-5 text-brand-deep" aria-hidden />
-              </div>
-              <h3 className="font-display text-lg font-bold text-brand-ink group-hover:text-brand-deep transition">
-                Glossário jurídico
-              </h3>
-              <p className="text-sm text-brand-ink/70 mt-1 leading-relaxed">
-                Dano moral, prescrição, usucapião, inventário — termos
-                jurídicos em linguagem clara.
-              </p>
-            </Link>
-          </div>
         </div>
       </section>
 

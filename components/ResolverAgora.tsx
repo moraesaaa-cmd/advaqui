@@ -327,12 +327,8 @@ export function ResolverAgora({ items }: { items: ProblemaIndexItem[] }) {
             </h2>
             <p className="text-brand-ink/65 mt-2 text-base md:text-lg max-w-2xl">
               Escreva do seu jeito, sem juridiquês. A gente entende a linguagem
-              do dia a dia e encontra, entre{" "}
-              <strong className="text-brand-deep">
-                {items.length} situações mapeadas
-              </strong>
-              , a que combina com a sua — com o passo a passo e onde achar um
-              advogado.
+              do dia a dia e mostra o caminho da sua situação — com o passo a
+              passo e onde achar um advogado.
             </p>
 
             <div className="mt-5 relative">
