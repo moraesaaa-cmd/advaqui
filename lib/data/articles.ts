@@ -1309,8 +1309,13 @@ export const ARTICLES: Article[] = [
     authorRole: "Equipe",
     relatedSpecialty: "criminal",
     intro:
-      "Toda vez que uma lei mexe em competência penal — em quem julga o quê — ela esbarra em um terreno sensível: o do juiz natural e das garantias que a Constituição blindou. A Lei nº 15.358/26 reacendeu esse debate, e a pergunta que o organiza é simples: até onde o legislador pode ir sem ferir a Constituição?",
+      "A Lei nº 15.358/26 — a Lei Antifacção — nasceu para endurecer o combate ao crime organizado. Mas, em um único parágrafo, fez algo que reacendeu um debate constitucional antigo: tirou certos homicídios do Tribunal do Júri. E aí a pergunta fica inevitável — até onde o legislador pode ir sem ferir a Constituição?",
     body: [
+      { type: "h2", text: "O que a Lei Antifacção fez, na prática" },
+      {
+        type: "p",
+        text: "A Lei nº 15.358/2026 criou o crime de domínio social estruturado (art. 2º, com pena de 20 a 40 anos) e, no art. 2º, § 8º, determinou que os homicídios dolosos praticados nesse contexto — por integrante de organização criminosa ultraviolenta, milícia ou grupo paramilitar — passem a ser julgados pelas varas criminais colegiadas de 1º grau (o juízo colegiado do art. 1º-A da Lei nº 12.694/2012), e não mais pelo Tribunal do Júri. É essa troca de julgador, de sete jurados leigos para um colegiado de juízes togados, que está no centro da polêmica."
+      },
       { type: "h2", text: "Competência não é detalhe — é garantia" },
       {
         type: "p",
@@ -1403,12 +1408,17 @@ export const ARTICLES: Article[] = [
     authorRole: "Equipe",
     relatedSpecialty: "criminal",
     intro:
-      "Diante do avanço do crime organizado, ganhou força a ideia de flexibilizar a competência do Tribunal do Júri — deslocando certos julgamentos para juízos especializados. A Lei nº 15.358/2026 colocou o tema na mesa. De um lado, a promessa de eficiência e segurança; de outro, uma garantia que a Constituição tratou como intocável. Quem vence esse cabo de guerra?",
+      "A Lei nº 15.358/2026 — a Lei Antifacção — fez o que parecia impensável: tirou do Tribunal do Júri certos homicídios e os entregou a um colegiado de juízes togados. No papel, é combate ao crime organizado. Na Constituição, esbarra numa garantia tratada como intocável. Quem vence esse cabo de guerra?",
     body: [
+      { type: "h2", text: "O que mudou com a Lei Antifacção" },
+      {
+        type: "p",
+        text: "A Lei nº 15.358/2026 criou o crime de domínio social estruturado (art. 2º) e, no art. 2º, § 8º, deslocou os homicídios praticados nesse contexto — por organização criminosa ultraviolenta, milícia ou grupo paramilitar — do Tribunal do Júri para as varas criminais colegiadas de 1º grau (art. 1º-A da Lei nº 12.694/2012). Em vez de sete jurados leigos, um colegiado de juízes. É exatamente essa flexibilização que divide a doutrina."
+      },
       { type: "h2", text: "Por que se quer flexibilizar" },
       {
         type: "p",
-        text: "O argumento da flexibilização é prático: julgamentos de crimes ligados a organizações criminosas envolvem intimidação de jurados, complexidade probatória e risco à integridade do júri popular. Juízos especializados ou colegiados seriam, nessa visão, mais aptos a julgar com segurança e técnica. A competência cederia em nome da efetividade da Justiça."
+        text: "O argumento da flexibilização é prático: julgamentos de crimes ligados a organizações criminosas envolvem intimidação de jurados, complexidade probatória e risco à integridade do júri popular. O juízo colegiado seria, nessa visão, mais apto a julgar com segurança e técnica. A competência cederia em nome da efetividade da Justiça."
       },
       {
         type: "tool",
@@ -1438,7 +1448,7 @@ export const ARTICLES: Article[] = [
           {
             titulo: "1. A lei é aplicada",
             texto:
-              "O caso é deslocado do júri para o juízo indicado pela nova regra de competência."
+              "O homicídio é deslocado do júri para a vara criminal colegiada de 1º grau (art. 1º-A da Lei nº 12.694/2012), com base no art. 2º, § 8º, da Lei Antifacção."
           },
           {
             titulo: "2. A defesa suscita a questão",
