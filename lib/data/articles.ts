@@ -1564,6 +1564,124 @@ export const ARTICLES: Article[] = [
           "O debate se concentra nos crimes dolosos contra a vida praticados em contexto de organização criminosa — exatamente onde a garantia do júri e a política de segurança se chocam."
       }
     ]
+  },
+  {
+    slug: "lei-antifaccao-15358-o-que-muda-na-pratica-penal",
+    title: "Lei Antifacção (15.358/26): o que muda na prática penal",
+    excerpt:
+      "Novo crime de 20 a 40 anos, prisão preventiva facilitada, perdimento de bens e o fim do auxílio-reclusão para condenados. O guia direto da Lei Antifacção — com os pontos já contestados.",
+    category: "Tribunal do Júri",
+    readingMinutes: 7,
+    publishedAt: "2026-05-30",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "criminal",
+    intro:
+      "Sancionada em março de 2026 e em vigor no dia seguinte, a Lei nº 15.358 — a Lei Antifacção — é o novo Marco Legal do Combate ao Crime Organizado. Em um só diploma, criou crime novo, endureceu a prisão, mexeu na competência e cortou benefícios. Para o criminalista, é leitura obrigatória; para o cidadão, é entender o que mudou. Aqui está o essencial, com os pontos que já estão sendo questionados.",
+    body: [
+      { type: "h2", text: "Uma lei, muitas mudanças" },
+      {
+        type: "p",
+        text: "A Lei Antifacção (Lei nº 15.358/2026) não é uma alteração pontual: reescreveu vários trechos da legislação penal de uma vez, com o objetivo declarado de combater organizações criminosas ultraviolentas, milícias e grupos paramilitares. Entrou em vigor na publicação, sem período de adaptação — ou seja, já está valendo."
+      },
+      {
+        type: "tool",
+        tool: "revela",
+        titulo: "Os conceitos-chave da nova lei",
+        itens: [
+          {
+            termo: "Domínio social estruturado",
+            definicao:
+              "Novo crime (art. 2º): exercer controle sobre território, comunidade ou atividade econômica por violência, grave ameaça ou meios que levem à submissão coletiva. Pena de reclusão de 20 a 40 anos."
+          },
+          {
+            termo: "Organização criminosa ultraviolenta",
+            definicao:
+              "Categoria que a lei usa para endurecer o tratamento de facções, milícias e grupos paramilitares que atuam com violência sistemática."
+          },
+          {
+            termo: "Perdimento de bens",
+            definicao:
+              "Perda, em favor do Estado, dos instrumentos usados no crime — que a nova lei tornou obrigatória nesse contexto, ainda que não haja risco de reutilização."
+          },
+          {
+            termo: "Intranscendência das penas",
+            definicao:
+              "Princípio constitucional (art. 5º, XLV): a pena não passa da pessoa do condenado. É o fundamento da crítica ao corte do auxílio-reclusão."
+          }
+        ]
+      },
+      { type: "h2", text: "O novo crime — e penas mais duras" },
+      {
+        type: "p",
+        text: "O coração da lei é o crime de domínio social estruturado, com pena de 20 a 40 anos e regime de cumprimento severo. A lógica é alcançar não só quem manda, mas quem sustenta a estrutura. Vieram junto um homicídio qualificado quando praticado nesse contexto e o aumento de pena para lesões na mesma situação."
+      },
+      { type: "h2", text: "Prisão, bens e benefícios: o cerco se fecha" },
+      {
+        type: "ul",
+        items: [
+          "Prisão preventiva: praticar os crimes do art. 2º passa a ser fundamento próprio para a preventiva (art. 313 do CPP).",
+          "Perdimento de bens: tornou-se obrigatório para os instrumentos do crime de facções e milícias.",
+          "Benefícios restringidos: lideranças ligadas a esses crimes perdem acesso a anistia, indulto, fiança e livramento condicional, com progressão de regime mais dura.",
+          "Auxílio-reclusão: vedado às famílias de condenados por domínio social estruturado."
+        ]
+      },
+      { type: "h2", text: "Onde a lei já é contestada" },
+      {
+        type: "p",
+        text: "Dureza não é o mesmo que constitucionalidade — e dois pontos concentram a crítica. O primeiro é a competência: o art. 2º, § 8º, retira do Tribunal do Júri os homicídios praticados nesse contexto e os manda para as varas criminais colegiadas de 1º grau (art. 1º-A da Lei nº 12.694/2012), o que esbarra na garantia constitucional do júri. O segundo é o corte do auxílio-reclusão: ao atingir a família do preso, a medida tensiona o princípio da intranscendência das penas (art. 5º, XLV), pelo qual a pena não pode passar da pessoa do condenado."
+      },
+      {
+        type: "tool",
+        tool: "perspectiva",
+        pergunta: "A Lei Antifacção acerta o tom no combate às facções?",
+        ladoA: {
+          rotulo: "Sim — o Estado precisava de ferramentas",
+          argumento:
+            "Facções ultraviolentas dominam territórios e intimidam a Justiça. Penas altas, perdimento e prisão facilitada dão ao Estado meios proporcionais à gravidade do problema."
+        },
+        ladoB: {
+          rotulo: "Cuidado — há excessos inconstitucionais",
+          argumento:
+            "Retirar casos do júri e punir a família do preso ferem garantias que valem para todos. Lei dura que ignora a Constituição vira munição para nulidades futuras."
+        }
+      },
+      {
+        type: "callout",
+        text: "Para a defesa, a leitura é dupla: conhecer cada novo rigor da lei E mapear seus flancos constitucionais. As teses de incompetência (manter o caso no júri) e de inconstitucionalidade da vedação do auxílio-reclusão já nascem fortes."
+      },
+      { type: "h2", text: "O que dominar agora" },
+      {
+        type: "p",
+        text: "Quem atua no criminal não tem o luxo de esperar a poeira baixar: a lei já está em vigor e aparecendo nos processos. Vale dominar o tipo do art. 2º e suas penas, as novas hipóteses de preventiva e as restrições de benefícios — e, do outro lado, as teses defensivas: competência do júri, intranscendência das penas e proporcionalidade. É esse domínio que diferencia o advogado no momento em que o cliente mais precisa."
+      },
+      {
+        type: "p",
+        text: "Conteúdo de análise doutrinária para estudo e debate; não é parecer sobre caso concreto e não esgota a lei, cuja íntegra deve ser conferida na fonte oficial."
+      }
+    ],
+    faq: [
+      {
+        question: "O que é o crime de domínio social estruturado?",
+        answer:
+          "É o novo tipo penal do art. 2º da Lei 15.358/2026: exercer controle sobre território, comunidade ou atividade econômica por violência, ameaça ou submissão coletiva. A pena é de reclusão de 20 a 40 anos."
+      },
+      {
+        question: "Por que o corte do auxílio-reclusão é criticado?",
+        answer:
+          "Porque atinge a família do preso, e não o condenado. Isso tensiona o princípio da intranscendência das penas (art. 5º, XLV, da Constituição), pelo qual a pena não pode passar da pessoa que cometeu o crime."
+      },
+      {
+        question: "A lei tira mesmo homicídios do Tribunal do Júri?",
+        answer:
+          "Em parte: o art. 2º, § 8º, desloca os homicídios praticados em contexto de facção para varas criminais colegiadas (Lei 12.694/2012). É um dos pontos mais contestados, por tocar a competência constitucional do júri."
+      },
+      {
+        question: "A Lei Antifacção já está valendo?",
+        answer:
+          "Sim. Foi publicada em março de 2026 e entrou em vigor na data da publicação, sem período de vacância — já se aplica aos casos."
+      }
+    ]
   }
 ];
 
