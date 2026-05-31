@@ -1682,6 +1682,132 @@ export const ARTICLES: Article[] = [
           "Sim. Foi publicada em março de 2026 e entrou em vigor na data da publicação, sem período de vacância — já se aplica aos casos."
       }
     ]
+  },
+  {
+    slug: "soberania-dos-veredictos-recurso-decisao-juri",
+    title: "O júri decidiu — dá para recorrer? A soberania dos veredictos na prática",
+    excerpt:
+      "Os jurados condenaram (ou absolveram) e você discorda. Cabe recurso? Entenda a apelação por decisão manifestamente contrária à prova (art. 593, III, d), o limite de um único novo júri e por que a soberania dos veredictos muda tudo.",
+    category: "Tribunal do Júri",
+    readingMinutes: 6,
+    publishedAt: "2026-05-30",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "criminal",
+    intro:
+      "Terminou o plenário, os jurados decidiram — e o resultado foi o oposto do que uma das partes esperava. Vem a pergunta imediata: dá para recorrer da decisão do júri? Sim, mas não como num processo comum. A Constituição blindou o veredicto com a soberania dos veredictos, e isso molda — e limita — todos os recursos. Entenda o que realmente cabe.",
+    body: [
+      { type: "h2", text: "A decisão do júri é soberana — mas não é intocável" },
+      {
+        type: "p",
+        text: "A Constituição assegura a soberania dos veredictos (art. 5º, XXXVIII, 'c'): quem dá a última palavra sobre o mérito de um crime doloso contra a vida é o Conselho de Sentença, não os juízes togados. Isso não significa que não há recurso — significa que o recurso não pode simplesmente substituir a vontade dos jurados pela do tribunal. Daí a apelação no júri ter um desenho próprio, mais estreito que no processo comum."
+      },
+      {
+        type: "tool",
+        tool: "revela",
+        titulo: "Os conceitos que organizam o recurso",
+        itens: [
+          {
+            termo: "Soberania dos veredictos",
+            definicao:
+              "Garantia constitucional (art. 5º, XXXVIII, 'c'): a decisão de mérito dos jurados prevalece e não pode ser trocada pela opinião do tribunal — no máximo, anulada para novo julgamento."
+          },
+          {
+            termo: "Apelação no júri",
+            definicao:
+              "Recurso cabível contra a decisão do júri, mas só nas hipóteses taxativas do art. 593, III, do CPP — não é um recurso amplo de mérito."
+          },
+          {
+            termo: "Manifestamente contrária à prova dos autos",
+            definicao:
+              "A hipótese mais discutida (art. 593, III, 'd'): a decisão não tem apoio em NENHUMA versão razoável da prova. Não basta o tribunal discordar — tem que ser escancarada."
+          },
+          {
+            termo: "Novo júri",
+            definicao:
+              "Consequência de prover a apelação da alínea 'd': o caso volta a um NOVO Conselho de Sentença — o tribunal não decide o mérito, para respeitar a soberania."
+          }
+        ]
+      },
+      { type: "h2", text: "As quatro portas do art. 593, III" },
+      {
+        type: "p",
+        text: "A apelação contra a decisão do júri só cabe em quatro situações, e cada uma tem um efeito diferente:"
+      },
+      {
+        type: "ul",
+        items: [
+          "a) Nulidade posterior à pronúncia — vício no rito do plenário (ex.: cerceamento de defesa). O tribunal anula e manda refazer.",
+          "b) Sentença do juiz-presidente contrária à lei ou à decisão dos jurados — aqui o erro é do juiz, não dos jurados; o tribunal corrige a sentença.",
+          "c) Erro ou injustiça na aplicação da pena ou da medida de segurança — o tribunal ajusta a dosimetria, sem tocar no veredicto.",
+          "d) Decisão dos jurados manifestamente contrária à prova dos autos — a única que mira o mérito do veredicto, e a mais limitada."
+        ]
+      },
+      { type: "h2", text: "A porta mais difícil: a alínea 'd'" },
+      {
+        type: "p",
+        text: "É na alínea 'd' que mora a confusão. Se o tribunal entender que os jurados decidiram contra prova manifesta, ele NÃO absolve nem condena — manda o réu a um NOVO júri, justamente para não ferir a soberania. E há um limite decisivo: por esse mesmo fundamento, só cabe UMA apelação (art. 593, § 3º). Se o segundo júri decidir no mesmo sentido, acabou — não há terceiro julgamento por 'contrariedade à prova'."
+      },
+      {
+        type: "callout",
+        text: "O ponto que ganha ou perde o recurso: se havia DUAS versões plausíveis na prova e os jurados escolheram uma delas, a decisão NÃO é manifestamente contrária à prova — é uma opção legítima do Conselho. A alínea 'd' só vale quando o veredicto não encontra apoio em nenhuma leitura razoável dos autos."
+      },
+      {
+        type: "tool",
+        tool: "quiz",
+        pergunta:
+          "Havia duas versões plausíveis nos autos. Os jurados absolveram, adotando a versão da defesa. A acusação apela com base no art. 593, III, 'd'. Qual o resultado mais provável?",
+        opcoes: [
+          {
+            texto: "O tribunal reforma e condena o réu",
+            explicacao:
+              "Não pode. Mesmo se desse provimento, o tribunal não condenaria — mandaria a novo júri. A soberania impede que o togado decida o mérito."
+          },
+          {
+            texto: "A apelação é negada: havendo duas versões, a escolha dos jurados é legítima",
+            correta: true,
+            explicacao:
+              "Exato. Com duas versões plausíveis, o veredicto não é 'manifestamente contrário à prova'. A alínea 'd' não serve para impor a versão que o tribunal prefere."
+          },
+          {
+            texto: "O caso vai automaticamente a novo júri",
+            explicacao:
+              "Só se a decisão fosse escancaradamente sem apoio na prova. Existindo versão razoável que sustente o veredicto, não há provimento."
+          }
+        ]
+      },
+      { type: "h2", text: "O que isso significa na sua estratégia" },
+      {
+        type: "p",
+        text: "Para o criminalista, a lição é dupla. Ao recorrer, escolher a alínea certa muda tudo: discutir pena é alínea 'c'; atacar nulidade é 'a'; só se arrisca na 'd' quando o veredicto é realmente insustentável — e lembrando do tiro único. Ao defender o veredicto favorável, o caminho é mostrar que existia base probatória para a escolha dos jurados. Dominar esse mapa é o que separa um recurso bem direcionado de um recurso natimorto."
+      },
+      {
+        type: "p",
+        text: "Conteúdo de análise para estudo e debate; não é parecer sobre caso concreto. Cada recurso no júri depende das particularidades dos autos e da orientação de um advogado."
+      }
+    ],
+    faq: [
+      {
+        question: "Cabe recurso contra a decisão do júri?",
+        answer:
+          "Sim, por apelação, mas só nas hipóteses do art. 593, III, do CPP (nulidade, erro do juiz, erro na pena ou decisão manifestamente contrária à prova). Não é um recurso amplo de mérito."
+      },
+      {
+        question: "O tribunal pode mudar a pena fixada no júri?",
+        answer:
+          "Pode, pela alínea 'c' do art. 593, III, quando há erro ou injustiça na aplicação da pena — isso não fere a soberania, porque não muda o veredicto, só a dosimetria."
+      },
+      {
+        question: "Quantas vezes dá para apelar por 'decisão contrária à prova'?",
+        answer:
+          "Apenas uma. Provida a apelação da alínea 'd', o réu vai a novo júri; pelo mesmo fundamento não cabe segunda apelação (art. 593, § 3º, do CPP)."
+      },
+      {
+        question: "O que é a soberania dos veredictos?",
+        answer:
+          "É a garantia (art. 5º, XXXVIII, 'c', da Constituição) de que a decisão de mérito é dos jurados. O tribunal pode anular para novo júri, mas não substituir o veredicto pela própria convicção."
+      }
+    ]
   }
 ];
 
