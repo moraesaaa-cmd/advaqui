@@ -57,8 +57,9 @@ import { SITE } from "@/lib/config";
  *  - Schema Article + spatialCoverage Place
  */
 
-export const dynamicParams = true;
-export const revalidate = 86400;
+// force-dynamic: renderiza sob demanda SEM gravar em disco — impede o disco de
+// reencher conforme o Google rastreia milhares de cidades. URL funciona normal.
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   const cidades = getCidadesPrioritarias();

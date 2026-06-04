@@ -47,8 +47,9 @@ import { SITE } from "@/lib/config";
  *  - Canonical próprio — não substitui /guias/[slug] (geral)
  */
 
-export const revalidate = 86400; // 24h
-export const dynamicParams = true;
+// force-dynamic: renderiza sob demanda SEM gravar em disco — impede o disco de
+// reencher conforme o Google rastreia milhares de cidades. URL funciona normal.
+export const dynamic = "force-dynamic";
 
 const GUIA_SLUGS = GUIAS.map((g) => g.slug);
 

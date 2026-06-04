@@ -37,8 +37,9 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
  * resolver disputas (Vara do Trabalho, Vara de Família etc).
  */
 
-export const revalidate = 86400;
-export const dynamicParams = true;
+// force-dynamic: renderiza sob demanda SEM gravar em disco — impede o disco de
+// reencher conforme o Google rastreia milhares de cidades. URL funciona normal.
+export const dynamic = "force-dynamic";
 
 const CALC_SLUGS = CALCULADORAS.map((c) => c.slug);
 

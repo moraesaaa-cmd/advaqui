@@ -37,8 +37,9 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
  *  - ISR nas demais — geradas sob demanda
  */
 
-export const revalidate = 86400;
-export const dynamicParams = true;
+// force-dynamic: renderiza sob demanda SEM gravar em disco — impede o disco de
+// reencher conforme o Google rastreia milhares de cidades. URL funciona normal.
+export const dynamic = "force-dynamic";
 
 const MIN_DECISOES_INDEXAVEIS = 3;
 
