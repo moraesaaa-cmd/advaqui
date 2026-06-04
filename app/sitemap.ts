@@ -12,6 +12,7 @@ import { PROBLEMAS } from "@/lib/data/problemas-juridicos";
 import { GUIAS } from "@/lib/data/guias";
 import { TEMAS_STJ } from "@/lib/data/jurisprudencia-temas";
 import { CUSTOS } from "@/lib/data/custos-juridicos";
+import { CALCULADORAS } from "@/lib/data/calculadoras";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
@@ -59,7 +60,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/guias`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
     { url: `${base}/central`, changeFrequency: "weekly", priority: 0.7, lastModified: now },
     { url: `${base}/advogados-de`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
-    { url: `${base}/quanto-custa`, changeFrequency: "weekly", priority: 0.8, lastModified: now }
+    { url: `${base}/quanto-custa`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
+    { url: `${base}/calculadoras`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
+    { url: `${base}/tribunais`, changeFrequency: "weekly", priority: 0.7, lastModified: now }
   ];
 
   // Glossário — termos individuais
@@ -109,6 +112,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
     lastModified: now
   }));
+
+  // Páginas-base de calculadoras (a versão /em/[cidade] está no sitemap
+  // secundário; aqui entram as páginas-base, que faltavam no índice).
+  const calculadoraRoutes: MetadataRoute.Sitemap = CALCULADORAS.map((calc) => ({
+    url: `${base}/calculadoras/${calc.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: now
+  }));
+
+  // Fórum/comarca das capitais (/tribunais/[uf]/[cidade]). A versão de todas
+  // as cidades está no sitemap secundário; aqui entram as capitais, que
+  // faltavam no índice raiz.
+  const tribunalRoutes: MetadataRoute.Sitemap = getAllCities()
+    .filter((c) => c.isCapital)
+    .map((c) => ({
+      url: `${base}/tribunais/${c.uf.toLowerCase()}/${c.slug}`,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      lastModified: now
+    }));
 
   // Combinações cauda longa (problema/área/tema/glossário × 5571 cidades)
   // estão agora em sitemaps secundários, listados em app/robots.ts.
@@ -235,6 +259,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...guiaRoutes,
     ...temaStjRoutes,
     ...custoRoutes,
-    ...areaRoutes
+    ...areaRoutes,
+    ...calculadoraRoutes,
+    ...tribunalRoutes
   ];
 }

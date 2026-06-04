@@ -21,6 +21,7 @@ import {
 import { findLawyerBySlug } from "@/lib/data/lawyers";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { SPECIALTIES } from "@/lib/data/specialties";
+import { GUIAS } from "@/lib/data/guias";
 import {
   getSpecialtyDescription,
   getUsefulDocsForSpecialties
@@ -111,6 +112,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 const labelOf = (slug: string) =>
   SPECIALTIES.find((s) => s.slug === slug)?.name || slug;
+
+/** Guia da área (quando existe) — link educativo a partir do card de área. */
+const guiaForArea = (areaSlug: string) =>
+  GUIAS.find((g) => g.area_slug === areaSlug);
 
 /**
  * Busca artigos publicados pelo advogado. Defensive: se a tabela
@@ -476,19 +481,31 @@ export default async function ProfessionalPage({
               Principais áreas de atendimento
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {primaryList.map((s) => (
-                <article
-                  key={s}
-                  className="rounded-xl border-2 border-brand-deep/15 bg-brand-deep/5 p-4"
-                >
-                  <h3 className="font-display text-sm md:text-base font-bold text-brand-ink mb-1">
-                    {labelOf(s)}
-                  </h3>
-                  <p className="text-xs md:text-sm text-brand-ink/80 leading-relaxed">
-                    {getSpecialtyDescription(s)}
-                  </p>
-                </article>
-              ))}
+              {primaryList.map((s) => {
+                const guia = guiaForArea(s);
+                return (
+                  <article
+                    key={s}
+                    className="rounded-xl border-2 border-brand-deep/15 bg-brand-deep/5 p-4"
+                  >
+                    <h3 className="font-display text-sm md:text-base font-bold text-brand-ink mb-1">
+                      {labelOf(s)}
+                    </h3>
+                    <p className="text-xs md:text-sm text-brand-ink/80 leading-relaxed">
+                      {getSpecialtyDescription(s)}
+                    </p>
+                    {guia && (
+                      <Link
+                        href={`/guias/${guia.slug}`}
+                        className="mt-2.5 inline-flex items-center gap-1 text-xs font-semibold text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline"
+                      >
+                        Guia de {labelOf(s)}
+                        <span aria-hidden>→</span>
+                      </Link>
+                    )}
+                  </article>
+                );
+              })}
             </div>
 
             {/* Outras áreas informadas (chips) */}
