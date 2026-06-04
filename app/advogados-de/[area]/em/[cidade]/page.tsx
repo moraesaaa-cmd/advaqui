@@ -44,8 +44,12 @@ import { SITE } from "@/lib/config";
  * editorial da combinação área × cidade.
  */
 
-export const revalidate = 86400; // 24h
-export const dynamicParams = true;
+// SEMPRE AO VIVO (force-dynamic): esta vitrine lista advogados que mudam em
+// runtime, igual a /advogados/[uf]/[cidade]. Antes era ISR de 24h sem gatilho
+// de revalidacao — advogado novo demorava ate 24h pra aparecer aqui (mesmo bug
+// do cadastro, pagina-gemea esquecida). force-dynamic reflete o cadastro na hora
+// e nao grava em disco. generateStaticParams abaixo fica ignorado sob force-dynamic.
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   const cidades = getCidadesPrioritarias();
