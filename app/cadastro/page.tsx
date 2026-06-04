@@ -364,6 +364,16 @@ export default function CadastroPage() {
       }
     }
 
+    // AUTOMÁTICO: no instante do cadastro, dispara a revalidação das páginas
+    // onde o novo perfil aparece (cidade, estado, home). Assim o advogado
+    // aparece IMEDIATAMENTE, sem depender de ciclo de cache. Best-effort —
+    // não bloqueia o fluxo se falhar (as páginas de advogado já são force-dynamic).
+    try {
+      await fetch("/api/lawyer/revalidate", { method: "POST" });
+    } catch {
+      // silencioso — força-dynamic já garante exibição ao vivo
+    }
+
     setSubmitting(false);
     toast("Cadastro realizado! Bem-vindo ao AdvAqui.");
     // Hard reload pra garantir que o Header re-sincroniza /api/auth/me

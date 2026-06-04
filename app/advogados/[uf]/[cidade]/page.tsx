@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Award, Users, MapPin, ArrowRight } from "lucide-react";
 import { findState } from "@/lib/data/states";
-import { findCity, getSsgCityParams, nearbyCities, findCapital } from "@/lib/data/cities";
+import { findCity, nearbyCities, findCapital } from "@/lib/data/cities";
 import { getLawyersForCity, sortLawyers, getLawyerCountsByCity } from "@/lib/data/lawyers";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { Breadcrumb } from "@/components/Breadcrumb";
@@ -16,12 +16,12 @@ import { formatCurrency } from "@/lib/utils/format";
 import { topCitiesForState } from "@/lib/seo/internal-links";
 import { CidadeRecursos } from "@/components/CidadeRecursos";
 
-export const revalidate = 3600;
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  return getSsgCityParams();
-}
+// SEMPRE AO VIVO (force-dynamic): o advogado recém-cadastrado aparece NA HORA,
+// sem depender de cache/ISR — que congelava esta página (e escondia o cadastro)
+// quando o disco enchia. force-dynamic renderiza por requisição e NÃO grava em
+// disco, então é imune ao problema de disco cheio. Conjunto pequeno e bounded
+// (cidades × poucos advogados), custo de render desprezível.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params

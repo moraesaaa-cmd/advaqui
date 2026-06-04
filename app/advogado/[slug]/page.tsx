@@ -18,7 +18,7 @@ import {
   Briefcase,
   Building2
 } from "lucide-react";
-import { findLawyerBySlug, getAllLawyerSlugs } from "@/lib/data/lawyers";
+import { findLawyerBySlug } from "@/lib/data/lawyers";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import {
@@ -55,13 +55,10 @@ import { SITE } from "@/lib/config";
  * LegalService schema. FAQ Schema fica pra rodada que liberar FAQs próprios
  * do advogado (depende de migration 0006).
  */
-export const revalidate = 3600;
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  const slugs = await getAllLawyerSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
+// SEMPRE AO VIVO (force-dynamic): o perfil reflete cadastro/edições NA HORA,
+// sem cache que possa congelar (e sumir quando o disco enchia). Renderiza por
+// requisição e NÃO grava em disco — imune a disco cheio.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const l = await findLawyerBySlug(params.slug);

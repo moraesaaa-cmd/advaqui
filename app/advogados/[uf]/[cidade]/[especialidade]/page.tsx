@@ -15,8 +15,10 @@ import { PLAN } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
 import { relatedCapitalsForSpecialty } from "@/lib/seo/internal-links";
 
-export const revalidate = 3600;
-export const dynamicParams = true;
+// Sempre ao vivo (force-dynamic): o advogado por especialidade na cidade
+// reflete o cadastro na hora, sem cache que congele. generateStaticParams
+// abaixo fica como referência (ignorado sob force-dynamic).
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   // Pré-gera capital × especialidades no build (27 x 15 = 405 páginas).
