@@ -53,9 +53,11 @@ import { SITE } from "@/lib/config";
  *  - Não substitui /problemas-juridicos/[slug] (geral) — canonical próprio
  */
 
-export const revalidate = 86400; // 24h
-// dynamicParams = true permite ISR pras 5521 cidades não pré-geradas
-export const dynamicParams = true;
+// force-dynamic: renderiza sob demanda SEM gravar em disco. Impede o acúmulo
+// (Google rastreando 111k URLs) que enchia o disco a 100% e quebrava o site.
+// As URLs continuam funcionando (geradas na hora). generateStaticParams abaixo
+// fica como referência (ignorado sob force-dynamic).
+export const dynamic = "force-dynamic";
 
 const PROBLEMA_SLUGS = PROBLEMAS.map((p) => p.slug);
 

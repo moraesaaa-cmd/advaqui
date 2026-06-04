@@ -43,8 +43,9 @@ import { SITE } from "@/lib/config";
  * cross-links pra problema, jurisprudência e advogados na cidade.
  */
 
-export const revalidate = 86400;
-export const dynamicParams = true;
+// force-dynamic: sob demanda, SEM gravar em disco — impede o acúmulo que
+// enchia o disco. URLs seguem funcionando (geradas na hora).
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   const cidades = getCidadesPrioritarias();
