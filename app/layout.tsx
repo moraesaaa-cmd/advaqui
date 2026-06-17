@@ -8,6 +8,7 @@ import { ChromeGate } from "@/components/ChromeGate";
 import { GlobalRecrutaCTA } from "@/components/GlobalRecrutaCTA";
 import { Toaster } from "@/components/Toast";
 import { JsonLd } from "@/components/JsonLd";
+import { GoogleAdsTag } from "@/components/GoogleAdsTag";
 import { PageViewTracker } from "@/components/PageViewTracker";
 import { orgSchema, websiteSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -84,6 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
         </ChromeGate>
         <Toaster />
+        <GoogleAdsTag />
         <JsonLd data={orgSchema()} />
         <JsonLd data={websiteSchema()} />
         {/* Analytics próprio — registra pageviews sem cookies, com IP truncado.
