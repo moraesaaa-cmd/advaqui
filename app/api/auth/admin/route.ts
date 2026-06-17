@@ -1,5 +1,12 @@
 import { NextResponse } from "next/server";
 import { createAdminToken, setAdminCookie } from "@/lib/auth/adminSession";
+import { createHash, timingSafeEqual } from "crypto";
+
+const safeEqual = (a: string, b: string): boolean => {
+  const ha = createHash("sha256").update(a).digest();
+  const hb = createHash("sha256").update(b).digest();
+  return timingSafeEqual(ha, hb);
+};
 
 /**
  * Endpoint server-side de autenticação admin.
@@ -32,10 +39,11 @@ const buildKey = (ip: string, email: string) =>
   `${ip}::${email.toLowerCase().trim()}`;
 
 const getClientIp = (req: Request): string => {
-  const xff = req.headers.get("x-forwarded-for");
-  if (xff) return xff.split(",")[0].trim();
+  // x-real-ip e setado pelo proxy (Nginx) e nao e falsificavel pelo cliente.
   const xri = req.headers.get("x-real-ip");
   if (xri) return xri.trim();
+  const xff = req.headers.get("x-forwarded-for");
+  if (xff) return xff.split(",")[0].trim();
   return "unknown";
 };
 
@@ -92,7 +100,7 @@ export async function POST(req: Request) {
   }
 
   const ok =
-    email.toLowerCase() === expectedEmail && password === expectedPassword;
+    email.toLowerCase() === expectedEmail && safeEqual(password, expectedPassword);
 
   if (ok) {
     attempts.delete(key);
