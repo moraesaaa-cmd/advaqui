@@ -35,11 +35,7 @@ export { type Lawyer, mapLawyerRow };
  */
 const HIDDEN_PAGE_STATUSES = new Set<string>([
   "paused",
-  "suspended",
-  "review",
-  "draft",
-  "incomplete",
-  "not_configured"
+  "suspended"
 ]);
 
 /**

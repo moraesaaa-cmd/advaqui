@@ -40,11 +40,7 @@ export async function GET(req: Request) {
 
   const hiddenStatuses = new Set([
     "paused",
-    "suspended",
-    "review",
-    "draft",
-    "incomplete",
-    "not_configured"
+    "suspended"
   ]);
 
   const visible = (data || [])
