@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import {
   Check,
@@ -139,8 +140,8 @@ export default function PlanosPage() {
             <p className="mt-5 inline-flex items-start gap-2 text-sm md:text-base text-brand-bg/90 bg-white/10 rounded-xl px-4 py-2.5 border border-brand-accent/30">
               <ShieldCheck className="w-5 h-5 text-brand-accent flex-shrink-0 mt-0.5" aria-hidden />
               <span>
-                <strong className="text-brand-accent">Teste o Premium por 7 dias.</strong>{" "}
-                Se não fizer sentido para você, devolvemos seu dinheiro.
+                <strong className="text-brand-accent">Comece a aparecer hoje na sua cidade.</strong>{" "}
+                Renovação mensal, sem fidelidade — cancele quando quiser.
               </span>
             </p>
           </div>
@@ -382,8 +383,8 @@ export default function PlanosPage() {
               text="Plano é Pix mensal. Você decide se quer renovar — não há débito automático no cartão."
             />
             <GuaranteeCard
-              title="Saiu insatisfeito? Devolvemos"
-              text="Se nos primeiros 7 dias depois da ativação seu plano não rendeu nada, devolvemos integralmente o valor pago. Basta pedir."
+              title="Sem fidelidade, sem multa"
+              text="Renovação mensal. Você renova só se quiser e cancela quando quiser, sem permanência mínima e sem multa de cancelamento."
             />
             <GuaranteeCard
               title="Seus dados são seus"
@@ -464,8 +465,8 @@ export default function PlanosPage() {
               <div className="mt-3 rounded-lg bg-white/10 border border-brand-accent/40 px-3 py-2 text-xs text-brand-bg/90 flex items-start gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-brand-accent flex-shrink-0 mt-0.5" aria-hidden />
                 <span>
-                  <strong className="text-brand-accent">Experimente por 7 dias.</strong>{" "}
-                  Se não fizer sentido para você, seu dinheiro volta.
+                  <strong className="text-brand-accent">Pagamento via Pix, ativação rápida.</strong>{" "}
+                  Renovação mensal, sem fidelidade — cancele quando quiser.
                 </span>
               </div>
             </div>
@@ -519,8 +520,8 @@ export default function PlanosPage() {
               </thead>
               <tbody>
                 {COMPARISON.map((group) => (
-                  <>
-                    <tr key={`g-${group.group}`} className="bg-brand-bg/40">
+                  <Fragment key={`g-${group.group}`}>
+                    <tr className="bg-brand-bg/40">
                       <td
                         colSpan={3}
                         className="px-4 py-2 text-xs font-bold text-brand-deep uppercase tracking-wider border-b border-brand-line"
@@ -540,7 +541,7 @@ export default function PlanosPage() {
                         </td>
                       </tr>
                     ))}
-                  </>
+                  </Fragment>
                 ))}
               </tbody>
             </table>

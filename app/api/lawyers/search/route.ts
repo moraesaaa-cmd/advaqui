@@ -28,8 +28,9 @@ export async function GET(req: Request) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("lawyers")
-    .select("id, slug, name, oab, oab_uf, city_name, uf")
+    .select("id, slug, name, oab, oab_uf, city_name, uf, is_public, page_status")
     .ilike("name", `%${q}%`)
+    .or("is_public.is.null,is_public.eq.true")
     .limit(limit);
 
   if (error) {
@@ -37,7 +38,24 @@ export async function GET(req: Request) {
     return NextResponse.json([], { status: 500 });
   }
 
-  return NextResponse.json(data || [], {
+  const hiddenStatuses = new Set([
+    "paused",
+    "suspended",
+    "review",
+    "draft",
+    "incomplete",
+    "not_configured"
+  ]);
+
+  const visible = (data || [])
+    .filter(
+      (row: any) =>
+        row.is_public !== false &&
+        !(row.page_status != null && hiddenStatuses.has(row.page_status))
+    )
+    .map(({ is_public, page_status, ...rest }: any) => rest);
+
+  return NextResponse.json(visible, {
     headers: { "Cache-Control": "public, max-age=300, s-maxage=300" }
   });
 }

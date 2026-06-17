@@ -12,6 +12,21 @@ export async function POST() {
     return NextResponse.json(current, { status: current.status });
   }
 
+  // Guard: nao rebaixar um advogado PREMIUM ATIVO. Se ele acessar a rota crua
+  // /painel/pagamento e clicar "Ja paguei" ja estando active e com plano
+  // vigente, manter o status — senao voltaria a "pending", sairia do topo e
+  // perderia o selo ate um admin reativar (e poderia pagar 2x por confusao).
+  const activeEndMs = current.lawyer.plan_end_date
+    ? new Date(current.lawyer.plan_end_date).getTime()
+    : 0;
+  if (current.lawyer.plan_status === "active" && activeEndMs > Date.now()) {
+    return NextResponse.json({
+      ok: true,
+      alreadyActive: true,
+      lawyer: toPanelLawyer(current.lawyer)
+    });
+  }
+
   const now = new Date().toISOString();
   const { data, error } = await current.admin
     .from("lawyers")

@@ -1,6 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { LawyerRow, PublicLawyer } from "@/lib/supabase/types";
 import { type Lawyer, mapLawyerRow } from "@/lib/data/lawyer-mapper";
+import { PIX } from "@/lib/config";
 
 /**
  * Funções server-side de acesso a `public.lawyers`.
@@ -28,6 +29,44 @@ import { type Lawyer, mapLawyerRow } from "@/lib/data/lawyer-mapper";
  */
 
 export { type Lawyer, mapLawyerRow };
+
+/**
+ * page_status que NUNCA devem aparecer no diretório público.
+ */
+const HIDDEN_PAGE_STATUSES = new Set<string>([
+  "paused",
+  "suspended",
+  "review",
+  "draft",
+  "incomplete",
+  "not_configured"
+]);
+
+/**
+ * Decide se um registro pode aparecer na listagem/contagem pública.
+ *
+ * Esconde quando `page_status` está num estado não-público OU `is_public`
+ * é explicitamente `false`.
+ *
+ * DEFENSIVO/COMPAT: se `page_status` for null/undefined (registro antigo,
+ * migration 0006 não aplicada) trata como visível; idem se `is_public` for
+ * null/undefined. Só esconde quando há sinal EXPLÍCITO de não-visível.
+ */
+function isPubliclyVisible(row: {
+  page_status?: string | null;
+  is_public?: boolean | null;
+}): boolean {
+  if (
+    typeof row.page_status === "string" &&
+    HIDDEN_PAGE_STATUSES.has(row.page_status)
+  ) {
+    return false;
+  }
+  if (row.is_public === false) {
+    return false;
+  }
+  return true;
+}
 
 /**
  * Lista advogados de uma cidade específica (uf+slug).
@@ -91,6 +130,8 @@ export async function getLawyersForCity(
 
   const matched: Lawyer[] = [];
   for (const row of byId.values()) {
+    // Esconde registros não-públicos (paused/suspended/draft… ou is_public=false).
+    if (!isPubliclyVisible(row)) continue;
     // 1) cidade principal
     if (row.uf === ufUpper && row.city_slug === citySlug) {
       matched.push(mapLawyerRow(row));
@@ -182,6 +223,7 @@ export async function getLawyersForState(uf: string): Promise<Lawyer[]> {
   }
 
   return Array.from(byId.values())
+    .filter((r) => isPubliclyVisible(r))
     .map((r) => mapLawyerRow(r))
     .sort((a, b) => a.name.localeCompare(b.name, "pt-BR"));
 }
@@ -246,7 +288,7 @@ export async function getLawyerCountsByState(): Promise<Record<string, number>> 
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("lawyers")
-    .select("uf,target_uf,extra_cities");
+    .select("uf,target_uf,extra_cities,page_status,is_public");
 
   if (error) {
     console.error("getLawyerCountsByState error:", error.message);
@@ -257,8 +299,12 @@ export async function getLawyerCountsByState(): Promise<Record<string, number>> 
     uf?: string;
     target_uf?: string | null;
     extra_cities?: Array<{ uf?: string }> | null;
+    page_status?: string | null;
+    is_public?: boolean | null;
   };
   for (const r of (data || []) as Row[]) {
+    // Não conta registros não-públicos no diretório.
+    if (!isPubliclyVisible(r)) continue;
     const ufs = new Set<string>();
     if (r.uf) ufs.add(r.uf.toUpperCase());
     if (r.target_uf) ufs.add(r.target_uf.toUpperCase());
@@ -285,7 +331,7 @@ export async function getLawyerCountsByCity(
   const ufUpper = uf.toUpperCase();
   const { data, error } = await supabase
     .from("lawyers")
-    .select("city_slug,uf,target_city,target_uf,extra_cities");
+    .select("city_slug,uf,target_city,target_uf,extra_cities,page_status,is_public");
 
   if (error) {
     console.error("getLawyerCountsByCity error:", error.message);
@@ -298,8 +344,12 @@ export async function getLawyerCountsByCity(
     target_city?: string | null;
     target_uf?: string | null;
     extra_cities?: Array<{ uf?: string; slug?: string }> | null;
+    page_status?: string | null;
+    is_public?: boolean | null;
   };
   for (const r of (data || []) as Row[]) {
+    // Não conta registros não-públicos no diretório.
+    if (!isPubliclyVisible(r)) continue;
     // Coleta cidades únicas (por slug) onde esse lawyer aparece NESSE estado.
     // Set garante que o lawyer não é contado 2x na mesma cidade (caso
     // tenha um duplicado em extra_cities).
@@ -403,7 +453,7 @@ export async function adminActivatePremium(
   } else {
     await admin.from("plan_history").insert({
       lawyer_id: lawyerId,
-      amount: 59.9,
+      amount: PIX.amount,
       status: "confirmed",
       payment_date: now.toISOString(),
       expires_at: expires.toISOString()

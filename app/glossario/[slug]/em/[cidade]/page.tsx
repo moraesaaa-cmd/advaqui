@@ -92,7 +92,9 @@ export async function generateMetadata({
   return buildMetadata({
     title,
     description: description.slice(0, 160),
-    path: `/glossario/${termo.slug}/em/${params.cidade}`
+    path: `/glossario/${termo.slug}/em/${params.cidade}`,
+    canonical: `/glossario/${termo.slug}`,
+    noIndex: true
   });
 }
 

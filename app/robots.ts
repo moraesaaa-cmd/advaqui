@@ -104,7 +104,6 @@ export default function robots(): MetadataRoute.Robots {
     "/painel",
     "/api/",
     "/login",
-    "/cadastro",
     "/recuperar-senha",
     "/redefinir-senha"
   ];

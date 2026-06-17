@@ -107,7 +107,8 @@ export async function generateMetadata({
   return buildMetadata({
     title: titleLocal,
     description: descLocal.slice(0, 160),
-    path: `/blog/${article.slug}/em/${params.cidade}`
+    path: `/blog/${article.slug}/em/${params.cidade}`,
+    canonical: `/blog/${article.slug}`
   });
 }
 

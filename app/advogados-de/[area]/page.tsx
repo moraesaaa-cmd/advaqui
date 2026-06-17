@@ -112,7 +112,7 @@ export default function AreaBasePage({
 
         <div className="mt-6">
           <Link
-            href={`/advogados/${sp.slug}`}
+            href={`/advogados-de/${sp.slug}`}
             className="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-brand-deep text-white hover:bg-brand-deep/90 transition"
           >
             <Users className="w-4 h-4" aria-hidden />

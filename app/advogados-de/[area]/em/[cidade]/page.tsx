@@ -96,7 +96,8 @@ export async function generateMetadata({
   return buildMetadata({
     title,
     description: description.slice(0, 160),
-    path: `/advogados-de/${sp.slug}/em/${params.cidade}`
+    path: `/advogados-de/${sp.slug}/em/${params.cidade}`,
+    canonical: `/advogados-de/${sp.slug}`
   });
 }
 
@@ -243,7 +244,7 @@ export default async function AdvogadoAreaCidadePage({
               </Link>{" "}
               ou{" "}
               <Link
-                href={`/advogados/${sp.slug}`}
+                href={`/advogados-de/${sp.slug}`}
                 className="text-brand-deep underline"
               >
                 profissionais da área em todo o Brasil
