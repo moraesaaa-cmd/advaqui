@@ -96,8 +96,7 @@ export async function generateMetadata({
   return buildMetadata({
     title: tituloLocal,
     description: descricaoLocal.slice(0, 160),
-    path: `/modelos/${tpl.slug}/em/${params.cidade}`,
-    canonical: `/modelos/${tpl.slug}`
+    path: `/modelos/${tpl.slug}/em/${params.cidade}`
   });
 }
 

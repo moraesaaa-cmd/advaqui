@@ -109,8 +109,7 @@ export async function generateMetadata({
   return buildMetadata({
     title: tituloLocal,
     description: descricaoLocal.slice(0, 160),
-    path: `/problemas-juridicos/${problema.slug}/em/${params.cidade}`,
-    canonical: `/problemas-juridicos/${problema.slug}`
+    path: `/problemas-juridicos/${problema.slug}/em/${params.cidade}`
   });
 }
 

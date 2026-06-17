@@ -96,8 +96,7 @@ export async function generateMetadata({
   return buildMetadata({
     title,
     description: description.slice(0, 160),
-    path: `/advogados-de/${sp.slug}/em/${params.cidade}`,
-    canonical: `/advogados-de/${sp.slug}`
+    path: `/advogados-de/${sp.slug}/em/${params.cidade}`
   });
 }
 

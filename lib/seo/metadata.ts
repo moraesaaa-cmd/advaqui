@@ -7,10 +7,6 @@ type PageMetaInput = {
   path?: string;
   image?: string;
   noIndex?: boolean;
-  /** Override do canonical (relativo a "/" ou absoluto). Consolida variantes
-   *  near-duplicate (ex.: /glossario/[slug]/em/[cidade]) na pagina-base,
-   *  evitando conteudo duplicado em escala. */
-  canonical?: string;
 };
 
 /**
@@ -27,19 +23,16 @@ export const buildMetadata = (input: PageMetaInput): Metadata => {
   const shortTitle = input.title.replace(trailingSiteName, "").trim();
   const fullTitle = `${shortTitle} — ${SITE.name}`;
   const url = input.path ? `${SITE.url}${input.path}` : SITE.url;
-  const canonicalUrl = input.canonical
-    ? (input.canonical.startsWith("http") ? input.canonical : `${SITE.url}${input.canonical}`)
-    : url;
   const image = input.image || `${SITE.url}/opengraph-image`;
 
   return {
     title: shortTitle,
     description: input.description,
-    alternates: { canonical: canonicalUrl },
+    alternates: { canonical: url },
     openGraph: {
       title: fullTitle,
       description: input.description,
-      url: canonicalUrl,
+      url,
       siteName: SITE.name,
       locale: "pt_BR",
       type: "website",
