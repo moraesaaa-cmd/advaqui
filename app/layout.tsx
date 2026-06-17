@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ChromeGate } from "@/components/ChromeGate";
 import { GlobalRecrutaCTA } from "@/components/GlobalRecrutaCTA";
 import { Toaster } from "@/components/Toast";
 import { JsonLd } from "@/components/JsonLd";
@@ -74,10 +75,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Pular para o conteúdo
         </a>
-        <Header />
+        <ChromeGate>
+          <Header />
+        </ChromeGate>
         <main id="main" className="flex-1">{children}</main>
-        <GlobalRecrutaCTA />
-        <Footer />
+        <ChromeGate>
+          <GlobalRecrutaCTA />
+          <Footer />
+        </ChromeGate>
         <Toaster />
         <JsonLd data={orgSchema()} />
         <JsonLd data={websiteSchema()} />
