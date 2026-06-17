@@ -110,8 +110,9 @@ function validate(item: STFRawItem): string | null {
   if (!url) return "sem_url";
   // Garante host stf.jus.br
   try {
-    const host = new URL(url).hostname;
-    if (!host.endsWith("stf.jus.br")) return "host_nao_oficial";
+    const host = new URL(url).hostname.toLowerCase();
+    if (host !== "stf.jus.br" && !host.endsWith(".stf.jus.br"))
+      return "host_nao_oficial";
   } catch {
     return "url_invalida";
   }

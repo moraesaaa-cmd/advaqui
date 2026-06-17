@@ -19,15 +19,15 @@ export const PIX = {
 };
 
 export const PLAN = {
-  price: 59.9,
-  priceLabel: "R$ 59,90",
+  price: PIX.amount,
+  priceLabel: `R$ ${PIX.amount.toFixed(2).replace(".", ",")}`,
   cycleDays: 30,
   activationHours: 48
 };
 
 export const ADMIN_CREDENTIALS = {
   email: process.env.ADMIN_EMAIL || "admin@AdvAqui.com.br",
-  password: process.env.ADMIN_PASSWORD || "Admin@2026"
+  password: process.env.ADMIN_PASSWORD || ""
 };
 
 export const FEATURES = {
