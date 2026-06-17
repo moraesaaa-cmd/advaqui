@@ -32,10 +32,15 @@ export async function generateMetadata({
   const city = findCity(params.uf, params.cidade);
   if (!st || !city)
     return buildMetadata({ title: "Cidade", description: "Cidade não encontrada", noIndex: true });
+  // noindex para cidade SEM advogado: ~5.5k paginas vazias = thin content que
+  // derruba o dominio. Volta a index automaticamente quando um advogado se
+  // cadastra ali (force-dynamic re-avalia a cada requisicao).
+  const cityLawyers = await getLawyersForCity(st.uf, city.slug);
   return buildMetadata({
     title: `Advogados em ${city.name}/${st.uf}`,
     description: `Encontre perfis de advogados em ${city.name}/${st.uf}, com OAB, áreas de atuação, região atendida e canais de contato.`,
-    path: `/advogados/${st.uf.toLowerCase()}/${city.slug}`
+    path: `/advogados/${st.uf.toLowerCase()}/${city.slug}`,
+    noIndex: cityLawyers.length === 0
   });
 }
 
