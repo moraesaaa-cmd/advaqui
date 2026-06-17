@@ -90,8 +90,7 @@ export async function generateMetadata({
       0,
       160
     ),
-    path: `/calculadoras/${calc.slug}/em/${params.cidade}`,
-    canonical: `/calculadoras/${calc.slug}`
+    path: `/calculadoras/${calc.slug}/em/${params.cidade}`
   });
 }
 

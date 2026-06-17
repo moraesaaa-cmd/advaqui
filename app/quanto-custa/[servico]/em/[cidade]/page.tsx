@@ -103,8 +103,7 @@ export async function generateMetadata({
   return buildMetadata({
     title: tituloLocal,
     description: descricaoLocal.slice(0, 160),
-    path: `/quanto-custa/${custo.slug}/em/${params.cidade}`,
-    canonical: `/quanto-custa/${custo.slug}`
+    path: `/quanto-custa/${custo.slug}/em/${params.cidade}`
   });
 }
 
