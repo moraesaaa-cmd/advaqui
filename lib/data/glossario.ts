@@ -1150,6 +1150,132 @@ export const GLOSSARIO: GlossarioTermo[] = [
     areas: ["civil", "criminal"],
     ver_tambem: ["recurso-especial", "recurso-extraordinario", "transito-em-julgado"],
     atualizado_em: "2026-05-29"
+  },
+  {
+    slug: "herdeiro-necessario",
+    termo: "Herdeiro necessário",
+    variacoes: ["herdeiro forçado", "legítimário"],
+    definicao_curta:
+      "Sucessor que a lei protege com direito à metade da herança, não podendo ser totalmente excluído por testamento.",
+    explicacao: [
+      "Os herdeiros necessários são os descendentes (filhos e seus descendentes), os ascendentes (pais, avós) e o cônjuge. A lei reserva a eles uma fração mínima da herança — a legítima — que não pode ser suprimida nem diminuída por testamento.",
+      "A legítima é, em regra, metade do patrimônio deixado. A outra metade — a parte disponível — pode ser deixada livremente para qualquer pessoa, incluindo instituições, amigos ou caridades.",
+      "Quando há apenas herdeiros necessários e nenhum testamento, a herança se divide igualmente entre eles. Brigas sobre testamentos que visam afetar a legítima costumam resultar em ações na Justiça.",
+      "Determinar quem é herdeiro necessário é essencial no planejamento sucessório. Um advogado pode ajudar a estruturar a herança respeitando direitos e minimizando conflitos futuros."
+    ],
+    exemplos: [
+      "Filhos que têm garantido o direito a 50% da herança independentemente do testamento",
+      "Pai que não pode usar testamento para deixar tudo a estranhos, excluindo os filhos da legítima",
+      "Mãe viúva que é herdeira necessária junto com os filhos na sucessão do marido"
+    ],
+    areas: ["familia", "civil"],
+    ver_tambem: ["testamento", "inventario", "espolio", "partilha-de-bens"],
+    atualizado_em: "2026-06-18"
+  },
+  {
+    slug: "litigancia-de-ma-fe",
+    termo: "Litigância de má-fé",
+    variacoes: ["processo temerário", "abuso do direito de ação"],
+    definicao_curta:
+      "Atitude desonesta no processo, como mentir, simular fatos ou usar a ação para prejudicar sem direito.",
+    explicacao: [
+      "Litigância de má-fé ocorre quando a parte age com desonestidade clara no processo — apresenta alegações infundadas sabendo serem falsas, simula documentos, faz afirmações contraditórias propositalmente ou usa o processo como arma de perseguição, não como instrumento legítimo de justiça.",
+      "O código de processo civil prevê sanções: multa, indenização ao adversário pelas despesas e até responsabilização do advogado que induz a conduta. O juiz pode reconhecer de ofício ou por pedido da parte.",
+      "Nem toda derrota é má-fé; é preciso má-fé comprovada. Um argumento fraco ou uma tese minoritária não gera sanção, apenas perda do caso.",
+      "Se você é acusado de litigância de má-fé, defenda-se ativamente, com provas de que agiu de boa-fé. Um advogado experiente em defesa em processos pode ajudar a neutralizar acusações infundadas."
+    ],
+    exemplos: [
+      "Réu que nega receber citação sabendo que foi entregue regularmente",
+      "Autor que apresenta documento falso para ganhar a causa",
+      "Parte que segue ajuizando ações idênticas já julgadas, abusando do acesso à justiça"
+    ],
+    areas: ["civil", "criminal"],
+    ver_tambem: ["citacao", "transito-em-julgado", "responsabilidade-civil"],
+    atualizado_em: "2026-06-18"
+  },
+  {
+    slug: "liminar",
+    termo: "Liminar",
+    variacoes: ["tutela de urgência", "medida cautelar", "decisão provisória"],
+    definicao_curta:
+      "Ordem do juiz dada durante o processo, antes da sentença final, para evitar danos urgentes.",
+    explicacao: [
+      "A liminar é uma decisão rápida do juiz que busca proteger de dano grave e iminente que não pode esperar o final do processo. Exemplos clássicos envolvem saúde (autorizar cirurgia urgente), posse (evitar despejo iminente) ou direitos que se perderiam com atrasos.",
+      "Para obter, é comum que se demonstre não só urgência, mas também a probabilidade de ganhar o caso (presença de direito) e o risco do dano. O juiz pesa esses fatores e decide rápido.",
+      "A liminar é provisória: pode ser revogada depois se confirmada como injustificada, ou pode ser mantida na sentença final. Por isso, não garante vitória definitiva — é apenas proteção temporária.",
+      "Procurar orientação de advogado com urgência é recomendado para estruturar o pedido de liminar de forma convincente. Argumentação clara e prova do risco aumentam as chances de deferimento."
+    ],
+    exemplos: [
+      "Liminar que obriga plano de saúde a autorizar medicamento oncológico enquanto a discussão do direito prossegue",
+      "Ordem que suspende protesto de dívida enquanto se discute se a dívida existiu",
+      "Decisão que evita despejo iminente até julgamento do caso"
+    ],
+    areas: ["civil", "consumidor", "familia"],
+    ver_tambem: ["tutela-de-urgencia", "mandado-de-seguranca", "plano-de-saude"],
+    atualizado_em: "2026-06-18"
+  },
+  {
+    slug: "dolo",
+    termo: "Dolo",
+    variacoes: ["intenção maliciosa", "fraude", "engano voluntário"],
+    definicao_curta:
+      "Intenção clara de enganar ou prejudicar alguém, caracterizando ato ilícito ou mácula do consentimento.",
+    explicacao: [
+      "Dolo é a vontade consciente de causar dano ou de enganar. Difere da culpa, que é negligência, imprudência ou imperícia sem intenção de prejudicar. Para fins de responsabilidade civil, dolo costuma levar a consequências mais graves.",
+      "Em contratos, dolo vicia o consentimento. Se uma parte engana propositalmente a outra para levá-la a contratar, o contrato pode ser anulado e o enganador responde por perdas e danos.",
+      "Exemplo prático: vender um carro com o hodômetro rodado (quilometragem falsa) sabendo disso é dolo; vender um carro que desenvolveu problema desconhecido é simplesmente vício.",
+      "Provar dolo é mais difícil que provar culpa — costuma exigir evidência clara da intenção. Consulte um advogado se se sente enganado em uma transação para avaliar se há dolo configurado e que ações cabem."
+    ],
+    exemplos: [
+      "Vendedor que mente sobre o estado de um bem sabendo estar defeituoso para enganar o comprador",
+      "Empresa que simula atributos de um produto para induzir consumidor a comprar",
+      "Pessoa que falsifica documento com intenção clara de prejudicar outrem"
+    ],
+    areas: ["civil", "consumidor", "criminal"],
+    ver_tambem: ["dano-moral", "dano-material"],
+    atualizado_em: "2026-06-18"
+  },
+  {
+    slug: "forca-maior",
+    termo: "Força maior",
+    variacoes: ["caso fortuito", "evento irresistível", "fato imprevisível"],
+    definicao_curta:
+      "Acontecimento extraordinário, irresistível e imprevisível que impede cumprimento de obrigação contratual.",
+    explicacao: [
+      "Força maior é o evento que escapa ao controle de quem deveria cumprir uma obrigação — desastre natural, catástrofe, guerra, epidemia. Se realmente imprevisível e irresistível, pode liberar a parte do dever de cumprir ou permitir atraso sem responsabilidade.",
+      "Nem tudo que é difícil ou caro configura força maior. Crises econômicas, faltas de matéria-prima no mercado, altas de preço não são, em regra, força maior — são riscos do negócio. Força maior é só o excepcional.",
+      "Para beneficiar-se, a parte costuma precisar notificar rapidamente a outra sobre a impossibilidade e tomar medidas para mitigar danos. Inércia pode resultar em perda do benefício.",
+      "Contratos costumam ter cláusulas de força maior. Se está envolvido em uma obrigação impossível por evento excepcional, consulte seu advogado sobre como invocar essa defesa e seus efeitos no seu contrato específico."
+    ],
+    exemplos: [
+      "Fornecedor que não consegue entregar matéria-prima por catástrofe natural",
+      "Empresa impedida de funcionar por determinação de lockdown durante pandemia",
+      "Transportadora que não consegue cumprir prazo por fechamento de rodovia por enchente"
+    ],
+    areas: ["civil", "empresarial", "consumidor"],
+    ver_tambem: ["clausula-penal", "distrato", "responsabilidade-civil"],
+    atualizado_em: "2026-06-18"
+  },
+  {
+    slug: "nulidade",
+    termo: "Nulidade",
+    variacoes: ["nulo", "contrato nulo", "ato nulo"],
+    definicao_curta:
+      "Vício grave que torna um ato ou contrato completamente inválido, sem efeitos, desde a origem.",
+    explicacao: [
+      "Nulidade é a sanção que elimina totalmente a validade de um ato jurídico. Contratos podem ser nulos por falta de capacidade grave, deficiente consentimento essencial, ilicitude manifesta ou desobediência a requisitos formais exigidos por lei.",
+      "Diferencia-se da anulabilidade: nulo é inválido de origem e, em regra, não gera efeitos nem precisa de ação para deixar de valer. Anulável é válido por enquanto, mas pode ser invalidado por ação de quem tem o direito.",
+      "Nulidade pode ser pronunciada de ofício pelo juiz e por qualquer interessado. Não caduca por decurso de prazo (com exceções mínimas e bem específicas), preservando a proteção indefinidamente.",
+      "Se acredita que um ato é nulo — como um contrato feito por você sem consentimento real ou em violação clara de lei —, procure orientação jurídica para avaliar a nulidade e as ações cabíveis para proteger seus direitos."
+    ],
+    exemplos: [
+      "Contrato celebrado por menor incapaz, sem representação adequada, é nulo",
+      "Ato praticado contra norma de ordem pública (venda de pessoa, trabalho escravo) é nulo",
+      "Documento falsificado usado para formalizar transação é nulo desde a origem"
+    ],
+    areas: ["civil", "familia", "criminal"],
+    ver_tambem: ["transito-em-julgado", "coisa-julgada"],
+    atualizado_em: "2026-06-18"
   }
 ];
 
