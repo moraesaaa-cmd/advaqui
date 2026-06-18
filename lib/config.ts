@@ -12,7 +12,7 @@
 };
 
 export const PIX = {
-  key: process.env.PIX_KEY || "68852fb1-adfe-4656-bb9a-63d20cd73ce1",
+  key: process.env.PIX_KEY || "",
   receiverName: process.env.PIX_RECEIVER_NAME || "AdvAqui",
   receiverCity: process.env.PIX_RECEIVER_CITY || "JEQUITINHONHA",
   amount: Number(process.env.PIX_AMOUNT || "59.90")

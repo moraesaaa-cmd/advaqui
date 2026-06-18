@@ -18,6 +18,10 @@ const nextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), browsing-topics=()" },
+          // CSP defensiva: scripts so de origem propria + Google (gtag); inline permitido
+          // (Next hydration + JSON-LD). connect/img permissivos p/ nao quebrar ViaCEP,
+          // Supabase, ui-avatars/unsplash. object/base/frame-ancestors travados.
+          { key: "Content-Security-Policy", value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https:" },
           { key: "X-DNS-Prefetch-Control", value: "on" }
         ]
       }

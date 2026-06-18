@@ -89,12 +89,10 @@ export async function POST(req: Request) {
   const expectedPassword = process.env.ADMIN_PASSWORD || "";
 
   if (!expectedEmail || !expectedPassword) {
+    // Nao vazar detalhe de config pro cliente; motivo real so no log do servidor.
+    console.error("[admin-login] ADMIN_EMAIL/ADMIN_PASSWORD ausentes no ambiente do servidor");
     return NextResponse.json(
-      {
-        ok: false,
-        error:
-          "Servidor sem credenciais admin configuradas. Verifique ADMIN_EMAIL e ADMIN_PASSWORD no .env.local."
-      },
+      { ok: false, error: "Erro interno. Tente novamente mais tarde." },
       { status: 500 }
     );
   }
