@@ -37,6 +37,7 @@ const emptyResponse = {
   topCountries: [] as Array<{ country: string; count: number }>,
   topRegions: [] as Array<{ region: string; count: number }>,
   topCities: [] as Array<{ city: string; count: number }>,
+  topReferrers: [] as Array<{ source: string; count: number }>,
   recent: [] as Array<{
     path: string;
     country: string | null;
@@ -108,7 +109,7 @@ export async function GET() {
     // Top páginas / países / regiões em 24h
     const { data: rows24, error: err24 } = await admin
       .from("site_visits")
-      .select("path,country,region,city")
+      .select("path,country,region,city,referer")
       .eq("is_bot", false)
       .gte("visited_at", minus24h)
       .limit(5000);
@@ -147,6 +148,30 @@ export async function GET() {
       count: x.count
     }));
 
+    // Origem do tráfego (de onde vieram): classifica o referer.
+    //   vazio → "Direto"; advaqui.com → interno (ignorado); resto → host.
+    const refCounts = new Map<string, number>();
+    for (const r of safeRows as Array<Record<string, string | null>>) {
+      const raw = r.referer || "";
+      let label: string | null;
+      if (!raw) {
+        label = "Direto";
+      } else {
+        try {
+          label = new URL(raw).hostname.replace(/^www\./, "");
+        } catch {
+          label = raw;
+        }
+        if (label && label.includes("advaqui")) label = null;
+      }
+      if (!label) continue;
+      refCounts.set(label, (refCounts.get(label) || 0) + 1);
+    }
+    const topReferrers = Array.from(refCounts.entries())
+      .map(([source, count]) => ({ source, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10);
+
     // Últimas 20 visitas
     const { data: recentData } = await admin
       .from("site_visits")
@@ -165,6 +190,7 @@ export async function GET() {
       topCountries,
       topRegions,
       topCities,
+      topReferrers,
       recent: recentData || [],
       migrationPending: false
     });

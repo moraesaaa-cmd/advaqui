@@ -116,6 +116,7 @@ export default function AdminPage() {
     topCountries: Array<{ country: string; count: number }>;
     topRegions: Array<{ region: string; count: number }>;
     topCities: Array<{ city: string; count: number }>;
+    topReferrers: Array<{ source: string; count: number }>;
     recent: Array<{
       path: string;
       country: string | null;
@@ -1291,6 +1292,35 @@ export default function AdminPage() {
                   )}
                 </section>
               </div>
+
+              {/* Origem do tráfego (referrer) — de onde vieram */}
+              <section className="card">
+                <h3 className="font-display text-base font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-brand-deep" aria-hidden />
+                  Origem do tráfego — de onde vieram (24h)
+                </h3>
+                {analytics.topReferrers.length === 0 ? (
+                  <p className="text-xs text-brand-ink/55 italic">Sem dados ainda.</p>
+                ) : (
+                  <ul className="space-y-1.5 text-xs">
+                    {analytics.topReferrers.map((s) => (
+                      <li
+                        key={s.source}
+                        className="flex items-center justify-between gap-2 py-1 border-b border-brand-line/60 last:border-0"
+                      >
+                        <span className="text-brand-ink/85 truncate">
+                          {s.source === "Direto"
+                            ? "Direto / sem referência (digitou ou favoritos)"
+                            : s.source}
+                        </span>
+                        <span className="font-bold text-brand-ink whitespace-nowrap">
+                          {s.count}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </section>
 
               {/* Últimas visitas — ao vivo */}
               <section className="card">
