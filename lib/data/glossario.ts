@@ -1276,6 +1276,135 @@ export const GLOSSARIO: GlossarioTermo[] = [
     areas: ["civil", "familia", "criminal"],
     ver_tambem: ["transito-em-julgado", "coisa-julgada"],
     atualizado_em: "2026-06-18"
+  },
+  {
+    slug: "meacao",
+    termo: "Meação",
+    variacoes: ["meação do cônjuge", "meação do cônjuge supérstite", "participação do cônjuge"],
+    definicao_curta:
+      "Direito do cônjuge sobrevivente à parte que lhe cabe dos bens do casal, definido pelo regime de casamento — não é herança, mas divisão do que já lhe pertence.",
+    explicacao: [
+      "A meação é a divisão do patrimônio entre marido e mulher quando um deles falece ou quando o casamento termina. Não é herança do cônjuge supérstite — é a separação da parte que já lhe pertence por direito, antes de se contar o que vai para os herdeiros. O que muda drasticamente é qual é essa parte, conforme o regime de bens que rege o casamento.",
+      "Na comunhão parcial, em regra a meação abrange os bens adquiridos onerosamente durante o casamento, deixando de fora bens anteriores e alguns bens específicos (como imóvel recebido por herança). O cônjuge supérstite fica com metade desses bens adquiridos conjuntamente. Na comunhão universal, a meação alcança quase a totalidade do patrimônio, com poucas exceções. Na separação total de bens, em regra não há meação — cada um fica apenas com o que é seu.",
+      "A meação não é condicionada a estar vivo no momento da abertura da sucessão em todos os casos — em regra, basta ter estado casado. Mas situações especiais, como viuvez do cônjuge que se casou meses antes do falecimento, podem suscitar discussões sobre o direito, dependendo das circunstâncias e da jurisprudência local.",
+      "Depois de feita a meação e o cônjuge receber sua parte, o restante dos bens (a chamada herança líquida) é dividido entre os demais herdeiros, conforme a ordem legal de sucessão ou o que diz o testamento. Por isso é importante distinguir: primeiro separa-se a meação, depois calcula-se a herança com o que sobra."
+    ],
+    exemplos: [
+      "Casal casado em comunhão parcial compra apartamento juntos durante 20 anos de casamento. Quando um falece, o outro recebe metade do imóvel por meação, e a outra metade segue para o inventário como herança a ser dividida entre filhos e o cônjuge na qualidade de herdeiro.",
+      "Marido falece deixando imóvel herdado do pai (antes do casamento) e apartamento comprado com a esposa durante o casamento. Na comunhão parcial, a meação atinge só o apartamento. A metade herdada vai para inventário como herança.",
+      "Casal em regime de comunhão universal: praticamente todos os bens adquiridos — imóveis, carros, investimentos — entram na meação do cônjuge vivo, que recebe uma metade, e a outra metade segue para inventário."
+    ],
+    areas: ["familia", "civil"],
+    ver_tambem: ["inventario", "testamento", "partilha-de-bens", "divorcio", "uniao-estavel", "prescricao"],
+    atualizado_em: "2026-06-18"
+  },
+  {
+    slug: "pensao-por-morte",
+    termo: "Pensão por morte",
+    variacoes: ["benefício por morte", "pensão do INSS", "pensão para dependentes"],
+    definicao_curta:
+      "Benefício do INSS pago aos dependentes do segurado falecido, garantindo renda mínima para sua subsistência.",
+    explicacao: [
+      "A pensão por morte é um benefício previdenciário do INSS concedido aos dependentes de um segurado que faleceu. O objetivo é amparar quem dependia financeiramente do falecido, oferecendo uma renda de reposição. A concessão depende de o falecido ter contribuído ao INSS ou ter algum período de graça em aberto — não é necessário estar aposentado ou ativo no momento da morte.",
+      "O benefício é dividido entre os dependentes, e a cota de cada um varia conforme o tipo de dependente e, em alguns casos, a idade ou condição. Cônjuges, companheiros em união estável e filhos menores são os dependentes mais comuns, mas também podem receber pais idosos ou irmãos menores em certas circunstâncias. Os filhos mantêm direito até os 21 anos de idade, salvo se forem inválidos ou portadores de deficiência — neste caso, podem receber mesmo após essa idade, independentemente de estarem estudando.",
+      "A duração da cota varia conforme a situação. Para filhos solteiros, a pensão segue até os 21 anos. Para o cônjuge, a duração pode variar — em regra, pode ser vitalícia dependendo da idade e do tempo de união no momento da morte, mas há outras modalidades de pensão com prazo determinado. O pensionista pode casar de novo sem perder o benefício — essa era uma restrição que foi revogada em 1991, e hoje a mudança no estado civil não afeta o direito à pensão. Procure um advogado ou procurador de benefícios para orientação sobre sua situação específica.",
+      "Questões comuns incluem como é feita a prova de dependência, quanto tempo o falecido precisava ter contribuído, e como funciona a divisão entre múltiplos beneficiários. Os valores, prazos e condições exatas variam conforme o caso, e é fundamental consultar o INSS ou um especialista antes de tomar qualquer decisão."
+    ],
+    exemplos: [
+      "Viúva que recebe pensão mensal do INSS após a morte do marido que contribuía há anos",
+      "Filhos de um trabalhador falecido que recebem cotas de pensão até atingir 21 anos de idade",
+      "Companheiro em união estável que requer pensão por morte do parceiro junto ao INSS",
+      "Pai idoso sem renda que recebe pensão por morte do filho que era o mantenedor da casa"
+    ],
+    areas: ["previdenciario"],
+    ver_tambem: ["aposentadoria", "auxilio-doenca", "uniao-estavel"],
+    atualizado_em: "2026-06-18"
+  },
+  {
+    slug: "hipossuficiencia",
+    termo: "Hipossuficiência",
+    variacoes: ["hipossuficiente", "insuficiência de meios", "falta de meios de prova"],
+    definicao_curta:
+      "Falta de condição técnica ou financeira para investigar fatos relevantes ou se defender adequadamente em processo judicial.",
+    explicacao: [
+      "Hipossuficiência é conceito distinto de vulnerabilidade. Enquanto a lei presume automaticamente a vulnerabilidade de todo consumidor (independentemente de sua renda ou escolaridade), a hipossuficiência é aferida caso a caso pelo juiz. Trata-se da incapacidade prática de uma das partes em levantar provas sobre fatos que apenas a outra conhece — por falta de recursos financeiros, acesso técnico ou conhecimento especializado.",
+      "Na prática, aparece muito nas discussões sobre inversão do ônus da prova. A lei permite ao juiz inverter esse ônus quando presentes a verossimilhança da alegação (a alegação é minimamente plausível) e a hipossuficiência. Sem a primeira, a inversão não ocorre mesmo com hipossuficiência. Sem a segunda, exige-se que a parte vulnerável faça prova de fatos muito difíceis de seu lado.",
+      "Exemplos comuns: consumidor alegando defeito em produto técnico, sem como comprovar se o erro foi de fábrica ou de uso; paciente argumentando erro médico sem ter acesso fácil a laudo técnico; empregado denunciando práticas irregulares da empresa sem acesso aos registros internos da empregadora. Em todos, a hipossuficiência justifica transferir ao fornecedor, médico ou empregador a responsabilidade de demonstrar o contrário.",
+      "A hipossuficiência não é um 'joker' para ganhar qualquer ação. O juiz avalia se realmente há impossibilidade ou dificuldade excessiva de prova, e se a alegação inicial é razoável. Também pode reconhecer hipossuficiência de uma das partes sem necessariamente inverter o ônus — depende do contexto específico do caso."
+    ],
+    exemplos: [
+      "Consumidor que recebe aparelho novo e ele para de funcionar semanas depois; não sabe se foi defeito de fábrica ou dano do próprio uso — juiz pode inverter e exigir que o fornecedor prove que foi mau uso",
+      "Paciente denunciando erro em cirurgia, mas sem acesso aos autos médicos e radiografias que só o hospital conserva; hipossuficiência pode levar o juiz a exigir que o médico/hospital demonstrem que a conduta foi correta",
+      "Trabalhador cobrando horas extras não registradas; empresa controla os pontos eletrônicos; juiz pode considerar hipossuficiência e exigir que a empregadora comprove que não havia aditivos na jornada"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["responsabilidade-civil", "dano-material", "dano-moral"],
+    atualizado_em: "2026-06-18"
+  },
+  {
+    slug: "culpa",
+    termo: "Culpa",
+    variacoes: ["negligência", "imprudência", "imperícia", "culpa grave", "culpa leve", "culpa levíssima"],
+    definicao_curta:
+      "Comportamento negligente, imprudente ou imperito que causa dano a outrem, sem intenção de prejudicar.",
+    explicacao: [
+      "Culpa é a falta de cuidado, atenção ou técnica que causa prejuízo a alguém, mas sem vontade intencional de prejudicar — e é justamente isso que a distingue do dolo (a intenção deliberada de causar o dano). Quando alguém age com culpa, quer fazer algo, mas o faz de forma negligente, imprudente ou sem o conhecimento técnico necessário, resultando em dano.",
+      "A lei reconhece três graus de culpa: a grave (também conhecida como culpa lata), quando o agente age com descuido extremo, ignorando o óbvio; a leve, que é o descuido comum, quando a pessoa não age com o cuidado esperado de uma pessoa normal; e a levíssima, quando há apenas pequena falta de atenção ou cuidado. Quanto mais grave a culpa, mais ela pesa nas consequências para quem prejudicou.",
+      "O juiz, ao fixar ou reduzir a indenização, pode considerar a gravidade da culpa em relação ao dano causado. Quando há grande desproporcionalidade entre o grau de culpa e o dano sofrido, a lei permite que o juiz ajuste o valor da compensação. Por exemplo, um pequeno descuido que resulta em dano enorme pode levar a uma redução da indenização se não houver proporção, embora isso seja avaliado caso a caso.",
+      "Provar culpa geralmente depende de mostrar que a pessoa não agiu com o cuidado devido. Documentos, testemunhas, laudos periciais e até a conduta da pessoa no dia dos fatos servem para demonstrar se houve negligência, imprudência ou falta de conhecimento técnico. Em casos de responsabilidade civil, a culpa é frequentemente o ponto central da discussão no processo."
+    ],
+    exemplos: [
+      "Motorista que colide com outro veículo por não ter visto uma placa de trânsito — descuido que poderia ser evitado por qualquer dirigente atento",
+      "Médico que realiza cirurgia sem conferir o histórico do paciente e causa complicação porque não sabia de alergia — falta de técnica ou atenção elementar",
+      "Vizinho que deixa água da chuva vazar pela parede e danificar o apartamento do andar inferior — negligência ao não manter a impermeabilização",
+      "Lojista que exibe um produto de forma perigosa e um cliente se machuca — imprudência em não prever riscos óbvios"
+    ],
+    areas: ["civil", "consumidor"],
+    ver_tambem: ["dolo", "dano-moral", "dano-material", "responsabilidade-civil"],
+    atualizado_em: "2026-06-18"
+  },
+  {
+    slug: "insalubridade",
+    termo: "Adicional de insalubridade",
+    variacoes: ["insalubridade", "adicional insalubre", "ambiente insalubre", "trabalho insalubre"],
+    definicao_curta:
+      "Valor adicionado ao salário do trabalhador que exerce atividade em ambiente prejudicial à saúde, conforme avaliação pericial.",
+    explicacao: [
+      "O adicional de insalubridade é uma compensação salarial para o trabalhador que exercita atividades em ambientes perigosos ou prejudiciais à saúde — exposição a produtos químicos, ruído excessivo, temperaturas extremas, ou radiação. A ideia é remunerar esse risco adicional.",
+      "A caracterização do ambiente como insalubre depende de laudo pericial técnico realizado segundo a NR-15 (Norma Regulamentadora nº 15), que lista as atividades e graus de exposição. Sem laudo, não há adicional. A empresa não pode simplesmente decidir pagar — precisa de comprovação.",
+      "Os percentuais são, em regra, 10% (grau mínimo), 20% (grau médio) ou 40% (grau máximo) incidentes sobre a base de cálculo. Porém, a base sobre a qual o percentual incide — salário mínimo, salário base, ou outra — é tema com divergência na jurisprudência e costuma variar conforme normas coletivas da categoria. Essa questão depende do caso e é fundamental consultar um advogado antes de aceitar um cálculo ou cobrar em juízo.",
+      "O adicional pode ser eliminado se a empresa remove o risco — instala equipamento de proteção adequado ou muda o trabalhador para ambiente saudável. Isso não descaracteriza a relação de trabalho nem é abusivo; é forma de cumprir a lei de forma mais eficiente. Outras profissões perigosas — bombeiro, mineiro, mergulhador — têm regras próprias, às vezes mais favoráveis."
+    ],
+    exemplos: [
+      "Operário de fábrica química exposto a vapores tóxicos que recebe laudo confirmando insalubridade e passa a receber o adicional",
+      "Trabalhador de construção em ambiente barulhento acima dos limites legais que recebe percentual sobre o salário",
+      "Metalúrgico que trabalha com altas temperaturas e, após laudo, passa a receber compensação mensal",
+      "Profissional que deixa de trabalhar em setor insalubre, equipado com proteção, e tem o adicional removido pela empresa"
+    ],
+    areas: ["trabalhista"],
+    ver_tambem: ["acidente-de-trabalho", "auxilio-acidente", "rescisao"],
+    atualizado_em: "2026-06-18"
+  },
+  {
+    slug: "periculosidade",
+    termo: "Adicional de periculosidade",
+    variacoes: ["adicional periculosidade", "periculosidade", "trabalho perigoso", "risco grave de morte"],
+    definicao_curta:
+      "Acréscimo de salário pago ao trabalhador que labora em atividade com risco grave de morte ou lesão permanente.",
+    explicacao: [
+      "O adicional de periculosidade é um acréscimo no salário do trabalhador que exerce atividade caracterizada como perigosa — ou seja, aquela que expõe o empregado a risco grave de morte ou lesão permanente. É reconhecimento legal de que o trabalho em si traz perigo, independentemente de o acidente ocorrer ou não.",
+      "A lei brasileira prevê, em regra, um adicional mínimo de 30% sobre a remuneração, mas esse percentual pode variar. A base de cálculo é em geral o salário-base, porém em situações específicas (como parte do setor elétrico) a base pode ser diferente, dependendo da legislação setorial ou convenção coletiva. Por isso é importante conferir qual é a base exata no seu contrato e categorias de trabalho.",
+      "A caracterização de uma atividade como perigosa é feita por laudo técnico, em regra de segurança do trabalho. Algumas profissões — como eletricista de alta tensão, bombeiro, trabalhador em indústrias químicas — são tradicionalmente reconhecidas como perigosas. Outras dependerão de análise específica.",
+      "Quanto à possibilidade de acumular o adicional de periculosidade com o de insalubridade: a lei em regra prevê que o trabalhador opte pelo adicional mais vantajoso, não recebendo ambos. Contudo, essa possibilidade de acúmulo é tema discutido na Justiça do Trabalho, e existem decisões em ambos os sentidos — não se pode afirmar categoricamente que é impossível acumular. Cada caso merece análise de um advogado levando em conta a situação concreta e a jurisprudência mais recente."
+    ],
+    exemplos: [
+      "Técnico em manutenção de linhas de alta tensão que recebe adicional por trabalho em altura e sob risco de choque",
+      "Operador de equipamento de processo químico perigoso que tem direito ao adicional reconhecido em laudo",
+      "Vigilante de banco que executa trabalho com proteção a caixa de valores (profissão classicamente perigosa)"
+    ],
+    areas: ["trabalhista"],
+    ver_tambem: ["rescisao", "aposentadoria", "acidente-de-trabalho"],
+    atualizado_em: "2026-06-18"
   }
 ];
 
