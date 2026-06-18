@@ -23,7 +23,9 @@ export const metadata: Metadata = {
   }
 };
 
-export const dynamic = "force-static";
+// Estatica, mas revalida a cada 5 min para que atualizacoes apareçam rapido
+// (antes ficava em cache de 1 ano e as mudanças nao apareciam no navegador).
+export const revalidate = 300;
 
 const passos = [
   { n: "1", t: "Crie seu perfil", d: "Leva menos de 2 minutos: nome, OAB, cidade e áreas de atuação." },
@@ -915,14 +917,9 @@ export default async function LandingAdvogadoPremium() {
               >
                 <blockquote className="flex-1 text-slate-300">&ldquo;{d.texto}&rdquo;</blockquote>
                 <figcaption className="mt-5 flex items-center gap-3 border-t border-slate-800 pt-5">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={"https://api.dicebear.com/9.x/notionists/svg?seed=" + encodeURIComponent(d.nome) + "&backgroundColor=fde68a,fcd34d,fef3c7"}
-                    alt=""
-                    width={44}
-                    height={44}
-                    className="h-11 w-11 shrink-0 rounded-full bg-amber-400/15"
-                  />
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-300 to-amber-500 text-base font-bold text-slate-950">
+                    {d.iniciais}
+                  </span>
                   <span>
                     <span className="block font-semibold text-amber-300">{d.nome}</span>
                     <span className="block text-sm text-slate-400">{d.titulo}</span>
