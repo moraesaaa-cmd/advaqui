@@ -69,9 +69,9 @@ function truncateIp(ip: string): string {
  * Geolocalização best-effort do IP truncado (/24).
  *
  * Usada como fallback quando o proxy não envia headers de geo (caso do
- * Nginx no VPS). Consulta a API gratuita ipwho.is (HTTPS, sem chave) com
+ * Nginx no VPS). Consulta a API gratuita ip-api.com (sem chave) com
  * timeout curto e cache em memória por IP — assim a maioria das visitas
- * não dispara chamada externa e respeitamos o rate limit.
+ * não dispara chamada externa e respeitamos o rate limit (45/min).
  *
  * Privacidade: geolocaliza o IP JÁ truncado (último octeto zerado), então
  * resolve no máximo até cidade/estado, nunca um endereço exato.
@@ -92,26 +92,27 @@ async function geolocate(ip: string) {
   if (cached) return cached;
   try {
     const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 1500);
+    const timer = setTimeout(() => ctrl.abort(), 3000);
     const res = await fetch(
-      `https://ipwho.is/${ip}?fields=success,country_code,region,city`,
-      { signal: ctrl.signal }
+      `http://ip-api.com/json/${ip}?fields=status,countryCode,regionName,city`,
+      { signal: ctrl.signal, headers: { "User-Agent": "advaqui/1.0" } }
     );
     clearTimeout(timer);
     if (!res.ok) return fallback;
     const j = (await res.json()) as {
-      success?: boolean;
-      country_code?: string;
-      region?: string;
+      status?: string;
+      countryCode?: string;
+      regionName?: string;
       city?: string;
     };
-    const geo = j && j.success
-      ? {
-          country: j.country_code || null,
-          region: j.region || null,
-          city: j.city || null
-        }
-      : fallback;
+    const geo =
+      j && j.status === "success"
+        ? {
+            country: j.countryCode || null,
+            region: j.regionName || null,
+            city: j.city || null
+          }
+        : fallback;
     if (geoCache.size > 5000) geoCache.clear();
     geoCache.set(ip, geo);
     return geo;
