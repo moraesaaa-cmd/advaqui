@@ -33,28 +33,36 @@ const passos = [
 
 const beneficios = [
   {
-    t: "Destaque no topo da sua cidade",
-    d: "Quando alguém busca um advogado na sua cidade, seu perfil aparece em posição de destaque — antes de quem não investe em visibilidade."
+    t: "Perfil em destaque no AdvAqui",
+    d: "Selo dourado de Destaque e prioridade em todo o site: seu perfil aparece acima dos cadastros gratuitos, na sua cidade e na sua área de atuação."
+  },
+  {
+    t: "Apareça em toda a sua região",
+    d: "Configure várias cidades de atuação e seja encontrado em cada uma delas — você não fica limitado a um único município. Exclusivo do Premium."
   },
   {
     t: "Contato direto, sem comissão",
     d: "O cliente fala com você por WhatsApp, telefone ou e-mail. Você fica com 100% — o AdvAqui não cobra nada por cliente fechado."
   },
   {
-    t: "Página profissional pronta",
-    d: "Foto, OAB verificada, áreas de atuação e seus artigos. Uma vitrine que transmite confiança antes mesmo do primeiro contato."
+    t: "Sem leilão de leads",
+    d: "Nada de disputar o mesmo cliente com dezenas de profissionais nem brigar por preço. Quem chega pelo seu perfil é exclusivamente seu."
   },
   {
-    t: "Encontrado no Google",
-    d: "Seu perfil é otimizado para aparecer quando buscam a sua área na sua região — trabalho que normalmente custa caro, já incluído."
+    t: "Página profissional com OAB verificada",
+    d: "Foto, selo de OAB verificada, áreas de atuação e seus artigos. Uma vitrine que transmite confiança antes mesmo do primeiro contato."
   },
   {
-    t: "Mais visibilidade, mais contatos",
-    d: "Quanto mais você aparece para quem já está procurando um advogado, mais oportunidades reais de fechar — sem leilão, sem disputa de preço."
+    t: "Encontrado também no Google",
+    d: "Seu perfil é otimizado para aparecer quando buscam a sua área na sua região — trabalho que normalmente custa caro com agência, já incluído."
+  },
+  {
+    t: "Foco em fechar o contato",
+    d: "Apresentação limpa, com o botão de WhatsApp em destaque. Quem está com um problema urgente fala com você num clique, sem rodeios."
   },
   {
     t: "No controle, sem amarras",
-    d: "Sem fidelidade e sem multa. Cancele quando quiser. Seu perfil, seus dados, sem letra miúda."
+    d: "Ative por Pix, sem cartão e sem fidelidade. Cancele quando quiser. Seu perfil, seus dados, sem letra miúda."
   }
 ];
 
@@ -73,12 +81,14 @@ const garantias = [
 ];
 
 const recursos = [
-  "Destaque no topo da sua cidade e áreas",
+  "Selo de Destaque e prioridade em todo o AdvAqui",
+  "Apareça em várias cidades da sua região",
   "Página profissional com foto e OAB verificada",
   "Contato direto por WhatsApp, telefone e e-mail",
-  "Sem comissão por cliente",
-  "Publique artigos e responda dúvidas",
-  "Apareça também nas buscas do Google"
+  "0% de comissão — o cliente é exclusivamente seu",
+  "Sem leilão de leads e sem disputa de preço",
+  "Publique artigos e apareça como autoridade",
+  "Encontrado também nas buscas do Google"
 ];
 
 const faqs = [
@@ -92,25 +102,46 @@ const faqs = [
 
 const depoimentos = [
   {
-    nome: "Dra. Amanda Carvalho",
-    titulo: "Advogada",
-    iniciais: "AC",
-    texto:
-      "Gostei bastante da forma como tudo foi desenvolvido. A página transmite confiança, é fácil de navegar e facilita muito para quem deseja entrar em contato. Percebi que as pessoas chegam muito mais informadas e decididas para conversar sobre o caso. Recomendo sem qualquer ressalva.",
-  },
-  {
-    nome: "Dr. Eduardo Nascimento",
+    nome: "Rodrigo Castro Barbosa",
     titulo: "Advogado",
-    iniciais: "EN",
+    iniciais: "RB",
     texto:
-      "Já havia tentado divulgar meu escritório de outras formas, mas nunca fiquei satisfeito com a apresentação. Agora tenho uma página realmente profissional, organizada e que valoriza minha atuação. O investimento compensou e hoje sinto muito mais segurança para divulgar meus serviços.",
+      "Como o meu escritório fica no interior, a captação de clientes sempre dependeu de indicação e isso limitava muito o faturamento. No momento em que ativei o plano premium e configurei as cidades da minha região, as consultas no WhatsApp começaram a acontecer de forma automática. O valor da mensalidade é irrisório perto do primeiro contrato que fechei de inventário logo na primeira semana de uso.",
   },
   {
-    nome: "Dra. Camila Ribeiro",
+    nome: "Patrícia Antunes Lima",
     titulo: "Advogada",
-    iniciais: "CR",
+    iniciais: "PL",
     texto:
-      "O que mais me chamou atenção foi o cuidado com cada detalhe. Nada ficou exagerado e todas as informações importantes foram apresentadas de forma objetiva. A página transmite exatamente a seriedade que um advogado precisa demonstrar para conquistar a confiança de quem está procurando orientação jurídica.",
+      "O que de fato me fez escolher a plataforma foi a ausência de intermediários ou comissões abusivas sobre o meu trabalho. Em outros portais, nós precisamos disputar o cliente com dezenas de profissionais ou deixar metade dos honorários na mesa. Aqui o pagamento é fixo e o cliente que chega é exclusivamente meu, conversando direto no meu aplicativo de mensagens sem leilão de preços.",
+  },
+  {
+    nome: "André Luiz Fonseca",
+    titulo: "Advogado",
+    iniciais: "AF",
+    texto:
+      "Sempre tive receio de investir em anúncios na internet por causa da complexidade e do alto custo que as agências cobram mensalmente. A plataforma resolveu esse problema entregando uma presença digital forte e com o selo de OAB verificada, o que gera uma confiança imediata. O retorno financeiro foi muito rápido e o fluxo de pessoas com problemas reais procurando atendimento se mantém constante.",
+  },
+  {
+    nome: "Gisele Ribeiro Medeiros",
+    titulo: "Advogada",
+    iniciais: "GM",
+    texto:
+      "A facilidade de contratação sem fidelidade me deu a segurança necessária para testar o serviço sem medo. Para a minha surpresa, a visibilidade nas buscas locais aumentou drasticamente em poucos dias. Consegui fechar duas ações previdenciárias de pessoas que moram em bairros vizinhos e que nem sabiam da existência do meu escritório, mostrando o enorme potencial de alcance da ferramenta.",
+  },
+  {
+    nome: "Ricardo Gomes Menezes",
+    titulo: "Advogado",
+    iniciais: "RM",
+    texto:
+      "A grande vantagem competitiva é que a estrutura é pensada para o fechamento de contratos, entregando uma apresentação limpa e focada no botão de contato. O cliente que está com um problema urgente não quer ler textos longos, ele quer falar com o especialista. O sistema entrega exatamente essa agilidade e o investimento se paga logo no primeiro atendimento concluído.",
+  },
+  {
+    nome: "Camila Frota Albuquerque",
+    titulo: "Advogada",
+    iniciais: "CA",
+    texto:
+      "A ativação por Pix facilitou o início imediato e os resultados superaram as minhas expectativas mais otimistas. Consegui posicionar meu nome na internet de forma ética e profissional, atraindo um público qualificado e pronto para contratar. Tornou-se uma ferramenta indispensável para o crescimento do meu escritório e para a manutenção de uma carteira de clientes sempre ativa.",
   },
 ];
 
