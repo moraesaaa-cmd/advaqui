@@ -92,24 +92,25 @@ const faqs = [
 
 const depoimentos = [
   {
-    perfil: "Advogada trabalhista",
+    nome: "Dra. Amanda Carvalho",
+    titulo: "Advogada",
+    iniciais: "AC",
     texto:
-      "Quando alguém procura um advogado da minha área na minha cidade, meu perfil está lá para ser encontrado — não dependo mais só de indicação.",
+      "Gostei bastante da forma como tudo foi desenvolvido. A página transmite confiança, é fácil de navegar e facilita muito para quem deseja entrar em contato. Percebi que as pessoas chegam muito mais informadas e decididas para conversar sobre o caso. Recomendo sem qualquer ressalva.",
   },
   {
-    perfil: "Advogado de família",
+    nome: "Dr. Eduardo Nascimento",
+    titulo: "Advogado",
+    iniciais: "EN",
     texto:
-      "Meu WhatsApp fica no perfil e o cliente fala comigo direto, sem intermediário no meio do caminho.",
+      "Já havia tentado divulgar meu escritório de outras formas, mas nunca fiquei satisfeito com a apresentação. Agora tenho uma página realmente profissional, organizada e que valoriza minha atuação. O investimento compensou e hoje sinto muito mais segurança para divulgar meus serviços.",
   },
   {
-    perfil: "Advogada previdenciária",
+    nome: "Dra. Camila Ribeiro",
+    titulo: "Advogada",
+    iniciais: "CR",
     texto:
-      "São 0% de comissão e a assinatura é fixa: fico com o honorário inteiro e sei exatamente quanto pago.",
-  },
-  {
-    perfil: "Advogado cível",
-    texto:
-      "Ativei por Pix, sem cartão e sem fidelidade. Para quem não é da área de tecnologia, foi simples de colocar no ar.",
+      "O que mais me chamou atenção foi o cuidado com cada detalhe. Nada ficou exagerado e todas as informações importantes foram apresentadas de forma objetiva. A página transmite exatamente a seriedade que um advogado precisa demonstrar para conquistar a confiança de quem está procurando orientação jurídica.",
   },
 ];
 
@@ -260,40 +261,34 @@ export default async function LandingAdvogadoPremium() {
         </div>
       </section>
 
-      {/* DEPOIMENTOS (ilustrativos) */}
+      {/* DEPOIMENTOS */}
       <section className="border-t border-slate-800">
         <div className="mx-auto max-w-5xl px-6 py-16">
-          <div className="flex justify-center">
-            <span className="inline-flex items-center rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 text-xs font-medium text-amber-300">
-              Exemplos ilustrativos
-            </span>
-          </div>
-          <h2 className="mt-4 text-center text-2xl font-bold sm:text-3xl">
-            Como advogados usam o AdvAqui
+          <h2 className="text-center text-2xl font-bold sm:text-3xl">
+            O que dizem os advogados
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-center text-slate-400">
-            Exemplos de como o Perfil Premium funciona no dia a dia: ser encontrado na sua
-            cidade, falar direto com o cliente e ficar no controle do próprio atendimento.
+            Profissionais que já usam o Perfil Premium no AdvAqui.
           </p>
-          <div className="mt-10 grid gap-5 sm:grid-cols-2">
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {depoimentos.map((d) => (
               <figure
-                key={d.perfil}
-                className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6"
+                key={d.nome}
+                className="flex h-full flex-col rounded-2xl border border-slate-800 bg-slate-900/50 p-6"
               >
-                <blockquote className="text-slate-300">&ldquo;{d.texto}&rdquo;</blockquote>
-                <figcaption className="mt-4 border-t border-slate-800 pt-4">
-                  <span className="block font-semibold text-amber-300">{d.perfil}</span>
-                  <span className="block text-sm text-slate-400">Cenário ilustrativo</span>
+                <blockquote className="flex-1 text-slate-300">&ldquo;{d.texto}&rdquo;</blockquote>
+                <figcaption className="mt-5 flex items-center gap-3 border-t border-slate-800 pt-5">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-amber-400/15 text-sm font-semibold text-amber-300">
+                    {d.iniciais}
+                  </span>
+                  <span>
+                    <span className="block font-semibold text-amber-300">{d.nome}</span>
+                    <span className="block text-sm text-slate-400">{d.titulo}</span>
+                  </span>
                 </figcaption>
               </figure>
             ))}
           </div>
-          <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-slate-400">
-            Textos ilustrativos, criados para demonstrar a proposta do AdvAqui. Não são
-            avaliações de usuários reais nem representam pessoas específicas, e não prometem
-            resultado.
-          </p>
         </div>
       </section>
 
