@@ -154,6 +154,12 @@ export default async function LandingAdvogadoPremium() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-950" />
         <div className="relative mx-auto max-w-4xl px-6 py-20 text-center">
+          <div className="mx-auto mb-8 max-w-2xl rounded-xl border border-amber-400/50 bg-amber-400/10 px-5 py-3">
+            <p className="text-base font-semibold text-amber-200 sm:text-lg">
+              Quantos clientes você perdeu esta semana só porque não apareceu no Google?
+            </p>
+          </div>
+
           <span className="inline-block rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-1 text-sm font-medium text-amber-300">
             Para advogados e advogadas
           </span>
@@ -180,6 +186,161 @@ export default async function LandingAdvogadoPremium() {
           </p>
         </div>
       </section>
+
+      {/* DOR */}
+      <section className="border-t border-slate-800">
+        <div className="mx-auto max-w-5xl px-6 py-16">
+          <h2 className="text-center text-2xl font-bold sm:text-3xl">
+            Você fez tudo certo. Por que o cliente vai parar em{" "}
+            <span className="text-amber-400">outro escritório?</span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-slate-400">
+            A pergunta incomoda. Mas é ela que decide quem é contratado.
+          </p>
+
+          <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-slate-800 bg-slate-900/50 p-6 sm:p-10">
+            <div className="space-y-5 text-center text-lg leading-relaxed text-slate-300 sm:text-xl">
+              <p>
+                Você estudou anos.
+                <br className="sm:hidden" />{" "}
+                <span className="text-amber-300">Pagou faculdade.</span>{" "}
+                <span className="text-amber-300">Pagou OAB.</span>
+              </p>
+              <p>
+                Investe em cursos. Atende bem.
+              </p>
+              <p className="text-slate-400">
+                Mas quando alguém procura um advogado na internet…
+              </p>
+              <p className="text-xl font-semibold text-slate-100 sm:text-2xl">
+                o cliente encontra{" "}
+                <span className="text-amber-300">outro profissional.</span>
+              </p>
+            </div>
+
+            <div className="mx-auto my-8 h-px w-16 bg-slate-800" />
+
+            <div className="space-y-2 text-center text-lg leading-relaxed sm:text-xl">
+              <p className="text-slate-400">Não porque ele seja melhor.</p>
+              <p className="font-semibold text-slate-100">
+                Mas porque ele{" "}
+                <span className="text-amber-300">apareceu primeiro.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* NARRATIVA */}
+      <section className="border-t border-slate-800">
+  <div className="mx-auto max-w-5xl px-6 py-16">
+    <h2 className="text-center text-2xl font-bold sm:text-3xl">
+      Cinco nomes aparecem. <span className="text-amber-400">Quatro nunca souberam do cliente.</span>
+    </h2>
+    <p className="mx-auto mt-3 max-w-2xl text-center text-slate-400">
+      Veja o que acontece, todos os dias, quando alguém procura um advogado na internet.
+    </p>
+
+    {/* CENA: cartao de busca + os 4 que ficaram para tras */}
+    <div className="mt-10 grid items-start gap-6 lg:grid-cols-5">
+      {/* Cartao de busca (resultado) */}
+      <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 lg:col-span-3">
+        {/* barra de busca simulada */}
+        <div className="flex items-center gap-3 rounded-xl border border-slate-700 bg-slate-950 px-4 py-3">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-5 w-5 shrink-0 text-slate-500"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <span className="text-sm text-slate-300">advogado trabalhista em Montes Claros</span>
+        </div>
+        <p className="mt-4 text-xs uppercase tracking-wide text-slate-500">5 resultados encontrados</p>
+
+        {/* lista de resultados */}
+        <ul className="mt-4 space-y-3">
+          {/* 1o resultado — destacado */}
+          <li className="rounded-xl border border-amber-400/40 bg-amber-400/10 p-4">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-400 text-sm font-bold text-slate-950">
+                1º
+              </span>
+              <div className="min-w-0">
+                <p className="flex flex-wrap items-center gap-2 font-semibold text-slate-100">
+                  Dr. Você
+                  <span className="rounded-full border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 text-xs font-medium text-amber-300">
+                    ★ Destaque
+                  </span>
+                </p>
+                <p className="text-sm text-amber-300">OAB verificada · contato direto por WhatsApp</p>
+              </div>
+            </div>
+            <div className="mt-3 flex items-center gap-2 text-sm font-medium text-emerald-400">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4 shrink-0" aria-hidden="true">
+                <path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2Zm5.2 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.4.5c-.1.2-.3.3-.1.6.1.3.6 1 1.3 1.6.9.8 1.6 1 1.9 1.2.2.1.4.1.6-.1l.7-.8c.2-.2.4-.2.6-.1l1.8.9c.2.1.4.2.4.3.1.1.1.6-.1 1.2Z" />
+              </svg>
+              <span>O cliente liga. Fecha o contrato com você.</span>
+            </div>
+          </li>
+
+          {/* 2o ao 5o — apagados/opacos */}
+          {[
+            { p: "2º", n: "Dra. Concorrente" },
+            { p: "3º", n: "Dr. Concorrente" },
+            { p: "4º", n: "Dra. Concorrente" },
+            { p: "5º", n: "Dr. Concorrente" }
+          ].map((r) => (
+            <li key={r.p} className="rounded-xl border border-slate-800 bg-slate-900/40 p-4 opacity-40">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-800 text-sm font-bold text-slate-400">
+                  {r.p}
+                </span>
+                <div className="min-w-0">
+                  <p className="font-semibold text-slate-300">{r.n}</p>
+                  <p className="text-sm text-slate-500">Nunca soube que esse cliente existiu.</p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Linha do tempo da cena */}
+      <ol className="space-y-4 lg:col-span-2">
+        {[
+          { ico: "🔎", t: "Alguém pesquisa", d: "“Advogado trabalhista em Montes Claros.” Um problema real, agora." },
+          { ico: "📋", t: "Encontra cinco nomes", d: "A pessoa olha o primeiro resultado. Raramente passa do topo da lista." },
+          { ico: "📞", t: "Liga para o primeiro", d: "Fala direto por WhatsApp. Tira a dúvida, sente confiança." },
+          { ico: "✅", t: "Fecha contrato", d: "Os outros quatro nunca souberam que esse cliente existiu." }
+        ].map((s, i, arr) => (
+          <li key={s.t} className="relative flex gap-4 rounded-2xl border border-slate-800 bg-slate-900/50 p-5">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-800 text-lg" aria-hidden="true">
+              {s.ico}
+            </span>
+            <div>
+              <p className={"font-semibold " + (i === arr.length - 1 ? "text-emerald-400" : "text-amber-300")}>
+                {s.t}
+              </p>
+              <p className="mt-1 text-sm text-slate-400">{s.d}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <p className="mx-auto mt-10 max-w-2xl text-center text-slate-300">
+      A diferença entre ser o nome de cima e ser um dos quatro apagados não é talento.
+      É <span className="text-amber-400">aparecer na hora em que procuram</span>. É exatamente o que o Perfil Premium faz por você.
+    </p>
+  </div>
+</section>
 
       {/* PROBLEMA */}
       <section className="border-t border-slate-800">
@@ -211,6 +372,221 @@ export default async function LandingAdvogadoPremium() {
         </div>
       </section>
 
+      {/* DEMONSTRACAO */}
+      {/* DEMONSTRACAO — mostrar, nao so dizer */}
+      <section className="border-t border-slate-800">
+        <div className="mx-auto max-w-5xl px-6 py-16">
+          <h2 className="text-center text-2xl font-bold sm:text-3xl">
+            Veja como <span className="text-amber-400">funciona na prática</span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-slate-400">
+            Ilustrações do produto: do momento em que o cliente busca um advogado
+            até a conversa chegar no seu WhatsApp.
+          </p>
+
+          <div className="mt-12 grid items-start gap-6 lg:grid-cols-2">
+            {/* (1) RESULTADO DO GOOGLE */}
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6">
+              <p className="text-sm font-semibold text-amber-300">
+                Quando alguém busca na internet
+              </p>
+              <p className="mt-1 text-sm text-slate-400">
+                Seu perfil aparece em destaque, acima dos cadastros comuns.
+              </p>
+
+              {/* mockup claro do buscador */}
+              <div className="mt-5 rounded-xl bg-white p-4 text-slate-900 shadow-lg">
+                {/* barra de busca */}
+                <div className="flex items-center gap-3 rounded-full border border-slate-200 px-4 py-2.5">
+                  <span aria-hidden="true" className="text-slate-400">🔎</span>
+                  <span className="truncate text-sm text-slate-700">
+                    advogado trabalhista em Belo Horizonte
+                  </span>
+                </div>
+
+                {/* 1o resultado — DESTAQUE */}
+                <div className="mt-4 rounded-lg border border-amber-300 bg-amber-50 p-3 ring-1 ring-amber-200">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-400 text-xs font-bold text-slate-900">
+                      A
+                    </span>
+                    <span className="text-xs text-slate-600">
+                      advaqui.com › perfil
+                    </span>
+                    <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-semibold text-slate-900">
+                      <span aria-hidden="true">★</span> Perfil em destaque
+                    </span>
+                  </div>
+                  <p className="mt-1.5 text-base font-medium leading-snug text-blue-800">
+                    Dr. João Pereira, Advogado(a) — Direito Trabalhista
+                  </p>
+                  <div className="mt-1 flex items-center gap-2 text-xs text-slate-600">
+                    <span aria-hidden="true" className="text-amber-500">
+                      
+                    </span>
+                    <span>OAB verificada · Belo Horizonte e região</span>
+                  </div>
+                  <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                    Atendimento direto por WhatsApp. Direito do trabalho,
+                    rescisões e verbas. Fale agora com o advogado.
+                  </p>
+                </div>
+
+                {/* resultados comuns (atenuados) */}
+                <div className="mt-3 space-y-3 opacity-60">
+                  <div>
+                    <p className="text-sm font-medium leading-snug text-blue-800">
+                      Lista de advogados na região
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      outro-site.com › advogados
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium leading-snug text-blue-800">
+                      Escritório de advocacia — contato
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      exemplo.com.br › trabalhista
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <p className="mt-4 text-center text-xs text-slate-500">
+                Ilustração do produto. Nomes e telas são exemplos.
+              </p>
+            </div>
+
+            {/* (2) CELULAR — conversa estilo WhatsApp */}
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6">
+              <p className="text-sm font-semibold text-amber-300">
+                O cliente fala direto com você
+              </p>
+              <p className="mt-1 text-sm text-slate-400">
+                Sem intermediário e sem comissão — a conversa chega no seu WhatsApp.
+              </p>
+
+              {/* moldura do celular */}
+              <div className="mx-auto mt-5 w-full max-w-[280px] rounded-3xl border border-slate-700 bg-slate-950 p-2 shadow-xl">
+                {/* topo / status bar */}
+                <div className="flex items-center gap-3 rounded-t-2xl bg-emerald-600 px-4 py-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-sm font-semibold text-white">
+                    JP
+                  </span>
+                  <span className="leading-tight">
+                    <span className="block text-sm font-semibold text-white">
+                      Dr. João Pereira
+                    </span>
+                    <span className="block text-xs text-emerald-100">online</span>
+                  </span>
+                  <span aria-hidden="true" className="ml-auto text-white">📞</span>
+                </div>
+
+                {/* corpo da conversa */}
+                <div className="space-y-3 bg-slate-900 px-3 py-4">
+                  {/* bolha do cliente (recebida) */}
+                  <div className="flex justify-start">
+                    <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-slate-800 px-3 py-2 text-sm text-slate-100">
+                      <p>
+                        Olá! Vi seu perfil no AdvAqui e preciso de um advogado
+                        trabalhista. Pode me atender?
+                      </p>
+                      <span className="mt-1 block text-right text-[10px] text-slate-400">
+                        09:14
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* bolha do advogado (enviada) */}
+                  <div className="flex justify-end">
+                    <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-emerald-500 px-3 py-2 text-sm text-white">
+                      <p>
+                        Olá! Claro, posso sim. Me conta rapidamente o que
+                        aconteceu que eu já te oriento.
+                      </p>
+                      <span className="mt-1 block text-right text-[10px] text-emerald-50">
+                        09:15 <span aria-hidden="true">✓✓</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* segunda do cliente */}
+                  <div className="flex justify-start">
+                    <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-slate-800 px-3 py-2 text-sm text-slate-100">
+                      <p>Fui demitido sem receber as verbas. Quando podemos conversar?</p>
+                      <span className="mt-1 block text-right text-[10px] text-slate-400">
+                        09:16
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* barra de digitar */}
+                <div className="flex items-center gap-2 rounded-b-2xl bg-slate-800 px-3 py-2.5">
+                  <span className="flex-1 truncate rounded-full bg-slate-700 px-3 py-1.5 text-xs text-slate-400">
+                    Mensagem
+                  </span>
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-sm text-white">
+                    <span aria-hidden="true">➤</span>
+                  </span>
+                </div>
+              </div>
+
+              <p className="mt-4 text-center text-xs text-slate-500">
+                Ilustração do produto. Conversa fictícia para exemplo.
+              </p>
+            </div>
+          </div>
+
+          {/* (3) FLUXO DO CLIENTE — 4 passos com setas */}
+          <div className="mt-10 rounded-2xl border border-slate-800 bg-slate-900/50 p-6">
+            <p className="text-center text-sm font-semibold text-amber-300">
+              O caminho até o contrato
+            </p>
+            <div className="mt-6 flex flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:justify-center">
+              {/* passo 1 */}
+              <div className="flex-1 rounded-xl border border-slate-800 bg-slate-950/60 p-4 text-center">
+                <span aria-hidden="true" className="text-2xl">🔎</span>
+                <p className="mt-2 text-sm font-medium text-slate-100">
+                  Busca no Google
+                </p>
+              </div>
+              <span aria-hidden="true" className="self-center text-2xl text-amber-400 sm:rotate-0 rotate-90">
+                →
+              </span>
+              {/* passo 2 */}
+              <div className="flex-1 rounded-xl border border-amber-400/30 bg-slate-950/60 p-4 text-center">
+                <span aria-hidden="true" className="text-2xl">⭐</span>
+                <p className="mt-2 text-sm font-medium text-slate-100">
+                  Encontra seu perfil em destaque
+                </p>
+              </div>
+              <span aria-hidden="true" className="self-center text-2xl text-amber-400 sm:rotate-0 rotate-90">
+                →
+              </span>
+              {/* passo 3 */}
+              <div className="flex-1 rounded-xl border border-emerald-500/30 bg-slate-950/60 p-4 text-center">
+                <span aria-hidden="true" className="text-2xl">💬</span>
+                <p className="mt-2 text-sm font-medium text-slate-100">
+                  Fala no seu WhatsApp
+                </p>
+              </div>
+              <span aria-hidden="true" className="self-center text-2xl text-amber-400 sm:rotate-0 rotate-90">
+                →
+              </span>
+              {/* passo 4 */}
+              <div className="flex-1 rounded-xl border border-slate-800 bg-slate-950/60 p-4 text-center">
+                <span aria-hidden="true" className="text-2xl">🤝</span>
+                <p className="mt-2 text-sm font-medium text-slate-100">
+                  Fecha o contrato
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* BENEFICIOS */}
       <section className="border-t border-slate-800">
         <div className="mx-auto max-w-5xl px-6 py-16">
@@ -231,6 +607,139 @@ export default async function LandingAdvogadoPremium() {
         </div>
       </section>
 
+      {/* COMPARACAO */}
+      {/* COMPARACAO */}
+      <section className="border-t border-slate-800">
+        <div className="mx-auto max-w-5xl px-6 py-16">
+          <h2 className="text-center text-2xl font-bold sm:text-3xl">
+            Sem AdvAqui x Com AdvAqui
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-slate-400">
+            A diferença de estar — ou não — onde o cliente procura.
+          </p>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            {/* SEM ADVAQUI */}
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 opacity-80">
+              <div className="flex items-center gap-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-rose-500/10 text-rose-400">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M18 6 6 18M6 6l12 12" />
+                  </svg>
+                </span>
+                <p className="text-lg font-semibold text-slate-400">Sem AdvAqui</p>
+              </div>
+              <ul className="mt-6 space-y-3 text-sm">
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 text-rose-400/80" aria-hidden="true">✕</span>
+                  <span className="text-slate-400">Você depende de indicação para conseguir um novo cliente.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 text-rose-400/80" aria-hidden="true">✕</span>
+                  <span className="text-slate-400">É difícil aparecer para quem está procurando.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 text-rose-400/80" aria-hidden="true">✕</span>
+                  <span className="text-slate-400">A concorrência fica mais visível do que você.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 text-rose-400/80" aria-hidden="true">✕</span>
+                  <span className="text-slate-400">O cliente simplesmente não te encontra.</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* COM ADVAQUI */}
+            <div className="rounded-2xl border border-amber-400/30 bg-slate-900/50 p-6 shadow-lg shadow-amber-400/10">
+              <div className="flex items-center gap-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-400/15 text-amber-300">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </span>
+                <p className="text-lg font-semibold text-amber-400">Com AdvAqui</p>
+              </div>
+              <ul className="mt-6 space-y-3 text-sm">
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 text-emerald-400" aria-hidden="true">✓</span>
+                  <span className="text-slate-100">Seu perfil entra em destaque, na frente dos cadastros gratuitos.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 text-emerald-400" aria-hidden="true">✓</span>
+                  <span className="text-slate-100">Você é encontrado na sua cidade e na sua área de atuação.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 text-emerald-400" aria-hidden="true">✓</span>
+                  <span className="text-slate-100">O cliente fala com você direto pelo WhatsApp, sem intermediário.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 text-emerald-400" aria-hidden="true">✓</span>
+                  <span className="text-slate-100">Sua página profissional já fica pronta, com OAB verificada.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* BENEFICIOS EMOCIONAIS */}
+      {/* BENEFICIOS EMOCIONAIS */}
+      <section className="border-t border-slate-800">
+        <div className="mx-auto max-w-5xl px-6 py-16">
+          <h2 className="text-center text-2xl font-bold sm:text-3xl">
+            O que você sente quando seu nome <span className="text-amber-400">aparece</span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-slate-400">
+            Não é só ter um perfil. É a sensação de estar no lugar certo, na hora em que o cliente
+            precisa de você.
+          </p>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { emoji: "👀", frase: "Vou aparecer." },
+              { emoji: "✨", frase: "Vou ser visto." },
+              { emoji: "💬", frase: "Vou receber mais contatos." },
+              { emoji: "📈", frase: "Vou crescer." },
+              { emoji: "🧠", frase: "Vou ser lembrado." },
+              { emoji: "🤝", frase: "Vou fechar mais contratos." }
+            ].map((b) => (
+              <div
+                key={b.frase}
+                className="flex items-center gap-4 rounded-2xl border border-slate-800 bg-slate-900/50 p-6"
+              >
+                <span
+                  aria-hidden="true"
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-400/10 text-2xl"
+                >
+                  {b.emoji}
+                </span>
+                <p className="text-lg font-semibold text-slate-100">{b.frase}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mx-auto mt-8 max-w-2xl text-center text-sm text-slate-400">
+            <span className="font-semibold text-emerald-400">Sua presença, no seu controle.</span>{" "}
+            O AdvAqui dá o palco e o contato direto — o resultado depende do seu trabalho.
+          </p>
+        </div>
+      </section>
+
       {/* COMO FUNCIONA */}
       <section className="border-t border-slate-800">
         <div className="mx-auto max-w-5xl px-6 py-16">
@@ -245,6 +754,88 @@ export default async function LandingAdvogadoPremium() {
                 <p className="mt-2 text-sm text-slate-400">{p.d}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CUSTO DE NAO APARECER */}
+      <section className="border-t border-slate-800">
+        <div className="mx-auto max-w-5xl px-6 py-16">
+          <h2 className="text-center text-2xl font-bold sm:text-3xl">
+            O custo de <span className="text-amber-400">não aparecer</span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-slate-400">
+            A busca por advogado acontece o tempo todo, em todas as cidades do Brasil.
+            Quando alguém procura e você não está lá, quem aparece conversa com esse cliente
+            no seu lugar.
+          </p>
+
+          {/* CONTRASTE: custo x oportunidade */}
+          <div className="mt-10 grid items-stretch gap-5 lg:grid-cols-[1fr_auto_1fr]">
+            {/* Lado: o que você economiza */}
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6">
+              <p className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+                O que você economiza
+              </p>
+              <p className="mt-3 text-4xl font-bold text-slate-100 sm:text-5xl">R$ 59,90</p>
+              <p className="mt-1 text-sm text-slate-400">por mês · ativação por Pix · sem fidelidade</p>
+              <p className="mt-4 text-sm text-slate-400">
+                É o valor do Perfil Premium. Sem comissão por cliente e sem cartão de crédito.
+              </p>
+            </div>
+
+            {/* Separador "versus" */}
+            <div className="flex items-center justify-center">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-800 bg-slate-900/50 text-sm font-bold text-amber-400">
+                vs
+              </span>
+            </div>
+
+            {/* Lado: o que pode ficar para trás */}
+            <div className="rounded-2xl border border-amber-400/30 bg-slate-900/50 p-6 shadow-lg shadow-amber-400/10">
+              <p className="text-sm font-semibold uppercase tracking-wide text-amber-300">
+                O que pode ficar para trás
+              </p>
+              <p className="mt-3 text-4xl font-bold text-amber-400 sm:text-5xl">
+                R$ 2.000<span className="align-top text-2xl">*</span>
+              </p>
+              <p className="mt-1 text-sm text-slate-400">um único contrato que você não chegou a fechar</p>
+              <p className="mt-4 text-sm text-slate-300">
+                Quando o cliente procura primeiro e fala com outro profissional, esse contato
+                não volta. Não é uma promessa de resultado — é o tamanho da chance que passa
+                quando você não aparece.
+              </p>
+            </div>
+          </div>
+
+          {/* Pergunta central (hipótese) */}
+          <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-slate-800 bg-slate-900/50 p-6 text-center sm:p-8">
+            <p className="text-lg font-semibold text-slate-100 sm:text-xl">
+              Se um único contrato deixa de acontecer porque você não apareceu primeiro,
+              <span className="text-amber-300"> quanto custou economizar os R$ 59,90?</span>
+            </p>
+            <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-400">
+              <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="h-4 w-4">
+                <path fillRule="evenodd" d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 1 1 1.4-1.4l3.3 3.3 6.8-6.8a1 1 0 0 1 1.9.5Z" clipRule="evenodd" />
+              </svg>
+              Aparecer custa menos do que um cliente perdido
+            </p>
+          </div>
+
+          {/* Nota de transparência: exemplo ilustrativo */}
+          <p className="mx-auto mt-6 max-w-3xl text-center text-xs text-slate-500">
+            * Valor meramente ilustrativo, usado só para comparar grandezas — varia conforme a
+            área, o caso e o profissional. O AdvAqui aumenta sua visibilidade para quem procura
+            advogado; não garante a contratação nem o valor de honorários.
+          </p>
+
+          <div className="mt-10 text-center">
+            <a
+              href="#assinar"
+              className="inline-block w-full rounded-xl bg-amber-400 px-8 py-4 text-lg font-semibold text-slate-950 transition hover:bg-amber-300 sm:w-auto"
+            >
+              Quero aparecer por R$ 59,90/mês →
+            </a>
           </div>
         </div>
       </section>
@@ -328,7 +919,7 @@ export default async function LandingAdvogadoPremium() {
         <div className="mx-auto max-w-4xl px-6 py-16 text-center">
           <h2 className="text-2xl font-bold sm:text-3xl">Sem pegadinha, sem risco</h2>
           <p className="mx-auto mt-3 max-w-2xl text-slate-400">
-            Seja um dos primeiros advogados a garantir destaque na sua cidade. E se não quiser
+            Seja um dos primeiros advogados a ter destaque na sua cidade. E se não quiser
             continuar, é só cancelar.
           </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
