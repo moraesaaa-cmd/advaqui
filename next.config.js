@@ -44,7 +44,11 @@ const nextConfig = {
       // Raízes de rotas dinâmicas acessadas sem slug -> diretório (evita 404 solto).
       // O match é exato: não afeta /advogado/[slug] nem /p/[slug].
       { source: "/advogado", destination: "/advogados", permanent: true },
-      { source: "/p", destination: "/advogados", permanent: true }
+      { source: "/p", destination: "/advogados", permanent: true },
+      // /p/[slug] legado -> /advogado/[slug] (URL canonica do perfil desde Maio/2026).
+      // 301 declarativo no nivel de roteamento (mais confiavel que o permanentRedirect
+      // no componente, que estava devolvendo 200 com canonical pra home). Preserva ranking.
+      { source: "/p/:slug", destination: "/advogado/:slug", permanent: true }
     ];
   }
 };
