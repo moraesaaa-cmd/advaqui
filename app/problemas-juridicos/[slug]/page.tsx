@@ -14,7 +14,8 @@ import {
 import {
   PROBLEMAS,
   findProblema,
-  relatedProblemas
+  relatedProblemas,
+  findBaseLegal
 } from "@/lib/data/problemas-juridicos";
 import { findGlossarioTermo } from "@/lib/data/glossario";
 import { findTemaStj } from "@/lib/data/jurisprudencia-temas";
@@ -61,6 +62,7 @@ export default function ProblemaPage({ params }: { params: { slug: string } }) {
   if (!p) notFound();
 
   const relacionados = relatedProblemas(p.slug, 4);
+  const basesLegais = findBaseLegal(p.slug);
   const tema = p.tema_jurisprudencia ? findTemaStj(p.tema_jurisprudencia) : null;
   const areasObj = p.areas
     .map((s) => SPECIALTIES.find((sp) => sp.slug === s))
@@ -168,6 +170,27 @@ export default function ProblemaPage({ params }: { params: { slug: string } }) {
             ))}
           </ul>
         </section>
+
+        {/* Base legal */}
+        {basesLegais && basesLegais.length > 0 && (
+          <section className="mt-6">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-2 inline-flex items-center gap-2">
+              <Scale className="w-5 h-5 text-brand-deep" aria-hidden />
+              Base legal
+            </h2>
+            <ul className="space-y-3">
+              {basesLegais.map((b, i) => (
+                <li key={i} className="rounded-xl border border-brand-line bg-white p-4">
+                  <p className="font-semibold text-sm text-brand-deep">{b.citacao}</p>
+                  <p className="text-sm text-brand-ink/80 mt-1 leading-relaxed">{b.dispoe}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-brand-ink/55 mt-2 leading-relaxed">
+              Referências legais para orientação. A aplicação ao seu caso exige análise por um advogado.
+            </p>
+          </section>
+        )}
 
         {/* Quando urgente */}
         <aside

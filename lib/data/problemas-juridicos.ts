@@ -5119,3 +5119,47 @@ export function problemasByArea(): Record<string, ProblemaJuridico[]> {
   }
   return result;
 }
+
+const BASES_LEGAIS: Record<string, Array<{ citacao: string; dispoe: string }>> = {
+  "nome-negativado-indevidamente": [
+    { citacao: "Súmula 385 do STJ", dispoe: "Da anotação irregular em cadastro de proteção ao crédito, não cabe indenização por dano moral quando preexistente legítima inscrição, ressalvado o direito ao cancelamento." },
+    { citacao: "Art. 43, § 1º, do CDC (Lei 8.078/1990)", dispoe: "Os cadastros e dados de consumidores devem ser objetivos, claros e verdadeiros, e as informações negativas não podem ser mantidas por período superior a cinco anos." },
+  ],
+  "fui-demitido-sem-receber-direitos": [
+    { citacao: "Art. 477, § 6º, da CLT", dispoe: "A quitação das verbas rescisórias e a entrega dos documentos da rescisão devem ocorrer em até dez dias contados do término do contrato." },
+    { citacao: "Art. 477, § 8º, da CLT", dispoe: "O descumprimento do prazo de pagamento sujeita o empregador a multa em favor do empregado, equivalente ao seu salário, salvo quando o atraso decorrer de culpa do próprio trabalhador." },
+  ],
+  "estou-sendo-cobrado-por-divida-prescrita": [
+    { citacao: "Súmula 323 do STJ", dispoe: "A inscrição do nome do devedor pode ser mantida nos serviços de proteção ao crédito por, no máximo, cinco anos, independentemente da prescrição da execução." },
+    { citacao: "Art. 43, § 5º, do CDC (Lei 8.078/1990)", dispoe: "Consumada a prescrição relativa à cobrança de débitos, não serão fornecidas pelos sistemas de proteção ao crédito informações que possam impedir ou dificultar novo acesso ao crédito." },
+  ],
+  "pai-nao-paga-pensao": [
+    { citacao: "Art. 528, § 3º, do CPC (Lei 13.105/2015)", dispoe: "Não pago o débito alimentar nem aceita a justificativa, o juiz decretará a prisão do devedor pelo prazo de um a três meses." },
+    { citacao: "Art. 528, § 7º, do CPC (Lei 13.105/2015)", dispoe: "O débito alimentar que autoriza a prisão civil é o que compreende até as três prestações anteriores ao ajuizamento da execução e as que se vencerem no curso do processo." },
+  ],
+  "fui-demitida-gravida": [
+    { citacao: "Art. 10, II, \"b\", do ADCT da Constituição Federal de 1988", dispoe: "É vedada a dispensa arbitrária ou sem justa causa da empregada gestante desde a confirmação da gravidez até cinco meses após o parto." },
+  ],
+  "trabalhei-sem-carteira-assinada": [
+    { citacao: "Art. 3º da CLT", dispoe: "Considera-se empregado toda pessoa física que prestar serviços de natureza não eventual a empregador, sob a dependência deste e mediante salário." },
+    { citacao: "Art. 2º da CLT", dispoe: "Considera-se empregador a empresa que, assumindo os riscos da atividade econômica, admite, assalaria e dirige a prestação pessoal de serviços." },
+  ],
+  "comprei-produto-com-defeito": [
+    { citacao: "Art. 18, § 1º, do CDC (Lei 8.078/1990)", dispoe: "Não sanado o vício em até trinta dias, o consumidor pode exigir, à sua escolha, a substituição do produto, a restituição da quantia paga atualizada ou o abatimento proporcional do preço." },
+  ],
+  "quero-me-divorciar": [
+    { citacao: "Art. 226, § 6º, da Constituição Federal (redação da EC 66/2010)", dispoe: "O casamento civil pode ser dissolvido pelo divórcio, sem exigência de prévia separação ou de prazo." },
+    { citacao: "Art. 733 do CPC (Lei 13.105/2015)", dispoe: "Não havendo nascituro ou filhos incapazes, o divórcio consensual pode ser feito por escritura pública, com os interessados assistidos por advogado ou defensor público, sem necessidade de homologação judicial." },
+  ],
+  "voo-cancelado-ou-atrasado": [
+    { citacao: "Resolução nº 400/2016 da ANAC", dispoe: "Disciplina os direitos do passageiro, prevendo assistência material (comunicação, alimentação e hospedagem conforme o tempo de espera) e, à escolha do passageiro, reacomodação, reembolso integral ou execução do serviço por outra modalidade de transporte." },
+    { citacao: "Art. 14 do CDC (Lei 8.078/1990)", dispoe: "O fornecedor de serviços responde, independentemente de culpa, pela reparação dos danos causados aos consumidores por defeitos na prestação dos serviços." },
+  ],
+  "sofri-violencia-domestica": [
+    { citacao: "Art. 22 da Lei 11.340/2006 (Lei Maria da Penha)", dispoe: "Constatada a violência doméstica, o juiz poderá aplicar de imediato ao agressor medidas protetivas de urgência, como o afastamento do lar e a proibição de aproximação e contato com a ofendida." },
+  ],
+};
+
+export function findBaseLegal(slug: string) {
+  return BASES_LEGAIS[slug] ?? null;
+}
