@@ -16,7 +16,7 @@ import { SITE } from "@/lib/config";
 
 export const metadata: Metadata = {
   title:
-    "Para advogados — apareça quando procuram um advogado na sua cidade | AdvAqui",
+    "Para advogados — apareça quando procuram um advogado na sua cidade",
   description:
     "Crie seu perfil no AdvAqui e apareça nas buscas por advogado na sua cidade e área de atuação. Contato direto com o cliente, sem comissão e sem leilão de leads.",
   alternates: { canonical: `${SITE.url}/para-advogados` },
