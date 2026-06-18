@@ -75,13 +75,6 @@ const onde = [
   { t: "Direto no WhatsApp", d: "O cliente fala com você num clique, sem intermediário." }
 ];
 
-const garantias = [
-  "Comece de graça, ative quando quiser",
-  "Sem fidelidade — cancele a qualquer momento",
-  "OAB verificada no seu perfil",
-  "0% de comissão sobre seus clientes"
-];
-
 const recursos = [
   "Selo de Destaque e prioridade em todo o AdvAqui",
   "Mais visibilidade nas buscas do Google",
@@ -248,15 +241,7 @@ export default async function LandingAdvogadoPremium() {
 
           {/* SIMULACAO GOOGLE PESQUISA (desktop) */}
           <div className="mt-10">
-            <h3 className="text-center text-xl font-bold sm:text-2xl">
-              E é assim que você aparece no <span className="text-amber-400">Google</span>
-            </h3>
-            <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-slate-400">
-              Quando alguém pesquisa um advogado da sua área na sua cidade, seu perfil do AdvAqui
-              aparece com OAB verificada e contato direto.
-            </p>
-
-            <div className="mx-auto mt-6 max-w-2xl overflow-hidden rounded-2xl border border-slate-800 bg-white shadow-lg">
+            <div className="mx-auto max-w-2xl overflow-hidden rounded-2xl border border-slate-800 bg-white shadow-lg">
               <div className="border-b border-slate-200 p-4">
                 <div className="flex items-center gap-3 rounded-full border border-slate-200 px-4 py-2.5 shadow-sm">
                   <span className="text-lg font-medium tracking-tight">
@@ -1072,25 +1057,6 @@ export default async function LandingAdvogadoPremium() {
                   </span>
                 </figcaption>
               </figure>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* GARANTIAS / CONFIANCA */}
-      <section className="border-t border-slate-800">
-        <div className="mx-auto max-w-4xl px-6 py-16 text-center">
-          <h2 className="text-2xl font-bold sm:text-3xl">Sem pegadinha, sem risco</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-slate-400">
-            Seja um dos primeiros advogados a ter destaque na sua cidade. E se não quiser
-            continuar, é só cancelar.
-          </p>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2">
-            {garantias.map((g) => (
-              <div key={g} className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/50 px-5 py-4 text-left">
-                <span className="text-amber-400">✓</span>
-                <span className="text-sm text-slate-200">{g}</span>
-              </div>
             ))}
           </div>
         </div>
