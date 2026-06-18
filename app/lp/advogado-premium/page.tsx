@@ -236,6 +236,152 @@ export default async function LandingAdvogadoPremium() {
         </div>
       </section>
 
+      {/* PRINTS REAIS */}
+      <section className="border-t border-slate-800">
+        <div className="mx-auto max-w-5xl px-6 py-16">
+          <h2 className="text-center text-2xl font-bold sm:text-3xl">
+            É assim que você <span className="text-amber-400">aparece para o cliente</span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-slate-400">
+            Veja, na prática, como seu perfil aparece no Google e dentro do AdvAqui — com OAB verificada e contato direto.
+          </p>
+
+          {/* SIMULACAO GOOGLE PESQUISA (desktop) */}
+          <div className="mt-10">
+            <h3 className="text-center text-xl font-bold sm:text-2xl">
+              E é assim que você aparece no <span className="text-amber-400">Google</span>
+            </h3>
+            <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-slate-400">
+              Quando alguém pesquisa um advogado da sua área na sua cidade, seu perfil do AdvAqui
+              aparece com OAB verificada e contato direto.
+            </p>
+
+            <div className="mx-auto mt-6 max-w-2xl overflow-hidden rounded-2xl border border-slate-800 bg-white shadow-lg">
+              <div className="border-b border-slate-200 p-4">
+                <div className="flex items-center gap-3 rounded-full border border-slate-200 px-4 py-2.5 shadow-sm">
+                  <span className="text-lg font-medium tracking-tight">
+                    <span className="text-blue-500">G</span>
+                    <span className="text-red-500">o</span>
+                    <span className="text-amber-500">o</span>
+                    <span className="text-blue-500">g</span>
+                    <span className="text-green-600">l</span>
+                    <span className="text-red-500">e</span>
+                  </span>
+                  <span className="h-4 w-px bg-slate-200" />
+                  <span className="min-w-0 flex-1 truncate text-sm text-slate-700">
+                    advogado trabalhista em Belo Horizonte
+                  </span>
+                  <span aria-hidden="true" className="text-slate-400">🔎</span>
+                </div>
+              </div>
+
+              <div className="space-y-5 p-5">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-100 text-xs font-bold text-amber-700">A</span>
+                    <span className="leading-tight">
+                      <span className="block text-sm text-slate-800">AdvAqui</span>
+                      <span className="block text-xs text-green-700">advaqui.com › advogado › joao-pereira</span>
+                    </span>
+                  </div>
+                  <p className="mt-1.5 text-lg leading-snug text-blue-800 sm:text-xl">
+                    Dr. João Pereira — Advogado Trabalhista em Belo Horizonte
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-slate-600">
+                    OAB/MG verificada. Atendimento direto por WhatsApp em demissões, rescisões e
+                    verbas trabalhistas. Fale agora com um advogado na sua cidade.
+                  </p>
+                </div>
+
+                <div className="space-y-4 opacity-50">
+                  <div>
+                    <p className="text-xs text-green-700">outro-site.com.br › lista-advogados</p>
+                    <p className="text-lg leading-snug text-blue-800">Lista de advogados na região</p>
+                    <p className="text-sm text-slate-600">Encontre profissionais de direito do trabalho perto de você…</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-green-700">exemplo.adv.br › trabalhista</p>
+                    <p className="text-lg leading-snug text-blue-800">Escritório de advocacia trabalhista</p>
+                    <p className="text-sm text-slate-600">Atuação em causas trabalhistas e cíveis…</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* SIMULACAO GOOGLE MOBILE (com botao de ligar) */}
+          <div className="mt-12">
+            <h3 className="text-center text-xl font-bold sm:text-2xl">
+              No celular, com <span className="text-amber-400">botão de ligar</span>
+            </h3>
+            <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-slate-400">
+              Quem procura pelo celular liga ou chama no WhatsApp com um toque.
+            </p>
+            <div className="mx-auto mt-6 w-full max-w-sm overflow-hidden rounded-3xl border border-slate-700 bg-white shadow-xl">
+              <div className="border-b border-slate-200 p-3">
+                <div className="flex items-center gap-2 rounded-full border border-slate-200 px-3 py-2">
+                  <span aria-hidden="true" className="text-slate-400">🔎</span>
+                  <span className="min-w-0 flex-1 truncate text-sm text-slate-700">advogado perto de mim</span>
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="rounded-xl border border-slate-200 p-4">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 text-xs font-bold text-amber-700">A</span>
+                    <span className="text-xs text-green-700">advaqui.com</span>
+                  </div>
+                  <p className="mt-2 text-base font-medium leading-snug text-blue-800">
+                    Dr. João Pereira — Advogado em Belo Horizonte
+                  </p>
+                  <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                    OAB/MG verificada · Direito Trabalhista, Família e Cível.
+                  </p>
+                  <div className="mt-3 grid grid-cols-2 gap-2">
+                    <span className="flex items-center justify-center gap-1.5 rounded-full bg-blue-600 px-3 py-2 text-sm font-semibold text-white">
+                      <span aria-hidden="true">📞</span> Ligar
+                    </span>
+                    <span className="flex items-center justify-center gap-1.5 rounded-full bg-emerald-500 px-3 py-2 text-sm font-semibold text-white">
+                      <span aria-hidden="true">💬</span> WhatsApp
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p className="mx-auto mt-4 max-w-2xl text-center text-xs text-slate-500">
+              Simulações ilustrativas de resultado de busca. Nomes e textos são exemplos.
+            </p>
+          </div>
+
+          {/* TELAS REAIS */}
+          <div className="mt-14">
+            <h3 className="text-center text-xl font-bold sm:text-2xl">
+              Telas reais da <span className="text-amber-400">plataforma</span>
+            </h3>
+            <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
+              {[
+                { src: "/prints/home.png", t: "Busca por cidade", d: "Onde o cliente começa a procurar um advogado." },
+                { src: "/prints/cidade.png", t: "Diretório da cidade", d: "Quem tem Destaque aparece primeiro, com OAB verificada." },
+                { src: "/prints/perfil.png", t: "Página profissional", d: "Foto, áreas de atuação e contato direto por WhatsApp." }
+              ].map((p) => (
+                <figure key={p.src} className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/50">
+                  <div className="aspect-[16/10] overflow-hidden border-b border-slate-800 bg-white">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.src} alt={p.t} className="h-full w-full object-cover object-top" loading="lazy" />
+                  </div>
+                  <figcaption className="p-5">
+                    <p className="font-semibold text-amber-300">{p.t}</p>
+                    <p className="mt-1 text-sm text-slate-400">{p.d}</p>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+            <p className="mx-auto mt-6 text-center text-xs text-slate-500">
+              Capturas reais da plataforma AdvAqui.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* NARRATIVA */}
       <section className="border-t border-slate-800">
   <div className="mx-auto max-w-5xl px-6 py-16">
@@ -640,110 +786,6 @@ export default async function LandingAdvogadoPremium() {
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PRINTS REAIS */}
-      <section className="border-t border-slate-800">
-        <div className="mx-auto max-w-5xl px-6 py-16">
-          <h2 className="text-center text-2xl font-bold sm:text-3xl">
-            Prints reais do <span className="text-amber-400">AdvAqui</span>
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-center text-slate-400">
-            Telas reais da plataforma no ar: a busca por cidade, o diretório com os perfis em destaque e a página profissional do advogado.
-          </p>
-          <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {[
-              { src: "/prints/home.png", t: "Busca por cidade", d: "Onde o cliente começa a procurar um advogado." },
-              { src: "/prints/cidade.png", t: "Diretório da cidade", d: "Quem tem Destaque aparece primeiro, com OAB verificada." },
-              { src: "/prints/perfil.png", t: "Página profissional", d: "Foto, áreas de atuação e contato direto por WhatsApp." }
-            ].map((p) => (
-              <figure key={p.src} className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/50">
-                <div className="aspect-[16/10] overflow-hidden border-b border-slate-800 bg-white">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.src} alt={p.t} className="h-full w-full object-cover object-top" loading="lazy" />
-                </div>
-                <figcaption className="p-5">
-                  <p className="font-semibold text-amber-300">{p.t}</p>
-                  <p className="mt-1 text-sm text-slate-400">{p.d}</p>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-          <p className="mx-auto mt-6 text-center text-xs text-slate-500">
-            Capturas reais da plataforma AdvAqui.
-          </p>
-
-          {/* SIMULACAO GOOGLE PESQUISA */}
-          <div className="mt-14">
-            <h3 className="text-center text-xl font-bold sm:text-2xl">
-              E é assim que você aparece no <span className="text-amber-400">Google</span>
-            </h3>
-            <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-slate-400">
-              Quando alguém pesquisa um advogado da sua área na sua cidade, seu perfil do AdvAqui
-              aparece com OAB verificada e contato direto.
-            </p>
-
-            <div className="mx-auto mt-6 max-w-2xl overflow-hidden rounded-2xl border border-slate-800 bg-white shadow-lg">
-              {/* barra de busca do Google */}
-              <div className="border-b border-slate-200 p-4">
-                <div className="flex items-center gap-3 rounded-full border border-slate-200 px-4 py-2.5 shadow-sm">
-                  <span className="text-lg font-medium tracking-tight">
-                    <span className="text-blue-500">G</span>
-                    <span className="text-red-500">o</span>
-                    <span className="text-amber-500">o</span>
-                    <span className="text-blue-500">g</span>
-                    <span className="text-green-600">l</span>
-                    <span className="text-red-500">e</span>
-                  </span>
-                  <span className="h-4 w-px bg-slate-200" />
-                  <span className="min-w-0 flex-1 truncate text-sm text-slate-700">
-                    advogado trabalhista em Belo Horizonte
-                  </span>
-                  <span aria-hidden="true" className="text-slate-400">🔎</span>
-                </div>
-              </div>
-
-              {/* resultados */}
-              <div className="space-y-5 p-5">
-                {/* resultado do AdvAqui em destaque */}
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-100 text-xs font-bold text-amber-700">A</span>
-                    <span className="leading-tight">
-                      <span className="block text-sm text-slate-800">AdvAqui</span>
-                      <span className="block text-xs text-green-700">advaqui.com › advogado › joao-pereira</span>
-                    </span>
-                  </div>
-                  <p className="mt-1.5 text-lg leading-snug text-blue-800 sm:text-xl">
-                    Dr. João Pereira — Advogado Trabalhista em Belo Horizonte
-                  </p>
-                  <p className="mt-1 text-sm leading-relaxed text-slate-600">
-                    OAB/MG verificada. Atendimento direto por WhatsApp em demissões, rescisões e
-                    verbas trabalhistas. Fale agora com um advogado na sua cidade.
-                  </p>
-                </div>
-
-                {/* resultados comuns, atenuados */}
-                <div className="space-y-4 opacity-50">
-                  <div>
-                    <p className="text-xs text-green-700">outro-site.com.br › lista-advogados</p>
-                    <p className="text-lg leading-snug text-blue-800">Lista de advogados na região</p>
-                    <p className="text-sm text-slate-600">Encontre profissionais de direito do trabalho perto de você…</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-green-700">exemplo.adv.br › trabalhista</p>
-                    <p className="text-lg leading-snug text-blue-800">Escritório de advocacia trabalhista</p>
-                    <p className="text-sm text-slate-600">Atuação em causas trabalhistas e cíveis…</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <p className="mx-auto mt-4 max-w-2xl text-center text-xs text-slate-500">
-              Simulação ilustrativa de um resultado de busca. Nomes e textos são exemplos.
-            </p>
           </div>
         </div>
       </section>
