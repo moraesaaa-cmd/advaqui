@@ -27,7 +27,7 @@ export const dynamic = "force-static";
 
 const passos = [
   { n: "1", t: "Crie seu perfil", d: "Leva menos de 2 minutos: nome, OAB, cidade e áreas de atuação." },
-  { n: "2", t: "Ative por Pix", d: "Mensalidade de " + PLAN.priceLabel + " via Pix. Sem fidelidade." },
+  { n: "2", t: "Ative seu perfil", d: "Mensalidade de " + PLAN.priceLabel + ". Sem fidelidade." },
   { n: "3", t: "Seja encontrado", d: "Seu perfil entra em destaque e os clientes falam direto com você." }
 ];
 
@@ -62,13 +62,13 @@ const beneficios = [
   },
   {
     t: "No controle, sem amarras",
-    d: "Ative por Pix, sem cartão e sem fidelidade. Cancele quando quiser. Seu perfil, seus dados, sem letra miúda."
+    d: "Sem cartão e sem fidelidade. Cancele quando quiser. Seu perfil, seus dados, sem letra miúda."
   }
 ];
 
 const onde = [
-  { t: "No Google", d: "Quando alguém pesquisa “advogado em [sua cidade]”." },
-  { t: "Na busca por cidade", d: "Nas 5.571 cidades do Brasil cobertas pelo AdvAqui." },
+  { t: "No Google", d: "Quando alguém pesquisa por um advogado na própria cidade." },
+  { t: "Na busca por cidade", d: "Em todas as cidades do Brasil cobertas pelo AdvAqui." },
   { t: "Na busca por área", d: "Trabalhista, família, criminal, previdenciário, cível e mais." },
   { t: "Direto no WhatsApp", d: "O cliente fala com você num clique, sem intermediário." }
 ];
@@ -82,13 +82,16 @@ const garantias = [
 
 const recursos = [
   "Selo de Destaque e prioridade em todo o AdvAqui",
-  "Apareça em várias cidades da sua região",
+  "Mais visibilidade nas buscas do Google",
+  "Topo dos resultados na sua cidade e na sua área",
+  "Apareça nas cidades de toda a sua região",
   "Página profissional com foto e OAB verificada",
   "Contato direto por WhatsApp, telefone e e-mail",
   "0% de comissão — o cliente é exclusivamente seu",
   "Sem leilão de leads e sem disputa de preço",
   "Publique artigos e apareça como autoridade",
-  "Encontrado também nas buscas do Google"
+  "Atendimento e suporte para configurar tudo",
+  "Sem fidelidade — cancele quando quiser"
 ];
 
 const faqs = [
@@ -96,7 +99,7 @@ const faqs = [
   { q: "O AdvAqui cobra comissão por cliente?", a: "Não. O contato é direto entre você e o cliente. Você paga apenas a mensalidade." },
   { q: "Como recebo os clientes?", a: "Seu perfil mostra seu WhatsApp, telefone e e-mail. O cliente fala direto com você." },
   { q: "Preciso saber de tecnologia?", a: "Não. A página profissional é montada para você. Basta preencher seus dados." },
-  { q: "Em quanto tempo apareço?", a: "Assim que o pagamento por Pix é confirmado, seu perfil entra em destaque." },
+  { q: "Em quanto tempo apareço?", a: "Assim que o pagamento é confirmado, seu perfil entra em destaque." },
   { q: "Posso cancelar?", a: "A qualquer momento, sem multa e sem fidelidade." }
 ];
 
@@ -182,7 +185,7 @@ export default async function LandingAdvogadoPremium() {
             />
           </div>
           <p className="mt-4 text-sm text-slate-400">
-            Ativação por Pix · {PLAN.priceLabel}/mês · Sem fidelidade · Cancele quando quiser
+            {PLAN.priceLabel}/mês · Sem fidelidade · Cancele quando quiser
           </p>
         </div>
       </section>
@@ -421,9 +424,6 @@ export default async function LandingAdvogadoPremium() {
                     Dr. João Pereira, Advogado(a) — Direito Trabalhista
                   </p>
                   <div className="mt-1 flex items-center gap-2 text-xs text-slate-600">
-                    <span aria-hidden="true" className="text-amber-500">
-                      
-                    </span>
                     <span>OAB verificada · Belo Horizonte e região</span>
                   </div>
                   <p className="mt-1 text-xs leading-relaxed text-slate-600">
@@ -536,6 +536,61 @@ export default async function LandingAdvogadoPremium() {
               <p className="mt-4 text-center text-xs text-slate-500">
                 Ilustração do produto. Conversa fictícia para exemplo.
               </p>
+            </div>
+
+            {/* (3) PERFIL PROFISSIONAL */}
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6">
+              <p className="text-sm font-semibold text-amber-300">Sua página profissional</p>
+              <p className="mt-1 text-sm text-slate-400">
+                Foto, OAB verificada, áreas de atuação e botão de contato — pronta para o cliente confiar.
+              </p>
+              <div className="mt-5 rounded-xl border border-slate-700 bg-slate-950 p-5">
+                <div className="flex items-center gap-4">
+                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-amber-400 text-xl font-bold text-slate-950">JP</span>
+                  <div>
+                    <p className="font-semibold text-slate-100">Dr. João Pereira</p>
+                    <p className="text-sm text-amber-300">Advogado · Belo Horizonte/MG</p>
+                    <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[11px] font-medium text-emerald-300">
+                      <span aria-hidden="true">✓</span> OAB verificada
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-300">Trabalhista</span>
+                  <span className="rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-300">Família</span>
+                  <span className="rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-300">Previdenciário</span>
+                </div>
+                <div className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-white">
+                  <span aria-hidden="true">💬</span> Falar no WhatsApp
+                </div>
+              </div>
+              <p className="mt-4 text-center text-xs text-slate-500">Ilustração do produto.</p>
+            </div>
+
+            {/* (4) DESTAQUE / RANKING */}
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6">
+              <p className="text-sm font-semibold text-amber-300">Sempre acima dos cadastros comuns</p>
+              <p className="mt-1 text-sm text-slate-400">
+                Com o selo de Destaque, seu perfil fica no topo — enquanto os cadastros gratuitos ficam para trás.
+              </p>
+              <div className="mt-5 space-y-4 rounded-xl border border-slate-700 bg-slate-950 p-5">
+                <div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-semibold text-amber-300">Seu perfil — Premium</span>
+                    <span className="rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-bold text-slate-900">TOPO</span>
+                  </div>
+                  <div className="mt-1.5 h-2.5 w-full rounded-full bg-amber-400" />
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500">Cadastro comum</p>
+                  <div className="mt-1.5 h-2.5 w-2/3 rounded-full bg-slate-700" />
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500">Cadastro comum</p>
+                  <div className="mt-1.5 h-2.5 w-1/2 rounded-full bg-slate-700" />
+                </div>
+              </div>
+              <p className="mt-4 text-center text-xs text-slate-500">Ilustração do produto.</p>
             </div>
           </div>
 
@@ -699,46 +754,6 @@ export default async function LandingAdvogadoPremium() {
         </div>
       </section>
 
-      {/* BENEFICIOS EMOCIONAIS */}
-      {/* BENEFICIOS EMOCIONAIS */}
-      <section className="border-t border-slate-800">
-        <div className="mx-auto max-w-5xl px-6 py-16">
-          <h2 className="text-center text-2xl font-bold sm:text-3xl">
-            O que você sente quando seu nome <span className="text-amber-400">aparece</span>
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-center text-slate-400">
-            Não é só ter um perfil. É a sensação de estar no lugar certo, na hora em que o cliente
-            precisa de você.
-          </p>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { emoji: "👀", frase: "Vou aparecer." },
-              { emoji: "✨", frase: "Vou ser visto." },
-              { emoji: "💬", frase: "Vou receber mais contatos." },
-              { emoji: "📈", frase: "Vou crescer." },
-              { emoji: "🧠", frase: "Vou ser lembrado." },
-              { emoji: "🤝", frase: "Vou fechar mais contratos." }
-            ].map((b) => (
-              <div
-                key={b.frase}
-                className="flex items-center gap-4 rounded-2xl border border-slate-800 bg-slate-900/50 p-6"
-              >
-                <span
-                  aria-hidden="true"
-                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-400/10 text-2xl"
-                >
-                  {b.emoji}
-                </span>
-                <p className="text-lg font-semibold text-slate-100">{b.frase}</p>
-              </div>
-            ))}
-          </div>
-          <p className="mx-auto mt-8 max-w-2xl text-center text-sm text-slate-400">
-            <span className="font-semibold text-emerald-400">Sua presença, no seu controle.</span>{" "}
-            O AdvAqui dá o palco e o contato direto — o resultado depende do seu trabalho.
-          </p>
-        </div>
-      </section>
 
       {/* COMO FUNCIONA */}
       <section className="border-t border-slate-800">
@@ -778,7 +793,7 @@ export default async function LandingAdvogadoPremium() {
                 O que você economiza
               </p>
               <p className="mt-3 text-4xl font-bold text-slate-100 sm:text-5xl">R$ 59,90</p>
-              <p className="mt-1 text-sm text-slate-400">por mês · ativação por Pix · sem fidelidade</p>
+              <p className="mt-1 text-sm text-slate-400">por mês · sem fidelidade · cancele quando quiser</p>
               <p className="mt-4 text-sm text-slate-400">
                 É o valor do Perfil Premium. Sem comissão por cliente e sem cartão de crédito.
               </p>
@@ -846,7 +861,7 @@ export default async function LandingAdvogadoPremium() {
           <div className="rounded-2xl border border-amber-400/30 bg-slate-900 p-8 text-center shadow-lg shadow-amber-400/10">
             <p className="text-lg font-semibold">Perfil Premium AdvAqui</p>
             <p className="mt-2 text-5xl font-bold text-amber-400">{PLAN.priceLabel}</p>
-            <p className="text-sm text-slate-400">/mês · via Pix · Sem fidelidade · Cancele quando quiser</p>
+            <p className="text-sm text-slate-400">/mês · Sem fidelidade · Cancele quando quiser</p>
             <ul className="mt-6 space-y-2 text-left text-sm">
               {recursos.map((r) => (
                 <li key={r} className="flex items-start gap-2">
@@ -859,7 +874,7 @@ export default async function LandingAdvogadoPremium() {
               href="#assinar"
               className="mt-8 inline-block w-full rounded-xl bg-amber-400 px-8 py-4 text-lg font-semibold text-slate-950 transition hover:bg-amber-300"
             >
-              Assinar agora por Pix
+              Assinar agora
             </a>
           </div>
         </div>
@@ -869,8 +884,8 @@ export default async function LandingAdvogadoPremium() {
       <section className="border-t border-slate-800">
         <div className="mx-auto grid max-w-4xl gap-8 px-6 py-12 text-center sm:grid-cols-3">
           <div>
-            <p className="text-3xl font-bold text-amber-400">5.571</p>
-            <p className="text-sm text-slate-400">cidades cobertas no Brasil</p>
+            <p className="text-3xl font-bold text-amber-400">Nacional</p>
+            <p className="text-sm text-slate-400">cobertura em todas as cidades do Brasil</p>
           </div>
           <div>
             <p className="text-3xl font-bold text-amber-400">OAB</p>
@@ -900,9 +915,14 @@ export default async function LandingAdvogadoPremium() {
               >
                 <blockquote className="flex-1 text-slate-300">&ldquo;{d.texto}&rdquo;</blockquote>
                 <figcaption className="mt-5 flex items-center gap-3 border-t border-slate-800 pt-5">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-amber-400/15 text-sm font-semibold text-amber-300">
-                    {d.iniciais}
-                  </span>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={"https://api.dicebear.com/9.x/notionists/svg?seed=" + encodeURIComponent(d.nome) + "&backgroundColor=fde68a,fcd34d,fef3c7"}
+                    alt=""
+                    width={44}
+                    height={44}
+                    className="h-11 w-11 shrink-0 rounded-full bg-amber-400/15"
+                  />
                   <span>
                     <span className="block font-semibold text-amber-300">{d.nome}</span>
                     <span className="block text-sm text-slate-400">{d.titulo}</span>
@@ -953,7 +973,7 @@ export default async function LandingAdvogadoPremium() {
         <div className="mx-auto max-w-3xl px-6 py-20 text-center">
           <h2 className="text-3xl font-bold sm:text-4xl">Comece a aparecer hoje</h2>
           <p className="mx-auto mt-4 max-w-xl text-slate-300">
-            Crie seu perfil, ative por Pix e seja encontrado por quem já está procurando um advogado
+            Crie seu perfil e seja encontrado por quem já está procurando um advogado
             na sua cidade.
           </p>
           <div className="mt-8">
@@ -965,7 +985,7 @@ export default async function LandingAdvogadoPremium() {
             </a>
           </div>
           <p className="mt-4 text-sm text-slate-400">
-            {PLAN.priceLabel}/mês · Ativação por Pix · Sem fidelidade
+            {PLAN.priceLabel}/mês · Sem fidelidade · Cancele quando quiser
           </p>
         </div>
       </section>
