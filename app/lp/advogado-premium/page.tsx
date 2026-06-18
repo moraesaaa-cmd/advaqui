@@ -644,6 +644,39 @@ export default async function LandingAdvogadoPremium() {
         </div>
       </section>
 
+      {/* PRINTS REAIS */}
+      <section className="border-t border-slate-800">
+        <div className="mx-auto max-w-5xl px-6 py-16">
+          <h2 className="text-center text-2xl font-bold sm:text-3xl">
+            Prints reais do <span className="text-amber-400">AdvAqui</span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-slate-400">
+            Telas reais da plataforma no ar: a busca por cidade, o diretório com os perfis em destaque e a página profissional do advogado.
+          </p>
+          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+            {[
+              { src: "/prints/home.png", t: "Busca por cidade", d: "Onde o cliente começa a procurar um advogado." },
+              { src: "/prints/cidade.png", t: "Diretório da cidade", d: "Quem tem Destaque aparece primeiro, com OAB verificada." },
+              { src: "/prints/perfil.png", t: "Página profissional", d: "Foto, áreas de atuação e contato direto por WhatsApp." }
+            ].map((p) => (
+              <figure key={p.src} className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/50">
+                <div className="aspect-[16/10] overflow-hidden border-b border-slate-800 bg-white">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={p.src} alt={p.t} className="h-full w-full object-cover object-top" loading="lazy" />
+                </div>
+                <figcaption className="p-5">
+                  <p className="font-semibold text-amber-300">{p.t}</p>
+                  <p className="mt-1 text-sm text-slate-400">{p.d}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="mx-auto mt-6 text-center text-xs text-slate-500">
+            Capturas reais da plataforma AdvAqui.
+          </p>
+        </div>
+      </section>
+
       {/* BENEFICIOS */}
       <section className="border-t border-slate-800">
         <div className="mx-auto max-w-5xl px-6 py-16">
