@@ -2,8 +2,8 @@
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { MapPin, ChevronRight, Loader2 } from "lucide-react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { MapPin, ChevronRight, Loader2, Search } from "lucide-react";
 import { Breadcrumb } from "@/components/Breadcrumb";
 
 type CityHit = { name: string; slug: string; uf: string; isCapital: boolean };
@@ -21,6 +21,14 @@ function ResultsInner() {
   const params = useSearchParams();
   const q = params.get("q") || "";
   const term = q.trim();
+  const router = useRouter();
+  const [input, setInput] = useState(q);
+  useEffect(() => {
+    const t = setTimeout(() => {
+      router.replace(`/buscar?q=${encodeURIComponent(input)}`, { scroll: false });
+    }, 150);
+    return () => clearTimeout(t);
+  }, [input, router]);
 
   const [cities, setCities] = useState<CityHit[]>([]);
   const [lawyers, setLawyers] = useState<LawyerHit[]>([]);
@@ -61,6 +69,20 @@ function ResultsInner() {
       <h1 className="font-display text-3xl font-bold text-brand-ink">
         Resultados para &quot;{q}&quot;
       </h1>
+      <div className="mt-5">
+        <label htmlFor="busca-input" className="sr-only">Buscar cidade ou advogado</label>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-ink/40" aria-hidden />
+          <input
+            id="busca-input"
+            type="search"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Digite uma cidade ou o nome de um advogado..."
+            className="w-full rounded-xl border border-brand-line bg-white py-3 pl-10 pr-4 text-brand-ink outline-none focus:border-brand-accent"
+          />
+        </div>
+      </div>
 
       {term.length < 2 && (
         <p className="mt-4 text-brand-ink/60">Digite ao menos 2 letras para buscar.</p>

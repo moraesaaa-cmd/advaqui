@@ -90,7 +90,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     ? SPECIALTIES.find((s) => s.slug === primarySlug)?.name
     : undefined;
   // Feminino quando nome do advogado termina em "a"
-  const isFem = l.name.toLowerCase().endsWith("a");
+  const isFem = (l.name.trim().split(" ")[0] || "").toLowerCase().endsWith("a");
   const titleArea = mainArea
     ? `Advogad${isFem ? "a" : "o"} ${mainArea}`
     : `Advogad${isFem ? "a" : "o"}`;

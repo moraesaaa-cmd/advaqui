@@ -30,6 +30,14 @@ import { PIX } from "@/lib/config";
 
 export { type Lawyer, mapLawyerRow };
 
+// Perfil de rede exibido em cidades SEM advogado, para nenhuma pagina ficar vazia.
+const FALLBACK_LAWYER_SLUG = "kellsons-de-moraes-oliveira";
+let _fallbackCache: Promise<Lawyer | null> | undefined;
+function getFallbackLawyer(): Promise<Lawyer | null> {
+  if (!_fallbackCache) _fallbackCache = findLawyerBySlug(FALLBACK_LAWYER_SLUG);
+  return _fallbackCache;
+}
+
 /**
  * page_status que NUNCA devem aparecer no diretório público.
  */
@@ -152,6 +160,11 @@ export async function getLawyersForCity(
 
   // Ordenação consistente: premium ativos primeiro, featured antes do resto,
   // depois alfabético pelo nome.
+  // FALLBACK_EMPTY_CITY: nenhuma cidade fica vazia.
+  if (matched.length === 0) {
+    const fb = await getFallbackLawyer();
+    if (fb) return [fb];
+  }
   return matched.sort((a, b) => {
     const aPrem = a.planStatus === "active" ? 1 : 0;
     const bPrem = b.planStatus === "active" ? 1 : 0;
