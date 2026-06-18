@@ -233,10 +233,10 @@ export default async function LandingAdvogadoPremium() {
       <section className="border-t border-slate-800">
         <div className="mx-auto max-w-5xl px-6 py-16">
           <h2 className="text-center text-2xl font-bold sm:text-3xl">
-            É assim que você <span className="text-amber-400">aparece para o cliente</span>
+            Depois de assinar, é assim que você <span className="text-amber-400">aparece para o cliente</span>
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-center text-slate-400">
-            Veja, na prática, como seu perfil aparece no Google e dentro do AdvAqui — com OAB verificada e contato direto.
+            Com a assinatura premium, seu perfil sobe ao topo e passa a aparecer assim para quem procura — no Google e em todo o AdvAqui, com OAB verificada e contato direto.
           </p>
 
           {/* SIMULACAO GOOGLE PESQUISA (desktop) */}
