@@ -427,7 +427,10 @@ export async function adminActivatePremium(
     .update({
       plan_status: "active",
       plan_start_date: now.toISOString(),
-      plan_end_date: expires.toISOString()
+      plan_end_date: expires.toISOString(),
+      // Ao confirmar o pagamento, o advogado já sobe para o topo (destaque)
+      // automaticamente — sem precisar de um segundo clique manual no admin.
+      featured: true
     })
     .eq("id", lawyerId);
 

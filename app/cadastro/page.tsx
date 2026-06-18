@@ -182,6 +182,8 @@ export default function CadastroPage() {
     }
   }, []);
 
+  const [cepWarn, setCepWarn] = useState("");
+
   // -------- ViaCEP — autopreenche endereço/cidade/UF ---------------------------
   // Endpoint público gratuito (https://viacep.com.br/ws/{cep}/json/), sem chave.
   // Reduz drasticamente erros de digitação. Em falha silenciosa, o user
@@ -189,6 +191,7 @@ export default function CadastroPage() {
 
   const handleCepBlur = async () => {
     const digits = form.cep.replace(/\D/g, "");
+    setCepWarn("");
     if (digits.length !== 8) return;
     try {
       const ctrl = new AbortController();
@@ -197,7 +200,10 @@ export default function CadastroPage() {
         signal: ctrl.signal
       });
       clearTimeout(timer);
-      if (!res.ok) return;
+      if (!res.ok) {
+        setCepWarn("Não conseguimos validar o CEP agora — preencha endereço, cidade e UF manualmente.");
+        return;
+      }
       const data = (await res.json()) as {
         erro?: boolean;
         logradouro?: string;
@@ -205,7 +211,10 @@ export default function CadastroPage() {
         localidade?: string;
         uf?: string;
       };
-      if (data.erro) return;
+      if (data.erro) {
+        setCepWarn("CEP não encontrado. Confira o número ou preencha endereço, cidade e UF manualmente.");
+        return;
+      }
       setForm((p) => {
         const next = { ...p };
         const parts: string[] = [];
@@ -220,7 +229,8 @@ export default function CadastroPage() {
       // Marca cidade como selecionada (vem do ViaCEP, fonte oficial)
       if (data.localidade) setCitySelected(true);
     } catch {
-      // Silencioso — user preenche manualmente
+      // Falha de rede/timeout — avisa e deixa o user preencher manualmente
+      setCepWarn("Não conseguimos validar o CEP agora — preencha os campos manualmente.");
     }
   };
 
@@ -331,10 +341,11 @@ export default function CadastroPage() {
       return;
     }
 
-    // Aguarda 800ms pra trigger handle_new_user() criar a linha em
+    // Aguarda 1800ms pra trigger handle_new_user() criar a linha em
     // public.lawyers (a função roda síncrona no Postgres mas o cliente
-    // pode receber a resposta antes do commit ser visível).
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    // pode receber a resposta antes do commit ser visível). Margem maior
+    // evita o race em que o signIn ocorre antes de a linha existir.
+    await new Promise((resolve) => setTimeout(resolve, 1800));
 
     // Garante sessão ativa antes de redirecionar. Se Confirm Email
     // estiver desativado, signUp já retorna data.session, mas em alguns
@@ -539,6 +550,9 @@ export default function CadastroPage() {
               <p className="text-xs text-brand-ink/50 mt-1">
                 Digite o CEP e saia do campo — preenchemos endereço, cidade e UF automaticamente.
               </p>
+              {cepWarn && (
+                <p className="text-amber-700 text-xs mt-1">{cepWarn}</p>
+              )}
             </div>
             <div className="grid sm:grid-cols-3 gap-4">
               <div>

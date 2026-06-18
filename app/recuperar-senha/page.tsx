@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { AlertCircle, Mail, ArrowLeft, CheckCircle } from "lucide-react";
 import { isValidEmail } from "@/lib/utils/validation";
@@ -21,10 +21,21 @@ export default function RecuperarSenhaPage() {
   const [step, setStep] = useState<"form" | "sent">("form");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [cooldown, setCooldown] = useState(0);
+
+  // Conta regressiva do rate limit: evita enfileirar e-mails com cliques
+  // repetidos (o SMTP do plano free entrega poucos e-mails por hora).
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const t = setTimeout(() => setCooldown((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [cooldown]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (cooldown > 0) return;
 
     if (!isValidEmail(email)) {
       setError("Informe um e-mail válido.");
@@ -32,6 +43,7 @@ export default function RecuperarSenhaPage() {
     }
 
     setLoading(true);
+    setCooldown(60);
     const supabase = createClient();
     const { error: supaError } = await supabase.auth.resetPasswordForEmail(
       email.trim().toLowerCase(),
@@ -129,8 +141,16 @@ export default function RecuperarSenhaPage() {
             />
             {error && <p className="text-red-600 text-xs mt-1">{error}</p>}
           </div>
-          <button type="submit" className="btn-primary w-full" disabled={loading}>
-            {loading ? "Enviando…" : "Enviar link de recuperação"}
+          <button
+            type="submit"
+            className="btn-primary w-full"
+            disabled={loading || cooldown > 0}
+          >
+            {loading
+              ? "Enviando…"
+              : cooldown > 0
+                ? `Aguarde ${cooldown}s para reenviar`
+                : "Enviar link de recuperação"}
           </button>
         </form>
 
