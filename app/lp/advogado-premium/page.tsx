@@ -154,7 +154,7 @@ export default async function LandingAdvogadoPremium() {
   const pixPayload = buildPixPayload();
   const qrDataUrl = await QRCode.toDataURL(pixPayload, { margin: 1, width: 320 });
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100">
+    <main className="min-h-screen overflow-x-hidden bg-slate-950 text-slate-100">
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-950" />
@@ -247,7 +247,7 @@ export default async function LandingAdvogadoPremium() {
     </p>
 
     {/* CENA: cartao de busca + os 4 que ficaram para tras */}
-    <div className="mt-10 grid items-start gap-6 lg:grid-cols-5">
+    <div className="mt-10 grid grid-cols-1 items-start gap-6 lg:grid-cols-5">
       {/* Cartao de busca (resultado) */}
       <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 lg:col-span-3">
         {/* barra de busca simulada */}
@@ -389,7 +389,7 @@ export default async function LandingAdvogadoPremium() {
             até a conversa chegar no seu WhatsApp.
           </p>
 
-          <div className="mt-12 grid items-start gap-6 lg:grid-cols-2">
+          <div className="mt-12 grid grid-cols-1 items-start gap-6 lg:grid-cols-2">
             {/* (1) RESULTADO DO GOOGLE */}
             <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6">
               <p className="text-sm font-semibold text-amber-300">
@@ -404,7 +404,7 @@ export default async function LandingAdvogadoPremium() {
                 {/* barra de busca */}
                 <div className="flex items-center gap-3 rounded-full border border-slate-200 px-4 py-2.5">
                   <span aria-hidden="true" className="text-slate-400">🔎</span>
-                  <span className="truncate text-sm text-slate-700">
+                  <span className="min-w-0 truncate text-sm text-slate-700">
                     advogado trabalhista em Belo Horizonte
                   </span>
                 </div>
@@ -653,7 +653,7 @@ export default async function LandingAdvogadoPremium() {
           <p className="mx-auto mt-3 max-w-2xl text-center text-slate-400">
             Telas reais da plataforma no ar: a busca por cidade, o diretório com os perfis em destaque e a página profissional do advogado.
           </p>
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
             {[
               { src: "/prints/home.png", t: "Busca por cidade", d: "Onde o cliente começa a procurar um advogado." },
               { src: "/prints/cidade.png", t: "Diretório da cidade", d: "Quem tem Destaque aparece primeiro, com OAB verificada." },
@@ -698,7 +698,7 @@ export default async function LandingAdvogadoPremium() {
                     <span className="text-red-500">e</span>
                   </span>
                   <span className="h-4 w-px bg-slate-200" />
-                  <span className="flex-1 truncate text-sm text-slate-700">
+                  <span className="min-w-0 flex-1 truncate text-sm text-slate-700">
                     advogado trabalhista em Belo Horizonte
                   </span>
                   <span aria-hidden="true" className="text-slate-400">🔎</span>
