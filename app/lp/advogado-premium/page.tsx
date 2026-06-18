@@ -674,6 +674,77 @@ export default async function LandingAdvogadoPremium() {
           <p className="mx-auto mt-6 text-center text-xs text-slate-500">
             Capturas reais da plataforma AdvAqui.
           </p>
+
+          {/* SIMULACAO GOOGLE PESQUISA */}
+          <div className="mt-14">
+            <h3 className="text-center text-xl font-bold sm:text-2xl">
+              E é assim que você aparece no <span className="text-amber-400">Google</span>
+            </h3>
+            <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-slate-400">
+              Quando alguém pesquisa um advogado da sua área na sua cidade, seu perfil do AdvAqui
+              aparece com OAB verificada e contato direto.
+            </p>
+
+            <div className="mx-auto mt-6 max-w-2xl overflow-hidden rounded-2xl border border-slate-800 bg-white shadow-lg">
+              {/* barra de busca do Google */}
+              <div className="border-b border-slate-200 p-4">
+                <div className="flex items-center gap-3 rounded-full border border-slate-200 px-4 py-2.5 shadow-sm">
+                  <span className="text-lg font-medium tracking-tight">
+                    <span className="text-blue-500">G</span>
+                    <span className="text-red-500">o</span>
+                    <span className="text-amber-500">o</span>
+                    <span className="text-blue-500">g</span>
+                    <span className="text-green-600">l</span>
+                    <span className="text-red-500">e</span>
+                  </span>
+                  <span className="h-4 w-px bg-slate-200" />
+                  <span className="flex-1 truncate text-sm text-slate-700">
+                    advogado trabalhista em Belo Horizonte
+                  </span>
+                  <span aria-hidden="true" className="text-slate-400">🔎</span>
+                </div>
+              </div>
+
+              {/* resultados */}
+              <div className="space-y-5 p-5">
+                {/* resultado do AdvAqui em destaque */}
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-100 text-xs font-bold text-amber-700">A</span>
+                    <span className="leading-tight">
+                      <span className="block text-sm text-slate-800">AdvAqui</span>
+                      <span className="block text-xs text-green-700">advaqui.com › advogado › joao-pereira</span>
+                    </span>
+                  </div>
+                  <p className="mt-1.5 text-lg leading-snug text-blue-800 sm:text-xl">
+                    Dr. João Pereira — Advogado Trabalhista em Belo Horizonte
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-slate-600">
+                    OAB/MG verificada. Atendimento direto por WhatsApp em demissões, rescisões e
+                    verbas trabalhistas. Fale agora com um advogado na sua cidade.
+                  </p>
+                </div>
+
+                {/* resultados comuns, atenuados */}
+                <div className="space-y-4 opacity-50">
+                  <div>
+                    <p className="text-xs text-green-700">outro-site.com.br › lista-advogados</p>
+                    <p className="text-lg leading-snug text-blue-800">Lista de advogados na região</p>
+                    <p className="text-sm text-slate-600">Encontre profissionais de direito do trabalho perto de você…</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-green-700">exemplo.adv.br › trabalhista</p>
+                    <p className="text-lg leading-snug text-blue-800">Escritório de advocacia trabalhista</p>
+                    <p className="text-sm text-slate-600">Atuação em causas trabalhistas e cíveis…</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p className="mx-auto mt-4 max-w-2xl text-center text-xs text-slate-500">
+              Simulação ilustrativa de um resultado de busca. Nomes e textos são exemplos.
+            </p>
+          </div>
         </div>
       </section>
 
