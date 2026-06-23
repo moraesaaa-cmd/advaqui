@@ -25,6 +25,7 @@ const COLUMNS: Array<{ title: string; links: Array<{ href: string; label: string
     title: "Ferramentas",
     links: [
       { href: "/calculadoras", label: "Calculadoras" },
+      { href: "/calculadora-prazos", label: "Calculadora de prazos" },
       { href: "/quanto-custa", label: "Quanto custa" },
       { href: "/modelos", label: "Modelos de documentos" },
       { href: "/montar-peticao", label: "Montar petição" },

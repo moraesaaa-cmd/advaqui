@@ -12,7 +12,9 @@ import {
   Users,
   ShoppingCart,
   Banknote,
-  Search
+  Search,
+  Handshake,
+  FileSignature
 } from "lucide-react";
 
 /**
@@ -41,6 +43,8 @@ type DocType = {
   label: string;
   desc: string;
   Icon: typeof Scale;
+  /** Campos próprios; se ausente, usa os campos comuns de petição. */
+  comuns?: Field[];
   extra: Field[];
   build: (v: Record<string, string>) => string;
 };
@@ -206,6 +210,139 @@ const DOC_TYPES: DocType[] = [
         "foro",
         "[cidade]"
       )}, [data].\n\n_______________________________________\n${g(v, "autor")}`
+  },
+  {
+    id: "honorarios",
+    label: "Contrato de honorários",
+    desc: "Contrato de honorários advocatícios (advogado × cliente).",
+    Icon: Handshake,
+    comuns: [
+      { key: "adv", label: "Nome do(a) advogado(a)", placeholder: "Quem presta o serviço" },
+      { key: "advOab", label: "OAB do(a) advogado(a)", placeholder: "Ex.: OAB/MG 195349" },
+      { key: "cliente", label: "Nome do cliente (contratante)", placeholder: "Quem contrata" },
+      {
+        key: "clienteQualif",
+        label: "Qualificação do cliente",
+        placeholder: "nacionalidade, estado civil, profissão, CPF, endereço",
+        textarea: true
+      },
+      {
+        key: "objeto",
+        label: "Objeto — o que será feito",
+        placeholder: "Ex.: ação trabalhista contra a empresa X",
+        textarea: true
+      },
+      { key: "valor", label: "Valor dos honorários", placeholder: "Ex.: R$ 3.000,00" },
+      { key: "pagamento", label: "Forma de pagamento", placeholder: "Ex.: entrada + 3 parcelas" },
+      { key: "exito", label: "Honorários de êxito (%)", placeholder: "Ex.: 20% sobre o proveito" },
+      { key: "foro", label: "Cidade/UF do contrato", placeholder: "Ex.: Almenara/MG" }
+    ],
+    extra: [],
+    build: (v) =>
+      `CONTRATO DE PRESTAÇÃO DE SERVIÇOS ADVOCATÍCIOS\n\nCONTRATANTE: ${g(
+        v,
+        "cliente"
+      )}, ${g(
+        v,
+        "clienteQualif",
+        "[qualificação]"
+      )}.\n\nCONTRATADO(A): ${g(v, "adv")}, advogado(a) inscrito(a) na ${g(
+        v,
+        "advOab",
+        "[OAB]"
+      )}.\n\nAs partes ajustam o presente contrato, nas cláusulas a seguir.\n\nCLÁUSULA 1ª - DO OBJETO\nO(a) CONTRATADO(A) prestará serviços advocatícios consistentes em: ${g(
+        v,
+        "objeto",
+        "[descreva o serviço]"
+      )}.\n\nCLÁUSULA 2ª - DOS HONORÁRIOS\nPelos serviços, o(a) CONTRATANTE pagará honorários de ${g(
+        v,
+        "valor",
+        "[valor]"
+      )}, na forma: ${g(
+        v,
+        "pagamento",
+        "[forma de pagamento]"
+      )}.\n\nCLÁUSULA 3ª - DOS HONORÁRIOS DE ÊXITO\nEm caso de êxito, serão devidos honorários de ${g(
+        v,
+        "exito",
+        "[percentual]"
+      )} sobre o proveito econômico, sem prejuízo dos honorários de sucumbência, que pertencem ao(à) CONTRATADO(A) (art. 23 da Lei 8.906/94).\n\nCLÁUSULA 4ª - DAS OBRIGAÇÕES\nO(a) CONTRATADO(A) atuará com zelo e diligência; o(a) CONTRATANTE fornecerá documentos e informações e arcará com custas, despesas processuais e emolumentos.\n\nCLÁUSULA 5ª - DA RESCISÃO\nO contrato pode ser rescindido por qualquer das partes, respeitados os honorários proporcionais ao trabalho já realizado.\n\nCLÁUSULA 6ª - DO FORO\nFica eleito o foro da comarca de ${g(
+        v,
+        "foro",
+        "[cidade]"
+      )} para dirimir dúvidas.\n\n${g(
+        v,
+        "foro",
+        "[cidade]"
+      )}, [data].\n\n____________________________________\n${g(
+        v,
+        "cliente",
+        "[contratante]"
+      )} — CONTRATANTE\n\n____________________________________\n${g(
+        v,
+        "adv",
+        "[advogado]"
+      )} — ${g(v, "advOab", "OAB/[UF] [nº]")} — CONTRATADO(A)`
+  },
+  {
+    id: "procuracao",
+    label: "Procuração ad judicia",
+    desc: "Procuração para o advogado representar em juízo.",
+    Icon: FileSignature,
+    comuns: [
+      { key: "outorgante", label: "Nome de quem outorga (cliente)", placeholder: "Quem dá os poderes" },
+      {
+        key: "outorganteQualif",
+        label: "Qualificação do outorgante",
+        placeholder: "nacionalidade, estado civil, profissão, CPF, endereço",
+        textarea: true
+      },
+      { key: "adv", label: "Nome do(a) advogado(a)", placeholder: "Quem recebe os poderes" },
+      { key: "advOab", label: "OAB do(a) advogado(a)", placeholder: "Ex.: OAB/MG 195349" },
+      {
+        key: "advEndereco",
+        label: "Endereço profissional do(a) advogado(a)",
+        placeholder: "Endereço do escritório",
+        textarea: true
+      },
+      {
+        key: "poderes",
+        label: "Poderes especiais (opcional)",
+        placeholder: "Ex.: transigir, firmar acordo, receber e dar quitação, substabelecer",
+        textarea: true
+      },
+      { key: "foro", label: "Cidade/UF", placeholder: "Ex.: Almenara/MG" }
+    ],
+    extra: [],
+    build: (v) =>
+      `PROCURAÇÃO AD JUDICIA ET EXTRA\n\nOUTORGANTE: ${g(
+        v,
+        "outorgante"
+      )}, ${g(
+        v,
+        "outorganteQualif",
+        "[qualificação]"
+      )}.\n\nOUTORGADO(A): ${g(v, "adv")}, advogado(a) inscrito(a) na ${g(
+        v,
+        "advOab",
+        "[OAB]"
+      )}, com escritório em ${g(
+        v,
+        "advEndereco",
+        "[endereço profissional]"
+      )}.\n\nPODERES: pela presente, o(a) outorgante nomeia e constitui seu(sua) bastante procurador(a) o(a) outorgado(a), a quem confere os poderes da cláusula ad judicia et extra (art. 105 do CPC), para o foro em geral, em qualquer Juízo, Instância ou Tribunal, podendo propor e contestar ações, requerer, arrazoar, recorrer e praticar todos os atos necessários ao fiel cumprimento do mandato${
+        v["poderes"] && v["poderes"].trim()
+          ? `, e ainda os poderes especiais de ${v["poderes"].trim()}`
+          : " [poderes especiais, se houver: transigir, firmar acordo, receber e dar quitação, substabelecer]"
+      }.\n\n${g(
+        v,
+        "foro",
+        "[cidade]"
+      )}, [data].\n\n____________________________________\n${g(
+        v,
+        "outorgante",
+        "[outorgante]"
+      )}`
   }
 ];
 
@@ -216,7 +353,9 @@ export default function MontarPeticaoPage() {
   const [showResult, setShowResult] = useState(false);
 
   const docType = DOC_TYPES.find((d) => d.id === typeId) || null;
-  const fields: Field[] = docType ? [...COMUNS_PETICAO, ...docType.extra] : [];
+  const fields: Field[] = docType
+    ? [...(docType.comuns ?? COMUNS_PETICAO), ...docType.extra]
+    : [];
 
   const draft = useMemo(
     () => (docType ? docType.build(v) : ""),
