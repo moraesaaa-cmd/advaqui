@@ -293,7 +293,7 @@ Crie `.env.local` copiando `.env.example`:
 PIX_KEY="sua-chave-pix"
 PIX_RECEIVER_NAME="Seu Nome"
 PIX_RECEIVER_CITY="JEQUITINHONHA"
-PIX_AMOUNT="59.90"
+PIX_AMOUNT="19.90"
 ```
 
 Em produção (Vercel), configure em **Settings → Environment Variables**.

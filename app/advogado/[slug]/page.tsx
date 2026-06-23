@@ -464,7 +464,7 @@ export default async function ProfessionalPage({
             </p>
             <p className="text-xs text-brand-ink/70 mt-1.5 mb-3">
               O plano premium (
-              <strong>R$ 59,90/mês</strong>, sem fidelidade) coloca seu perfil em destaque,
+              <strong>R$ 19,90/mês</strong>, sem fidelidade) coloca seu perfil em destaque,
               libera botão WhatsApp clicável, bio completa, e selo de OAB verificada.
             </p>
             <Link href="/planos" className="text-sm font-medium text-brand-deep underline">

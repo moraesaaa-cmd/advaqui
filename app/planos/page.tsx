@@ -26,7 +26,7 @@ import { PerfilAntesDepois } from "@/components/PerfilAntesDepois";
 export const metadata = buildMetadata({
   title: "Planos — apareça primeiro na sua cidade",
   description:
-    "Plano premium do AdvAqui por R$ 59,90/mês. Apareça no topo das buscas da sua cidade, WhatsApp clicável, foto destacada, OAB verificada. Sem fidelidade.",
+    "Plano premium do AdvAqui por R$ 19,90/mês. Apareça no topo das buscas da sua cidade, WhatsApp clicável, foto destacada, OAB verificada. Sem fidelidade.",
   path: "/planos"
 });
 

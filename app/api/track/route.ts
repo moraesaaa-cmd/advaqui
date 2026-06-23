@@ -66,15 +66,18 @@ function truncateIp(ip: string): string {
 }
 
 /**
- * Geolocalização best-effort do IP truncado (/24).
+ * Geolocalização best-effort do IP do visitante.
  *
  * Usada como fallback quando o proxy não envia headers de geo (caso do
  * Nginx no VPS). Consulta a API gratuita ip-api.com (sem chave) com
  * timeout curto e cache em memória por IP — assim a maioria das visitas
  * não dispara chamada externa e respeitamos o rate limit (45/min).
  *
- * Privacidade: geolocaliza o IP JÁ truncado (último octeto zerado), então
- * resolve no máximo até cidade/estado, nunca um endereço exato.
+ * Precisão: resolve pelo IP COMPLETO. Geolocalizar o IP já truncado (.0)
+ * devolve a localização registrada do bloco /24 — tipicamente a capital ou
+ * a matriz da operadora, não a cidade real do visitante. O IP completo é
+ * usado apenas aqui, em memória; no banco gravamos somente a versão
+ * truncada /24. Resolve no máximo até cidade/UF, nunca um endereço exato.
  *
  * Nunca lança: em qualquer falha/timeout retorna nulos e o insert segue.
  */
@@ -167,15 +170,19 @@ export async function POST(req: Request) {
     req.headers.get("x-forwarded-for") ||
     req.headers.get("x-real-ip") ||
     "";
+  // IP completo do cliente (1º da cadeia XFF) — usado SÓ para geolocalizar,
+  // nunca persistido. No banco gravamos apenas a versão truncada /24 (ipTrunc).
+  const ipFull = xff.split(",")[0].trim();
   const ipTrunc = truncateIp(xff);
 
-  // Geo: usa os headers do proxy se existirem; senão geolocaliza o IP /24
-  // (best-effort, com cache + timeout — nunca quebra o tracking).
+  // Geo: usa os headers do proxy se existirem; senão geolocaliza pelo IP
+  // COMPLETO (precisão de cidade) — best-effort, com cache + timeout, nunca
+  // quebra o tracking. Só o IP truncado /24 vai pro banco.
   let geoCountry = country ? country.slice(0, 4) : null;
   let geoRegion = region ? region.slice(0, 32) : null;
   let geoCity = city ? city.slice(0, 80) : null;
-  if (!geoCountry && !geoRegion && !geoCity && ipTrunc && !isBot) {
-    const g = await geolocate(ipTrunc);
+  if (!geoCountry && !geoRegion && !geoCity && ipFull && !isBot) {
+    const g = await geolocate(ipFull);
     geoCountry = g.country ? g.country.slice(0, 4) : null;
     geoRegion = g.region ? g.region.slice(0, 32) : null;
     geoCity = g.city ? g.city.slice(0, 80) : null;

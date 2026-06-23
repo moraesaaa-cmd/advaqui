@@ -93,7 +93,7 @@ export const CHECKLIST_SECTIONS: ChecklistSection[] = [
       {
         title: "Cadastro AdvAqui (advaqui.com.br)",
         description:
-          "Diretório hiperlocal, perfil grátis, premium R$ 59,90/mês com WhatsApp clicável."
+          "Diretório hiperlocal, perfil grátis, premium R$ 19,90/mês com WhatsApp clicável."
       },
       {
         title: "Cadastro Jusbrasil",
@@ -214,7 +214,7 @@ sem inflar custo de marketing.
 
 Próximo passo recomendado:
 - Cadastre seu perfil no AdvAqui: https://advaqui.com.br/cadastro
-- Premium R$ 59,90/mês = WhatsApp clicável, selo OAB verificada,
+- Premium R$ 19,90/mês = WhatsApp clicável, selo OAB verificada,
   posição no topo da página da sua cidade.
 
 © AdvAqui · Use livremente. Compartilhe com colegas advogados.

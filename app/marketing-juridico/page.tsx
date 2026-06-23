@@ -176,7 +176,7 @@ export default function MarketingJuridicoPage() {
                 Aplique tudo isso em prática hoje
               </h2>
               <p className="text-brand-bg/85 mt-3 text-sm md:text-base leading-relaxed">
-                Cadastro grátis + plano premium R$ 59,90/mês = perfil otimizado, WhatsApp
+                Cadastro grátis + plano premium R$ 19,90/mês = perfil otimizado, WhatsApp
                 clicável, selo de OAB verificada, posição no topo da cidade. Você aplica
                 o conteúdo desses guias no AdvAqui sem precisar montar tudo do zero.
               </p>

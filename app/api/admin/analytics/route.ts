@@ -43,6 +43,7 @@ const emptyResponse = {
     country: string | null;
     region: string | null;
     city: string | null;
+    ip_trunc: string | null;
     visited_at: string;
   }>,
   migrationPending: false
@@ -175,7 +176,7 @@ export async function GET() {
     // Últimas 20 visitas
     const { data: recentData } = await admin
       .from("site_visits")
-      .select("path,country,region,city,visited_at")
+      .select("path,country,region,city,ip_trunc,visited_at")
       .eq("is_bot", false)
       .order("visited_at", { ascending: false })
       .limit(20);

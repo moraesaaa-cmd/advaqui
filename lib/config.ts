@@ -15,7 +15,7 @@ export const PIX = {
   key: process.env.PIX_KEY || "",
   receiverName: process.env.PIX_RECEIVER_NAME || "AdvAqui",
   receiverCity: process.env.PIX_RECEIVER_CITY || "JEQUITINHONHA",
-  amount: Number(process.env.PIX_AMOUNT || "59.90")
+  amount: Number(process.env.PIX_AMOUNT || "19.90")
 };
 
 export const PLAN = {

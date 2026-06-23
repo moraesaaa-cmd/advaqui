@@ -169,7 +169,7 @@ export function PremiumValueSection() {
         <ValueCard
           Icon={Zap}
           title="Sem fidelidade"
-          text="Mensal, R$ 59,90. Cancela quando quiser, sem multa, sem letra miúda, sem permanência."
+          text="Mensal, R$ 19,90. Cancela quando quiser, sem multa, sem letra miúda, sem permanência."
         />
       </div>
 

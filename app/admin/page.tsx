@@ -53,7 +53,7 @@ function buildUpsellMailto(u: LawyerRow): string {
 
 Aqui é a equipe do AdvAqui. Notei que você está cadastrado(a) gratuitamente em ${u.city_name}/${u.uf} — obrigado(a) por confiar no nosso diretório.
 
-Queria te apresentar rapidamente o plano Premium (R$ 59,90/mês, Pix, sem fidelidade), que pode aumentar significativamente a visibilidade do seu perfil:
+Queria te apresentar rapidamente o plano Premium (R$ 19,90/mês, Pix, sem fidelidade), que pode aumentar significativamente a visibilidade do seu perfil:
 
   • Seu perfil aparece no TOPO da página de ${u.city_name}, acima dos demais
   • Selo dourado "Destaque" + selo "OAB verificada" (após validação)
@@ -122,6 +122,7 @@ export default function AdminPage() {
       country: string | null;
       region: string | null;
       city: string | null;
+      ip_trunc: string | null;
       visited_at: string;
     }>;
     migrationPending: boolean;
@@ -1355,6 +1356,14 @@ export default function AdminPage() {
                             {r.path}
                           </span>
                           <span className="text-brand-ink/55">{place || "—"}</span>
+                          {r.ip_trunc && (
+                            <span
+                              className="font-mono text-brand-ink/40 text-[11px]"
+                              title="IP truncado /24 (LGPD)"
+                            >
+                              {r.ip_trunc}
+                            </span>
+                          )}
                           <span className="text-brand-ink/45 ml-auto whitespace-nowrap">
                             {agoLabel}
                           </span>
