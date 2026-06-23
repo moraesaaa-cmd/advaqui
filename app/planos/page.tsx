@@ -420,6 +420,128 @@ export default function PlanosPage() {
           </p>
         </section>
 
+        {/* COMO APARECE PARA O CLIENTE (portado da LP premium) */}
+        <section className="mb-14 max-w-5xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-brand-accent/20 text-brand-deep border border-brand-accent/40 mb-3">
+              <Search className="w-3.5 h-3.5" aria-hidden />
+              Como você aparece
+            </div>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink leading-tight">
+              Depois de assinar, é assim que você{" "}
+              <span className="text-brand-deep">aparece para o cliente</span>
+            </h2>
+            <p className="text-brand-ink/65 mt-3 text-base leading-relaxed">
+              Com o premium, seu perfil sobe ao topo e passa a aparecer assim para quem
+              procura — no Google e em todo o AdvAqui, com OAB verificada e contato direto.
+            </p>
+          </div>
+
+          {/* Simulação Google — desktop */}
+          <div className="mx-auto max-w-2xl overflow-hidden rounded-2xl border border-brand-line bg-white shadow-card">
+            <div className="border-b border-slate-200 p-4">
+              <div className="flex items-center gap-3 rounded-full border border-slate-200 px-4 py-2.5 shadow-sm">
+                <span className="text-lg font-medium tracking-tight">
+                  <span className="text-blue-500">G</span>
+                  <span className="text-red-500">o</span>
+                  <span className="text-amber-500">o</span>
+                  <span className="text-blue-500">g</span>
+                  <span className="text-green-600">l</span>
+                  <span className="text-red-500">e</span>
+                </span>
+                <span className="h-4 w-px bg-slate-200" />
+                <span className="min-w-0 flex-1 truncate text-sm text-slate-700">
+                  advogado trabalhista em Belo Horizonte
+                </span>
+                <span aria-hidden="true" className="text-slate-400">🔎</span>
+              </div>
+            </div>
+            <div className="space-y-5 p-5">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-100 text-xs font-bold text-amber-700">
+                    A
+                  </span>
+                  <span className="leading-tight">
+                    <span className="block text-sm text-slate-800">AdvAqui</span>
+                    <span className="block text-xs text-green-700">
+                      advaqui.com › advogado › joao-pereira
+                    </span>
+                  </span>
+                </div>
+                <p className="mt-1.5 text-lg leading-snug text-blue-800 sm:text-xl">
+                  Dr. João Pereira — Advogado Trabalhista em Belo Horizonte
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-slate-600">
+                  OAB/MG verificada. Atendimento direto por WhatsApp em demissões,
+                  rescisões e verbas trabalhistas. Fale agora com um advogado na sua cidade.
+                </p>
+              </div>
+              <div className="space-y-4 opacity-50">
+                <div>
+                  <p className="text-xs text-green-700">outro-site.com.br › lista-advogados</p>
+                  <p className="text-lg leading-snug text-blue-800">Lista de advogados na região</p>
+                  <p className="text-sm text-slate-600">
+                    Encontre profissionais de direito do trabalho perto de você…
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-green-700">exemplo.adv.br › trabalhista</p>
+                  <p className="text-lg leading-snug text-blue-800">Escritório de advocacia trabalhista</p>
+                  <p className="text-sm text-slate-600">Atuação em causas trabalhistas e cíveis…</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Simulação Google — mobile */}
+          <div className="mt-10">
+            <h3 className="text-center font-display text-xl font-bold text-brand-ink">
+              No celular, com <span className="text-brand-deep">botão de ligar</span>
+            </h3>
+            <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-brand-ink/60">
+              Quem procura pelo celular liga ou chama no WhatsApp com um toque.
+            </p>
+            <div className="mx-auto mt-6 w-full max-w-sm overflow-hidden rounded-3xl border border-brand-line bg-white shadow-cardHover">
+              <div className="border-b border-slate-200 p-3">
+                <div className="flex items-center gap-2 rounded-full border border-slate-200 px-3 py-2">
+                  <span aria-hidden="true" className="text-slate-400">🔎</span>
+                  <span className="min-w-0 flex-1 truncate text-sm text-slate-700">
+                    advogado perto de mim
+                  </span>
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="rounded-xl border border-slate-200 p-4">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 text-xs font-bold text-amber-700">
+                      A
+                    </span>
+                    <span className="text-xs text-green-700">advaqui.com</span>
+                  </div>
+                  <p className="mt-2 text-base font-medium leading-snug text-blue-800">
+                    Dr. João Pereira — Advogado em Belo Horizonte
+                  </p>
+                  <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                    OAB/MG verificada · Direito Trabalhista, Família e Cível.
+                  </p>
+                  <div className="mt-3 grid grid-cols-2 gap-2">
+                    <span className="flex items-center justify-center gap-1.5 rounded-full bg-blue-600 px-3 py-2 text-sm font-semibold text-white">
+                      <span aria-hidden="true">📞</span> Ligar
+                    </span>
+                    <span className="flex items-center justify-center gap-1.5 rounded-full bg-emerald-500 px-3 py-2 text-sm font-semibold text-white">
+                      <span aria-hidden="true">💬</span> WhatsApp
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p className="mx-auto mt-4 max-w-2xl text-center text-xs text-brand-ink/50">
+              Simulações ilustrativas de resultado de busca. Nomes e textos são exemplos.
+            </p>
+          </div>
+        </section>
+
         {/* CARDS DE PLANO */}
         <section className="grid md:grid-cols-2 gap-6 mb-14 max-w-5xl mx-auto">
           {/* Gratuito */}
@@ -490,7 +612,7 @@ export default function PlanosPage() {
         </section>
 
         {/* COMPARAÇÃO COMPLETA */}
-        <section className="mb-14">
+        <section className="mb-14 max-w-5xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-8">
             <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink">
               Comparação completa, item por item
@@ -549,7 +671,7 @@ export default function PlanosPage() {
         </section>
 
         {/* CTA FINAL */}
-        <section className="mb-14 rounded-3xl bg-gradient-to-br from-brand-deep to-brand-ink text-white p-8 md:p-12 relative overflow-hidden">
+        <section className="mb-14 max-w-5xl mx-auto rounded-3xl bg-gradient-to-br from-brand-deep to-brand-ink text-white p-8 md:p-12 relative overflow-hidden">
           <div
             aria-hidden
             className="absolute -top-1/4 -right-1/4 w-1/2 aspect-square rounded-full bg-brand-accent/20 blur-3xl"
