@@ -27,6 +27,7 @@ const COLUMNS: Array<{ title: string; links: Array<{ href: string; label: string
       { href: "/calculadoras", label: "Calculadoras" },
       { href: "/quanto-custa", label: "Quanto custa" },
       { href: "/modelos", label: "Modelos de documentos" },
+      { href: "/montar-peticao", label: "Montar petição" },
       { href: "/tribunais", label: "Tribunais por cidade" }
     ]
   },
@@ -34,6 +35,7 @@ const COLUMNS: Array<{ title: string; links: Array<{ href: string; label: string
     title: "AdvAqui",
     links: [
       { href: "/planos", label: "Planos" },
+      { href: "/criar-perfil", label: "Montar meu perfil" },
       { href: "/cadastro", label: "Cadastrar advogado" },
       { href: "/blog", label: "Blog" },
       { href: "/marketing-juridico", label: "Marketing jurídico" },

@@ -86,11 +86,18 @@ export default function ParaAdvogadosPage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                href="/cadastro"
+                href="/criar-perfil"
                 className="btn-accent inline-flex items-center gap-2 text-base"
               >
+                <Sparkles className="w-5 h-5" aria-hidden />
+                Montar meu perfil em 1 minuto
+              </Link>
+              <Link
+                href="/cadastro"
+                className="btn-ghost text-white border border-white/25 hover:bg-white/10 inline-flex items-center gap-2"
+              >
                 <UserPlus className="w-5 h-5" aria-hidden />
-                Criar meu perfil grátis
+                Criar direto no cadastro
               </Link>
               <Link
                 href="/planos"
@@ -205,12 +212,19 @@ export default function ParaAdvogadosPage() {
               </div>
             ))}
           </div>
-          <div className="text-center mt-10">
+          <div className="text-center mt-10 flex flex-wrap gap-3 justify-center">
             <Link
-              href="/cadastro"
+              href="/criar-perfil"
               className="btn-accent inline-flex items-center gap-2"
             >
-              Criar meu perfil grátis
+              <Sparkles className="w-4 h-4" aria-hidden />
+              Montar meu perfil em 1 minuto
+            </Link>
+            <Link
+              href="/cadastro"
+              className="btn-ghost border border-brand-line inline-flex items-center gap-2"
+            >
+              Criar direto no cadastro
               <ArrowRight className="w-4 h-4" aria-hidden />
             </Link>
           </div>
