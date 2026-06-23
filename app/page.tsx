@@ -43,8 +43,8 @@ export default async function HomePage() {
               Encontre o advogado certo na sua cidade
             </h1>
             <p className="mt-4 text-lg md:text-xl text-brand-bg/85 max-w-2xl mx-auto">
-              Diretório nacional de advogados verificados. Por cidade, por especialidade,
-              direto com quem pode resolver seu caso.
+              O diretório que mostra advogados por cidade e área — com OAB, endereço
+              e WhatsApp. Sem cadastro do cliente, sem comissão, sem intermediário.
             </p>
             <div className="mt-8 max-w-xl mx-auto">
               <SearchBox />

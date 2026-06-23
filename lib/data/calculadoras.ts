@@ -416,6 +416,112 @@ export const CALCULADORAS: Calculadora[] = [
     variacao_local:
       "É um programa federal, sem variação de valor por cidade. O requerimento é online (gov.br) ou presencial no posto do SINE/atendimento do trabalhador da região.",
     atualizado_em: "2026-06-23"
+  },
+  {
+    slug: "danos-morais",
+    titulo: "Dano moral — como o valor é fixado",
+    area_slug: "civil",
+    resumo:
+      "Como os tribunais calculam a indenização por dano moral — não há tabela fixa, mas há método e parâmetros.",
+    formula:
+      "Não existe tabela única. O juiz fixa o valor olhando a gravidade do dano, a repercussão, a capacidade econômica das partes e o caráter pedagógico. O STJ usa o método bifásico: (1) valor-base a partir de precedentes para casos semelhantes; (2) ajuste para mais ou menos conforme as circunstâncias do caso.",
+    precisa_ter: [
+      "Provas do dano (documentos, prints, testemunhas)",
+      "Comprovação da conduta do ofensor",
+      "Registro do impacto sofrido (negativação, exposição, abalo)",
+      "Histórico de casos parecidos no tribunal local, se houver"
+    ],
+    exemplo: {
+      cenario:
+        "Negativação indevida no SPC/Serasa por dívida já paga, sem outras negativações legítimas.",
+      passos: [
+        "Verifica-se a Súmula 385 do STJ — havendo negativação legítima anterior, não cabe indenização",
+        "Valor-base (1ª fase) — em negativação indevida, faixas comuns ficam entre R$ 5.000 e R$ 15.000",
+        "Ajuste (2ª fase) — sobe ou desce conforme tempo da negativação, reincidência e porte do ofensor"
+      ],
+      resultado:
+        "Indenização normalmente entre R$ 5.000 e R$ 15.000 nesse tipo de caso — varia muito conforme o tribunal e as provas."
+    },
+    observacoes: [
+      "Súmula 385 do STJ — negativação indevida não gera dano moral se já existia outra negativação legítima",
+      "O método bifásico foi consolidado pelo STJ (REsp 1.152.541)",
+      "O valor não pode gerar enriquecimento sem causa nem ser irrisório",
+      "Dano moral pode coexistir com dano material (prejuízo financeiro comprovado)"
+    ],
+    variacao_local:
+      "Os parâmetros são nacionais (STJ), mas o valor concreto varia por tribunal e por juízo. Em causas menores, o Juizado Especial Cível da comarca julga sem custas iniciais até certo limite.",
+    atualizado_em: "2026-06-23"
+  },
+  {
+    slug: "revisao-beneficio-inss",
+    titulo: "Revisão de benefício do INSS — quando cabe",
+    area_slug: "previdenciario",
+    resumo:
+      "Quando é possível revisar o valor da aposentadoria ou benefício e qual o prazo para pedir.",
+    formula:
+      "A revisão recalcula o benefício quando houve erro ou omissão no cálculo original — salários de contribuição não considerados, atividade especial não reconhecida ou índice de correção errado. O pedido tem prazo decadencial de 10 anos, contados do mês seguinte ao primeiro pagamento.",
+    precisa_ter: [
+      "Carta de concessão do benefício",
+      "CNIS (extrato de contribuições) atualizado",
+      "Comprovantes de salários e vínculos",
+      "Documentos de atividade especial, se for o caso (PPP, laudos)"
+    ],
+    exemplo: {
+      cenario:
+        "Aposentado percebe que períodos com exposição a agente nocivo não foram contados como tempo especial.",
+      passos: [
+        "Confere a carta de concessão e o CNIS",
+        "Reúne PPP/LTCAT que comprovem a atividade especial",
+        "Recalcula incluindo a conversão do tempo especial",
+        "Verifica o prazo — a revisão deve ser pedida em até 10 anos do início do benefício"
+      ],
+      resultado:
+        "Confirmado o erro e dentro do prazo, o benefício pode ser recalculado para valor maior, com diferenças retroativas (respeitada a prescrição das parcelas)."
+    },
+    observacoes: [
+      "Prazo decadencial de 10 anos para revisar o ato de concessão",
+      "As parcelas atrasadas prescrevem em 5 anos (recebe só os últimos 5 anos de diferença)",
+      "A 'revisão da vida toda' foi afastada pelo STF em 2024 — confirme a tese aplicável ao seu caso",
+      "A revisão pode ser administrativa (no próprio INSS) antes da via judicial"
+    ],
+    variacao_local:
+      "As regras são federais. A ação corre na Justiça Federal ou nos Juizados Especiais Federais da região — em comarcas sem vara federal, há competência delegada à Justiça estadual em alguns casos.",
+    atualizado_em: "2026-06-23"
+  },
+  {
+    slug: "custas-processuais",
+    titulo: "Custas processuais — quanto custa entrar com uma ação",
+    area_slug: "civil",
+    resumo:
+      "Como estimar as custas iniciais de um processo e quando é possível pedir gratuidade de justiça.",
+    formula:
+      "As custas variam por tribunal (tabela do TJ de cada estado ou da Justiça Federal). Em regra, ficam entre 1% e 2% do valor da causa, com um valor mínimo e um teto. Quem não pode pagar sem prejuízo do próprio sustento tem direito à gratuidade de justiça (art. 98 do CPC).",
+    precisa_ter: [
+      "Valor da causa definido",
+      "Tabela de custas do tribunal competente",
+      "Comprovação de renda (se for pedir gratuidade)",
+      "Tipo de ação (alguns ritos são isentos, como o Juizado até certo limite)"
+    ],
+    exemplo: {
+      cenario:
+        "Ação de cobrança com valor da causa de R$ 50.000 em um TJ que cobra 1% de custas iniciais.",
+      passos: [
+        "Custas iniciais — R$ 50.000 × 1% = R$ 500 (respeitado o mínimo e o teto do tribunal)",
+        "Acrescentam-se taxa de mandato, diligências de oficial de justiça e, ao final, custas finais",
+        "Sem condição de pagar, pede-se gratuidade de justiça já na petição inicial"
+      ],
+      resultado:
+        "Custas iniciais em torno de R$ 500 nesse exemplo — confira a tabela do tribunal, pois cada estado tem percentuais, mínimos e tetos próprios."
+    },
+    observacoes: [
+      "No Juizado Especial, em regra não há custas iniciais (1º grau gratuito até o limite legal)",
+      "A gratuidade de justiça pode ser total ou parcial (art. 98, §5º, do CPC)",
+      "O vencido paga as custas e os honorários de sucumbência ao final",
+      "Custas iniciais não recolhidas podem levar ao cancelamento da distribuição (art. 290 do CPC)"
+    ],
+    variacao_local:
+      "As tabelas mudam por tribunal — cada TJ publica a sua e a Justiça Federal tem regra própria. Em capitais há mais varas e distribuição eletrônica; no interior, a vara única acumula competências.",
+    atualizado_em: "2026-06-23"
   }
 ];
 

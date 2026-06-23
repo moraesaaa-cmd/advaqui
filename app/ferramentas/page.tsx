@@ -11,6 +11,7 @@ import {
   Landmark,
   UserPlus,
   Search,
+  TrendingUp,
   ArrowRight
 } from "lucide-react";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -46,6 +47,12 @@ const GROUPS: Group[] = [
         label: "Calculadora de prazos",
         desc: "Vencimento em dias úteis (CPC) ou corridos, já descontando feriados.",
         Icon: CalendarClock
+      },
+      {
+        href: "/atualizar-valor",
+        label: "Atualizar um valor",
+        desc: "Correção, juros de mora e multa sobre uma dívida — com a memória de cálculo.",
+        Icon: TrendingUp
       },
       {
         href: "/calculadoras",
