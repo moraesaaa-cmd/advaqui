@@ -310,6 +310,112 @@ export const CALCULADORAS: Calculadora[] = [
     variacao_local:
       "ITCMD muda por UF. Cada estado tem alíquota e regras próprias — consulta no site da Receita Estadual. Custas variam por TJ. Em capitais, há cartórios especializados em inventário.",
     atualizado_em: "2026-05-22"
+  },
+  {
+    slug: "reajuste-aluguel",
+    titulo: "Reajuste de aluguel — como calcular",
+    area_slug: "imobiliario",
+    resumo:
+      "Como calcular o reajuste anual do aluguel pelo índice previsto no contrato (IGP-M, IPCA ou outro).",
+    formula:
+      "Novo aluguel = aluguel atual × (1 + variação acumulada do índice nos últimos 12 meses). O índice e a data-base são os do contrato; o reajuste é anual (Lei 8.245/91, art. 17 e seguintes).",
+    precisa_ter: [
+      "Contrato de locação (cláusula de reajuste e índice escolhido)",
+      "Valor atual do aluguel",
+      "Mês de aniversário do contrato (data-base do reajuste)",
+      "Variação acumulada do índice em 12 meses (IGP-M na FGV; IPCA/INPC no IBGE)"
+    ],
+    exemplo: {
+      cenario:
+        "Aluguel atual de R$ 1.500, reajuste anual pelo IGP-M, que acumulou 4,5% nos últimos 12 meses.",
+      passos: [
+        "Fator de reajuste — 1 + 0,045 = 1,045",
+        "Novo aluguel — R$ 1.500 × 1,045 = R$ 1.567,50",
+        "Diferença mensal — R$ 67,50"
+      ],
+      resultado:
+        "Novo aluguel de R$ 1.567,50 a partir do mês de aniversário do contrato."
+    },
+    observacoes: [
+      "O reajuste só pode ocorrer uma vez por ano (periodicidade mínima de 12 meses)",
+      "Se o índice ficar negativo, não há obrigação de reduzir o aluguel, mas o inquilino pode negociar",
+      "Trocar o índice do contrato (ex.: de IGP-M para IPCA) exige acordo entre as partes",
+      "Após 3 anos sem acordo sobre o valor, cabe ação revisional de aluguel (art. 19 da Lei 8.245/91)"
+    ],
+    variacao_local:
+      "A Lei do Inquilinato é nacional. O que muda por cidade é a vara competente para ação revisional ou de despejo — em comarcas menores, a Vara Cível; em capitais, juizados ou varas especializadas.",
+    atualizado_em: "2026-06-23"
+  },
+  {
+    slug: "atualizacao-divida",
+    titulo: "Atualização de dívida — correção, juros e multa",
+    area_slug: "civil",
+    resumo:
+      "Como atualizar um valor devido somando correção monetária, juros de mora e multa contratual.",
+    formula:
+      "Valor atualizado = principal + correção monetária (pelo índice aplicável) + juros de mora + multa (se houver). Desde a Lei 14.905/2024, na falta de taxa pactuada, a correção segue o IPCA e os juros legais seguem a taxa Selic (deduzido o IPCA).",
+    precisa_ter: [
+      "Valor original da dívida",
+      "Data de vencimento (ou da citação, conforme o caso)",
+      "Índice de correção e taxa de juros previstos no contrato (se houver)",
+      "Percentual de multa contratual ou moratória"
+    ],
+    exemplo: {
+      cenario:
+        "Dívida de R$ 1.000 vencida há 10 meses, com correção aproximada de 5%, juros de mora de 1% ao mês e multa de 2%.",
+      passos: [
+        "Correção monetária — R$ 1.000 × 5% = R$ 50",
+        "Juros de mora — R$ 1.000 × 1% × 10 meses = R$ 100",
+        "Multa — R$ 1.000 × 2% = R$ 20",
+        "Total — R$ 1.000 + R$ 50 + R$ 100 + R$ 20 = R$ 1.170"
+      ],
+      resultado:
+        "Dívida atualizada de aproximadamente R$ 1.170 (confirme o regime de juros e o índice aplicáveis à data)."
+    },
+    observacoes: [
+      "Sem taxa pactuada, vale a Lei 14.905/2024: correção pelo IPCA e juros legais pela Selic (descontado o IPCA) — confirme o regime conforme a data da dívida",
+      "Os juros de mora correm, em regra, a partir do vencimento (obrigação positiva e líquida) ou da citação",
+      "A capitalização de juros (juros sobre juros) só vale se houver previsão expressa",
+      "Em relações de consumo há limites — juros e multas abusivas podem ser revistos judicialmente"
+    ],
+    variacao_local:
+      "As regras são nacionais (Código Civil). A cobrança judicial corre na comarca do devedor ou do foro de eleição do contrato — em valores menores, cabe o Juizado Especial Cível local.",
+    atualizado_em: "2026-06-23"
+  },
+  {
+    slug: "seguro-desemprego",
+    titulo: "Seguro-desemprego — parcelas e valor",
+    area_slug: "trabalhista",
+    resumo:
+      "Quantas parcelas e qual o valor do seguro-desemprego, conforme o tempo trabalhado e a média salarial.",
+    formula:
+      "O número de parcelas depende do tempo trabalhado e de quantas vezes o benefício já foi solicitado. O valor parte da média dos 3 últimos salários, aplicada às faixas atualizadas a cada ano pelo Ministério do Trabalho, respeitando o piso de 1 salário mínimo e um teto.",
+    precisa_ter: [
+      "Termo de rescisão (TRCT) e comprovante de dispensa sem justa causa",
+      "Os 3 últimos contracheques",
+      "Carteira de Trabalho Digital (app gov.br)",
+      "Requerimento do seguro-desemprego (gov.br ou app Carteira de Trabalho Digital)"
+    ],
+    exemplo: {
+      cenario:
+        "Trabalhador dispensado sem justa causa na 1ª solicitação, com 20 meses trabalhados e média salarial de R$ 2.000.",
+      passos: [
+        "Parcelas (1ª solicitação) — 4 parcelas para quem trabalhou de 12 a 23 meses; 5 parcelas para 24 meses ou mais",
+        "Como trabalhou 20 meses — 4 parcelas",
+        "Valor — aplica-se a média salarial à tabela de faixas vigente do ano, com piso de 1 salário mínimo"
+      ],
+      resultado:
+        "4 parcelas, com valor calculado pela tabela vigente — confirme as faixas atualizadas do ano no portal gov.br."
+    },
+    observacoes: [
+      "As faixas e os valores são reajustados todo ano — sempre confira a tabela vigente no gov.br",
+      "Prazo para requerer — em regra de 7 a 120 dias após a dispensa",
+      "Não cabe em pedido de demissão nem em dispensa por justa causa",
+      "Receber outra renda própria suficiente para o sustento pode impedir o benefício"
+    ],
+    variacao_local:
+      "É um programa federal, sem variação de valor por cidade. O requerimento é online (gov.br) ou presencial no posto do SINE/atendimento do trabalhador da região.",
+    atualizado_em: "2026-06-23"
   }
 ];
 

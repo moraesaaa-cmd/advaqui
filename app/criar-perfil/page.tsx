@@ -518,7 +518,7 @@ export default function CriarPerfilPage() {
             {/* Diagnóstico — o que falta */}
             <div>
               <h3 className="font-display text-base font-bold text-brand-ink mb-2">
-                {gaps.length === 0 ? "Seu perfil está completo 🎉" : "O que ainda falta"}
+                {gaps.length === 0 ? "Seu perfil está completo" : "O que ainda falta"}
               </h3>
               {gaps.length === 0 ? (
                 <p className="text-sm text-brand-ink/70">
