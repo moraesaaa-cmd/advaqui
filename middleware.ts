@@ -37,7 +37,16 @@ export async function middleware(request: NextRequest) {
 
   // getUser() valida e, se necessario, renova o token, disparando setAll com
   // os cookies atualizados na resposta.
-  await supabase.auth.getUser();
+  //
+  // BLINDAGEM (Jun/2026): uma falha transitoria de rede com o Supabase
+  // (VPS em Boston -> DB em Sao Paulo, cross-region) NAO pode derrubar a rota
+  // com 500 e travar o painel/salvamento. Em erro, seguimos sem renovar; a
+  // propria rota (getCurrentLawyer) trata a auth e devolve 401 limpo.
+  try {
+    await supabase.auth.getUser();
+  } catch {
+    // ignore — nunca bloqueia /painel ou o save por falha transitoria de auth
+  }
   return response;
 }
 
