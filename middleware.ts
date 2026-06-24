@@ -14,6 +14,27 @@ import { createServerClient } from "@supabase/ssr";
  * (force-dynamic) nem o cookie HMAC do admin.
  */
 export async function middleware(request: NextRequest) {
+  const host = request.headers.get("host") || "";
+  const { pathname } = request.nextUrl;
+
+  // Subdomínio multas.advaqui.com → serve a landing do recurso de multa
+  // (/multas) no MESMO app. Só a raiz é reescrita; /multas, /api, /_next e
+  // assets passam direto. Público de trânsito ≠ diretório de advogados.
+  if (host.startsWith("multas.")) {
+    if (pathname === "/") {
+      const u = request.nextUrl.clone();
+      u.pathname = "/multas";
+      return NextResponse.rewrite(u);
+    }
+    return NextResponse.next();
+  }
+
+  // Fora de /painel e /api/painel não há o que renovar — evita rodar o
+  // Supabase no resto (ex.: "/", incluído no matcher só para o subdomínio).
+  if (!pathname.startsWith("/painel") && !pathname.startsWith("/api/painel")) {
+    return NextResponse.next({ request });
+  }
+
   let response = NextResponse.next({ request });
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -51,5 +72,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/painel/:path*", "/api/painel/:path*"],
+  // "/" entra para permitir a reescrita do subdomínio multas.* → /multas.
+  matcher: ["/", "/painel/:path*", "/api/painel/:path*"],
 };

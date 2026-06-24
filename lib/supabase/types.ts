@@ -306,6 +306,32 @@ export type AgendamentoRow = {
   ip_trunc: string | null;
 };
 
+// ---------------------------------------------------------------------------
+// Recurso de multa — clientes (subdomínio multas.advaqui.com)
+// Pessoa paga → cadastra (status 'aguardando') → admin ativa ('ativo') → usa.
+// ---------------------------------------------------------------------------
+export type RecursoClienteRow = {
+  id: string;
+  created_at: string;
+  email: string;
+  nome: string | null;
+  telefone: string | null;
+  fase: string | null;
+  infracao: string | null;
+  cpf: string | null;
+  placa: string | null;
+  ait: string | null;
+  orgao: string | null;
+  data_infracao: string | null;
+  cidade: string | null;
+  relato: string | null;
+  status: string; // aguardando | ativo | expirado | cancelado
+  recursos_restantes: number;
+  access_token: string;
+  activated_at: string | null;
+  ip_trunc: string | null;
+};
+
 /**
  * Versão pública de um perfil de advogado, sem CPF.
  * Use sempre que renderizar dados publicamente (diretório, perfil).
@@ -433,6 +459,13 @@ export type Database = {
           contato: string;
         };
         Update: Partial<AgendamentoRow>;
+        Relationships: [];
+      };
+      // Recurso de multa — clientes (migration 0011)
+      recurso_clientes: {
+        Row: RecursoClienteRow;
+        Insert: Partial<RecursoClienteRow> & { email: string };
+        Update: Partial<RecursoClienteRow>;
         Relationships: [];
       };
     };

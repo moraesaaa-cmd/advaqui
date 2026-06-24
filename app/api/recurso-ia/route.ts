@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { analiseIA, pecaCompletaIA, type DadosRecurso } from "@/lib/ai/recurso";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
  * POST /api/recurso-ia  { modo: "analise" | "completo", ...dados }
@@ -57,6 +58,51 @@ export async function POST(req: Request) {
     );
   }
 
+  // A PEÇA COMPLETA é o recurso pago: exige um token de cliente ATIVO (liberado
+  // pelo admin após o pagamento) com recursos restantes. A ANÁLISE é gratuita.
+  let cliente: { id: string; recursos_restantes: number } | null = null;
+  if (modo === "completo") {
+    const token = clamp(body.token, 80);
+    if (!token) {
+      return NextResponse.json(
+        { ok: false, motivo: "sem_acesso", mensagem: "Para gerar a peça completa, finalize o cadastro e o pagamento." },
+        { status: 402 }
+      );
+    }
+    try {
+      const admin = createAdminClient();
+      const { data: cli } = await admin
+        .from("recurso_clientes")
+        .select("id,status,recursos_restantes")
+        .eq("access_token", token)
+        .maybeSingle();
+      if (!cli) {
+        return NextResponse.json(
+          { ok: false, motivo: "sem_acesso", mensagem: "Acesso não encontrado. Refaça o cadastro." },
+          { status: 403 }
+        );
+      }
+      if (cli.status !== "ativo") {
+        return NextResponse.json(
+          { ok: false, motivo: "aguardando", mensagem: "Seu acesso ainda não foi liberado. Assim que confirmarmos o pagamento, você poderá gerar a peça." },
+          { status: 402 }
+        );
+      }
+      if (cli.recursos_restantes <= 0) {
+        return NextResponse.json(
+          { ok: false, motivo: "esgotado", mensagem: "Você já usou todos os recursos do seu plano." },
+          { status: 402 }
+        );
+      }
+      cliente = { id: cli.id, recursos_restantes: cli.recursos_restantes };
+    } catch {
+      return NextResponse.json(
+        { ok: false, motivo: "erro", mensagem: "Não foi possível verificar o seu acesso agora." },
+        { status: 500 }
+      );
+    }
+  }
+
   const dados: DadosRecurso = {
     fase: clamp(body.fase, 30) || "defesa-previa",
     infracao: clamp(body.infracao, 40) || "outra",
@@ -87,5 +133,20 @@ export async function POST(req: Request) {
     );
   }
 
-  return NextResponse.json({ ok: true, modo, texto: r.texto });
+  // Gerou a peça paga: desconta 1 do plano do cliente.
+  let restantes: number | undefined;
+  if (cliente) {
+    restantes = Math.max(0, cliente.recursos_restantes - 1);
+    try {
+      const admin = createAdminClient();
+      await admin
+        .from("recurso_clientes")
+        .update({ recursos_restantes: restantes })
+        .eq("id", cliente.id);
+    } catch {
+      /* não bloqueia a entrega já gerada */
+    }
+  }
+
+  return NextResponse.json({ ok: true, modo, texto: r.texto, recursos_restantes: restantes });
 }
