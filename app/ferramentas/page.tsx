@@ -14,6 +14,7 @@ import {
   TrendingUp,
   Stethoscope,
   Route,
+  Car,
   ArrowRight
 } from "lucide-react";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -86,6 +87,12 @@ const GROUPS: Group[] = [
         label: "Modelos prontos",
         desc: "Procuração, contrato de locação, recibo, distrato e outros — é só preencher.",
         Icon: FileText
+      },
+      {
+        href: "/recurso-de-multa",
+        label: "Recurso de multa de trânsito",
+        desc: "Monte o recurso (defesa prévia, JARI ou CETRAN) com a fundamentação do CTB.",
+        Icon: Car
       }
     ]
   },
