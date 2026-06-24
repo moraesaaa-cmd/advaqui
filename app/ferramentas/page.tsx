@@ -20,6 +20,9 @@ import {
   Compass,
   Radar,
   CalendarCheck,
+  Percent,
+  Wallet,
+  Sparkles,
   ArrowRight
 } from "lucide-react";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -57,6 +60,12 @@ const GROUPS: Group[] = [
         Icon: CalendarClock
       },
       {
+        href: "/correcao-monetaria",
+        label: "Correção monetária (IPCA/INPC/IGP-M)",
+        desc: "Atualize um valor pela inflação oficial do Banco Central, com a memória mês a mês.",
+        Icon: Percent
+      },
+      {
         href: "/atualizar-valor",
         label: "Atualizar um valor",
         desc: "Correção, juros de mora e multa sobre uma dívida — com a memória de cálculo.",
@@ -67,6 +76,12 @@ const GROUPS: Group[] = [
         label: "Calculadoras jurídicas",
         desc: "Rescisão, FGTS, pensão, férias, 13º, aluguel, dívida, inventário e mais.",
         Icon: Calculator
+      },
+      {
+        href: "/seguro-desemprego",
+        label: "Simulador de seguro-desemprego",
+        desc: "Quantas parcelas e qual o valor pela tabela oficial do MTE de 2026.",
+        Icon: Wallet
       },
       {
         href: "/quanto-custa",
@@ -196,6 +211,12 @@ const GROUPS: Group[] = [
         label: "Montar meu perfil",
         desc: "Em um minuto, monte sua ficha e veja o que falta para o cliente te chamar.",
         Icon: UserPlus
+      },
+      {
+        href: "/revisor-peticao",
+        label: "Revisor de petições com IA",
+        desc: "Revise ou humanize o texto da sua peça com IA. Recurso do plano premium.",
+        Icon: Sparkles
       },
       {
         href: "/advogados",
