@@ -301,10 +301,10 @@ export function RecursoMultaLanding(): ReactNode {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          ...dadosBase(),
           nome: cadNome,
           email: cadEmail,
-          telefone: cadTel,
-          ...dadosBase()
+          telefone: cadTel
         })
       });
       const json: {
