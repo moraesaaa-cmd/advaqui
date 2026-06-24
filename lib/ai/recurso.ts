@@ -115,21 +115,49 @@ export async function analiseIA(d: DadosRecurso) {
   return chamarOpenAI(system, contexto(d), 600);
 }
 
+const PERSONA_PECA =
+  "Você é um(a) especialista experiente na redação de recursos administrativos de trânsito no Brasil, com domínio do CTB (Lei 9.503/97), das Resoluções do CONTRAN, das súmulas do STJ e dos princípios do Direito Administrativo. Redige, para o próprio interessado protocolar, peças EXTENSAS, densas e tecnicamente sólidas. ";
+
+/**
+ * Peça completa de 12+ páginas. gpt-4o-mini tende a "encerrar cedo" numa única
+ * chamada (parava em ~5 páginas), então geramos em DOIS blocos paralelos e
+ * concatenamos: (A) abertura + preliminares; (B) mérito aprofundado + pedidos.
+ * Cada bloco é longo por si só; juntos passam de 12 páginas.
+ */
 export async function pecaCompletaIA(d: DadosRecurso) {
-  const system =
-    "Você é um(a) especialista experiente na redação de recursos administrativos de trânsito no Brasil, com domínio do CTB (Lei 9.503/97), das Resoluções do CONTRAN, das súmulas do STJ e dos princípios do Direito Administrativo. Sua tarefa é redigir, para o próprio interessado protocolar, uma peça de recurso administrativo COMPLETA, EXTENSA e TECNICAMENTE SÓLIDA — com NO MÍNIMO 12 PÁGINAS (cerca de 5.000 a 7.000 palavras). " +
+  const ctx = contexto(d);
+
+  const sysA =
+    PERSONA_PECA +
     REGRAS +
-    "\n\nESTRUTURA OBRIGATÓRIA (desenvolva CADA seção em vários parágrafos densos, sem resumir):\n" +
-    "1. ENDEREÇAMENTO — à autoridade/órgão competente conforme a fase do recurso.\n" +
+    "\n\nNESTA RESPOSTA, redija APENAS a PRIMEIRA METADE da peça, desenvolvendo CADA seção em vários parágrafos densos (sem resumir):\n" +
+    "1. ENDEREÇAMENTO — à autoridade/órgão competente conforme a fase.\n" +
     "2. QUALIFICAÇÃO DO REQUERENTE — com os dados fornecidos; onde faltar, use marcadores [ ].\n" +
-    "3. DA TEMPESTIVIDADE — demonstre o cabimento e a tempestividade, discorrendo sobre os prazos do CTB e o direito de recorrer.\n" +
+    "3. DA TEMPESTIVIDADE — discorra sobre os prazos do CTB e o direito de recorrer.\n" +
     "4. DA SÍNTESE DOS FATOS — narre a autuação de forma circunstanciada.\n" +
-    "5. DAS PRELIMINARES — desenvolva as preliminares cabíveis (nulidades e vícios formais do auto e da notificação).\n" +
-    "6. DO MÉRITO — desenvolva CADA tese de forma APROFUNDADA (mínimo 3 a 4 parágrafos por tese): explique o conceito jurídico, cite o dispositivo legal, relacione ao caso concreto, traga o entendimento doutrinário e jurisprudencial (de forma genérica e honesta), e conclua. Discorra sobre o devido processo legal, a ampla defesa e o contraditório (art. 5º, LIV e LV, da CF), a presunção de legitimidade do ato administrativo e os seus LIMITES, e os princípios da legalidade, da motivação, da proporcionalidade e da razoabilidade.\n" +
+    "5. DAS PRELIMINARES — desenvolva, em profundidade, as nulidades e vícios formais do auto e da notificação (inclua a exigência de dupla notificação — Súmula 312 do STJ — e os requisitos do art. 280 do CTB).\n" +
+    "ENCERRE após as preliminares. NÃO escreva o mérito, os pedidos nem o fecho — virão em seguida.";
+
+  const sysB =
+    PERSONA_PECA +
+    REGRAS +
+    "\n\nESTA É A CONTINUAÇÃO (SEGUNDA METADE) de um recurso já iniciado (endereçamento, fatos e preliminares já foram redigidos). NÃO repita o endereçamento nem a qualificação. Comece DIRETAMENTE no título 'DO MÉRITO' e redija, com MUITA profundidade:\n" +
+    "6. DO MÉRITO — desenvolva NO MÍNIMO 4 teses, cada uma com 4 ou mais parágrafos: explique o conceito jurídico, cite o dispositivo legal, relacione ao caso, traga o entendimento doutrinário e jurisprudencial (genérico e honesto) e conclua. Discorra sobre o devido processo legal, a ampla defesa e o contraditório (art. 5º, LIV e LV, da CF), a presunção de legitimidade do ato administrativo e seus LIMITES, e os princípios da legalidade, da motivação, da proporcionalidade e da razoabilidade.\n" +
     "7. DA FUNDAMENTAÇÃO JURÍDICA — aprofunde os fundamentos legais e principiológicos.\n" +
-    "8. DOS PEDIDOS — requeira o cancelamento/arquivamento do auto, com pedidos subsidiários (ex.: conversão em advertência, quando cabível).\n" +
-    "9. FECHO — termos em que pede deferimento, local, data e espaço para assinatura.\n\n" +
-    "EXTENSÃO E ARGUMENTAÇÃO: a peça DEVE ser longa e densa. Quando FALTAREM dados ou elementos concretos do caso, NÃO se recuse a redigir e NÃO encurte: faça VOLTAS ARGUMENTATIVAS — argumente em tese, traga princípios gerais, doutrina, hipóteses e a importância da estrita observância do procedimento pela Administração, mantendo a peça robusta e persuasiva. Redija sempre a peça INTEIRA, do endereçamento ao fecho, ainda que sem todos os dados do usuário.";
-  // max_tokens alto e timeout longo: peça extensa de 12+ páginas leva mais tempo.
-  return chamarOpenAI(system, contexto(d) + "\n\nRedija agora a peça completa, com no mínimo 12 páginas, desenvolvendo em profundidade todas as seções e teses.", 14000, 0.6, 150000);
+    "8. DOS PEDIDOS — requeira o cancelamento/arquivamento do auto, com pedidos subsidiários.\n" +
+    "9. FECHO — termos em que pede deferimento, local, data e espaço para assinatura.\n" +
+    "Quando faltarem dados concretos, faça VOLTAS ARGUMENTATIVAS (argumente em tese, com princípios e doutrina), mantendo a peça longa e robusta.";
+
+  const instrucao =
+    "\n\nDesenvolva ao máximo, com parágrafos longos e linguagem jurídica formal.";
+
+  const [a, b] = await Promise.all([
+    chamarOpenAI(sysA, ctx + instrucao, 7000, 0.6, 140000),
+    chamarOpenAI(sysB, ctx + instrucao, 8000, 0.6, 140000)
+  ]);
+
+  if (a.ok && b.ok) return { ok: true as const, texto: `${a.texto}\n\n${b.texto}` };
+  if (a.ok) return a; // ao menos a primeira metade
+  if (b.ok) return b;
+  return a; // ambos falharam → repassa o erro (sem_chave/timeout/etc.)
 }
