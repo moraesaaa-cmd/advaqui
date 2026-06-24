@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import { FileText, Copy, Printer, Check, AlertTriangle } from "lucide-react";
+import { FileText, Copy, Printer, Check, AlertTriangle, Sparkles, Loader2 } from "lucide-react";
 import {
   INFRACOES,
   FASES,
@@ -180,9 +180,49 @@ export function RecursoMultaWidget() {
     [form, tesesSelecionadas]
   );
 
+  const [aiTexto, setAiTexto] = useState<string | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiErro, setAiErro] = useState<string | null>(null);
+
+  // Texto exibido/copiado/impresso: a versão da IA quando existir, senão a
+  // peça montada por template.
+  const exibido = aiTexto ?? peca;
+
+  const gerarComIA = async () => {
+    if (aiLoading) return;
+    setAiLoading(true);
+    setAiErro(null);
+    try {
+      const res = await fetch("/api/recurso-ia", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          modo: "completo",
+          fase: form.fase,
+          infracao: form.infracao,
+          nome: form.nome,
+          cpf: form.cpf,
+          placa: form.placa,
+          ait: form.ait,
+          orgao: form.orgao,
+          data: form.data,
+          cidade: form.cidadeUf,
+          relato: form.fatos
+        })
+      });
+      const json = await res.json();
+      if (json.ok && json.texto) setAiTexto(json.texto);
+      else setAiErro(json.mensagem || "Não foi possível gerar com IA. Use o modelo padrão.");
+    } catch {
+      setAiErro("Falha de conexão. Use o modelo padrão abaixo.");
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   const copiar = async () => {
     try {
-      await navigator.clipboard.writeText(peca);
+      await navigator.clipboard.writeText(exibido);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -195,7 +235,7 @@ export function RecursoMultaWidget() {
     if (!w) return;
     w.document.write(
       `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Recurso de multa</title></head><body><pre style="font-family: Georgia, 'Times New Roman', serif; white-space: pre-wrap; padding: 40px; line-height: 1.7; font-size: 14px; color:#111;">${escapeHtml(
-        peca
+        exibido
       )}</pre></body></html>`
     );
     w.document.close();
@@ -318,11 +358,46 @@ export function RecursoMultaWidget() {
         </div>
       </div>
 
+      {/* Botão de geração por IA */}
+      <div className="mt-5">
+        <button
+          onClick={gerarComIA}
+          disabled={aiLoading}
+          className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-brand-accent px-5 py-3 text-sm font-bold text-brand-ink hover:brightness-95 transition disabled:opacity-50"
+        >
+          {aiLoading ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" aria-hidden /> Gerando com IA...
+            </>
+          ) : (
+            <>
+              <Sparkles className="w-4 h-4" aria-hidden /> Gerar peça completa com IA
+            </>
+          )}
+        </button>
+        <p className="text-[11px] text-brand-ink/50 mt-1.5 text-center">
+          A IA monta a peça com a fundamentação do CTB a partir dos seus dados.
+          Sempre revise antes de protocolar. Já existe o modelo padrão abaixo,
+          mesmo sem IA.
+        </p>
+        {aiErro && (
+          <p className="mt-2 rounded-lg border-l-4 border-amber-400 bg-amber-50 p-2.5 text-xs text-amber-900">
+            {aiErro}
+          </p>
+        )}
+      </div>
+
       {/* Pré-visualização */}
       <div className="mt-5">
         <div className="flex items-center justify-between gap-2 mb-2">
-          <p className="text-xs font-semibold uppercase tracking-wide text-brand-ink/55">
-            Recurso gerado
+          <p className="text-xs font-semibold uppercase tracking-wide text-brand-ink/55 inline-flex items-center gap-1.5">
+            {aiTexto ? (
+              <>
+                <Sparkles className="w-3.5 h-3.5 text-brand-accent2" aria-hidden /> Recurso gerado por IA
+              </>
+            ) : (
+              "Recurso gerado (modelo)"
+            )}
           </p>
           <div className="flex gap-2">
             <button
@@ -348,8 +423,16 @@ export function RecursoMultaWidget() {
           </div>
         </div>
         <pre className="rounded-xl bg-brand-deep/5 border border-brand-deep/20 p-4 text-xs text-brand-ink/90 whitespace-pre-wrap font-mono leading-relaxed max-h-96 overflow-auto">
-          {peca}
+          {exibido}
         </pre>
+        {aiTexto && (
+          <button
+            onClick={() => setAiTexto(null)}
+            className="mt-2 text-xs text-brand-ink/55 hover:text-brand-deep transition underline"
+          >
+            Voltar ao modelo padrão
+          </button>
+        )}
       </div>
 
       <aside
