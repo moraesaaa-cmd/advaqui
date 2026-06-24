@@ -12,6 +12,8 @@ import {
   UserPlus,
   Search,
   TrendingUp,
+  Stethoscope,
+  Route,
   ArrowRight
 } from "lucide-react";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -93,10 +95,22 @@ const GROUPS: Group[] = [
       "Antes de gastar com consulta, entenda o seu caso e o caminho dele.",
     tools: [
       {
+        href: "/diagnostico",
+        label: "Diagnóstico trabalhista",
+        desc: "6 perguntas e você vê os direitos que cabem no seu caso, o prazo e o que fazer.",
+        Icon: Stethoscope
+      },
+      {
         href: "/problemas-juridicos",
         label: "Problemas jurídicos passo a passo",
         desc: "Demissão, negativação, pensão, INSS, plano de saúde — o que fazer, em ordem.",
         Icon: HelpCircle
+      },
+      {
+        href: "/linha-do-tempo",
+        label: "Linha do tempo de um processo",
+        desc: "Quanto tempo demora? Veja as etapas de um processo, da inicial ao pagamento.",
+        Icon: Route
       },
       {
         href: "/glossario",

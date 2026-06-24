@@ -15,6 +15,15 @@ import { createAdminClient } from "@/lib/supabase/admin";
  *
  * Bots (is_bot=true) são EXCLUÍDOS dos agregados — só conta humanos.
  *
+ * VISITANTE REAL = humano NO BRASIL (country='BR'). O AdvAqui é um produto
+ * brasileiro; o grosso do tráfego "não-bot" vem de crawlers e scanners de
+ * datacenters da China, Hong Kong, Singapura e EUA que mandam User-Agent de
+ * navegador (logo escapam do filtro is_bot). Esse tráfego estrangeiro poluía
+ * o ranking de cidades com "Beijing, Hong Kong, Singapore" e inflava as
+ * contagens. Por isso as métricas de visitante e o ranking de cidade/estado
+ * passam a filtrar country='BR'; o tráfego automatizado/exterior é devolvido
+ * só em `automated24h` (e top países do exterior) para transparência.
+ *
  * Auth: usa o cookie `advaqui_admin` (mesmo que o resto do /api/admin).
  * Defensive: se a tabela site_visits não existe (migration 0007 pendente),
  * retorna zeros sem quebrar.
@@ -33,6 +42,10 @@ const emptyResponse = {
   last48h: 0,
   last7d: 0,
   activeNow: 0,
+  // Tráfego automatizado (robôs/scanners do exterior) detectado nas últimas
+  // 24h — NÃO entra nas contagens de visitantes acima. Mostrado à parte só
+  // para transparência (o painel não esconde, mas também não conta como gente).
+  automated24h: 0,
   topPaths: [] as Array<{ path: string; count: number }>,
   topCountries: [] as Array<{ country: string; count: number }>,
   topRegions: [] as Array<{ region: string; count: number }>,
@@ -65,30 +78,42 @@ export async function GET() {
   const minus5min = new Date(now - 5 * 60 * 1000).toISOString();
 
   try {
-    // Counts paralelos: 24h, 48h, 7d, ativos agora (5min)
-    const [c24, c48, c7d, cNow] = await Promise.all([
+    // Counts paralelos: 24h, 48h, 7d, ativos agora (5min) — só humanos no BR.
+    // cAuto24 = tráfego automatizado/exterior em 24h (não-bot, fora do BR),
+    // contado à parte só para transparência.
+    const [c24, c48, c7d, cNow, cAuto24] = await Promise.all([
       admin
         .from("site_visits")
         .select("id", { count: "exact", head: true })
         .eq("is_bot", false)
+        .eq("country", "BR")
         .gte("visited_at", minus24h),
       admin
         .from("site_visits")
         .select("id", { count: "exact", head: true })
         .eq("is_bot", false)
+        .eq("country", "BR")
         .gte("visited_at", minus48h),
       admin
         .from("site_visits")
         .select("id", { count: "exact", head: true })
         .eq("is_bot", false)
+        .eq("country", "BR")
         .gte("visited_at", minus7d),
       admin
         .from("site_visits")
         .select("session_id")
         .eq("is_bot", false)
+        .eq("country", "BR")
         .gte("visited_at", minus5min)
         .not("session_id", "is", null)
-        .limit(500)
+        .limit(500),
+      admin
+        .from("site_visits")
+        .select("id", { count: "exact", head: true })
+        .eq("is_bot", false)
+        .or("country.neq.BR,country.is.null")
+        .gte("visited_at", minus24h)
     ]);
 
     // Se a tabela não existe, qualquer um desses retorna erro 42P01
@@ -107,11 +132,22 @@ export async function GET() {
         .filter(Boolean)
     );
 
-    // Top páginas / países / regiões em 24h
+    // Top páginas / regiões / cidades em 24h — só visitantes humanos no BR.
     const { data: rows24, error: err24 } = await admin
       .from("site_visits")
       .select("path,country,region,city,referer")
       .eq("is_bot", false)
+      .eq("country", "BR")
+      .gte("visited_at", minus24h)
+      .limit(5000);
+
+    // Tráfego automatizado/exterior em 24h — agrupado por país, só para
+    // o admin ver de onde vêm os robôs (China, Hong Kong, Singapura, EUA…).
+    const { data: foreignRows } = await admin
+      .from("site_visits")
+      .select("country")
+      .eq("is_bot", false)
+      .or("country.neq.BR,country.is.null")
       .gte("visited_at", minus24h)
       .limit(5000);
 
@@ -136,7 +172,12 @@ export async function GET() {
       path: x.key,
       count: x.count
     }));
-    const topCountries = aggregate(safeRows, "country").map((x) => ({
+    // Países do exterior (tráfego automatizado) — não são visitantes reais,
+    // exibidos só para o admin saber a origem dos robôs.
+    const topCountries = aggregate(
+      (foreignRows || []) as Array<Record<string, string | null>>,
+      "country"
+    ).map((x) => ({
       country: x.key,
       count: x.count
     }));
@@ -173,11 +214,13 @@ export async function GET() {
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
 
-    // Últimas 20 visitas
+    // Últimas 20 visitas — só visitantes humanos no Brasil (feed ao vivo
+    // real, sem o ruído de robôs estrangeiros batendo no site toda hora).
     const { data: recentData } = await admin
       .from("site_visits")
       .select("path,country,region,city,ip_trunc,visited_at")
       .eq("is_bot", false)
+      .eq("country", "BR")
       .order("visited_at", { ascending: false })
       .limit(20);
 
@@ -187,6 +230,7 @@ export async function GET() {
       last48h: c48.count || 0,
       last7d: c7d.count || 0,
       activeNow: activeSessionIds.size,
+      automated24h: cAuto24.count || 0,
       topPaths,
       topCountries,
       topRegions,

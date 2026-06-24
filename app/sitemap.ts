@@ -62,6 +62,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/advogados-de`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
     { url: `${base}/quanto-custa`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
     { url: `${base}/calculadoras`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
+    { url: `${base}/diagnostico`, changeFrequency: "monthly", priority: 0.8, lastModified: now },
+    { url: `${base}/linha-do-tempo`, changeFrequency: "monthly", priority: 0.7, lastModified: now },
     { url: `${base}/tribunais`, changeFrequency: "weekly", priority: 0.7, lastModified: now }
   ];
 

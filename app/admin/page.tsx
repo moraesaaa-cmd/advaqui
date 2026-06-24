@@ -16,7 +16,8 @@ import {
   Globe,
   MapPin,
   TrendingUp,
-  RefreshCw
+  RefreshCw,
+  Bot
 } from "lucide-react";
 import { PlanBadge } from "@/components/PlanBadge";
 import { formatDate } from "@/lib/utils/format";
@@ -112,6 +113,7 @@ export default function AdminPage() {
     last48h: number;
     last7d: number;
     activeNow: number;
+    automated24h?: number;
     topPaths: Array<{ path: string; count: number }>;
     topCountries: Array<{ country: string; count: number }>;
     topRegions: Array<{ region: string; count: number }>;
@@ -1120,8 +1122,9 @@ export default function AdminPage() {
                 Visitas em tempo real
               </h2>
               <p className="text-xs text-brand-ink/65 mt-0.5">
-                Atualiza automaticamente a cada 15s. IP truncado, sem cookies,
-                sem fingerprint.
+                Visitantes humanos no Brasil. Atualiza a cada 15s. IP truncado,
+                sem cookies, sem fingerprint. Robôs e tráfego do exterior são
+                contados à parte (logo abaixo), não como visitantes.
               </p>
             </div>
             <button
@@ -1186,6 +1189,21 @@ export default function AdminPage() {
                 </div>
               </div>
 
+              {/* Tráfego automatizado (robôs/exterior) — transparência: não
+                  some, mas também não conta como visitante. */}
+              {(analytics.automated24h ?? 0) > 0 && (
+                <p className="text-xs text-brand-ink/55 -mt-2 flex items-center gap-1.5">
+                  <Bot className="w-3.5 h-3.5 text-brand-ink/40" aria-hidden />
+                  <span>
+                    <strong className="text-brand-ink/75">
+                      {analytics.automated24h}
+                    </strong>{" "}
+                    acessos automatizados (robôs/scanners do exterior) em 24h —
+                    excluídos das visitas acima.
+                  </span>
+                </p>
+              )}
+
               {/* Top páginas + Top países lado a lado */}
               <div className="grid md:grid-cols-2 gap-4">
                 <section className="card">
@@ -1217,42 +1235,20 @@ export default function AdminPage() {
                 <section className="card">
                   <h3 className="font-display text-base font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
                     <Globe className="w-4 h-4 text-brand-deep" aria-hidden />
-                    De onde vêm os visitantes (24h)
+                    Onde estão seus visitantes — Brasil (24h)
                   </h3>
-                  {analytics.topCountries.length === 0 &&
-                  analytics.topRegions.length === 0 ? (
+                  {analytics.topRegions.length === 0 &&
+                  analytics.topCities.length === 0 ? (
                     <p className="text-xs text-brand-ink/55 italic">
-                      Sem geolocalização disponível ainda. Configure o reverse
-                      proxy pra enviar headers CF-IPCountry/X-Geo-Region.
+                      Nenhuma visita do Brasil nas últimas 24h ainda. (O tráfego
+                      do exterior, se houver, aparece mais abaixo.)
                     </p>
                   ) : (
                     <div className="space-y-3">
-                      {analytics.topCountries.length > 0 && (
-                        <div>
-                          <p className="text-[10px] font-bold uppercase tracking-wide text-brand-ink/55 mb-1.5">
-                            Países
-                          </p>
-                          <ul className="space-y-1 text-xs">
-                            {analytics.topCountries.map((c) => (
-                              <li
-                                key={c.country}
-                                className="flex items-center justify-between gap-2"
-                              >
-                                <span className="text-brand-ink/85">
-                                  {c.country}
-                                </span>
-                                <span className="font-bold text-brand-ink">
-                                  {c.count}
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
                       {analytics.topRegions.length > 0 && (
                         <div>
                           <p className="text-[10px] font-bold uppercase tracking-wide text-brand-ink/55 mb-1.5">
-                            Estados / Regiões
+                            Estados
                           </p>
                           <ul className="space-y-1 text-xs">
                             {analytics.topRegions.map((r) => (
@@ -1289,6 +1285,28 @@ export default function AdminPage() {
                           </ul>
                         </div>
                       )}
+                    </div>
+                  )}
+
+                  {/* Tráfego do exterior (robôs/scanners) — separado e em tom
+                      apagado pra deixar claro que NÃO são clientes em potencial. */}
+                  {analytics.topCountries.length > 0 && (
+                    <div className="mt-4 pt-3 border-t border-brand-line/60">
+                      <p className="text-[10px] font-bold uppercase tracking-wide text-brand-ink/40 mb-1.5 inline-flex items-center gap-1">
+                        <Bot className="w-3 h-3" aria-hidden />
+                        Tráfego automatizado — exterior
+                      </p>
+                      <ul className="space-y-1 text-xs">
+                        {analytics.topCountries.map((c) => (
+                          <li
+                            key={c.country}
+                            className="flex items-center justify-between gap-2 text-brand-ink/45"
+                          >
+                            <span>{c.country}</span>
+                            <span className="font-semibold">{c.count}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   )}
                 </section>

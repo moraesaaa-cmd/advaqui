@@ -192,6 +192,21 @@ export async function getLawyersBySpecialty(
   specialty: string
 ): Promise<Lawyer[]> {
   const all = await getLawyersForCity(uf, citySlug);
+
+  // Cidade SEM advogado real (getLawyersForCity devolveu só os perfis de
+  // rede): mostra SEMPRE os dois perfis de rede em qualquer página de área,
+  // sem filtrar por especialidade. Antes, ao filtrar por área aqui, uma
+  // página tipo "Advogado previdenciário em X" só exibia o perfil de rede
+  // que tinha aquela área (ex.: só Kellsons), deixando o outro de fora. Como
+  // nessas cidades os perfis são só rede/apresentação, os dois devem aparecer
+  // juntos em toda área. (Em cidade COM advogado real, mantém o filtro normal.)
+  const onlyFallback =
+    all.length > 0 &&
+    all.every((l) => FALLBACK_LAWYER_SLUGS.includes(l.slug));
+  if (onlyFallback) {
+    return await getFallbackLawyers();
+  }
+
   const filtered = all.filter((l) => l.specialties.includes(specialty));
   // Nenhuma página de área fica vazia — cai nos perfis de rede.
   if (filtered.length === 0) {
