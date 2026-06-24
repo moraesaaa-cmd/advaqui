@@ -93,7 +93,7 @@ const FAQS: { q: string; a: string }[] = [
     a: "Sim. Você descreve a multa e mostramos as teses cabíveis sem custo. Você só paga R$9,90 se quiser gerar o recurso completo, pronto para protocolar."
   },
   {
-    q: "Como recebo o meu recurso?",
+    q: "Como eu gero o meu recurso?",
     a: "Depois do pagamento via Pix e do cadastro, o seu painel é liberado. Lá você preenche os dados da multa e a inteligência artificial gera o recurso na hora, pronto para baixar, imprimir e protocolar."
   },
   {
@@ -242,15 +242,16 @@ export function RecursoMultaLanding(): ReactNode {
       if (json.ok && json.texto) {
         setAnalise(json.texto);
       } else {
-        // Fallback honesto: sem inventar números, indica fundamentos sólidos.
+        // Fallback honesto: não afirma êxito; informa que a análise automática
+        // falhou e que a peça pode ser gerada mesmo assim.
         setAnaliseErro(
           json.mensagem ||
-            "Não foi possível gerar a análise detalhada agora, mas identificamos fundamentos sólidos para contestar a sua autuação."
+            "Não foi possível gerar a análise automática agora. Você ainda pode gerar o recurso completo, montado com a fundamentação do CTB e das súmulas aplicáveis."
         );
       }
     } catch {
       setAnaliseErro(
-        "Não foi possível conectar agora, mas identificamos fundamentos sólidos para contestar a sua autuação."
+        "Não foi possível conectar agora. Tente novamente em instantes — a análise é gratuita."
       );
     } finally {
       if (azTimer.current) {
@@ -602,7 +603,7 @@ export function RecursoMultaLanding(): ReactNode {
                   margin: "0 0 22px"
                 }}
               >
-                Multado injustamente? Nós elaboramos o seu recurso.
+                Multado injustamente? Gere o seu recurso com IA.
               </h1>
               <p
                 style={{
@@ -614,8 +615,8 @@ export function RecursoMultaLanding(): ReactNode {
                 }}
               >
                 Responda algumas perguntas, a inteligência artificial analisa o seu caso e gera uma
-                peça técnica com a tese e a fundamentação corretas. Proteja os pontos da sua CNH,
-                evite a suspensão e não pague o que não deve.
+                peça técnica com a tese e a fundamentação corretas. Conteste os pontos da sua CNH e
+                questione o que considera indevido, com os fundamentos certos.
               </p>
               <div style={{ display: "flex", gap: 13, flexWrap: "wrap", alignItems: "center" }}>
                 <a
@@ -660,7 +661,7 @@ export function RecursoMultaLanding(): ReactNode {
               >
                 {[
                   { v: "~2 min", l: "Para analisar o seu caso" },
-                  { v: "Na hora", l: "Recurso no seu painel" },
+                  { v: "Em segundos", l: "A peça gerada pela IA" },
                   { v: "3 fases", l: "Defesa · JARI · CETRAN" }
                 ].map((s) => (
                   <div key={s.l}>
@@ -689,7 +690,7 @@ export function RecursoMultaLanding(): ReactNode {
                     height: 84,
                     flex: "0 0 auto",
                     borderRadius: "50%",
-                    background: `conic-gradient(${ACCENT} 0% 92%, #E6E7EB 92% 100%)`,
+                    background: "#FFE3D5",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center"
@@ -724,10 +725,10 @@ export function RecursoMultaLanding(): ReactNode {
                 </div>
                 <div>
                   <div style={{ fontFamily: DISPLAY, fontWeight: 700, fontSize: 19, lineHeight: 1.15 }}>
-                    Sua multa pode ser cancelada
+                    Vale a pena recorrer
                   </div>
                   <div style={{ fontSize: 13, color: "#5A5F6A", marginTop: 4 }}>
-                    Casos com vício no auto ou na notificação têm alta chance de reversão.
+                    Vícios no auto ou na notificação são fundamentos sólidos para contestar a autuação.
                   </div>
                 </div>
               </div>
@@ -803,7 +804,7 @@ export function RecursoMultaLanding(): ReactNode {
             <span>✓ A tese certa para a sua infração</span>
             <span>✓ Artigos, súmulas e Resoluções citados</span>
             <span>✓ Defenda os pontos da sua CNH</span>
-            <span>✓ Recurso gerado na hora por IA jurídica</span>
+            <span>✓ Peça gerada em segundos pela IA, no seu painel</span>
           </div>
         </div>
 
@@ -837,8 +838,8 @@ export function RecursoMultaLanding(): ReactNode {
               Vamos analisar a sua multa
             </h2>
             <p style={{ fontSize: 16, color: "#5A5F6A", maxWidth: "60ch", margin: "0 auto", lineHeight: 1.6 }}>
-              Leva cerca de 2 minutos. A análise é gratuita — você só paga se quiser receber o
-              recurso pronto.
+              Leva cerca de 2 minutos. A análise é gratuita — você só paga se quiser gerar o
+              recurso completo.
             </p>
           </div>
 
@@ -1125,8 +1126,8 @@ export function RecursoMultaLanding(): ReactNode {
                       display: "inline-flex",
                       alignItems: "center",
                       gap: 8,
-                      background: "#E8F6EE",
-                      color: "#1E8E54",
+                      background: "#EEF1F5",
+                      color: "#44474F",
                       fontWeight: 700,
                       fontSize: 13,
                       padding: "7px 15px",
@@ -1134,16 +1135,16 @@ export function RecursoMultaLanding(): ReactNode {
                       marginBottom: 22
                     }}
                   >
-                    ✓ Boa notícia
+                    Análise concluída
                   </div>
                   <div
                     style={{
                       position: "relative",
-                      width: 128,
-                      height: 128,
+                      width: 96,
+                      height: 96,
                       margin: "0 auto 18px",
                       borderRadius: "50%",
-                      background: `conic-gradient(${ACCENT} 0% 88%, #ECEDF1 88% 100%)`,
+                      background: "#FFE3D5",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -1152,8 +1153,8 @@ export function RecursoMultaLanding(): ReactNode {
                   >
                     <div
                       style={{
-                        width: 100,
-                        height: 100,
+                        width: 72,
+                        height: 72,
                         borderRadius: "50%",
                         background: "#fff",
                         display: "flex",
@@ -1163,8 +1164,8 @@ export function RecursoMultaLanding(): ReactNode {
                       }}
                     >
                       <svg
-                        width="44"
-                        height="44"
+                        width="34"
+                        height="34"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke={ACCENT}
@@ -1172,7 +1173,8 @@ export function RecursoMultaLanding(): ReactNode {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       >
-                        <path d="M20 6L9 17l-5-5" />
+                        <path d="M9 12l2 2 4-4" />
+                        <circle cx="12" cy="12" r="9" />
                       </svg>
                     </div>
                   </div>
@@ -1185,7 +1187,7 @@ export function RecursoMultaLanding(): ReactNode {
                       letterSpacing: "-0.01em"
                     }}
                   >
-                    Identificamos fundamentos sólidos no seu caso
+                    Veja a análise do seu caso
                   </h3>
                   <p
                     style={{
@@ -1196,8 +1198,8 @@ export function RecursoMultaLanding(): ReactNode {
                       margin: "0 auto 22px"
                     }}
                   >
-                    Cruzamos os dados da sua autuação com o CTB, as súmulas do STJ e as Resoluções
-                    CONTRAN. Veja o que encontramos:
+                    A IA cruzou os dados da sua autuação com o CTB, as súmulas do STJ e as Resoluções
+                    do CONTRAN. Veja o que ela encontrou:
                   </p>
                 </div>
 
@@ -1237,8 +1239,8 @@ export function RecursoMultaLanding(): ReactNode {
                     textAlign: "center"
                   }}
                 >
-                  A decisão final é do órgão de trânsito. Entregamos uma peça tecnicamente sólida,
-                  com os fundamentos certos para o seu caso.
+                  A decisão final é do órgão de trânsito. A IA monta a peça com os fundamentos
+                  certos para o seu caso, pronta para você revisar e protocolar.
                 </div>
               </div>
             )}
@@ -1362,7 +1364,7 @@ export function RecursoMultaLanding(): ReactNode {
                       letterSpacing: "-0.01em"
                     }}
                   >
-                    Para onde enviamos o recurso?
+                    Quase lá — crie o seu acesso
                   </h3>
                   <p style={{ fontSize: 14, color: "#5A5F6A", margin: 0 }}>
                     Cadastre-se para gerar o Pix e liberar o seu painel de recursos.
@@ -1433,7 +1435,7 @@ export function RecursoMultaLanding(): ReactNode {
                   {saving ? "Enviando…" : "Continuar para o pagamento"}
                 </button>
                 <div style={{ textAlign: "center", fontSize: 12, color: "#9AA0AA", marginTop: 12 }}>
-                  Seus dados são usados apenas para elaborar e enviar o seu recurso.
+                  Seus dados são usados apenas para gerar o seu recurso e liberar o seu acesso.
                 </div>
               </div>
             )}
@@ -1603,7 +1605,7 @@ export function RecursoMultaLanding(): ReactNode {
                     letterSpacing: "-0.01em"
                   }}
                 >
-                  Recebido!
+                  Pagamento registrado!
                 </h3>
                 <p
                   style={{
@@ -1734,7 +1736,7 @@ export function RecursoMultaLanding(): ReactNode {
                               cursor: gerando ? "default" : "pointer"
                             }}
                           >
-                            {gerando ? "Elaborando a peça…" : "Gerar peça completa"}
+                            {gerando ? "Gerando a peça…" : "Gerar peça completa"}
                           </button>
                         </div>
                         {pecaErro && (
@@ -1976,7 +1978,7 @@ export function RecursoMultaLanding(): ReactNode {
                 <span style={{ color: "#8A8F99", fontSize: 13.5 }}>único</span>
               </div>
               <p style={{ fontSize: 13.5, color: "#C2C7D0", margin: "0 0 24px" }}>
-                Receba até <strong style={{ color: "#fff" }}>3 recursos</strong> completos.
+                Gere até <strong style={{ color: "#fff" }}>3 recursos</strong> completos no seu painel.
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 11, fontSize: 14 }}>
                 {[
@@ -2188,10 +2190,18 @@ export function RecursoMultaLanding(): ReactNode {
               </div>
             </div>
           </div>
+          <div style={{ ...wrap, marginTop: 22 }}>
+            <p style={{ fontSize: 11.5, lineHeight: 1.6, color: "#6B7280", margin: 0 }}>
+              A AdvAqui não é escritório de advocacia e não presta consultoria jurídica. Esta é uma
+              ferramenta de autosserviço: o recurso administrativo de multa não exige advogado e é
+              gerado e protocolado pelo próprio interessado. Para casos que envolvam suspensão ou
+              cassação da CNH, procure um advogado de sua confiança.
+            </p>
+          </div>
           <div
             style={{
               ...wrap,
-              marginTop: 22,
+              marginTop: 18,
               fontSize: 12,
               display: "flex",
               justifyContent: "space-between",

@@ -107,7 +107,7 @@ async function chamarOpenAI(
 
 export async function analiseIA(d: DadosRecurso) {
   const system =
-    "Você é advogado(a) especialista em direito de trânsito no Brasil. " +
+    "Você é um assistente que redige minutas de recurso administrativo de trânsito para o próprio interessado protocolar, com base na legislação. " +
     REGRAS +
     " Sua resposta de ANÁLISE deve ter no máximo 8 linhas: aponte as teses mais promissoras para o caso e uma avaliação honesta das chances (em termos como 'há fundamentos sólidos', sem percentual nem promessa). Nada de peça completa aqui.";
   return chamarOpenAI(system, contexto(d), 600);
@@ -115,7 +115,7 @@ export async function analiseIA(d: DadosRecurso) {
 
 export async function pecaCompletaIA(d: DadosRecurso) {
   const system =
-    "Você é advogado(a) especialista em direito de trânsito no Brasil. " +
+    "Você é um assistente que redige minutas de recurso administrativo de trânsito para o próprio interessado protocolar, com base na legislação. " +
     REGRAS +
     " Gere a PEÇA COMPLETA de recurso administrativo, estruturada em: endereçamento; qualificação do requerente; DOS FATOS; DOS FUNDAMENTOS (com os artigos/súmulas); DOS PEDIDOS; fecho com local, data e assinatura. Texto pronto para revisão e protocolo.";
   return chamarOpenAI(system, contexto(d), 1800);

@@ -14,7 +14,7 @@
  * Tudo gated por cliente ATIVO — a liberação é feita pelo admin após o Pix.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { INFRACOES, FASES } from "@/lib/data/multas";
 
 const ACCENT = "#F4631A";
