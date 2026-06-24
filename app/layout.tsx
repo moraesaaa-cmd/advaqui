@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Fraunces } from "next/font/google";
+import { Public_Sans, Newsreader } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import { Header } from "@/components/Header";
@@ -13,16 +13,21 @@ import { PageViewTracker } from "@/components/PageViewTracker";
 import { orgSchema, websiteSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 
-const inter = Inter({
+// Tipografia do redesign (claude_design): Public Sans (corpo) + Newsreader
+// (títulos serif). Mantemos os NOMES das variáveis (--font-inter/--font-fraunces)
+// para não tocar no tailwind.config nem nas centenas de usos de font-sans/font-display
+// — só a fonte por trás de cada variável muda. Serif→serif, sans→sans: sem quebra.
+const inter = Public_Sans({
   subsets: ["latin"],
   display: "swap",
+  weight: ["400", "500", "600", "700"],
   variable: "--font-inter"
 });
 
-const fraunces = Fraunces({
+const fraunces = Newsreader({
   subsets: ["latin"],
   display: "swap",
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-fraunces"
 });
 
