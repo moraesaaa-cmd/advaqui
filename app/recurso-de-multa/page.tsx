@@ -1,11 +1,13 @@
 import Link from "next/link";
-import { Car, Clock, ShieldCheck, HelpCircle, ListChecks } from "lucide-react";
+import { Car, Clock, ShieldCheck, HelpCircle, ListChecks, MapPin } from "lucide-react";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { RecursoMultaWidget } from "@/components/RecursoMultaWidget";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { findCapital, type City } from "@/lib/data/cities";
+import { STATES } from "@/lib/data/states";
 import { SITE } from "@/lib/config";
 
 /**
@@ -64,6 +66,7 @@ const FAQ = [
 ];
 
 export default function RecursoMultaPage() {
+  const capitais = STATES.map((s) => findCapital(s.uf)).filter(Boolean) as City[];
   return (
     <div className="container-narrow py-10">
       <Breadcrumb items={[{ label: "Recurso de multa" }]} />
@@ -153,6 +156,29 @@ export default function RecursoMultaPage() {
           no seu caso.
         </span>
       </aside>
+
+      {/* Recurso de multa por cidade — caminho de crawl para as páginas locais */}
+      <section className="card mb-6">
+        <h2 className="font-display text-xl font-bold text-brand-ink mb-1 inline-flex items-center gap-2">
+          <MapPin className="w-5 h-5 text-brand-deep" aria-hidden />
+          Recurso de multa por cidade
+        </h2>
+        <p className="text-sm text-brand-ink/75 mb-3 leading-relaxed">
+          Cada cidade tem uma página com o órgão de trânsito local, prazos e o gerador. Comece pela
+          capital do seu estado:
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {capitais.map((c) => (
+            <Link
+              key={`${c.uf}-${c.slug}`}
+              href={`/recurso-de-multa/${c.uf.toLowerCase()}/${c.slug}`}
+              className="text-sm px-3 py-1.5 rounded-full border border-brand-line hover:border-brand-deep hover:text-brand-deep transition"
+            >
+              {c.name}/{c.uf}
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <CTAFinal />
 

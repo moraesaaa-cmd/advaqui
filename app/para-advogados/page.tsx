@@ -13,6 +13,8 @@ import {
   Sparkles
 } from "lucide-react";
 import { SITE } from "@/lib/config";
+import { findCapital, type City } from "@/lib/data/cities";
+import { STATES } from "@/lib/data/states";
 
 export const metadata: Metadata = {
   title:
@@ -57,6 +59,7 @@ const FAQ = [
 ];
 
 export default function ParaAdvogadosPage() {
+  const capitais = STATES.map((s) => findCapital(s.uf)).filter(Boolean) as City[];
   return (
     <>
       {/* Hero */}
@@ -340,6 +343,29 @@ export default function ParaAdvogadosPage() {
               </p>
             </details>
           ))}
+        </div>
+      </section>
+
+      {/* Por cidade — caminho de crawl para as páginas locais */}
+      <section className="bg-brand-bg py-16">
+        <div className="container-tight max-w-4xl">
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-ink text-center mb-2">
+            Apareça na sua cidade
+          </h2>
+          <p className="text-brand-ink/65 text-center mb-6">
+            Cada cidade tem uma página própria. Comece pela capital do seu estado:
+          </p>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {capitais.map((c) => (
+              <Link
+                key={`${c.uf}-${c.slug}`}
+                href={`/para-advogados/${c.uf.toLowerCase()}/${c.slug}`}
+                className="text-sm px-3 py-1.5 rounded-full border border-brand-line bg-white hover:border-brand-deep hover:text-brand-deep transition"
+              >
+                {c.name}/{c.uf}
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 

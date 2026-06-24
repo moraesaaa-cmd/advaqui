@@ -1,0 +1,673 @@
+<title>AdvAqui — Auditoria pós-redesign da Home</title>
+<style>
+  :root {
+    --paper: #f7f5f1;
+    --paper-2: #fffefb;
+    --ink: #16181d;
+    --ink-2: #4a4d56;
+    --ink-3: #777b85;
+    --line: #e3ddd0;
+    --line-2: #ece7db;
+    --indigo: #2f3a8f;
+    --indigo-soft: #eceef8;
+    --crit: #b3261e;
+    --crit-bg: #fbeceb;
+    --crit-line: #e9bbb6;
+    --warn: #9a5d05;
+    --warn-bg: #fbf2e2;
+    --warn-line: #e6cf9c;
+    --ok: #2f6b45;
+    --ok-bg: #e9f1ea;
+    --ok-line: #b7d4c0;
+    --mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap {
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+
+  /* ---------- Masthead ---------- */
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding: 40px 0 22px;
+    margin-bottom: 8px;
+  }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--indigo);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    align-items: baseline;
+    margin-bottom: 16px;
+  }
+  .kicker .sep { color: var(--line); }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(30px, 5vw, 46px);
+    line-height: 1.05;
+    letter-spacing: -0.012em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .standfirst {
+    font-family: var(--serif);
+    font-size: clamp(16px, 2.1vw, 19px);
+    color: var(--ink-2);
+    max-width: 64ch;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* ---------- Go / no-go verdict panel ---------- */
+  .gonogo {
+    margin: 34px 0 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .gng-card {
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--ok);
+    border-radius: 4px;
+    padding: 18px 18px 16px;
+  }
+  .gng-card .verdict {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ok);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .gng-card .verdict::before {
+    content: "";
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--ok);
+    flex: none;
+  }
+  .gng-card h3 {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 650;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  .gng-card p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .gng-card code { font-family: var(--mono); font-size: 12px; background: var(--line-2); padding: 1px 4px; border-radius: 3px; }
+
+  .gng-note {
+    grid-column: 1 / -1;
+    font-size: 12.5px;
+    color: var(--ink-3);
+    border-left: 3px solid var(--warn-line);
+    background: var(--warn-bg);
+    padding: 10px 14px;
+    border-radius: 0 4px 4px 0;
+  }
+  .gng-note strong { color: var(--warn); }
+
+  /* ---------- Section headers ---------- */
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin: 54px 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-head .num {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-3);
+  }
+  .section-head h2 {
+    font-family: var(--serif);
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.01em;
+    flex: 1;
+  }
+  .section-head .count {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+
+  .lede {
+    font-size: 14px;
+    color: var(--ink-2);
+    margin: -6px 0 22px;
+    max-width: 72ch;
+  }
+
+  /* ---------- Verdict matrix (10 fronts) ---------- */
+  .matrix {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(188px, 1fr));
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .mx {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .mx .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .mx .name { font-weight: 550; letter-spacing: -0.005em; }
+  .mx .v { margin-left: auto; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; }
+  .mx.ok { border-left: 3px solid var(--ok); }
+  .mx.ok .dot { background: var(--ok); } .mx.ok .v { color: var(--ok); }
+  .mx.warn { border-left: 3px solid var(--warn); }
+  .mx.warn .dot { background: var(--warn); } .mx.warn .v { color: var(--warn); }
+
+  /* ---------- Finding cards ---------- */
+  .findings { display: flex; flex-direction: column; gap: 16px; }
+
+  .finding {
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .finding.sev-alta { border-left: 5px solid var(--crit); }
+  .finding.sev-media { border-left: 5px solid var(--warn); }
+  .finding.sev-baixa { border-left: 5px solid var(--ok); }
+
+  .f-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line-2);
+    background: linear-gradient(0deg, transparent, rgba(0,0,0,0.012));
+  }
+  .badge {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .badge.alta { background: var(--crit-bg); color: var(--crit); border: 1px solid var(--crit-line); }
+  .badge.media { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-line); }
+  .badge.baixa { background: var(--ok-bg); color: var(--ok); border: 1px solid var(--ok-line); }
+  .badge.front {
+    background: var(--indigo-soft);
+    color: var(--indigo);
+    border: 1px solid #cdd3ef;
+  }
+  .f-title {
+    font-weight: 650;
+    font-size: 15px;
+    letter-spacing: -0.012em;
+    flex-basis: 100%;
+    margin-top: 2px;
+  }
+  .f-body { padding: 14px 18px 16px; }
+  .f-body p { margin: 0 0 12px; font-size: 13.5px; color: var(--ink-2); line-height: 1.56; }
+  .f-body p:last-child { margin-bottom: 0; }
+
+  .f-fix {
+    margin-top: 12px;
+    background: var(--indigo-soft);
+    border-radius: 4px;
+    padding: 11px 14px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #25306e;
+  }
+  .f-fix .lbl {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--indigo);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 5px;
+  }
+  .f-fix.none { background: var(--ok-bg); color: #2c5a3d; }
+  .f-fix.none .lbl { color: var(--ok); }
+
+  .path {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--ink-3);
+    word-break: break-all;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line);
+  }
+  code, .mono { font-family: var(--mono); font-size: 0.88em; }
+  .f-body code, .f-fix code { background: rgba(47,58,143,0.07); padding: 1px 4px; border-radius: 3px; word-break: break-word; }
+  .f-fix.none code { background: rgba(47,107,69,0.1); }
+
+  /* ---------- Order-of-work strip ---------- */
+  .order {
+    margin: 8px 0 0;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 6px 4px;
+  }
+  .order ol { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+  .order li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 34px 1fr auto;
+    gap: 14px;
+    align-items: baseline;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .order li:last-child { border-bottom: 0; }
+  .order li::before {
+    content: counter(step);
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--indigo);
+    text-align: center;
+  }
+  .order .what { font-size: 14px; }
+  .order .what b { font-weight: 650; }
+  .order .what span { display: block; color: var(--ink-3); font-size: 12.5px; margin-top: 2px; }
+  .order .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+    align-self: center;
+  }
+  .order .tag.crit { background: var(--crit-bg); color: var(--crit); }
+  .order .tag.warn { background: var(--warn-bg); color: var(--warn); }
+  .order .tag.low { background: var(--line-2); color: var(--ink-3); }
+
+  footer {
+    margin-top: 56px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-3);
+    font-family: var(--mono);
+    letter-spacing: 0.02em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    justify-content: space-between;
+  }
+
+  a { color: var(--indigo); }
+  :focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; }
+
+  @media (max-width: 720px) {
+    .gonogo { grid-template-columns: 1fr; }
+    .order li { grid-template-columns: 28px 1fr; }
+    .order .tag { grid-column: 2; justify-self: start; margin-top: 4px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">
+      <span>Auditoria de código</span><span class="sep">/</span>
+      <span>AdvAqui · pós-redesign da Home</span><span class="sep">/</span>
+      <span>10 frentes · 24 achados</span><span class="sep">/</span>
+      <span>2026-06-24</span>
+    </div>
+    <h1>O redesign da Home pode ir ao ar — com três ajustes antes do próximo deploy</h1>
+    <p class="standfirst">Nada no redesign quebra o build, remove URL ou tira página do índice. Os bloqueios reais são anteriores ao redesign e vivem no fluxo pago de recurso de multa: uma peça pode ser cobrada e entregue defeituosa, e uma geração lenta pode dar 504 e cobrar sem entregar. Tudo isso é corrigível sem tocar na Home.</p>
+  </header>
+
+  <!-- ===== GO / NO-GO ===== -->
+  <div class="gonogo">
+    <div class="gng-card">
+      <div class="verdict">Confirmado · A</div>
+      <h3>O build deve passar</h3>
+      <p>Nenhum achado quebra TypeScript ou compilação. Os pesos de fonte (400–700) existem em Public Sans e Newsreader, e o <code>next/font</code> validaria em build. O defeito de fonte é visual, não de build.</p>
+    </div>
+    <div class="gng-card">
+      <div class="verdict">Confirmado · B</div>
+      <h3>Nenhuma URL foi removida</h3>
+      <p>Todos os links da Home apontam para rotas existentes (<code>/blog</code>, <code>/modelos</code>, <code>/problemas-juridicos</code>, <code>/para-advogados</code>). Nenhuma rota nova quebrada. Três ferramentas novas já estão no sitemap.</p>
+    </div>
+    <div class="gng-card">
+      <div class="verdict">Confirmado · C</div>
+      <h3>Nenhuma página perdeu indexação</h3>
+      <p>A Home herda <code>robots: index, follow</code> do layout — sem <code>noindex</code>. O <code>robots.ts</code> mantém todo o conteúdo público liberado. Os ~40 <code>noindex</code> do site são todos defensivos e corretos.</p>
+    </div>
+    <div class="gng-note">
+      <strong>Ressalva única sobre indexação (não é de-indexação):</strong> <code>/login</code> e <code>/cadastro</code> estão listados no <code>sitemap.ts</code> (linhas 52–53) mas são <code>disallow</code> no robots e <code>noindex</code> no layout. Isso gera o aviso “enviada mas bloqueada pelo robots.txt” no Search Console — ruído de relatório, não perda de conteúdo de valor. Limpar removendo as duas URLs do sitemap.
+    </div>
+  </div>
+
+  <!-- ===== MATRIX ===== -->
+  <div class="section-head">
+    <span class="num">§1</span>
+    <h2>Vereditos por frente</h2>
+    <span class="count">7 atenção · 3 ok</span>
+  </div>
+  <div class="matrix">
+    <div class="mx warn"><span class="dot"></span><span class="name">home-build</span><span class="v">atenção</span></div>
+    <div class="mx ok"><span class="dot"></span><span class="name">home-seo</span><span class="v">ok</span></div>
+    <div class="mx warn"><span class="dot"></span><span class="name">fontes-impacto</span><span class="v">atenção</span></div>
+    <div class="mx warn"><span class="dot"></span><span class="name">indexacao-site</span><span class="v">atenção</span></div>
+    <div class="mx ok"><span class="dot"></span><span class="name">links-quebrados</span><span class="v">ok</span></div>
+    <div class="mx warn"><span class="dot"></span><span class="name">apis-multa</span><span class="v">atenção</span></div>
+    <div class="mx warn"><span class="dot"></span><span class="name">apis-painel-ia</span><span class="v">atenção</span></div>
+    <div class="mx warn"><span class="dot"></span><span class="name">conteudo-coerencia</span><span class="v">atenção</span></div>
+    <div class="mx warn"><span class="dot"></span><span class="name">conformidade</span><span class="v">atenção</span></div>
+    <div class="mx warn"><span class="dot"></span><span class="name">perf-504</span><span class="v">atenção</span></div>
+  </div>
+  <p class="lede">Os dois “ok” cobrem exatamente o que o redesign tocou (SEO da Home e links internos). As sete “atenção” concentram-se no fluxo pago de multa, na tipografia que não renderiza e em pequenas incoerências de texto/documentação.</p>
+
+  <!-- ===== ORDER OF WORK ===== -->
+  <div class="section-head">
+    <span class="num">§2</span>
+    <h2>Ordem de trabalho</h2>
+    <span class="count">crítico → melhoria</span>
+  </div>
+  <p class="lede">Faça os dois primeiros antes do próximo deploy do fluxo de multa. Os demais não bloqueiam o redesign e podem entrar no mesmo PR ou logo depois.</p>
+  <div class="order">
+    <ol>
+      <li>
+        <div class="what"><b>Travar a peça do recurso: exigir os 3 blocos da IA</b><span>Falha parcial hoje cobra o cliente e entrega documento sem cabeçalho. Trocar <code>partes.length&gt;0</code> por <code>a.ok &amp;&amp; b.ok &amp;&amp; c.ok</code> para cair no estorno.</span></div>
+        <span class="tag crit">crítico</span>
+      </li>
+      <li>
+        <div class="what"><b>Fechar o risco de 504 + cobrança órfã</b><span>Reduzir timeout por bloco (140s → 80–90s), exportar <code>maxDuration=170</code> na rota e confirmar <code>proxy_read_timeout 180s</code> no Nginx do VPS. Alinhar AbortController &lt; maxDuration &lt; Nginx.</span></div>
+        <span class="tag crit">crítico</span>
+      </li>
+      <li>
+        <div class="what"><b>Limpar o sitemap</b><span>Remover <code>/login</code> e <code>/cadastro</code> (sitemap.ts 52–53). Não tocar robots nem layouts.</span></div>
+        <span class="tag warn">rápido</span>
+      </li>
+      <li>
+        <div class="what"><b>Ligar as fontes ao Tailwind</b><span>Apontar <code>fontFamily</code> para <code>var(--font-inter)</code> / <code>var(--font-fraunces)</code>. O redesign tipográfico só renderiza depois disso. Validar visualmente em seguida.</span></div>
+        <span class="tag warn">visual</span>
+      </li>
+      <li>
+        <div class="what"><b>Tornar o limite do revisor atômico e à prova de falha</b><span>Substituir read-modify-write por UPDATE condicional; só chamar a OpenAI se afetou 1 linha; não engolir erro de incremento.</span></div>
+        <span class="tag warn">média</span>
+      </li>
+      <li>
+        <div class="what"><b>Acertar os textos do funil de pagamento</b><span>“Pagamento registrado!” → estado real; “12 horas” → janela folgada; suavizar “Vale a pena recorrer” e o prazo de 30 dias. Confirmar <code>PIX_RECEIVER_CITY</code> em produção.</span></div>
+        <span class="tag warn">média</span>
+      </li>
+      <li>
+        <div class="what"><b>Melhorias e documentação</b><span>Remover <code>force-dynamic</code> de <code>multas/page.tsx</code> (SSG perdido); corrigir comentários desatualizados (recurso.ts, indices, multas.ts); atualizar README/ESTADO-ATUAL para Public Sans + Newsreader.</span></div>
+        <span class="tag low">baixa</span>
+      </li>
+    </ol>
+  </div>
+
+  <!-- ===== CRITICAL ===== -->
+  <div class="section-head">
+    <span class="num">§3</span>
+    <h2>Crítico — corrigir antes do deploy do fluxo de multa</h2>
+    <span class="count">severidade alta · 2</span>
+  </div>
+  <div class="findings">
+
+    <article class="finding sev-alta">
+      <div class="f-head">
+        <span class="badge alta">alta</span>
+        <span class="badge front">apis-multa</span>
+        <span class="f-title">Falha parcial da IA entrega peça quebrada e cobra mesmo assim</span>
+      </div>
+      <div class="f-body">
+        <p><code>pecaCompletaIA</code> gera a peça em 3 blocos paralelos (A = endereçamento/qualificação/tempestividade/fatos; B = preliminares; C = mérito/pedidos/fecho) e concatena só os que voltaram <code>ok</code>: <code>const partes = [a,b,c].filter(p=>p.ok)…; if(partes.length&gt;0) return {ok:true,…}</code>. Se o bloco A falhar (timeout/erro) e os outros não, a função devolve <code>ok:true</code> com uma peça estruturalmente inutilizável — o recurso começa direto em “DAS PRELIMINARES”, sem endereçamento nem qualificação do requerente.</p>
+        <p>Como <code>r.ok</code> é <code>true</code>, a rota <code>recurso-ia</code> não estorna: o cliente perde 1 dos 3 recursos (já decrementado na reserva atômica) e recebe um documento imprestável para protocolar. Cobrança efetiva por entrega defeituosa.</p>
+        <div class="f-fix">
+          <span class="lbl">Correção</span>
+          Exigir os 3 blocos: <code>if (a.ok &amp;&amp; b.ok &amp;&amp; c.ok) return {ok:true, texto:[a,b,c].map(p=&gt;p.texto).join('\n\n')}; return (a.ok ? (b.ok ? c : b) : a)</code>. Assim a falha parcial cai no caminho <code>!r.ok</code>, que estorna e devolve o fallback determinístico. No mínimo, nunca aceitar peça sem o bloco A.
+        </div>
+        <div class="path">lib/ai/recurso.ts (linhas 160–168) · app/api/recurso-ia/route.ts (linhas 138–186)</div>
+      </div>
+    </article>
+
+    <article class="finding sev-alta">
+      <div class="f-head">
+        <span class="badge alta">alta</span>
+        <span class="badge front">perf-504</span>
+        <span class="f-title">504 do Nginx + cobrança órfã na geração completa</span>
+      </div>
+      <div class="f-body">
+        <p>O modo <code>completo</code> dispara 3 chamadas paralelas à OpenAI com <code>AbortController</code> de 140000 ms cada. Somado ao parse do body e aos round-trips ao Supabase (verificação de acesso, reserva atômica, insert de histórico), o pior caso fica colado no <code>proxy_read_timeout</code> do Nginx — documentado em ~180s, mas o valor não está fixado. Uma completion lenta pode estourar 180s e o Nginx devolve 504.</p>
+        <p>Como o servidor é Node self-hosted via PM2 (não serverless), não há <code>maxDuration</code> do Next que mate a request antes — ela fica pendurada até o Nginx cortar. A reserva do recurso é descontada <em>antes</em> da IA e o estorno só roda se a função retornar; num 504 o Nginx mata a request no meio, o estorno nunca executa, e o cliente é cobrado sem receber a peça.</p>
+        <div class="f-fix">
+          <span class="lbl">Correção</span>
+          Reduzir o timeout por bloco de 140000 → 80000–90000 ms (teto &lt; 180s com folga). Adicionar <code>export const maxDuration = 170</code> em <code>/api/recurso-ia</code> (em Node standalone o maxDuration aborta o handler, permitindo o estorno rodar). Confirmar no VPS que <code>proxy_read_timeout 180s</code> está explícito — o default do Nginx é 60s, e se ninguém elevou, as chamadas de 140s já dão 504 hoje. Alinhar: AbortController &lt; maxDuration &lt; proxy_read_timeout.
+        </div>
+        <div class="path">lib/ai/recurso.ts (linhas 161–163) · app/api/recurso-ia/route.ts</div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- ===== MEDIA ===== -->
+  <div class="section-head">
+    <span class="num">§4</span>
+    <h2>Média — corrigir, mas não bloqueia o redesign</h2>
+    <span class="count">severidade média · 8</span>
+  </div>
+  <div class="findings">
+
+    <article class="finding sev-media">
+      <div class="f-head">
+        <span class="badge media">média</span>
+        <span class="badge front">home-build · fontes-impacto</span>
+        <span class="f-title">As fontes do redesign não renderizam — variáveis definidas, nunca lidas</span>
+      </div>
+      <div class="f-body">
+        <p>O <code>app/layout.tsx</code> carrega Public Sans e Newsreader e as expõe só como as variáveis CSS <code>--font-inter</code> / <code>--font-fraunces</code> no <code>&lt;html&gt;</code>. Mas o <code>tailwind.config.ts</code> mapeia <code>font-sans → ["Inter",…]</code> e <code>font-display → ["Fraunces","Georgia","serif"]</code> com nomes literais, e nenhum CSS consome as variáveis (zero ocorrências em busca global — confirmado no código atual). O <code>next/font</code> auto-hospeda a família com nome gerado/hasheado, acessível só pela variável. O navegador procura “Inter”/“Fraunces” literais, não acha, e cai em <code>system-ui</code> / Georgia.</p>
+        <p>O defeito é anterior à troca; trocar Inter→Public Sans / Fraunces→Newsreader só muda qual fonte é baixada (e desperdiçada). Não quebra build, TS nem indexação — é visual. O comentário do layout (“sem quebra”) parte de premissa errada: manter o nome da variável não adianta se ela nunca foi ligada ao Tailwind.</p>
+        <div class="f-fix">
+          <span class="lbl">Correção</span>
+          Em <code>tailwind.config.ts</code>: <code>sans: ["var(--font-inter)","ui-sans-serif","system-ui","sans-serif"]</code> e <code>display: ["var(--font-fraunces)","Georgia","serif"]</code>. Sem mexer nos centenas de usos de <code>font-sans</code>/<code>font-display</code>. A mudança tipográfica latente vai aparecer de uma vez em todo o site — validar páginas-chave visualmente. Manter <code>display: swap</code>.
+        </div>
+        <div class="path">app/layout.tsx (linhas 16–19, 22, 29, 76) · tailwind.config.ts (linhas 30–31)</div>
+      </div>
+    </article>
+
+    <article class="finding sev-media">
+      <div class="f-head">
+        <span class="badge media">média</span>
+        <span class="badge front">indexacao-site</span>
+        <span class="f-title"><code>/login</code> e <code>/cadastro</code> no sitemap, mas bloqueados pelo robots</span>
+      </div>
+      <div class="f-body">
+        <p><code>/login</code> está no sitemap (linha 53) mas é <code>disallow</code> no robots (linha 107) e <code>noindex</code> no <code>app/login/layout.tsx</code>. Enviar uma URL bloqueada gera o aviso “Indexada, porém bloqueada pelo robots.txt” no Search Console. É ruído de relatório, não de-indexação de conteúdo de valor. Mesma situação para <code>/cadastro</code> (linha 52), de baixo valor de SEO.</p>
+        <div class="f-fix">
+          <span class="lbl">Correção</span>
+          Remover <code>${base}/login</code> (linha 53) e avaliar remover <code>/cadastro</code> (linha 52) do <code>staticRoutes</code>. Não mexer no robots nem nos layouts — só tirar as URLs bloqueadas do sitemap para limpar o aviso.
+        </div>
+        <div class="path">app/sitemap.ts (linhas 52–53)</div>
+      </div>
+    </article>
+
+    <article class="finding sev-media">
+      <div class="f-head">
+        <span class="badge media">média</span>
+        <span class="badge front">apis-painel-ia</span>
+        <span class="f-title">Limite de 3/mês do revisor é burlável e não confiável</span>
+      </div>
+      <div class="f-body">
+        <p>A contagem usa read-modify-write não atômico (<code>revisor_usos: usosMes + 1</code>): duas requisições simultâneas leem o mesmo <code>usosMes</code>, ambas passam no teste <code>usosMes &gt;= LIMITE_MES</code> e gravam o mesmo valor — o premium consegue &gt;3 revisões/mês. Pior: o incremento só ocorre <em>depois</em> de sucesso da OpenAI e dentro de um try/catch que engole o erro. Se o UPDATE falhar, o uso nunca é debitado — revisões ilimitadas e custo de tokens vazando, exatamente o que o limite deveria evitar.</p>
+        <div class="f-fix">
+          <span class="lbl">Correção</span>
+          Débito atômico e à prova de falha via UPDATE condicional (incrementa e checa numa só operação, com <code>returning</code>), e só chamar a OpenAI se afetou 1 linha. Não engolir o erro do incremento.
+        </div>
+        <div class="path">app/api/painel/revisar-peticao/route.ts (linhas 93, 122–129)</div>
+      </div>
+    </article>
+
+    <article class="finding sev-media">
+      <div class="f-head">
+        <span class="badge media">média</span>
+        <span class="badge front">perf-504</span>
+        <span class="f-title">Nenhuma rota de IA define <code>maxDuration</code> explícito</span>
+      </div>
+      <div class="f-body">
+        <p>Grep em todos os <code>route.ts</code> retorna só <code>runtime</code>/<code>dynamic</code>/<code>revalidate</code> — nenhum <code>maxDuration</code>. Para as rotas de IA, o handler depende só do AbortController interno e do corte do Nginx. <code>revisar-peticao</code> usa 55000 ms (seguro), mas a ausência de <code>maxDuration</code> deixa o alinhamento Next↔Nginx implícito e frágil a qualquer mudança futura de prompt/modelo que estique a latência.</p>
+        <div class="f-fix">
+          <span class="lbl">Correção</span>
+          Definir <code>export const maxDuration</code> nas duas rotas de IA (ex.: 170 em recurso-ia, 70 em revisar-peticao), documentando a regra AbortController &lt; maxDuration &lt; Nginx proxy_read_timeout.
+        </div>
+        <div class="path">app/api/recurso-ia/route.ts · app/api/painel/revisar-peticao/route.ts</div>
+      </div>
+    </article>
+
+    <article class="finding sev-media">
+      <div class="f-head">
+        <span class="badge media">média</span>
+        <span class="badge front">conteudo-coerencia</span>
+        <span class="f-title">Promessa de “e-mail em até 12 horas” num fluxo 100% manual</span>
+      </div>
+      <div class="f-body">
+        <p>A landing diz duas vezes “você recebe um e-mail em até 12 horas com o acesso liberado”. A liberação é manual: o cliente entra como <code>aguardando</code> e só o admin ativa no painel. Nada no código dispara e-mail nem garante 12h. SLA fixo de 12h num fluxo manual tende a gerar reclamação/chargeback quando o pagamento cai fora do horário comercial. O produto-irmão assume <code>activationHours = 48</code>.</p>
+        <div class="f-fix">
+          <span class="lbl">Correção</span>
+          Trocar “12 horas” por janela folgada (“em até 24 horas úteis”) ou remover o número (“assim que confirmarmos o pagamento”). Idealmente automatizar o disparo; enquanto não houver automação, não prometer hora fixa.
+        </div>
+        <div class="path">components/multas/RecursoMultaLanding.tsx (~linhas 1562, 1619)</div>
+      </div>
+    </article>
+
+    <article class="finding sev-media">
+      <div class="f-head">
+        <span class="badge media">média</span>
+        <span class="badge front">conteudo-coerencia</span>
+        <span class="f-title">“Pagamento registrado!” afirma um fato que o sistema não verificou</span>
+      </div>
+      <div class="f-body">
+        <p>O botão “Já paguei” só executa <code>setStep('done')</code> e a tela seguinte exibe “Pagamento registrado!”. O pagamento não foi registrado — o Pix é cego e a confirmação é manual pelo admin. O texto pode induzir o usuário a achar que pagou mesmo sem ter pago, ou a cobrar liberação imediata.</p>
+        <div class="f-fix">
+          <span class="lbl">Correção</span>
+          Trocar o título por algo que descreva o estado real: “Pedido recebido — confirmando o seu Pix” ou “Assim que o Pix cair, liberamos o seu acesso”. Alinhar o restante do texto a essa confirmação pendente.
+        </div>
+        <div class="path">components/multas/RecursoMultaLanding.tsx (~linhas 1549, 1608)</div>
+      </div>
+    </article>
+
+    <article class="finding sev-media">
+      <div class="f-head">
+        <span class="badge media">média</span>
+        <span class="badge front">conformidade</span>
+        <span class="f-title">Tom publicitário com risco CDC/OAB antes da análise do caso</span>
+      </div>
+      <div class="f-body">
+        <p>O card “Vale a pena recorrer” e o subtítulo “Vícios no auto ou na notificação são fundamentos sólidos para contestar” aparecem no hero de forma estática, <em>antes</em> de qualquer análise do caso concreto — sugerindo prejulgamento favorável genérico. Com “Multado injustamente?” e “proteja a sua CNH”, há indução leve de que recorrer compensa sempre, tangenciando publicidade que cria expectativa de êxito (CDC art. 37; captação imoderada estilo OAB).</p>
+        <div class="f-fix">
+          <span class="lbl">Correção</span>
+          Suavizar: título “Vale a pena recorrer” → “Quando vale recorrer”; subtítulo condicional (“…<em>podem</em> ser fundamentos para contestar — depende do seu caso”). Melhoria de conformidade; não afeta build, indexação nem URL.
+        </div>
+        <div class="path">components/multas/RecursoMultaLanding.tsx (linhas 606, 728–732, 1903)</div>
+      </div>
+    </article>
+
+    <article class="finding sev-media">
+      <div class="f-head">
+        <span class="badge media">média</span>
+        <span class="badge front">conformidade</span>
+        <span class="f-title">Prazo de “ao menos 30 dias” pode induzir à perda de prazo</span>
+      </div>
+      <div class="f-body">
+        <p>O bloco PRAZO afirma “(em regra, ao menos 30 dias)”. Os prazos administrativos de trânsito variam por fase e órgão — a notificação fixa o prazo, frequentemente 30 dias, mas não é garantia universal. Como a peça pode ser protocolada pelo próprio leigo, uma afirmação numérica genérica pode levar à perda de prazo se o órgão fixar prazo menor.</p>
+        <div class="f-fix">
+          <span class="lbl">Correção</span>
+          Ancorar ao documento real: “O prazo consta da própria notificação que você recebeu — confira a data-limite nela e não confie em prazos genéricos.” Mantém a urgência sem afirmar um número que pode estar errado.
+        </div>
+        <div class="path">components/multas/RecursoMultaLanding.tsx (linhas 2045–2049)</div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- ===== BAIXA ===== -->
+  <div class="section-head">
+    <span class="num">§5</span>
+    <h2>Baixa — documentação, performance e confirmações</h2>
+    <span class="count">severidade baixa · 12</span>
+  </div>
+
+  <p class="lede"><strong>Uma melhoria de performance real entre as baixas:</strong></p>
+  <div class="findings">
+    <article class="finding sev-baixa">
+      <div class="f-head">
+        <span class="badge baixa">baixa</span>
+        <span class="badge front">perf-504</span>
+        <span class="f-title"><code>force-dynamic</code> em <code>multas/page.tsx</code> desperdiça SSG</span>
+      </div>
+      <div class="f-body">
+        <p>A página tem <code>export const dynamic = "force-dynamic"</code> (linha 46) justificado por ser “funil interativo”. Mas a interatividade vive no client component <code>RecursoMultaLanding</code>, que só consome APIs via fetch no browser — o shell não lê cookies, headers nem dados por request. Sem motivo de runtime para forçar dinamismo; a página poderia ser estática e servir mais rápido, aliviando o Node. Não causa 504, mas é SSG perdido sem ganho.</p>
+        <div class="f-fix">
+          <span class="lbl">Correção</span>
+          Remover <code>force-dynamic</code> e deixar estática (ou ISR). Canonical para <code>multas.advaqui.com</code> e a fonte via <code>next/font</code> permanecem válidos em SSG. Testar o build para confirmar que nada na árvore do shell força dinamismo.
+        </div>
+        <div class="path">app/multas/page.tsx (linha 46)</div>
+      </div>
+    </article>
+  </div>
+
+  <p class="lede" style="margin-top:30px"><strong>Comentários/docs desatualizados</strong> (código correto, manutenção induzida a erro): doc-block de <code>recurso.ts</code> diz “DOIS blocos” mas executa três (linhas 121–126, 159); cabeçalho de <code>api/indices</code> contradiz a própria implementação sobre incluir o mês-base no produtório (validar a convenção juridicamente); cabeçalho de <code>multas.ts</code> diz “determinístico, sem IA” quando o caminho padrão é OpenAI e o template é só fallback; <code>README.md</code> e <code>ESTADO-ATUAL.md</code> ainda citam Inter + Fraunces.</p>
+
+  <p class="lede" style="margin-top:18px"><strong>Confirmações registradas (auditado, nada a fazer):</strong> Home com H1 único e hierarquia de headings correta; conteúdo rico server-rendered com ISR <code>revalidate=600</code>; links internos íntegros e crawláveis via <code>next/link</code>; metadata herdada layout→home correta com canonical próprio; <code>robots.ts</code> libera todo conteúdo público; três ferramentas novas (<code>/correcao-monetaria</code>, <code>/seguro-desemprego</code>, <code>/revisor-peticao</code>) indexáveis e no sitemap; gating do recurso pago à prova de corrida e sem vazamento entre clientes (UUID v4, filtros por <code>access_token</code>); disclaimer “não é escritório” presente; persona de IA sem “advogado”; vedação de promessa de resultado consistente em camadas; pesos de fonte 400–700 válidos; <code>display: swap</code> mitigando FOUT.</p>
+
+  <p class="lede" style="margin-top:18px"><strong>Observações pontuais a confirmar:</strong> canonical da Home aponta para <code>https://advaqui.com</code> sem barra final — verificar via <code>curl -I</code> que a URL servida em produção bate exatamente (sem redirect trailing-slash). E confirmar a env <code>PIX_RECEIVER_CITY</code> em produção: o default <code>JEQUITINHONHA</code> no payload Pix de um produto vendido como nacional destoa e pode gerar desconfiança no pagamento — deve bater com o cadastro do titular da conta.</p>
+
+  <footer>
+    <span>AdvAqui · auditoria pós-redesign da Home</span>
+    <span>24 achados · 10 frentes · 2 críticos · build/URL/indexação confirmados OK</span>
+  </footer>
+
+</div>

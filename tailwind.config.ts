@@ -27,8 +27,12 @@ const config: Config = {
         }
       },
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-        display: ["Fraunces", "Georgia", "serif"]
+        // Ligado às CSS vars do next/font (app/layout.tsx). O next/font
+        // auto-hospeda a fonte sob um nome com hash e a expõe SÓ via a
+        // variável — por isso o mapeamento precisa ser var(--...), não o
+        // nome literal da família (senão cai no fallback system-ui/Georgia).
+        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["var(--font-fraunces)", "Georgia", "serif"]
       },
       boxShadow: {
         card: "0 1px 2px rgba(15,27,45,0.04), 0 4px 12px rgba(15,27,45,0.06)",

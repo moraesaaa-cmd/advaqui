@@ -83,6 +83,12 @@ export default function robots(): MetadataRoute.Robots {
   for (let i = 0; i < CALCULADORAS.length; i++) {
     sitemaps.push(`${base}/sitemap-calculadoras-cidades/sitemap/${i}.xml`);
   }
+  // Recurso de multa × cidade e Para advogados × cidade — 1 sitemap por UF (27 cada).
+  // Uma URL indexável por município para ranquear localmente.
+  for (let i = 0; i < STATES.length; i++) {
+    sitemaps.push(`${base}/sitemap-recurso-multa-cidades/sitemap/${i}.xml`);
+    sitemaps.push(`${base}/sitemap-para-advogados-cidades/sitemap/${i}.xml`);
+  }
   sitemaps.push(`${base}/sitemap-jurisprudencia.xml`);
 
   // Paths permitidos/bloqueados — definidos uma vez e reutilizados por todos
@@ -97,7 +103,9 @@ export default function robots(): MetadataRoute.Robots {
     "/modelos/",
     "/quanto-custa/",
     "/tribunais/",
-    "/calculadoras/"
+    "/calculadoras/",
+    "/recurso-de-multa/",
+    "/para-advogados/"
   ];
   const disallow = [
     "/admin",

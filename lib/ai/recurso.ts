@@ -157,13 +157,22 @@ export async function pecaCompletaIA(d: DadosRecurso) {
     "\n\nDesenvolva ao máximo, com parágrafos longos e linguagem jurídica formal. Não economize palavras.";
 
   // 3 blocos paralelos → peça com 12+ páginas. Concatena na ordem A, B, C.
+  // Timeout por bloco = 85s: com os três em paralelo, o pior caso (~85s +
+  // overhead de Supabase) fica com folga sob o proxy_read_timeout do Nginx
+  // (180s). Antes eram 140s, perigosamente colados no corte do Nginx → 504.
   const [a, b, c] = await Promise.all([
-    chamarOpenAI(sysA, ctx + instrucao, 6000, 0.6, 140000),
-    chamarOpenAI(sysB, ctx + instrucao, 6000, 0.6, 140000),
-    chamarOpenAI(sysC, ctx + instrucao, 8000, 0.6, 140000)
+    chamarOpenAI(sysA, ctx + instrucao, 6000, 0.6, 85000),
+    chamarOpenAI(sysB, ctx + instrucao, 6000, 0.6, 85000),
+    chamarOpenAI(sysC, ctx + instrucao, 8000, 0.6, 85000)
   ]);
 
-  const partes = [a, b, c].filter((p) => p.ok).map((p) => (p as { texto: string }).texto);
-  if (partes.length > 0) return { ok: true as const, texto: partes.join("\n\n") };
-  return a; // todos falharam → repassa o erro (sem_chave/timeout/etc.)
+  // Exigimos os TRÊS blocos. Uma peça sem a abertura (bloco A: endereçamento,
+  // qualificação e fatos) ou sem o mérito (bloco C) é imprestável para
+  // protocolar. Numa falha parcial retornamos !ok — a rota então ESTORNA o
+  // recurso pago e cai no fallback determinístico, em vez de cobrar por uma
+  // peça estruturalmente quebrada.
+  if (a.ok && b.ok && c.ok) {
+    return { ok: true as const, texto: [a.texto, b.texto, c.texto].join("\n\n") };
+  }
+  return ([a, b, c].find((p) => !p.ok) || a) as { ok: false; erro: string };
 }

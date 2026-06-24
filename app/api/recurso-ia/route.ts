@@ -12,6 +12,10 @@ import { createAdminClient } from "@/lib/supabase/admin";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+// Geração da peça completa = até ~85s por bloco (3 em paralelo). maxDuration
+// dá folga para o Next abortar ANTES do Nginx (proxy_read_timeout 180s), de
+// modo que o estorno do recurso rode mesmo no pior caso, evitando cobrança órfã.
+export const maxDuration = 170;
 
 const WINDOW_MS = 60_000;
 const MAX_ANALISE = 8; // análises por IP/min
