@@ -120,6 +120,12 @@ const GROUPS: Group[] = [
         Icon: Route
       },
       {
+        href: "/divorcio",
+        label: "Divórcio: cartório ou Justiça?",
+        desc: "4 perguntas dizem se o seu divórcio pode ser em cartório ou precisa da Justiça.",
+        Icon: Scale
+      },
+      {
         href: "/glossario",
         label: "Glossário jurídico",
         desc: "Termos do direito traduzidos para o português do dia a dia.",
