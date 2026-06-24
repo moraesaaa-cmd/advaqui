@@ -1559,7 +1559,7 @@ export function RecursoMultaLanding(): ReactNode {
                   Já paguei →
                 </button>
                 <div style={{ fontSize: 12, color: "#9AA0AA", marginTop: 12 }}>
-                  Seu acesso é liberado após a confirmação do pagamento.
+                  Após o pagamento, você recebe um e-mail em até 12 horas com o acesso liberado.
                 </div>
               </div>
             )}
@@ -1616,7 +1616,7 @@ export function RecursoMultaLanding(): ReactNode {
                     margin: "0 auto 8px"
                   }}
                 >
-                  Seu acesso será liberado após a confirmação do pagamento.
+                  Você receberá um e-mail em até 12 horas confirmando a liberação do seu acesso.
                 </p>
                 <p
                   style={{

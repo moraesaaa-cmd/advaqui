@@ -69,6 +69,12 @@ export type LawyerRow = {
   paused_reason?: string | null;
   suspension_reason?: string | null;
 
+  // ----- Revisor de petições por IA (migration 0013) ----------------------
+  /** Nº de revisões por IA usadas no mês de referência (controle de custo). */
+  revisor_usos?: number | null;
+  /** Mês de referência das revisões no formato AAAA-MM. */
+  revisor_usos_ref?: string | null;
+
   /** Resumo curto (até 160 chars) exibido no topo da página. */
   short_summary?: string | null;
   /** Slugs das áreas principais (até 3) — destacadas. */

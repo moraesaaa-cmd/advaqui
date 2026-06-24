@@ -19,14 +19,14 @@ Este documento registra as escolhas feitas ao longo da construção do AdvAqui, 
 | Item | Valor | Justificativa |
 |---|---|---|
 | Plano gratuito | R$ 0 | Capta cadastros sem fricção, gera massa para tráfego SEO |
-| Plano premium | R$ 59,90/mês | Igual ao Jurídico Certo (R$ 59,00), mantém competitividade |
+| Plano premium | R$ 19,90/mês | Preço vigente no site (lib/config.ts PIX_AMOUNT=19.90); abaixo dos concorrentes p/ ganhar base |
 | Pagamento | Apenas Pix | Zero risco de chargeback, zero taxa de gateway, simples para advogado leigo |
 | Ativação | Manual em até 48h pelo admin | Modelo bootstrap — não exige integração com webhook de pagamento |
 | Fidelidade | Nenhuma, cancelamento livre | Diferencia do Jurídico Certo que tem reclamações de dificuldade de cancelar |
 | Renovação | Manual (nova ativação a cada 30 dias) | Sem dor de chargeback, sem assinatura quebrada |
 | Chave Pix | `68852fb1-adfe-4656-bb9a-63d20cd73ce1` (chave aleatória) | Fixa, configurada em `.env.local` |
 
-**Por que Pix manual ao invés de assinatura recorrente** — assinatura recorrente exige integração com gateway (Stripe, MercadoPago, OpenPix), webhooks, idempotência, retry de falhas, etc. Pix manual é o caminho mais simples para começar e aceitável para R$ 59,90/mês com poucas dezenas de advogados.
+**Por que Pix manual ao invés de assinatura recorrente** — assinatura recorrente exige integração com gateway (Stripe, MercadoPago, OpenPix), webhooks, idempotência, retry de falhas, etc. Pix manual é o caminho mais simples para começar e aceitável para R$ 19,90/mês com poucas dezenas de advogados.
 
 **Quando trocar por Pix recorrente automatizado** — quando passar de 50 advogados pagantes e o trabalho manual da ativação virar gargalo. Pix Automático foi regulamentado pelo Bacen e tem APIs como OpenPix/Woovi.
 

@@ -85,6 +85,22 @@ export async function POST(req: Request) {
     );
   }
 
+  // Limite mensal de uso do revisor por IA (controle de custo do plano premium).
+  const LIMITE_MES = 3;
+  const mesRef = new Date().toISOString().slice(0, 7);
+  const usosMes =
+    current.lawyer.revisor_usos_ref === mesRef ? current.lawyer.revisor_usos ?? 0 : 0;
+  if (usosMes >= LIMITE_MES) {
+    return NextResponse.json(
+      {
+        ok: false,
+        code: "limite",
+        error: "Você atingiu o limite de revisões por IA deste mês. Tente novamente no próximo mês."
+      },
+      { status: 429 }
+    );
+  }
+
   const r = await revisarPeticaoIA(texto, modo);
   if (!r.ok) {
     const code =
@@ -100,6 +116,16 @@ export async function POST(req: Request) {
         ? "A revisão demorou demais. Tente um texto menor."
         : "Não foi possível revisar agora. Tente novamente.";
     return NextResponse.json({ ok: false, code, error }, { status: 503 });
+  }
+
+  // Contabiliza o uso do mês (silencioso) — controle de custo do plano premium.
+  try {
+    await current.admin
+      .from("lawyers")
+      .update({ revisor_usos: usosMes + 1, revisor_usos_ref: mesRef })
+      .eq("id", current.lawyer.id);
+  } catch {
+    /* não bloqueia a entrega já gerada */
   }
 
   return NextResponse.json({ ok: true, texto: r.texto, modo });

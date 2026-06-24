@@ -175,22 +175,67 @@ export function RecursoPainelView() {
     if (navigator.clipboard) navigator.clipboard.writeText(texto).catch(() => undefined);
   }, []);
 
-  const imprimir = useCallback((texto: string) => {
-    const w = window.open("", "_blank", "width=820,height=1000");
-    if (!w) return;
-    const safe = texto.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    w.document.write(
-      `<!doctype html><html><head><meta charset="utf-8"><title>Recurso de Multa</title>` +
-        `<style>body{font-family:Georgia,'Times New Roman',serif;line-height:1.65;color:#16181D;max-width:720px;margin:40px auto;padding:0 24px;white-space:pre-wrap;font-size:15px;}@media print{body{margin:0;}}</style>` +
-        `</head><body>${safe}</body></html>`
-    );
-    w.document.close();
-    w.focus();
-    w.setTimeout(() => w.print(), 300);
-  }, []);
-
   const restantes = acesso?.recursos_restantes ?? 0;
   const podeGerar = acesso?.status === "ativo" && restantes > 0;
+
+  // Documento HTML formatado da peça (margens ABNT, títulos centralizados,
+  // parágrafos justificados). Reaproveitado por imprimir (PDF) e baixar Word.
+  const corpoHtml = useCallback((texto: string) => {
+    const esc = (s: string) =>
+      s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return texto
+      .split(/\n/)
+      .map((linha) => {
+        const t = linha.trim();
+        if (!t) return "";
+        const ehTitulo =
+          t.length <= 80 && t === t.toUpperCase() && /[A-ZÀ-Ú]/.test(t);
+        if (ehTitulo) {
+          return `<p style="text-align:center;font-weight:bold;margin:20px 0 10px;">${esc(t)}</p>`;
+        }
+        return `<p style="text-align:justify;text-indent:2.5em;margin:0 0 10px;line-height:1.6;">${esc(t)}</p>`;
+      })
+      .join("");
+  }, []);
+
+  const docHtml = useCallback(
+    (texto: string) =>
+      `<!doctype html><html><head><meta charset="utf-8"><title>Recurso de Multa — AdvAqui</title>` +
+      `<style>@page{margin:2.5cm 2cm;}body{font-family:'Times New Roman',Georgia,serif;font-size:12pt;color:#16181D;max-width:760px;margin:0 auto;padding:24px;}</style>` +
+      `</head><body>${corpoHtml(texto)}</body></html>`,
+    [corpoHtml]
+  );
+
+  const imprimir = useCallback(
+    (texto: string) => {
+      const w = window.open("", "_blank", "width=820,height=1000");
+      if (!w) return;
+      w.document.write(docHtml(texto));
+      w.document.close();
+      w.focus();
+      w.setTimeout(() => w.print(), 300);
+    },
+    [docHtml]
+  );
+
+  const baixarWord = useCallback(
+    (texto: string) => {
+      const html =
+        `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"></head><body>` +
+        corpoHtml(texto) +
+        `</body></html>`;
+      const blob = new Blob(["﻿", html], { type: "application/msword" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "recurso-de-multa.doc";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    },
+    [corpoHtml]
+  );
 
   const wrap: CSSProperties = { maxWidth: 760, margin: "0 auto", padding: "0 20px" };
   const input: CSSProperties = {
@@ -353,9 +398,17 @@ export function RecursoPainelView() {
                 </div>
               )}
               {acesso.status === "ativo" && restantes === 0 && (
-                <div style={{ marginTop: 16, fontSize: 13.5, color: "#5A5F6A", background: "#F7F8FA", border: "1px solid #E6E7EB", borderRadius: 10, padding: "12px 15px" }}>
-                  Você já usou os 3 recursos do seu plano. As peças geradas continuam disponíveis
-                  abaixo para baixar quando quiser.
+                <div style={{ marginTop: 16, background: "#F7F8FA", border: "1px solid #E6E7EB", borderRadius: 10, padding: "14px 16px" }}>
+                  <p style={{ fontSize: 13.5, color: "#5A5F6A", margin: "0 0 12px" }}>
+                    Você já usou os 3 recursos do seu plano. As peças geradas continuam disponíveis
+                    abaixo para baixar quando quiser. Precisa de mais?
+                  </p>
+                  <a
+                    href="/multas#planos"
+                    style={{ ...cta, display: "inline-block", textDecoration: "none", padding: "12px 22px", fontSize: 14.5 }}
+                  >
+                    Comprar mais recursos
+                  </a>
                 </div>
               )}
             </div>
@@ -419,9 +472,10 @@ export function RecursoPainelView() {
               <div ref={novaRef} style={{ background: "#fff", border: `2px solid ${ACCENT}`, borderRadius: 16, padding: "clamp(20px,4vw,28px)", marginBottom: 22 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexWrap: "wrap", gap: 10 }}>
                   <span style={{ fontFamily: DISPLAY, fontWeight: 700, fontSize: 16, color: "#1E8E54" }}>✓ Recurso gerado</span>
-                  <div style={{ display: "flex", gap: 8 }}>
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                     <button type="button" onClick={() => copiar(novaPeca)} style={{ background: DARK, color: "#fff", border: "none", padding: "9px 16px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: SANS }}>Copiar</button>
-                    <button type="button" onClick={() => imprimir(novaPeca)} style={{ ...cta, padding: "9px 16px", fontSize: 13 }}>Imprimir / PDF</button>
+                    <button type="button" onClick={() => baixarWord(novaPeca)} style={{ background: "#1E5BB8", color: "#fff", border: "none", padding: "9px 16px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: SANS }}>Baixar Word</button>
+                    <button type="button" onClick={() => imprimir(novaPeca)} style={{ ...cta, padding: "9px 16px", fontSize: 13 }}>Baixar PDF</button>
                   </div>
                 </div>
                 <div style={{ whiteSpace: "pre-wrap", fontSize: 14, lineHeight: 1.7, color: "#16181D", maxHeight: 420, overflow: "auto", background: "#F7F8FA", border: "1px solid #E6E7EB", borderRadius: 10, padding: "18px 20px" }}>
@@ -447,9 +501,10 @@ export function RecursoPainelView() {
                           {new Date(p.created_at).toLocaleDateString("pt-BR")}
                         </span>
                       </summary>
-                      <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+                      <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
                         <button type="button" onClick={() => copiar(p.texto)} style={{ background: DARK, color: "#fff", border: "none", padding: "8px 14px", borderRadius: 8, fontSize: 12.5, fontWeight: 600, cursor: "pointer", fontFamily: SANS }}>Copiar</button>
-                        <button type="button" onClick={() => imprimir(p.texto)} style={{ ...cta, padding: "8px 14px", fontSize: 12.5 }}>Imprimir / PDF</button>
+                        <button type="button" onClick={() => baixarWord(p.texto)} style={{ background: "#1E5BB8", color: "#fff", border: "none", padding: "8px 14px", borderRadius: 8, fontSize: 12.5, fontWeight: 600, cursor: "pointer", fontFamily: SANS }}>Word</button>
+                        <button type="button" onClick={() => imprimir(p.texto)} style={{ ...cta, padding: "8px 14px", fontSize: 12.5 }}>PDF</button>
                       </div>
                       <div style={{ whiteSpace: "pre-wrap", fontSize: 13.5, lineHeight: 1.7, color: "#2A2E36", maxHeight: 360, overflow: "auto", background: "#F7F8FA", border: "1px solid #E6E7EB", borderRadius: 10, padding: "16px 18px", marginBottom: 14 }}>
                         {p.texto}
