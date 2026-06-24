@@ -18,6 +18,8 @@ import {
   PiggyBank,
   Home,
   Compass,
+  Radar,
+  CalendarCheck,
   ArrowRight
 } from "lucide-react";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -151,6 +153,18 @@ const GROUPS: Group[] = [
         label: "Divórcio: cartório ou Justiça?",
         desc: "4 perguntas dizem se o seu divórcio pode ser em cartório ou precisa da Justiça.",
         Icon: Scale
+      },
+      {
+        href: "/processos",
+        label: "Consulta de processos",
+        desc: "Acompanhe o andamento pelo número (CNJ), direto da base pública do DataJud.",
+        Icon: Radar
+      },
+      {
+        href: "/agenda",
+        label: "Agendar uma consulta",
+        desc: "Peça um horário com advogado — diga a área, o assunto e quando prefere.",
+        Icon: CalendarCheck
       },
       {
         href: "/glossario",
