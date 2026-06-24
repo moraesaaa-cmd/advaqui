@@ -119,8 +119,8 @@ export default function PlanosPage() {
           }}
         />
         <div className="relative container-tight py-14 md:py-20">
-          <div className="max-w-3xl">
-            <div className="flex flex-wrap items-center gap-2 mb-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="flex flex-wrap items-center justify-center gap-2 mb-4">
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white/15 text-white">
                 <Star className="w-3.5 h-3.5 fill-current" aria-hidden />
                 Planos AdvAqui

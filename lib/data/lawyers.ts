@@ -30,11 +30,19 @@ import { PIX } from "@/lib/config";
 
 export { type Lawyer, mapLawyerRow };
 
-// Perfil de rede exibido em cidades SEM advogado, para nenhuma pagina ficar vazia.
-const FALLBACK_LAWYER_SLUG = "kellsons-de-moraes-oliveira";
-let _fallbackCache: Promise<Lawyer | null> | undefined;
-function getFallbackLawyer(): Promise<Lawyer | null> {
-  if (!_fallbackCache) _fallbackCache = findLawyerBySlug(FALLBACK_LAWYER_SLUG);
+// Perfis de rede exibidos em páginas SEM advogado, para nenhuma página
+// (cidade OU cidade+área) ficar vazia.
+const FALLBACK_LAWYER_SLUGS = [
+  "kellsons-de-moraes-oliveira",
+  "barbara-de-oliveira-silva"
+];
+let _fallbackCache: Promise<Lawyer[]> | undefined;
+function getFallbackLawyers(): Promise<Lawyer[]> {
+  if (!_fallbackCache) {
+    _fallbackCache = Promise.all(
+      FALLBACK_LAWYER_SLUGS.map((s) => findLawyerBySlug(s))
+    ).then((arr) => arr.filter((l): l is Lawyer => Boolean(l)));
+  }
   return _fallbackCache;
 }
 
@@ -162,8 +170,7 @@ export async function getLawyersForCity(
   // depois alfabético pelo nome.
   // FALLBACK_EMPTY_CITY: nenhuma cidade fica vazia.
   if (matched.length === 0) {
-    const fb = await getFallbackLawyer();
-    if (fb) return [fb];
+    return await getFallbackLawyers();
   }
   return matched.sort((a, b) => {
     const aPrem = a.planStatus === "active" ? 1 : 0;
@@ -185,7 +192,12 @@ export async function getLawyersBySpecialty(
   specialty: string
 ): Promise<Lawyer[]> {
   const all = await getLawyersForCity(uf, citySlug);
-  return all.filter((l) => l.specialties.includes(specialty));
+  const filtered = all.filter((l) => l.specialties.includes(specialty));
+  // Nenhuma página de área fica vazia — cai nos perfis de rede.
+  if (filtered.length === 0) {
+    return await getFallbackLawyers();
+  }
+  return filtered;
 }
 
 /**
