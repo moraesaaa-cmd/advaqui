@@ -133,7 +133,7 @@ export async function POST(req: Request) {
     );
   }
 
-  // Gerou a peça paga: desconta 1 do plano do cliente.
+  // Gerou a peça paga: desconta 1 do plano do cliente e guarda no histórico.
   let restantes: number | undefined;
   if (cliente) {
     restantes = Math.max(0, cliente.recursos_restantes - 1);
@@ -143,6 +143,15 @@ export async function POST(req: Request) {
         .from("recurso_clientes")
         .update({ recursos_restantes: restantes })
         .eq("id", cliente.id);
+      // Persiste a peça para o cliente rever/baixar no painel (/recurso/painel).
+      // Se a tabela ainda não existir (migration 0012 pendente), ignora.
+      await admin.from("recurso_pecas").insert({
+        cliente_id: cliente.id,
+        fase: dados.fase || null,
+        infracao: dados.infracao || null,
+        titulo: null,
+        texto: r.texto
+      });
     } catch {
       /* não bloqueia a entrega já gerada */
     }

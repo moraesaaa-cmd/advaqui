@@ -333,6 +333,20 @@ export type RecursoClienteRow = {
 };
 
 /**
+ * Peça de recurso gerada por IA dentro do painel do cliente de multa.
+ * Histórico para o cliente rever/baixar (até 3, controlado por recursos_restantes).
+ */
+export type RecursoPecaRow = {
+  id: string;
+  created_at: string;
+  cliente_id: string;
+  fase: string | null;
+  infracao: string | null;
+  titulo: string | null;
+  texto: string;
+};
+
+/**
  * Versão pública de um perfil de advogado, sem CPF.
  * Use sempre que renderizar dados publicamente (diretório, perfil).
  */
@@ -466,6 +480,13 @@ export type Database = {
         Row: RecursoClienteRow;
         Insert: Partial<RecursoClienteRow> & { email: string };
         Update: Partial<RecursoClienteRow>;
+        Relationships: [];
+      };
+      // Recurso de multa — peças geradas no painel do cliente (migration 0012)
+      recurso_pecas: {
+        Row: RecursoPecaRow;
+        Insert: Partial<RecursoPecaRow> & { cliente_id: string; texto: string };
+        Update: Partial<RecursoPecaRow>;
         Relationships: [];
       };
     };
