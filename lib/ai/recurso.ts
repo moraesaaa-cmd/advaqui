@@ -130,34 +130,40 @@ export async function pecaCompletaIA(d: DadosRecurso) {
   const sysA =
     PERSONA_PECA +
     REGRAS +
-    "\n\nNESTA RESPOSTA, redija APENAS a PRIMEIRA METADE da peça, desenvolvendo CADA seção em vários parágrafos densos (sem resumir):\n" +
+    "\n\nNESTA RESPOSTA, redija APENAS a ABERTURA da peça, cada seção com vários parágrafos longos e densos:\n" +
     "1. ENDEREÇAMENTO — à autoridade/órgão competente conforme a fase.\n" +
     "2. QUALIFICAÇÃO DO REQUERENTE — com os dados fornecidos; onde faltar, use marcadores [ ].\n" +
-    "3. DA TEMPESTIVIDADE — discorra sobre os prazos do CTB e o direito de recorrer.\n" +
-    "4. DA SÍNTESE DOS FATOS — narre a autuação de forma circunstanciada.\n" +
-    "5. DAS PRELIMINARES — desenvolva, em profundidade, as nulidades e vícios formais do auto e da notificação (inclua a exigência de dupla notificação — Súmula 312 do STJ — e os requisitos do art. 280 do CTB).\n" +
-    "ENCERRE após as preliminares. NÃO escreva o mérito, os pedidos nem o fecho — virão em seguida.";
+    "3. DA TEMPESTIVIDADE E DO CABIMENTO — discorra com profundidade sobre os prazos do CTB, o direito de recorrer e o duplo grau na esfera administrativa.\n" +
+    "4. DA SÍNTESE DOS FATOS — narre a autuação de forma minuciosa e circunstanciada.\n" +
+    "ENCERRE após os fatos. NÃO escreva preliminares, mérito, pedidos nem fecho — virão depois.";
 
   const sysB =
     PERSONA_PECA +
     REGRAS +
-    "\n\nESTA É A CONTINUAÇÃO (SEGUNDA METADE) de um recurso já iniciado (endereçamento, fatos e preliminares já foram redigidos). NÃO repita o endereçamento nem a qualificação. Comece DIRETAMENTE no título 'DO MÉRITO' e redija, com MUITA profundidade:\n" +
-    "6. DO MÉRITO — desenvolva NO MÍNIMO 4 teses, cada uma com 4 ou mais parágrafos: explique o conceito jurídico, cite o dispositivo legal, relacione ao caso, traga o entendimento doutrinário e jurisprudencial (genérico e honesto) e conclua. Discorra sobre o devido processo legal, a ampla defesa e o contraditório (art. 5º, LIV e LV, da CF), a presunção de legitimidade do ato administrativo e seus LIMITES, e os princípios da legalidade, da motivação, da proporcionalidade e da razoabilidade.\n" +
-    "7. DA FUNDAMENTAÇÃO JURÍDICA — aprofunde os fundamentos legais e principiológicos.\n" +
-    "8. DOS PEDIDOS — requeira o cancelamento/arquivamento do auto, com pedidos subsidiários.\n" +
-    "9. FECHO — termos em que pede deferimento, local, data e espaço para assinatura.\n" +
-    "Quando faltarem dados concretos, faça VOLTAS ARGUMENTATIVAS (argumente em tese, com princípios e doutrina), mantendo a peça longa e robusta.";
+    "\n\nESTA É A CONTINUAÇÃO de um recurso já iniciado (endereçamento, qualificação e fatos já redigidos). NÃO repita essas seções. Comece DIRETAMENTE no título 'DAS PRELIMINARES' e desenvolva, com MUITA profundidade (vários parágrafos por tópico):\n" +
+    "DAS PRELIMINARES — nulidades e vícios formais do auto de infração e das notificações: ausência ou irregularidade da dupla notificação (Súmula 312 do STJ; arts. 280, 281 e 282 do CTB), falta de requisitos do auto, cerceamento de defesa, vícios de motivação e de intimação. Explique cada conceito, cite o dispositivo, relacione ao caso e conclua. Faça VOLTAS ARGUMENTATIVAS quando faltarem dados. ENCERRE após as preliminares — o mérito vem depois.";
+
+  const sysC =
+    PERSONA_PECA +
+    REGRAS +
+    "\n\nESTA É A PARTE FINAL de um recurso já iniciado (abertura e preliminares já redigidas). NÃO repita as seções anteriores. Comece DIRETAMENTE no título 'DO MÉRITO' e redija com a MÁXIMA profundidade:\n" +
+    "DO MÉRITO — desenvolva NO MÍNIMO 4 teses, cada uma com 4 ou mais parágrafos: conceito jurídico, dispositivo legal, relação com o caso, entendimento doutrinário e jurisprudencial (genérico e honesto) e conclusão. Discorra sobre o devido processo legal, a ampla defesa e o contraditório (art. 5º, LIV e LV, da CF), a presunção de legitimidade do ato administrativo e seus LIMITES, e os princípios da legalidade, da motivação, da proporcionalidade e da razoabilidade.\n" +
+    "DA FUNDAMENTAÇÃO JURÍDICA — aprofunde os fundamentos legais e principiológicos.\n" +
+    "DOS PEDIDOS — requeira o cancelamento/arquivamento do auto, com pedidos subsidiários.\n" +
+    "FECHO — termos em que pede deferimento, local, data e espaço para assinatura.\n" +
+    "Quando faltarem dados, faça VOLTAS ARGUMENTATIVAS, mantendo a peça longa e robusta.";
 
   const instrucao =
-    "\n\nDesenvolva ao máximo, com parágrafos longos e linguagem jurídica formal.";
+    "\n\nDesenvolva ao máximo, com parágrafos longos e linguagem jurídica formal. Não economize palavras.";
 
-  const [a, b] = await Promise.all([
-    chamarOpenAI(sysA, ctx + instrucao, 7000, 0.6, 140000),
-    chamarOpenAI(sysB, ctx + instrucao, 8000, 0.6, 140000)
+  // 3 blocos paralelos → peça com 12+ páginas. Concatena na ordem A, B, C.
+  const [a, b, c] = await Promise.all([
+    chamarOpenAI(sysA, ctx + instrucao, 6000, 0.6, 140000),
+    chamarOpenAI(sysB, ctx + instrucao, 6000, 0.6, 140000),
+    chamarOpenAI(sysC, ctx + instrucao, 8000, 0.6, 140000)
   ]);
 
-  if (a.ok && b.ok) return { ok: true as const, texto: `${a.texto}\n\n${b.texto}` };
-  if (a.ok) return a; // ao menos a primeira metade
-  if (b.ok) return b;
-  return a; // ambos falharam → repassa o erro (sem_chave/timeout/etc.)
+  const partes = [a, b, c].filter((p) => p.ok).map((p) => (p as { texto: string }).texto);
+  if (partes.length > 0) return { ok: true as const, texto: partes.join("\n\n") };
+  return a; // todos falharam → repassa o erro (sem_chave/timeout/etc.)
 }
