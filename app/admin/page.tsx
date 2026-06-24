@@ -17,7 +17,8 @@ import {
   MapPin,
   TrendingUp,
   RefreshCw,
-  Bot
+  Bot,
+  Car
 } from "lucide-react";
 import { PlanBadge } from "@/components/PlanBadge";
 import { formatDate } from "@/lib/utils/format";
@@ -579,9 +580,18 @@ export default function AdminPage() {
     <div className="container-tight py-10">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <h1 className="font-display text-3xl font-bold text-brand-ink">Painel administrativo</h1>
-        <button onClick={logout} className="btn-ghost text-sm">
-          <LogOut className="w-4 h-4" aria-hidden /> Sair
-        </button>
+        <div className="flex items-center gap-2">
+          <a
+            href="/admin/recurso-clientes"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium bg-brand-accent/15 text-brand-ink border border-brand-accent/40 hover:bg-brand-accent/25 transition"
+            title="Liberar/cancelar acesso dos clientes do recurso de multa (multas.advaqui.com) — não são advogados"
+          >
+            <Car className="w-4 h-4" aria-hidden /> Clientes de multa
+          </a>
+          <button onClick={logout} className="btn-ghost text-sm">
+            <LogOut className="w-4 h-4" aria-hidden /> Sair
+          </button>
+        </div>
       </div>
 
       <details className="mb-6 rounded-2xl border border-amber-300 bg-amber-50 p-4">

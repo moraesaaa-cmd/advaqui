@@ -33,11 +33,10 @@ const ACCENT = "#F4631A";
 const DARK = "#15171C";
 const TOKEN_KEY = "recurso_token";
 
-const SANS = "'Plus Jakarta Sans', system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
-const DISPLAY = "'Bricolage Grotesque', system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
-
-const FONTS_HREF =
-  "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap";
+// As fontes do design são carregadas via next/font em app/multas/page.tsx, que
+// expõe estas variáveis CSS (auto-hospedadas, sem violar a CSP `style-src 'self'`).
+const SANS = "var(--rm-body), system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
+const DISPLAY = "var(--rm-display), system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
 
 type Step =
   | "form"
@@ -91,19 +90,19 @@ const FASES_CARDS: { n: string; t: string; d: string }[] = [
 const FAQS: { q: string; a: string }[] = [
   {
     q: "A análise é mesmo gratuita?",
-    a: "Sim. Você descreve a multa e mostramos as teses cabíveis sem custo. Você só paga R$9,90 se quiser receber o recurso completo, pronto para protocolar."
+    a: "Sim. Você descreve a multa e mostramos as teses cabíveis sem custo. Você só paga R$9,90 se quiser gerar o recurso completo, pronto para protocolar."
   },
   {
     q: "Como recebo o meu recurso?",
-    a: "Depois do pagamento via Pix e do cadastro, nossa equipe elabora a peça com toda a fundamentação e envia para o seu e-mail em até 24 horas."
+    a: "Depois do pagamento via Pix e do cadastro, o seu painel é liberado. Lá você preenche os dados da multa e a inteligência artificial gera o recurso na hora, pronto para baixar, imprimir e protocolar."
   },
   {
     q: "O recurso garante o cancelamento da multa?",
-    a: "Nenhum recurso pode garantir o resultado — a decisão é do órgão de trânsito. O que entregamos é uma peça tecnicamente sólida, com os fundamentos certos para o seu caso."
+    a: "Nenhum recurso pode garantir o resultado — a decisão é do órgão de trânsito. O que você gera é uma peça tecnicamente sólida, com os fundamentos certos para o seu caso."
   },
   {
     q: "O que está incluso no plano de R$9,90?",
-    a: "Pagamento único, sem renovação automática, que dá direito a até 3 recursos completos, elaborados e revisados por especialistas e entregues em até 24h."
+    a: "Pagamento único, sem renovação automática, que libera o seu painel para gerar até 3 recursos completos com a IA, na hora, com a fundamentação do CTB, das súmulas do STJ e das Resoluções do CONTRAN."
   },
   {
     q: "Preciso de advogado para recorrer de multa?",
@@ -117,31 +116,7 @@ const FASE_SUB: Record<string, string> = {
   cetran: "2ª instância, se a JARI negar"
 };
 
-// Garante a injeção das fontes do design uma única vez no <head>.
-function useDesignFonts(): void {
-  useEffect(() => {
-    const id = "recurso-design-fonts";
-    if (document.getElementById(id)) return;
-    const pre1 = document.createElement("link");
-    pre1.rel = "preconnect";
-    pre1.href = "https://fonts.googleapis.com";
-    const pre2 = document.createElement("link");
-    pre2.rel = "preconnect";
-    pre2.href = "https://fonts.gstatic.com";
-    pre2.crossOrigin = "anonymous";
-    const css = document.createElement("link");
-    css.id = id;
-    css.rel = "stylesheet";
-    css.href = FONTS_HREF;
-    document.head.appendChild(pre1);
-    document.head.appendChild(pre2);
-    document.head.appendChild(css);
-  }, []);
-}
-
 export function RecursoMultaLanding(): ReactNode {
-  useDesignFonts();
-
   const [step, setStep] = useState<Step>("form");
   const [form, setForm] = useState<FormState>({
     fase: FASES[0]?.value ?? "defesa-previa",
@@ -523,34 +498,40 @@ export function RecursoMultaLanding(): ReactNode {
               justifyContent: "space-between"
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 11 }}>
               <div
                 style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 8,
+                  width: 32,
+                  height: 32,
+                  borderRadius: 9,
                   background: ACCENT,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontFamily: DISPLAY,
-                  fontWeight: 800,
-                  color: "#fff",
-                  fontSize: 17
+                  flex: "0 0 auto"
                 }}
               >
-                A
+                {/* Ícone de trânsito (escudo/cone) — comunica "multas", não diretório */}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <path d="M9 12l2 2 4-4" />
+                </svg>
               </div>
-              <span style={{ fontFamily: DISPLAY, fontWeight: 700, fontSize: 19, color: "#F4F5F7" }}>
-                AdvAqui
-              </span>
+              <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
+                <span style={{ fontFamily: DISPLAY, fontWeight: 700, fontSize: 18, color: "#F4F5F7" }}>
+                  Recurso de Multa
+                </span>
+                <span style={{ fontSize: 11, color: "#8A8F99", fontWeight: 500, marginTop: 4 }}>
+                  por AdvAqui
+                </span>
+              </div>
             </div>
             <nav className="rm-nav-links" style={{ display: "flex", gap: 28, alignItems: "center" }}>
               <a href="#fases" style={{ color: "#C2C7D0", textDecoration: "none", fontSize: 14 }}>
                 Como funciona
               </a>
               <a href="#planos" style={{ color: "#C2C7D0", textDecoration: "none", fontSize: 14 }}>
-                Planos
+                Preço
               </a>
               <a
                 className="rm-nav-cta"
@@ -632,9 +613,9 @@ export function RecursoMultaLanding(): ReactNode {
                   margin: "0 0 32px"
                 }}
               >
-                Responda algumas perguntas, nossa equipe analisa o seu caso e elabora uma peça
-                técnica com a tese e a fundamentação corretas. Proteja os pontos da sua CNH, evite a
-                suspensão e não pague o que não deve.
+                Responda algumas perguntas, a inteligência artificial analisa o seu caso e gera uma
+                peça técnica com a tese e a fundamentação corretas. Proteja os pontos da sua CNH,
+                evite a suspensão e não pague o que não deve.
               </p>
               <div style={{ display: "flex", gap: 13, flexWrap: "wrap", alignItems: "center" }}>
                 <a
@@ -678,8 +659,8 @@ export function RecursoMultaLanding(): ReactNode {
                 }}
               >
                 {[
-                  { v: "~2 min", l: "Para enviar o seu caso" },
-                  { v: "Até 24h", l: "Recurso no seu e-mail" },
+                  { v: "~2 min", l: "Para analisar o seu caso" },
+                  { v: "Na hora", l: "Recurso no seu painel" },
                   { v: "3 fases", l: "Defesa · JARI · CETRAN" }
                 ].map((s) => (
                   <div key={s.l}>
@@ -753,9 +734,9 @@ export function RecursoMultaLanding(): ReactNode {
               <div style={{ height: 1, background: "#E6E7EB", margin: "6px 0 20px" }} />
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {[
-                  { t: "Responda sobre a multa", s: "Infração, fase e alguns dados." },
-                  { t: "Analisamos o seu caso", s: "Identificamos as teses cabíveis." },
-                  { t: "Receba pronto em 24h", s: "A peça chega no seu e-mail." }
+                  { t: "Conte sobre a multa", s: "Infração, fase e alguns dados." },
+                  { t: "A IA analisa o caso", s: "Identifica as teses cabíveis na hora." },
+                  { t: "Gere o recurso no painel", s: "Pronto para baixar e protocolar." }
                 ].map((it, i) => (
                   <div key={it.t} style={{ display: "flex", gap: 13, alignItems: "flex-start" }}>
                     <div
@@ -822,7 +803,7 @@ export function RecursoMultaLanding(): ReactNode {
             <span>✓ A tese certa para a sua infração</span>
             <span>✓ Artigos, súmulas e Resoluções citados</span>
             <span>✓ Defenda os pontos da sua CNH</span>
-            <span>✓ Elaborado e revisado por especialistas</span>
+            <span>✓ Recurso gerado na hora por IA jurídica</span>
           </div>
         </div>
 
@@ -1314,8 +1295,8 @@ export function RecursoMultaLanding(): ReactNode {
                     margin: "0 auto 24px"
                   }}
                 >
-                  Nossa equipe elabora a peça completa, com toda a fundamentação, e envia pronta para
-                  você protocolar.
+                  Você gera a peça completa na hora, com toda a fundamentação, direto no seu painel —
+                  pronta para protocolar.
                 </p>
                 <div
                   style={{
@@ -1345,9 +1326,9 @@ export function RecursoMultaLanding(): ReactNode {
                   <div style={{ display: "flex", flexDirection: "column", gap: 11, fontSize: 14 }}>
                     {[
                       <>Até <strong>3 recursos</strong> completos</>,
-                      "Elaborado e revisado por especialistas",
+                      "Gerados pela IA com a tese certa",
                       "Artigos, súmulas e Resoluções citados",
-                      "Entregue em até 24h no seu e-mail"
+                      "No seu painel, prontos para baixar"
                     ].map((t, i) => (
                       <div key={i} style={{ display: "flex", gap: 10 }}>
                         <span style={{ color: "#1E8E54" }}>✓</span> {t}
@@ -1384,7 +1365,7 @@ export function RecursoMultaLanding(): ReactNode {
                     Para onde enviamos o recurso?
                   </h3>
                   <p style={{ fontSize: 14, color: "#5A5F6A", margin: 0 }}>
-                    Cadastre-se para gerar o Pix e receber a peça em até 24h.
+                    Cadastre-se para gerar o Pix e liberar o seu painel de recursos.
                   </p>
                 </div>
                 <div
@@ -1641,11 +1622,30 @@ export function RecursoMultaLanding(): ReactNode {
                     color: "#8A8F99",
                     lineHeight: 1.6,
                     maxWidth: "48ch",
-                    margin: "0 auto 26px"
+                    margin: "0 auto 22px"
                   }}
                 >
-                  Já pagou? Verifique abaixo e, quando liberado, gere a sua peça completa aqui mesmo.
+                  Tudo acontece no seu painel: assim que o acesso for liberado, você gera os seus
+                  recursos (até 3) na hora, com a IA. Guarde o link abaixo para voltar quando quiser.
                 </p>
+
+                <a
+                  href={token ? `/recurso/painel?t=${encodeURIComponent(token)}` : "/recurso/painel"}
+                  style={{
+                    ...ctaPrimary,
+                    display: "inline-block",
+                    textDecoration: "none",
+                    maxWidth: 420,
+                    width: "100%",
+                    marginBottom: 18,
+                    textAlign: "center"
+                  }}
+                >
+                  Ir para o meu painel →
+                </a>
+                <div style={{ fontSize: 12, color: "#9AA0AA", margin: "0 auto 26px" }}>
+                  ou verifique e gere por aqui mesmo:
+                </div>
 
                 {!peca && (
                   <>
@@ -1897,8 +1897,8 @@ export function RecursoMultaLanding(): ReactNode {
               Bem mais barato que pagar a multa
             </h2>
             <p style={{ fontSize: 16, color: "#5A5F6A", margin: 0, lineHeight: 1.6 }}>
-              A análise é gratuita. Por uma fração do valor da multa, receba o recurso completo e
-              proteja a sua CNH.
+              A análise é gratuita. Por uma fração do valor da multa, gere o recurso completo no seu
+              painel e proteja a sua CNH.
             </p>
           </div>
           <div
@@ -1923,7 +1923,7 @@ export function RecursoMultaLanding(): ReactNode {
                   <span style={{ color: "#1E8E54" }}>✓</span> Teses cabíveis identificadas
                 </div>
                 <div style={{ display: "flex", gap: 10, color: "#9AA0AA" }}>
-                  <span>—</span> Recurso elaborado e enviado
+                  <span>—</span> Recurso completo gerado no painel
                 </div>
               </div>
               <a
@@ -1980,9 +1980,9 @@ export function RecursoMultaLanding(): ReactNode {
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 11, fontSize: 14 }}>
                 {[
-                  "Até 3 peças completas",
-                  "Elaborado e revisado por especialistas",
-                  "Entregue em até 24h no e-mail",
+                  "Até 3 recursos completos",
+                  "Gerados na hora pela IA jurídica",
+                  "Você mesmo gera no seu painel",
                   "Sem renovação automática"
                 ].map((t) => (
                   <div key={t} style={{ display: "flex", gap: 10 }}>
@@ -2101,59 +2101,6 @@ export function RecursoMultaLanding(): ReactNode {
           </div>
         </section>
 
-        {/* ADVOGADO CTA */}
-        <section style={{ background: "#1C1F26", color: "#F4F5F7" }}>
-          <div
-            style={{
-              ...wrap,
-              paddingTop: "clamp(48px,6vw,64px)",
-              paddingBottom: "clamp(48px,6vw,64px)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 28,
-              flexWrap: "wrap"
-            }}
-          >
-            <div>
-              <div
-                style={{
-                  fontSize: 12,
-                  fontWeight: 700,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: "#FFB089",
-                  marginBottom: 10
-                }}
-              >
-                Para advogados
-              </div>
-              <h2 style={{ fontFamily: DISPLAY, fontWeight: 700, fontSize: "clamp(22px,2.6vw,28px)", margin: "0 0 8px" }}>
-                Sou advogado e quero aparecer aqui
-              </h2>
-              <p style={{ fontSize: 15, color: "#9AA0AA", margin: 0, maxWidth: "52ch" }}>
-                Apareça quando alguém procura um advogado na sua cidade. Leva menos de 1 minuto e não
-                custa nada para começar.
-              </p>
-            </div>
-            <a
-              href="https://advaqui.com/criar-perfil"
-              style={{
-                background: ACCENT,
-                color: "#fff",
-                textDecoration: "none",
-                fontSize: 14.5,
-                fontWeight: 700,
-                padding: "14px 26px",
-                borderRadius: 10,
-                whiteSpace: "nowrap"
-              }}
-            >
-              Criar meu perfil grátis
-            </a>
-          </div>
-        </section>
-
         {/* FOOTER */}
         <footer style={{ background: "#0F1116", color: "#8A8F99", paddingTop: 52, paddingBottom: 36 }}>
           <div
@@ -2190,11 +2137,14 @@ export function RecursoMultaLanding(): ReactNode {
                 </span>
               </div>
               <p style={{ fontSize: 13, lineHeight: 1.6, margin: "0 0 12px" }}>
-                Encontre advogados por cidade e área de atuação. Diretório nacional e biblioteca
-                jurídica em linguagem clara.
+                Recurso de multa de trânsito on-line: análise gratuita e a peça pronta, gerada por
+                IA com a fundamentação do CTB. Um serviço AdvAqui.
               </p>
-              <a href="mailto:contato@advaqui.com.br" style={{ fontSize: 13, color: "#C2C7D0", textDecoration: "none" }}>
-                contato@advaqui.com.br
+              <a
+                href="https://advaqui.com/criar-perfil"
+                style={{ fontSize: 13, color: "#C2C7D0", textDecoration: "none" }}
+              >
+                É advogado? Apareça no AdvAqui →
               </a>
             </div>
             <div style={{ display: "flex", gap: 52, flexWrap: "wrap" }}>
