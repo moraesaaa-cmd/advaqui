@@ -14,8 +14,6 @@ export const metadata: Metadata = buildMetadata({
   path: "/seguro-desemprego"
 });
 
-export const dynamic = "force-dynamic";
-
 export default function SeguroDesempregoPage() {
   return <SeguroDesempregoWidget />;
 }

@@ -60,7 +60,7 @@ export async function POST(req: Request) {
 
   // A PEÇA COMPLETA é o recurso pago: exige um token de cliente ATIVO (liberado
   // pelo admin após o pagamento) com recursos restantes. A ANÁLISE é gratuita.
-  let cliente: { id: string; recursos_restantes: number } | null = null;
+  let cliente: { id: string; recursos_restantes: number; token: string } | null = null;
   if (modo === "completo") {
     const token = clamp(body.token, 80);
     if (!token) {
@@ -94,7 +94,26 @@ export async function POST(req: Request) {
           { status: 402 }
         );
       }
-      cliente = { id: cli.id, recursos_restantes: cli.recursos_restantes };
+      // RESERVA ATÔMICA: desconta 1 recurso ANTES de chamar a IA paga, com
+      // decremento condicional (filtra pelo saldo lido). Em corrida (duas
+      // requisições simultâneas com o mesmo token), só UMA consegue reservar —
+      // a outra não afeta linha e é barrada. Evita gerar N peças pagas
+      // descontando só uma (abuso de custo da OpenAI). Estornamos se a IA falhar.
+      const { data: reserva } = await admin
+        .from("recurso_clientes")
+        .update({ recursos_restantes: cli.recursos_restantes - 1 })
+        .eq("access_token", token)
+        .eq("status", "ativo")
+        .eq("recursos_restantes", cli.recursos_restantes)
+        .select("id")
+        .maybeSingle();
+      if (!reserva) {
+        return NextResponse.json(
+          { ok: false, motivo: "ocupado", mensagem: "Já há uma geração em andamento para o seu acesso. Aguarde alguns segundos e tente de novo." },
+          { status: 409 }
+        );
+      }
+      cliente = { id: cli.id, recursos_restantes: cli.recursos_restantes - 1, token };
     } catch {
       return NextResponse.json(
         { ok: false, motivo: "erro", mensagem: "Não foi possível verificar o seu acesso agora." },
@@ -119,6 +138,20 @@ export async function POST(req: Request) {
   const r = modo === "completo" ? await pecaCompletaIA(dados) : await analiseIA(dados);
 
   if (!r.ok) {
+    // A IA falhou: ESTORNA a reserva (devolve o recurso descontado), de forma
+    // condicional para não estornar em duplicidade.
+    if (cliente) {
+      try {
+        const admin = createAdminClient();
+        await admin
+          .from("recurso_clientes")
+          .update({ recursos_restantes: cliente.recursos_restantes + 1 })
+          .eq("access_token", cliente.token)
+          .eq("recursos_restantes", cliente.recursos_restantes);
+      } catch {
+        /* estorno best-effort */
+      }
+    }
     // sem_chave ou erro → o cliente cai no gerador determinístico (não-IA).
     const semChave = r.erro === "sem_chave";
     return NextResponse.json(
@@ -133,18 +166,13 @@ export async function POST(req: Request) {
     );
   }
 
-  // Gerou a peça paga: desconta 1 do plano do cliente e guarda no histórico.
+  // Peça gerada com sucesso: a reserva já descontou o recurso. Só guardamos a
+  // peça no histórico para o cliente rever/baixar no painel (/recurso/painel).
   let restantes: number | undefined;
   if (cliente) {
-    restantes = Math.max(0, cliente.recursos_restantes - 1);
+    restantes = cliente.recursos_restantes;
     try {
       const admin = createAdminClient();
-      await admin
-        .from("recurso_clientes")
-        .update({ recursos_restantes: restantes })
-        .eq("id", cliente.id);
-      // Persiste a peça para o cliente rever/baixar no painel (/recurso/painel).
-      // Se a tabela ainda não existir (migration 0012 pendente), ignora.
       await admin.from("recurso_pecas").insert({
         cliente_id: cliente.id,
         fase: dados.fase || null,
@@ -153,7 +181,7 @@ export async function POST(req: Request) {
         texto: r.texto
       });
     } catch {
-      /* não bloqueia a entrega já gerada */
+      /* histórico é best-effort; não bloqueia a entrega da peça */
     }
   }
 

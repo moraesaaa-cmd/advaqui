@@ -175,6 +175,7 @@ export function CorrecaoMonetariaWidget() {
               type="month"
               className="input"
               value={ate}
+              min={de || undefined}
               onChange={(e) => setAte(e.target.value)}
             />
           </div>
@@ -304,8 +305,8 @@ export function CorrecaoMonetariaWidget() {
         <div className="flex items-start gap-2 text-xs p-3 rounded-xl border border-amber-200 bg-amber-50 text-amber-900">
           <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" aria-hidden />
           <span>
-            O índice incide a partir do mês seguinte à data do valor (mesma regra
-            da Calculadora do Cidadão do Banco Central). Para juros de mora e
+            Mesma metodologia da Calculadora do Cidadão do Banco Central: aplica
+            os índices do mês inicial ao mês final, inclusive. Para juros de mora e
             multa, use a{" "}
             <Link href="/atualizar-valor" className="underline font-medium">
               calculadora de atualização de valores

@@ -14,8 +14,6 @@ export const metadata: Metadata = buildMetadata({
   path: "/correcao-monetaria"
 });
 
-export const dynamic = "force-dynamic";
-
 export default function CorrecaoMonetariaPage() {
   return <CorrecaoMonetariaWidget />;
 }

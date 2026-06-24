@@ -14,8 +14,6 @@ export const metadata: Metadata = buildMetadata({
   path: "/revisor-peticao"
 });
 
-export const dynamic = "force-dynamic";
-
 export default function RevisorPeticaoPage() {
   return <RevisorPeticaoWidget />;
 }

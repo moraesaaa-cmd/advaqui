@@ -40,11 +40,6 @@ function parseComp(s: unknown): { y: number; m: number } | null {
   return { y, m };
 }
 
-/** Mês seguinte a {y,m}. */
-function proxMes(c: { y: number; m: number }): { y: number; m: number } {
-  return c.m === 12 ? { y: c.y + 1, m: 1 } : { y: c.y, m: c.m + 1 };
-}
-
 /** {y,m} -> índice comparável (y*12+m) para ordenar/comparar. */
 const ord = (c: { y: number; m: number }) => c.y * 12 + c.m;
 
@@ -89,29 +84,12 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  // Período de aplicação: do mês seguinte ao "de" até o "ate", inclusive.
-  const inicioAplic = proxMes(de);
-  if (ord(inicioAplic) > ord(ate)) {
-    // Mesma competência (ou adjacente): nada a corrigir.
-    return NextResponse.json({
-      ok: true,
-      indice: serie.nome,
-      fonte: serie.fonte,
-      de: `${pad(de.m)}/${de.y}`,
-      ate: `${pad(ate.m)}/${ate.y}`,
-      fator: 1,
-      percentual: 0,
-      valorOriginal: valor,
-      valorCorrigido: valor,
-      meses: [],
-      observacao:
-        "Período sem meses a corrigir: o índice incide a partir do mês seguinte à data inicial."
-    });
-  }
-
-  // dataInicial = 1º dia do mês de início de aplicação; dataFinal = último dia do mês final.
+  // Janela de cálculo: aplica os índices do mês INICIAL ao mês final, inclusive
+  // — a mesma metodologia da Calculadora do Cidadão do Banco Central (o índice
+  // do mês da data-base entra no produtório). dataInicial = 1º dia do mês "de";
+  // dataFinal = último dia do mês "ate".
   const ultimoDiaAte = new Date(ate.y, ate.m, 0).getDate();
-  const dataInicial = `01/${pad(inicioAplic.m)}/${inicioAplic.y}`;
+  const dataInicial = `01/${pad(de.m)}/${de.y}`;
   const dataFinal = `${pad(ultimoDiaAte)}/${pad(ate.m)}/${ate.y}`;
 
   const url =

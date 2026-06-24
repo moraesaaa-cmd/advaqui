@@ -229,9 +229,10 @@ export function RevisorPeticaoWidget() {
         <div className="flex items-start gap-2 text-xs p-3 rounded-xl border border-amber-200 bg-amber-50 text-amber-900">
           <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" aria-hidden />
           <span>
-            A IA não inventa fatos nem jurisprudência, mas pode errar. Revise o
-            resultado antes de protocolar — a responsabilidade técnica é sempre do
-            advogado. O texto enviado não é armazenado.
+            A IA pode cometer erros e até citar leis ou julgados inexistentes.
+            Confira todas as citações e dados antes de protocolar — a
+            responsabilidade técnica é sempre do advogado. O texto enviado não é
+            armazenado.
           </span>
         </div>
       </div>
