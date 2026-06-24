@@ -289,6 +289,23 @@ export type JurisprudenciaTemaRow = {
   atualizado_em: string;
 };
 
+// ---------------------------------------------------------------------------
+// Agenda de consultas (migration 0010)
+// ---------------------------------------------------------------------------
+export type AgendamentoRow = {
+  id: string;
+  created_at: string;
+  nome: string;
+  contato: string;
+  area: string | null;
+  assunto: string | null;
+  data_preferida: string | null;
+  periodo: string | null;
+  mensagem: string | null;
+  status: string;
+  ip_trunc: string | null;
+};
+
 /**
  * Versão pública de um perfil de advogado, sem CPF.
  * Use sempre que renderizar dados publicamente (diretório, perfil).
@@ -406,6 +423,16 @@ export type Database = {
           nome: string;
         };
         Update: Partial<JurisprudenciaTemaRow>;
+        Relationships: [];
+      };
+      // Agenda de consultas (migration 0010)
+      agendamentos: {
+        Row: AgendamentoRow;
+        Insert: Partial<AgendamentoRow> & {
+          nome: string;
+          contato: string;
+        };
+        Update: Partial<AgendamentoRow>;
         Relationships: [];
       };
     };
