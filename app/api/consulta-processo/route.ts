@@ -37,9 +37,16 @@ function rateLimited(ip: string): boolean {
 }
 
 export async function POST(req: Request) {
+  // IP confiável para rate-limit: o cliente pode forjar o 1º valor de
+  // X-Forwarded-For. O confiável é o X-Real-IP que o Nginx define, ou o ÚLTIMO
+  // da cadeia XFF (anexado pelo proxy) — nunca o primeiro.
+  const xff = (req.headers.get("x-forwarded-for") || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
   const ip =
-    (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() ||
     req.headers.get("x-real-ip") ||
+    (xff.length ? xff[xff.length - 1] : "") ||
     "anon";
 
   if (rateLimited(ip)) {

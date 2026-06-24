@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { CalendarClock, Plus, Trash2, AlertTriangle } from "lucide-react";
 
 /**
@@ -44,9 +45,22 @@ export function GerenciadorPrazos() {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) setPrazos(JSON.parse(raw));
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          setPrazos(
+            parsed.filter(
+              (x) =>
+                x &&
+                typeof x.id === "string" &&
+                typeof x.titulo === "string" &&
+                typeof x.data === "string"
+            )
+          );
+        }
+      }
     } catch {
-      /* ignora */
+      /* localStorage corrompido/indisponível — ignora */
     }
     setCarregado(true);
   }, []);
@@ -160,9 +174,9 @@ export function GerenciadorPrazos() {
         <span>
           Esta é uma agenda pessoal de lembretes. Para prazo processual (em dias
           úteis, com feriados), use a{" "}
-          <a href="/calculadora-prazos" className="font-semibold underline">
+          <Link href="/calculadora-prazos" className="font-semibold underline">
             calculadora de prazos
-          </a>
+          </Link>
           . Os dados ficam só neste navegador — se limpar o histórico, eles somem.
         </span>
       </aside>

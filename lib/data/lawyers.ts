@@ -36,14 +36,33 @@ const FALLBACK_LAWYER_SLUGS = [
   "kellsons-de-moraes-oliveira",
   "barbara-de-oliveira-silva"
 ];
-let _fallbackCache: Promise<Lawyer[]> | undefined;
-function getFallbackLawyers(): Promise<Lawyer[]> {
-  if (!_fallbackCache) {
-    _fallbackCache = Promise.all(
-      FALLBACK_LAWYER_SLUGS.map((s) => findLawyerBySlug(s))
-    ).then((arr) => arr.filter((l): l is Lawyer => Boolean(l)));
+let _fallbackCache: Lawyer[] | undefined;
+async function getFallbackLawyers(): Promise<Lawyer[]> {
+  // Reusa o cache só quando ele está COMPLETO (todos os perfis de rede
+  // resolvidos e visíveis). Nunca memoiza resultado vazio/parcial — assim um
+  // erro transitório do Supabase, ou um perfil temporariamente pausado, não
+  // congela um array errado em memória até o próximo restart (rota é
+  // force-dynamic). No caminho normal (todos publicados) memoiza na 1ª chamada.
+  if (_fallbackCache && _fallbackCache.length === FALLBACK_LAWYER_SLUGS.length) {
+    return _fallbackCache;
   }
-  return _fallbackCache;
+  const resolved = await Promise.all(
+    FALLBACK_LAWYER_SLUGS.map((s) => findLawyerBySlug(s))
+  );
+  const arr = resolved.filter(
+    (l): l is Lawyer => Boolean(l) && isLawyerPubliclyVisible(l as Lawyer)
+  );
+  if (arr.length === FALLBACK_LAWYER_SLUGS.length) _fallbackCache = arr;
+  return arr;
+}
+
+/** Visibilidade pública aplicada ao Lawyer (camelCase), p/ os perfis de rede. */
+function isLawyerPubliclyVisible(l: Lawyer): boolean {
+  if (typeof l.pageStatus === "string" && HIDDEN_PAGE_STATUSES.has(l.pageStatus)) {
+    return false;
+  }
+  if (l.isPublic === false) return false;
+  return true;
 }
 
 /**

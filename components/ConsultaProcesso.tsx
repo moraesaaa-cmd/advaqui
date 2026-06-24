@@ -30,6 +30,12 @@ type Processo = {
 
 function dataBR(iso: string | null): string {
   if (!iso) return "—";
+  // Pega a data declarada no próprio texto (YYYY-MM-DD, mesmo em timestamp
+  // completo) e formata sem criar Date — evita o deslocamento de 1 dia que
+  // new Date('YYYY-MM-DD') (meia-noite UTC) causa ao renderizar em horário
+  // de Brasília.
+  const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return `${m[3]}/${m[2]}/${m[1]}`;
   const d = new Date(iso);
   if (isNaN(d.getTime())) return iso.slice(0, 10);
   return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });

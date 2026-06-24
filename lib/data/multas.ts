@@ -2,7 +2,8 @@
  * Dados do gerador de Recurso de Multa de Trânsito (/recurso-de-multa).
  *
  * Conteúdo escrito à mão a partir do Código de Trânsito Brasileiro (CTB,
- * Lei 9.503/1997) e de entendimentos consolidados (Súmulas 312 e 127 do STJ).
+ * Lei 9.503/1997) e da Súmula 312 do STJ (exige a dupla notificação — da
+ * autuação e da penalidade).
  * NÃO é parecer: o gerador monta um MODELO de recurso que o cidadão revisa e
  * adapta. As teses entram como argumentos possíveis — cada uma só vale se for
  * verdadeira no caso concreto.
@@ -38,14 +39,14 @@ export const TESES_COMUNS: Record<string, Tese> = {
   notificacao_prazo: {
     titulo: "Notificação da autuação fora do prazo",
     texto:
-      "A autoridade de trânsito tem o prazo de 30 dias para expedir a Notificação da Autuação, contado da data do cometimento da infração (art. 281, parágrafo único, II, do CTB). O Superior Tribunal de Justiça consolidou na Súmula 312 que, esgotado esse prazo sem a notificação, o auto de infração deve ser arquivado e o registro do veículo liberado. Não tendo a notificação observado o prazo legal, impõe-se o cancelamento da autuação.",
-    base: "Art. 281, parágrafo único, II, CTB; Súmula 312 do STJ."
+      "A autoridade de trânsito tem o prazo de 30 dias para expedir a Notificação da Autuação, contado da data do cometimento da infração; esgotado esse prazo sem a notificação, o auto de infração deve ser arquivado e o registro liberado (art. 281, parágrafo único, II, do CTB). Não tendo a notificação observado o prazo legal, impõe-se o cancelamento da autuação.",
+    base: "Art. 281, parágrafo único, II, do CTB."
   },
   dupla_notificacao: {
     titulo: "Ausência de dupla notificação (autuação e penalidade)",
     texto:
-      "O devido processo administrativo exige DUAS notificações distintas: a da autuação (art. 280) e a da aplicação da penalidade (art. 282), assegurando o direito de defesa em cada fase. A Súmula 127 do STJ é expressa ao exigir a dupla notificação. A falta de qualquer uma delas configura cerceamento de defesa e nulidade do processo.",
-    base: "Arts. 280 e 282 do CTB; Súmula 127 do STJ."
+      "O devido processo administrativo exige DUAS notificações distintas: a da autuação (art. 280) e a da aplicação da penalidade (art. 282), assegurando o direito de defesa em cada fase. A Súmula 312 do STJ é expressa ao exigir as notificações da autuação e da aplicação da pena. A falta de qualquer uma delas configura cerceamento de defesa e nulidade do processo.",
+    base: "Arts. 280 e 282 do CTB; Súmula 312 do STJ."
   },
   requisitos_auto: {
     titulo: "Auto de infração sem os requisitos legais",

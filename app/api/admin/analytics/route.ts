@@ -24,7 +24,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
  * passam a filtrar country='BR'; o tráfego automatizado/exterior é devolvido
  * só em `automated24h` (e top países do exterior) para transparência.
  *
- * Auth: usa o cookie `advaqui_admin` (mesmo que o resto do /api/admin).
+ * Auth: usa o cookie `advaqui_admin_session` (mesmo que o resto do /api/admin).
  * Defensive: se a tabela site_visits não existe (migration 0007 pendente),
  * retorna zeros sem quebrar.
  *

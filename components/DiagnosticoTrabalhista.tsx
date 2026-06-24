@@ -361,6 +361,8 @@ export function DiagnosticoTrabalhista() {
     const provasLabels = PROVAS.filter((p) =>
       answers.provas.includes(p.value)
     ).map((p) => p.label);
+    const registroLabel = REGISTROS.find((r) => r.value === answers.registro)?.label;
+    const tempoLabel = TEMPOS.find((t) => t.value === answers.tempo)?.label;
 
     return (
       <section
@@ -381,6 +383,14 @@ export function DiagnosticoTrabalhista() {
               {cidadeTxt ? ` — ${cidadeTxt}` : ""}. Não é parecer jurídico: cada
               caso tem detalhes que só um advogado avalia.
             </p>
+            {(registroLabel || tempoLabel) && (
+              <p className="text-xs text-brand-ink/55 mt-1.5 leading-snug">
+                Você informou:
+                {registroLabel ? ` registro em carteira — ${registroLabel.toLowerCase()};` : ""}
+                {tempoLabel ? ` tempo de empresa — ${tempoLabel.toLowerCase()}.` : ""} Leve
+                isso ao advogado — muda o que pode ser cobrado e o período retroativo.
+              </p>
+            )}
           </div>
         </div>
 
@@ -645,7 +655,7 @@ export function DiagnosticoTrabalhista() {
             })}
           </div>
           <button
-            onClick={() => setStep(5)}
+            onClick={() => setStep((s) => Math.min(TOTAL_STEPS - 1, s + 1))}
             className="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand-deep px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-ink transition"
           >
             Continuar

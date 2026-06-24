@@ -41,8 +41,14 @@ function truncIp(xff: string): string | null {
 }
 
 export async function POST(req: Request) {
-  const xff = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "";
-  const ip = xff.split(",")[0].trim() || "anon";
+  const xff = req.headers.get("x-forwarded-for") || "";
+  const xffParts = xff.split(",").map((s) => s.trim()).filter(Boolean);
+  // Chave de rate-limit confiável: X-Real-IP (Nginx) ou o ÚLTIMO da cadeia XFF
+  // (anexado pelo proxy) — nunca o 1º, que o cliente pode forjar.
+  const ip =
+    req.headers.get("x-real-ip") ||
+    (xffParts.length ? xffParts[xffParts.length - 1] : "") ||
+    "anon";
   if (rateLimited(ip)) {
     return NextResponse.json(
       { ok: false, mensagem: "Você enviou vários pedidos seguidos. Aguarde um minuto." },
@@ -71,12 +77,15 @@ export async function POST(req: Request) {
     );
   }
 
+  const dataPref = clamp(body.data_preferida, 10);
   const registro = {
     nome,
     contato,
     area: clamp(body.area, 60) || null,
     assunto: clamp(body.assunto, 160) || null,
-    data_preferida: clamp(body.data_preferida, 10) || null, // YYYY-MM-DD
+    // Só aceita YYYY-MM-DD; qualquer outra coisa vira null (coluna é DATE —
+    // string inválida derrubaria o insert com 500).
+    data_preferida: /^\d{4}-\d{2}-\d{2}$/.test(dataPref) ? dataPref : null,
     periodo: clamp(body.periodo, 20) || null,
     mensagem: clamp(body.mensagem, 1000) || null,
     status: "novo",

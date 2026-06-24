@@ -78,15 +78,26 @@ export function AgendaAdminView() {
   }, [carregar]);
 
   const mudarStatus = async (id: string, status: string) => {
+    const anterior = lista.find((a) => a.id === id)?.status;
+    const reverter = () => {
+      if (anterior !== undefined) {
+        setLista((l) => l.map((a) => (a.id === id ? { ...a, status: anterior } : a)));
+      }
+    };
     setLista((l) => l.map((a) => (a.id === id ? { ...a, status } : a)));
     try {
-      await fetch("/api/admin/agendamentos", {
+      const res = await fetch("/api/admin/agendamentos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status })
       });
+      if (!res.ok) {
+        // 401 = sessão admin expirou; outros = erro no servidor. Reverte a UI.
+        if (res.status === 401) setEstado("naoauth");
+        reverter();
+      }
     } catch {
-      /* otimista */
+      reverter();
     }
   };
 

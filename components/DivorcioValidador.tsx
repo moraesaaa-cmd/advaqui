@@ -18,8 +18,9 @@ import {
  *
  * Regra (Lei 11.441/2007; CPC, arts. 731 a 733): o divórcio extrajudicial,
  * por escritura em cartório, exige (1) acordo entre as partes (consensual),
- * (2) ausência de filhos menores ou incapazes e (3) assistência de advogado.
- * Havendo filhos menores/incapazes ou falta de acordo, o caminho é a Justiça.
+ * (2) ausência de filhos menores ou incapazes, (3) ausência de gravidez
+ * (nascituro a proteger) e (4) assistência de advogado. Havendo filhos
+ * menores/incapazes, gravidez ou falta de acordo, o caminho é a Justiça.
  *
  * Determinístico, client-side, nada é enviado. É orientação informativa — o
  * advogado é obrigatório em qualquer das vias.
@@ -167,6 +168,13 @@ export function DivorcioValidador() {
                   ? "Como há acordo entre vocês, dá para fazer o divórcio consensual na Justiça — mais simples e rápido que o litigioso. Um juiz homologa o acordo e decide o que envolve os filhos."
                   : "Sem acordo, será um divórcio litigioso: cada parte apresenta seus pedidos e o juiz decide guarda, pensão e partilha."}
               </p>
+              {a.bens === "sim" && (
+                <p className="text-sm text-amber-950 mt-2 leading-relaxed">
+                  Sobre os bens: a partilha pode entrar no próprio processo ou
+                  ser feita depois, em ação separada. O advogado indica o que é
+                  melhor no seu caso.
+                </p>
+              )}
             </div>
           )}
 

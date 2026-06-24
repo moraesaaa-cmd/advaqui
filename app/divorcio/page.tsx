@@ -32,7 +32,7 @@ const FAQ = [
   },
   {
     q: "Tenho filhos menores. Posso fazer no cartório?",
-    a: "Em regra, não. Havendo filhos menores ou incapazes, o divórcio precisa ser judicial, para que o juiz analise guarda, convivência e pensão alimentícia. Se já houver decisão judicial definindo essas questões, converse com um advogado sobre as exceções."
+    a: "Em regra, não. Havendo filhos menores ou incapazes, o divórcio precisa ser judicial, para que o juiz analise guarda, convivência e pensão alimentícia. Cada caso tem particularidades — um advogado avalia a sua situação concreta."
   },
   {
     q: "Preciso de advogado mesmo no cartório?",
