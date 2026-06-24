@@ -15,6 +15,9 @@ import {
   Stethoscope,
   Route,
   Car,
+  PiggyBank,
+  Home,
+  Compass,
   ArrowRight
 } from "lucide-react";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -68,6 +71,12 @@ const GROUPS: Group[] = [
         label: "Quanto custa um advogado",
         desc: "Faixas de honorários por tipo de causa, em valores reais.",
         Icon: Coins
+      },
+      {
+        href: "/prazos",
+        label: "Gerenciador de prazos",
+        desc: "Cadastre datas-limite e receba alertas por cor. Salva só no seu navegador.",
+        Icon: CalendarClock
       }
     ]
   },
@@ -102,10 +111,28 @@ const GROUPS: Group[] = [
       "Antes de gastar com consulta, entenda o seu caso e o caminho dele.",
     tools: [
       {
+        href: "/triagem",
+        label: "Triagem: qual advogado procurar",
+        desc: "3 perguntas apontam a área do seu caso, a urgência e o próximo passo.",
+        Icon: Compass
+      },
+      {
         href: "/diagnostico",
         label: "Diagnóstico trabalhista",
         desc: "6 perguntas e você vê os direitos que cabem no seu caso, o prazo e o que fazer.",
         Icon: Stethoscope
+      },
+      {
+        href: "/previdencia",
+        label: "Aposentadoria: regras e simulador",
+        desc: "As regras de transição explicadas + cálculo da sua pontuação (idade + tempo).",
+        Icon: PiggyBank
+      },
+      {
+        href: "/imobiliario",
+        label: "Comprar imóvel com segurança",
+        desc: "Checklist de documentos e certidões — vê os pontos críticos antes de assinar.",
+        Icon: Home
       },
       {
         href: "/problemas-juridicos",
