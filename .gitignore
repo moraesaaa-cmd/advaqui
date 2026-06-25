@@ -15,3 +15,7 @@ next-env.d.ts
 __pycache__/
 *.pyc
 .venv/
+
+# TS incremental build cache (nao versionar)
+tsconfig.tsbuildinfo
+*.tsbuildinfo
