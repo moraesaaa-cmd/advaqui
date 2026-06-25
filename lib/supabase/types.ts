@@ -352,6 +352,22 @@ export type RecursoPecaRow = {
   texto: string;
 };
 
+export type BlogArticleRow = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  body: string;
+  reading_minutes: number;
+  author: string;
+  published_at: string | null;
+  created_at: string;
+  status: string;
+  seo_keywords: string[] | null;
+  topic_index: number | null;
+};
+
 /**
  * Versão pública de um perfil de advogado, sem CPF.
  * Use sempre que renderizar dados publicamente (diretório, perfil).
@@ -493,6 +509,18 @@ export type Database = {
         Row: RecursoPecaRow;
         Insert: Partial<RecursoPecaRow> & { cliente_id: string; texto: string };
         Update: Partial<RecursoPecaRow>;
+        Relationships: [];
+      };
+      blog_articles: {
+        Row: BlogArticleRow;
+        Insert: Partial<BlogArticleRow> & {
+          slug: string;
+          title: string;
+          excerpt: string;
+          category: string;
+          body: string;
+        };
+        Update: Partial<BlogArticleRow>;
         Relationships: [];
       };
     };

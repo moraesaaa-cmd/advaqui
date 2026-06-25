@@ -513,7 +513,7 @@ export async function POST(req: Request) {
     case "list-articles": {
       const supabase = createAdminClient();
       const { data, error } = await supabase
-        .from("blog_articles" as any)
+        .from("blog_articles")
         .select("id,slug,title,category,status,reading_minutes,created_at,published_at")
         .order("created_at", { ascending: false })
         .limit(200);
@@ -524,7 +524,7 @@ export async function POST(req: Request) {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
       const supabase = createAdminClient();
       const { data: article } = await supabase
-        .from("blog_articles" as any)
+        .from("blog_articles")
         .select("status")
         .eq("id", body.id)
         .maybeSingle();
@@ -532,7 +532,7 @@ export async function POST(req: Request) {
       const newStatus = article.status === "published" ? "draft" : "published";
       const update: Record<string, unknown> = { status: newStatus };
       if (newStatus === "published" && !article.status) update.published_at = new Date().toISOString();
-      const { error } = await supabase.from("blog_articles" as any).update(update).eq("id", body.id);
+      const { error } = await supabase.from("blog_articles").update(update).eq("id", body.id);
       if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       revalidatePath("/blog");
       return NextResponse.json({ ok: true, status: newStatus });
@@ -540,7 +540,7 @@ export async function POST(req: Request) {
     case "delete-article": {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
       const supabase = createAdminClient();
-      const { error } = await supabase.from("blog_articles" as any).delete().eq("id", body.id);
+      const { error } = await supabase.from("blog_articles").delete().eq("id", body.id);
       if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       revalidatePath("/blog");
       return NextResponse.json({ ok: true });
