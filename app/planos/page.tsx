@@ -388,7 +388,7 @@ export default function PlanosPage() {
           <div className="grid md:grid-cols-3 gap-5">
             {[
               { step: "01", title: "Cadastre-se grátis", desc: "Preencha nome, OAB, cidade e especialidades. Menos de 1 minuto." },
-              { step: "02", title: "Ative o Premium via Pix", desc: `Pague ${formatCurrency(PLAN.price)} no Pix — sem cartão, sem débito automático. Confirmamos em até ${PLAN.activationLabel}.` },
+              { step: "02", title: "Ative o Premium via Pix", desc: `Pague ${formatCurrency(PLAN.price)} no Pix — sem cartão, sem débito automático. Confirmamos em até ${PLAN.activationHours} horas.` },
               { step: "03", title: "Apareça no topo", desc: "Seu perfil sobe ao topo da cidade, com foto, selo OAB e WhatsApp clicável." }
             ].map((s) => (
               <div key={s.step} className="relative bg-white border border-brand-line rounded-[14px] p-6">
@@ -417,7 +417,7 @@ export default function PlanosPage() {
               { q: "Posso aparecer em mais de uma cidade?", a: "Com o Premium, você aparece em até 10 cidades diferentes — ideal para quem atende em comarcas vizinhas." },
               { q: "A OAB é verificada mesmo?", a: "Sim. Nosso time confere o número da OAB antes de conceder o selo. Isso protege tanto você quanto o cliente que busca." },
               { q: "O AdvAqui cobra comissão sobre causas?", a: "Nunca. O cliente fala direto com você. O AdvAqui não intermedia, não cobra percentual e não participa do honorário." },
-              { q: "Quanto tempo leva para ativar?", a: `Após o pagamento do Pix, a ativação acontece em até ${PLAN.activationLabel}. Na maioria dos casos, em poucas horas.` }
+              { q: "Quanto tempo leva para ativar?", a: `Após o pagamento do Pix, a ativação acontece em até ${PLAN.activationHours} horas. Na maioria dos casos, em poucas horas.` }
             ].map((faq) => (
               <details key={faq.q} className="bg-white border border-brand-line rounded-[14px] p-5 group">
                 <summary className="font-semibold text-[15px] cursor-pointer list-none flex items-center justify-between gap-3">
