@@ -10,6 +10,7 @@ import {
   findFase,
   type Tese
 } from "@/lib/data/multas";
+import { printLegalDoc, downloadLegalDoc } from "@/lib/peca/documento";
 
 /**
  * Gerador de Recurso de Multa — monta a peça por template (determinístico),
@@ -134,13 +135,6 @@ function montarPeca(form: Form, tesesSelecionadas: Tese[]): string {
   return L.join("\n");
 }
 
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
-
 export function RecursoMultaWidget() {
   const [form, setForm] = useState<Form>(INIT);
   const [selKeys, setSelKeys] = useState<Set<string>>(() => {
@@ -230,17 +224,22 @@ export function RecursoMultaWidget() {
     }
   };
 
+  const docMeta = () => {
+    const fase = findFase(form.fase);
+    return {
+      title: fase ? fase.nomePeca : "Recurso de multa",
+      sourceLine: `Recurso gerado em AdvAqui · ${new Date().toLocaleDateString("pt-BR")}`,
+      footerNote:
+        "Confira o prazo na sua notificação e anexe os documentos exigidos. Revise antes de protocolar — este é um modelo de apoio e não garante o deferimento."
+    };
+  };
+
   const imprimir = () => {
-    const w = window.open("", "_blank");
-    if (!w) return;
-    w.document.write(
-      `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Recurso de multa</title></head><body><pre style="font-family: Georgia, 'Times New Roman', serif; white-space: pre-wrap; padding: 40px; line-height: 1.7; font-size: 14px; color:#111;">${escapeHtml(
-        exibido
-      )}</pre></body></html>`
-    );
-    w.document.close();
-    w.focus();
-    setTimeout(() => w.print(), 300);
+    printLegalDoc({ ...docMeta(), content: exibido });
+  };
+
+  const baixarWord = () => {
+    downloadLegalDoc("recurso-de-multa", { ...docMeta(), content: exibido });
   };
 
   return (
@@ -413,6 +412,12 @@ export function RecursoMultaWidget() {
                   <Copy className="w-3.5 h-3.5 text-brand-deep" aria-hidden /> Copiar
                 </>
               )}
+            </button>
+            <button
+              onClick={baixarWord}
+              className="inline-flex items-center gap-1.5 rounded-lg border-2 border-brand-line px-3 py-1.5 text-xs font-semibold text-brand-ink hover:border-brand-deep transition"
+            >
+              <FileText className="w-3.5 h-3.5 text-brand-deep" aria-hidden /> Word
             </button>
             <button
               onClick={imprimir}

@@ -228,57 +228,88 @@ const GROUPS: Group[] = [
   }
 ];
 
+const GOLD = "#C8A24A";
+
+// Selos por ferramenta (sem mexer nos dados): IA / Premium nos destaques.
+function badgeFor(href: string): { text: string; ia?: boolean } | null {
+  if (href === "/recurso-de-multa") return { text: "IA", ia: true };
+  if (href === "/revisor-peticao") return { text: "Premium · IA", ia: true };
+  return null;
+}
+
 export default function FerramentasPage() {
   return (
     <main className="container-tight py-12 md:py-16">
-      <header className="max-w-2xl mb-10">
-        <p className="text-sm font-semibold uppercase tracking-wide text-brand-deep">
+      <header className="max-w-2xl mb-12">
+        <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: GOLD }}>
           Ferramentas
         </p>
-        <h1 className="font-display text-3xl md:text-4xl font-bold text-brand-ink mt-2 text-balance">
+        <h1 className="font-display text-3xl md:text-5xl font-semibold text-brand-ink tracking-tight text-balance leading-[1.08]">
           Mais que um diretório: as ferramentas do seu caso, num lugar só
         </h1>
-        <p className="text-brand-ink/70 mt-3 text-base md:text-lg leading-relaxed">
+        <p className="text-brand-ink/70 mt-4 text-base md:text-lg leading-relaxed">
           Calcular um prazo, atualizar uma dívida, montar o rascunho de uma
           peça, entender o passo a passo do seu problema. Tudo gratuito, sem
           cadastro e funcionando no seu próprio navegador.
         </p>
       </header>
 
-      <div className="space-y-12">
+      <div className="space-y-14">
         {GROUPS.map((group) => (
           <section key={group.title}>
-            <div className="mb-4">
-              <h2 className="font-display text-2xl font-bold text-brand-ink">
-                {group.title}
-              </h2>
-              <p className="text-sm text-brand-ink/65 mt-1">{group.blurb}</p>
+            <div className="flex items-center gap-3 mb-5">
+              <div>
+                <h2 className="font-display text-2xl font-semibold text-brand-ink tracking-tight">
+                  {group.title}
+                </h2>
+                <p className="text-sm text-brand-ink/65 mt-1">{group.blurb}</p>
+              </div>
+              <span className="hidden md:block h-px flex-1 mt-2" style={{ background: "#EFEDE5" }} />
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {group.tools.map((t) => (
-                <Link
-                  key={t.href}
-                  href={t.href}
-                  className="card group hover:border-brand-deep hover:shadow-cardHover flex flex-col"
-                >
-                  <span className="w-11 h-11 rounded-xl bg-brand-deep/10 flex items-center justify-center mb-3">
-                    <t.Icon className="w-5 h-5 text-brand-deep" aria-hidden />
-                  </span>
-                  <span className="font-display font-bold text-brand-ink">
-                    {t.label}
-                  </span>
-                  <span className="text-sm text-brand-ink/70 mt-1 leading-relaxed flex-1">
-                    {t.desc}
-                  </span>
-                  <span className="text-sm font-medium text-brand-deep inline-flex items-center gap-1 mt-3">
-                    Abrir
-                    <ArrowRight
-                      className="w-4 h-4 group-hover:translate-x-0.5 transition"
-                      aria-hidden
-                    />
-                  </span>
-                </Link>
-              ))}
+              {group.tools.map((t) => {
+                const badge = badgeFor(t.href);
+                return (
+                  <Link
+                    key={t.href}
+                    href={t.href}
+                    className="card group relative flex flex-col transition hover:-translate-y-0.5 hover:shadow-cardHover"
+                    style={{ borderColor: "#E6E1D6" }}
+                  >
+                    {badge && (
+                      <span
+                        className="absolute top-4 right-4 inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full"
+                        style={{ background: "rgba(200,162,74,0.14)", color: "#A0843A", border: "1px solid rgba(200,162,74,0.3)" }}
+                      >
+                        {badge.ia && <Sparkles className="w-3 h-3" aria-hidden />}
+                        {badge.text}
+                      </span>
+                    )}
+                    <span
+                      className="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+                      style={{ background: "rgba(200,162,74,0.12)" }}
+                    >
+                      <t.Icon className="w-5 h-5" style={{ color: GOLD }} aria-hidden />
+                    </span>
+                    <span className="font-display font-semibold text-brand-ink">
+                      {t.label}
+                    </span>
+                    <span className="text-sm text-brand-ink/70 mt-1 leading-relaxed flex-1">
+                      {t.desc}
+                    </span>
+                    <span
+                      className="text-sm font-semibold inline-flex items-center gap-1 mt-3"
+                      style={{ color: "#A0843A" }}
+                    >
+                      Abrir
+                      <ArrowRight
+                        className="w-4 h-4 group-hover:translate-x-0.5 transition"
+                        aria-hidden
+                      />
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         ))}
