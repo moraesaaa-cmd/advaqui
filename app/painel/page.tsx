@@ -685,17 +685,13 @@ export default function PainelPage() {
             <div className="p-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
               {PANEL_TOOLS.map((tool) => {
                 const locked = tool.premium && status !== "active";
-                const Wrapper = locked ? "div" : Link;
-                return (
-                  <Wrapper
-                    key={tool.href}
-                    {...(!locked ? { href: tool.href } : {})}
-                    className={`group relative rounded-xl border p-3.5 transition ${
-                      locked
-                        ? "border-brand-line/50 bg-brand-bg/40 cursor-default"
-                        : "border-brand-line bg-white hover:border-brand-deep hover:shadow-card"
-                    }`}
-                  >
+                const cardClass = `group relative rounded-xl border p-3.5 transition ${
+                  locked
+                    ? "border-brand-line/50 bg-brand-bg/40 cursor-default"
+                    : "border-brand-line bg-white hover:border-brand-deep hover:shadow-card"
+                }`;
+                const inner = (
+                  <>
                     <div className="flex items-start justify-between mb-2">
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                         tool.premium
@@ -738,7 +734,12 @@ export default function PainelPage() {
                         Desbloquear <Star className="w-2.5 h-2.5" aria-hidden />
                       </Link>
                     )}
-                  </Wrapper>
+                  </>
+                );
+                return locked ? (
+                  <div key={tool.href} className={cardClass}>{inner}</div>
+                ) : (
+                  <Link key={tool.href} href={tool.href} className={cardClass}>{inner}</Link>
                 );
               })}
             </div>
