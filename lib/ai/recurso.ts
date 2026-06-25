@@ -107,12 +107,39 @@ async function chamarOpenAI(
   }
 }
 
+/** Erros transitórios em que vale a pena repetir a chamada. */
+function retryavel(erro: string): boolean {
+  return /timeout|abort|_429|_5\d\d|network|fetch|ECONN|EAI_AGAIN/i.test(erro);
+}
+
+/**
+ * chamarOpenAI com nova tentativa (backoff) em falhas transitórias. Usar só
+ * onde o orçamento de tempo permite (NÃO nos blocos de 85s da peça completa,
+ * que somados precisam caber sob o proxy_read_timeout de 180s do Nginx).
+ */
+async function chamarComRetry(
+  system: string,
+  user: string,
+  maxTokens: number,
+  temperature = 0.4,
+  timeoutMs = 60000,
+  tentativasExtra = 1
+): Promise<{ ok: true; texto: string } | { ok: false; erro: string }> {
+  let r = await chamarOpenAI(system, user, maxTokens, temperature, timeoutMs);
+  for (let i = 0; i < tentativasExtra && !r.ok; i++) {
+    if (r.erro === "sem_chave" || !retryavel(r.erro)) break;
+    await new Promise((res) => setTimeout(res, 800 * (i + 1)));
+    r = await chamarOpenAI(system, user, maxTokens, temperature, timeoutMs);
+  }
+  return r;
+}
+
 export async function analiseIA(d: DadosRecurso) {
   const system =
     "Você é um assistente que redige minutas de recurso administrativo de trânsito para o próprio interessado protocolar, com base na legislação. " +
     REGRAS +
     " Sua resposta de ANÁLISE deve ter no máximo 8 linhas: aponte as teses mais promissoras para o caso e uma avaliação honesta das chances (em termos como 'há fundamentos sólidos', sem percentual nem promessa). Nada de peça completa aqui.";
-  return chamarOpenAI(system, contexto(d), 600);
+  return chamarComRetry(system, contexto(d), 600);
 }
 
 const PERSONA_PECA =

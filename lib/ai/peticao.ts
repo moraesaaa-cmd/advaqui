@@ -63,6 +63,11 @@ async function chamarOpenAI(
   }
 }
 
+/** Erros transitórios em que vale a pena repetir a chamada. */
+function retryavel(erro: string): boolean {
+  return /timeout|_429|_5\d\d|network|fetch|ECONN|EAI_AGAIN/i.test(erro);
+}
+
 export async function revisarPeticaoIA(texto: string, modo: ModoPeticao) {
   const system =
     modo === "humanizar"
@@ -70,5 +75,13 @@ export async function revisarPeticaoIA(texto: string, modo: ModoPeticao) {
         REGRAS
       : "Você é advogado(a) revisor(a) experiente. Sua tarefa é REVISAR a peça a seguir: corrija ortografia, gramática, pontuação, concordância, clareza, coesão e a técnica jurídica (uso correto dos termos), aprimorando a redação sem mudar o conteúdo. " +
         REGRAS;
-  return chamarOpenAI(system, `Peça a trabalhar:\n\n${texto}`, 2200);
+  const user = `Peça a trabalhar:\n\n${texto}`;
+  // Uma nova tentativa em falha transitória (timeout/429/5xx). 55s + retry
+  // ainda cabe sob o proxy_read_timeout do Nginx (180s).
+  let r = await chamarOpenAI(system, user, 2200);
+  if (!r.ok && r.erro !== "sem_chave" && retryavel(r.erro)) {
+    await new Promise((res) => setTimeout(res, 1000));
+    r = await chamarOpenAI(system, user, 2200);
+  }
+  return r;
 }
