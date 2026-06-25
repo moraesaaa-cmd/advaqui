@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   FileText,
@@ -8,6 +8,8 @@ import {
   ArrowLeft,
   Copy,
   AlertTriangle,
+  Crown,
+  Lock,
   Scale,
   Users,
   ShoppingCart,
@@ -16,6 +18,7 @@ import {
   Handshake,
   FileSignature
 } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 /**
  * /montar-peticao — Robô de peças (gerador de rascunhos guiado).
@@ -351,6 +354,25 @@ export default function MontarPeticaoPage() {
   const [v, setV] = useState<Record<string, string>>({});
   const [copied, setCopied] = useState(false);
   const [showResult, setShowResult] = useState(false);
+  const [isPremium, setIsPremium] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) { setIsPremium(false); return; }
+        const { data } = await supabase
+          .from("lawyers")
+          .select("plan_status")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        setIsPremium(data?.plan_status === "active");
+      } catch {
+        setIsPremium(false);
+      }
+    })();
+  }, []);
 
   const docType = DOC_TYPES.find((d) => d.id === typeId) || null;
   const fields: Field[] = docType
@@ -496,19 +518,51 @@ export default function MontarPeticaoPage() {
                 >
                   <ArrowLeft className="w-3.5 h-3.5" aria-hidden /> Editar
                 </button>
-                <button type="button" onClick={copy} className="btn-ghost text-xs">
-                  <Copy className="w-3.5 h-3.5" aria-hidden />
-                  {copied ? "Copiado!" : "Copiar"}
-                </button>
+                {isPremium && (
+                  <button type="button" onClick={copy} className="btn-ghost text-xs">
+                    <Copy className="w-3.5 h-3.5" aria-hidden />
+                    {copied ? "Copiado!" : "Copiar"}
+                  </button>
+                )}
               </div>
             </div>
-            <pre className="whitespace-pre-wrap text-sm text-brand-ink/85 font-mono leading-relaxed bg-brand-bg/30 border border-brand-line rounded-xl p-4 overflow-x-auto">
-              {draft}
-            </pre>
-            <p className="text-xs text-brand-ink/50 mt-2">
-              Os trechos entre [colchetes] e ___ devem ser completados. Texto
-              gerado no seu navegador — nada é salvo ou enviado.
-            </p>
+
+            {isPremium ? (
+              <>
+                <pre className="whitespace-pre-wrap text-sm text-brand-ink/85 font-mono leading-relaxed bg-brand-bg/30 border border-brand-line rounded-xl p-4 overflow-x-auto">
+                  {draft}
+                </pre>
+                <p className="text-xs text-brand-ink/50 mt-2">
+                  Os trechos entre [colchetes] e ___ devem ser completados. Texto
+                  gerado no seu navegador — nada é salvo ou enviado.
+                </p>
+              </>
+            ) : (
+              <div className="relative">
+                <pre className="whitespace-pre-wrap text-sm text-brand-ink/85 font-mono leading-relaxed bg-brand-bg/30 border border-brand-line rounded-xl p-4 overflow-x-auto max-h-48 overflow-hidden">
+                  {draft}
+                </pre>
+                <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white via-white/95 to-transparent rounded-b-xl" />
+                <div className="absolute inset-x-0 bottom-0 flex flex-col items-center pb-4">
+                  <div className="w-12 h-12 rounded-full bg-brand-deep/10 flex items-center justify-center mb-3">
+                    <Lock className="w-5 h-5 text-brand-deep" aria-hidden />
+                  </div>
+                  <p className="font-display text-base font-bold text-brand-ink mb-1">
+                    Rascunho completo exclusivo Premium
+                  </p>
+                  <p className="text-xs text-brand-ink/60 mb-3 max-w-sm text-center">
+                    Assine o AdvAqui Premium para gerar o texto completo, copiar e usar em todas as ferramentas com IA.
+                  </p>
+                  <Link
+                    href="/painel/pagamento"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition shadow-lg shadow-amber-500/20"
+                    style={{ background: "linear-gradient(135deg, #C8A24A, #A67C2E)" }}
+                  >
+                    <Crown className="w-4 h-4" aria-hidden /> Ativar premium
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Captação — encontrar advogado */}

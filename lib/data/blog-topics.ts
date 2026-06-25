@@ -1317,4 +1317,712 @@ export const BLOG_TOPICS: BlogTopic[] = [
     keywords: ["dano estético", "cicatriz acidente", "indenização estética", "dano imagem corporal"],
     targetAudience: "Vítimas de acidentes ou procedimentos que resultaram em alteração estética permanente",
   },
+
+  // ============================================================
+  // NOVOS TÓPICOS — BLOCO 2
+  // ============================================================
+
+  // --- TRABALHISTA (extras) ---
+  {
+    category: "Trabalhista",
+    title: "Trabalho intermitente: como funciona, direitos e armadilhas",
+    keywords: ["trabalho intermitente", "contrato intermitente", "direitos intermitente", "CLT intermitente", "convocação intermitente"],
+    targetAudience: "Trabalhadores contratados na modalidade intermitente com dúvidas sobre seus direitos",
+  },
+  {
+    category: "Trabalhista",
+    title: "Pejotização: quando a empresa obriga o trabalhador a abrir CNPJ é fraude?",
+    keywords: ["pejotização", "fraude trabalhista PJ", "CLT disfarçada", "vínculo empregatício PJ", "trabalhador PJ direitos"],
+    targetAudience: "Profissionais que trabalham como PJ mas exercem função de empregado CLT",
+  },
+  {
+    category: "Trabalhista",
+    title: "Acidente de trabalho: direitos, estabilidade e indenização",
+    keywords: ["acidente de trabalho", "estabilidade acidentário", "CAT acidente", "indenização acidente trabalho", "doença ocupacional"],
+    targetAudience: "Trabalhadores que sofreram acidente durante o trabalho ou no trajeto",
+  },
+  {
+    category: "Trabalhista",
+    title: "Teletrabalho e home office: quem paga internet, luz e equipamentos?",
+    keywords: ["teletrabalho direitos", "home office CLT", "ajuda de custo home office", "equipamento teletrabalho", "reforma trabalhista home office"],
+    targetAudience: "Empregados em regime de teletrabalho que querem saber quem arca com os custos",
+  },
+  {
+    category: "Trabalhista",
+    title: "Banco de horas: como funciona, limites e quando é ilegal",
+    keywords: ["banco de horas", "compensação horas", "banco horas individual", "banco horas acordo", "limite banco horas"],
+    targetAudience: "Trabalhadores com banco de horas que querem entender se o acordo é válido",
+  },
+  {
+    category: "Trabalhista",
+    title: "Demissão por justa causa: motivos, o que se perde e como reverter",
+    keywords: ["justa causa motivos", "reverter justa causa", "direitos justa causa", "demissão justa causa CLT", "anular justa causa"],
+    targetAudience: "Trabalhadores demitidos por justa causa que consideram a penalidade injusta",
+  },
+  {
+    category: "Trabalhista",
+    title: "Adicional de insalubridade e periculosidade: quem tem direito e quanto recebe",
+    keywords: ["insalubridade", "periculosidade", "adicional insalubridade", "laudo insalubridade", "grau insalubridade"],
+    targetAudience: "Trabalhadores expostos a agentes nocivos ou situações perigosas no trabalho",
+  },
+  {
+    category: "Trabalhista",
+    title: "Trabalho aos domingos e feriados: quando é permitido e quanto se recebe",
+    keywords: ["trabalho domingo", "trabalho feriado", "folga compensatória", "pagamento dobrado feriado", "escala domingo"],
+    targetAudience: "Empregados que trabalham em domingos e feriados sem receber corretamente",
+  },
+
+  // --- FAMÍLIA (extras) ---
+  {
+    category: "Família",
+    title: "Alienação parental: o que é, como provar e consequências legais",
+    keywords: ["alienação parental", "prova alienação parental", "lei alienação parental", "síndrome alienação parental", "guarda alienação"],
+    targetAudience: "Pais que suspeitam estar sendo vítimas de alienação parental",
+  },
+  {
+    category: "Família",
+    title: "Divórcio com bens no exterior: como funciona a partilha internacional",
+    keywords: ["divórcio bens exterior", "partilha internacional", "divórcio expatriado", "bens casal exterior", "separação bens estrangeiro"],
+    targetAudience: "Casais com patrimônio no exterior que estão se divorciando",
+  },
+  {
+    category: "Família",
+    title: "Guarda compartilhada: como funciona na prática e quando pode ser negada",
+    keywords: ["guarda compartilhada", "guarda compartilhada obrigatória", "residência alternada", "convivência pai mãe", "guarda unilateral"],
+    targetAudience: "Pais separados com dúvidas sobre como a guarda compartilhada funciona",
+  },
+  {
+    category: "Família",
+    title: "Adoção no Brasil: passo a passo, requisitos e tempo de espera",
+    keywords: ["adoção brasil", "como adotar criança", "cadastro adoção", "requisitos adoção", "tempo espera adoção"],
+    targetAudience: "Pessoas interessadas em adotar uma criança ou adolescente no Brasil",
+  },
+  {
+    category: "Família",
+    title: "Pensão alimentícia para filho maior de 18 anos: até quando é devida?",
+    keywords: ["pensão filho maior", "pensão alimentícia faculdade", "alimentos filho universitário", "exoneração pensão", "pensão até que idade"],
+    targetAudience: "Pais que pagam pensão ou filhos maiores que ainda dependem de alimentos",
+  },
+  {
+    category: "Família",
+    title: "União estável: direitos, como comprovar e diferença para casamento",
+    keywords: ["união estável direitos", "comprovar união estável", "contrato união estável", "diferença casamento união estável", "declaração união estável"],
+    targetAudience: "Casais que vivem juntos e querem entender seus direitos na união estável",
+  },
+
+  // --- PREVIDENCIÁRIO (extras) ---
+  {
+    category: "Previdenciário",
+    title: "Aposentadoria por idade 2026: regras atualizadas e como dar entrada",
+    keywords: ["aposentadoria por idade", "requisitos aposentadoria idade", "idade mínima aposentadoria", "como pedir aposentadoria", "INSS aposentadoria"],
+    targetAudience: "Segurados do INSS próximos da idade de aposentadoria",
+  },
+  {
+    category: "Previdenciário",
+    title: "Auxílio-doença negado: como recorrer da decisão do INSS",
+    keywords: ["auxílio-doença negado", "recurso INSS", "perícia INSS", "indeferimento auxílio-doença", "contestar INSS"],
+    targetAudience: "Segurados que tiveram o pedido de auxílio-doença negado pelo INSS",
+  },
+  {
+    category: "Previdenciário",
+    title: "Tempo de contribuição rural: como comprovar para aposentadoria",
+    keywords: ["aposentadoria rural", "tempo contribuição rural", "prova atividade rural", "trabalhador rural INSS", "autodeclaração rural"],
+    targetAudience: "Trabalhadores rurais que precisam comprovar tempo de trabalho no campo",
+  },
+  {
+    category: "Previdenciário",
+    title: "BPC/LOAS: quem tem direito ao benefício de um salário mínimo sem contribuir",
+    keywords: ["BPC LOAS", "benefício assistencial", "BPC idoso", "BPC deficiente", "renda familiar BPC"],
+    targetAudience: "Idosos e pessoas com deficiência de baixa renda que querem requerer o BPC",
+  },
+  {
+    category: "Previdenciário",
+    title: "Pensão por morte: quem são os dependentes e como pedir",
+    keywords: ["pensão por morte", "dependentes pensão", "pensão por morte cônjuge", "pensão por morte filho", "duração pensão morte"],
+    targetAudience: "Familiares de segurado falecido que precisam requerer pensão por morte",
+  },
+  {
+    category: "Previdenciário",
+    title: "Revisão de aposentadoria: quando vale a pena e prazos para pedir",
+    keywords: ["revisão aposentadoria", "revisão INSS", "prazo revisão aposentadoria", "revisão da vida toda", "recálculo aposentadoria"],
+    targetAudience: "Aposentados que suspeitam que o valor do benefício foi calculado incorretamente",
+  },
+
+  // --- CONSUMIDOR (extras) ---
+  {
+    category: "Consumidor",
+    title: "Compra online arrependida: como exercer o direito de devolução em 7 dias",
+    keywords: ["direito arrependimento", "devolução compra online", "7 dias devolução", "CDC arrependimento", "cancelar compra internet"],
+    targetAudience: "Consumidores que compraram pela internet e querem devolver o produto",
+  },
+  {
+    category: "Consumidor",
+    title: "Nome negativado indevidamente: como limpar e pedir indenização",
+    keywords: ["nome negativado indevido", "limpar nome SPC Serasa", "indenização negativação", "danos morais negativação", "cadastro indevido"],
+    targetAudience: "Pessoas com nome negativado sem motivo que querem reparação",
+  },
+  {
+    category: "Consumidor",
+    title: "Recall de veículo: direitos do consumidor e o que fazer se o carro não for consertado",
+    keywords: ["recall carro", "recall obrigatório", "direitos recall", "carro com defeito fábrica", "responsabilidade montadora"],
+    targetAudience: "Proprietários de veículos convocados para recall ou com defeito de fábrica",
+  },
+  {
+    category: "Consumidor",
+    title: "Voo cancelado ou atrasado: indenização, reacomodação e direitos do passageiro",
+    keywords: ["voo cancelado indenização", "atraso voo direitos", "passageiro aéreo direitos", "ANAC reclamação", "reacomodação voo"],
+    targetAudience: "Passageiros aéreos prejudicados por cancelamento ou atraso de voo",
+  },
+  {
+    category: "Consumidor",
+    title: "Cobrança abusiva de banco: juros abusivos, tarifas ilegais e como reclamar",
+    keywords: ["cobrança abusiva banco", "juros abusivos", "tarifa ilegal banco", "reclamar Banco Central", "revisão contrato bancário"],
+    targetAudience: "Clientes de bancos que suspeitam de cobranças ou juros abusivos",
+  },
+  {
+    category: "Consumidor",
+    title: "Garantia de produto: prazos legais, garantia contratual e como reclamar",
+    keywords: ["garantia produto", "prazo garantia CDC", "garantia contratual", "defeito produto garantia", "reclamar defeito"],
+    targetAudience: "Consumidores com produtos defeituosos dentro ou fora da garantia",
+  },
+  {
+    category: "Consumidor",
+    title: "Superendividamento: a nova lei que protege o consumidor com muitas dívidas",
+    keywords: ["superendividamento", "lei superendividamento", "renegociar dívidas", "mínimo existencial", "repactuação dívidas"],
+    targetAudience: "Consumidores endividados que querem usar a lei de superendividamento para renegociar",
+  },
+
+  // --- CRIMINAL (extras) ---
+  {
+    category: "Criminal",
+    title: "Legítima defesa: quando matar ou ferir alguém não é crime",
+    keywords: ["legítima defesa", "excludente ilicitude", "legítima defesa requisitos", "excesso legítima defesa", "defesa própria"],
+    targetAudience: "Pessoas envolvidas em situações de autodefesa que querem entender a lei",
+  },
+  {
+    category: "Criminal",
+    title: "Stalking (perseguição): a nova lei e como denunciar",
+    keywords: ["stalking crime", "perseguição lei", "crime perseguição", "denunciar stalking", "Lei 14.132"],
+    targetAudience: "Vítimas de perseguição reiterada que querem denunciar o agressor",
+  },
+  {
+    category: "Criminal",
+    title: "Embriaguez ao volante: multa, prisão e como funciona o teste do bafômetro",
+    keywords: ["embriaguez volante", "bafômetro recusar", "multa alcool direção", "crime trânsito bebida", "Lei Seca"],
+    targetAudience: "Motoristas que querem entender as consequências de dirigir sob efeito de álcool",
+  },
+  {
+    category: "Criminal",
+    title: "Acordo de não persecução penal (ANPP): quem tem direito e como funciona",
+    keywords: ["ANPP", "acordo não persecução", "acordo penal", "Ministério Público acordo", "pena mínima 4 anos"],
+    targetAudience: "Réus em processo criminal que querem saber se têm direito ao ANPP",
+  },
+  {
+    category: "Criminal",
+    title: "Estelionato digital: golpes por Pix, WhatsApp e redes sociais",
+    keywords: ["estelionato digital", "golpe Pix", "golpe WhatsApp", "fraude online", "estelionato eletrônico"],
+    targetAudience: "Vítimas de golpes financeiros digitais que querem recuperar valores e denunciar",
+  },
+
+  // --- IMOBILIÁRIO (extras) ---
+  {
+    category: "Imobiliário",
+    title: "Distrato de compra de imóvel na planta: direitos e valores de devolução",
+    keywords: ["distrato imóvel planta", "devolução imóvel", "cancelar compra imóvel", "Lei do Distrato", "retenção distrato"],
+    targetAudience: "Compradores de imóvel na planta que querem desistir do negócio",
+  },
+  {
+    category: "Imobiliário",
+    title: "Vícios ocultos no imóvel: infiltração, rachaduras e responsabilidade do vendedor",
+    keywords: ["vício oculto imóvel", "defeito imóvel comprado", "infiltração imóvel novo", "responsabilidade construtora", "prazo reclamar defeito imóvel"],
+    targetAudience: "Compradores que descobriram defeitos no imóvel após a compra",
+  },
+  {
+    category: "Imobiliário",
+    title: "Usucapião: como adquirir a propriedade de um imóvel pelo tempo de posse",
+    keywords: ["usucapião", "usucapião urbana", "usucapião rural", "tempo usucapião", "usucapião extrajudicial"],
+    targetAudience: "Possuidores de imóvel sem escritura que querem regularizar a propriedade",
+  },
+  {
+    category: "Imobiliário",
+    title: "Condomínio: direitos e deveres do morador e o que o síndico pode ou não fazer",
+    keywords: ["direitos morador condomínio", "síndico pode proibir", "multa condomínio", "assembleia condomínio", "regimento interno"],
+    targetAudience: "Moradores de condomínio em conflito com o síndico ou regras condominiais",
+  },
+  {
+    category: "Imobiliário",
+    title: "Leilão de imóvel: como funciona, riscos e como arrematar com segurança",
+    keywords: ["leilão imóvel", "arrematar imóvel leilão", "leilão judicial", "leilão extrajudicial", "riscos leilão imóvel"],
+    targetAudience: "Pessoas interessadas em comprar imóvel em leilão judicial ou extrajudicial",
+  },
+  {
+    category: "Imobiliário",
+    title: "Inquilino pode ser despejado no inverno? Mitos e verdades sobre despejo",
+    keywords: ["despejo inquilino", "ação despejo", "prazo despejo", "despejo liminar", "defesa despejo"],
+    targetAudience: "Inquilinos que receberam notificação de despejo e querem saber seus direitos",
+  },
+
+  // --- TRÂNSITO (extras) ---
+  {
+    category: "Trânsito",
+    title: "CNH suspensa: como recuperar e quando pode dirigir novamente",
+    keywords: ["CNH suspensa", "suspensão carteira", "recuperar CNH", "curso reciclagem", "dirigir CNH suspensa"],
+    targetAudience: "Motoristas com carteira suspensa que querem saber como recuperar o direito de dirigir",
+  },
+  {
+    category: "Trânsito",
+    title: "Multa por radar: como contestar e quando a multa pode ser anulada",
+    keywords: ["multa radar", "contestar multa", "recurso multa trânsito", "radar irregular", "anular multa"],
+    targetAudience: "Motoristas multados por radar que consideram a autuação injusta",
+  },
+  {
+    category: "Trânsito",
+    title: "Acidente de trânsito: quem paga o prejuízo e como cobrar indenização",
+    keywords: ["acidente trânsito indenização", "culpa acidente", "seguro DPVAT", "danos acidente carro", "boletim ocorrência acidente"],
+    targetAudience: "Vítimas de acidente de trânsito que querem ser indenizadas pelos prejuízos",
+  },
+  {
+    category: "Trânsito",
+    title: "Transferência de pontos da CNH: é legal indicar outro condutor?",
+    keywords: ["transferência pontos CNH", "indicar condutor", "pontos carteira", "NIC condutor infrator", "multa outro motorista"],
+    targetAudience: "Motoristas que querem saber se podem transferir pontos da multa para outro condutor",
+  },
+  {
+    category: "Trânsito",
+    title: "DPVAT acabou? Como funciona o seguro obrigatório de trânsito agora",
+    keywords: ["DPVAT", "seguro obrigatório trânsito", "SPVAT", "indenização acidente trânsito", "seguro trânsito 2026"],
+    targetAudience: "Vítimas de acidente de trânsito que querem saber sobre o seguro obrigatório",
+  },
+
+  // --- TRIBUTÁRIO (extras) ---
+  {
+    category: "Tributário",
+    title: "Imposto de Renda retido na fonte: quando tenho direito à restituição?",
+    keywords: ["restituição imposto renda", "IRRF", "imposto retido fonte", "declaração IR restituição", "malha fina"],
+    targetAudience: "Contribuintes que querem entender quando e como receber a restituição do IR",
+  },
+  {
+    category: "Tributário",
+    title: "MEI ultrapassou o limite de faturamento: o que acontece e como regularizar",
+    keywords: ["MEI limite faturamento", "MEI estourou limite", "desenquadramento MEI", "MEI para ME", "regularizar MEI"],
+    targetAudience: "Microempreendedores individuais que ultrapassaram o teto de faturamento",
+  },
+  {
+    category: "Tributário",
+    title: "Dívida ativa: como consultar, negociar e evitar a penhora de bens",
+    keywords: ["dívida ativa", "consultar dívida ativa", "negociar dívida ativa", "execução fiscal", "penhora bens dívida"],
+    targetAudience: "Contribuintes com débitos inscritos em dívida ativa que querem regularizar",
+  },
+  {
+    category: "Tributário",
+    title: "ITCMD: quanto se paga de imposto sobre herança e doação",
+    keywords: ["ITCMD", "imposto herança", "imposto doação", "alíquota ITCMD", "isenção ITCMD"],
+    targetAudience: "Herdeiros ou doadores que precisam entender o imposto sobre transmissão",
+  },
+  {
+    category: "Tributário",
+    title: "Reforma tributária 2026: o que muda para o consumidor e para a empresa",
+    keywords: ["reforma tributária", "IBS CBS", "imposto consumo", "mudanças tributárias", "nova tributação Brasil"],
+    targetAudience: "Contribuintes e empresários que querem entender os impactos da reforma tributária",
+  },
+
+  // --- SUCESSÕES (extras) ---
+  {
+    category: "Sucessões",
+    title: "Herança digital: o que acontece com redes sociais, criptos e contas online após a morte",
+    keywords: ["herança digital", "conta digital falecido", "criptomoeda herança", "rede social falecido", "testamento digital"],
+    targetAudience: "Herdeiros que precisam acessar ou transferir ativos digitais de pessoa falecida",
+  },
+  {
+    category: "Sucessões",
+    title: "Inventário extrajudicial: quando é possível fazer em cartório e quanto custa",
+    keywords: ["inventário extrajudicial", "inventário cartório", "custo inventário", "prazo inventário", "escritura partilha"],
+    targetAudience: "Herdeiros que querem fazer o inventário de forma rápida e extrajudicial",
+  },
+  {
+    category: "Sucessões",
+    title: "Herdeiro necessário: quem não pode ser excluído da herança",
+    keywords: ["herdeiro necessário", "legítima herança", "deserdação", "exclusão herança", "quota obrigatória"],
+    targetAudience: "Familiares que querem entender quem tem direito garantido à herança",
+  },
+  {
+    category: "Sucessões",
+    title: "Doação em vida x testamento: qual a melhor forma de planejar a sucessão",
+    keywords: ["doação em vida", "testamento", "planejamento sucessório", "antecipação herança", "doação com reserva usufruto"],
+    targetAudience: "Pessoas que querem planejar a transmissão de bens ainda em vida",
+  },
+
+  // --- CONTRATUAL (extras) ---
+  {
+    category: "Contratual",
+    title: "Contrato de prestação de serviço: cláusulas essenciais e como se proteger",
+    keywords: ["contrato prestação serviço", "cláusula contrato", "contrato freelancer", "modelo contrato serviço", "rescisão contrato serviço"],
+    targetAudience: "Prestadores de serviço e contratantes que querem formalizar a relação",
+  },
+  {
+    category: "Contratual",
+    title: "Cláusula de fidelidade: quando o consumidor pode cancelar antes do prazo",
+    keywords: ["fidelidade contrato", "multa fidelidade", "cancelar contrato fidelidade", "cláusula abusiva fidelidade", "telefonia fidelidade"],
+    targetAudience: "Consumidores presos a contratos de fidelidade que querem cancelar",
+  },
+  {
+    category: "Contratual",
+    title: "Contrato verbal tem validade jurídica? Como provar acordo sem papel assinado",
+    keywords: ["contrato verbal", "acordo verbal validade", "provar contrato verbal", "contrato informal", "testemunha contrato"],
+    targetAudience: "Pessoas que fizeram acordos informais e precisam cobrar o que foi combinado",
+  },
+  {
+    category: "Contratual",
+    title: "Assinatura digital e eletrônica: validade jurídica de contratos online",
+    keywords: ["assinatura digital validade", "assinatura eletrônica", "contrato online validade", "certificado digital", "ICP-Brasil"],
+    targetAudience: "Empresas e profissionais que querem usar assinatura eletrônica com segurança jurídica",
+  },
+
+  // --- ADMINISTRATIVO (extras) ---
+  {
+    category: "Administrativo",
+    title: "Concurso público anulado: direitos do candidato aprovado",
+    keywords: ["concurso anulado", "anulação concurso", "direitos candidato concurso", "nomeação concurso", "preterição concurso"],
+    targetAudience: "Candidatos aprovados em concurso público que tiveram o certame anulado",
+  },
+  {
+    category: "Administrativo",
+    title: "Servidor público e processo administrativo disciplinar (PAD): como se defender",
+    keywords: ["PAD servidor", "processo administrativo disciplinar", "defesa servidor público", "demissão servidor", "sindicância"],
+    targetAudience: "Servidores públicos respondendo a processo administrativo disciplinar",
+  },
+  {
+    category: "Administrativo",
+    title: "Como processar o Estado: responsabilidade civil da administração pública",
+    keywords: ["processar Estado", "indenização Estado", "responsabilidade civil Estado", "dano causado governo", "ação contra município"],
+    targetAudience: "Cidadãos prejudicados por ação ou omissão do poder público",
+  },
+  {
+    category: "Administrativo",
+    title: "Licitação: irregularidades mais comuns e como denunciar",
+    keywords: ["licitação irregular", "fraude licitação", "denunciar licitação", "Tribunal de Contas", "impugnação edital"],
+    targetAudience: "Cidadãos e empresários que suspeitam de irregularidades em licitações públicas",
+  },
+
+  // --- DIGITAL/LGPD (extras) ---
+  {
+    category: "Digital/LGPD",
+    title: "Vazamento de dados pessoais: o que fazer e como pedir indenização",
+    keywords: ["vazamento dados", "LGPD indenização", "dados vazados", "notificação vazamento", "ANPD reclamação"],
+    targetAudience: "Pessoas que tiveram dados pessoais vazados por empresas ou órgãos públicos",
+  },
+  {
+    category: "Digital/LGPD",
+    title: "Direito ao esquecimento na internet: como remover informações pessoais do Google",
+    keywords: ["direito ao esquecimento", "remover nome Google", "desindexar conteúdo", "apagar dados internet", "privacidade online"],
+    targetAudience: "Pessoas que querem remover informações pessoais de resultados de busca",
+  },
+  {
+    category: "Digital/LGPD",
+    title: "Golpe do Pix: como recuperar o dinheiro e responsabilidade do banco",
+    keywords: ["golpe Pix recuperar", "Pix fraude banco", "MED Pix", "estorno Pix golpe", "responsabilidade banco Pix"],
+    targetAudience: "Vítimas de golpe via Pix que querem recuperar os valores transferidos",
+  },
+  {
+    category: "Digital/LGPD",
+    title: "Perfil fake e difamação nas redes sociais: como identificar o autor e processar",
+    keywords: ["perfil fake", "difamação rede social", "identificar perfil falso", "IP redes sociais", "indenização cyberbullying"],
+    targetAudience: "Vítimas de ofensas ou difamação por perfis anônimos nas redes sociais",
+  },
+  {
+    category: "Digital/LGPD",
+    title: "Compras em sites internacionais: direitos do consumidor brasileiro",
+    keywords: ["compra site internacional", "importação consumidor", "CDC compra exterior", "produto importado defeito", "Shein Shopee direitos"],
+    targetAudience: "Consumidores que compram em sites internacionais e enfrentam problemas",
+  },
+
+  // --- SAÚDE (extras) ---
+  {
+    category: "Saúde",
+    title: "Plano de saúde negou cirurgia: o que fazer para conseguir a autorização",
+    keywords: ["plano saúde negou cirurgia", "negativa plano saúde", "liminar cirurgia", "ANS reclamação", "obrigar plano cirurgia"],
+    targetAudience: "Pacientes que tiveram cirurgia negada pelo plano de saúde",
+  },
+  {
+    category: "Saúde",
+    title: "Erro médico: como provar e pedir indenização por negligência",
+    keywords: ["erro médico", "negligência médica", "indenização erro médico", "processo médico", "prova erro médico"],
+    targetAudience: "Pacientes que sofreram dano por erro ou negligência de profissional de saúde",
+  },
+  {
+    category: "Saúde",
+    title: "Medicamento de alto custo: como obrigar o SUS ou plano a fornecer",
+    keywords: ["medicamento alto custo SUS", "obrigar plano medicamento", "liminar medicamento", "remédio caro SUS", "judicialização saúde"],
+    targetAudience: "Pacientes que precisam de medicamento caro não coberto pelo SUS ou plano",
+  },
+  {
+    category: "Saúde",
+    title: "Reajuste abusivo de plano de saúde por idade: quando é ilegal",
+    keywords: ["reajuste plano saúde idade", "reajuste abusivo plano", "aumento plano idoso", "Estatuto Idoso plano saúde", "ANS reajuste"],
+    targetAudience: "Beneficiários de plano de saúde com reajustes elevados por mudança de faixa etária",
+  },
+
+  // ============================================================
+  // NOVAS CATEGORIAS
+  // ============================================================
+
+  // --- AMBIENTAL ---
+  {
+    category: "Ambiental",
+    title: "Desmatamento ilegal: como denunciar e quais as penalidades",
+    keywords: ["desmatamento ilegal", "denunciar desmatamento", "crime ambiental", "IBAMA denúncia", "multa ambiental"],
+    targetAudience: "Cidadãos que presenciaram desmatamento ilegal e querem denunciar",
+  },
+  {
+    category: "Ambiental",
+    title: "Poluição sonora do vizinho ou comércio: limites legais e como agir",
+    keywords: ["poluição sonora", "barulho vizinho lei", "limite decibéis", "denunciar barulho", "perturbação sossego"],
+    targetAudience: "Moradores prejudicados por barulho excessivo de vizinhos ou estabelecimentos",
+  },
+  {
+    category: "Ambiental",
+    title: "Queimada e incêndio florestal: responsabilidade civil e criminal",
+    keywords: ["queimada crime", "incêndio florestal", "responsabilidade queimada", "multa queimada", "dano ambiental fogo"],
+    targetAudience: "Proprietários rurais e cidadãos que querem entender as consequências legais de queimadas",
+  },
+  {
+    category: "Ambiental",
+    title: "APP e reserva legal: o que o proprietário rural é obrigado a preservar",
+    keywords: ["APP área preservação", "reserva legal", "Código Florestal", "CAR cadastro", "desmatamento reserva legal"],
+    targetAudience: "Proprietários rurais com dúvidas sobre as áreas que devem ser preservadas",
+  },
+  {
+    category: "Ambiental",
+    title: "Crime ambiental de empresa: quando o dono responde pessoalmente",
+    keywords: ["crime ambiental empresa", "responsabilidade ambiental", "desconsideração personalidade ambiental", "multa ambiental empresa", "recuperação dano ambiental"],
+    targetAudience: "Empresários preocupados com a responsabilidade pessoal por danos ambientais",
+  },
+
+  // --- MILITAR ---
+  {
+    category: "Militar",
+    title: "Direitos do militar: estabilidade, reforma e pensão militar",
+    keywords: ["direitos militar", "reforma militar", "pensão militar", "estabilidade militar", "aposentadoria militar"],
+    targetAudience: "Militares das Forças Armadas ou estaduais com dúvidas sobre seus direitos",
+  },
+  {
+    category: "Militar",
+    title: "Dispensa do serviço militar: quem pode ser dispensado e como pedir",
+    keywords: ["dispensa serviço militar", "alistamento militar", "excesso contingente", "escusa consciência", "certificado reservista"],
+    targetAudience: "Jovens convocados para o serviço militar que querem saber sobre dispensa",
+  },
+
+  // --- ELEITORAL ---
+  {
+    category: "Eleitoral",
+    title: "Título de eleitor cancelado: como regularizar e voltar a votar",
+    keywords: ["título eleitor cancelado", "regularizar título", "multa eleitoral", "quitação eleitoral", "situação eleitoral"],
+    targetAudience: "Eleitores com título cancelado que precisam regularizar a situação",
+  },
+  {
+    category: "Eleitoral",
+    title: "Crimes eleitorais: compra de voto, boca de urna e fake news em eleição",
+    keywords: ["crime eleitoral", "compra de voto", "boca urna", "fake news eleição", "denunciar crime eleitoral"],
+    targetAudience: "Cidadãos que presenciaram irregularidades eleitorais e querem denunciar",
+  },
+
+  // --- IDOSO ---
+  {
+    category: "Idoso",
+    title: "Estatuto do Idoso: principais direitos que todo idoso precisa conhecer",
+    keywords: ["Estatuto Idoso", "direitos idoso", "prioridade idoso", "proteção idoso", "idoso 60 anos direitos"],
+    targetAudience: "Idosos e familiares que querem conhecer os direitos garantidos pelo Estatuto",
+  },
+  {
+    category: "Idoso",
+    title: "Empréstimo consignado para idoso: fraude, descontos indevidos e como cancelar",
+    keywords: ["consignado fraude idoso", "empréstimo indevido idoso", "cancelar consignado", "desconto INSS indevido", "golpe consignado"],
+    targetAudience: "Idosos que tiveram empréstimo consignado contratado sem autorização",
+  },
+  {
+    category: "Idoso",
+    title: "Maus-tratos contra idoso: como denunciar e quais as penas",
+    keywords: ["maus-tratos idoso", "denunciar abuso idoso", "violência contra idoso", "abandono idoso", "Disque 100 idoso"],
+    targetAudience: "Familiares ou vizinhos que presenciam maus-tratos contra pessoas idosas",
+  },
+
+  // --- CRIANÇA E ADOLESCENTE ---
+  {
+    category: "Criança e Adolescente",
+    title: "Bullying e cyberbullying na escola: responsabilidade da instituição e dos pais do agressor",
+    keywords: ["bullying escola", "cyberbullying", "responsabilidade escola bullying", "indenização bullying", "Lei 13.185 bullying"],
+    targetAudience: "Pais de crianças vítimas de bullying que querem responsabilizar a escola ou o agressor",
+  },
+  {
+    category: "Criança e Adolescente",
+    title: "Trabalho infantil: o que é permitido e como denunciar",
+    keywords: ["trabalho infantil", "menor aprendiz", "denunciar trabalho infantil", "idade mínima trabalho", "trabalho adolescente"],
+    targetAudience: "Cidadãos que querem denunciar trabalho infantil ou entender as regras para menor aprendiz",
+  },
+  {
+    category: "Criança e Adolescente",
+    title: "Menor infrator: o que acontece com adolescente que comete crime",
+    keywords: ["menor infrator", "ato infracional", "medida socioeducativa", "internação menor", "ECA adolescente crime"],
+    targetAudience: "Pais de adolescentes em conflito com a lei que querem entender as consequências",
+  },
+
+  // --- BANCÁRIO/FINANCEIRO ---
+  {
+    category: "Bancário",
+    title: "Portabilidade de crédito: como transferir dívida para banco com juros menores",
+    keywords: ["portabilidade crédito", "transferir dívida banco", "juros menores", "renegociar empréstimo", "portabilidade consignado"],
+    targetAudience: "Tomadores de empréstimo que querem migrar a dívida para outro banco com melhores condições",
+  },
+  {
+    category: "Bancário",
+    title: "Cartão de crédito clonado: responsabilidade do banco e como contestar compras",
+    keywords: ["cartão clonado", "compra não reconhecida", "fraude cartão crédito", "contestar fatura", "responsabilidade banco fraude"],
+    targetAudience: "Titulares de cartão que identificaram compras não reconhecidas na fatura",
+  },
+  {
+    category: "Bancário",
+    title: "Conta bancária de falecido: como desbloquear o dinheiro antes do inventário",
+    keywords: ["conta falecido", "alvará judicial conta", "dinheiro herança banco", "desbloquear conta morto", "saque conta falecido"],
+    targetAudience: "Herdeiros que precisam acessar valores na conta bancária de pessoa falecida",
+  },
+
+  // --- EMPRESARIAL (extras) ---
+  {
+    category: "Empresarial",
+    title: "Recuperação judicial: quando a empresa pode pedir e como funciona",
+    keywords: ["recuperação judicial", "empresa em crise", "plano recuperação", "falência empresa", "Lei 11.101"],
+    targetAudience: "Empresários com empresa em dificuldade financeira considerando a recuperação judicial",
+  },
+  {
+    category: "Empresarial",
+    title: "Sócio quer sair da empresa: como fazer a dissolução parcial de sociedade",
+    keywords: ["saída sócio", "dissolução parcial", "apuração haveres", "retirada sócio", "exclusão sócio"],
+    targetAudience: "Sócios que querem sair da sociedade ou excluir outro sócio",
+  },
+  {
+    category: "Empresarial",
+    title: "Franquia: direitos do franqueado e o que fazer quando a franqueadora descumpre o contrato",
+    keywords: ["franquia direitos", "franqueado contrato", "COF franquia", "rescisão franquia", "franqueadora inadimplente"],
+    targetAudience: "Franqueados com problemas na relação com a franqueadora",
+  },
+  {
+    category: "Empresarial",
+    title: "Marca registrada: como registrar no INPI e proteger contra cópia",
+    keywords: ["registro marca INPI", "marca registrada", "proteger marca", "uso indevido marca", "oposição marca"],
+    targetAudience: "Empresários e empreendedores que querem registrar e proteger sua marca",
+  },
+
+  // --- CIVIL (novos) ---
+  {
+    category: "Civil",
+    title: "Danos morais: quanto vale uma indenização e como calcular",
+    keywords: ["danos morais valor", "indenização danos morais", "calcular danos morais", "quantum indenizatório", "dano moral quanto pedir"],
+    targetAudience: "Pessoas que querem processar por danos morais e precisam saber valores praticados",
+  },
+  {
+    category: "Civil",
+    title: "Prescrição e decadência: prazos para entrar na Justiça e não perder o direito",
+    keywords: ["prescrição prazo", "decadência prazo", "prazo processar", "perda direito prazo", "prescrição ação"],
+    targetAudience: "Pessoas que querem saber se ainda estão no prazo para entrar com ação judicial",
+  },
+  {
+    category: "Civil",
+    title: "Responsabilidade civil do profissional liberal: médico, advogado, engenheiro",
+    keywords: ["responsabilidade profissional liberal", "erro profissional", "indenização profissional", "negligência profissional", "culpa profissional"],
+    targetAudience: "Clientes prejudicados por erro de profissional liberal que querem indenização",
+  },
+  {
+    category: "Civil",
+    title: "Promessa de compra e venda: quando o vendedor é obrigado a cumprir",
+    keywords: ["promessa compra venda", "contrato promessa", "adjudicação compulsória", "vendedor desistiu", "compromisso compra venda"],
+    targetAudience: "Compradores cujo vendedor desistiu de cumprir o contrato de promessa de venda",
+  },
+
+  // --- PREVIDENCIÁRIO (novos extras) ---
+  {
+    category: "Previdenciário",
+    title: "Aposentadoria especial: quem trabalha com insalubridade pode se aposentar antes?",
+    keywords: ["aposentadoria especial", "insalubridade aposentadoria", "PPP aposentadoria", "LTCAT", "tempo especial INSS"],
+    targetAudience: "Trabalhadores expostos a agentes nocivos que querem aposentadoria com tempo reduzido",
+  },
+  {
+    category: "Previdenciário",
+    title: "INSS pelo celular: como usar o Meu INSS para agendar, consultar e pedir benefícios",
+    keywords: ["Meu INSS app", "agendar INSS", "consultar benefício INSS", "pedir aposentadoria online", "extrato INSS"],
+    targetAudience: "Segurados que querem resolver pendências no INSS sem sair de casa",
+  },
+
+  // --- DIGITAL/LGPD (novos extras) ---
+  {
+    category: "Digital/LGPD",
+    title: "Inteligência artificial e direitos autorais: quem é dono do que a IA cria?",
+    keywords: ["IA direitos autorais", "inteligência artificial autoria", "obra criada IA", "copyright IA", "propriedade intelectual IA"],
+    targetAudience: "Criadores de conteúdo e empresas que usam IA e querem entender a questão autoral",
+  },
+  {
+    category: "Digital/LGPD",
+    title: "Cancelamento de assinatura digital: como cancelar serviços online que dificultam o cancelamento",
+    keywords: ["cancelar assinatura", "cancelar serviço online", "dark pattern", "direito cancelar", "cobrança após cancelamento"],
+    targetAudience: "Consumidores que não conseguem cancelar assinaturas de serviços digitais",
+  },
+
+  // --- TRABALHISTA (novos extras) ---
+  {
+    category: "Trabalhista",
+    title: "Assédio sexual no trabalho: como denunciar e direitos da vítima",
+    keywords: ["assédio sexual trabalho", "denunciar assédio", "prova assédio sexual", "rescisão indireta assédio", "canal denúncia empresa"],
+    targetAudience: "Trabalhadores vítimas de assédio sexual no ambiente de trabalho",
+  },
+  {
+    category: "Trabalhista",
+    title: "Trabalhador por aplicativo (Uber, iFood, 99): tem vínculo de emprego?",
+    keywords: ["trabalhador aplicativo", "vínculo Uber", "motorista app direitos", "entregador iFood CLT", "gig economy Brasil"],
+    targetAudience: "Motoristas e entregadores de aplicativo que querem saber se têm direitos trabalhistas",
+  },
+
+  // --- CONSUMIDOR (novos extras) ---
+  {
+    category: "Consumidor",
+    title: "Consórcio: desistência, restituição de valores e direitos do consorciado",
+    keywords: ["desistência consórcio", "restituição consórcio", "direitos consorciado", "cancelar consórcio", "consórcio contemplado"],
+    targetAudience: "Consorciados que querem desistir do consórcio e recuperar os valores pagos",
+  },
+  {
+    category: "Consumidor",
+    title: "Propaganda enganosa: quando a publicidade é ilegal e como reclamar",
+    keywords: ["propaganda enganosa", "publicidade abusiva", "CDC propaganda", "PROCON reclamação", "oferta não cumprida"],
+    targetAudience: "Consumidores que se sentiram enganados por propaganda ou publicidade falsa",
+  },
+
+  // --- TRÂNSITO (novos extras) ---
+  {
+    category: "Trânsito",
+    title: "Carro apreendido: como retirar do pátio do DETRAN e prazos",
+    keywords: ["carro apreendido", "retirar carro pátio", "DETRAN liberação", "prazo carro apreendido", "custo diária pátio"],
+    targetAudience: "Proprietários de veículo apreendido que querem saber como recuperar o carro",
+  },
+
+  // --- SAÚDE (novos extras) ---
+  {
+    category: "Saúde",
+    title: "Cirurgia plástica que deu errado: responsabilidade do cirurgião e indenização",
+    keywords: ["cirurgia plástica erro", "resultado cirurgia estética", "processo cirurgião plástico", "obrigação resultado médico", "indenização cirurgia plástica"],
+    targetAudience: "Pacientes insatisfeitos com resultado de cirurgia plástica que consideram entrar na Justiça",
+  },
+
+  // --- AMBIENTAL (novos extras) ---
+  {
+    category: "Ambiental",
+    title: "Animais silvestres: é crime ter em casa? Como legalizar",
+    keywords: ["animal silvestre casa", "crime animal silvestre", "IBAMA animal", "legalizar animal silvestre", "multa animal silvestre"],
+    targetAudience: "Pessoas que possuem ou querem possuir animal silvestre e querem saber a legalidade",
+  },
+
+  // --- IMOBILIÁRIO (novos extras) ---
+  {
+    category: "Imobiliário",
+    title: "IPTU atrasado: prescrição, como negociar e risco de perder o imóvel",
+    keywords: ["IPTU atrasado", "prescrição IPTU", "negociar IPTU", "execução fiscal IPTU", "perder imóvel IPTU"],
+    targetAudience: "Proprietários de imóvel com IPTU em atraso preocupados com execução fiscal",
+  },
 ];

@@ -2,8 +2,21 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { AlertCircle, ArrowLeft, Star } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  Check,
+  Crown,
+  MapPin,
+  Search,
+  Shield,
+  Sparkles,
+  Star,
+  Zap
+} from "lucide-react";
 import { PixDisplay } from "@/components/PixDisplay";
+import { PLAN } from "@/lib/config";
+import { formatCurrency } from "@/lib/utils/format";
 import { toast } from "@/components/Toast";
 import type { Lawyer } from "@/lib/data/lawyer-mapper";
 
@@ -168,64 +181,151 @@ export default function PagamentoPage() {
     );
   }
 
+  const BENEFITS = [
+    { icon: Crown, text: "Perfil no topo das buscas da sua cidade" },
+    { icon: Shield, text: "Selo 'OAB Verificada' após validação" },
+    { icon: Zap, text: "WhatsApp clicável direto no card" },
+    { icon: MapPin, text: "Até 10 cidades de atuação" },
+    { icon: Sparkles, text: "Ferramentas com IA: petições, recursos, revisor" },
+    { icon: Search, text: "Filtro avançado por área nas buscas" },
+  ];
+
   if (confirmed) {
     return (
       <div className="container-narrow max-w-lg py-16">
-        <div className="card text-center">
-          <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
-            <Star className="w-8 h-8 text-emerald-700" aria-hidden />
+        <div className="rounded-3xl border border-brand-line bg-white overflow-hidden text-center">
+          <div
+            className="px-6 pt-10 pb-8"
+            style={{ background: "linear-gradient(135deg,#0F1B2D,#1B2D49)" }}
+          >
+            <div className="w-20 h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center mx-auto mb-4">
+              <Check className="w-10 h-10 text-emerald-400" aria-hidden />
+            </div>
+            <h1 className="font-display text-2xl font-bold text-white mb-2">
+              Pagamento sinalizado
+            </h1>
+            <p className="text-sm text-white/70 max-w-sm mx-auto">
+              Nossa equipe vai validar o Pix e ativar seu plano premium em
+              até <strong className="text-white">48 horas</strong>.
+            </p>
           </div>
-          <h1 className="font-display text-2xl font-bold text-brand-ink mb-2">
-            Pagamento sinalizado
-          </h1>
-          <p className="text-brand-ink/70 mb-6">
-            Recebemos sua sinalização. Nossa equipe vai validar o Pix e ativar seu plano premium em
-            até <strong>48 horas</strong>. Você receberá a confirmação aqui no painel.
-          </p>
-          <div className="text-sm text-brand-ink/60 bg-brand-bg rounded-xl p-3 mb-5">
-            <p>1. Pagamento sinalizado</p>
-            <p>2. Em análise (até 48h)</p>
-            <p>3. Plano ativo</p>
+          <div className="px-6 py-6">
+            <div className="flex items-center justify-between gap-2 mb-6">
+              {[
+                { n: "1", label: "Pix enviado", done: true },
+                { n: "2", label: "Em análise", done: false },
+                { n: "3", label: "Plano ativo", done: false }
+              ].map((step) => (
+                <div key={step.n} className="flex-1 text-center">
+                  <div className={`w-9 h-9 rounded-full mx-auto mb-1.5 flex items-center justify-center text-sm font-bold ${
+                    step.done
+                      ? "bg-emerald-600 text-white"
+                      : "bg-brand-line/60 text-brand-ink/40"
+                  }`}>
+                    {step.done ? <Check className="w-4 h-4" /> : step.n}
+                  </div>
+                  <p className={`text-xs font-medium ${step.done ? "text-emerald-700" : "text-brand-ink/50"}`}>
+                    {step.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <Link href="/painel" className="btn-primary w-full">
+              Voltar ao painel
+            </Link>
           </div>
-          <Link href="/painel" className="btn-primary">
-            Voltar ao painel
-          </Link>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="container-narrow max-w-lg py-12">
-      <Link href="/painel" className="inline-flex items-center gap-1 text-sm text-brand-deep mb-4">
+    <div className="container-narrow max-w-2xl py-12">
+      <Link href="/painel" className="inline-flex items-center gap-1 text-sm text-brand-deep hover:text-brand-accent transition mb-6">
         <ArrowLeft className="w-4 h-4" aria-hidden />
         Voltar ao painel
       </Link>
 
-      <header className="text-center mb-6">
-        <div className="w-14 h-14 rounded-full bg-brand-accent/20 flex items-center justify-center mx-auto mb-3">
-          <Star className="w-7 h-7 text-brand-accent" aria-hidden />
+      <div className="rounded-3xl overflow-hidden border border-brand-line bg-white">
+        <div
+          className="relative px-6 pt-10 pb-8 text-center overflow-hidden"
+          style={{ background: "linear-gradient(135deg,#0F1B2D,#1B2D49)" }}
+        >
+          <div
+            aria-hidden
+            className="absolute pointer-events-none"
+            style={{
+              top: -60,
+              right: -20,
+              width: 260,
+              height: 200,
+              background: "radial-gradient(ellipse at center, rgba(200,162,74,0.2), transparent 70%)"
+            }}
+          />
+          <div className="relative">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/20">
+              <Crown className="w-8 h-8 text-white" aria-hidden />
+            </div>
+            <h1 className="font-display text-3xl font-bold text-white mb-1">
+              Premium AdvAqui
+            </h1>
+            <p className="text-sm text-white/60">
+              Destaque-se na busca e receba mais clientes
+            </p>
+            <div className="mt-5 inline-flex items-baseline gap-1">
+              <span className="font-display text-4xl font-bold text-white">
+                {formatCurrency(PLAN.price)}
+              </span>
+              <span className="text-white/50 text-sm">/mês</span>
+            </div>
+            <p className="text-xs text-white/40 mt-1">Sem fidelidade. Cancele quando quiser.</p>
+          </div>
         </div>
-        <h1 className="font-display text-2xl font-bold text-brand-ink">Ativar plano premium</h1>
-        <p className="text-sm text-brand-ink/60 mt-1">
-          Pagamento por Pix. Ativação manual em até 48 horas.
-        </p>
-      </header>
 
-      <PixDisplay txid={`AdvAqui${user.id.slice(0, 6).toUpperCase()}`} />
+        <div className="px-6 py-6">
+          <div className="grid sm:grid-cols-2 gap-3 mb-6">
+            {BENEFITS.map((b) => (
+              <div key={b.text} className="flex items-start gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-brand-deep/8 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <b.icon className="w-3.5 h-3.5 text-brand-deep" aria-hidden />
+                </div>
+                <p className="text-sm text-brand-ink/80 leading-snug">{b.text}</p>
+              </div>
+            ))}
+          </div>
 
-      <button
-        onClick={confirm}
-        disabled={confirming}
-        className="btn-primary w-full mt-6 bg-emerald-600 hover:bg-emerald-500"
-      >
-        {confirming ? "Registrando..." : "Já realizei o pagamento"}
-      </button>
+          <div className="border-t border-brand-line/60 pt-6">
+            <h2 className="font-display text-lg font-bold text-brand-ink mb-4 text-center">
+              Pagamento via Pix
+            </h2>
+            <PixDisplay txid={`AdvAqui${user.id.slice(0, 6).toUpperCase()}`} />
 
-      <p className="text-xs text-brand-ink/50 mt-4 text-center leading-relaxed">
-        Ao clicar, você confirma que enviou o Pix para a chave acima. Nossa equipe valida
-        manualmente e ativa o seu destaque em até 48 horas.
-      </p>
+            <button
+              onClick={confirm}
+              disabled={confirming}
+              className="w-full mt-6 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white text-sm transition shadow-lg shadow-emerald-600/20 disabled:opacity-50"
+              style={{ background: "linear-gradient(135deg, #059669, #047857)" }}
+            >
+              {confirming ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Registrando...
+                </>
+              ) : (
+                <>
+                  <Check className="w-4 h-4" aria-hidden />
+                  Já realizei o pagamento
+                </>
+              )}
+            </button>
+
+            <p className="text-[11px] text-brand-ink/40 mt-4 text-center leading-relaxed">
+              Ao clicar, você confirma que enviou o Pix para a chave acima. Nossa equipe valida
+              manualmente e ativa o seu destaque em até {PLAN.activationHours} horas.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

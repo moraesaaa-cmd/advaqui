@@ -1337,6 +1337,17 @@ export default function AdminPage() {
             </div>
           </div>
 
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50/50 p-3.5 flex items-start gap-3">
+            <Bot className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" aria-hidden />
+            <div className="text-sm">
+              <p className="font-semibold text-emerald-900">Publicação automática ativa</p>
+              <p className="text-emerald-800/70 text-xs mt-0.5">
+                10 artigos/dia via cron (06h-21h BRT, horários diversificados).
+                317 tópicos cadastrados — o robô para automaticamente quando todos forem publicados.
+              </p>
+            </div>
+          </div>
+
           {articlesLoading && articles.length === 0 && (
             <p className="text-center text-brand-ink/50 py-8">Carregando artigos...</p>
           )}
