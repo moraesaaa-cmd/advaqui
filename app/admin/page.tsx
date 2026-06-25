@@ -615,21 +615,65 @@ export default function AdminPage() {
 
   return (
     <div className="container-tight py-10">
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-        <h1 className="font-display text-3xl font-bold text-brand-ink">Painel administrativo</h1>
-        <div className="flex items-center gap-2">
-          <a
-            href="/admin/recurso-clientes"
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium bg-brand-accent/15 text-brand-ink border border-brand-accent/40 hover:bg-brand-accent/25 transition"
-            title="Liberar/cancelar acesso dos clientes do recurso de multa (multas.advaqui.com) — não são advogados"
-          >
-            <Car className="w-4 h-4" aria-hidden /> Clientes de multa
-          </a>
-          <button onClick={logout} className="btn-ghost text-sm">
-            <LogOut className="w-4 h-4" aria-hidden /> Sair
-          </button>
+      <section
+        className="rounded-3xl text-white p-6 md:p-7 mb-6 relative overflow-hidden"
+        style={{ background: "linear-gradient(135deg,#0F1B2D,#1B2D49)" }}
+      >
+        <div
+          aria-hidden
+          className="absolute pointer-events-none"
+          style={{
+            top: -100,
+            right: -30,
+            width: 320,
+            height: 260,
+            background: "radial-gradient(ellipse at center, rgba(200,162,74,0.16), transparent 70%)"
+          }}
+        />
+        <div className="relative flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: "#E3C078" }}>
+              Administração
+            </p>
+            <h1 className="font-display text-3xl md:text-4xl font-semibold tracking-tight">
+              Painel administrativo
+            </h1>
+            <p className="text-sm mt-1.5" style={{ color: "#A9B4C6" }}>
+              Cadastros, mensagens, visitas e métricas do AdvAqui.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <a
+              href="/admin/recurso-clientes"
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white border border-white/20 hover:bg-white/10 transition"
+              title="Liberar/cancelar acesso dos clientes do recurso de multa (multas.advaqui.com) — não são advogados"
+            >
+              <Car className="w-4 h-4" aria-hidden /> Clientes de multa
+            </a>
+            <button
+              onClick={logout}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white/80 hover:bg-white/10 transition"
+            >
+              <LogOut className="w-4 h-4" aria-hidden /> Sair
+            </button>
+          </div>
         </div>
-      </div>
+        <div className="relative mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { label: "Cadastros", value: users.length },
+            { label: "Premium ativos", value: users.filter((u) => u.plan_status === "active").length },
+            { label: "Aguardando", value: users.filter((u) => u.plan_status === "pending").length },
+            { label: "Msgs não lidas", value: unread }
+          ].map((m) => (
+            <div key={m.label} className="rounded-2xl bg-white/[0.07] border border-white/10 p-4">
+              <p className="text-[11px] uppercase tracking-wide" style={{ color: "#7E8BA1" }}>
+                {m.label}
+              </p>
+              <p className="font-display text-2xl font-semibold mt-1">{m.value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <details className="mb-6 rounded-2xl border border-amber-300 bg-amber-50 p-4">
         <summary className="cursor-pointer text-sm font-semibold text-amber-900">

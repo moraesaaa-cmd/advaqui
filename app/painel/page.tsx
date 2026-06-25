@@ -160,6 +160,22 @@ export default function PainelPage() {
   const daysLeft = useMemo(() => daysUntil(user?.planEndDate), [user?.planEndDate]);
   const status = user?.planStatus || "free";
 
+  // Completude do perfil — alimenta o cartão de métricas do dashboard.
+  const completeness = useMemo(() => {
+    if (!user) return 0;
+    const checks = [
+      !!user.photoUrl,
+      !!(user.bio && user.bio.trim().length >= 20),
+      !!user.phone,
+      !!user.whatsapp,
+      !!user.address,
+      user.specialties.length > 0,
+      !!(user.shortSummary && user.shortSummary.trim()),
+      (user.primarySpecialties?.length || 0) > 0
+    ];
+    return Math.round((checks.filter(Boolean).length / checks.length) * 100);
+  }, [user]);
+
   const startEdit = () => {
     if (!user) return;
     setDraft({ ...user, extraCities: [...(user.extraCities || [])] });
@@ -392,67 +408,151 @@ export default function PainelPage() {
 
   return (
     <div className="container-tight py-10">
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-        <div>
-          <h1 className="font-display text-3xl font-bold text-brand-ink">Meu painel</h1>
-          <p className="text-sm text-brand-ink/60 mt-1">
-            Ola, {user.name.split(" ")[0] || "advogado"}
-          </p>
+      {/* HERO do dashboard — navy com métricas */}
+      <section
+        className="rounded-3xl text-white p-6 md:p-8 mb-6 relative overflow-hidden"
+        style={{ background: "linear-gradient(135deg,#0F1B2D 0%,#16263F 60%,#1B2D49 100%)" }}
+      >
+        <div
+          aria-hidden
+          className="absolute pointer-events-none"
+          style={{
+            top: -120,
+            right: -40,
+            width: 360,
+            height: 300,
+            background: "radial-gradient(ellipse at center, rgba(200,162,74,0.18), transparent 70%)"
+          }}
+        />
+        <div className="relative flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: "#E3C078" }}>
+              Painel do advogado
+            </p>
+            <h1 className="font-display text-3xl md:text-4xl font-semibold tracking-tight">
+              Olá, {user.name.split(" ")[0] || "advogado"}
+            </h1>
+            <p className="text-sm mt-1.5" style={{ color: "#A9B4C6" }}>
+              {planMessage(status, daysLeft)}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/advogado/${user.slug}`}
+              target="_blank"
+              className="inline-flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg text-white border border-white/20 hover:bg-white/10 transition"
+            >
+              <ExternalLink className="w-4 h-4" aria-hidden />
+              Ver perfil público
+            </Link>
+            <button
+              onClick={logout}
+              aria-label="Sair"
+              className="inline-flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg text-white/80 hover:bg-white/10 transition"
+            >
+              <LogOut className="w-4 h-4" aria-hidden /> Sair
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Link
-            href={`/advogado/${user.slug}`}
-            target="_blank"
-            className="btn-ghost border border-brand-line text-sm"
-          >
-            <ExternalLink className="w-4 h-4" aria-hidden />
-            Ver perfil publico
-          </Link>
-          <button onClick={logout} className="btn-ghost text-sm" aria-label="Sair">
-            <LogOut className="w-4 h-4" aria-hidden /> Sair
-          </button>
-        </div>
-      </div>
 
-      {status === "free" && (
-        <div className="rounded-2xl bg-brand-ink text-white p-5 mb-6 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <TrendingUp className="w-6 h-6 text-brand-accent" aria-hidden />
+        {status === "free" && (
+          <div className="relative mt-5 rounded-2xl bg-white/[0.06] border border-white/10 p-4 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <TrendingUp className="w-6 h-6" style={{ color: "#C8A24A" }} aria-hidden />
+              <div>
+                <p className="font-semibold text-sm">Você está perdendo visibilidade</p>
+                <p className="text-[13px]" style={{ color: "#A9B4C6" }}>
+                  Ative o premium por {formatCurrency(PLAN.price)} e apareça primeiro nas buscas de {user.cityName}.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/painel/pagamento"
+              className="font-bold text-sm px-5 py-2.5 rounded-xl whitespace-nowrap"
+              style={{ background: "#C8A24A", color: "#0F1B2D" }}
+            >
+              Ativar premium
+            </Link>
+          </div>
+        )}
+        {status === "pending" && (
+          <div className="relative mt-5 rounded-2xl bg-white/[0.06] border border-white/10 p-4 flex items-start gap-3">
+            <Clock className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: "#E3C078" }} aria-hidden />
             <div>
-              <p className="font-semibold">Voce esta perdendo visibilidade</p>
-              <p className="text-sm text-brand-bg/80">
-                Ative o premium por {formatCurrency(PLAN.price)} e apareca primeiro nas buscas de{" "}
-                {user.cityName}.
+              <p className="font-semibold text-sm">Pagamento em análise</p>
+              <p className="text-[13px]" style={{ color: "#A9B4C6" }}>
+                Recebemos sua sinalização. A ativação será feita em até {PLAN.activationHours} horas. Pagamento
+                marcado em {formatDate(user.paymentDate)}.
               </p>
             </div>
           </div>
-          <Link href="/painel/pagamento" className="btn-accent">Ativar premium</Link>
-        </div>
-      )}
-
-      {status === "pending" && (
-        <div className="rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 p-5 mb-6 flex items-start gap-3">
-          <Clock className="w-5 h-5 mt-0.5 flex-shrink-0" aria-hidden />
-          <div>
-            <p className="font-semibold">Pagamento em analise</p>
-            <p className="text-sm">
-              Recebemos sua sinalizacao. A ativacao sera feita em ate {PLAN.activationHours} horas.
-              Pagamento marcado em {formatDate(user.paymentDate)}.
-            </p>
+        )}
+        {status === "expired" && (
+          <div className="relative mt-5 rounded-2xl bg-white/[0.06] border border-white/10 p-4 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-red-300" aria-hidden />
+              <div>
+                <p className="font-semibold text-sm">Seu plano expirou</p>
+                <p className="text-[13px]" style={{ color: "#A9B4C6" }}>
+                  Renove agora para voltar ao destaque na sua cidade.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/painel/pagamento"
+              className="font-bold text-sm px-5 py-2.5 rounded-xl whitespace-nowrap"
+              style={{ background: "#C8A24A", color: "#0F1B2D" }}
+            >
+              Renovar
+            </Link>
           </div>
-        </div>
-      )}
+        )}
 
-      {status === "expired" && (
-        <div className="rounded-2xl bg-red-50 border border-red-200 text-red-900 p-5 mb-6 flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" aria-hidden />
-          <div className="flex-1">
-            <p className="font-semibold">Seu plano expirou</p>
-            <p className="text-sm">Renove agora para voltar ao destaque na sua cidade.</p>
-          </div>
-          <Link href="/painel/pagamento" className="btn-accent">Renovar</Link>
+        <div className="relative mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            {
+              label: "Plano",
+              value:
+                status === "active"
+                  ? "Premium"
+                  : status === "pending"
+                  ? "Em análise"
+                  : status === "expired"
+                  ? "Vencido"
+                  : "Gratuito",
+              sub:
+                status === "active" && daysLeft !== null
+                  ? `${daysLeft} dias restantes`
+                  : status === "free"
+                  ? "ative o destaque"
+                  : ""
+            },
+            {
+              label: "Perfil completo",
+              value: `${completeness}%`,
+              sub: completeness >= 80 ? "ótimo" : "complete seu perfil"
+            },
+            { label: "Áreas de atuação", value: String(user.specialties.length), sub: "especialidades" },
+            {
+              label: "Cidades",
+              value: String(1 + (user.extraCities?.length || 0)),
+              sub: "onde você aparece"
+            }
+          ].map((m) => (
+            <div key={m.label} className="rounded-2xl bg-white/[0.07] border border-white/10 p-4">
+              <p className="text-[11px] uppercase tracking-wide" style={{ color: "#7E8BA1" }}>
+                {m.label}
+              </p>
+              <p className="font-display text-2xl font-semibold mt-1">{m.value}</p>
+              {m.sub && (
+                <p className="text-[11px] mt-0.5" style={{ color: "#9FB0CB" }}>
+                  {m.sub}
+                </p>
+              )}
+            </div>
+          ))}
         </div>
-      )}
+      </section>
 
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
