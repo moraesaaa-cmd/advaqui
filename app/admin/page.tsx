@@ -25,6 +25,7 @@ import { formatDate } from "@/lib/utils/format";
 import { toast } from "@/components/Toast";
 import { AdminExtraCitiesModal } from "@/components/AdminExtraCitiesModal";
 import type { ExtraCity } from "@/components/AdminExtraCitiesModal";
+import { AdminEditModal, type AdminEditConfig } from "@/components/AdminEditModal";
 import type { LawyerRow, MessageRow, PlanStatus } from "@/lib/supabase/types";
 
 const TABS = [
@@ -107,6 +108,9 @@ export default function AdminPage() {
     name: string;
     initial: ExtraCity[];
   } | null>(null);
+
+  // Modal genérico de edição (substitui os window.prompt de entrada de texto).
+  const [editModal, setEditModal] = useState<AdminEditConfig | null>(null);
 
   // Analytics em tempo real (Fase 4 — aba Visitas).
   type Analytics = {
@@ -324,46 +328,68 @@ export default function AdminPage() {
     }
   };
 
-  const changeEmail = async (id: string, currentEmail: string) => {
-    const newEmail = window.prompt(
-      `E-mail atual: ${currentEmail}\n\nDigite o novo e-mail:`,
-      currentEmail
-    );
-    if (!newEmail || newEmail === currentEmail) return;
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
-      toast("E-mail invalido", "error");
-      return;
-    }
-    if (busy) return;
-    setBusy(true);
-    const r = await callAdmin({ action: "set-email", id, email: newEmail });
-    setBusy(false);
-    if (r.status === 200) {
-      toast(`E-mail alterado para ${newEmail}`);
-      await refreshUsers();
-    } else {
-      toast(r.json.error || "Erro ao trocar e-mail", "error");
-    }
+  const changeEmail = (id: string, currentEmail: string) => {
+    setEditModal({
+      title: "Trocar e-mail de login",
+      description: `E-mail atual: ${currentEmail}`,
+      submitLabel: "Salvar e-mail",
+      fields: [{ key: "email", label: "Novo e-mail", value: currentEmail, type: "email" }],
+      onSubmit: async (v) => {
+        const newEmail = (v.email || "").trim();
+        if (!newEmail || newEmail === currentEmail) {
+          setEditModal(null);
+          return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
+          toast("E-mail invalido", "error");
+          return;
+        }
+        setBusy(true);
+        const r = await callAdmin({ action: "set-email", id, email: newEmail });
+        setBusy(false);
+        if (r.status === 200) {
+          toast(`E-mail alterado para ${newEmail}`);
+          setEditModal(null);
+          await refreshUsers();
+        } else {
+          toast(r.json.error || "Erro ao trocar e-mail", "error");
+        }
+      }
+    });
   };
 
-  const resetPassword = async (id: string, name: string) => {
-    const newPass = window.prompt(
-      `Defina uma nova senha para ${name}.\n\nMinimo 8 caracteres. Avise o advogado pelo canal habitual.\nDigite a nova senha:`
-    );
-    if (!newPass) return;
-    if (newPass.length < 8) {
-      toast("Senha precisa ter pelo menos 8 caracteres", "error");
-      return;
-    }
-    if (busy) return;
-    setBusy(true);
-    const r = await callAdmin({ action: "set-password", id, password: newPass });
-    setBusy(false);
-    if (r.status === 200) {
-      toast("Senha redefinida. Avise o usuario.");
-    } else {
-      toast(r.json.error || "Erro ao redefinir senha", "error");
-    }
+  const resetPassword = (id: string, name: string) => {
+    setEditModal({
+      title: `Resetar senha — ${name}`,
+      description:
+        "Defina uma nova senha (mínimo 8 caracteres) e avise o advogado pelo canal habitual.",
+      submitLabel: "Redefinir senha",
+      fields: [
+        {
+          key: "pass",
+          label: "Nova senha",
+          value: "",
+          type: "password",
+          placeholder: "mínimo 8 caracteres"
+        }
+      ],
+      onSubmit: async (v) => {
+        const newPass = v.pass || "";
+        if (newPass.length < 8) {
+          toast("Senha precisa ter pelo menos 8 caracteres", "error");
+          return;
+        }
+        setBusy(true);
+        const r = await callAdmin({ action: "set-password", id, password: newPass });
+        setBusy(false);
+        if (r.status === 200) {
+          toast("Senha redefinida. Avise o usuario.");
+          setEditModal(null);
+        } else {
+          toast(r.json.error || "Erro ao redefinir senha", "error");
+        }
+      }
+    });
   };
 
   const sendMagicLink = async (id: string, name: string) => {
@@ -380,49 +406,61 @@ export default function AdminPage() {
     setBusy(false);
     if (r.status === 200 && typeof r.json.magicLink === "string") {
       const link = r.json.magicLink as string;
-      // Copia automatico se browser suportar
       try {
         await navigator.clipboard.writeText(link);
-        toast("Magic link copiado para a area de transferencia (cole no WhatsApp).");
+        toast("Magic link copiado para a área de transferência (cole no WhatsApp).");
       } catch {
-        toast("Magic link gerado. Copie do prompt abaixo.");
+        toast("Magic link gerado — copie no campo abaixo.");
       }
-      // Mostra o link num prompt pra garantir que o admin veja
-      window.prompt(
-        `Magic link para ${name} (expira em 1h):\n\nCole no WhatsApp/e-mail do advogado:`,
-        link
-      );
+      setEditModal({
+        title: `Magic link — ${name}`,
+        description:
+          "Expira em 1 hora. Cole no WhatsApp/e-mail do advogado. (Já copiado para a área de transferência.)",
+        fields: [{ key: "link", label: "Link de acesso", value: link, type: "text", readonly: true }],
+        onSubmit: async () => setEditModal(null)
+      });
     } else {
       toast(r.json.error || "Erro ao gerar magic link", "error");
     }
   };
 
-  const editLawyerField = async (
+  const editLawyerField = (
     id: string,
     fieldKey: string,
     fieldLabel: string,
     currentValue: string
   ) => {
-    const value = window.prompt(`${fieldLabel}:`, currentValue || "");
-    if (value === null) return;
-    if (busy) return;
-    setBusy(true);
-    const trimmed = value.trim();
-    // Campos opcionais — string vazia vira null no banco.
-    // Importante: o admin pode QUERER esvaziar (ex: limpar Instagram errado).
-    const payload = trimmed === "" ? null : trimmed;
-    const r = await callAdmin({
-      action: "update-lawyer",
-      id,
-      fields: { [fieldKey]: payload }
+    setEditModal({
+      title: fieldLabel,
+      submitLabel: "Salvar",
+      fields: [
+        {
+          key: "value",
+          label: fieldLabel,
+          value: currentValue || "",
+          type: fieldKey === "bio" ? "textarea" : "text"
+        }
+      ],
+      onSubmit: async (v) => {
+        // Campos opcionais — string vazia vira null no banco (admin pode querer esvaziar).
+        const trimmed = (v.value ?? "").trim();
+        const payload = trimmed === "" ? null : trimmed;
+        setBusy(true);
+        const r = await callAdmin({
+          action: "update-lawyer",
+          id,
+          fields: { [fieldKey]: payload }
+        });
+        setBusy(false);
+        if (r.status === 200) {
+          toast(`${fieldLabel} atualizado`);
+          setEditModal(null);
+          await refreshUsers();
+        } else {
+          toast(r.json.error || "Erro ao atualizar", "error");
+        }
+      }
     });
-    setBusy(false);
-    if (r.status === 200) {
-      toast(`${fieldLabel} atualizado`);
-      await refreshUsers();
-    } else {
-      toast(r.json.error || "Erro ao atualizar", "error");
-    }
   };
 
   /**
@@ -435,59 +473,58 @@ export default function AdminPage() {
    * Slug é gerado automaticamente a partir do nome (lowercase, sem acentos,
    * hífen no lugar de espaços).
    */
-  const editMainCity = async (
-    id: string,
-    currentUf: string,
-    currentName: string
-  ) => {
-    const uf = window.prompt(
-      `UF da cidade principal (2 letras, ex: MG, SP):`,
-      currentUf || ""
-    );
-    if (uf === null) return;
-    const ufClean = uf.trim().toUpperCase();
-    if (!/^[A-Z]{2}$/.test(ufClean)) {
-      toast("UF inválida (precisa ter 2 letras maiúsculas)", "error");
-      return;
-    }
-    const name = window.prompt(
-      `Nome da cidade (sem UF, ex: Belo Horizonte):`,
-      currentName || ""
-    );
-    if (name === null) return;
-    const nameClean = name.trim();
-    if (nameClean.length < 2) {
-      toast("Nome de cidade inválido", "error");
-      return;
-    }
-    const slug = nameClean
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[̀-ͯ]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-    if (!slug) {
-      toast("Nome gerou slug vazio — tente outro nome", "error");
-      return;
-    }
-    if (busy) return;
-    setBusy(true);
-    const r = await callAdmin({
-      action: "update-lawyer",
-      id,
-      fields: {
-        uf: ufClean,
-        city_name: nameClean,
-        city_slug: slug
+  const editMainCity = (id: string, currentUf: string, currentName: string) => {
+    setEditModal({
+      title: "Cidade principal",
+      description: "UF + nome da cidade. O endereço (slug) é gerado automaticamente.",
+      submitLabel: "Salvar cidade",
+      fields: [
+        { key: "uf", label: "UF (2 letras)", value: currentUf || "", type: "text", placeholder: "MG" },
+        {
+          key: "name",
+          label: "Nome da cidade",
+          value: currentName || "",
+          type: "text",
+          placeholder: "Belo Horizonte"
+        }
+      ],
+      onSubmit: async (v) => {
+        const ufClean = (v.uf || "").trim().toUpperCase();
+        if (!/^[A-Z]{2}$/.test(ufClean)) {
+          toast("UF inválida (precisa ter 2 letras maiúsculas)", "error");
+          return;
+        }
+        const nameClean = (v.name || "").trim();
+        if (nameClean.length < 2) {
+          toast("Nome de cidade inválido", "error");
+          return;
+        }
+        const slug = nameClean
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+        if (!slug) {
+          toast("Nome gerou slug vazio — tente outro nome", "error");
+          return;
+        }
+        setBusy(true);
+        const r = await callAdmin({
+          action: "update-lawyer",
+          id,
+          fields: { uf: ufClean, city_name: nameClean, city_slug: slug }
+        });
+        setBusy(false);
+        if (r.status === 200) {
+          toast(`Cidade principal atualizada para ${nameClean}/${ufClean}`);
+          setEditModal(null);
+          await refreshUsers();
+        } else {
+          toast(r.json.error || "Erro ao atualizar cidade", "error");
+        }
       }
     });
-    setBusy(false);
-    if (r.status === 200) {
-      toast(`Cidade principal atualizada para ${nameClean}/${ufClean}`);
-      await refreshUsers();
-    } else {
-      toast(r.json.error || "Erro ao atualizar cidade", "error");
-    }
   };
 
   /**
@@ -820,6 +857,11 @@ export default function AdminPage() {
                   >
                     Magic link
                   </button>
+                  <details className="w-full mt-1 rounded-xl border border-brand-line bg-brand-bg/40 px-3 py-2">
+                    <summary className="cursor-pointer text-xs font-semibold text-brand-ink/80 select-none">
+                      ✎ Editar dados do perfil
+                    </summary>
+                    <div className="flex flex-wrap gap-2 mt-2">
                   <button
                     onClick={() => editLawyerField(u.id, "name", "Novo nome completo", u.name)}
                     disabled={busy}
@@ -966,6 +1008,8 @@ export default function AdminPage() {
                       Remover foto
                     </button>
                   )}
+                    </div>
+                  </details>
                   <button
                     onClick={() => viewFullLawyer(u.id)}
                     disabled={busy}
@@ -1406,32 +1450,45 @@ export default function AdminPage() {
         </div>
       )}
 
-      {tab === "stats" && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {(
-            [
-              ["Total cadastrados", users.length, Users],
-              [
-                "Premium ativos",
-                users.filter((u) => u.plan_status === "active").length,
-                Star
-              ],
-              [
-                "Aguardando ativação",
-                users.filter((u) => u.plan_status === "pending").length,
-                MessageSquare
-              ],
-              ["Mensagens não lidas", unread, MessageSquare]
-            ] as Array<[string, number, typeof Users]>
-          ).map(([label, count, Icon], idx) => (
-            <div key={idx} className="card text-center">
-              <Icon className="w-6 h-6 text-brand-deep mx-auto mb-2" aria-hidden />
-              <p className="text-3xl font-bold text-brand-ink font-display">{count}</p>
-              <p className="text-xs text-brand-ink/60 mt-1">{label}</p>
+      {tab === "stats" &&
+        (() => {
+          const active = users.filter((u) => u.plan_status === "active").length;
+          const pending = users.filter((u) => u.plan_status === "pending").length;
+          const free = users.filter((u) => u.plan_status === "free").length;
+          const expired = users.filter((u) => u.plan_status === "expired").length;
+          const cancelled = users.filter((u) => u.plan_status === "cancelled").length;
+          const verified = users.filter((u) => u.verified_oab).length;
+          const total = users.length;
+          const conv = total > 0 ? Math.round((active / total) * 100) : 0;
+          const cards: Array<[string, string | number, typeof Users, string]> = [
+            ["Total cadastrados", total, Users, "text-brand-deep"],
+            ["Premium ativos", active, Star, "text-emerald-600"],
+            ["Aguardando ativação", pending, RefreshCw, "text-amber-600"],
+            ["Taxa de conversão", `${conv}%`, TrendingUp, "text-brand-deep"],
+            ["Gratuitos", free, Users, "text-brand-ink/50"],
+            ["Vencidos", expired, BarChart3, "text-orange-500"],
+            ["OAB verificadas", verified, Star, "text-emerald-600"],
+            ["Mensagens não lidas", unread, MessageSquare, "text-brand-deep"]
+          ];
+          return (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {cards.map(([label, count, Icon, color], idx) => (
+                  <div key={idx} className="card text-center">
+                    <Icon className={`w-6 h-6 mx-auto mb-2 ${color}`} aria-hidden />
+                    <p className="text-3xl font-bold text-brand-ink font-display">{count}</p>
+                    <p className="text-xs text-brand-ink/60 mt-1">{label}</p>
+                  </div>
+                ))}
+              </div>
+              {cancelled > 0 && (
+                <p className="text-xs text-brand-ink/55">
+                  {cancelled} cadastro(s) com plano cancelado.
+                </p>
+              )}
             </div>
-          ))}
-        </div>
-      )}
+          );
+        })()}
 
       {/* Modal de edição de cidades adicionais (Fase 4) */}
       {extraCitiesModal && (
@@ -1441,6 +1498,14 @@ export default function AdminPage() {
           busy={busy}
           onSave={saveExtraCities}
           onClose={() => setExtraCitiesModal(null)}
+        />
+      )}
+
+      {editModal && (
+        <AdminEditModal
+          config={editModal}
+          busy={busy}
+          onClose={() => setEditModal(null)}
         />
       )}
     </div>
