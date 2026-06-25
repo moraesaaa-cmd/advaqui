@@ -366,6 +366,9 @@ export type BlogArticleRow = {
   status: string;
   seo_keywords: string[] | null;
   topic_index: number | null;
+  author_id: string | null;
+  author_name: string | null;
+  meta_description: string | null;
 };
 
 /**
