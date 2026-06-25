@@ -191,6 +191,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now
   }));
 
+  // Artigos gerados por IA (blog_articles no Supabase)
+  const seedSlugs = new Set(getAllArticleSlugs());
+  const dbArticleRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const adminBlog = createAdminClient();
+    const { data: dbArticles, error: dbErr } = await adminBlog
+      .from("blog_articles")
+      .select("slug, published_at")
+      .eq("status", "published")
+      .not("published_at", "is", null)
+      .limit(5000);
+
+    if (!dbErr && Array.isArray(dbArticles)) {
+      for (const a of dbArticles as Array<{ slug: string; published_at: string }>) {
+        if (seedSlugs.has(a.slug)) continue;
+        dbArticleRoutes.push({
+          url: `${base}/blog/${a.slug}`,
+          changeFrequency: "monthly",
+          priority: 0.7,
+          lastModified: a.published_at ? new Date(a.published_at) : now
+        });
+      }
+    }
+  } catch {
+    // Banco offline — sitemap segue sem artigos do DB
+  }
+
   const templateRoutes: MetadataRoute.Sitemap = getAllTemplateSlugs().map((slug) => ({
     url: `${base}/modelos/${slug}`,
     changeFrequency: "monthly",
@@ -263,6 +290,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...stateRoutes,
     ...capitalSpecRoutes,
     ...articleRoutes,
+    ...dbArticleRoutes,
     ...templateRoutes,
     ...mktRoutes,
     ...profileRoutes,
