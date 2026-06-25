@@ -32,10 +32,10 @@ import { Fluxograma, QuadroComparativo } from "@/components/Fluxograma";
 import { ArticleTool } from "@/components/ArticleTools";
 
 export const dynamicParams = true;
-export const revalidate = 3600;
+export const revalidate = 21600;
 
 /** Busca artigo no banco (blog_articles) pelo slug. */
-async function getArticleFromDB(slug: string): Promise<Article | null> {
+async function getArticleFromDB(slug: string): Promise<(Article & { _authorId?: string | null; _authorSlug?: string | null }) | null> {
   try {
     const supabase = createAdminClient();
     const { data } = await supabase
@@ -45,22 +45,36 @@ async function getArticleFromDB(slug: string): Promise<Article | null> {
       .eq("status", "published")
       .maybeSingle();
     if (!data) return null;
+
+    // Se o artigo tem author_id (UGC), busca o slug do advogado para link
+    let authorSlug: string | null = null;
+    if (data.author_id) {
+      const { data: lawyer } = await supabase
+        .from("lawyers")
+        .select("slug")
+        .eq("id", data.author_id)
+        .maybeSingle();
+      authorSlug = lawyer?.slug || null;
+    }
+
     return {
       slug: data.slug,
       title: data.title,
-      excerpt: data.excerpt,
+      excerpt: data.meta_description || data.excerpt,
       category: data.category,
       readingMinutes: data.reading_minutes || 5,
       publishedAt: data.published_at
         ? data.published_at.split("T")[0]
         : data.created_at.split("T")[0],
-      author: data.author || "Equipe AdvAqui",
-      authorRole: "Equipe" as const,
-      intro: data.excerpt,
+      author: data.author_name || data.author || "Equipe AdvAqui",
+      authorRole: data.author_id ? ("Advogado Premium" as const) : ("Equipe" as const),
+      intro: data.meta_description || data.excerpt,
       body: [{ type: "p" as const, text: data.body }],
       faq: [],
-      _source: "db" as const
-    } as Article;
+      _source: "db" as const,
+      _authorId: data.author_id || null,
+      _authorSlug: authorSlug
+    } as Article & { _authorId?: string | null; _authorSlug?: string | null };
   } catch {
     return null;
   }
@@ -79,11 +93,20 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       noIndex: true
     });
   }
-  return buildMetadata({
+  const base = buildMetadata({
     title: article.title,
     description: article.excerpt,
     path: `/blog/${article.slug}`
   });
+  return {
+    ...base,
+    openGraph: {
+      ...(base.openGraph as Record<string, unknown>),
+      type: "article",
+      authors: [article.author || "Equipe AdvAqui"],
+      publishedTime: article.publishedAt,
+    },
+  };
 }
 
 const renderSection = (section: ArticleSection, idx: number) => {
@@ -162,7 +185,9 @@ const articleJsonLd = (
   excerpt: string,
   publishedAt: string,
   updatedAt: string | undefined,
-  author: string
+  author: string,
+  isUgc?: boolean,
+  authorProfileUrl?: string | null
 ) => ({
   "@context": "https://schema.org",
   "@type": "Article",
@@ -170,7 +195,13 @@ const articleJsonLd = (
   description: excerpt,
   datePublished: publishedAt,
   dateModified: updatedAt || publishedAt,
-  author: { "@type": "Organization", name: author },
+  author: isUgc
+    ? {
+        "@type": "Person",
+        name: author,
+        ...(authorProfileUrl ? { url: authorProfileUrl } : {})
+      }
+    : { "@type": "Organization", name: author },
   publisher: {
     "@type": "Organization",
     name: SITE.name,
@@ -195,6 +226,10 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
   // Artigos do banco usam HTML cru no body; seed articles usam ArticleSection[]
   const isDBArticle = "_source" in article && (article as Article & { _source?: string })._source === "db";
+
+  // UGC: extrair dados do autor (advogado) se presentes
+  const authorId = "_authorId" in article ? (article as Article & { _authorId?: string | null })._authorId : null;
+  const authorSlug = "_authorSlug" in article ? (article as Article & { _authorSlug?: string | null })._authorSlug : null;
 
   const related = getRelatedArticles(article.slug, 3);
   const publishedDate = new Date(article.publishedAt).toLocaleDateString("pt-BR", {
@@ -226,7 +261,16 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-brand-ink/60 border-t border-brand-line pt-4">
             <span className="inline-flex items-center gap-1.5">
               <User className="w-4 h-4" aria-hidden />
-              {article.author}{" "}
+              {authorId && authorSlug ? (
+                <Link
+                  href={`/advogado/${authorSlug}`}
+                  className="text-brand-deep hover:text-brand-accent2 font-medium transition"
+                >
+                  {article.author}
+                </Link>
+              ) : (
+                article.author
+              )}{" "}
               <span className="ml-1 px-1.5 py-0.5 rounded text-xs bg-brand-line/60 text-brand-ink/70">
                 {article.authorRole}
               </span>
@@ -451,7 +495,9 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           article.excerpt,
           article.publishedAt,
           article.updatedAt,
-          article.author
+          article.author,
+          !!authorId,
+          authorSlug ? `${SITE.url}/advogado/${authorSlug}` : null
         )}
       />
       <JsonLd data={faqJsonLd(article.faq)} />

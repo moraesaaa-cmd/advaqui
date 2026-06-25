@@ -514,11 +514,32 @@ export async function POST(req: Request) {
       const supabase = createAdminClient();
       const { data, error } = await supabase
         .from("blog_articles")
-        .select("id,slug,title,category,status,reading_minutes,created_at,published_at")
+        .select("id,slug,title,category,status,reading_minutes,created_at,published_at,author_id,author_name")
         .order("created_at", { ascending: false })
         .limit(200);
       if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       return NextResponse.json({ ok: true, articles: data ?? [] });
+    }
+    case "approve-article": {
+      if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
+      const supabase = createAdminClient();
+      const { error } = await supabase
+        .from("blog_articles")
+        .update({ status: "published", published_at: new Date().toISOString() })
+        .eq("id", body.id);
+      if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      revalidatePath("/blog");
+      return NextResponse.json({ ok: true, status: "published" });
+    }
+    case "reject-article": {
+      if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
+      const supabase = createAdminClient();
+      const { error } = await supabase
+        .from("blog_articles")
+        .update({ status: "rejected" })
+        .eq("id", body.id);
+      if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json({ ok: true, status: "rejected" });
     }
     case "toggle-article-status": {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });

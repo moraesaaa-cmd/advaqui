@@ -1859,6 +1859,9 @@ type BlogArticleRow = {
   body: string;
   reading_minutes: number;
   author: string;
+  author_id: string | null;
+  author_name: string | null;
+  meta_description: string | null;
   published_at: string | null;
   created_at: string;
   status: string;
@@ -1926,15 +1929,15 @@ export async function getArticlesFromDB(options?: {
   const dbArticles: Article[] = (data as BlogArticleRow[]).map((row) => ({
     slug: row.slug,
     title: row.title,
-    excerpt: row.excerpt,
+    excerpt: row.meta_description || row.excerpt,
     category: row.category,
     readingMinutes: row.reading_minutes || 5,
     publishedAt: row.published_at
       ? row.published_at.split("T")[0]
       : row.created_at.split("T")[0],
-    author: row.author || "Equipe AdvAqui",
-    authorRole: "Equipe" as const,
-    intro: row.excerpt,
+    author: row.author_name || row.author || "Equipe AdvAqui",
+    authorRole: row.author_id ? ("Advogado Premium" as const) : ("Equipe" as const),
+    intro: row.meta_description || row.excerpt,
     body: htmlToSections(row.body),
     faq: [],
     _source: "db" as const

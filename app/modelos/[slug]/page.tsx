@@ -24,7 +24,7 @@ import { TemplateBody } from "@/components/TemplateBody";
 import { relatedArticlesForTemplate } from "@/lib/seo/internal-links";
 
 export const dynamicParams = false;
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   return getAllTemplateSlugs().map((slug) => ({ slug }));

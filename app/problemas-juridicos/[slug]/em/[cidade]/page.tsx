@@ -9,18 +9,15 @@ import {
   MapPin,
   Scale,
   Users,
-  Compass
+  Compass,
+  ArrowRight
 } from "lucide-react";
 import {
   PROBLEMAS,
   findProblema,
   relatedProblemas
 } from "@/lib/data/problemas-juridicos";
-import {
-  getCidadesPrioritarias,
-  cidadesPrioritariasMesmaRegiao
-} from "@/lib/data/cidades-prioritarias";
-import { findCity } from "@/lib/data/cities";
+import { findCity, getAllCities, nearbyCities } from "@/lib/data/cities";
 import { findGlossarioTermo } from "@/lib/data/glossario";
 import { findTemaStj } from "@/lib/data/jurisprudencia-temas";
 import { findGuiaByArea } from "@/lib/data/guias";
@@ -35,39 +32,37 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 
 /**
- * /problemas-juridicos/[slug]/em/[cidade] — combinação problema × cidade.
+ * /problemas-juridicos/[slug]/em/[cidade] — combinação problema x cidade.
  *
- * 20 problemas × 5571 cidades IBGE = 111.420 URLs cauda longa indexáveis.
+ * 20 problemas x 5571 cidades IBGE = 111.420 URLs cauda longa indexáveis.
  *
  * Estratégia híbrida:
- *  - SSG nas 50 cidades prioritárias × 20 problemas (1000 pré-geradas)
- *  - ISR (dynamicParams = true) nas 5521 cidades restantes — geradas
- *    sob demanda no primeiro acesso e cacheadas com revalidate=24h
+ *  - SSG nas 27 capitais x 20 problemas (540 pré-geradas no build)
+ *  - ISR (dynamicParams = true) nas 5544 cidades restantes — geradas
+ *    sob demanda no primeiro acesso e cacheadas por 7 dias (revalidate=604800)
  *  - notFound() se a "cidade-uf" não existir na base IBGE — evita lixo
  *
  * Conteúdo único por combinação:
  *  - H1, title, description e intro contextualizam o problema na cidade
  *  - Lista advogados que atuam ali (via getLawyersForCity)
- *  - Links pra cidades vizinhas da mesma região
+ *  - Links pra cidades vizinhas (nearbyCities — mesmo estado, vizinhas alfabeticamente)
+ *  - Links pro diretório de advogados por especialidade na cidade
  *  - Reaproveita passos práticos, documentos e direitos do problema base
  *  - Não substitui /problemas-juridicos/[slug] (geral) — canonical próprio
  */
 
-// force-dynamic: renderiza sob demanda SEM gravar em disco. Impede o acúmulo
-// (Google rastreando 111k URLs) que enchia o disco a 100% e quebrava o site.
-// As URLs continuam funcionando (geradas na hora). generateStaticParams abaixo
-// fica como referência (ignorado sob force-dynamic).
-export const dynamic = "force-dynamic";
+export const revalidate = 604800;
+export const dynamicParams = true;
 
 const PROBLEMA_SLUGS = PROBLEMAS.map((p) => p.slug);
 
 export function generateStaticParams() {
-  const cidades = getCidadesPrioritarias();
+  const capitals = getAllCities().filter((c) => c.isCapital);
   const params: Array<{ slug: string; cidade: string }> = [];
-  for (const p of PROBLEMA_SLUGS) {
-    for (const c of cidades) {
+  for (const slug of PROBLEMA_SLUGS) {
+    for (const c of capitals) {
       params.push({
-        slug: p,
+        slug,
         cidade: `${c.slug}-${c.uf.toLowerCase()}`
       });
     }
@@ -75,11 +70,9 @@ export function generateStaticParams() {
   return params;
 }
 
-/** Resolve "cidade-uf" → { uf, citySlug } com defesa.
- *  Aceita qualquer cidade do IBGE (não só prioritárias) — usado pra ISR. */
-function parseCidadeParam(
-  param: string
-): { uf: string; citySlug: string; cidadeNome: string } | null {
+/** Resolve "cidade-uf" -> { uf, citySlug, city } com defesa.
+ *  Aceita qualquer cidade do IBGE (não só capitais) — usado pra ISR. */
+function parseCidadeParam(param: string) {
   // Espera "slug-uf" — UF tem exatamente 2 letras
   const m = param.match(/^(.+)-([a-z]{2})$/i);
   if (!m) return null;
@@ -87,7 +80,7 @@ function parseCidadeParam(
   const uf = m[2].toUpperCase();
   const city = findCity(uf, citySlug);
   if (!city) return null;
-  return { uf, citySlug, cidadeNome: city.name };
+  return { uf, citySlug, cidadeNome: city.name, city };
 }
 
 export async function generateMetadata({
@@ -105,7 +98,7 @@ export async function generateMetadata({
     });
   }
   const tituloLocal = `${problema.titulo.replace(/\?$/, "").replace(/\.$/, "")} em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
-  const descricaoLocal = `${problema.resumo} Veja como agir em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}, com advogados que atuam na cidade.`;
+  const descricaoLocal = `${problema.intencao_curta} Veja como agir em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}, com advogados que atuam na cidade.`;
   return buildMetadata({
     title: tituloLocal,
     description: descricaoLocal.slice(0, 160),
@@ -155,11 +148,9 @@ export default async function ProblemaPorCidadePage({
   const lawyersExibir = lawyersDaArea.length > 0 ? lawyersDaArea : lawyers;
   const lawyersExibirTop = lawyersExibir.slice(0, 6);
 
-  const cidadeRegional = cidadesPrioritariasMesmaRegiao(
-    cidadeInfo.uf,
-    cidadeInfo.citySlug,
-    6
-  );
+  // Cidades vizinhas (mesmo estado, proximidade alfabética)
+  const vizinhas = nearbyCities(cidadeInfo.city, 8);
+
   const outrosProblemasArea = relatedProblemas(problema.slug, 5);
   const tituloLocal = `${problema.titulo.replace(/\?$/, "").replace(/\.$/, "")} em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
   const ufLower = cidadeInfo.uf.toLowerCase();
@@ -198,12 +189,35 @@ export default async function ProblemaPorCidadePage({
               )}
             </p>
             <p className="text-base md:text-lg text-brand-ink/85 mt-3 leading-relaxed">
+              {problema.intencao_curta}
+            </p>
+            <p className="text-sm md:text-base text-brand-ink/75 mt-2 leading-relaxed">
               {problema.resumo}
             </p>
           </div>
         </div>
 
-        {/* Conteúdo localizado */}
+        {/* Contexto local */}
+        <div className="mt-4 rounded-xl bg-brand-bg/40 border border-brand-line p-4">
+          <p className="text-sm md:text-base text-brand-ink/85 leading-relaxed">
+            Se você está em {cidadeInfo.cidadeNome}, procure um advogado{" "}
+            {areasObj[0] ? (
+              <Link
+                href={`/advogados/${ufLower}/${cidadeInfo.citySlug}/${areasObj[0].slug}`}
+                className="text-brand-deep underline font-medium"
+              >
+                {areasObj[0].name.toLowerCase()}
+              </Link>
+            ) : (
+              "especializado"
+            )}{" "}
+            na região. A orientação técnica é a mesma em todo o Brasil, mas prazos
+            administrativos locais, varas competentes e canais extrajudiciais
+            (Procon, defensoria pública, OAB seccional) variam por cidade.
+          </p>
+        </div>
+
+        {/* Conteúdo — situação */}
         <section className="mt-6">
           <h2 className="font-display text-xl font-bold text-brand-ink mb-2">
             Como costuma acontecer
@@ -217,13 +231,6 @@ export default async function ProblemaPorCidadePage({
                 {s}
               </p>
             ))}
-            <p className="text-sm md:text-base text-brand-ink/85 leading-relaxed">
-              Em {cidadeInfo.cidadeNome}/{cidadeInfo.uf}, a orientação técnica é
-              a mesma — o que pode mudar são prazos administrativos locais,
-              estrutura de varas competentes e a disponibilidade de canais
-              extrajudiciais (Procon, defensoria pública, balcão da OAB seccional).
-              Por isso vale procurar um advogado que atue na cidade.
-            </p>
           </div>
         </section>
 
@@ -293,6 +300,36 @@ export default async function ProblemaPorCidadePage({
           </div>
         </aside>
       </article>
+
+      {/* Encontre advogado por especialidade na cidade */}
+      {areasObj.length > 0 && (
+        <section className="card mb-6">
+          <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+            <ArrowRight className="w-5 h-5 text-brand-deep" aria-hidden />
+            Encontre advogado em {cidadeInfo.cidadeNome}
+          </h2>
+          <p className="text-sm text-brand-ink/75 mb-3 leading-relaxed">
+            Áreas do direito relacionadas a esta situação:
+          </p>
+          <ul className="grid gap-2 sm:grid-cols-2">
+            {areasObj.map((area) => (
+              <li key={area.slug}>
+                <Link
+                  href={`/advogados/${ufLower}/${cidadeInfo.citySlug}/${area.slug}`}
+                  className="block group rounded-xl border border-brand-line p-4 hover:border-brand-deep/40 hover:shadow-card transition"
+                >
+                  <p className="font-semibold text-sm text-brand-ink group-hover:text-brand-deep transition">
+                    Advogado {area.name} em {cidadeInfo.cidadeNome}
+                  </p>
+                  <p className="text-xs text-brand-ink/65 mt-0.5 leading-snug">
+                    Ver profissionais cadastrados
+                  </p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Advogados em CIDADE para a área */}
       <section className="card mb-6">
@@ -388,6 +425,24 @@ export default async function ProblemaPorCidadePage({
           </Link>
         )}
 
+        <Link
+          href={`/problemas-juridicos/${problema.slug}`}
+          className="block group mb-2 rounded-xl border border-brand-line p-4 hover:border-brand-deep/40 hover:bg-brand-bg/30 transition"
+        >
+          <div className="flex items-start gap-3">
+            <HelpCircle className="w-5 h-5 text-brand-deep flex-shrink-0 mt-1" aria-hidden />
+            <div className="flex-1">
+              <p className="text-xs text-brand-ink/55 font-semibold uppercase tracking-wide">
+                Página geral do problema
+              </p>
+              <p className="text-sm md:text-base font-semibold text-brand-ink group-hover:text-brand-deep transition mt-0.5">
+                {problema.titulo}
+              </p>
+            </div>
+            <ChevronRight className="w-5 h-5 text-brand-ink/30 group-hover:text-brand-deep flex-shrink-0 mt-1" aria-hidden />
+          </div>
+        </Link>
+
         {termosGloss.length > 0 && (
           <div className="mt-4">
             <p className="text-xs text-brand-ink/55 font-semibold uppercase tracking-wide mb-2">
@@ -441,23 +496,23 @@ export default async function ProblemaPorCidadePage({
       )}
 
       {/* Cidades próximas com o mesmo problema */}
-      {cidadeRegional.length > 0 && (
+      {vizinhas.length > 0 && (
         <section className="card mb-6">
           <h2 className="font-display text-xl font-bold text-brand-ink mb-3">
             {problema.titulo.replace(/\?$/, "").replace(/\.$/, "")} em cidades próximas
           </h2>
-          <ul className="grid gap-2 sm:grid-cols-2">
-            {cidadeRegional.map((c) => (
+          <ul className="grid gap-2 sm:grid-cols-2 md:grid-cols-3">
+            {vizinhas.map((c) => (
               <li key={`${c.uf}-${c.slug}`}>
                 <Link
                   href={`/problemas-juridicos/${problema.slug}/em/${c.slug}-${c.uf.toLowerCase()}`}
                   className="block group rounded-lg border border-brand-line p-3 hover:border-brand-deep/40 hover:bg-brand-bg/30 transition"
                 >
                   <p className="font-semibold text-sm text-brand-ink group-hover:text-brand-deep transition">
-                    {c.nome_completo}
+                    {c.name}, {c.uf}
                   </p>
                   <p className="text-xs text-brand-ink/65 mt-0.5 leading-snug">
-                    {c.regiao}
+                    {c.state}
                   </p>
                 </Link>
               </li>
@@ -465,6 +520,28 @@ export default async function ProblemaPorCidadePage({
           </ul>
         </section>
       )}
+
+      {/* CTA — advogados */}
+      <aside className="rounded-xl border-l-4 border-brand-deep bg-brand-bg/40 p-4 md:p-5 mb-6">
+        <h2 className="font-display text-lg font-bold text-brand-ink mb-2">
+          Cada caso é único
+        </h2>
+        <p className="text-sm md:text-base text-brand-ink/85 leading-relaxed">
+          Este guia é informativo. Para decisões concretas — prazos, valores,
+          documentos do seu caso —{" "}
+          <Link
+            href={
+              areasObj[0]
+                ? `/advogados/${ufLower}/${cidadeInfo.citySlug}/${areasObj[0].slug}`
+                : `/advogados/${ufLower}/${cidadeInfo.citySlug}`
+            }
+            className="text-brand-deep underline font-medium"
+          >
+            fale com um advogado de {cidadeInfo.cidadeNome}
+          </Link>{" "}
+          que conhece a Justiça local.
+        </p>
+      </aside>
 
       <aside
         role="note"

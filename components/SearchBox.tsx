@@ -104,6 +104,9 @@ export function SearchBox() {
   }, []);
 
   const navigateTo = useCallback((hit: Hit) => {
+    try {
+      localStorage.setItem("advaqui_last_city", JSON.stringify({ name: hit.name, slug: hit.slug, uf: hit.uf }));
+    } catch {}
     router.push(`/advogados/${hit.uf.toLowerCase()}/${hit.slug}`);
     setOpen(false);
     setQ(hit.name);

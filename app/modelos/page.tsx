@@ -19,7 +19,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata = buildMetadata({
   title: "Modelos gratuitos de documentos",

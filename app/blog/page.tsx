@@ -21,7 +21,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 
-export const revalidate = 3600;
+export const revalidate = 10800;
 
 export const metadata = buildMetadata({
   title: "Blog jurídico — artigos, guias, problemas e glossário num lugar só",
@@ -336,11 +336,11 @@ export default async function BlogHubPage() {
             <h2 className="font-display text-2xl font-bold">É advogado? Publique no AdvAqui</h2>
             <p className="text-brand-bg/85 mt-3 text-sm leading-relaxed">
               Conteúdo bem feito constrói autoridade na sua especialidade — e o Google
-              entende isso. Em breve, membros do plano em destaque poderão publicar
-              artigos com assinatura e link para o próprio perfil.
+              entende isso. Membros do plano premium podem publicar artigos
+              com assinatura e link direto para o próprio perfil.
             </p>
             <p className="text-brand-bg/65 mt-2 text-xs">
-              Por enquanto, envie sugestões e artigos para {SITE.email}.
+              Acesse seu painel e vá em Blog para enviar seu primeiro artigo.
             </p>
           </div>
           <div>

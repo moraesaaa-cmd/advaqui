@@ -25,6 +25,8 @@ import {
   Sparkles,
   ArrowRight
 } from "lucide-react";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbSchema } from "@/lib/seo/schema";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
@@ -391,6 +393,13 @@ export default function FerramentasPage() {
         decisões sobre o seu caso, fale com um advogado — cada situação tem
         detalhes que mudam o resultado.
       </p>
+
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Início", url: "/" },
+          { name: "Ferramentas", url: "/ferramentas" }
+        ])}
+      />
     </main>
   );
 }

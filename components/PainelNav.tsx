@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, HelpCircle, Palette, CreditCard } from "lucide-react";
+import { LayoutDashboard, FileText, HelpCircle, Palette, CreditCard, BookOpen } from "lucide-react";
 
 const TABS = [
   { href: "/painel", label: "Meu perfil", Icon: LayoutDashboard, exact: true },
   { href: "/painel/pagamento", label: "Pagamento", Icon: CreditCard },
   { href: "/painel/artigos", label: "Artigos", Icon: FileText },
+  { href: "/painel/blog", label: "Blog", Icon: BookOpen },
   { href: "/painel/perguntas", label: "Perguntas", Icon: HelpCircle },
   { href: "/painel/aparencia", label: "Aparência", Icon: Palette }
 ];

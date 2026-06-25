@@ -17,6 +17,13 @@ export async function middleware(request: NextRequest) {
   const host = request.headers.get("host") || "";
   const { pathname } = request.nextUrl;
 
+  // www → non-www: canonical 301 (SEO — evita conteúdo duplicado)
+  if (host.startsWith("www.")) {
+    const u = request.nextUrl.clone();
+    u.host = host.replace(/^www\./, "");
+    return NextResponse.redirect(u, 301);
+  }
+
   // Subdomínio multas.advaqui.com → serve a landing do recurso de multa
   // (/multas) no MESMO app. Só a raiz é reescrita; /multas, /api, /_next e
   // assets passam direto. Público de trânsito ≠ diretório de advogados.

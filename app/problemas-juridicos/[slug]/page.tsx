@@ -22,6 +22,7 @@ import { findTemaStj } from "@/lib/data/jurisprudencia-temas";
 import { findGuiaByArea } from "@/lib/data/guias";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { getCidadesPrioritarias } from "@/lib/data/cidades-prioritarias";
+import { relatedArticlesForSpecialty } from "@/lib/seo/internal-links";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
@@ -376,6 +377,35 @@ export default function ProblemaPage({ params }: { params: { slug: string } }) {
         </section>
       )}
 
+      {/* Blog — artigos relacionados à especialidade */}
+      {(() => {
+        const blogPosts = areasObj[0] ? relatedArticlesForSpecialty(areasObj[0].slug, 3) : [];
+        if (blogPosts.length === 0) return null;
+        return (
+          <section className="card mb-6">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3">
+              Artigos sobre {areasObj[0].name.toLowerCase()}
+            </h2>
+            <div className="space-y-2">
+              {blogPosts.map((a) => (
+                <Link
+                  key={a.slug}
+                  href={`/blog/${a.slug}`}
+                  className="block group rounded-lg border border-brand-line p-3 hover:border-brand-deep/40 hover:bg-brand-bg/30 transition"
+                >
+                  <p className="font-semibold text-sm text-brand-ink group-hover:text-brand-deep transition">
+                    {a.title}
+                  </p>
+                  <p className="text-xs text-brand-ink/65 mt-0.5">
+                    {a.readingMinutes} min de leitura
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        );
+      })()}
+
       {/* CTA — advogados */}
       <aside className="rounded-xl border-l-4 border-brand-deep bg-brand-bg/40 p-4 md:p-5 mb-6">
         <h2 className="font-display text-lg font-bold text-brand-ink mb-2">
@@ -385,7 +415,7 @@ export default function ProblemaPage({ params }: { params: { slug: string } }) {
           Este guia é informativo. Para decisões concretas — prazos, valores,
           documentos do seu caso —{" "}
           <Link
-            href={areasObj[0] ? `/advogados/${areasObj[0].slug}` : "/advogados"}
+            href={areasObj[0] ? `/advogados-de/${areasObj[0].slug}` : "/advogados"}
             className="text-brand-deep underline font-medium"
           >
             fale com um advogado da sua cidade

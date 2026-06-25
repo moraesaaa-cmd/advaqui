@@ -108,6 +108,31 @@ export const howToSchema = (
   }))
 });
 
+export const lawyerPersonSchema = (lawyer: Lawyer) => ({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: lawyer.name,
+  jobTitle: "Advogado",
+  description: lawyer.bio || undefined,
+  url: `${SITE.url}/advogado/${lawyer.slug}`,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: lawyer.cityName,
+    addressRegion: lawyer.uf,
+    addressCountry: "BR",
+    ...(lawyer.address ? { streetAddress: lawyer.address } : {})
+  },
+  areaServed: {
+    "@type": "City",
+    name: lawyer.cityName
+  },
+  knowsAbout: lawyer.specialties,
+  memberOf: {
+    "@type": "Organization",
+    name: `OAB/${lawyer.oabUf}`
+  }
+});
+
 export const cityServiceSchema = (cityName: string, uf: string, count: number) => ({
   "@context": "https://schema.org",
   "@type": "Service",

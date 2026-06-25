@@ -12,6 +12,10 @@ import { citySpecialtyIntro } from "@/lib/data/templates";
 import { getUsefulDocsForSpecialties } from "@/lib/data/specialty-descriptions";
 import { getProblemaIndex } from "@/lib/data/problema-index";
 import { relatedCapitalsForSpecialty } from "@/lib/seo/internal-links";
+import { getSpecialtyContent } from "@/lib/data/specialty-content";
+import type { SpecialtyUrgency } from "@/lib/data/specialty-content";
+import { nearbyCities } from "@/lib/data/cities";
+import { AlertTriangle, Clock, Info } from "lucide-react";
 
 // Sempre ao vivo (force-dynamic): o advogado por especialidade na cidade
 // reflete o cadastro na hora, sem cache que congele.
@@ -48,6 +52,56 @@ export async function generateMetadata({
 
 const eyebrow = "text-xs font-bold uppercase tracking-wider";
 
+const URGENCY_STYLES: Record<SpecialtyUrgency["level"], {
+  bg: string;
+  border: string;
+  iconColor: string;
+  badgeBg: string;
+  badgeColor: string;
+  textColor: string;
+  label: string;
+}> = {
+  alta: {
+    bg: "#FEF2F2",
+    border: "#FECACA",
+    iconColor: "#DC2626",
+    badgeBg: "#DC2626",
+    badgeColor: "#FFFFFF",
+    textColor: "#7F1D1D",
+    label: "Urgência alta"
+  },
+  media: {
+    bg: "#FFFBEB",
+    border: "#FDE68A",
+    iconColor: "#D97706",
+    badgeBg: "#D97706",
+    badgeColor: "#FFFFFF",
+    textColor: "#78350F",
+    label: "Atenção ao prazo"
+  },
+  baixa: {
+    bg: "#F0FDF4",
+    border: "#BBF7D0",
+    iconColor: "#16A34A",
+    badgeBg: "#16A34A",
+    badgeColor: "#FFFFFF",
+    textColor: "#14532D",
+    label: "Prazo flexível"
+  }
+};
+
+function UrgencyIcon({ level }: { level: SpecialtyUrgency["level"] }) {
+  const cls = "w-5 h-5 flex-shrink-0";
+  switch (level) {
+    case "alta":
+      return <AlertTriangle className={cls} aria-hidden />;
+    case "media":
+      return <Clock className={cls} aria-hidden />;
+    case "baixa":
+      return <Info className={cls} aria-hidden />;
+  }
+}
+
 export default async function CitySpecialtyPage({
   params
 }: {
@@ -73,8 +127,10 @@ export default async function CitySpecialtyPage({
     .slice(0, 5);
   const docs = getUsefulDocsForSpecialties([sp.slug], 5);
 
-  // FAQ parametrizado (informativo, gera FAQPage schema).
-  const faqs = [
+  const spContent = getSpecialtyContent(sp.slug);
+  const nearby = nearbyCities(city, 6);
+
+  const genericFaqs = [
     {
       q: `Qual o prazo para procurar um advogado ${areaLow} em ${city.name}?`,
       a: `O prazo varia conforme o tipo de caso. Em geral, quanto antes você procurar orientação, mais opções terá — alguns direitos prescrevem com o tempo. Um advogado ${areaLow} na sua cidade pode avaliar o prazo específico da sua situação.`
@@ -88,6 +144,7 @@ export default async function CitySpecialtyPage({
       a: `Boa parte dos atos hoje é digital, pelo Processo Judicial Eletrônico (PJe). Audiências podem ser presenciais ou por videoconferência, conforme o caso e a Vara. O advogado orienta o que é necessário.`
     }
   ];
+  const faqs = [...(spContent?.faqs ?? []), ...genericFaqs];
 
   const jump = [
     { href: "#advogados", label: `Ver advogados (${lawyers.length})`, primary: true },
@@ -179,6 +236,40 @@ export default async function CitySpecialtyPage({
           </a>
         ))}
       </div>
+
+      {/* URGÊNCIA — prazo prescricional */}
+      {spContent?.urgency && (() => {
+        const u = spContent.urgency;
+        const s = URGENCY_STYLES[u.level];
+        return (
+          <div
+            className="rounded-[14px] px-5 py-4 mb-6 flex items-start gap-4 flex-wrap sm:flex-nowrap"
+            style={{ background: s.bg, border: `1px solid ${s.border}` }}
+          >
+            <div className="flex items-center gap-3 flex-shrink-0 pt-0.5" style={{ color: s.iconColor }}>
+              <UrgencyIcon level={u.level} />
+              <span
+                className="text-[12px] font-bold uppercase tracking-wider px-2 py-0.5 rounded"
+                style={{ background: s.badgeBg, color: s.badgeColor }}
+              >
+                {s.label} · {u.prazo}
+              </span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[14.5px] leading-relaxed" style={{ color: s.textColor }}>
+                {u.alerta}
+              </p>
+            </div>
+            <a
+              href="#advogados"
+              className="text-[13px] font-bold px-4 py-2 rounded-lg whitespace-nowrap flex-shrink-0 self-center"
+              style={{ background: s.badgeBg, color: s.badgeColor }}
+            >
+              Fale com um advogado agora
+            </a>
+          </div>
+        );
+      })()}
 
       {/* DIRETÓRIO */}
       <section id="advogados" className="pb-2 scroll-mt-20">
@@ -340,6 +431,130 @@ export default async function CitySpecialtyPage({
           </Link>
         </section>
       </div>
+
+      {/* CONTEÚDO DA ESPECIALIDADE — anti-thin content */}
+      {spContent && (
+        <section className="pt-[42px] pb-2">
+          <h2 className="font-display font-semibold text-[23px] tracking-tight mb-4">
+            O que faz um advogado {areaLow}
+          </h2>
+          <div className="space-y-4 text-[15px] leading-relaxed" style={{ color: "#3C485A" }}>
+            {spContent.paragraphs.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+
+          <h3 className="font-display font-semibold text-[19px] tracking-tight mt-8 mb-3">
+            Quando procurar um advogado {areaLow} em {city.name}
+          </h3>
+          <p className="text-[15px] leading-relaxed mb-6" style={{ color: "#3C485A" }}>
+            {spContent.whenToHire}
+          </p>
+
+          <h3 className="font-display font-semibold text-[19px] tracking-tight mb-3">
+            Casos mais comuns em direito {areaLow}
+          </h3>
+          <div className="bg-white rounded-[14px] px-5 py-2" style={{ border: "1px solid #E4E2DA" }}>
+            {spContent.commonCases.map((c) => (
+              <div
+                key={c}
+                className="flex items-center gap-3 py-[13px] text-[14.5px]"
+                style={{ color: "#3C485A", borderBottom: "1px solid #EDEBE3" }}
+              >
+                <span className="w-[7px] h-[7px] rounded-sm flex-shrink-0" style={{ background: "#274472" }} />
+                {c}
+              </div>
+            ))}
+          </div>
+
+          <div
+            className="rounded-[14px] px-[22px] py-4 mt-6 flex items-center justify-between gap-5 flex-wrap"
+            style={{ background: "linear-gradient(135deg, #0F1B2D 0%, #1A3050 100%)" }}
+          >
+            <div>
+              <span className="text-sm text-white font-semibold">
+                Precisa de ajuda com {areaLow}?
+              </span>
+              <span className="text-sm ml-2" style={{ color: "#A9B4C6" }}>
+                Encontre um advogado na sua região
+              </span>
+            </div>
+            <Link
+              href={`/advogados-de/${sp.slug}`}
+              className="text-[13.5px] font-bold px-4 py-[9px] rounded-lg whitespace-nowrap"
+              style={{ background: "#C8A24A", color: "#0F1B2D" }}
+            >
+              Ver em outras cidades
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {/* ADVOGADOS EM CIDADES PRÓXIMAS */}
+      {nearby.length > 0 && (
+        <section className="pt-[42px] pb-2">
+          <h2 className="font-display font-semibold text-[23px] tracking-tight mb-4">
+            Advogado {areaLow} em cidades próximas a {city.name}
+          </h2>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+            {nearby.map((nc) => (
+              <Link
+                key={nc.slug}
+                href={`/advogados/${nc.uf.toLowerCase()}/${nc.slug}/${sp.slug}`}
+                className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
+                style={{ border: "1px solid #E4E2DA" }}
+              >
+                <span className="font-bold text-[15px]" style={{ color: "#274472" }}>→</span>
+                <span className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>
+                  {nc.name}/{nc.uf}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* RECURSOS ÚTEIS — tribunal, glossário, guias */}
+      <section className="pt-[42px] pb-2">
+        <h2 className="font-display font-semibold text-[23px] tracking-tight mb-4">
+          Recursos jurídicos em {city.name}
+        </h2>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+          <Link
+            href={`/tribunais/${st.uf.toLowerCase()}/${city.slug}`}
+            className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
+            style={{ border: "1px solid #E4E2DA" }}
+          >
+            <span className="text-lg">🏛️</span>
+            <div>
+              <div className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>Fórum e Comarca</div>
+              <div className="text-[12px]" style={{ color: "#6B7689" }}>{city.name}/{st.uf}</div>
+            </div>
+          </Link>
+          <Link
+            href={`/guias/${sp.slug}`}
+            className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
+            style={{ border: "1px solid #E4E2DA" }}
+          >
+            <span className="text-lg">📘</span>
+            <div>
+              <div className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>Guia de {sp.name}</div>
+              <div className="text-[12px]" style={{ color: "#6B7689" }}>Passo a passo para leigos</div>
+            </div>
+          </Link>
+          <Link
+            href="/glossario"
+            className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
+            style={{ border: "1px solid #E4E2DA" }}
+          >
+            <span className="text-lg">📖</span>
+            <div>
+              <div className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>Glossário jurídico</div>
+              <div className="text-[12px]" style={{ color: "#6B7689" }}>Termos em linguagem simples</div>
+            </div>
+          </Link>
+        </div>
+      </section>
 
       {/* FAQ */}
       <section id="faq" className="pt-[42px] pb-2 scroll-mt-20">

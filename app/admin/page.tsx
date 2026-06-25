@@ -127,6 +127,8 @@ export default function AdminPage() {
     reading_minutes: number | null;
     created_at: string;
     published_at: string | null;
+    author_id?: string | null;
+    author_name?: string | null;
   };
   const [articles, setArticles] = useState<BlogArticle[]>([]);
   const [articlesLoading, setArticlesLoading] = useState(false);
@@ -170,6 +172,33 @@ export default function AdminPage() {
       await refreshArticles();
     } else {
       toast(r.json.error || "Erro ao excluir", "error");
+    }
+  };
+
+  const approveArticle = async (id: string) => {
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "approve-article", id });
+    setBusy(false);
+    if (r.status === 200) {
+      toast("Artigo aprovado e publicado");
+      await refreshArticles();
+    } else {
+      toast(r.json.error || "Erro ao aprovar", "error");
+    }
+  };
+
+  const rejectArticle = async (id: string, title: string) => {
+    if (!confirm(`Rejeitar artigo "${title}"?`)) return;
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "reject-article", id });
+    setBusy(false);
+    if (r.status === 200) {
+      toast("Artigo rejeitado");
+      await refreshArticles();
+    } else {
+      toast(r.json.error || "Erro ao rejeitar", "error");
     }
   };
 
@@ -1348,6 +1377,53 @@ export default function AdminPage() {
             </div>
           </div>
 
+          {/* UGC — artigos pendentes de advogados */}
+          {(() => {
+            const pending = articles.filter((a) => a.author_id && a.status === "pending");
+            if (pending.length === 0) return null;
+            return (
+              <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-4 space-y-2">
+                <p className="font-semibold text-amber-900 text-sm">
+                  {pending.length} artigo(s) de advogados aguardando revisão
+                </p>
+                {pending.map((a) => (
+                  <article key={a.id} className="bg-white rounded-lg border border-amber-200 p-3 flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-brand-ink text-sm truncate">{a.title}</p>
+                      <p className="text-xs text-brand-ink/55 mt-0.5">
+                        Por {a.author_name || "advogado"} · {formatDate(a.created_at)}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <a
+                        href={`/blog/${a.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70"
+                      >
+                        Ler
+                      </a>
+                      <button
+                        onClick={() => void approveArticle(a.id)}
+                        disabled={busy}
+                        className="px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-medium hover:bg-emerald-100 disabled:opacity-50"
+                      >
+                        Aprovar
+                      </button>
+                      <button
+                        onClick={() => void rejectArticle(a.id, a.title)}
+                        disabled={busy}
+                        className="px-3 py-1.5 bg-red-50 text-red-700 rounded-lg text-xs font-medium hover:bg-red-100 disabled:opacity-50"
+                      >
+                        Rejeitar
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            );
+          })()}
+
           {articlesLoading && articles.length === 0 && (
             <p className="text-center text-brand-ink/50 py-8">Carregando artigos...</p>
           )}
@@ -1371,10 +1447,19 @@ export default function AdminPage() {
                       <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${
                         a.status === "published"
                           ? "bg-emerald-100 text-emerald-700"
-                          : "bg-amber-100 text-amber-700"
+                          : a.status === "pending"
+                          ? "bg-amber-100 text-amber-700"
+                          : a.status === "rejected"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-gray-100 text-gray-700"
                       }`}>
-                        {a.status === "published" ? "Publicado" : "Rascunho"}
+                        {a.status === "published" ? "Publicado" : a.status === "pending" ? "Pendente" : a.status === "rejected" ? "Rejeitado" : "Rascunho"}
                       </span>
+                      {a.author_name && (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                          UGC · {a.author_name}
+                        </span>
+                      )}
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-brand-line text-brand-ink/70">
                         {a.category}
                       </span>

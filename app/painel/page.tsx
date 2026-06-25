@@ -183,6 +183,14 @@ export default function PainelPage() {
   const [msg, setMsg] = useState("");
   const [sendingMsg, setSendingMsg] = useState(false);
 
+  // IA — Melhorar perfil com IA (Premium)
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiSuggestions, setAiSuggestions] = useState<{
+    bio: string;
+    shortSummary: string;
+    suggestedTitle: string;
+  } | null>(null);
+
   const loadProfile = useCallback(async () => {
     setLoadState("loading");
     setLoadError("");
@@ -316,6 +324,38 @@ export default function PainelPage() {
       toast(err instanceof Error ? err.message : "Erro ao salvar. Tente novamente.", "error");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const improveProfileWithAI = async () => {
+    if (!draft || aiLoading) return;
+    setAiLoading(true);
+    setAiSuggestions(null);
+    try {
+      const data = await requestJson<{
+        ok: true;
+        suggestions: { bio: string; shortSummary: string; suggestedTitle: string };
+      }>(
+        "/api/painel/improve-profile",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: draft.name,
+            oab: draft.oab,
+            city: draft.cityName,
+            specialties: draft.specialties,
+            bio: draft.bio
+          })
+        },
+        30000
+      );
+      setAiSuggestions(data.suggestions);
+    } catch (err) {
+      console.error("[painel:improveProfileWithAI]", err);
+      toast(err instanceof Error ? err.message : "Erro ao gerar sugestões. Tente novamente.", "error");
+    } finally {
+      setAiLoading(false);
     }
   };
 
@@ -849,6 +889,90 @@ export default function PainelPage() {
                     maxLength={500}
                     onChange={(event) => setDraft({ ...draft, bio: event.target.value })}
                   />
+
+                  {/* Melhorar perfil com IA — Premium */}
+                  {status === "active" ? (
+                    <button
+                      type="button"
+                      onClick={improveProfileWithAI}
+                      disabled={aiLoading}
+                      className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-brand-accent/15 text-brand-accent hover:bg-brand-accent/25 transition disabled:opacity-50"
+                    >
+                      <Sparkles className="w-3.5 h-3.5" aria-hidden />
+                      {aiLoading ? "Gerando sugestões..." : "Melhorar apresentação com IA"}
+                    </button>
+                  ) : (
+                    <Link
+                      href="/painel/pagamento"
+                      className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-medium px-3 py-1.5 rounded-lg bg-brand-ink/5 text-brand-ink/40"
+                    >
+                      <Lock className="w-3 h-3" aria-hidden />
+                      Melhore seu perfil com IA — Premium
+                    </Link>
+                  )}
+
+                  {/* Preview das sugestões da IA */}
+                  {aiSuggestions && (
+                    <div className="mt-3 rounded-xl border-2 border-brand-accent/30 bg-brand-accent/5 p-4 space-y-3">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Sparkles className="w-4 h-4 text-brand-accent" aria-hidden />
+                        <p className="text-sm font-semibold text-brand-ink">Sugestão da IA</p>
+                      </div>
+
+                      <div>
+                        <p className="text-[11px] font-medium text-brand-ink/60 mb-1">Bio sugerida</p>
+                        <p className="text-sm text-brand-ink leading-relaxed whitespace-pre-line bg-white rounded-lg p-3 border border-brand-line">
+                          {aiSuggestions.bio}
+                        </p>
+                      </div>
+
+                      {aiSuggestions.shortSummary && (
+                        <div>
+                          <p className="text-[11px] font-medium text-brand-ink/60 mb-1">Resumo curto sugerido</p>
+                          <p className="text-sm text-brand-ink bg-white rounded-lg p-3 border border-brand-line">
+                            {aiSuggestions.shortSummary}
+                          </p>
+                        </div>
+                      )}
+
+                      {aiSuggestions.suggestedTitle && (
+                        <div>
+                          <p className="text-[11px] font-medium text-brand-ink/60 mb-1">Título profissional sugerido</p>
+                          <p className="text-sm text-brand-ink bg-white rounded-lg p-3 border border-brand-line">
+                            {aiSuggestions.suggestedTitle}
+                          </p>
+                        </div>
+                      )}
+
+                      <div className="flex gap-2 pt-1">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setDraft({
+                              ...draft,
+                              bio: aiSuggestions.bio.slice(0, 500),
+                              shortSummary: aiSuggestions.shortSummary
+                                ? aiSuggestions.shortSummary.slice(0, 160)
+                                : draft.shortSummary
+                            });
+                            setAiSuggestions(null);
+                            toast("Sugestão aplicada. Revise e clique em Salvar quando estiver satisfeito.");
+                          }}
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg bg-brand-deep text-white hover:bg-brand-deep/90 transition"
+                        >
+                          <CheckSquare className="w-3.5 h-3.5" aria-hidden />
+                          Usar esta versão
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setAiSuggestions(null)}
+                          className="inline-flex items-center gap-1.5 text-xs font-medium px-4 py-2 rounded-lg border border-brand-line text-brand-ink/70 hover:bg-brand-bg transition"
+                        >
+                          Descartar
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Resumo profissional curto — Fase 3 */}

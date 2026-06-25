@@ -340,6 +340,111 @@ export default async function CityPage({
         </section>
       )}
 
+      {/* ÁREAS MAIS PROCURADAS — grid com cards descritivos */}
+      <section className="pt-[42px] scroll-mt-20">
+        <h2
+          className="font-display font-semibold text-[23px] tracking-tight mb-2"
+          style={{ color: "#0F1B2D" }}
+        >
+          Áreas de atuação mais procuradas em {city.name}
+        </h2>
+        <p className="text-[15px] mb-5" style={{ color: "#5A6678" }}>
+          Conheça as principais especialidades jurídicas com advogados atuantes na cidade.
+        </p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {SPECIALTIES.map((sp) => (
+            <Link
+              key={sp.slug}
+              href={`/advogados/${st.uf.toLowerCase()}/${city.slug}/${sp.slug}`}
+              className="group bg-white rounded-[14px] p-5 flex flex-col justify-between hover:shadow-md transition"
+              style={{ border: "1px solid #E4E2DA" }}
+            >
+              <div>
+                <h3
+                  className="font-display font-semibold text-[17px] mb-1.5"
+                  style={{ color: "#0F1B2D" }}
+                >
+                  {sp.name}
+                </h3>
+                <p
+                  className="text-[13.5px] leading-relaxed line-clamp-2"
+                  style={{ color: "#5A6678" }}
+                >
+                  {sp.intro}
+                </p>
+              </div>
+              <span
+                className="inline-flex items-center gap-1 text-[13px] font-semibold mt-3 group-hover:gap-2 transition-all"
+                style={{ color: "#C8A24A" }}
+              >
+                Ver advogados
+                <ArrowRight className="w-3.5 h-3.5" aria-hidden />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* TRIBUNAL E RECURSOS JURÍDICOS */}
+      <section className="pt-[42px] scroll-mt-20">
+        <h2
+          className="font-display font-semibold text-[23px] tracking-tight mb-2"
+          style={{ color: "#0F1B2D" }}
+        >
+          Tribunal e recursos jurídicos
+        </h2>
+        <p className="text-[15px] mb-5" style={{ color: "#5A6678" }}>
+          Informações úteis sobre a comarca de {city.name} e ferramentas jurídicas gratuitas.
+        </p>
+        <div className="grid sm:grid-cols-2 gap-4">
+          {[
+            {
+              href: `/tribunais/${st.uf.toLowerCase()}/${city.slug}`,
+              title: `Fórum e Comarca de ${city.name}`,
+              description: "Endereço, telefone e informações do fórum local"
+            },
+            {
+              href: "/glossario",
+              title: "Glossário jurídico",
+              description: "Termos jurídicos explicados em linguagem simples"
+            },
+            {
+              href: "/calculadoras",
+              title: "Calculadoras jurídicas",
+              description: "Calcule prazos, correções monetárias e valores"
+            },
+            {
+              href: "/ferramentas",
+              title: "Ferramentas gratuitas",
+              description: "Modelos, checklists e guias para seu caso"
+            }
+          ].map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="group bg-white rounded-[14px] p-5 flex items-center justify-between gap-4 hover:shadow-md transition"
+              style={{ border: "1px solid #E4E2DA" }}
+            >
+              <div>
+                <h3
+                  className="font-display font-semibold text-[16px] mb-1"
+                  style={{ color: "#0F1B2D" }}
+                >
+                  {item.title}
+                </h3>
+                <p className="text-[13.5px]" style={{ color: "#5A6678" }}>
+                  {item.description}
+                </p>
+              </div>
+              <ArrowRight
+                className="w-4 h-4 flex-shrink-0 text-brand-ink/30 group-hover:text-brand-accent transition"
+                aria-hidden
+              />
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <CidadeRecursos cityName={city.name} uf={st.uf} citySlug={city.slug} region={city.region} />
 
       {/* CTA ADVOGADO */}

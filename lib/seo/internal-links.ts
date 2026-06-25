@@ -182,6 +182,19 @@ export function relatedArticlesForTemplate(
 }
 
 /**
+ * Artigos do blog relacionados a uma especialidade jurídica.
+ * Usado em glossário e problemas-juridicos para fechar o cluster de conteúdo.
+ */
+export function relatedArticlesForSpecialty(
+  specialtySlug: string,
+  limit = 3
+): Article[] {
+  return ARTICLES
+    .filter((a) => a.relatedSpecialty === specialtySlug)
+    .slice(0, limit);
+}
+
+/**
  * Modelos relacionados a um artigo — caminho inverso do mapeamento acima.
  * Usado no artigo do blog: "Documentos prontos pra esse tema".
  */

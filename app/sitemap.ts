@@ -75,7 +75,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/prazos`, changeFrequency: "monthly", priority: 0.6, lastModified: now },
     { url: `${base}/processos`, changeFrequency: "monthly", priority: 0.8, lastModified: now },
     { url: `${base}/agenda`, changeFrequency: "monthly", priority: 0.7, lastModified: now },
-    { url: `${base}/tribunais`, changeFrequency: "weekly", priority: 0.7, lastModified: now }
+    { url: `${base}/tribunais`, changeFrequency: "weekly", priority: 0.7, lastModified: now },
+    { url: `${base}/selo`, changeFrequency: "monthly", priority: 0.5, lastModified: now }
   ];
 
   // Glossário — termos individuais

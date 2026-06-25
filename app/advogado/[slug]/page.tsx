@@ -22,7 +22,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { ExtraCitiesGroupedByUF } from "@/components/ExtraCitiesGroupedByUF";
 import { ReaderQuestionForm } from "@/components/ReaderQuestionForm";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema, lawyerSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, lawyerSchema, lawyerPersonSchema } from "@/lib/seo/schema";
 import { whatsappLink, telLink, formatDate } from "@/lib/utils/format";
 import { SITE } from "@/lib/config";
 
@@ -35,7 +35,7 @@ import { SITE } from "@/lib/config";
  * seguem gated por `featured`. Nota/avaliações/formação/anos NÃO existem no
  * banco e NÃO são inventados — só exibimos dado real do profissional.
  */
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const l = await findLawyerBySlug(params.slug);
@@ -731,6 +731,7 @@ export default async function ProfessionalPage({
         ])}
       />
       <JsonLd data={lawyerSchema(l)} />
+      <JsonLd data={lawyerPersonSchema(l)} />
       {featured && (l.showFaqs ?? true) && (
         <JsonLd
           data={{

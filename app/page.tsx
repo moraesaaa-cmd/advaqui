@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { SearchBox } from "@/components/SearchBox";
+import { GeoPersonalize } from "@/components/GeoPersonalize";
 import { getAllArticles } from "@/lib/data/articles";
 
 export const revalidate = 600;
@@ -169,6 +170,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* PERSONALIZAÇÃO — CTA local baseado na última cidade pesquisada */}
+      <GeoPersonalize />
 
       {/* ORIENTAÇÃO INTELIGENTE — card do design (2 colunas) */}
       <section className="container-tight pt-14 md:pt-16">
