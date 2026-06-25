@@ -8,6 +8,10 @@ import { Logo } from "./Logo";
 import { createClient } from "@/lib/supabase/client";
 
 /**
+ * Header do handoff (claude_design): barra navy #0F1B2D, altura 64px, logo
+ * (pino dourado + check) à esquerda, nav clara, "Entrar" + botão branco
+ * "Cadastrar advogado" à direita.
+ *
  * Navegação agrupada por intenção do visitante (em vez de uma lista solta).
  *  - Conteúdo: blog (hub que reúne artigos, problemas, guias, glossário e
  *    materiais), jurisprudência, marketing
@@ -135,13 +139,13 @@ export function Header() {
   };
 
   const linkClass =
-    "px-3 py-2 rounded-lg text-sm font-medium text-brand-ink hover:bg-brand-line/60 transition";
+    "px-3 py-2 rounded-lg text-sm font-medium text-[#C2CBDA] hover:text-white hover:bg-white/10 transition";
 
   return (
-    <header className="sticky top-0 z-40 bg-brand-bg/95 backdrop-blur border-b border-brand-line">
+    <header className="sticky top-0 z-40 bg-[#0F1B2D]/95 backdrop-blur border-b border-white/10">
       <div className="container-tight flex items-center justify-between h-16">
         <Link href="/" className="flex items-center" aria-label="AdvAqui — página inicial">
-          <Logo />
+          <Logo light />
         </Link>
 
         <nav className="hidden md:flex items-center gap-1" aria-label="Principal">
@@ -211,7 +215,7 @@ export function Header() {
                   onClick={() => setMenuOpen((v) => !v)}
                   aria-expanded={menuOpen}
                   aria-haspopup="menu"
-                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-brand-deep/10 text-brand-ink hover:bg-brand-deep/15 transition text-sm font-medium"
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 text-white hover:bg-white/15 transition text-sm font-medium"
                 >
                   {session.status === "admin" ? (
                     <Shield className="w-4 h-4" aria-hidden />
@@ -268,15 +272,25 @@ export function Header() {
               </div>
             ) : (
               <>
-                <Link href="/login" className="btn-ghost text-sm">Entrar</Link>
-                <Link href="/cadastro" className="btn-accent text-sm py-2 px-4">Cadastrar advogado</Link>
+                <Link
+                  href="/login"
+                  className="text-sm font-medium text-[#C2CBDA] hover:text-white px-3 py-2 rounded-lg transition"
+                >
+                  Entrar
+                </Link>
+                <Link
+                  href="/cadastro"
+                  className="text-sm font-semibold rounded-lg py-2 px-4 bg-white text-[#0F1B2D] hover:bg-white/90 transition"
+                >
+                  Cadastrar advogado
+                </Link>
               </>
             )}
           </div>
         </nav>
 
         <button
-          className="md:hidden p-2 -mr-2"
+          className="md:hidden p-2 -mr-2 text-white"
           aria-label={open ? "Fechar menu" : "Abrir menu"}
           aria-expanded={open}
           onClick={() => setOpen(!open)}
@@ -286,14 +300,14 @@ export function Header() {
       </div>
 
       {open && (
-        <div className="md:hidden border-t border-brand-line bg-brand-bg max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <div className="md:hidden border-t border-white/10 bg-[#0F1B2D] max-h-[calc(100vh-4rem)] overflow-y-auto">
           <div className="container-tight py-3 space-y-1">
             {PRIMARY.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="block px-3 py-3 rounded-lg text-base font-semibold text-brand-ink hover:bg-brand-line/60"
+                className="block px-3 py-3 rounded-lg text-base font-semibold text-white hover:bg-white/10"
               >
                 {item.label}
               </Link>
@@ -301,7 +315,7 @@ export function Header() {
 
             {GROUPS.map((group) => (
               <div key={group.label} className="pt-2">
-                <p className="px-3 pb-1 text-xs font-bold uppercase tracking-wide text-brand-ink/50">
+                <p className="px-3 pb-1 text-xs font-bold uppercase tracking-wide text-white/50">
                   {group.label}
                 </p>
                 {group.items.map((item) => (
@@ -309,7 +323,7 @@ export function Header() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="block px-3 py-2.5 rounded-lg text-base font-medium text-brand-ink hover:bg-brand-line/60"
+                    className="block px-3 py-2.5 rounded-lg text-base font-medium text-[#C2CBDA] hover:text-white hover:bg-white/10"
                   >
                     {item.label}
                   </Link>
@@ -322,26 +336,26 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="block px-3 py-3 rounded-lg text-base font-semibold text-brand-ink hover:bg-brand-line/60 mt-2"
+                className="block px-3 py-3 rounded-lg text-base font-semibold text-white hover:bg-white/10 mt-2"
               >
                 {item.label}
               </Link>
             ))}
 
-            <div className="pt-2 flex flex-col gap-2 border-t border-brand-line mt-2">
+            <div className="pt-2 flex flex-col gap-2 border-t border-white/10 mt-2">
               {session.status === "lawyer" || session.status === "admin" ? (
                 <>
-                  <p className="px-3 text-xs text-brand-ink/60">
+                  <p className="px-3 text-xs text-white/60">
                     {session.status === "admin" ? (
-                      <>Logado como <strong className="text-brand-ink">Admin</strong></>
+                      <>Logado como <strong className="text-white">Admin</strong></>
                     ) : (
-                      <>Logado como <strong className="text-brand-ink">{session.firstName}</strong></>
+                      <>Logado como <strong className="text-white">{session.firstName}</strong></>
                     )}
                   </p>
                   <Link
                     href={session.status === "admin" ? "/admin" : "/painel"}
                     onClick={() => setOpen(false)}
-                    className="btn-primary justify-center inline-flex items-center gap-2"
+                    className="justify-center inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-[#0F1B2D] font-semibold hover:bg-white/90 transition"
                   >
                     <LayoutDashboard className="w-4 h-4" aria-hidden />
                     {session.status === "admin" ? "Painel admin" : "Meu painel"}
@@ -352,7 +366,7 @@ export function Header() {
                       setOpen(false);
                       void logout();
                     }}
-                    className="btn-ghost justify-center inline-flex items-center gap-2 text-red-700"
+                    className="justify-center inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-red-300 hover:bg-white/10 transition"
                   >
                     <LogOut className="w-4 h-4" aria-hidden />
                     Sair
@@ -360,10 +374,18 @@ export function Header() {
                 </>
               ) : (
                 <>
-                  <Link href="/login" onClick={() => setOpen(false)} className="btn-ghost justify-center">
+                  <Link
+                    href="/login"
+                    onClick={() => setOpen(false)}
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-white border border-white/25 hover:bg-white/10 transition font-medium"
+                  >
                     Entrar
                   </Link>
-                  <Link href="/cadastro" onClick={() => setOpen(false)} className="btn-accent justify-center">
+                  <Link
+                    href="/cadastro"
+                    onClick={() => setOpen(false)}
+                    className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-[#0F1B2D] font-semibold hover:bg-white/90 transition"
+                  >
                     Cadastrar advogado
                   </Link>
                 </>

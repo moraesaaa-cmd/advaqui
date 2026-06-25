@@ -1,31 +1,37 @@
 import { SITE } from "@/lib/config";
 
+/**
+ * Logo do handoff "Melhorias para advaqui.com" (Apex / claude_design):
+ * pino de localização dourado (#C8A24A) com um "check" navy no centro —
+ * "advogado verificado perto de você". Wordmark em Newsreader (font-display).
+ * O check fica navy sobre o pino dourado em qualquer fundo; só o wordmark
+ * muda de cor (light = branco no header navy; senão, navy).
+ */
 export function Logo({ light = false }: { light?: boolean }) {
-  const ink = light ? "text-white" : "text-brand-ink";
-  const accent = "text-brand-accent";
   return (
-    <span className={`inline-flex items-center gap-2 font-display ${ink}`}>
+    <span className={`inline-flex items-center gap-2 font-display ${light ? "text-white" : "text-brand-ink"}`}>
       <svg
-        width="28"
-        height="28"
-        viewBox="0 0 32 32"
+        width="22"
+        height="26"
+        viewBox="0 0 24 28"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden
+        className="block"
       >
         <path
-          d="M6 5h12l8 8-14 14L6 19V5z"
-          fill="currentColor"
-          className={accent}
+          d="M12 0C5.37 0 0 5.37 0 12c0 8.4 12 16 12 16s12-7.6 12-16C24 5.37 18.63 0 12 0z"
+          fill="#C8A24A"
         />
         <path
-          d="M11 11h6M11 14h8M11 17h5"
-          stroke={light ? "#0F1B2D" : "#FBF9F4"}
-          strokeWidth="1.6"
+          d="M7.5 12.2l3 3 6-6.2"
+          stroke="#0F1B2D"
+          strokeWidth="2.4"
           strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
-      <span className="text-lg font-bold tracking-tight">{SITE.name}</span>
+      <span className="text-[1.4rem] font-semibold tracking-tight leading-none">{SITE.name}</span>
     </span>
   );
 }

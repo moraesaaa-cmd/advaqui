@@ -3,9 +3,6 @@ import { notFound } from "next/navigation";
 import {
   MapPin,
   Phone,
-  Mail,
-  Star,
-  ShieldCheck,
   MessageCircle,
   User,
   Globe,
@@ -14,22 +11,14 @@ import {
   Clock,
   AlertCircle,
   FileText,
-  HelpCircle,
-  Briefcase,
-  Building2
+  HelpCircle
 } from "lucide-react";
 import { findLawyerBySlug } from "@/lib/data/lawyers";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { SPECIALTIES } from "@/lib/data/specialties";
-import { GUIAS } from "@/lib/data/guias";
-import {
-  getSpecialtyDescription,
-  getUsefulDocsForSpecialties
-} from "@/lib/data/specialty-descriptions";
+import { getUsefulDocsForSpecialties } from "@/lib/data/specialty-descriptions";
 import { DEFAULT_FAQS } from "@/lib/data/default-faqs";
-import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
-import { ShareLinkButton } from "@/components/ShareLinkButton";
 import { ExtraCitiesGroupedByUF } from "@/components/ExtraCitiesGroupedByUF";
 import { ReaderQuestionForm } from "@/components/ReaderQuestionForm";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -38,27 +27,14 @@ import { whatsappLink, telLink, formatDate } from "@/lib/utils/format";
 import { SITE } from "@/lib/config";
 
 /**
- * Página Profissional AdvAqui — URL canônica `/advogado/[slug]` (Maio/2026 v2).
+ * Página Profissional AdvAqui — URL canônica `/advogado/[slug]`.
+ * Redesign claude_design (Apex): capa navy + coluna principal + sidebar fixa.
  *
- * Versão expandida (Fase 2 do produto). Agora estruturada em seções:
- *   1. Cabeçalho profissional
- *   2. Sobre o profissional (bio)
- *   3. Como funciona o contato inicial (orientação ética)
- *   4. Áreas de atuação em cards com descrição
- *   5. Região de atendimento
- *   6. Documentos úteis para o primeiro contato
- *   7. Aviso ético
- *   8. Rodapé institucional
- *
- * Linguagem sóbria conforme Provimento OAB 205/2021.
- *
- * SEO básico: title, meta description, canonical, Open Graph, breadcrumbs,
- * LegalService schema. FAQ Schema fica pra rodada que liberar FAQs próprios
- * do advogado (depende de migration 0006).
+ * Linguagem sóbria conforme Provimento OAB 205/2021. Diferenciais premium
+ * (WhatsApp clicável, e-mail, presença digital, artigos, perguntas, atendimento)
+ * seguem gated por `featured`. Nota/avaliações/formação/anos NÃO existem no
+ * banco e NÃO são inventados — só exibimos dado real do profissional.
  */
-// SEMPRE AO VIVO (force-dynamic): o perfil reflete cadastro/edições NA HORA,
-// sem cache que possa congelar (e sumir quando o disco enchia). Renderiza por
-// requisição e NÃO grava em disco — imune a disco cheio.
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
@@ -69,7 +45,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       description: "Página não encontrada",
       noIndex: true
     });
-  // Quando pausada/não-indexável, mostra título genérico e marca noindex.
   const isPaused = l.pageStatus === "paused" || l.isPublic === false;
   const noIndex = isPaused || l.isIndexable === false;
   if (isPaused) {
@@ -80,8 +55,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       noIndex: true
     });
   }
-  // Title — usa área principal (1º item de primarySpecialties se houver, senão
-  // 1º slug de specialties) pra ficar Advogado [Área] em [Cidade]/[UF].
   const primarySlug =
     Array.isArray(l.primarySpecialties) && l.primarySpecialties[0]
       ? l.primarySpecialties[0]
@@ -89,13 +62,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const mainArea = primarySlug
     ? SPECIALTIES.find((s) => s.slug === primarySlug)?.name
     : undefined;
-  // Feminino quando nome do advogado termina em "a"
   const isFem = (l.name.trim().split(" ")[0] || "").toLowerCase().endsWith("a");
   const titleArea = mainArea
     ? `Advogad${isFem ? "a" : "o"} ${mainArea}`
     : `Advogad${isFem ? "a" : "o"}`;
   const title = `${l.name} — ${titleArea} em ${l.cityName}/${l.uf}`;
-  // Description — usa shortSummary se houver, senão bio, senão template.
   const description =
     l.shortSummary ||
     l.bio ||
@@ -113,14 +84,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 const labelOf = (slug: string) =>
   SPECIALTIES.find((s) => s.slug === slug)?.name || slug;
 
-/** Guia da área (quando existe) — link educativo a partir do card de área. */
-const guiaForArea = (areaSlug: string) =>
-  GUIAS.find((g) => g.area_slug === areaSlug);
+function initialsOf(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  const a = parts[0]?.[0] ?? "";
+  const b = parts.length > 1 ? parts[parts.length - 1][0] : "";
+  return (a + b).toUpperCase();
+}
 
-/**
- * Busca artigos publicados pelo advogado. Defensive: se a tabela
- * lawyer_articles ainda não existe (migration 0006 pendente), retorna [].
- */
 type PublicArticle = {
   id: string;
   slug: string;
@@ -140,20 +110,13 @@ async function fetchPublishedArticles(lawyerId: string): Promise<PublicArticle[]
       .eq("status", "published")
       .order("published_at", { ascending: false })
       .limit(20);
-    if (error) {
-      // Tabela ainda não existe? Trate como lista vazia.
-      return [];
-    }
+    if (error) return [];
     return (data as PublicArticle[]) || [];
   } catch {
     return [];
   }
 }
 
-/**
- * Busca perguntas respondidas pelo advogado (status='answered'). Defensive
- * igual ao fetch de artigos.
- */
 type PublicQuestion = {
   id: string;
   question: string;
@@ -185,9 +148,7 @@ export default async function ProfessionalPage({
   const l = await findLawyerBySlug(params.slug);
   if (!l) notFound();
 
-  // Página pausada / não-pública → mensagem neutra e fim. Sem dados pessoais
-  // expostos, sem schema de LegalService. Defensive: usa pageStatus se a
-  // migration 0006 foi aplicada, senão respeita is_public como fallback.
+  // Página pausada / não-pública → mensagem neutra e fim.
   const isPaused = l.pageStatus === "paused" || l.isPublic === false;
   if (isPaused) {
     return (
@@ -201,16 +162,10 @@ export default async function ProfessionalPage({
             tarde ou utilize o diretório para encontrar outros profissionais.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-2">
-            <Link
-              href="/advogados"
-              className="btn-accent text-sm inline-flex items-center gap-2"
-            >
+            <Link href="/advogados" className="btn-accent text-sm inline-flex items-center gap-2">
               Ver diretório
             </Link>
-            <Link
-              href="/"
-              className="btn-ghost border border-brand-line text-sm"
-            >
+            <Link href="/" className="btn-ghost border border-brand-line text-sm">
               Voltar para a home
             </Link>
           </div>
@@ -225,11 +180,7 @@ export default async function ProfessionalPage({
     `Olá ${l.name}, encontrei seu perfil no ${SITE.name} e gostaria de conversar.`
   );
   const tel = telLink(l.phone);
-  const publicUrl = `${SITE.url}/advogado/${l.slug}`;
 
-  // ----- Defaults pra display preferences -----
-  // Premium-only respeitam as flags do banco. Quando vêm undefined (migration
-  // 0006 não aplicada ou advogado free), tudo aparece (default true).
   const showAddress = l.showAddress ?? true;
   const showAddressFull = l.showAddressFull ?? true;
   const showEmail = l.showEmail ?? true;
@@ -237,667 +188,538 @@ export default async function ProfessionalPage({
   const showExtraCities = l.showExtraCities ?? true;
   const showUsefulDocs = l.showUsefulDocs ?? true;
 
-  const usefulDocs = showUsefulDocs
-    ? getUsefulDocsForSpecialties(l.specialties, 8)
-    : [];
+  const usefulDocs = showUsefulDocs ? getUsefulDocsForSpecialties(l.specialties, 8) : [];
 
-  // ----- Separação áreas principais (até 3) × outras áreas -----
   const primaryList =
     Array.isArray(l.primarySpecialties) && l.primarySpecialties.length > 0
       ? l.primarySpecialties.filter((s) => l.specialties.includes(s)).slice(0, 3)
       : l.specialties.slice(0, 3);
   const otherList = l.specialties.filter((s) => !primaryList.includes(s));
-
-  // Linguagem do título da área principal usado em h2
   const mainAreaSlug = primaryList[0] || l.specialties[0];
-  const mainArea = mainAreaSlug
-    ? SPECIALTIES.find((s) => s.slug === mainAreaSlug)?.name
-    : null;
+  const mainArea = mainAreaSlug ? labelOf(mainAreaSlug) : null;
+  const isFem = (l.name.trim().split(" ")[0] || "").toLowerCase().endsWith("a");
+  const advWord = `Advogad${isFem ? "a" : "o"}`;
 
-  // Conteúdo dinâmico (Fase 3) — busca em paralelo para não atrasar SSG.
-  // Sem await Promise.all pra manter código simples; o Next.js otimiza.
   const articles =
     featured && (l.showArticles ?? true) ? await fetchPublishedArticles(l.id) : [];
   const answeredQuestions =
     featured && (l.showQuestions ?? true) ? await fetchAnsweredQuestions(l.id) : [];
 
+  // Destaques reais (sem inventar números). Só para premium.
+  const modalLabel = (() => {
+    const m = l.serviceModalities;
+    if (!m || m.length === 0) return null;
+    if (m.includes("in_person") && m.includes("online")) return "Pres. + Online";
+    if (m.includes("online")) return "Online";
+    return "Presencial";
+  })();
+  const highlights: Array<{ value: string; label: string }> = [];
+  const areaCount = l.primarySpecialties?.length || l.specialties.length;
+  if (areaCount) highlights.push({ value: String(areaCount), label: areaCount === 1 ? "área de atuação" : "áreas de atuação" });
+  if (modalLabel) highlights.push({ value: modalLabel, label: "atendimento" });
+  if (l.verifiedOab) highlights.push({ value: "OAB", label: "verificada" });
+  highlights.push({ value: l.cityName, label: "cidade base" });
+
+  const sectionTitle = "font-display text-xl md:text-[22px] font-semibold text-brand-ink";
+  const cardCls = "bg-white border border-brand-line rounded-[14px] p-6 md:p-7";
+
   return (
-    <div className="container-narrow py-10">
-      <Breadcrumb
-        items={[
-          { label: "Diretório", href: "/advogados" },
-          { label: l.uf, href: `/advogados/${l.uf.toLowerCase()}` },
-          { label: l.cityName, href: `/advogados/${l.uf.toLowerCase()}/${l.citySlug}` },
-          { label: l.name }
-        ]}
-      />
-
-      {/* ===== 1. CABEÇALHO PROFISSIONAL ===== */}
-      <article className="card">
-        <header className="flex flex-col sm:flex-row items-start gap-5">
-          {l.photoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={l.photoUrl}
-              alt={`Foto de ${l.name}`}
-              loading="eager"
-              decoding="async"
-              className={`w-32 h-32 md:w-36 md:h-36 rounded-2xl object-cover flex-shrink-0 bg-brand-bg ${
-                featured ? "ring-2 ring-brand-accent border-2 border-white shadow-card" : "border-2 border-brand-line"
-              }`}
-              style={{ imageRendering: "auto" }}
-            />
-          ) : (
-            <div className="w-32 h-32 md:w-36 md:h-36 rounded-2xl bg-brand-deep/10 flex items-center justify-center flex-shrink-0" aria-hidden>
-              <User className="w-16 h-16 text-brand-deep" aria-hidden />
-            </div>
-          )}
-          <div className="flex-1">
-            <div className="flex items-center flex-wrap gap-2">
-              <h1 className="font-display text-3xl font-bold text-brand-ink">{l.name}</h1>
-              {featured && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-brand-accent text-brand-ink">
-                  <Star className="w-3.5 h-3.5" aria-hidden /> Destaque
-                </span>
-              )}
-              {featured && l.verifiedOab && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                  <ShieldCheck className="w-3.5 h-3.5" aria-hidden /> OAB verificada
-                </span>
-              )}
-            </div>
-            <p className="text-brand-ink/70 mt-1">
-              OAB/{l.oabUf} {l.oab}
-              {!l.verifiedOab && (
-                <span className="text-xs text-brand-ink/50 ml-2">
-                  (informada pelo profissional)
-                </span>
-              )}
-            </p>
-
-            {/* Resumo profissional curto (Fase 3) */}
-            {l.shortSummary && (
-              <p className="text-sm text-brand-ink/85 mt-2 leading-relaxed max-w-prose">
-                {l.shortSummary}
-              </p>
+    <>
+      {/* ===== CAPA NAVY ===== */}
+      <div style={{ background: "linear-gradient(110deg,#0F1B2D 0%,#1B2D49 100%)" }} className="text-white">
+        <div className="max-w-[1140px] mx-auto px-7 pt-[34px]">
+          {/* breadcrumb */}
+          <div className="flex gap-2 items-center text-[13px] mb-6 flex-wrap" style={{ color: "#9FB0CB" }}>
+            <Link href={`/advogados/${l.uf.toLowerCase()}/${l.citySlug}`} className="hover:text-white">
+              {l.cityName}, {l.uf}
+            </Link>
+            {mainArea && (
+              <>
+                <span>›</span>
+                <span>{mainArea}</span>
+              </>
             )}
+            <span>›</span>
+            <span style={{ color: "#fff", fontWeight: 600 }}>{l.name}</span>
+          </div>
 
-            {/* Áreas principais em destaque (chips de até 3) */}
-            {primaryList.length > 0 && (
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {primaryList.map((slug) => (
-                  <span
-                    key={`primary-${slug}`}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-brand-deep/10 text-brand-deep border border-brand-deep/15"
-                  >
-                    {labelOf(slug)}
-                  </span>
-                ))}
+          <div className="flex flex-col md:flex-row gap-6 md:gap-[26px] md:items-end pb-7">
+            {/* avatar */}
+            {l.photoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={l.photoUrl}
+                alt={`Foto de ${l.name}`}
+                loading="eager"
+                decoding="async"
+                className="w-[108px] h-[108px] rounded-[18px] object-cover flex-shrink-0"
+                style={{ border: "3px solid rgba(200,162,74,0.55)" }}
+              />
+            ) : (
+              <div
+                className="w-[108px] h-[108px] rounded-[18px] flex items-center justify-center font-display text-[42px] font-semibold text-white flex-shrink-0"
+                style={{ background: "#274472", border: "3px solid rgba(200,162,74,0.55)" }}
+                aria-hidden
+              >
+                {initialsOf(l.name) || <User className="w-12 h-12" aria-hidden />}
               </div>
             )}
-            <p className="text-sm text-brand-ink/65 mt-1 inline-flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5" aria-hidden />
-              {l.cityName}/{l.uf}
-              {mainArea && (
-                <>
-                  <span className="text-brand-ink/30">·</span>
-                  <span>{mainArea}</span>
-                </>
-              )}
-            </p>
 
-            {/* Botões de ação principais */}
-            <div className="mt-4 flex flex-wrap gap-2">
-              {featured && wa && (
+            <div className="flex-1 min-w-0">
+              {featured && (
+                <div
+                  className="inline-flex items-center gap-1.5 text-xs font-bold px-[11px] py-[5px] rounded-full mb-2.5"
+                  style={{ background: "rgba(200,162,74,0.18)", color: "#E3C078", letterSpacing: "0.04em" }}
+                >
+                  ★ PERFIL PREMIUM
+                </div>
+              )}
+              <h1 className="font-display font-semibold text-3xl md:text-[36px] tracking-tight mb-1.5">
+                {l.name}
+              </h1>
+              <div className="text-[15px]" style={{ color: "#C2CBDA" }}>
+                {advWord}
+                {mainArea ? ` ${mainArea}` : ""} · OAB/{l.oabUf} {l.oab}
+                {!l.verifiedOab && (
+                  <span className="ml-1.5 text-[12px]" style={{ color: "#7E8BA1" }}>
+                    (informada pelo profissional)
+                  </span>
+                )}
+              </div>
+              <div className="flex gap-[18px] mt-3.5 text-[13.5px] flex-wrap" style={{ color: "#9FB0CB" }}>
+                {l.verifiedOab && <span>✓ OAB verificada</span>}
+                {modalLabel && <span>{modalLabel}</span>}
+                <span>📍 {l.cityName}/{l.uf}</span>
+              </div>
+            </div>
+
+            {/* CTA (premium) */}
+            {featured && wa && (
+              <div className="flex flex-col gap-2 pb-1">
                 <a
                   href={wa}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-500 transition"
+                  className="inline-flex items-center justify-center gap-2 text-white text-[15px] font-semibold px-[26px] py-[13px] rounded-[10px]"
+                  style={{ background: "#25623F" }}
                 >
-                  <MessageCircle className="w-4 h-4" aria-hidden />
-                  Falar pelo WhatsApp
+                  <MessageCircle className="w-4 h-4" aria-hidden /> Falar agora
                 </a>
-              )}
-              <ShareLinkButton url={publicUrl} title={`Perfil de ${l.name}`} />
-            </div>
-          </div>
-        </header>
-
-        {/* ===== 2. SOBRE O PROFISSIONAL ===== */}
-        {l.bio && (
-          <section className="mt-8 pt-6 border-t border-brand-line">
-            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
-              <User className="w-5 h-5 text-brand-deep" aria-hidden />
-              Sobre o profissional
-            </h2>
-            <p className="text-brand-ink/85 leading-relaxed whitespace-pre-line">
-              {l.bio}
-            </p>
-          </section>
-        )}
-
-        {/* ===== 3. CONTATO E ENDEREÇO ===== */}
-        <section className="mt-8 pt-6 border-t border-brand-line">
-          <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
-            <Phone className="w-5 h-5 text-brand-deep" aria-hidden />
-            Contato e endereço
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-            {showAddress && (
-              <div className="flex items-center gap-3 rounded-xl border border-brand-line p-3">
-                <MapPin className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
-                <span>
-                  {l.address && showAddressFull ? `${l.address} — ` : ""}
-                  {l.cityName}/{l.uf}
+                <span className="text-center text-[12.5px]" style={{ color: "#9FB0CB" }}>
+                  Sem custo de contato
                 </span>
               </div>
             )}
-            {showPhone && tel && (
-              <a
-                href={tel}
-                className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition"
-              >
-                <Phone className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
-                <span>{l.phone}</span>
-              </a>
-            )}
-            {showEmail && featured && (
-              <a
-                href={`mailto:${l.email}`}
-                className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition"
-              >
-                <Mail className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
-                <span className="break-all">{l.email}</span>
-              </a>
-            )}
-            {featured && wa && (
-              <a
-                href={wa}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-3 hover:bg-emerald-100 transition text-emerald-900"
-              >
-                <MessageCircle className="w-4 h-4 flex-shrink-0" aria-hidden />
-                <span className="font-semibold">Falar pelo WhatsApp</span>
-              </a>
-            )}
           </div>
-        </section>
+        </div>
+      </div>
 
-        {/* ===== 4. COMO FUNCIONA O CONTATO INICIAL ===== */}
-        <section className="mt-8 pt-6 border-t border-brand-line">
-          <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
-            <HelpCircle className="w-5 h-5 text-brand-deep" aria-hidden />
-            Como funciona o contato inicial
-          </h2>
-          <p className="text-sm text-brand-ink/85 leading-relaxed">
-            Você pode enviar uma mensagem pelo canal informado nesta página. O
-            profissional poderá avaliar as informações iniciais e, se
-            necessário, combinar uma consulta ou orientação jurídica.
-          </p>
-
-          {/* CTA intermediário */}
-          {featured && wa && (
-            <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <p className="text-sm font-semibold text-emerald-900">
-                Deseja enviar uma mensagem ao profissional?
-              </p>
-              <a
-                href={wa}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-500 transition whitespace-nowrap"
-              >
-                <MessageCircle className="w-4 h-4" aria-hidden />
-                Falar pelo WhatsApp
-              </a>
+      {/* ===== CORPO ===== */}
+      <div
+        className={`max-w-[1140px] mx-auto px-7 py-8 grid gap-9 items-start ${
+          featured ? "lg:grid-cols-[1fr_330px]" : ""
+        }`}
+      >
+        {/* COLUNA PRINCIPAL */}
+        <div className="flex flex-col gap-7 min-w-0">
+          {/* destaques (premium) */}
+          {featured && highlights.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {highlights.slice(0, 4).map((h) => (
+                <div key={h.label} className="bg-white border border-brand-line rounded-xl p-4">
+                  <div className="font-display text-[20px] md:text-[24px] font-semibold truncate" style={{ color: "#0F1B2D" }}>
+                    {h.value}
+                  </div>
+                  <div className="text-[12.5px] mt-0.5" style={{ color: "#6B7689" }}>{h.label}</div>
+                </div>
+              ))}
             </div>
           )}
-        </section>
 
-        {/* ===== 5. UPSELL PARA NÃO-PREMIUM (mantido) ===== */}
-        {!featured && (
-          <div className="mt-6 rounded-2xl border border-brand-accent/40 bg-brand-accent/5 p-5">
-            <p className="text-sm font-semibold text-brand-ink">
-              Quer aparecer no topo de {l.cityName} e ter WhatsApp clicável no perfil?
-            </p>
-            <p className="text-xs text-brand-ink/70 mt-1.5 mb-3">
-              O plano premium (
-              <strong>R$ 19,90/mês</strong>, sem fidelidade) coloca seu perfil em destaque,
-              libera botão WhatsApp clicável, bio completa, e selo de OAB verificada.
-            </p>
-            <Link href="/planos" className="text-sm font-medium text-brand-deep underline">
-              Conhecer o plano premium
-            </Link>
-          </div>
-        )}
-
-        {/* ===== 6. ÁREAS DE ATUAÇÃO (CARDS COM DESCRIÇÃO) ===== */}
-        {l.specialties.length > 0 && (
-          <section className="mt-8 pt-6 border-t border-brand-line">
-            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
-              <Briefcase className="w-5 h-5 text-brand-deep" aria-hidden />
-              Principais áreas de atendimento
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {primaryList.map((s) => {
-                const guia = guiaForArea(s);
-                return (
-                  <article
-                    key={s}
-                    className="rounded-xl border-2 border-brand-deep/15 bg-brand-deep/5 p-4"
-                  >
-                    <h3 className="font-display text-sm md:text-base font-bold text-brand-ink mb-1">
-                      {labelOf(s)}
-                    </h3>
-                    <p className="text-xs md:text-sm text-brand-ink/80 leading-relaxed">
-                      {getSpecialtyDescription(s)}
-                    </p>
-                    {guia && (
-                      <Link
-                        href={`/guias/${guia.slug}`}
-                        className="mt-2.5 inline-flex items-center gap-1 text-xs font-semibold text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline"
-                      >
-                        Guia de {labelOf(s)}
-                        <span aria-hidden>→</span>
-                      </Link>
-                    )}
-                  </article>
-                );
-              })}
-            </div>
-
-            {/* Outras áreas informadas (chips) */}
-            {otherList.length > 0 && (
-              <div className="mt-5">
-                <h3 className="text-sm font-semibold text-brand-ink/75 mb-2">
-                  Outras áreas informadas
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {otherList.map((s) => (
-                    <span
-                      key={`other-${s}`}
-                      className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-white border border-brand-line text-brand-ink/80"
-                    >
-                      {labelOf(s)}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </section>
-        )}
-
-        {/* ===== 7. ATENDIMENTO ===== */}
-        {featured && (
-          <section className="mt-8 pt-6 border-t border-brand-line">
-            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
-              <Building2 className="w-5 h-5 text-brand-deep" aria-hidden />
-              Atendimento
-            </h2>
-
-            <div className="rounded-xl border border-brand-line bg-brand-bg/30 p-4 space-y-3">
-              {/* Modalidade — premium pode marcar in_person/online */}
-              {Array.isArray(l.serviceModalities) && l.serviceModalities.length > 0 && (
-                <p className="text-sm text-brand-ink/85">
-                  <span className="font-semibold text-brand-ink">Modalidade:</span>{" "}
-                  {l.serviceModalities.includes("in_person") &&
-                    l.serviceModalities.includes("online")
-                    ? "Atendimento presencial e online"
-                    : l.serviceModalities.includes("online")
-                    ? "Atendimento online"
-                    : "Atendimento presencial"}
-                </p>
-              )}
-
-              <p className="text-sm text-brand-ink/85">
-                <span className="font-semibold text-brand-ink">Cidade base:</span>{" "}
-                {l.cityName}/{l.uf}
+          {/* upsell (free) */}
+          {!featured && (
+            <div className="rounded-2xl border border-brand-accent/40 bg-brand-accent/5 p-5">
+              <p className="text-sm font-semibold text-brand-ink">
+                Quer aparecer no topo de {l.cityName} e ter WhatsApp clicável no perfil?
               </p>
-
-              {l.serviceRegion && (
-                <p className="text-sm text-brand-ink/85">
-                  <span className="font-semibold text-brand-ink">Região atendida:</span>{" "}
-                  {l.serviceRegion}
-                </p>
-              )}
-
-              {showExtraCities && l.extraCities && l.extraCities.length > 0 && (
-                <div>
-                  <p className="text-sm font-semibold text-brand-ink mb-2">
-                    Também atende em:
-                  </p>
-                  {/* Agrupado por UF quando houver muitas cidades (>= 5) */}
-                  {l.extraCities.length >= 5 ? (
-                    <ExtraCitiesGroupedByUF cities={l.extraCities} />
-                  ) : (
-                    <div className="flex flex-wrap gap-2">
-                      {l.extraCities.map((c) => (
-                        <Link
-                          key={`${c.uf}-${c.slug}`}
-                          href={`/advogados/${c.uf.toLowerCase()}/${c.slug}`}
-                          className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
-                        >
-                          {c.name}/{c.uf}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {l.officeHours && (
-                <div>
-                  <p className="text-sm font-semibold text-brand-ink mb-1 inline-flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-brand-deep" aria-hidden />
-                    Horário de atendimento:
-                  </p>
-                  <p className="text-sm text-brand-ink/85 whitespace-pre-line">
-                    {l.officeHours}
-                  </p>
-                </div>
-              )}
-
-              {l.preferredContact && (
-                <p className="text-sm text-brand-ink/85">
-                  <span className="font-semibold text-brand-ink">
-                    Canal preferencial de contato:
-                  </span>{" "}
-                  {l.preferredContact === "whatsapp"
-                    ? "WhatsApp"
-                    : l.preferredContact === "phone"
-                    ? "Telefone"
-                    : "E-mail"}
-                </p>
-              )}
+              <p className="text-xs text-brand-ink/70 mt-1.5 mb-3">
+                O plano premium (<strong>R$ 19,90/mês</strong>, sem fidelidade) coloca seu perfil em
+                destaque, libera botão WhatsApp clicável, bio completa e selo de OAB verificada.
+              </p>
+              <Link href="/planos" className="text-sm font-medium text-brand-deep underline">
+                Conhecer o plano premium
+              </Link>
             </div>
-          </section>
-        )}
+          )}
 
-        {/* ===== 7b. ANTES DE ENTRAR EM CONTATO ===== */}
-        <section className="mt-8 pt-6 border-t border-brand-line">
-          <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
-            <HelpCircle className="w-5 h-5 text-brand-deep" aria-hidden />
-            Antes de entrar em contato
-          </h2>
-          <p className="text-sm text-brand-ink/85 leading-relaxed">
-            Para facilitar o primeiro atendimento, envie uma mensagem objetiva
-            com seu nome, cidade, área do assunto e um breve resumo da
-            situação. Evite enviar dados sensíveis ou documentos antes de
-            orientação individual do profissional.
-          </p>
-        </section>
+          {/* Sobre */}
+          {l.bio && (
+            <section className={cardCls}>
+              <h2 className={`${sectionTitle} mb-3`}>Sobre</h2>
+              <p className="text-[15.5px] leading-relaxed whitespace-pre-line" style={{ color: "#3C485A" }}>
+                {l.bio}
+              </p>
+            </section>
+          )}
 
-        {/* ===== 8. DOCUMENTOS ÚTEIS PARA O PRIMEIRO CONTATO ===== */}
-        {usefulDocs.length > 0 && l.specialties.length > 0 && (
-          <section className="mt-8 pt-6 border-t border-brand-line">
-            <h2 className="font-display text-xl font-bold text-brand-ink mb-2 inline-flex items-center gap-2">
-              <FileText className="w-5 h-5 text-brand-deep" aria-hidden />
-              Documentos úteis para o primeiro contato
-            </h2>
-            <p className="text-sm text-brand-ink/65 mb-3">
-              Lista informativa de documentos comuns nos casos das áreas em que
-              este profissional atua. Pode variar conforme o caso específico.
-            </p>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
-              {usefulDocs.map((doc) => (
-                <li key={doc} className="text-sm text-brand-ink/85 flex items-start gap-2">
-                  <span className="text-brand-accent2 mt-0.5">•</span>
-                  <span>{doc}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="text-xs text-amber-900 bg-amber-50 border border-amber-200 rounded-lg p-3">
-              <strong>Atenção:</strong> evite enviar dados sensíveis (CPF
-              completo, comprovantes bancários, fotos pessoais) antes de
-              orientação individual do profissional.
-            </p>
-          </section>
-        )}
-
-        {/* ===== 8a. ARTIGOS DO ADVOGADO ===== */}
-        {featured && (l.showArticles ?? true) && articles.length > 0 && (
-          <section className="mt-8 pt-6 border-t border-brand-line">
-            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
-              <FileText className="w-5 h-5 text-brand-deep" aria-hidden />
-              Artigos informativos
-            </h2>
-            <p className="text-sm text-brand-ink/65 mb-4">
-              Conteúdo informativo publicado por {l.name.split(" ")[0]}. Caráter
-              exclusivamente educativo.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {articles.map((a) => (
-                <Link
-                  key={a.id}
-                  href={`/advogado/${l.slug}/artigos/${a.slug}`}
-                  className="block rounded-xl border border-brand-line bg-white p-4 hover:border-brand-deep transition group"
-                >
-                  {a.specialty_slug && (
-                    <span className="inline-block text-[10px] font-bold uppercase tracking-wide text-brand-deep mb-1.5">
-                      {SPECIALTIES.find((s) => s.slug === a.specialty_slug)?.name ||
-                        a.specialty_slug}
-                    </span>
-                  )}
-                  <h3 className="font-display text-sm md:text-base font-bold text-brand-ink group-hover:text-brand-deep transition">
-                    {a.title}
-                  </h3>
-                  {a.summary && (
-                    <p className="text-xs md:text-sm text-brand-ink/70 leading-relaxed mt-1 line-clamp-3">
-                      {a.summary}
-                    </p>
-                  )}
-                  <p className="text-xs text-brand-ink/55 mt-2">
-                    {a.read_time_minutes ? `${a.read_time_minutes} min de leitura` : ""}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ===== 8b. PERGUNTAS FREQUENTES ===== */}
-        {featured && (l.showFaqs ?? true) && (
-          <section className="mt-8 pt-6 border-t border-brand-line">
-            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-brand-deep" aria-hidden />
-              Perguntas frequentes
-            </h2>
-            <div className="space-y-3">
-              {DEFAULT_FAQS.map((faq, idx) => (
-                <details
-                  key={`faq-${idx}`}
-                  className="group rounded-xl border border-brand-line bg-white p-4 open:border-brand-deep/30 open:bg-brand-bg/30"
-                >
-                  <summary className="cursor-pointer font-semibold text-sm md:text-base text-brand-ink list-none flex items-center justify-between gap-2">
-                    {faq.question}
-                    <span
-                      aria-hidden
-                      className="text-brand-deep text-lg leading-none group-open:rotate-45 transition-transform"
-                    >
-                      +
-                    </span>
-                  </summary>
-                  <p className="mt-2 text-sm text-brand-ink/80 leading-relaxed">
-                    {faq.answer}
-                  </p>
-                </details>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ===== 8c. PERGUNTAS DE LEITORES (respondidas + form) ===== */}
-        {featured && (l.showQuestions ?? true) && (
-          <section className="mt-8 pt-6 border-t border-brand-line">
-            <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-brand-deep" aria-hidden />
-              Perguntas de leitores
-            </h2>
-            <p className="text-sm text-brand-ink/65 mb-4">
-              Perguntas informativas respondidas pelo profissional. Os
-              esclarecimentos têm caráter educativo e não substituem consulta
-              jurídica individual.
-            </p>
-
-            {/* Lista de respondidas */}
-            {answeredQuestions.length > 0 && (
-              <div className="space-y-3 mb-5">
-                {answeredQuestions.map((q) => (
-                  <article
-                    key={q.id}
-                    className="rounded-xl border border-brand-line bg-white p-4"
+          {/* Áreas de atuação */}
+          {l.specialties.length > 0 && (
+            <section>
+              <h2 className={`${sectionTitle} mb-4`}>Áreas de atuação</h2>
+              <div className="flex flex-wrap gap-2.5">
+                {primaryList.map((s) => (
+                  <span
+                    key={`p-${s}`}
+                    className="text-sm px-4 py-2.5 rounded-[9px] font-medium"
+                    style={{ background: "#0F1B2D", color: "#fff" }}
                   >
-                    <p className="font-semibold text-brand-ink text-sm md:text-base">
-                      {q.question}
-                    </p>
-                    <p className="mt-2 text-sm text-brand-ink/80 whitespace-pre-line leading-relaxed">
-                      {q.answer}
-                    </p>
-                    {q.answered_at && (
-                      <p className="text-[11px] text-brand-ink/50 mt-2">
-                        Respondida em{" "}
-                        {new Date(q.answered_at).toLocaleDateString("pt-BR")}
-                      </p>
-                    )}
-                  </article>
+                    {labelOf(s)}
+                  </span>
+                ))}
+                {otherList.map((s) => (
+                  <span
+                    key={`o-${s}`}
+                    className="text-sm px-4 py-2.5 rounded-[9px] bg-white"
+                    style={{ border: "1px solid #E0DED5", color: "#3C485A" }}
+                  >
+                    {labelOf(s)}
+                  </span>
                 ))}
               </div>
-            )}
+            </section>
+          )}
 
-            {/* Formulário pra novas perguntas */}
-            {l.allowQuestions !== false && (
-              <>
-                <h3 className="font-semibold text-sm md:text-base text-brand-ink mb-2">
-                  Enviar uma pergunta
-                </h3>
-                <ReaderQuestionForm lawyerSlug={l.slug} />
-              </>
-            )}
-          </section>
-        )}
+          {/* Contato (free — sem WhatsApp clicável) */}
+          {!featured && (
+            <section className={cardCls}>
+              <h2 className={`${sectionTitle} mb-4`}>Contato</h2>
+              <div className="grid sm:grid-cols-2 gap-3 text-sm">
+                {showAddress && (
+                  <div className="flex items-center gap-3 rounded-xl border border-brand-line p-3">
+                    <MapPin className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
+                    <span>
+                      {l.address && showAddressFull ? `${l.address} — ` : ""}
+                      {l.cityName}/{l.uf}
+                    </span>
+                  </div>
+                )}
+                {showPhone && tel && (
+                  <a href={tel} className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition">
+                    <Phone className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
+                    <span>{l.phone}</span>
+                  </a>
+                )}
+              </div>
+            </section>
+          )}
 
-        {/* ===== 9. PRESENÇA DIGITAL (Premium) ===== */}
-        {featured && (l.website || l.instagram || l.linkedin) && (
-          <section className="mt-8 pt-6 border-t border-brand-line">
-            <h2 className="font-display text-xl font-bold text-brand-ink mb-3">
-              Presença digital
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {l.website && (
-                <a
-                  href={l.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-brand-line bg-white hover:border-brand-accent transition text-sm text-brand-ink"
-                >
-                  <Globe className="w-4 h-4 text-brand-deep" aria-hidden />
-                  Site oficial
-                </a>
-              )}
-              {l.instagram && (
-                <a
-                  href={`https://instagram.com/${l.instagram}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-brand-line bg-white hover:border-brand-accent transition text-sm text-brand-ink"
-                >
-                  <Instagram className="w-4 h-4 text-pink-600" aria-hidden />
-                  @{l.instagram}
-                </a>
-              )}
-              {l.linkedin && (
-                <a
-                  href={
-                    l.linkedin.startsWith("http")
-                      ? l.linkedin
-                      : `https://linkedin.com/in/${l.linkedin}`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-brand-line bg-white hover:border-brand-accent transition text-sm text-brand-ink"
-                >
-                  <Linkedin className="w-4 h-4 text-blue-700" aria-hidden />
-                  LinkedIn
-                </a>
-              )}
-            </div>
-          </section>
-        )}
+          {/* Como funciona o atendimento (premium, navy) */}
+          {featured && (
+            <section className="rounded-[14px] p-6 md:p-7 text-white" style={{ background: "#0F1B2D" }}>
+              <h2 className="font-display text-xl md:text-[22px] font-semibold mb-[18px]">
+                Como funciona o atendimento
+              </h2>
+              <div className="flex flex-col gap-4">
+                {[
+                  { n: "1", t: "Você manda sua situação no WhatsApp", d: "Sem compromisso. Explique do seu jeito o que aconteceu." },
+                  { n: "2", t: "O profissional avalia e responde", d: "Recebe a mensagem, analisa as informações iniciais e retorna o contato." },
+                  { n: "3", t: "Vocês combinam os próximos passos", d: "Honorários e atendimento são tratados diretamente, sem intermediário e sem comissão." }
+                ].map((s) => (
+                  <div key={s.n} className="flex gap-3.5 items-start">
+                    <span className="font-display text-lg flex-shrink-0" style={{ color: "#C8A24A" }}>{s.n}</span>
+                    <div>
+                      <div className="font-semibold text-[15px]">{s.t}</div>
+                      <div className="text-[13.5px] leading-relaxed" style={{ color: "#A9B4C6" }}>{s.d}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
-        {/* ===== 10. CTA FINAL ===== */}
-        {featured && wa && (
-          <section className="mt-8 pt-6 border-t border-brand-line">
-            <div className="rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-200 p-5 md:p-6 text-center">
-              <p className="text-base md:text-lg font-semibold text-emerald-900 mb-3">
-                Precisa de orientação sobre alguma dessas áreas?
+          {/* Região / extra cities (premium) */}
+          {featured && showExtraCities && l.extraCities && l.extraCities.length > 0 && (
+            <section className={cardCls}>
+              <h2 className={`${sectionTitle} mb-3`}>Também atende em</h2>
+              {l.extraCities.length >= 5 ? (
+                <ExtraCitiesGroupedByUF cities={l.extraCities} />
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {l.extraCities.map((c) => (
+                    <Link
+                      key={`${c.uf}-${c.slug}`}
+                      href={`/advogados/${c.uf.toLowerCase()}/${c.slug}`}
+                      className="text-sm px-3 py-1.5 rounded-lg bg-white hover:text-brand-deep transition"
+                      style={{ border: "1px solid #E0DED5", color: "#3C485A" }}
+                    >
+                      {c.name}/{c.uf}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
+
+          {/* Artigos (premium) */}
+          {featured && (l.showArticles ?? true) && articles.length > 0 && (
+            <section>
+              <h2 className={`${sectionTitle} mb-3 inline-flex items-center gap-2`}>
+                <FileText className="w-5 h-5 text-brand-deep" aria-hidden />
+                Artigos informativos
+              </h2>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {articles.map((a) => (
+                  <Link
+                    key={a.id}
+                    href={`/advogado/${l.slug}/artigos/${a.slug}`}
+                    className="block rounded-xl border border-brand-line bg-white p-4 hover:border-brand-deep transition group"
+                  >
+                    {a.specialty_slug && (
+                      <span className="inline-block text-[10px] font-bold uppercase tracking-wide text-brand-deep mb-1.5">
+                        {labelOf(a.specialty_slug)}
+                      </span>
+                    )}
+                    <h3 className="font-display text-sm md:text-base font-bold text-brand-ink group-hover:text-brand-deep transition">
+                      {a.title}
+                    </h3>
+                    {a.summary && (
+                      <p className="text-xs md:text-sm text-brand-ink/70 leading-relaxed mt-1 line-clamp-3">
+                        {a.summary}
+                      </p>
+                    )}
+                    {a.read_time_minutes ? (
+                      <p className="text-xs text-brand-ink/55 mt-2">{a.read_time_minutes} min de leitura</p>
+                    ) : null}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Perguntas frequentes (premium) */}
+          {featured && (l.showFaqs ?? true) && (
+            <section>
+              <h2 className={`${sectionTitle} mb-4`}>Perguntas que costumo responder</h2>
+              <div className="flex flex-col gap-2.5">
+                {DEFAULT_FAQS.map((faq, idx) => (
+                  <details
+                    key={`faq-${idx}`}
+                    className="group bg-white rounded-xl px-5 py-[17px]"
+                    style={{ border: "1px solid #E4E2DA" }}
+                  >
+                    <summary className="cursor-pointer font-semibold text-[15px] text-brand-ink list-none flex items-center justify-between gap-2">
+                      {faq.question}
+                      <span aria-hidden className="text-brand-deep text-lg group-open:rotate-45 transition-transform">+</span>
+                    </summary>
+                    <p className="mt-2 text-sm text-brand-ink/80 leading-relaxed">{faq.answer}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Perguntas de leitores (premium) */}
+          {featured && (l.showQuestions ?? true) && (
+            <section>
+              <h2 className={`${sectionTitle} mb-3 inline-flex items-center gap-2`}>
+                <HelpCircle className="w-5 h-5 text-brand-deep" aria-hidden />
+                Perguntas de leitores
+              </h2>
+              <p className="text-sm text-brand-ink/65 mb-4">
+                Esclarecimentos de caráter educativo, que não substituem consulta jurídica individual.
               </p>
-              <a
-                href={wa}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 text-white font-bold text-sm md:text-base hover:bg-emerald-500 transition shadow-sm"
-              >
-                <MessageCircle className="w-5 h-5" aria-hidden />
-                Falar pelo WhatsApp
-              </a>
+              {answeredQuestions.length > 0 && (
+                <div className="flex flex-col gap-3 mb-5">
+                  {answeredQuestions.map((q) => (
+                    <article key={q.id} className="rounded-xl border border-brand-line bg-white p-4">
+                      <p className="font-semibold text-brand-ink text-sm md:text-base">{q.question}</p>
+                      <p className="mt-2 text-sm text-brand-ink/80 whitespace-pre-line leading-relaxed">{q.answer}</p>
+                      {q.answered_at && (
+                        <p className="text-[11px] text-brand-ink/50 mt-2">
+                          Respondida em {new Date(q.answered_at).toLocaleDateString("pt-BR")}
+                        </p>
+                      )}
+                    </article>
+                  ))}
+                </div>
+              )}
+              {l.allowQuestions !== false && (
+                <>
+                  <h3 className="font-semibold text-sm md:text-base text-brand-ink mb-2">Enviar uma pergunta</h3>
+                  <ReaderQuestionForm lawyerSlug={l.slug} />
+                </>
+              )}
+            </section>
+          )}
+
+          {/* Documentos úteis */}
+          {usefulDocs.length > 0 && l.specialties.length > 0 && (
+            <section className={cardCls}>
+              <h2 className={`${sectionTitle} mb-2 inline-flex items-center gap-2`}>
+                <FileText className="w-5 h-5 text-brand-deep" aria-hidden />
+                Documentos úteis para o primeiro contato
+              </h2>
+              <p className="text-sm text-brand-ink/65 mb-3">
+                Lista informativa de documentos comuns nas áreas em que este profissional atua. Pode
+                variar conforme o caso.
+              </p>
+              <ul className="grid sm:grid-cols-2 gap-2 mb-3">
+                {usefulDocs.map((doc) => (
+                  <li key={doc} className="text-sm text-brand-ink/85 flex items-start gap-2">
+                    <span className="mt-0.5" style={{ color: "#C8A24A" }}>•</span>
+                    <span>{doc}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-amber-900 bg-amber-50 border border-amber-200 rounded-lg p-3">
+                <strong>Atenção:</strong> evite enviar dados sensíveis (CPF completo, comprovantes
+                bancários, fotos pessoais) antes de orientação individual do profissional.
+              </p>
+            </section>
+          )}
+
+          {/* Presença digital (premium) */}
+          {featured && (l.website || l.instagram || l.linkedin) && (
+            <section>
+              <h2 className={`${sectionTitle} mb-3`}>Presença digital</h2>
+              <div className="flex flex-wrap gap-2">
+                {l.website && (
+                  <a href={l.website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-brand-line bg-white hover:border-brand-accent transition text-sm text-brand-ink">
+                    <Globe className="w-4 h-4 text-brand-deep" aria-hidden /> Site oficial
+                  </a>
+                )}
+                {l.instagram && (
+                  <a href={`https://instagram.com/${l.instagram}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-brand-line bg-white hover:border-brand-accent transition text-sm text-brand-ink">
+                    <Instagram className="w-4 h-4 text-pink-600" aria-hidden /> @{l.instagram}
+                  </a>
+                )}
+                {l.linkedin && (
+                  <a
+                    href={l.linkedin.startsWith("http") ? l.linkedin : `https://linkedin.com/in/${l.linkedin}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-brand-line bg-white hover:border-brand-accent transition text-sm text-brand-ink"
+                  >
+                    <Linkedin className="w-4 h-4 text-blue-700" aria-hidden /> LinkedIn
+                  </a>
+                )}
+              </div>
+            </section>
+          )}
+
+          {/* Aviso ético */}
+          <aside className="rounded-xl border-l-4 border-amber-400 bg-amber-50 p-4 text-xs md:text-sm text-amber-900 leading-relaxed" role="note">
+            <p className="flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" aria-hidden />
+              <span>
+                As informações desta página têm caráter exclusivamente informativo e não substituem
+                consulta individual com profissional habilitado. O contato inicial não implica
+                contratação automática de serviços jurídicos.
+              </span>
+            </p>
+          </aside>
+
+          {/* Rodapé institucional */}
+          <footer className="pt-2 border-t border-brand-line">
+            <p className="text-xs text-brand-ink/60 mb-3 mt-4">
+              Perfil cadastrado em {formatDate(l.createdAt)}.
+              {l.updatedAt && l.updatedAt !== l.createdAt && (
+                <> Última atualização em {formatDate(l.updatedAt)}.</>
+              )}
+            </p>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+              <Link href="/contato" className="text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline">
+                Corrigir ou denunciar informação
+              </Link>
+              <Link href="/termos" className="text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline">
+                Termos de uso
+              </Link>
+              <Link href="/privacidade" className="text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline">
+                Política de privacidade
+              </Link>
+              <Link href="/" className="text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline">
+                Sobre o AdvAqui
+              </Link>
             </div>
-          </section>
+          </footer>
+        </div>
+
+        {/* SIDEBAR (premium) */}
+        {featured && (
+          <aside className="flex flex-col gap-[18px] lg:sticky lg:top-20">
+            <div className={cardCls.replace("p-6 md:p-7", "p-[22px]")}>
+              <div className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: "#8A93A3" }}>
+                Contato direto
+              </div>
+              <div className="flex flex-col gap-3 text-sm">
+                {showPhone && l.phone && (
+                  <div>
+                    <div className="text-[12.5px]" style={{ color: "#6B7689" }}>WhatsApp / telefone</div>
+                    <div className="font-semibold">{l.phone}</div>
+                  </div>
+                )}
+                <div>
+                  <div className="text-[12.5px]" style={{ color: "#6B7689" }}>E-mail</div>
+                  <div className="font-semibold break-all">
+                    {showEmail ? l.email : "Disponível após o contato"}
+                  </div>
+                </div>
+                {showAddress && (
+                  <div>
+                    <div className="text-[12.5px]" style={{ color: "#6B7689" }}>Escritório</div>
+                    <div className="font-semibold leading-snug">
+                      {l.address && showAddressFull ? `${l.address} — ` : ""}
+                      {l.cityName}/{l.uf}
+                    </div>
+                  </div>
+                )}
+              </div>
+              {wa && (
+                <a
+                  href={wa}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 text-white text-[14.5px] font-semibold py-3 rounded-[10px] mt-[18px]"
+                  style={{ background: "#25623F" }}
+                >
+                  <MessageCircle className="w-4 h-4" aria-hidden /> Falar no WhatsApp
+                </a>
+              )}
+            </div>
+
+            <div className={cardCls.replace("p-6 md:p-7", "p-[22px]")}>
+              <div className="text-xs font-bold uppercase tracking-wider mb-3.5" style={{ color: "#8A93A3" }}>
+                Atendimento
+              </div>
+              <div className="flex flex-col gap-[11px] text-sm" style={{ color: "#3C485A" }}>
+                <div className="flex justify-between">
+                  <span>Presencial</span>
+                  <span className="font-semibold">{l.cityName}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Online</span>
+                  <span className="font-semibold" style={{ color: l.serviceModalities?.includes("online") ? "#2E7D5B" : undefined }}>
+                    {l.serviceModalities?.includes("online") ? "Sim" : "—"}
+                  </span>
+                </div>
+                {l.officeHours && (
+                  <div className="flex justify-between gap-3">
+                    <span className="inline-flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5" aria-hidden /> Horário
+                    </span>
+                    <span className="font-semibold text-right whitespace-pre-line">{l.officeHours}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="rounded-[14px] px-5 py-[18px] text-[13px] leading-relaxed" style={{ background: "#FBF6EA", border: "1px solid #EAD9A8", color: "#7A6326" }}>
+              <strong style={{ color: "#5E4C18" }}>Perfil Premium</strong> — aparece no topo das buscas
+              da cidade, com foto, áreas e botão de WhatsApp em destaque.
+            </div>
+          </aside>
         )}
-
-        {/* ===== 11. AVISO ÉTICO OBRIGATÓRIO ===== */}
-        <aside
-          className="mt-8 rounded-xl border-l-4 border-amber-400 bg-amber-50 p-4 text-xs md:text-sm text-amber-900 leading-relaxed"
-          role="note"
-        >
-          <p className="flex items-start gap-2">
-            <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" aria-hidden />
-            <span>
-              As informações desta página têm caráter exclusivamente informativo
-              e não substituem consulta individual com profissional habilitado.
-              O contato inicial não implica contratação automática de serviços
-              jurídicos.
-            </span>
-          </p>
-        </aside>
-
-        {/* ===== 12. RODAPÉ INSTITUCIONAL ===== */}
-        <footer className="mt-6 pt-4 border-t border-brand-line">
-          <p className="text-xs text-brand-ink/60 mb-3">
-            Perfil cadastrado em {formatDate(l.createdAt)}.
-            {l.updatedAt && l.updatedAt !== l.createdAt && (
-              <> Última atualização em {formatDate(l.updatedAt)}.</>
-            )}
-          </p>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
-            <Link
-              href="/contato"
-              className="text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline"
-            >
-              Corrigir ou denunciar informação
-            </Link>
-            <Link
-              href="/termos"
-              className="text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline"
-            >
-              Termos de uso
-            </Link>
-            <Link
-              href="/privacidade"
-              className="text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline"
-            >
-              Política de privacidade
-            </Link>
-            <Link
-              href="/"
-              className="text-brand-deep hover:text-brand-accent2 underline-offset-2 hover:underline"
-            >
-              Sobre o AdvAqui
-            </Link>
-          </div>
-        </footer>
-      </article>
+      </div>
 
       <JsonLd
         data={breadcrumbSchema([
@@ -909,7 +731,6 @@ export default async function ProfessionalPage({
         ])}
       />
       <JsonLd data={lawyerSchema(l)} />
-      {/* FAQ schema — só quando exibimos perguntas frequentes na página */}
       {featured && (l.showFaqs ?? true) && (
         <JsonLd
           data={{
@@ -918,14 +739,11 @@ export default async function ProfessionalPage({
             mainEntity: DEFAULT_FAQS.map((f) => ({
               "@type": "Question",
               name: f.question,
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: f.answer
-              }
+              acceptedAnswer: { "@type": "Answer", text: f.answer }
             }))
           }}
         />
       )}
-    </div>
+    </>
   );
 }

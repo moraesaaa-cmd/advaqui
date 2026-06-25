@@ -57,3 +57,38 @@
     text-wrap: balance;
   }
 }
+
+/* Marquee de depoimentos (Planos) — claude_design.
+   Duas faixas em sentidos opostos, loop infinito, pausa no hover.
+   O conteúdo é duplicado no array (translateX -50% = uma cópia completa). */
+@keyframes advMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes advMarquee2 {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+.adv-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: advMarquee 46s linear infinite;
+}
+.adv-track2 {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: advMarquee2 52s linear infinite;
+}
+.adv-marquee:hover .adv-track,
+.adv-marquee:hover .adv-track2 {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .adv-track,
+  .adv-track2 {
+    animation: none;
+    flex-wrap: wrap;
+  }
+}

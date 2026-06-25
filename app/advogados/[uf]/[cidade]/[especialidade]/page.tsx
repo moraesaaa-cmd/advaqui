@@ -1,30 +1,23 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Users, ArrowLeft } from "lucide-react";
 import { findState } from "@/lib/data/states";
 import { findCity, findCapital } from "@/lib/data/cities";
 import { SPECIALTIES, findSpecialty } from "@/lib/data/specialties";
 import { getLawyersBySpecialty, sortLawyers } from "@/lib/data/lawyers";
-import { Breadcrumb } from "@/components/Breadcrumb";
 import { LawyerCard } from "@/components/LawyerCard";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { citySpecialtyIntro } from "@/lib/data/templates";
-import { PLAN } from "@/lib/config";
-import { formatCurrency } from "@/lib/utils/format";
+import { getUsefulDocsForSpecialties } from "@/lib/data/specialty-descriptions";
+import { getProblemaIndex } from "@/lib/data/problema-index";
 import { relatedCapitalsForSpecialty } from "@/lib/seo/internal-links";
 
 // Sempre ao vivo (force-dynamic): o advogado por especialidade na cidade
-// reflete o cadastro na hora, sem cache que congele. generateStaticParams
-// abaixo fica como referência (ignorado sob force-dynamic).
+// reflete o cadastro na hora, sem cache que congele.
 export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
-  // Pré-gera capital × especialidades no build (27 x 15 = 405 páginas).
-  // As demais combinações cidade × especialidade são geradas sob demanda (ISR)
-  // no primeiro acesso e cacheadas conforme `revalidate`. Como o slug da
-  // cidade vem da base IBGE, qualquer URL válida é resolvida — sem cidade órfã.
   const out: Array<{ uf: string; cidade: string; especialidade: string }> = [];
   const { getAllCities } = await import("@/lib/data/cities");
   const capitals = getAllCities().filter((c) => c.isCapital);
@@ -53,6 +46,8 @@ export async function generateMetadata({
   });
 }
 
+const eyebrow = "text-xs font-bold uppercase tracking-wider";
+
 export default async function CitySpecialtyPage({
   params
 }: {
@@ -65,100 +60,338 @@ export default async function CitySpecialtyPage({
 
   const lawyers = sortLawyers(await getLawyersBySpecialty(st.uf, city.slug, sp.slug));
   const capital = findCapital(st.uf);
+  const areaLow = sp.name.toLowerCase();
+
+  // Partição premium × gratuito (premium primeiro, já vem de sortLawyers).
+  const premium = lawyers.filter((l) => l.planStatus === "active" || l.featured);
+  const free = lawyers.filter((l) => !(l.planStatus === "active" || l.featured));
+  const onlineCount = lawyers.filter((l) => l.serviceModalities?.includes("online")).length;
+
+  // Conteúdo real por área: problemas comuns + documentos úteis.
+  const problemas = getProblemaIndex()
+    .filter((p) => p.area === sp.slug)
+    .slice(0, 5);
+  const docs = getUsefulDocsForSpecialties([sp.slug], 5);
+
+  // FAQ parametrizado (informativo, gera FAQPage schema).
+  const faqs = [
+    {
+      q: `Qual o prazo para procurar um advogado ${areaLow} em ${city.name}?`,
+      a: `O prazo varia conforme o tipo de caso. Em geral, quanto antes você procurar orientação, mais opções terá — alguns direitos prescrevem com o tempo. Um advogado ${areaLow} na sua cidade pode avaliar o prazo específico da sua situação.`
+    },
+    {
+      q: `Quanto custa um advogado ${areaLow} em ${city.name}/${st.uf}?`,
+      a: `Os honorários variam de acordo com o caso e o profissional. Muitos atuam por honorários de êxito (percentual sobre o resultado) ou cobram a primeira consulta. Confirme sempre a forma de cobrança no primeiro contato, direto com o advogado.`
+    },
+    {
+      q: `Preciso ir ao fórum pessoalmente?`,
+      a: `Boa parte dos atos hoje é digital, pelo Processo Judicial Eletrônico (PJe). Audiências podem ser presenciais ou por videoconferência, conforme o caso e a Vara. O advogado orienta o que é necessário.`
+    }
+  ];
+
+  const jump = [
+    { href: "#advogados", label: `Ver advogados (${lawyers.length})`, primary: true },
+    { href: "#problemas", label: "Problemas comuns" },
+    { href: "#documentos", label: "Documentos" },
+    { href: "#faq", label: "Dúvidas frequentes" }
+  ];
 
   return (
-    <div className="container-tight py-10">
-      <Breadcrumb
-        items={[
-          { label: "Diretório", href: "/advogados" },
-          { label: st.name, href: `/advogados/${st.uf.toLowerCase()}` },
-          { label: city.name, href: `/advogados/${st.uf.toLowerCase()}/${city.slug}` },
-          { label: sp.name }
-        ]}
-      />
+    <div className="max-w-[1140px] mx-auto px-7">
+      {/* BREADCRUMB */}
+      <div className="flex gap-2 items-center text-[13px] py-[18px] flex-wrap" style={{ color: "#6B7689" }}>
+        <Link href="/" className="hover:text-brand-deep">Brasil</Link>
+        <span>›</span>
+        <Link href="/advogados" className="hover:text-brand-deep">Áreas de atuação</Link>
+        <span>›</span>
+        <Link href={`/advogados/${st.uf.toLowerCase()}/${city.slug}`} className="hover:text-brand-deep">
+          {sp.name}
+        </Link>
+        <span>›</span>
+        <span style={{ color: "#1A2433", fontWeight: 600 }}>{city.name}, {st.uf}</span>
+      </div>
 
-      <h1 className="font-display text-4xl font-bold text-brand-ink">
-        Advogado {sp.name} em {city.name}, {st.uf}
-      </h1>
-      <p className="text-brand-ink/80 mt-3 max-w-3xl leading-relaxed">
-        {citySpecialtyIntro(city, st, sp)}
-      </p>
+      {/* HERO */}
+      <div className="grid lg:grid-cols-[1fr_320px] gap-10 items-start pb-3.5">
+        <div>
+          <div
+            className="inline-flex items-center gap-2 text-[12.5px] font-semibold px-[11px] py-[5px] rounded-full mb-[18px]"
+            style={{ background: "#E8EEF6", color: "#274472" }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#2E7D5B" }} />
+            Diretório verificado · OAB/{st.uf}
+          </div>
+          <h1 className="font-display font-semibold text-3xl md:text-[42px] leading-[1.08] tracking-tight mb-4">
+            Advogado {areaLow} em {city.name}, {st.uf}
+          </h1>
+          <p className="text-[17px] leading-relaxed max-w-[560px]" style={{ color: "#3C485A" }}>
+            {citySpecialtyIntro(city, st, sp)}
+          </p>
+        </div>
 
-      {lawyers.length > 0 ? (
-        <section className="mt-8">
-          <h2 className="sr-only">Lista de advogados {sp.name} em {city.name}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {lawyers.map((l) => (
-              <LawyerCard key={l.id} lawyer={l} />
+        {/* BLOCO DE DADOS LOCAIS */}
+        <aside
+          className="bg-white rounded-[14px] p-6"
+          style={{ border: "1px solid #E4E2DA", boxShadow: "0 1px 2px rgba(15,27,45,0.04)" }}
+        >
+          <div className={`${eyebrow} mb-[18px]`} style={{ color: "#8A93A3" }}>
+            Advogados em {city.name}
+          </div>
+          <div className="flex gap-3.5 mb-[18px]">
+            <div className="flex-1 rounded-[11px] p-3.5" style={{ background: "#F7F6F2" }}>
+              <div className="font-display text-[28px] font-semibold" style={{ color: "#0F1B2D" }}>
+                {lawyers.length}
+              </div>
+              <div className="text-[12.5px]" style={{ color: "#6B7689" }}>cadastrados</div>
+            </div>
+            <div className="flex-1 rounded-[11px] p-3.5" style={{ background: "#F7F6F2" }}>
+              <div className="font-display text-[28px] font-semibold" style={{ color: "#0F1B2D" }}>
+                {onlineCount}
+              </div>
+              <div className="text-[12.5px]" style={{ color: "#6B7689" }}>atendem online</div>
+            </div>
+          </div>
+          <div
+            className="flex flex-col gap-[11px] text-[13.5px] pt-4"
+            style={{ color: "#3C485A", borderTop: "1px solid #EDEBE3" }}
+          >
+            <div className="flex gap-2.5 items-center"><span style={{ color: "#2E7D5B" }}>✓</span> OAB verificada em cada perfil</div>
+            <div className="flex gap-2.5 items-center"><span style={{ color: "#2E7D5B" }}>✓</span> Contato direto por WhatsApp</div>
+            <div className="flex gap-2.5 items-center"><span style={{ color: "#2E7D5B" }}>✓</span> Sem comissão e sem intermediário</div>
+          </div>
+        </aside>
+      </div>
+
+      {/* JUMP BAR */}
+      <div className="flex gap-2 flex-wrap py-[22px]">
+        {jump.map((j) => (
+          <a
+            key={j.href}
+            href={j.href}
+            className="text-[13.5px] px-4 py-[9px] rounded-lg font-semibold"
+            style={
+              j.primary
+                ? { background: "#0F1B2D", color: "#fff" }
+                : { background: "#fff", border: "1px solid #E0DED5", color: "#3C485A", fontWeight: 400 }
+            }
+          >
+            {j.label}
+          </a>
+        ))}
+      </div>
+
+      {/* DIRETÓRIO */}
+      <section id="advogados" className="pb-2 scroll-mt-20">
+        <div className="flex items-baseline justify-between mb-[18px] gap-3 flex-wrap">
+          <h2 className="font-display font-semibold text-[27px] tracking-tight">
+            Advogados {areaLow} em {city.name}
+          </h2>
+          <span className="text-[13.5px]" style={{ color: "#6B7689" }}>
+            Premium primeiro · depois por proximidade
+          </span>
+        </div>
+
+        {lawyers.length === 0 ? (
+          <div className="bg-white rounded-2xl p-7" style={{ border: "1px solid #E4E2DA" }}>
+            <h3 className="font-display text-xl font-semibold text-brand-ink mb-2">
+              Ainda não há advogado {areaLow} cadastrado em {city.name}
+            </h3>
+            <p className="text-brand-ink/70 mb-4 max-w-2xl text-[15px] leading-relaxed">
+              Esta página existe para que pessoas que procuram advogado {areaLow} em {city.name}/{st.uf}
+              encontrem profissionais à medida que se cadastram. Veja advogados de outras áreas em{" "}
+              {city.name} ou consulte a capital.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href={`/advogados/${st.uf.toLowerCase()}/${city.slug}`}
+                className="inline-flex items-center text-sm font-semibold px-4 py-2.5 rounded-lg text-brand-deep bg-white"
+                style={{ border: "1px solid #E0DED5" }}
+              >
+                Ver advogados em {city.name}
+              </Link>
+              {capital && capital.slug !== city.slug && (
+                <Link
+                  href={`/advogados/${st.uf.toLowerCase()}/${capital.slug}/${sp.slug}`}
+                  className="inline-flex items-center text-sm font-semibold px-4 py-2.5 rounded-lg text-brand-deep bg-white"
+                  style={{ border: "1px solid #E0DED5" }}
+                >
+                  Ver {areaLow} em {capital.name}
+                </Link>
+              )}
+              <Link
+                href="/cadastro"
+                className="inline-flex items-center text-sm font-bold px-4 py-2.5 rounded-lg"
+                style={{ background: "#C8A24A", color: "#0F1B2D" }}
+              >
+                É advogado? Cadastre-se grátis
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* PREMIUM */}
+            {premium.length > 0 && (
+              <>
+                <div className="flex items-center gap-2.5 mb-3.5">
+                  <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold" style={{ color: "#A0843A" }}>
+                    <span className="text-sm">★</span> Profissionais em destaque
+                  </span>
+                  <span className="h-px flex-1" style={{ background: "#EFEDE5" }} />
+                </div>
+                <div className="flex flex-col gap-4 mb-[30px]">
+                  {premium.map((l) => (
+                    <LawyerCard key={l.id} lawyer={l} featured />
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* BANNER DE CONVERSÃO */}
+            <div
+              className="rounded-[14px] px-[22px] py-4 mb-6 flex items-center justify-between gap-5 flex-wrap"
+              style={{ background: "#0F1B2D" }}
+            >
+              <span className="text-sm" style={{ color: "#DDE3EC" }}>
+                É advogado? <strong className="text-white">Apareça no topo desta página</strong> —
+                perfis em destaque recebem até 5× mais contatos.
+              </span>
+              <Link
+                href="/planos"
+                className="text-[13.5px] font-bold px-4 py-[9px] rounded-lg whitespace-nowrap"
+                style={{ background: "#C8A24A", color: "#0F1B2D" }}
+              >
+                Quero aparecer aqui
+              </Link>
+            </div>
+
+            {/* GRATUITOS */}
+            {free.length > 0 && (
+              <>
+                <div className="flex items-center gap-2.5 mb-3.5">
+                  <span className="text-[13px] font-semibold" style={{ color: "#5A6678" }}>
+                    Outros advogados em {city.name}
+                  </span>
+                  <span className="h-px flex-1" style={{ background: "#EFEDE5" }} />
+                </div>
+                <div className="grid md:grid-cols-2 gap-3.5">
+                  {free.map((l) => (
+                    <LawyerCard key={l.id} lawyer={l} featured={false} />
+                  ))}
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </section>
+
+      {/* PROBLEMAS + DOCUMENTOS */}
+      <div className="grid md:grid-cols-2 gap-7 pt-[42px] pb-2">
+        <section id="problemas" className="scroll-mt-20">
+          <h2 className="font-display font-semibold text-[23px] tracking-tight mb-4">
+            Problemas comuns nesta área
+          </h2>
+          <div className="flex flex-col gap-2.5">
+            {(problemas.length > 0
+              ? problemas.map((p) => ({ label: p.titulo, href: `/problemas-juridicos/${p.slug}` }))
+              : [{ label: `Ver problemas de Direito ${sp.name}`, href: "/problemas-juridicos" }]
+            ).map((p) => (
+              <Link
+                key={p.href}
+                href={p.href}
+                className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
+                style={{ border: "1px solid #E4E2DA" }}
+              >
+                <span className="font-bold text-[15px]" style={{ color: "#274472" }}>→</span>
+                <span className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>{p.label}</span>
+              </Link>
             ))}
           </div>
         </section>
-      ) : (
-        <section className="mt-8 card">
-          <Users className="w-10 h-10 text-brand-ink/30 mb-3" aria-hidden />
-          <h2 className="font-display text-2xl font-bold text-brand-ink mb-2">
-            Ainda não há advogado {sp.name.toLowerCase()} cadastrado em {city.name}
+        <section id="documentos" className="scroll-mt-20">
+          <h2 className="font-display font-semibold text-[23px] tracking-tight mb-4">
+            Documentos para o primeiro contato
           </h2>
-          <p className="text-brand-ink/70 mb-4 max-w-2xl">
-            Esta página existe para que pessoas que procuram advogado {sp.name.toLowerCase()} em{" "}
-            {city.name}/{st.uf} encontrem profissionais à medida que se cadastram. Você pode ver os
-            advogados de outras áreas em {city.name} ou consultar profissionais na capital.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href={`/advogados/${st.uf.toLowerCase()}/${city.slug}`}
-              className="btn-ghost border border-brand-line"
-            >
-              <ArrowLeft className="w-4 h-4" aria-hidden /> Ver advogados em {city.name}
-            </Link>
-            {capital && capital.slug !== city.slug && (
-              <Link
-                href={`/advogados/${st.uf.toLowerCase()}/${capital.slug}/${sp.slug}`}
-                className="btn-ghost border border-brand-line"
-              >
-                Ver {sp.name.toLowerCase()} em {capital.name}
-              </Link>
+          <div className="bg-white rounded-[14px] px-5 py-2" style={{ border: "1px solid #E4E2DA" }}>
+            {(docs.length > 0 ? docs : ["RG e CPF", "Comprovante de residência", "Documentos relacionados ao caso"]).map(
+              (d) => (
+                <div
+                  key={d}
+                  className="flex items-center gap-3 py-[13px] text-[14.5px]"
+                  style={{ color: "#3C485A", borderBottom: "1px solid #EDEBE3" }}
+                >
+                  <span className="w-[7px] h-[7px] rounded-sm" style={{ background: "#C8A24A" }} />
+                  {d}
+                </div>
+              )
             )}
-            <Link href="/cadastro" className="btn-accent">
-              É advogado? Cadastre-se grátis
-            </Link>
           </div>
+          <Link
+            href="/calculadoras"
+            className="rounded-[14px] px-5 py-[18px] mt-3.5 flex items-center justify-between text-white"
+            style={{ background: "#0F1B2D" }}
+          >
+            <div>
+              <div className="font-semibold text-[15px]">Calculadoras jurídicas</div>
+              <div className="text-[13px]" style={{ color: "#A9B4C6" }}>Rescisão, prazos, correção e mais</div>
+            </div>
+            <span className="text-[13px] font-bold px-3.5 py-[9px] rounded-lg" style={{ background: "#C8A24A", color: "#0F1B2D" }}>
+              Abrir
+            </span>
+          </Link>
         </section>
-      )}
+      </div>
 
-      <section className="mt-12 card">
-        <h2 className="font-display text-xl font-bold text-brand-ink mb-2">
-          Outras áreas de atuação em {city.name}
+      {/* FAQ */}
+      <section id="faq" className="pt-[42px] pb-2 scroll-mt-20">
+        <div className="flex items-center gap-3 mb-[18px]">
+          <h2 className="font-display font-semibold text-[23px] tracking-tight">
+            Dúvidas sobre direito {areaLow} em {city.name}
+          </h2>
+        </div>
+        <div className="flex flex-col gap-2.5">
+          {faqs.map((f) => (
+            <details
+              key={f.q}
+              className="group bg-white rounded-xl px-5 py-[17px]"
+              style={{ border: "1px solid #E4E2DA" }}
+            >
+              <summary className="flex justify-between items-center gap-4 cursor-pointer list-none">
+                <span className="font-semibold text-[15.5px]" style={{ color: "#1A2433" }}>{f.q}</span>
+                <span className="text-xl group-open:rotate-45 transition-transform" style={{ color: "#8A93A3" }}>+</span>
+              </summary>
+              <p className="text-sm leading-relaxed mt-2.5" style={{ color: "#5A6678" }}>{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* INTERLINK SEO — outras áreas e capitais (preserva o ranqueamento) */}
+      <section className="pt-[42px]">
+        <h2 className="font-display font-semibold text-lg tracking-tight mb-3">
+          Outras áreas em {city.name}
         </h2>
-        <div className="flex flex-wrap gap-2 mt-3">
+        <div className="flex flex-wrap gap-2">
           {SPECIALTIES.filter((s) => s.slug !== sp.slug).map((s) => (
             <Link
               key={s.slug}
               href={`/advogados/${st.uf.toLowerCase()}/${city.slug}/${s.slug}`}
-              className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
+              className="text-[13px] px-3 py-1.5 rounded-lg text-brand-ink/80 hover:text-brand-deep transition"
+              style={{ background: "#F1F0EA" }}
             >
               {s.name}
             </Link>
           ))}
         </div>
-      </section>
-
-      {/* Interlinking SEO — capitais de outros estados com a MESMA
-          especialidade. Ajuda o Google a entender que essa especialidade
-          é uma rede de páginas e melhora ranking. */}
-      <section className="mt-10 card">
-        <h2 className="font-display text-xl font-bold text-brand-ink mb-2">
-          Advogado {sp.name.toLowerCase()} em outras capitais
+        <h2 className="font-display font-semibold text-lg tracking-tight mb-3 mt-7">
+          Advogado {areaLow} em outras capitais
         </h2>
-        <p className="text-sm text-brand-ink/60 mb-3">
-          Encontre profissionais da mesma especialidade nas principais cidades do Brasil.
-        </p>
         <div className="flex flex-wrap gap-2">
           {relatedCapitalsForSpecialty(sp, st.uf, 9).map(({ city: cap, state: ostate }) => (
             <Link
               key={`${ostate.uf}-${cap.slug}`}
               href={`/advogados/${ostate.uf.toLowerCase()}/${cap.slug}/${sp.slug}`}
-              className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
+              className="text-[13px] px-3 py-1.5 rounded-lg text-brand-ink/80 hover:text-brand-deep transition"
+              style={{ background: "#F1F0EA" }}
             >
               {cap.name}/{ostate.uf}
             </Link>
@@ -166,17 +399,30 @@ export default async function CitySpecialtyPage({
         </div>
       </section>
 
-      <section className="mt-10 rounded-2xl bg-brand-ink text-white p-6">
-        <h2 className="font-display text-xl font-bold mb-2">
-          Atua com direito {sp.name.toLowerCase()} em {city.name}? Aumente sua visibilidade
-        </h2>
-        <p className="text-brand-bg/85 text-sm mb-4 max-w-2xl">
-          Com o plano de destaque por {formatCurrency(PLAN.price)} ao mês, seu perfil aparece em
-          posição privilegiada quando alguém busca por advogado {sp.name.toLowerCase()} em{" "}
-          {city.name}. Mais exposição local, sem fidelidade.
-        </p>
-        <Link href="/planos" className="btn-accent">
-          Conhecer planos
+      {/* CTA ADVOGADO */}
+      <section
+        className="rounded-[18px] px-10 py-9 my-[42px] flex items-center justify-between gap-8 flex-wrap"
+        style={{ background: "#0F1B2D" }}
+      >
+        <div>
+          <h2 className="font-display font-semibold text-[26px] text-white tracking-tight mb-2">
+            É advogado {areaLow} em {city.name}?
+          </h2>
+          <p className="text-[15px]" style={{ color: "#A9B4C6" }}>
+            Apareça nesta página quando alguém procurar. Leva menos de 1 minuto e não custa nada para começar.
+          </p>
+          {lawyers.length > 0 && (
+            <div className="flex gap-5 mt-4 text-[13px]" style={{ color: "#7E8BA1" }}>
+              <span>✓ {lawyers.length} {lawyers.length === 1 ? "perfil ativo" : "perfis ativos"} aqui</span>
+            </div>
+          )}
+        </div>
+        <Link
+          href="/cadastro"
+          className="text-[15px] font-bold px-6 py-3.5 rounded-[10px] whitespace-nowrap"
+          style={{ background: "#C8A24A", color: "#0F1B2D" }}
+        >
+          Criar meu perfil grátis
         </Link>
       </section>
 
@@ -188,6 +434,17 @@ export default async function CitySpecialtyPage({
           { name: city.name, url: `/advogados/${st.uf.toLowerCase()}/${city.slug}` },
           { name: sp.name, url: `/advogados/${st.uf.toLowerCase()}/${city.slug}/${sp.slug}` }
         ])}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a }
+          }))
+        }}
       />
     </div>
   );

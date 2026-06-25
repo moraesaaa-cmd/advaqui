@@ -83,7 +83,7 @@ export function SearchBox() {
           }}
           onFocus={() => setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
-          placeholder="Digite a sua cidade..."
+          placeholder="Buscar advogado pela sua cidade…"
           className="flex-1 px-5 py-4 text-base text-brand-ink placeholder:text-brand-ink/40 outline-none"
           autoComplete="off"
           aria-label="Buscar advogados pela cidade"
@@ -91,7 +91,8 @@ export function SearchBox() {
           aria-controls="search-city-listbox"
         />
         <button
-          className="px-6 bg-brand-accent text-brand-ink font-bold flex items-center gap-2"
+          className="px-6 font-bold flex items-center gap-2"
+          style={{ background: "linear-gradient(135deg, #E0B65C, #C39A3F)", color: "#11203B" }}
           aria-label="Buscar"
           type="submit"
         >
