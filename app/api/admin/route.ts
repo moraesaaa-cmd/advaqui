@@ -530,7 +530,7 @@ export async function POST(req: Request) {
         .maybeSingle();
       if (!article) return NextResponse.json({ ok: false, error: "Artigo não encontrado" }, { status: 404 });
       const newStatus = article.status === "published" ? "draft" : "published";
-      const update: Record<string, unknown> = { status: newStatus };
+      const update: { status: string; published_at?: string } = { status: newStatus };
       if (newStatus === "published" && !article.status) update.published_at = new Date().toISOString();
       const { error } = await supabase.from("blog_articles").update(update).eq("id", body.id);
       if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
