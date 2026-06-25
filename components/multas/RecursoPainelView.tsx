@@ -16,6 +16,7 @@
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { INFRACOES, FASES } from "@/lib/data/multas";
+import { createClient as createSupabaseClient } from "@/lib/supabase/client";
 
 const ACCENT = "#F4631A";
 const DARK = "#15171C";
@@ -48,6 +49,7 @@ export function RecursoPainelView() {
   const [pecas, setPecas] = useState<Peca[]>([]);
   const [erro, setErro] = useState("");
   const [tokenInput, setTokenInput] = useState("");
+  const [isPremium, setIsPremium] = useState(false);
 
   // formulário de geração
   const [fase, setFase] = useState(FASES[0]?.value ?? "defesa-previa");
@@ -96,6 +98,7 @@ export function RecursoPainelView() {
   }, []);
 
   // Lê o token de ?t= ou do localStorage (sem useSearchParams p/ evitar Suspense).
+  // Advogados premium AdvAqui entram sem token.
   useEffect(() => {
     let tk = "";
     try {
@@ -105,12 +108,36 @@ export function RecursoPainelView() {
     } catch {
       /* ambiente sem window/localStorage */
     }
-    if (!tk) {
-      setEstado("sem_token");
-      return;
-    }
-    setToken(tk);
-    void carregar(tk);
+
+    // Verifica se é advogado premium AdvAqui.
+    (async () => {
+      try {
+        const supabase = createSupabaseClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data } = await supabase
+            .from("lawyers")
+            .select("plan_status,name")
+            .eq("user_id", user.id)
+            .maybeSingle();
+          if (data?.plan_status === "active") {
+            setIsPremium(true);
+            setAcesso({ status: "ativo", recursos_restantes: 999, nome: data.name ?? null });
+            setEstado("ok");
+            return;
+          }
+        }
+      } catch {
+        // Sem sessão — segue fluxo normal.
+      }
+
+      if (!tk) {
+        setEstado("sem_token");
+        return;
+      }
+      setToken(tk);
+      void carregar(tk);
+    })();
   }, [carregar]);
 
   const entrarComToken = useCallback(() => {
@@ -129,28 +156,29 @@ export function RecursoPainelView() {
   }, [tokenInput, carregar]);
 
   const gerar = useCallback(async () => {
-    if (!token || gerando) return;
+    if ((!token && !isPremium) || gerando) return;
     setGerando(true);
     setGerErro("");
     setNovaPeca("");
     try {
+      const payload: Record<string, unknown> = {
+        modo: "completo",
+        fase,
+        infracao,
+        nome,
+        cpf,
+        placa,
+        ait,
+        orgao,
+        data,
+        cidade,
+        relato
+      };
+      if (token && !isPremium) payload.token = token;
       const res = await fetch("/api/recurso-ia", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          modo: "completo",
-          token,
-          fase,
-          infracao,
-          nome,
-          cpf,
-          placa,
-          ait,
-          orgao,
-          data,
-          cidade,
-          relato
-        })
+        body: JSON.stringify(payload)
       });
       const json = await res.json();
       if (json.ok && json.texto) {
@@ -169,14 +197,14 @@ export function RecursoPainelView() {
     } finally {
       setGerando(false);
     }
-  }, [token, gerando, fase, infracao, nome, cpf, placa, ait, orgao, data, cidade, relato, carregar]);
+  }, [token, isPremium, gerando, fase, infracao, nome, cpf, placa, ait, orgao, data, cidade, relato, carregar]);
 
   const copiar = useCallback((texto: string) => {
     if (navigator.clipboard) navigator.clipboard.writeText(texto).catch(() => undefined);
   }, []);
 
   const restantes = acesso?.recursos_restantes ?? 0;
-  const podeGerar = acesso?.status === "ativo" && restantes > 0;
+  const podeGerar = acesso?.status === "ativo" && (isPremium || restantes > 0);
 
   // Documento HTML formatado da peça (margens ABNT, títulos centralizados,
   // parágrafos justificados). Reaproveitado por imprimir (PDF) e baixar Word.
@@ -371,16 +399,27 @@ export function RecursoPainelView() {
                 <div
                   style={{
                     textAlign: "center",
-                    background: podeGerar ? "#FFF1EA" : "#F2F3F5",
-                    border: `1px solid ${podeGerar ? "rgba(244,99,26,0.3)" : "#E6E7EB"}`,
+                    background: isPremium ? "linear-gradient(135deg, #FFF8E6, #FFF1EA)" : podeGerar ? "#FFF1EA" : "#F2F3F5",
+                    border: `1px solid ${isPremium ? "rgba(200,162,74,0.4)" : podeGerar ? "rgba(244,99,26,0.3)" : "#E6E7EB"}`,
                     borderRadius: 12,
                     padding: "10px 18px"
                   }}
                 >
-                  <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 26, color: podeGerar ? ACCENT : "#8A8F99" }}>
-                    {restantes}
-                  </div>
-                  <div style={{ fontSize: 11, color: "#5A5F6A" }}>de 3 recursos</div>
+                  {isPremium ? (
+                    <>
+                      <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 18, color: "#B8860B" }}>
+                        ★ Premium
+                      </div>
+                      <div style={{ fontSize: 11, color: "#5A5F6A" }}>ilimitado</div>
+                    </>
+                  ) : (
+                    <>
+                      <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 26, color: podeGerar ? ACCENT : "#8A8F99" }}>
+                        {restantes}
+                      </div>
+                      <div style={{ fontSize: 11, color: "#5A5F6A" }}>de 3 recursos</div>
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -458,7 +497,7 @@ export function RecursoPainelView() {
                 </div>
 
                 <button type="button" onClick={gerar} disabled={gerando} style={{ ...cta, width: "100%", marginTop: 22, opacity: gerando ? 0.7 : 1, cursor: gerando ? "default" : "pointer" }}>
-                  {gerando ? "Gerando o seu recurso…" : `Gerar recurso com IA (resta${restantes === 1 ? "" : "m"} ${restantes})`}
+                  {gerando ? "Gerando o seu recurso…" : isPremium ? "Gerar recurso com IA — Premium" : `Gerar recurso com IA (resta${restantes === 1 ? "" : "m"} ${restantes})`}
                 </button>
                 {gerErro && <p style={{ color: "#B42318", fontSize: 13, marginTop: 12, textAlign: "center" }}>{gerErro}</p>}
                 <p style={{ fontSize: 11.5, color: "#9AA0AA", marginTop: 12, textAlign: "center", lineHeight: 1.5 }}>

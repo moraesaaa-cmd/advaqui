@@ -28,6 +28,7 @@ import {
 } from "react";
 import QRCode from "qrcode";
 import { INFRACOES, FASES } from "@/lib/data/multas";
+import { createClient as createSupabaseClient } from "@/lib/supabase/client";
 
 const ACCENT = "#F4631A";
 const DARK = "#15171C";
@@ -157,6 +158,9 @@ export function RecursoMultaLanding(): ReactNode {
   const [gerando, setGerando] = useState(false);
   const [pecaErro, setPecaErro] = useState("");
 
+  // Premium AdvAqui: advogados com plano ativo pulam o pagamento do recurso.
+  const [isPremium, setIsPremium] = useState(false);
+
   const azTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const pixCopyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -168,6 +172,22 @@ export function RecursoMultaLanding(): ReactNode {
     } catch {
       /* localStorage indisponível */
     }
+    // Verifica se é advogado premium AdvAqui.
+    (async () => {
+      try {
+        const supabase = createSupabaseClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+        const { data } = await supabase
+          .from("lawyers")
+          .select("plan_status")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (data?.plan_status === "active") setIsPremium(true);
+      } catch {
+        // Sem sessão — segue fluxo normal.
+      }
+    })();
   }, []);
 
   // Gera o QR Code (data URL) a partir do payload Pix devolvido pelo backend.
@@ -348,14 +368,16 @@ export function RecursoMultaLanding(): ReactNode {
   }, [token]);
 
   const gerarPeca = useCallback(async () => {
-    if (!token) return;
+    if (!token && !isPremium) return;
     setGerando(true);
     setPecaErro("");
     try {
+      const payload: Record<string, unknown> = { modo: "completo", ...dadosBase() };
+      if (token && !isPremium) payload.token = token;
       const res = await fetch("/api/recurso-ia", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ modo: "completo", token, ...dadosBase() })
+        body: JSON.stringify(payload)
       });
       const json: { ok?: boolean; texto?: string; mensagem?: string; motivo?: string } =
         await res.json();
@@ -375,7 +397,7 @@ export function RecursoMultaLanding(): ReactNode {
     } finally {
       setGerando(false);
     }
-  }, [token, dadosBase]);
+  }, [token, isPremium, dadosBase]);
 
   const copyPeca = useCallback(() => {
     if (peca && navigator.clipboard) navigator.clipboard.writeText(peca).catch(() => undefined);
@@ -1221,18 +1243,50 @@ export function RecursoMultaLanding(): ReactNode {
                   {analise || analiseErro}
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setStep("unlock")}
-                  style={{ ...ctaPrimary, width: "100%", maxWidth: 520, display: "block", margin: "0 auto" }}
-                >
-                  Prosseguir →
-                </button>
+                {isPremium ? (
+                  <button
+                    type="button"
+                    onClick={() => { setStep("done"); void gerarPeca(); }}
+                    disabled={gerando}
+                    style={{ ...ctaPrimary, width: "100%", maxWidth: 520, display: "block", margin: "0 auto", opacity: gerando ? 0.7 : 1 }}
+                  >
+                    <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26z"/></svg>
+                      {gerando ? "Gerando recurso…" : "Gerar recurso completo — Premium"}
+                    </span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setStep("unlock")}
+                    style={{ ...ctaPrimary, width: "100%", maxWidth: 520, display: "block", margin: "0 auto" }}
+                  >
+                    Prosseguir →
+                  </button>
+                )}
+                {isPremium && (
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "#1E8E54",
+                      marginTop: 12,
+                      textAlign: "center",
+                      fontWeight: 600,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 6
+                    }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26z"/></svg>
+                    Incluso no seu plano Premium AdvAqui — sem custo adicional
+                  </div>
+                )}
                 <div
                   style={{
                     fontSize: 11,
                     color: "#9AA0AA",
-                    marginTop: 16,
+                    marginTop: isPremium ? 8 : 16,
                     maxWidth: "52ch",
                     marginLeft: "auto",
                     marginRight: "auto",
@@ -1605,49 +1659,66 @@ export function RecursoMultaLanding(): ReactNode {
                     letterSpacing: "-0.01em"
                   }}
                 >
-                  Pagamento registrado!
+                  {isPremium ? "Gerando o seu recurso…" : "Pagamento registrado!"}
                 </h3>
-                <p
-                  style={{
-                    fontSize: 15,
-                    color: "#5A5F6A",
-                    lineHeight: 1.6,
-                    maxWidth: "48ch",
-                    margin: "0 auto 8px"
-                  }}
-                >
-                  Você receberá um e-mail em até 12 horas confirmando a liberação do seu acesso.
-                </p>
-                <p
-                  style={{
-                    fontSize: 13.5,
-                    color: "#8A8F99",
-                    lineHeight: 1.6,
-                    maxWidth: "48ch",
-                    margin: "0 auto 22px"
-                  }}
-                >
-                  Tudo acontece no seu painel: assim que o acesso for liberado, você gera os seus
-                  recursos (até 3) na hora, com a IA. Guarde o link abaixo para voltar quando quiser.
-                </p>
+                {isPremium ? (
+                  <p
+                    style={{
+                      fontSize: 15,
+                      color: "#5A5F6A",
+                      lineHeight: 1.6,
+                      maxWidth: "48ch",
+                      margin: "0 auto 22px"
+                    }}
+                  >
+                    A IA está montando a peça completa com a fundamentação do seu caso.
+                    Incluso no seu plano Premium AdvAqui.
+                  </p>
+                ) : (
+                  <>
+                    <p
+                      style={{
+                        fontSize: 15,
+                        color: "#5A5F6A",
+                        lineHeight: 1.6,
+                        maxWidth: "48ch",
+                        margin: "0 auto 8px"
+                      }}
+                    >
+                      Você receberá um e-mail em até 12 horas confirmando a liberação do seu acesso.
+                    </p>
+                    <p
+                      style={{
+                        fontSize: 13.5,
+                        color: "#8A8F99",
+                        lineHeight: 1.6,
+                        maxWidth: "48ch",
+                        margin: "0 auto 22px"
+                      }}
+                    >
+                      Tudo acontece no seu painel: assim que o acesso for liberado, você gera os seus
+                      recursos (até 3) na hora, com a IA. Guarde o link abaixo para voltar quando quiser.
+                    </p>
 
-                <a
-                  href={token ? `/recurso/painel?t=${encodeURIComponent(token)}` : "/recurso/painel"}
-                  style={{
-                    ...ctaPrimary,
-                    display: "inline-block",
-                    textDecoration: "none",
-                    maxWidth: 420,
-                    width: "100%",
-                    marginBottom: 18,
-                    textAlign: "center"
-                  }}
-                >
-                  Ir para o meu painel →
-                </a>
-                <div style={{ fontSize: 12, color: "#9AA0AA", margin: "0 auto 26px" }}>
-                  ou verifique e gere por aqui mesmo:
-                </div>
+                    <a
+                      href={token ? `/recurso/painel?t=${encodeURIComponent(token)}` : "/recurso/painel"}
+                      style={{
+                        ...ctaPrimary,
+                        display: "inline-block",
+                        textDecoration: "none",
+                        maxWidth: 420,
+                        width: "100%",
+                        marginBottom: 18,
+                        textAlign: "center"
+                      }}
+                    >
+                      Ir para o meu painel →
+                    </a>
+                    <div style={{ fontSize: 12, color: "#9AA0AA", margin: "0 auto 26px" }}>
+                      ou verifique e gere por aqui mesmo:
+                    </div>
+                  </>
+                )}
 
                 {!peca && (
                   <>

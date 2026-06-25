@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { analiseIA, pecaCompletaIA, type DadosRecurso } from "@/lib/ai/recurso";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 
 /**
  * POST /api/recurso-ia  { modo: "analise" | "completo", ...dados }
@@ -82,65 +83,90 @@ export async function POST(req: Request) {
 
   // A PEÇA COMPLETA é o recurso pago: exige um token de cliente ATIVO (liberado
   // pelo admin após o pagamento) com recursos restantes. A ANÁLISE é gratuita.
+  // EXCEÇÃO: advogados com plano Premium AdvAqui (plan_status=active) geram
+  // sem pagar — o recurso de multa está incluso no plano mensal.
   let cliente: { id: string; recursos_restantes: number; token: string } | null = null;
+  let premiumBypass = false;
   if (modo === "completo") {
-    const token = clamp(body.token, 80);
-    if (!token) {
-      return NextResponse.json(
-        { ok: false, motivo: "sem_acesso", mensagem: "Para gerar a peça completa, finalize o cadastro e o pagamento." },
-        { status: 402 }
-      );
-    }
+    // Tenta bypass premium via sessão Supabase (cookie auth).
     try {
-      const admin = createAdminClient();
-      const { data: cli } = await admin
-        .from("recurso_clientes")
-        .select("id,status,recursos_restantes")
-        .eq("access_token", token)
-        .maybeSingle();
-      if (!cli) {
-        return NextResponse.json(
-          { ok: false, motivo: "sem_acesso", mensagem: "Acesso não encontrado. Refaça o cadastro." },
-          { status: 403 }
-        );
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const admin = createAdminClient();
+        const { data: lawyer } = await admin
+          .from("lawyers")
+          .select("plan_status")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (lawyer?.plan_status === "active") {
+          premiumBypass = true;
+          cliente = { id: user.id, recursos_restantes: 999, token: `premium_${user.id}` };
+        }
       }
-      if (cli.status !== "ativo") {
-        return NextResponse.json(
-          { ok: false, motivo: "aguardando", mensagem: "Seu acesso ainda não foi liberado. Assim que confirmarmos o pagamento, você poderá gerar a peça." },
-          { status: 402 }
-        );
-      }
-      if (cli.recursos_restantes <= 0) {
-        return NextResponse.json(
-          { ok: false, motivo: "esgotado", mensagem: "Você já usou todos os recursos do seu plano." },
-          { status: 402 }
-        );
-      }
-      // RESERVA ATÔMICA: desconta 1 recurso ANTES de chamar a IA paga, com
-      // decremento condicional (filtra pelo saldo lido). Em corrida (duas
-      // requisições simultâneas com o mesmo token), só UMA consegue reservar —
-      // a outra não afeta linha e é barrada. Evita gerar N peças pagas
-      // descontando só uma (abuso de custo da OpenAI). Estornamos se a IA falhar.
-      const { data: reserva } = await admin
-        .from("recurso_clientes")
-        .update({ recursos_restantes: cli.recursos_restantes - 1 })
-        .eq("access_token", token)
-        .eq("status", "ativo")
-        .eq("recursos_restantes", cli.recursos_restantes)
-        .select("id")
-        .maybeSingle();
-      if (!reserva) {
-        return NextResponse.json(
-          { ok: false, motivo: "ocupado", mensagem: "Já há uma geração em andamento para o seu acesso. Aguarde alguns segundos e tente de novo." },
-          { status: 409 }
-        );
-      }
-      cliente = { id: cli.id, recursos_restantes: cli.recursos_restantes - 1, token };
     } catch {
-      return NextResponse.json(
-        { ok: false, motivo: "erro", mensagem: "Não foi possível verificar o seu acesso agora." },
-        { status: 500 }
-      );
+      // Sem sessão ou erro de auth — segue para o fluxo normal com token.
+    }
+
+    if (!premiumBypass) {
+      const token = clamp(body.token, 80);
+      if (!token) {
+        return NextResponse.json(
+          { ok: false, motivo: "sem_acesso", mensagem: "Para gerar a peça completa, finalize o cadastro e o pagamento." },
+          { status: 402 }
+        );
+      }
+      try {
+        const admin = createAdminClient();
+        const { data: cli } = await admin
+          .from("recurso_clientes")
+          .select("id,status,recursos_restantes")
+          .eq("access_token", token)
+          .maybeSingle();
+        if (!cli) {
+          return NextResponse.json(
+            { ok: false, motivo: "sem_acesso", mensagem: "Acesso não encontrado. Refaça o cadastro." },
+            { status: 403 }
+          );
+        }
+        if (cli.status !== "ativo") {
+          return NextResponse.json(
+            { ok: false, motivo: "aguardando", mensagem: "Seu acesso ainda não foi liberado. Assim que confirmarmos o pagamento, você poderá gerar a peça." },
+            { status: 402 }
+          );
+        }
+        if (cli.recursos_restantes <= 0) {
+          return NextResponse.json(
+            { ok: false, motivo: "esgotado", mensagem: "Você já usou todos os recursos do seu plano." },
+            { status: 402 }
+          );
+        }
+        // RESERVA ATÔMICA: desconta 1 recurso ANTES de chamar a IA paga, com
+        // decremento condicional (filtra pelo saldo lido). Em corrida (duas
+        // requisições simultâneas com o mesmo token), só UMA consegue reservar —
+        // a outra não afeta linha e é barrada. Evita gerar N peças pagas
+        // descontando só uma (abuso de custo da OpenAI). Estornamos se a IA falhar.
+        const { data: reserva } = await admin
+          .from("recurso_clientes")
+          .update({ recursos_restantes: cli.recursos_restantes - 1 })
+          .eq("access_token", token)
+          .eq("status", "ativo")
+          .eq("recursos_restantes", cli.recursos_restantes)
+          .select("id")
+          .maybeSingle();
+        if (!reserva) {
+          return NextResponse.json(
+            { ok: false, motivo: "ocupado", mensagem: "Já há uma geração em andamento para o seu acesso. Aguarde alguns segundos e tente de novo." },
+            { status: 409 }
+          );
+        }
+        cliente = { id: cli.id, recursos_restantes: cli.recursos_restantes - 1, token };
+      } catch {
+        return NextResponse.json(
+          { ok: false, motivo: "erro", mensagem: "Não foi possível verificar o seu acesso agora." },
+          { status: 500 }
+        );
+      }
     }
   }
 
@@ -162,8 +188,8 @@ export async function POST(req: Request) {
 
   if (!r.ok) {
     // A IA falhou: ESTORNA a reserva (devolve o recurso descontado), de forma
-    // condicional para não estornar em duplicidade.
-    if (cliente) {
+    // condicional para não estornar em duplicidade. Premium não tem reserva.
+    if (cliente && !premiumBypass) {
       try {
         const admin = createAdminClient();
         await admin
@@ -210,5 +236,5 @@ export async function POST(req: Request) {
     }
   }
 
-  return NextResponse.json({ ok: true, modo, texto: r.texto, recursos_restantes: restantes, ms: elapsed });
+  return NextResponse.json({ ok: true, modo, texto: r.texto, recursos_restantes: restantes, premium: premiumBypass, ms: elapsed });
 }
