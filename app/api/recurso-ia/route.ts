@@ -97,7 +97,7 @@ export async function POST(req: Request) {
         const { data: lawyer } = await admin
           .from("lawyers")
           .select("plan_status")
-          .eq("user_id", user.id)
+          .eq("id", user.id)
           .maybeSingle();
         if (lawyer?.plan_status === "active") {
           premiumBypass = true;

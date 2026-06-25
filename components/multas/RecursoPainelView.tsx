@@ -118,7 +118,7 @@ export function RecursoPainelView() {
           const { data } = await supabase
             .from("lawyers")
             .select("plan_status,name")
-            .eq("user_id", user.id)
+            .eq("id", user.id)
             .maybeSingle();
           if (data?.plan_status === "active") {
             setIsPremium(true);
