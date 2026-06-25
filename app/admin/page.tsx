@@ -18,7 +18,11 @@ import {
   TrendingUp,
   RefreshCw,
   Bot,
-  Car
+  Car,
+  BookOpen,
+  Sparkles,
+  Eye,
+  EyeOff
 } from "lucide-react";
 import { PlanBadge } from "@/components/PlanBadge";
 import { formatDate } from "@/lib/utils/format";
@@ -31,6 +35,7 @@ import type { LawyerRow, MessageRow, PlanStatus } from "@/lib/supabase/types";
 const TABS = [
   { id: "users", label: "Cadastros", Icon: Users },
   { id: "messages", label: "Mensagens", Icon: MessageSquare },
+  { id: "blog", label: "Blog", Icon: BookOpen },
   { id: "visits", label: "Visitas", Icon: Activity },
   { id: "stats", label: "Resumo", Icon: BarChart3 }
 ] as const;
@@ -111,6 +116,94 @@ export default function AdminPage() {
 
   // Modal genérico de edição (substitui os window.prompt de entrada de texto).
   const [editModal, setEditModal] = useState<AdminEditConfig | null>(null);
+
+  // Blog — lista de artigos gerados
+  type BlogArticle = {
+    id: string;
+    slug: string;
+    title: string;
+    category: string;
+    status: string;
+    reading_minutes: number | null;
+    created_at: string;
+    published_at: string | null;
+  };
+  const [articles, setArticles] = useState<BlogArticle[]>([]);
+  const [articlesLoading, setArticlesLoading] = useState(false);
+  const [generating, setGenerating] = useState(false);
+
+  const refreshArticles = async () => {
+    setArticlesLoading(true);
+    try {
+      const r = await callAdmin({ action: "list-articles" });
+      if (r.status === 200 && Array.isArray(r.json.articles)) {
+        setArticles(r.json.articles as BlogArticle[]);
+      }
+    } catch (err) {
+      console.error("[admin:blog]", err);
+    } finally {
+      setArticlesLoading(false);
+    }
+  };
+
+  const toggleArticleStatus = async (id: string) => {
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "toggle-article-status", id });
+    setBusy(false);
+    if (r.status === 200) {
+      toast(r.json.status === "published" ? "Artigo publicado" : "Artigo ocultado");
+      await refreshArticles();
+    } else {
+      toast(r.json.error || "Erro ao alterar status", "error");
+    }
+  };
+
+  const deleteArticle = async (id: string, title: string) => {
+    if (!confirm(`Excluir artigo "${title}"? Esta ação não pode ser desfeita.`)) return;
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "delete-article", id });
+    setBusy(false);
+    if (r.status === 200) {
+      toast("Artigo excluído");
+      await refreshArticles();
+    } else {
+      toast(r.json.error || "Erro ao excluir", "error");
+    }
+  };
+
+  const generateBatch = async (count: number) => {
+    if (generating) return;
+    setGenerating(true);
+    toast(`Gerando ${count} artigo(s)... Aguarde.`);
+    try {
+      const res = await fetch("/api/admin/generate-articles-batch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ count })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        toast(`${data.generated ?? count} artigo(s) gerado(s)`);
+        await refreshArticles();
+      } else {
+        toast(data.error || "Erro ao gerar artigos", "error");
+      }
+    } catch (err) {
+      console.error("[admin:blog] batch gen failed", err);
+      toast("Erro de conexão ao gerar artigos", "error");
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  useEffect(() => {
+    if (tab === "blog" && articles.length === 0) {
+      void refreshArticles();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab]);
 
   // Analytics em tempo real (Fase 4 — aba Visitas).
   type Analytics = {
@@ -341,7 +434,7 @@ export default function AdminPage() {
           return;
         }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
-          toast("E-mail invalido", "error");
+          toast("E-mail inválido", "error");
           return;
         }
         setBusy(true);
@@ -383,7 +476,7 @@ export default function AdminPage() {
         const r = await callAdmin({ action: "set-password", id, password: newPass });
         setBusy(false);
         if (r.status === 200) {
-          toast("Senha redefinida. Avise o usuario.");
+          toast("Senha redefinida. Avise o usuário.");
           setEditModal(null);
         } else {
           toast(r.json.error || "Erro ao redefinir senha", "error");
@@ -396,8 +489,8 @@ export default function AdminPage() {
     if (busy) return;
     const ok = window.confirm(
       `Gerar magic link de login para ${name}?\n\n` +
-        "O link permite que o advogado entre uma vez sem usar senha. Util quando " +
-        "ele esqueceu a senha e voce precisa dar acesso sem redefini-la.\n\n" +
+        "O link permite que o advogado entre uma vez sem usar senha. Útil quando " +
+        "ele esqueceu a senha e você precisa dar acesso sem redefini-la.\n\n" +
         "Expira em 1 hora. Copie e envie pelo WhatsApp/e-mail."
     );
     if (!ok) return;
@@ -931,26 +1024,26 @@ export default function AdminPage() {
                     Editar cidade principal
                   </button>
                   <button
-                    onClick={() => editLawyerField(u.id, "oab", "Novo numero OAB", u.oab)}
+                    onClick={() => editLawyerField(u.id, "oab", "Novo número OAB", u.oab)}
                     disabled={busy}
                     className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
-                    title="Editar numero OAB"
+                    title="Editar número OAB"
                   >
                     Editar OAB
                   </button>
                   <button
                     onClick={() =>
-                      editLawyerField(u.id, "address", "Novo endereco profissional", u.address || "")
+                      editLawyerField(u.id, "address", "Novo endereço profissional", u.address || "")
                     }
                     disabled={busy}
                     className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
-                    title="Editar endereco profissional"
+                    title="Editar endereço profissional"
                   >
                     Editar endereço
                   </button>
                   <button
                     onClick={() =>
-                      editLawyerField(u.id, "bio", "Nova bio (ate 500 chars)", u.bio || "")
+                      editLawyerField(u.id, "bio", "Nova bio (até 500 chars)", u.bio || "")
                     }
                     disabled={busy}
                     className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
@@ -972,13 +1065,13 @@ export default function AdminPage() {
                       editLawyerField(
                         u.id,
                         "office_hours",
-                        "Horarios de atendimento (ex: Seg-Sex 9h-18h)",
+                        "Horários de atendimento (ex: Seg-Sex 9h-18h)",
                         u.office_hours || ""
                       )
                     }
                     disabled={busy}
                     className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
-                    title="Editar horarios de atendimento (premium)"
+                    title="Editar horários de atendimento (premium)"
                   >
                     Editar horários
                   </button>
@@ -1099,7 +1192,7 @@ export default function AdminPage() {
                         </details>
                         <details className="rounded-lg bg-brand-bg p-3">
                           <summary className="cursor-pointer text-xs font-semibold text-brand-deep">
-                            Historico de pagamentos ({Array.isArray(fullData.planHistory) ? fullData.planHistory.length : 0})
+                            Histórico de pagamentos ({Array.isArray(fullData.planHistory) ? fullData.planHistory.length : 0})
                           </summary>
                           <pre className="mt-2 text-[11px] text-brand-ink/80 whitespace-pre-wrap break-all bg-white p-2 rounded border border-brand-line max-h-96 overflow-y-auto">
                             {JSON.stringify(fullData.planHistory, null, 2)}
@@ -1114,7 +1207,7 @@ export default function AdminPage() {
                           </pre>
                         </details>
                         <p className="text-[11px] text-brand-ink/50 italic">
-                          Senha NAO eh visivel (armazenada como hash bcrypt no Supabase Auth).
+                          Senha NÃO é visível (armazenada como hash bcrypt no Supabase Auth).
                           Use o botao &quot;Resetar senha&quot; acima para definir uma nova.
                         </p>
                       </div>
@@ -1209,6 +1302,115 @@ export default function AdminPage() {
               )}
             </article>
           ))}
+        </div>
+      )}
+
+      {tab === "blog" && (
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 className="font-display text-xl font-bold text-brand-ink">
+                Artigos do blog
+              </h2>
+              <p className="text-xs text-brand-ink/65 mt-0.5">
+                {articles.length} artigo(s) no banco.{" "}
+                {articles.filter((a) => a.status === "published").length} publicado(s).
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => void generateBatch(5)}
+                disabled={generating}
+                className="btn-primary text-sm inline-flex items-center gap-2"
+              >
+                <Sparkles className="w-4 h-4" aria-hidden />
+                {generating ? "Gerando..." : "Gerar 5 artigos"}
+              </button>
+              <button
+                onClick={() => void refreshArticles()}
+                disabled={articlesLoading}
+                className="btn-ghost border border-brand-line text-sm inline-flex items-center gap-2"
+              >
+                <RefreshCw className={`w-4 h-4 ${articlesLoading ? "animate-spin" : ""}`} aria-hidden />
+                Atualizar
+              </button>
+            </div>
+          </div>
+
+          {articlesLoading && articles.length === 0 && (
+            <p className="text-center text-brand-ink/50 py-8">Carregando artigos...</p>
+          )}
+
+          {!articlesLoading && articles.length === 0 && (
+            <div className="card text-center py-10">
+              <BookOpen className="w-10 h-10 text-brand-ink/30 mx-auto mb-3" aria-hidden />
+              <p className="text-brand-ink/60">Nenhum artigo gerado ainda.</p>
+              <p className="text-xs text-brand-ink/45 mt-1">
+                Clique em &quot;Gerar 5 artigos&quot; para começar. A migration 0014_blog_articles.sql precisa estar aplicada no Supabase.
+              </p>
+            </div>
+          )}
+
+          {articles.length > 0 && (
+            <div className="space-y-2">
+              {articles.map((a) => (
+                <article key={a.id} className="card flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${
+                        a.status === "published"
+                          ? "bg-emerald-100 text-emerald-700"
+                          : "bg-amber-100 text-amber-700"
+                      }`}>
+                        {a.status === "published" ? "Publicado" : "Rascunho"}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-brand-line text-brand-ink/70">
+                        {a.category}
+                      </span>
+                    </div>
+                    <p className="font-semibold text-brand-ink text-sm truncate">{a.title}</p>
+                    <p className="text-xs text-brand-ink/55 mt-0.5">
+                      {a.reading_minutes ? `${a.reading_minutes} min de leitura · ` : ""}
+                      Criado em {formatDate(a.created_at)}
+                      {a.published_at ? ` · Publicado em ${formatDate(a.published_at)}` : ""}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <a
+                      href={`/blog/${a.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70"
+                    >
+                      Ver
+                    </a>
+                    <button
+                      onClick={() => toggleArticleStatus(a.id)}
+                      disabled={busy}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium inline-flex items-center gap-1 disabled:opacity-50 ${
+                        a.status === "published"
+                          ? "bg-amber-50 text-amber-800 hover:bg-amber-100"
+                          : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                      }`}
+                    >
+                      {a.status === "published" ? (
+                        <><EyeOff className="w-3 h-3" aria-hidden /> Ocultar</>
+                      ) : (
+                        <><Eye className="w-3 h-3" aria-hidden /> Publicar</>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => deleteArticle(a.id, a.title)}
+                      disabled={busy}
+                      className="px-3 py-1.5 bg-red-50 text-red-700 rounded-lg text-xs font-medium hover:bg-red-100 inline-flex items-center gap-1 disabled:opacity-50"
+                    >
+                      <Trash2 className="w-3 h-3" aria-hidden /> Excluir
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

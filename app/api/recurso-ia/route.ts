@@ -39,6 +39,22 @@ function clamp(v: unknown, n: number): string {
   return typeof v === "string" ? v.trim().slice(0, n) : "";
 }
 
+/** Traduz código de erro da IA para mensagem amigável em português. */
+function mensagemErroIA(erro?: string): string {
+  if (!erro) return "Não foi possível gerar com IA agora. Use o gerador padrão abaixo.";
+  if (erro === "sem_chave")
+    return "O serviço de inteligência artificial está temporariamente indisponível. Use o gerador padrão abaixo.";
+  if (erro === "vazio")
+    return "A IA não conseguiu gerar o texto. Tente novamente ou use o gerador padrão.";
+  if (/timeout|abort/i.test(erro))
+    return "A geração demorou mais que o esperado. Tente novamente em alguns instantes.";
+  if (/_429/.test(erro))
+    return "O serviço está com muita demanda no momento. Aguarde um minuto e tente novamente.";
+  if (/_5\d{2}/.test(erro))
+    return "O serviço de IA está instável no momento. Tente novamente em alguns instantes.";
+  return "Não foi possível gerar com IA agora. Use o gerador padrão abaixo.";
+}
+
 export async function POST(req: Request) {
   const xff = (req.headers.get("x-forwarded-for") || "")
     .split(",")
@@ -56,10 +72,12 @@ export async function POST(req: Request) {
 
   const modo = body.modo === "completo" ? "completo" : "analise";
   if (rateLimited(ip, modo === "completo" ? MAX_COMPLETO : MAX_ANALISE)) {
-    return NextResponse.json(
-      { ok: false, mensagem: "Muitas gerações seguidas. Aguarde um minuto." },
-      { status: 429 }
-    );
+    console.log(`[recurso-ia] RATE_LIMIT modo=${modo} ip=${ip.slice(0, 8)}***`);
+    const msgRL =
+      modo === "analise"
+        ? "Muitas análises seguidas. Aguarde um minuto antes de tentar novamente."
+        : "Muitas gerações seguidas. Aguarde um minuto antes de tentar novamente.";
+    return NextResponse.json({ ok: false, mensagem: msgRL }, { status: 429 });
   }
 
   // A PEÇA COMPLETA é o recurso pago: exige um token de cliente ATIVO (liberado
@@ -139,6 +157,7 @@ export async function POST(req: Request) {
     relato: clamp(body.relato, 1500)
   };
 
+  const t0 = Date.now();
   const r = modo === "completo" ? await pecaCompletaIA(dados) : await analiseIA(dados);
 
   if (!r.ok) {
@@ -157,18 +176,20 @@ export async function POST(req: Request) {
       }
     }
     // sem_chave ou erro → o cliente cai no gerador determinístico (não-IA).
+    console.log(`[recurso-ia] FAIL modo=${modo} ip=${ip.slice(0, 8)}*** erro=${r.erro}`);
     const semChave = r.erro === "sem_chave";
     return NextResponse.json(
       {
         ok: false,
         fallback: true,
-        mensagem: semChave
-          ? "IA indisponível no momento — use o gerador padrão abaixo."
-          : "Não foi possível gerar com IA agora. Use o gerador padrão abaixo."
+        mensagem: mensagemErroIA(r.erro)
       },
       { status: semChave ? 503 : 502 }
     );
   }
+
+  const elapsed = Date.now() - t0;
+  console.log(`[recurso-ia] OK modo=${modo} ip=${ip.slice(0, 8)}*** ms=${elapsed}`);
 
   // Peça gerada com sucesso: a reserva já descontou o recurso. Só guardamos a
   // peça no histórico para o cliente rever/baixar no painel (/recurso/painel).
@@ -189,5 +210,5 @@ export async function POST(req: Request) {
     }
   }
 
-  return NextResponse.json({ ok: true, modo, texto: r.texto, recursos_restantes: restantes });
+  return NextResponse.json({ ok: true, modo, texto: r.texto, recursos_restantes: restantes, ms: elapsed });
 }

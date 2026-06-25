@@ -11,7 +11,7 @@ import {
   ListChecks,
   ArrowRight
 } from "lucide-react";
-import { getAllArticles } from "@/lib/data/articles";
+import { getAllArticles, getArticlesFromDB } from "@/lib/data/articles";
 import { PROBLEMAS } from "@/lib/data/problemas-juridicos";
 import { GUIAS } from "@/lib/data/guias";
 import { GLOSSARIO } from "@/lib/data/glossario";
@@ -38,7 +38,13 @@ const CATEGORIES = [
   { label: "Consumidor", color: "bg-emerald-50 text-emerald-800 border-emerald-200" },
   { label: "Sucessões", color: "bg-purple-50 text-purple-800 border-purple-200" },
   { label: "Imobiliário", color: "bg-orange-50 text-orange-800 border-orange-200" },
-  { label: "Trânsito", color: "bg-slate-50 text-slate-800 border-slate-200" }
+  { label: "Trânsito", color: "bg-slate-50 text-slate-800 border-slate-200" },
+  { label: "Criminal", color: "bg-red-50 text-red-800 border-red-200" },
+  { label: "Tributário", color: "bg-teal-50 text-teal-800 border-teal-200" },
+  { label: "Administrativo", color: "bg-cyan-50 text-cyan-800 border-cyan-200" },
+  { label: "Digital/LGPD", color: "bg-violet-50 text-violet-800 border-violet-200" },
+  { label: "Contratual", color: "bg-lime-50 text-lime-800 border-lime-200" },
+  { label: "Saúde", color: "bg-pink-50 text-pink-800 border-pink-200" }
 ];
 
 const catBadge = (cat: string) =>
@@ -88,8 +94,23 @@ function SectionHead({
   );
 }
 
-export default function BlogHubPage() {
-  const articles = getAllArticles();
+export default async function BlogHubPage() {
+  // Busca artigos do banco (inclui seed + gerados pelo robo)
+  let articles = getAllArticles();
+  try {
+    const result = await getArticlesFromDB({ limit: 50 });
+    // getArticlesFromDB retorna seed + db combined; deduplica por slug
+    const slugSet = new Set<string>();
+    const deduped = result.articles.filter((a) => {
+      if (slugSet.has(a.slug)) return false;
+      slugSet.add(a.slug);
+      return true;
+    });
+    articles = deduped;
+  } catch {
+    // Falha silenciosa — mostra apenas seed articles
+  }
+
   const problemas = PROBLEMAS.slice(0, 8);
   const guias = GUIAS;
   const termos = GLOSSARIO.slice(0, 12);

@@ -61,26 +61,28 @@ export async function GET(req: Request) {
     );
   }
 
-  // Prefere matches do início da palavra (mais relevantes), depois infix.
+  const prefixCapitals: typeof results = [];
+  const prefixOther: typeof results = [];
+  const infixCapitals: typeof results = [];
+  const infixOther: typeof results = [];
+
   for (const c of cities) {
     if (!matchesUf(c)) continue;
-    if (normalize(c.name).startsWith(term)) {
-      results.push({ name: c.name, slug: c.slug, uf: c.uf, isCapital: c.isCapital });
-      if (results.length >= limit) break;
-    }
-  }
-  if (results.length < limit) {
-    for (const c of cities) {
-      if (!matchesUf(c)) continue;
-      const n = normalize(c.name);
-      if (!n.startsWith(term) && n.includes(term)) {
-        results.push({ name: c.name, slug: c.slug, uf: c.uf, isCapital: c.isCapital });
-        if (results.length >= limit) break;
-      }
+    const n = normalize(c.name);
+    if (n.startsWith(term)) {
+      (c.isCapital ? prefixCapitals : prefixOther).push({
+        name: c.name, slug: c.slug, uf: c.uf, isCapital: c.isCapital
+      });
+    } else if (n.includes(term)) {
+      (c.isCapital ? infixCapitals : infixOther).push({
+        name: c.name, slug: c.slug, uf: c.uf, isCapital: c.isCapital
+      });
     }
   }
 
-  return NextResponse.json(results, {
+  const sorted = [...prefixCapitals, ...prefixOther, ...infixCapitals, ...infixOther].slice(0, limit);
+
+  return NextResponse.json(sorted, {
     headers: { "Cache-Control": "public, max-age=3600, s-maxage=3600" }
   });
 }

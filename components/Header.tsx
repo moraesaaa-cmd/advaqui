@@ -21,22 +21,24 @@ const PRIMARY: Array<{ href: string; label: string }> = [
   { href: "/advogados", label: "Encontrar advogado" }
 ];
 
-const GROUPS: Array<{ label: string; items: Array<{ href: string; label: string }> }> = [
+const GROUPS: Array<{ label: string; items: Array<{ href: string; label: string; desc?: string }> }> = [
   {
     label: "Conteúdo",
     items: [
-      { href: "/blog", label: "Blog — artigos, guias, glossário e mais" },
-      { href: "/jurisprudencia", label: "Jurisprudência (STF/STJ)" },
-      { href: "/marketing-juridico", label: "Marketing (para advogados)" }
+      { href: "/blog", label: "Blog jurídico", desc: "Artigos, guias, glossário e problemas" },
+      { href: "/jurisprudencia", label: "Jurisprudência", desc: "Decisões do STF e STJ por tema" },
+      { href: "/problemas-juridicos", label: "Problemas jurídicos", desc: "Passo a passo do seu caso" },
+      { href: "/glossario", label: "Glossário", desc: "Termos jurídicos em linguagem clara" }
     ]
   },
   {
     label: "Ferramentas",
     items: [
-      { href: "/calculadoras", label: "Calculadoras" },
-      { href: "/quanto-custa", label: "Quanto custa" },
-      { href: "/modelos", label: "Modelos de documentos" },
-      { href: "/tribunais", label: "Tribunais por cidade" }
+      { href: "/ferramentas", label: "Todas as ferramentas", desc: "Calculadoras, modelos e mais" },
+      { href: "/montar-peticao", label: "Montar petição", desc: "Rascunho organizado da sua peça" },
+      { href: "/calculadora-prazos", label: "Calculadora de prazos", desc: "Dias úteis e corridos" },
+      { href: "/modelos", label: "Modelos de documentos", desc: "Procuração, contrato, recibo" },
+      { href: "/recurso-de-multa", label: "Recurso de multa", desc: "Gere seu recurso de trânsito" }
     ]
   }
 ];

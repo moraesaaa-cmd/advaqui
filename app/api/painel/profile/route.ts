@@ -44,7 +44,7 @@ export async function PATCH(req: Request) {
     body = (await req.json()) as Record<string, unknown>;
   } catch {
     return NextResponse.json(
-      { ok: false, code: "invalid_json", error: "Requisicao invalida." },
+      { ok: false, code: "invalid_json", error: "Requisição inválida." },
       { status: 400 }
     );
   }
@@ -301,7 +301,7 @@ export async function PATCH(req: Request) {
       {
         ok: false,
         code: "update_failed",
-        error: error?.message || "Nao foi possivel salvar o perfil."
+        error: error?.message || "Não foi possível salvar o perfil."
       },
       { status: 500 }
     );

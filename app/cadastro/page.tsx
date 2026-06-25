@@ -337,7 +337,7 @@ export default function CadastroPage() {
 
     if (!data.user) {
       setSubmitting(false);
-      toast("Cadastro nao retornou usuario. Tente novamente.", "error");
+      toast("Cadastro não retornou usuário. Tente novamente.", "error");
       return;
     }
 
@@ -360,12 +360,12 @@ export default function CadastroPage() {
         const sim = signInError.message.toLowerCase();
         if (sim.includes("email not confirmed") || sim.includes("not confirmed")) {
           toast(
-            "Cadastro criado! Verifique seu e-mail e clique no link de confirmacao antes de fazer login.",
+            "Cadastro criado! Verifique seu e-mail e clique no link de confirmação antes de fazer login.",
             "info"
           );
         } else {
           toast(
-            `Cadastro criado! Faca login em /login. (${signInError.message})`,
+            `Cadastro criado! Faça login em /login. (${signInError.message})`,
             "info"
           );
         }

@@ -68,7 +68,7 @@ export async function getCurrentLawyer(): Promise<AuthResult> {
       ok: false,
       status: 401,
       code: "unauthorized",
-      error: "Sessao expirada. Faca login novamente."
+      error: "Sessão expirada. Faça login novamente."
     };
   }
 
@@ -85,7 +85,7 @@ export async function getCurrentLawyer(): Promise<AuthResult> {
       ok: false,
       status: 500,
       code: "server_error",
-      error: "Nao foi possivel carregar seu perfil agora."
+      error: "Não foi possível carregar seu perfil agora."
     };
   }
 
@@ -94,7 +94,7 @@ export async function getCurrentLawyer(): Promise<AuthResult> {
       ok: false,
       status: 404,
       code: "profile_missing",
-      error: "Cadastro incompleto. Refaca o cadastro ou fale com o suporte."
+      error: "Cadastro incompleto. Refaça o cadastro ou fale com o suporte."
     };
   }
 

@@ -377,6 +377,61 @@ export default function PlanosPage() {
           </div>
         </section>
 
+        {/* ATIVAÇÃO EM 3 PASSOS */}
+        <section className="pt-[70px]">
+          <div className="text-center mb-9">
+            <div className={eyebrow} style={{ color: "#A0843A" }}>Rápido e sem burocracia</div>
+            <h2 className="font-display font-semibold text-3xl tracking-tight">
+              Ativação em 3 passos
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            {[
+              { step: "01", title: "Cadastre-se grátis", desc: "Preencha nome, OAB, cidade e especialidades. Menos de 1 minuto." },
+              { step: "02", title: "Ative o Premium via Pix", desc: `Pague ${formatCurrency(PLAN.price)} no Pix — sem cartão, sem débito automático. Confirmamos em até ${PLAN.activationLabel}.` },
+              { step: "03", title: "Apareça no topo", desc: "Seu perfil sobe ao topo da cidade, com foto, selo OAB e WhatsApp clicável." }
+            ].map((s) => (
+              <div key={s.step} className="relative bg-white border border-brand-line rounded-[14px] p-6">
+                <div className="font-display text-[32px] font-bold mb-2" style={{ color: "rgba(200,162,74,0.25)" }}>{s.step}</div>
+                <div className="font-semibold text-[16px] mb-2">{s.title}</div>
+                <div className="text-[13.5px] leading-relaxed" style={{ color: "#6B7689" }}>{s.desc}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="pt-[70px]">
+          <div className="text-center mb-9">
+            <div className={eyebrow} style={{ color: "#A0843A" }}>Perguntas frequentes</div>
+            <h2 className="font-display font-semibold text-3xl tracking-tight">
+              Tire suas dúvidas
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              { q: "Preciso ser advogado para cadastrar?", a: "O perfil de advogado exige OAB ativa. Se você não é advogado, pode usar as ferramentas do site criando uma conta gratuita de usuário." },
+              { q: "O perfil gratuito continua existindo?", a: "Sim. O plano gratuito mostra nome, OAB, cidade e 1 especialidade. O Premium adiciona foto de destaque, WhatsApp, múltiplas cidades, selo verificado e posição no topo." },
+              { q: "Posso cancelar a qualquer momento?", a: "Sem fidelidade. Se não renovar o Pix, o perfil volta ao plano gratuito no mês seguinte. Nada é cobrado automaticamente." },
+              { q: "Como funciona o pagamento?", a: `Pix mensal de ${formatCurrency(PLAN.price)}. Você recebe o QR Code no painel, paga e o plano é ativado. Sem cartão de crédito, sem débito automático.` },
+              { q: "Posso aparecer em mais de uma cidade?", a: "Com o Premium, você aparece em até 10 cidades diferentes — ideal para quem atende em comarcas vizinhas." },
+              { q: "A OAB é verificada mesmo?", a: "Sim. Nosso time confere o número da OAB antes de conceder o selo. Isso protege tanto você quanto o cliente que busca." },
+              { q: "O AdvAqui cobra comissão sobre causas?", a: "Nunca. O cliente fala direto com você. O AdvAqui não intermedia, não cobra percentual e não participa do honorário." },
+              { q: "Quanto tempo leva para ativar?", a: `Após o pagamento do Pix, a ativação acontece em até ${PLAN.activationLabel}. Na maioria dos casos, em poucas horas.` }
+            ].map((faq) => (
+              <details key={faq.q} className="bg-white border border-brand-line rounded-[14px] p-5 group">
+                <summary className="font-semibold text-[15px] cursor-pointer list-none flex items-center justify-between gap-3">
+                  <span>{faq.q}</span>
+                  <span className="text-brand-ink/30 group-open:rotate-45 transition-transform text-xl shrink-0">+</span>
+                </summary>
+                <p className="text-[13.5px] leading-relaxed mt-3 pt-3" style={{ color: "#6B7689", borderTop: "1px solid #EDEBE3" }}>
+                  {faq.a}
+                </p>
+              </details>
+            ))}
+          </div>
+        </section>
+
         {/* CTA FINAL */}
         <section className="py-16">
           <div
@@ -393,13 +448,22 @@ export default function PlanosPage() {
             <p className="text-sm mb-6" style={{ color: "#7E8BA1" }}>
               {formatCurrency(PLAN.price)}/mês · Pix · sem fidelidade · cancele quando quiser
             </p>
-            <Link
-              href="/cadastro"
-              className="inline-block font-bold text-base px-[30px] py-[15px] rounded-[11px]"
-              style={{ background: "#C8A24A", color: "#0F1B2D" }}
-            >
-              Ativar premium agora
-            </Link>
+            <div className="flex gap-3 justify-center flex-wrap">
+              <Link
+                href="/cadastro"
+                className="inline-block font-bold text-base px-[30px] py-[15px] rounded-[11px]"
+                style={{ background: "#C8A24A", color: "#0F1B2D" }}
+              >
+                Ativar premium agora
+              </Link>
+              <Link
+                href="/cadastro"
+                className="inline-block font-semibold text-base px-[26px] py-[15px] rounded-[11px]"
+                style={{ border: "1px solid rgba(255,255,255,0.25)", color: "white" }}
+              >
+                Começar com o plano grátis
+              </Link>
+            </div>
           </div>
         </section>
       </div>

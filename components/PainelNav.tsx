@@ -2,16 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, HelpCircle, Palette } from "lucide-react";
+import { LayoutDashboard, FileText, HelpCircle, Palette, CreditCard } from "lucide-react";
 
-/**
- * Barra de navegação do painel do advogado — transforma as páginas soltas
- * (/painel, /painel/artigos, /painel/perguntas, /painel/aparencia) num
- * dashboard unificado. Fica fixa logo abaixo do cabeçalho do site. Aba ativa
- * com sublinhado dourado.
- */
 const TABS = [
-  { href: "/painel", label: "Painel", Icon: LayoutDashboard, exact: true },
+  { href: "/painel", label: "Meu perfil", Icon: LayoutDashboard, exact: true },
+  { href: "/painel/pagamento", label: "Pagamento", Icon: CreditCard },
   { href: "/painel/artigos", label: "Artigos", Icon: FileText },
   { href: "/painel/perguntas", label: "Perguntas", Icon: HelpCircle },
   { href: "/painel/aparencia", label: "Aparência", Icon: Palette }

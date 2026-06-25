@@ -265,7 +265,7 @@ export async function POST(req: Request) {
     }
     case "set-email": {
       if (!body.id || !body.email)
-        return NextResponse.json({ ok: false, error: "ID e email obrigatorios" }, { status: 400 });
+        return NextResponse.json({ ok: false, error: "ID e email obrigatórios" }, { status: 400 });
       const admin = createAdminClient();
       const newEmail = body.email.trim().toLowerCase();
       // Atualiza auth.users (canonical) + public.lawyers (espelho)
@@ -288,7 +288,7 @@ export async function POST(req: Request) {
     }
     case "set-password": {
       if (!body.id || !body.password)
-        return NextResponse.json({ ok: false, error: "ID e nova senha obrigatorios" }, { status: 400 });
+        return NextResponse.json({ ok: false, error: "ID e nova senha obrigatórios" }, { status: 400 });
       if (body.password.length < 8) {
         return NextResponse.json(
           { ok: false, error: "Senha precisa ter pelo menos 8 caracteres" },
@@ -310,13 +310,13 @@ export async function POST(req: Request) {
       // saber a senha original (que e bcrypt e nao pode ser recuperada).
       // Link expira em 1h por padrao do Supabase.
       if (!body.id)
-        return NextResponse.json({ ok: false, error: "ID obrigatorio" }, { status: 400 });
+        return NextResponse.json({ ok: false, error: "ID obrigatório" }, { status: 400 });
       const admin = createAdminClient();
       const { data: userRes } = await admin.auth.admin.getUserById(body.id);
       const email = userRes?.user?.email;
       if (!email) {
         return NextResponse.json(
-          { ok: false, error: "E-mail do usuario nao encontrado" },
+          { ok: false, error: "E-mail do usuário não encontrado" },
           { status: 404 }
         );
       }
@@ -339,7 +339,7 @@ export async function POST(req: Request) {
     }
     case "get-lawyer-full": {
       if (!body.id)
-        return NextResponse.json({ ok: false, error: "ID obrigatorio" }, { status: 400 });
+        return NextResponse.json({ ok: false, error: "ID obrigatório" }, { status: 400 });
       const admin = createAdminClient();
       // Carrega 4 coisas em paralelo: lawyer (TUDO incluindo CPF), auth user
       // (data de criacao, ultimo login, email confirmation), historico de
@@ -362,7 +362,7 @@ export async function POST(req: Request) {
 
       if (lawyerRes.error || !lawyerRes.data) {
         return NextResponse.json(
-          { ok: false, error: lawyerRes.error?.message || "Advogado nao encontrado" },
+          { ok: false, error: lawyerRes.error?.message || "Advogado não encontrado" },
           { status: 404 }
         );
       }
@@ -393,7 +393,7 @@ export async function POST(req: Request) {
     }
     case "update-lawyer": {
       if (!body.id || !body.fields)
-        return NextResponse.json({ ok: false, error: "ID e fields obrigatorios" }, { status: 400 });
+        return NextResponse.json({ ok: false, error: "ID e fields obrigatórios" }, { status: 400 });
       // Whitelist tipada de campos editaveis pelo admin (evita inject de
       // plan_status etc). Usar `keyof LawyerRow` garante que o filtro casa
       // com `Partial<LawyerRow>` que o supabase-js 2.106 espera no update.
@@ -446,7 +446,7 @@ export async function POST(req: Request) {
         }
       }
       if (Object.keys(filtered).length === 0) {
-        return NextResponse.json({ ok: false, error: "Nenhum campo valido" }, { status: 400 });
+        return NextResponse.json({ ok: false, error: "Nenhum campo válido" }, { status: 400 });
       }
       const admin = createAdminClient();
       let { error } = await admin
@@ -490,7 +490,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: true });
     }
     case "remove-photo": {
-      if (!body.id) return NextResponse.json({ ok: false, error: "ID obrigatorio" }, { status: 400 });
+      if (!body.id) return NextResponse.json({ ok: false, error: "ID obrigatório" }, { status: 400 });
       const admin = createAdminClient();
       // Apaga arquivos no Storage (qualquer extensão que possa existir)
       const possible = [`${body.id}.jpg`, `${body.id}.png`, `${body.id}.webp`];
@@ -508,6 +508,41 @@ export async function POST(req: Request) {
       }
       if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       await revalidateLawyerPages(body.id);
+      return NextResponse.json({ ok: true });
+    }
+    case "list-articles": {
+      const supabase = createAdminClient();
+      const { data, error } = await supabase
+        .from("blog_articles")
+        .select("id,slug,title,category,status,reading_minutes,created_at,published_at")
+        .order("created_at", { ascending: false })
+        .limit(200);
+      if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json({ ok: true, articles: data ?? [] });
+    }
+    case "toggle-article-status": {
+      if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
+      const supabase = createAdminClient();
+      const { data: article } = await supabase
+        .from("blog_articles")
+        .select("status")
+        .eq("id", body.id)
+        .maybeSingle();
+      if (!article) return NextResponse.json({ ok: false, error: "Artigo não encontrado" }, { status: 404 });
+      const newStatus = article.status === "published" ? "draft" : "published";
+      const update: Record<string, unknown> = { status: newStatus };
+      if (newStatus === "published" && !article.status) update.published_at = new Date().toISOString();
+      const { error } = await supabase.from("blog_articles").update(update).eq("id", body.id);
+      if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      revalidatePath("/blog");
+      return NextResponse.json({ ok: true, status: newStatus });
+    }
+    case "delete-article": {
+      if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
+      const supabase = createAdminClient();
+      const { error } = await supabase.from("blog_articles").delete().eq("id", body.id);
+      if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      revalidatePath("/blog");
       return NextResponse.json({ ok: true });
     }
     default:

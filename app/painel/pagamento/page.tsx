@@ -41,7 +41,7 @@ const requestJson = async <T,>(
     if (!res.ok || data.ok === false) {
       throw new PaymentApiError(
         res.status,
-        data.error || "Nao foi possivel concluir a operacao."
+        data.error || "Não foi possível concluir a operação."
       );
     }
 
@@ -80,7 +80,7 @@ export default function PagamentoPage() {
       } catch (err) {
         if (!active) return;
         const message =
-          err instanceof Error ? err.message : "Nao foi possivel carregar o pagamento.";
+          err instanceof Error ? err.message : "Não foi possível carregar o pagamento.";
         setLoadError(message);
         if (err instanceof PaymentApiError && err.status === 401) {
           setLoadState("unauthorized");
@@ -109,7 +109,7 @@ export default function PagamentoPage() {
       );
       setUser(data.lawyer);
       setConfirmed(true);
-      toast("Pagamento sinalizado! Ativacao em ate 48 horas.");
+      toast("Pagamento sinalizado! Ativação em até 48 horas.");
     } catch (err) {
       console.error("[painel:payment]", err);
       toast(err instanceof Error ? err.message : "Erro ao registrar. Tente novamente.", "error");
@@ -122,17 +122,17 @@ export default function PagamentoPage() {
     const isLoading = loadState === "loading";
     const title =
       loadState === "unauthorized"
-        ? "Sessao expirada"
+        ? "Sessão expirada"
         : loadState === "profile_missing"
         ? "Cadastro incompleto"
         : isLoading
         ? "Carregando pagamento"
-        : "Nao foi possivel abrir o pagamento";
+        : "Não foi possível abrir o pagamento";
     const body =
       loadState === "unauthorized"
         ? "Entre novamente para sinalizar seu Pix."
         : loadState === "profile_missing"
-        ? "Nao encontramos seu perfil de advogado."
+        ? "Não encontramos seu perfil de advogado."
         : isLoading
         ? "Estamos buscando seus dados."
         : loadError || "Tente novamente em alguns segundos.";
@@ -179,12 +179,12 @@ export default function PagamentoPage() {
             Pagamento sinalizado
           </h1>
           <p className="text-brand-ink/70 mb-6">
-            Recebemos sua sinalizacao. Nossa equipe vai validar o Pix e ativar seu plano premium em
-            ate <strong>48 horas</strong>. Voce recebera a confirmacao aqui no painel.
+            Recebemos sua sinalização. Nossa equipe vai validar o Pix e ativar seu plano premium em
+            até <strong>48 horas</strong>. Você receberá a confirmação aqui no painel.
           </p>
           <div className="text-sm text-brand-ink/60 bg-brand-bg rounded-xl p-3 mb-5">
             <p>1. Pagamento sinalizado</p>
-            <p>2. Em analise (ate 48h)</p>
+            <p>2. Em análise (até 48h)</p>
             <p>3. Plano ativo</p>
           </div>
           <Link href="/painel" className="btn-primary">
@@ -208,7 +208,7 @@ export default function PagamentoPage() {
         </div>
         <h1 className="font-display text-2xl font-bold text-brand-ink">Ativar plano premium</h1>
         <p className="text-sm text-brand-ink/60 mt-1">
-          Pagamento por Pix. Ativacao manual em ate 48 horas.
+          Pagamento por Pix. Ativação manual em até 48 horas.
         </p>
       </header>
 
@@ -219,12 +219,12 @@ export default function PagamentoPage() {
         disabled={confirming}
         className="btn-primary w-full mt-6 bg-emerald-600 hover:bg-emerald-500"
       >
-        {confirming ? "Registrando..." : "Ja realizei o pagamento"}
+        {confirming ? "Registrando..." : "Já realizei o pagamento"}
       </button>
 
       <p className="text-xs text-brand-ink/50 mt-4 text-center leading-relaxed">
-        Ao clicar, voce confirma que enviou o Pix para a chave acima. Nossa equipe valida
-        manualmente e ativa o seu destaque em ate 48 horas.
+        Ao clicar, você confirma que enviou o Pix para a chave acima. Nossa equipe valida
+        manualmente e ativa o seu destaque em até 48 horas.
       </p>
     </div>
   );

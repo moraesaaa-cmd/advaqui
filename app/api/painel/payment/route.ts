@@ -44,7 +44,7 @@ export async function POST() {
       {
         ok: false,
         code: "payment_update_failed",
-        error: error?.message || "Nao foi possivel registrar o pagamento."
+        error: error?.message || "Não foi possível registrar o pagamento."
       },
       { status: 500 }
     );
@@ -91,7 +91,7 @@ export async function POST() {
         ok: false,
         code: "payment_history_failed",
         error:
-          "O status foi sinalizado, mas o historico falhou. Avise o suporte antes de tentar novamente."
+          "O status foi sinalizado, mas o histórico falhou. Avise o suporte antes de tentar novamente."
       },
       { status: 500 }
     );

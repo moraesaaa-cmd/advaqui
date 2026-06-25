@@ -88,6 +88,8 @@ export type Article = {
   faq: ArticleFAQ[];
   /** Sugestão de slug das cidades onde puxar advogados relacionados (opcional, futuramente). */
   relatedSpecialty?: string;
+  /** Origem do artigo: "seed" para hardcoded, "db" para gerados pelo robo. */
+  _source?: "seed" | "db";
 };
 
 export const ARTICLES: Article[] = [
@@ -1837,4 +1839,115 @@ export function getRelatedArticles(slug: string, count = 3): Article[] {
     (a) => a.slug !== slug && a.category !== current.category
   );
   return [...sameCat, ...others].slice(0, count);
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Artigos do banco de dados (Supabase — tabela blog_articles)
+ *
+ * getArticlesFromDB() busca artigos publicados do Supabase e os mapeia para
+ * o tipo Article, combinando com os artigos seed. Usado na listagem /blog
+ * para exibir artigos gerados pelo robo de conteudo junto com os seed.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+/** Tipo da linha crua retornada pelo Supabase (blog_articles). */
+type BlogArticleRow = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  body: string;
+  reading_minutes: number;
+  author: string;
+  published_at: string | null;
+  created_at: string;
+  status: string;
+  seo_keywords: string[] | null;
+};
+
+/**
+ * Converte HTML plano do banco para array de ArticleSection.
+ *
+ * O corpo salvo no banco e HTML puro (<h2>, <h3>, <p>, <ul>, <ol>).
+ * O renderer do blog espera ArticleSection[]. Esta funcao faz a ponte.
+ * Para artigos do banco, usamos um unico section { type: "html" } que
+ * o renderer trata como bloco HTML direto.
+ */
+function htmlToSections(html: string): ArticleSection[] {
+  // Retorna como um bloco "p" com HTML cru.
+  // O renderer do [slug]/page.tsx renderiza com dangerouslySetInnerHTML
+  // quando recebe source = "db".
+  return [{ type: "p", text: html }];
+}
+
+/**
+ * Busca artigos publicados do Supabase (tabela blog_articles).
+ *
+ * Retorna artigos do banco mapeados para Article, combinados com artigos
+ * seed (seed primeiro). Usado no /blog para listagem unificada.
+ *
+ * NOTA: como esta funcao faz I/O (fetch ao Supabase), deve ser chamada
+ * em contexto async (Server Component ou Route Handler).
+ */
+export async function getArticlesFromDB(options?: {
+  limit?: number;
+  offset?: number;
+  category?: string;
+}): Promise<{ articles: Article[]; total: number; hasMore: boolean }> {
+  // Import dinamico para evitar erro em contextos client-side
+  const { createAdminClient } = await import("@/lib/supabase/admin");
+
+  const supabase = createAdminClient();
+  const limit = options?.limit ?? 20;
+  const offset = options?.offset ?? 0;
+
+  // Query com contagem
+  let query = supabase
+    .from("blog_articles")
+    .select("*", { count: "exact" })
+    .eq("status", "published")
+    .order("published_at", { ascending: false });
+
+  if (options?.category) {
+    query = query.eq("category", options.category);
+  }
+
+  query = query.range(offset, offset + limit - 1);
+
+  const { data, error, count } = await query;
+
+  if (error || !data) {
+    console.error("[getArticlesFromDB] Supabase error:", error?.message);
+    // Retorna apenas seed articles como fallback
+    const seed = getAllArticles();
+    return { articles: seed, total: seed.length, hasMore: false };
+  }
+
+  const dbArticles: Article[] = (data as BlogArticleRow[]).map((row) => ({
+    slug: row.slug,
+    title: row.title,
+    excerpt: row.excerpt,
+    category: row.category,
+    readingMinutes: row.reading_minutes || 5,
+    publishedAt: row.published_at
+      ? row.published_at.split("T")[0]
+      : row.created_at.split("T")[0],
+    author: row.author || "Equipe AdvAqui",
+    authorRole: "Equipe" as const,
+    intro: row.excerpt,
+    body: htmlToSections(row.body),
+    faq: [],
+    _source: "db" as const
+  })) as Article[];
+
+  // Seed articles vem primeiro, depois os do banco
+  const seedArticles = offset === 0 ? getAllArticles() : [];
+  const combined = [...seedArticles, ...dbArticles];
+  const total = (count || 0) + (offset === 0 ? ARTICLES.length : 0);
+
+  return {
+    articles: combined,
+    total,
+    hasMore: offset + limit < (count || 0)
+  };
 }

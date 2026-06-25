@@ -5,8 +5,10 @@ import {
   getAllArticleSlugs,
   getArticleBySlug,
   getRelatedArticles,
+  type Article,
   type ArticleSection
 } from "@/lib/data/articles";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
@@ -29,15 +31,47 @@ import {
 import { Fluxograma, QuadroComparativo } from "@/components/Fluxograma";
 import { ArticleTool } from "@/components/ArticleTools";
 
-export const dynamicParams = false;
+export const dynamicParams = true;
 export const revalidate = 3600;
+
+/** Busca artigo no banco (blog_articles) pelo slug. */
+async function getArticleFromDB(slug: string): Promise<Article | null> {
+  try {
+    const supabase = createAdminClient();
+    const { data } = await supabase
+      .from("blog_articles")
+      .select("*")
+      .eq("slug", slug)
+      .eq("status", "published")
+      .maybeSingle();
+    if (!data) return null;
+    return {
+      slug: data.slug,
+      title: data.title,
+      excerpt: data.excerpt,
+      category: data.category,
+      readingMinutes: data.reading_minutes || 5,
+      publishedAt: data.published_at
+        ? data.published_at.split("T")[0]
+        : data.created_at.split("T")[0],
+      author: data.author || "Equipe AdvAqui",
+      authorRole: "Equipe" as const,
+      intro: data.excerpt,
+      body: [{ type: "p" as const, text: data.body }],
+      faq: [],
+      _source: "db" as const
+    } as Article;
+  } catch {
+    return null;
+  }
+}
 
 export async function generateStaticParams() {
   return getAllArticleSlugs().map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const article = getArticleBySlug(params.slug);
+  const article = getArticleBySlug(params.slug) || await getArticleFromDB(params.slug);
   if (!article) {
     return buildMetadata({
       title: "Artigo",
@@ -155,9 +189,12 @@ const faqJsonLd = (items: Array<{ question: string; answer: string }>) => ({
   }))
 });
 
-export default function ArticlePage({ params }: { params: { slug: string } }) {
-  const article = getArticleBySlug(params.slug);
+export default async function ArticlePage({ params }: { params: { slug: string } }) {
+  const article = getArticleBySlug(params.slug) || await getArticleFromDB(params.slug);
   if (!article) notFound();
+
+  // Artigos do banco usam HTML cru no body; seed articles usam ArticleSection[]
+  const isDBArticle = "_source" in article && (article as Article & { _source?: string })._source === "db";
 
   const related = getRelatedArticles(article.slug, 3);
   const publishedDate = new Date(article.publishedAt).toLocaleDateString("pt-BR", {
@@ -225,7 +262,14 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
         })()}
 
         <div className="prose prose-lg max-w-none">
-          {article.body.map(renderSection)}
+          {isDBArticle && article.body.length === 1 && article.body[0].type === "p" ? (
+            <div
+              className="text-brand-ink/85 leading-relaxed [&>h2]:font-display [&>h2]:text-2xl [&>h2]:md:text-3xl [&>h2]:font-bold [&>h2]:text-brand-ink [&>h2]:mt-10 [&>h2]:mb-4 [&>h3]:font-display [&>h3]:text-xl [&>h3]:font-bold [&>h3]:text-brand-deep [&>h3]:mt-6 [&>h3]:mb-3 [&>p]:mb-4 [&>ul]:mb-5 [&>ul]:space-y-2 [&>ul]:pl-5 [&>ul]:list-disc [&>ol]:mb-5 [&>ol]:space-y-2 [&>ol]:pl-5 [&>ol]:list-decimal"
+              dangerouslySetInnerHTML={{ __html: article.body[0].text }}
+            />
+          ) : (
+            article.body.map(renderSection)
+          )}
         </div>
 
         {article.faq.length > 0 && (

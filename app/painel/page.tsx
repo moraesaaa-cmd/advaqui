@@ -76,7 +76,7 @@ const requestJson = async <T,>(
       throw new PanelApiError(
         res.status,
         data.code || "request_failed",
-        data.error || "Nao foi possivel concluir a operacao."
+        data.error || "Não foi possível concluir a operação."
       );
     }
 
@@ -141,7 +141,7 @@ export default function PainelPage() {
       setLoadState("ready");
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : "Nao foi possivel carregar seu painel agora.";
+        err instanceof Error ? err.message : "Não foi possível carregar seu painel agora.";
       setLoadError(message);
       if (err instanceof PanelApiError && err.status === 401) {
         setLoadState("unauthorized");
@@ -195,7 +195,7 @@ export default function PainelPage() {
   const addExtraCity = () => {
     if (!draft) return;
     if ((draft.extraCities || []).length >= 9) {
-      toast("Maximo de 9 cidades adicionais (10 no total com a principal).", "error");
+      toast("Máximo de 9 cidades adicionais (10 no total com a principal).", "error");
       return;
     }
     setDraft({
@@ -314,16 +314,16 @@ export default function PainelPage() {
     if (!user || deleting) return;
     const confirmed = window.confirm(
       "Tem certeza que deseja excluir sua conta?\n\n" +
-        "Esta acao e IRREVERSIVEL. Seu perfil sera removido do diretorio publico, " +
-        "todas as mensagens enviadas serao desvinculadas e os pagamentos sinalizados " +
-        "ficarao no historico mas sem conta associada."
+        "Esta ação é IRREVERSÍVEL. Seu perfil será removido do diretório público, " +
+        "todas as mensagens enviadas serão desvinculadas e os pagamentos sinalizados " +
+        "ficarão no histórico mas sem conta associada."
     );
     if (!confirmed) return;
     const reConfirm = window.prompt(
-      'Digite EXCLUIR (em maiusculas) para confirmar a exclusao definitiva da sua conta:'
+      'Digite EXCLUIR (em maiúsculas) para confirmar a exclusão definitiva da sua conta:'
     );
     if (reConfirm !== "EXCLUIR") {
-      toast("Exclusao cancelada.");
+      toast("Exclusão cancelada.");
       return;
     }
     setDeleting(true);
@@ -336,7 +336,7 @@ export default function PainelPage() {
       } catch {
         // ignore
       }
-      toast("Conta excluida. Sentimos sua saida.");
+      toast("Conta excluída. Sentimos sua saída.");
       router.push("/");
       router.refresh();
     } catch (err) {
@@ -350,19 +350,19 @@ export default function PainelPage() {
     const isLoading = loadState === "loading";
     const title =
       loadState === "unauthorized"
-        ? "Sessao expirada"
+        ? "Sessão expirada"
         : loadState === "profile_missing"
         ? "Cadastro incompleto"
         : isLoading
         ? "Carregando painel"
-        : "Nao foi possivel abrir o painel";
+        : "Não foi possível abrir o painel";
     const body =
       loadState === "unauthorized"
         ? "Entre novamente para acessar seu painel."
         : loadState === "profile_missing"
-        ? "Nao encontramos seu perfil de advogado. Refaca o cadastro ou fale com o suporte."
+        ? "Não encontramos seu perfil de advogado. Refaça o cadastro ou fale com o suporte."
         : isLoading
-        ? "Estamos buscando seus dados com seguranca."
+        ? "Estamos buscando seus dados com segurança."
         : loadError || "Tente novamente em alguns segundos.";
 
     return (
@@ -651,7 +651,7 @@ export default function PainelPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="label">Endereco profissional</label>
+                  <label className="label">Endereço profissional</label>
                   <input
                     className="input"
                     value={draft.address || ""}
@@ -876,7 +876,7 @@ export default function PainelPage() {
                         Cidades adicionais ({(draft.extraCities || []).length} / 9)
                       </p>
                       <p className="text-xs text-brand-ink/60 mt-1">
-                        Disponivel apenas para premium. O perfil aparece em cada cidade listada.
+                        Disponível apenas para premium. O perfil aparece em cada cidade listada.
                       </p>
                     </div>
                     {status === "active" && (draft.extraCities || []).length < 9 && (
@@ -992,13 +992,13 @@ export default function PainelPage() {
                 </div>
 
                 <p className="text-xs text-brand-ink/50 pt-2 border-t border-brand-line">
-                  <strong>Cidade principal e OAB nao sao editaveis</strong> pelo painel. Para
-                  mudancas nesses campos, fale com o suporte abaixo.
+                  <strong>Cidade principal e OAB não são editáveis</strong> pelo painel. Para
+                  mudanças nesses campos, fale com o suporte abaixo.
                 </p>
 
                 <div className="flex gap-2 pt-2">
                   <button onClick={saveEdit} className="btn-primary" disabled={saving}>
-                    {saving ? "Salvando..." : "Salvar alteracoes"}
+                    {saving ? "Salvando..." : "Salvar alterações"}
                   </button>
                   <button
                     onClick={() => {
@@ -1019,7 +1019,7 @@ export default function PainelPage() {
                   ["E-mail", user.email],
                   ["Telefone", user.phone || "-"],
                   ["WhatsApp", user.whatsapp || "-"],
-                  ["Endereco", user.address || "-"],
+                  ["Endereço", user.address || "-"],
                   ["Cidade principal", `${user.cityName} / ${user.uf}`],
                   [
                     "Cidades adicionais",
@@ -1030,14 +1030,14 @@ export default function PainelPage() {
                       : "- (recurso premium)"
                   ],
                   [
-                    "Areas",
+                    "Áreas",
                     user.specialties
                       .map((slug) => SPECIALTIES.find((item) => item.slug === slug)?.name)
                       .filter(Boolean)
                       .join(", ") || "-"
                   ],
                   ["Bio", user.bio || "-"],
-                  ["Horario de atendimento", user.officeHours || (status === "active" ? "-" : "- (premium)")],
+                  ["Horário de atendimento", user.officeHours || (status === "active" ? "-" : "- (premium)")],
                   ["Site", user.website || (status === "active" ? "-" : "- (premium)")],
                   ["Instagram", user.instagram ? `@${user.instagram}` : (status === "active" ? "-" : "- (premium)")],
                   ["LinkedIn", user.linkedin || (status === "active" ? "-" : "- (premium)")]
@@ -1056,17 +1056,17 @@ export default function PainelPage() {
               Falar com o suporte
             </h2>
             <p className="text-sm text-brand-ink/60 mb-3">
-              Duvidas sobre pagamento, ativacao ou perfil. Respondemos em ate 48 horas pelo e-mail cadastrado.
+              Dúvidas sobre pagamento, ativação ou perfil. Respondemos em até 48 horas pelo e-mail cadastrado.
             </p>
             <textarea
               className="input min-h-24 resize-y"
-              placeholder="Descreva sua duvida ou problema com detalhes (minimo 10 caracteres)..."
+              placeholder="Descreva sua dúvida ou problema com detalhes (mínimo 10 caracteres)..."
               value={msg}
               onChange={(event) => setMsg(event.target.value)}
             />
             <p className="text-xs text-brand-ink/50 mt-2">
               {msg.trim().length < 10 ? (
-                <>{msg.trim().length} / 10 caracteres minimos</>
+                <>{msg.trim().length} / 10 caracteres mínimos</>
               ) : (
                 <span className="text-emerald-700 font-medium">
                   OK - {msg.trim().length} caracteres
@@ -1089,7 +1089,7 @@ export default function PainelPage() {
             </h2>
             <p className="text-sm text-red-900/80 mb-3">
               Exclui permanentemente sua conta do AdvAqui. Seu perfil sai do
-              diretorio publico imediatamente. Esta acao nao pode ser desfeita.
+              diretório público imediatamente. Esta ação não pode ser desfeita.
             </p>
             <button
               type="button"
@@ -1116,7 +1116,7 @@ export default function PainelPage() {
               </div>
               {user.planStartDate && (
                 <div className="flex justify-between">
-                  <dt>Ativacao</dt>
+                  <dt>Ativação</dt>
                   <dd>{formatDate(user.planStartDate)}</dd>
                 </div>
               )}
@@ -1138,7 +1138,7 @@ export default function PainelPage() {
             <Star className="w-5 h-5 text-brand-accent mb-2" aria-hidden />
             <p className="text-sm font-semibold text-brand-deep">Dica de visibilidade</p>
             <p className="text-xs text-brand-ink/70 mt-1 leading-relaxed">
-              Perfis com telefone, WhatsApp, bio e areas de atuacao bem preenchidas tendem a converter melhor.
+              Perfis com telefone, WhatsApp, bio e áreas de atuação bem preenchidas tendem a converter melhor.
             </p>
           </div>
 
