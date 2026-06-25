@@ -258,11 +258,32 @@ export default async function AdvogadoAreaCidadePage({
                 ? `Profissionais com atuação na área em ${cidadeInfo.cidadeNome}. Veja perfis, áreas de atuação e canais de contato direto.`
                 : `Profissionais cadastrados em ${cidadeInfo.cidadeNome}. Confirme a atuação na área antes da consulta.`}
             </p>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {lawyersExibir.map((lawyer) => (
-                <LawyerCard key={lawyer.id} lawyer={lawyer} />
-              ))}
-            </div>
+            {(() => {
+              const premium = lawyersExibir.filter(
+                (l) => l.planStatus === "active" || l.featured
+              );
+              const free = lawyersExibir.filter(
+                (l) => !(l.planStatus === "active" || l.featured)
+              );
+              return (
+                <>
+                  {premium.length > 0 && (
+                    <div className="flex flex-col gap-3 mb-4">
+                      {premium.map((lawyer) => (
+                        <LawyerCard key={lawyer.id} lawyer={lawyer} featured />
+                      ))}
+                    </div>
+                  )}
+                  {free.length > 0 && (
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {free.map((lawyer) => (
+                        <LawyerCard key={lawyer.id} lawyer={lawyer} featured={false} />
+                      ))}
+                    </div>
+                  )}
+                </>
+              );
+            })()}
             <p className="mt-4 text-sm">
               <Link
                 href={`/advogados/${ufLower}/${cidadeInfo.citySlug}/${sp.slug}`}

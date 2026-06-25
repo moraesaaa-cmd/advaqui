@@ -231,8 +231,10 @@ const GROUPS: Group[] = [
 const GOLD = "#C8A24A";
 
 // Selos por ferramenta (sem mexer nos dados): IA / Premium nos destaques.
+// Obs.: o /recurso-de-multa do grid é o gerador GRÁTIS por modelo (sem IA) —
+// a versão com IA é o produto pago em destaque no topo (multas.advaqui.com).
 function badgeFor(href: string): { text: string; ia?: boolean } | null {
-  if (href === "/recurso-de-multa") return { text: "IA", ia: true };
+  if (href === "/recurso-de-multa") return { text: "Grátis", ia: false };
   if (href === "/revisor-peticao") return { text: "Premium · IA", ia: true };
   return null;
 }
@@ -253,6 +255,75 @@ export default function FerramentasPage() {
           cadastro e funcionando no seu próprio navegador.
         </p>
       </header>
+
+      {/* DESTAQUE — recurso de multa com IA (produto pago, avulso ou Premium) */}
+      <section
+        className="rounded-3xl text-white p-7 md:p-9 mb-14 relative overflow-hidden"
+        style={{ background: "linear-gradient(135deg,#0F1B2D 0%,#16263F 60%,#1B2D49 100%)" }}
+      >
+        <div
+          aria-hidden
+          className="absolute pointer-events-none"
+          style={{
+            top: -90,
+            right: -40,
+            width: 340,
+            height: 280,
+            background: "radial-gradient(ellipse at center, rgba(200,162,74,0.18), transparent 70%)"
+          }}
+        />
+        <div className="relative grid lg:grid-cols-[1fr_auto] gap-7 items-center">
+          <div>
+            <span
+              className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full mb-4"
+              style={{ background: "rgba(200,162,74,0.16)", color: "#E3C078", border: "1px solid rgba(200,162,74,0.35)" }}
+            >
+              <Sparkles className="w-3.5 h-3.5" aria-hidden /> Recurso com Inteligência Artificial
+            </span>
+            <h2 className="font-display text-2xl md:text-[32px] font-semibold tracking-tight leading-[1.1] mb-3">
+              Recorra da sua multa de trânsito com ajuda de IA
+            </h2>
+            <p className="text-[15px] md:text-base leading-relaxed max-w-[640px]" style={{ color: "#C4CDDC" }}>
+              A IA monta o seu recurso (defesa prévia, JARI ou CETRAN) fundamentado no
+              Código de Trânsito Brasileiro, a partir dos dados da sua multa — pronto para
+              revisar e protocolar. Pague só pela peça (avulso) ou tenha acesso pelo
+              plano Premium.
+            </p>
+            <div className="flex flex-wrap gap-4 mt-5 text-[13px]" style={{ color: "#9FB0C6" }}>
+              <span className="inline-flex items-center gap-1.5">
+                <Car className="w-4 h-4" style={{ color: "#E3C078" }} aria-hidden /> Até 3 recursos por R$ 9,90
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4" style={{ color: "#E3C078" }} aria-hidden /> Texto gerado por IA, fundamentado no CTB
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 lg:w-[260px] shrink-0">
+            <a
+              href="https://multas.advaqui.com"
+              className="inline-flex items-center justify-center gap-2 text-[15px] font-bold px-6 py-3.5 rounded-xl transition hover:brightness-105"
+              style={{ background: "#C8A24A", color: "#0F1B2D" }}
+            >
+              Gerar meu recurso — R$ 9,90
+              <ArrowRight className="w-4 h-4" aria-hidden />
+            </a>
+            <Link
+              href="/planos"
+              className="inline-flex items-center justify-center gap-2 text-[15px] font-semibold px-6 py-3.5 rounded-xl text-white border border-white/25 hover:bg-white/10 transition"
+            >
+              Ver plano Premium
+            </Link>
+            <Link
+              href="/recurso-de-multa"
+              className="text-[12.5px] text-center underline underline-offset-2 hover:text-white transition"
+              style={{ color: "#9FB0C6" }}
+            >
+              Prefere o modelo grátis (sem IA)? Use o gerador
+            </Link>
+          </div>
+        </div>
+      </section>
 
       <div className="space-y-14">
         {GROUPS.map((group) => (
