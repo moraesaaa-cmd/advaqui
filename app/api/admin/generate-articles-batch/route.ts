@@ -37,7 +37,7 @@ function slugify(text: string): string {
 async function getUsedTopicIndices(): Promise<Set<number>> {
   const supabase = createAdminClient();
   const { data } = await supabase
-    .from("blog_articles")
+    .from("blog_articles" as never)
     .select("topic_index")
     .not("topic_index", "is", null);
   const indices = new Set<number>();
@@ -199,7 +199,7 @@ export async function POST(req: Request) {
       let finalSlug = baseSlug;
 
       const { data: existing } = await supabase
-        .from("blog_articles")
+        .from("blog_articles" as never)
         .select("slug")
         .eq("slug", baseSlug)
         .maybeSingle();
@@ -211,7 +211,7 @@ export async function POST(req: Request) {
       const readingMinutes = estimateReadingMinutes(generated.body);
 
       const { data: article, error } = await supabase
-        .from("blog_articles")
+        .from("blog_articles" as never)
         .insert({
           slug: finalSlug,
           title: generated.title || item.topic.title,

@@ -39,7 +39,7 @@ async function getArticleFromDB(slug: string): Promise<Article | null> {
   try {
     const supabase = createAdminClient();
     const { data } = await supabase
-      .from("blog_articles")
+      .from("blog_articles" as never)
       .select("*")
       .eq("slug", slug)
       .eq("status", "published")

@@ -1903,7 +1903,7 @@ export async function getArticlesFromDB(options?: {
 
   // Query com contagem
   let query = supabase
-    .from("blog_articles")
+    .from("blog_articles" as never)
     .select("*", { count: "exact" })
     .eq("status", "published")
     .order("published_at", { ascending: false });
