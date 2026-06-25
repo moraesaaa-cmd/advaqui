@@ -229,7 +229,7 @@ export async function PUT(req: Request) {
     .maybeSingle();
 
   if (fetchError) {
-    if (isMigrationError(fetchError.message)) return MIGRATION_PENDING_RESPONSE;
+    if (isMigrationError(fetchError.message)) return migrationPendingResponse();
     console.error("[painel:blog PUT] fetch failed", fetchError);
     return NextResponse.json(
       { ok: false, code: "read_failed", error: "Erro ao buscar artigo." },
@@ -313,7 +313,7 @@ export async function PUT(req: Request) {
     .maybeSingle();
 
   if (updateError) {
-    if (isMigrationError(updateError.message)) return MIGRATION_PENDING_RESPONSE;
+    if (isMigrationError(updateError.message)) return migrationPendingResponse();
 
     // Slug duplicado ao editar título
     if (/duplicate key|unique constraint/i.test(updateError.message) && update.slug) {
