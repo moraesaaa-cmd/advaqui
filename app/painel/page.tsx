@@ -6,19 +6,38 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   AlertCircle,
   BookOpen,
+  Calculator,
+  CalendarClock,
+  Car,
   CheckSquare,
   Clock,
+  Coins,
+  Compass,
   Edit3,
   ExternalLink,
+  FileSignature,
   FileText,
   HelpCircle,
+  Home,
+  Landmark,
+  Lock,
   LogOut,
   MessageSquare,
   Palette,
+  Percent,
+  PiggyBank,
+  Radar,
+  Route,
+  Scale,
+  Search,
   Sparkles,
   Star,
+  Stethoscope,
   Target,
-  TrendingUp
+  TrendingUp,
+  Wallet,
+  Wrench,
+  CalendarCheck
 } from "lucide-react";
 import { PlanBadge } from "@/components/PlanBadge";
 import { ExtraCityField } from "@/components/ExtraCityField";
@@ -39,6 +58,38 @@ type ProfileResponse = { ok: true; lawyer: Lawyer };
 const UFS = [
   "AC","AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT",
   "PA","PB","PE","PI","PR","RJ","RN","RO","RR","RS","SC","SE","SP","TO"
+];
+
+type PanelTool = {
+  href: string;
+  label: string;
+  desc: string;
+  Icon: typeof Calculator;
+  premium?: boolean;
+};
+
+const PANEL_TOOLS: PanelTool[] = [
+  { href: "/calculadora-prazos", label: "Prazos processuais", desc: "Dias úteis e corridos (CPC)", Icon: CalendarClock },
+  { href: "/calculadoras", label: "Calculadoras jurídicas", desc: "Rescisão, FGTS, pensão, férias", Icon: Calculator },
+  { href: "/atualizar-valor", label: "Atualizar valor", desc: "Correção + juros + multa", Icon: TrendingUp },
+  { href: "/correcao-monetaria", label: "Correção monetária", desc: "IPCA, INPC, IGP-M", Icon: Percent },
+  { href: "/seguro-desemprego", label: "Seguro-desemprego", desc: "Simulador tabela MTE 2026", Icon: Wallet },
+  { href: "/quanto-custa", label: "Quanto custa advogado", desc: "Faixas de honorários por área", Icon: Coins },
+  { href: "/modelos", label: "Modelos de documentos", desc: "Procuração, contratos, recibos", Icon: FileText },
+  { href: "/montar-peticao", label: "Montar petição", desc: "Trabalhista, alimentos, consumo", Icon: FileSignature, premium: true },
+  { href: "/recurso-de-multa", label: "Recurso de multa", desc: "Defesa prévia, JARI, CETRAN", Icon: Car, premium: true },
+  { href: "/revisor-peticao", label: "Revisor IA", desc: "Revise peças com inteligência artificial", Icon: Sparkles, premium: true },
+  { href: "/triagem", label: "Triagem jurídica", desc: "Descubra qual advogado procurar", Icon: Compass },
+  { href: "/diagnostico", label: "Diagnóstico trabalhista", desc: "Seus direitos em 6 perguntas", Icon: Stethoscope },
+  { href: "/previdencia", label: "Aposentadoria", desc: "Regras de transição + simulador", Icon: PiggyBank },
+  { href: "/processos", label: "Consultar processo", desc: "Andamento pelo número CNJ", Icon: Radar },
+  { href: "/glossario", label: "Glossário jurídico", desc: "Termos do direito em linguagem clara", Icon: BookOpen },
+  { href: "/jurisprudencia", label: "Jurisprudência", desc: "Decisões STF/STJ por tema", Icon: Scale },
+  { href: "/divorcio", label: "Divórcio", desc: "Cartório ou Justiça? 4 perguntas", Icon: Scale },
+  { href: "/linha-do-tempo", label: "Linha do tempo", desc: "Etapas de um processo judicial", Icon: Route },
+  { href: "/imobiliario", label: "Checklist imobiliário", desc: "Documentos para compra segura", Icon: Home },
+  { href: "/tribunais", label: "Tribunais por cidade", desc: "Endereço do fórum e varas", Icon: Landmark },
+  { href: "/agenda", label: "Agendar consulta", desc: "Peça horário com advogado", Icon: CalendarCheck },
 ];
 
 class PanelApiError extends Error {
@@ -604,6 +655,95 @@ export default function PainelPage() {
             </section>
           )}
 
+          {/* Ferramentas jurídicas — todas visíveis, premium gating nas IA */}
+          <section className="rounded-2xl border border-brand-line bg-white overflow-hidden">
+            <div className="px-6 pt-6 pb-4 border-b border-brand-line/60 bg-gradient-to-r from-brand-bg to-white">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-brand-deep/10 flex items-center justify-center">
+                    <Wrench className="w-5 h-5 text-brand-deep" aria-hidden />
+                  </div>
+                  <div>
+                    <h2 className="font-display text-lg font-bold text-brand-ink">
+                      Ferramentas jurídicas
+                    </h2>
+                    <p className="text-xs text-brand-ink/60">
+                      {status === "active"
+                        ? "Acesso completo — todas as ferramentas desbloqueadas"
+                        : "Ative o premium para desbloquear ferramentas com IA"}
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  href="/ferramentas"
+                  className="text-xs font-medium text-brand-deep hover:text-brand-accent transition hidden sm:inline-flex items-center gap-1"
+                >
+                  Ver todas <ExternalLink className="w-3 h-3" aria-hidden />
+                </Link>
+              </div>
+            </div>
+            <div className="p-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
+              {PANEL_TOOLS.map((tool) => {
+                const locked = tool.premium && status !== "active";
+                const Wrapper = locked ? "div" : Link;
+                return (
+                  <Wrapper
+                    key={tool.href}
+                    {...(!locked ? { href: tool.href } : {})}
+                    className={`group relative rounded-xl border p-3.5 transition ${
+                      locked
+                        ? "border-brand-line/50 bg-brand-bg/40 cursor-default"
+                        : "border-brand-line bg-white hover:border-brand-deep hover:shadow-card"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                        tool.premium
+                          ? locked
+                            ? "bg-brand-ink/5"
+                            : "bg-gradient-to-br from-brand-accent/20 to-brand-accent2/10"
+                          : "bg-brand-deep/8"
+                      }`}>
+                        <tool.Icon className={`w-4 h-4 ${
+                          locked ? "text-brand-ink/30" : tool.premium ? "text-brand-accent" : "text-brand-deep"
+                        }`} aria-hidden />
+                      </div>
+                      {tool.premium && (
+                        locked ? (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-brand-ink/5 text-brand-ink/40">
+                            <Lock className="w-2.5 h-2.5" aria-hidden /> Premium
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-brand-accent/15 text-brand-accent">
+                            <Sparkles className="w-2.5 h-2.5" aria-hidden /> IA
+                          </span>
+                        )
+                      )}
+                    </div>
+                    <p className={`text-sm font-semibold leading-tight ${
+                      locked ? "text-brand-ink/40" : "text-brand-ink"
+                    }`}>
+                      {tool.label}
+                    </p>
+                    <p className={`text-[11px] mt-1 leading-snug ${
+                      locked ? "text-brand-ink/25" : "text-brand-ink/55"
+                    }`}>
+                      {tool.desc}
+                    </p>
+                    {locked && (
+                      <Link
+                        href="/painel/pagamento"
+                        className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-brand-accent hover:text-brand-deep transition"
+                      >
+                        Desbloquear <Star className="w-2.5 h-2.5" aria-hidden />
+                      </Link>
+                    )}
+                  </Wrapper>
+                );
+              })}
+            </div>
+          </section>
+
           {/* Foto de perfil — disponível pra qualquer plano. Endpoint
               /api/painel/photo trata upload via Supabase Storage. */}
           <PhotoUploader
@@ -1142,70 +1282,36 @@ export default function PainelPage() {
             </p>
           </div>
 
-          {/* Materiais e recursos — exclusivos para advogados logados.
-              Como o painel inteiro só renderiza com sessão válida, qualquer
-              link aqui já está "atrás do gate". */}
-          <div className="rounded-2xl bg-gradient-to-br from-brand-accent2/15 to-brand-accent/5 border-2 border-brand-accent p-5 relative overflow-hidden">
-            <div
-              aria-hidden
-              className="absolute -top-px left-4 right-4 h-1 bg-gradient-to-r from-brand-accent2 via-brand-accent to-brand-accent2 rounded-b"
-            />
-            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-brand-accent text-brand-ink mb-3">
-              <Sparkles className="w-3 h-3" aria-hidden />
-              Materiais liberados
+          <div className="rounded-2xl overflow-hidden border border-brand-line bg-white">
+            <div className="px-4 py-3 bg-gradient-to-r from-brand-deep to-brand-ink">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-brand-accent" aria-hidden />
+                <p className="text-sm font-bold text-white">Recursos</p>
+              </div>
             </div>
-            <p className="text-sm font-semibold text-brand-ink mb-3">
-              Recursos para você crescer
-            </p>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/checklist"
-                  className="flex items-start gap-2 text-brand-ink hover:text-brand-deep transition group"
-                >
-                  <CheckSquare className="w-4 h-4 text-brand-deep mt-0.5 flex-shrink-0 group-hover:scale-110 transition" aria-hidden />
-                  <span>
-                    <span className="font-semibold block">Checklist presença digital</span>
-                    <span className="text-xs text-brand-ink/60">21 itens práticos · .txt</span>
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/modelos"
-                  className="flex items-start gap-2 text-brand-ink hover:text-brand-deep transition group"
-                >
-                  <FileText className="w-4 h-4 text-brand-deep mt-0.5 flex-shrink-0 group-hover:scale-110 transition" aria-hidden />
-                  <span>
-                    <span className="font-semibold block">Modelos de documentos</span>
-                    <span className="text-xs text-brand-ink/60">Procuração, contratos, recibos</span>
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/marketing-juridico"
-                  className="flex items-start gap-2 text-brand-ink hover:text-brand-deep transition group"
-                >
-                  <Target className="w-4 h-4 text-brand-deep mt-0.5 flex-shrink-0 group-hover:scale-110 transition" aria-hidden />
-                  <span>
-                    <span className="font-semibold block">Marketing jurídico</span>
-                    <span className="text-xs text-brand-ink/60">Guias completos</span>
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  className="flex items-start gap-2 text-brand-ink hover:text-brand-deep transition group"
-                >
-                  <BookOpen className="w-4 h-4 text-brand-deep mt-0.5 flex-shrink-0 group-hover:scale-110 transition" aria-hidden />
-                  <span>
-                    <span className="font-semibold block">Blog jurídico</span>
-                    <span className="text-xs text-brand-ink/60">Artigos por área</span>
-                  </span>
-                </Link>
-              </li>
+            <ul className="divide-y divide-brand-line/50">
+              {[
+                { href: "/checklist", icon: CheckSquare, label: "Checklist digital", sub: "21 itens práticos" },
+                { href: "/modelos", icon: FileText, label: "Modelos prontos", sub: "Procuração, contratos" },
+                { href: "/marketing-juridico", icon: Target, label: "Marketing jurídico", sub: "Guias completos" },
+                { href: "/blog", icon: BookOpen, label: "Blog jurídico", sub: "Artigos por área" },
+                { href: "/ferramentas", icon: Wrench, label: "Todas as ferramentas", sub: "Calculadoras, prazos, IA" },
+              ].map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-brand-bg transition group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-brand-deep/8 flex items-center justify-center flex-shrink-0 group-hover:bg-brand-deep/15 transition">
+                      <item.icon className="w-4 h-4 text-brand-deep" aria-hidden />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-brand-ink truncate">{item.label}</p>
+                      <p className="text-[11px] text-brand-ink/50">{item.sub}</p>
+                    </div>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </aside>
