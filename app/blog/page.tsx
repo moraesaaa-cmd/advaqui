@@ -44,7 +44,15 @@ const CATEGORIES = [
   { label: "Administrativo", color: "bg-cyan-50 text-cyan-800 border-cyan-200" },
   { label: "Digital/LGPD", color: "bg-violet-50 text-violet-800 border-violet-200" },
   { label: "Contratual", color: "bg-lime-50 text-lime-800 border-lime-200" },
-  { label: "Saúde", color: "bg-pink-50 text-pink-800 border-pink-200" }
+  { label: "Saúde", color: "bg-pink-50 text-pink-800 border-pink-200" },
+  { label: "Ambiental", color: "bg-green-50 text-green-800 border-green-200" },
+  { label: "Militar", color: "bg-stone-50 text-stone-800 border-stone-200" },
+  { label: "Eleitoral", color: "bg-blue-50 text-blue-800 border-blue-200" },
+  { label: "Idoso", color: "bg-yellow-50 text-yellow-800 border-yellow-200" },
+  { label: "Criança e Adolescente", color: "bg-fuchsia-50 text-fuchsia-800 border-fuchsia-200" },
+  { label: "Bancário", color: "bg-zinc-50 text-zinc-800 border-zinc-200" },
+  { label: "Empresarial", color: "bg-neutral-50 text-neutral-800 border-neutral-200" },
+  { label: "Civil", color: "bg-gray-50 text-gray-800 border-gray-200" }
 ];
 
 const catBadge = (cat: string) =>

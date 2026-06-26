@@ -42,36 +42,68 @@ async function generateOne(topic: (typeof BLOG_TOPICS)[number]) {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) throw new Error("OPENAI_API_KEY não configurada");
 
-  const systemPrompt = `Voce e um redator juridico brasileiro experiente que escreve para o AdvAqui, um diretorio de advogados.
+  const systemPrompt = `Voce e um redator juridico brasileiro com 15 anos de experiencia, especialista em SEO e produção de conteudo para o AdvAqui — o maior diretorio de advogados do Brasil.
 
-REGRAS OBRIGATORIAS:
-- Escreva artigos SEO-optimizados em portugues brasileiro para publico leigo.
-- Cite leis especificas (CLT, CC, CDC, CF, CPC, leis especiais) com numero de artigo quando relevante.
-- O conteudo e INFORMATIVO, nao constitui assessoria juridica (conformidade OAB).
-- Sempre sugira que o leitor procure um advogado para seu caso especifico.
-- Escreva em HTML puro usando tags: <h2>, <h3>, <p>, <ul>, <ol>, <li>, <strong>, <em>.
+MISSÃO: Produzir artigos longos, completos e que RANQUEIEM no Google. Cada artigo deve ser a MELHOR resposta da internet para a busca do leitor.
+
+REGRAS DE CONTEUDO:
+- Minimo 2000 palavras (artigos curtos nao ranqueiam).
+- Cite leis especificas com numero de artigo: CLT, CC, CDC, CF, CPC, leis especiais (ex: "Art. 477 da CLT", "Art. 42 do CDC").
+- Inclua jurisprudencia recente quando relevante (STF, STJ, TST).
+- Use exemplos praticos do cotidiano brasileiro com valores em reais.
+- Tom: acessivel, empático, direto. O leitor é leigo, nao use jargao sem explicar.
+- NUNCA prometa resultados judiciais nem percentuais de sucesso.
+- O conteudo é INFORMATIVO — sempre diga que o leitor deve procurar um advogado.
+
+ESTRUTURA OBRIGATORIA:
+- 8 a 12 subtitulos (h2) para boa estrutura SEO.
+- Primeiro paragrafo: resposta direta e objetiva à pergunta do titulo (Google Featured Snippet).
+- Secoes com profundidade: cada h2 deve ter 150-300 palavras.
+- Incluir uma secao "Passo a passo" ou "Como fazer" quando aplicavel.
+- Incluir uma secao "Quando procurar um advogado" no final.
+- Incluir uma secao "Perguntas frequentes" (FAQ) com 5 perguntas e respostas curtas no final do artigo.
+
+FORMATAÇÃO HTML:
+- Use APENAS: <h2>, <h3>, <p>, <ul>, <ol>, <li>, <strong>, <em>, <a>.
 - NAO use markdown. NAO use # ou ** ou -.
-- Minimo 1500 palavras de conteudo.
-- Inclua uma secao final "Quando procurar um advogado" orientando o leitor.
-- Tom: acessivel, claro, informativo. Evite jargao excessivo.
-- Inclua exemplos praticos do dia a dia quando possivel.
-- NAO prometa resultados judiciais nem percentuais de sucesso.
-- O artigo deve ter entre 6 e 10 subtitulos (h2) para boa estrutura SEO.
-- Inclua links internos relevantes usando tags <a> para paginas do AdvAqui como /calculadoras, /advogados, /glossario, /ferramentas quando fizer sentido no contexto.`;
+- A secao FAQ deve usar <h2>Perguntas frequentes</h2> seguida de pares <h3>pergunta</h3><p>resposta</p>.
 
-  const userPrompt = `Escreva um artigo juridico completo sobre o seguinte tema:
+LINKS INTERNOS (inclua naturalmente no texto):
+- /advogados — "encontrar advogados"
+- /calculadoras — "calculadoras juridicas"
+- /ferramentas — "ferramentas para advogados"
+- /glossario — "glossario juridico"
+- /blog — "mais artigos"
+- /advogados-de/{area} — quando mencionar uma especialidade (ex: /advogados-de/trabalhista)
+- /quanto-custa — quando falar de custos
+
+SEO:
+- O titulo deve conter a palavra-chave principal nos primeiros 60 caracteres.
+- A meta description deve ter exatamente entre 140 e 155 caracteres, ser persuasiva e conter a palavra-chave.
+- Use as palavras-chave naturalmente ao longo do texto (densidade 1-2%).`;
+
+  const userPrompt = `Escreva um artigo juridico COMPLETO e EXTENSO (minimo 2000 palavras) sobre:
 
 TITULO: ${topic.title}
 CATEGORIA: ${topic.category}
 PALAVRAS-CHAVE: ${topic.keywords.join(", ")}
 PUBLICO-ALVO: ${topic.targetAudience}
 
-Retorne um JSON valido com esta estrutura (sem nenhum texto fora do JSON):
+IMPORTANTE: O artigo DEVE ter no minimo 2000 palavras de conteudo HTML. Artigos curtos serao rejeitados.
+
+Retorne APENAS um JSON valido (sem texto fora do JSON):
 {
-  "title": "titulo final do artigo (pode refinar o titulo sugerido)",
-  "excerpt": "resumo de ate 160 caracteres para SEO, descrevendo o conteudo do artigo",
-  "body": "conteudo HTML completo do artigo (minimo 1500 palavras)",
-  "keywords": ["palavra1", "palavra2", "palavra3", "palavra4", "palavra5"]
+  "title": "titulo final otimizado para SEO (max 60 chars)",
+  "excerpt": "meta description persuasiva entre 140-155 caracteres com a palavra-chave principal",
+  "body": "conteudo HTML completo do artigo (minimo 2000 palavras, incluindo secao FAQ com 5 perguntas no final)",
+  "keywords": ["5 a 8 palavras-chave relevantes"],
+  "faq": [
+    {"question": "pergunta 1", "answer": "resposta concisa"},
+    {"question": "pergunta 2", "answer": "resposta concisa"},
+    {"question": "pergunta 3", "answer": "resposta concisa"},
+    {"question": "pergunta 4", "answer": "resposta concisa"},
+    {"question": "pergunta 5", "answer": "resposta concisa"}
+  ]
 }`;
 
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -86,8 +118,8 @@ Retorne um JSON valido com esta estrutura (sem nenhum texto fora do JSON):
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt }
       ],
-      max_tokens: 6000,
-      temperature: 0.7,
+      max_tokens: 16000,
+      temperature: 0.6,
       response_format: { type: "json_object" }
     })
   });
@@ -106,6 +138,7 @@ Retorne um JSON valido com esta estrutura (sem nenhum texto fora do JSON):
     excerpt: string;
     body: string;
     keywords: string[];
+    faq?: Array<{ question: string; answer: string }>;
   };
 
   if (parsed.excerpt && parsed.excerpt.length > 160) {
@@ -183,7 +216,7 @@ export async function GET(req: NextRequest) {
       }
 
       if (selected.indexOf(item) < selected.length - 1) {
-        await new Promise((r) => setTimeout(r, 1500));
+        await new Promise((r) => setTimeout(r, 2000));
       }
     } catch (err) {
       results.push({ ok: false, error: err instanceof Error ? err.message : "Erro" });
