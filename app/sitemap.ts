@@ -76,7 +76,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/processos`, changeFrequency: "monthly", priority: 0.8, lastModified: now },
     { url: `${base}/agenda`, changeFrequency: "monthly", priority: 0.7, lastModified: now },
     { url: `${base}/tribunais`, changeFrequency: "weekly", priority: 0.7, lastModified: now },
-    { url: `${base}/selo`, changeFrequency: "monthly", priority: 0.5, lastModified: now }
+    { url: `${base}/selo`, changeFrequency: "monthly", priority: 0.5, lastModified: now },
+    { url: `${base}/ferramentas`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
+    { url: `${base}/ferramentas/checklist-recurso-multa`, changeFrequency: "monthly", priority: 0.7, lastModified: now },
+    { url: `${base}/ferramentas/checklist-limpar-nome`, changeFrequency: "monthly", priority: 0.7, lastModified: now },
+    { url: `${base}/ferramentas/checklist-pensao-alimenticia`, changeFrequency: "monthly", priority: 0.7, lastModified: now },
+    { url: `${base}/ferramentas/checklist-documentos-guarda`, changeFrequency: "monthly", priority: 0.7, lastModified: now },
+    { url: `${base}/ferramentas/triagem-mandado-seguranca`, changeFrequency: "monthly", priority: 0.7, lastModified: now }
   ];
 
   // Glossário — termos individuais

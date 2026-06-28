@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, HelpCircle, Palette, CreditCard, BookOpen } from "lucide-react";
+import { LayoutDashboard, FileText, HelpCircle, Palette, CreditCard, BookOpen, Users, Bot } from "lucide-react";
 
 const TABS = [
   { href: "/painel", label: "Meu perfil", Icon: LayoutDashboard, exact: true },
@@ -10,7 +10,9 @@ const TABS = [
   { href: "/painel/artigos", label: "Artigos", Icon: FileText },
   { href: "/painel/blog", label: "Blog", Icon: BookOpen },
   { href: "/painel/perguntas", label: "Perguntas", Icon: HelpCircle },
-  { href: "/painel/aparencia", label: "Aparência", Icon: Palette }
+  { href: "/painel/aparencia", label: "Aparência", Icon: Palette },
+  { href: "/painel/leads", label: "Leads", Icon: Users },
+  { href: "/painel/agentes", label: "Agentes", Icon: Bot }
 ];
 
 export function PainelNav() {

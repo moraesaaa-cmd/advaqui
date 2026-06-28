@@ -23,16 +23,21 @@ import {
   Percent,
   Wallet,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  ClipboardCheck,
+  ShieldCheck,
+  Users,
+  ChevronRight
 } from "lucide-react";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { SITE } from "@/lib/config";
 
 export const metadata = buildMetadata({
-  title: "Ferramentas jurídicas gratuitas",
+  title: "Ferramentas Jurídicas Gratuitas",
   description:
-    "Calculadoras, contagem de prazos processuais, modelos de petições e documentos, glossário e jurisprudência — as ferramentas do AdvAqui reunidas num lugar só. Grátis e sem cadastro.",
+    "Checklists, simuladores e triagens jurídicas gratuitas. Organize seus documentos e descubra seus direitos.",
   path: "/ferramentas"
 });
 
@@ -41,12 +46,21 @@ type Tool = {
   label: string;
   desc: string;
   Icon: typeof Calculator;
+  area?: string;
+  free?: boolean;
 };
 
 type Group = {
   title: string;
   blurb: string;
   tools: Tool[];
+};
+
+const AREA_COLORS: Record<string, { bg: string; text: string }> = {
+  "Trânsito": { bg: "rgba(234,88,12,0.10)", text: "#C2410C" },
+  "Consumidor": { bg: "rgba(37,99,235,0.10)", text: "#1D4ED8" },
+  "Família": { bg: "rgba(147,51,234,0.10)", text: "#7C3AED" },
+  "Administrativo": { bg: "rgba(22,163,74,0.10)", text: "#15803D" },
 };
 
 const GROUPS: Group[] = [
@@ -204,6 +218,53 @@ const GROUPS: Group[] = [
     ]
   },
   {
+    title: "Checklists e triagens gratuitas",
+    blurb:
+      "Verifique seus direitos em minutos. Marque os itens, veja o resultado e, se quiser, fale com um advogado.",
+    tools: [
+      {
+        href: "/ferramentas/checklist-recurso-multa",
+        label: "Checklist: Recurso de Multa",
+        desc: "Verifique se tem tudo para recorrer",
+        Icon: Car,
+        area: "Trânsito",
+        free: true
+      },
+      {
+        href: "/ferramentas/checklist-limpar-nome",
+        label: "Checklist: Limpar Nome",
+        desc: "Passo a passo para sair do SPC/Serasa",
+        Icon: ShieldCheck,
+        area: "Consumidor",
+        free: true
+      },
+      {
+        href: "/ferramentas/checklist-pensao-alimenticia",
+        label: "Checklist: Pensão Alimentícia",
+        desc: "Documentos para pedir pensão",
+        Icon: ClipboardCheck,
+        area: "Família",
+        free: true
+      },
+      {
+        href: "/ferramentas/checklist-documentos-guarda",
+        label: "Checklist: Guarda de Filhos",
+        desc: "Preparação para ação de guarda",
+        Icon: Users,
+        area: "Família",
+        free: true
+      },
+      {
+        href: "/ferramentas/triagem-mandado-seguranca",
+        label: "Triagem: Mandado de Segurança",
+        desc: "Descubra se cabe MS no seu caso",
+        Icon: Scale,
+        area: "Administrativo",
+        free: true
+      }
+    ]
+  },
+  {
     title: "Para advogados",
     blurb:
       "Apareça para quem procura na sua cidade e use as mesmas ferramentas no seu dia a dia.",
@@ -342,6 +403,7 @@ export default function FerramentasPage() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {group.tools.map((t) => {
                 const badge = badgeFor(t.href);
+                const areaColor = t.area ? AREA_COLORS[t.area] : null;
                 return (
                   <Link
                     key={t.href}
@@ -349,15 +411,27 @@ export default function FerramentasPage() {
                     className="card group relative flex flex-col transition hover:-translate-y-0.5 hover:shadow-cardHover"
                     style={{ borderColor: "#E6E1D6" }}
                   >
-                    {badge && (
-                      <span
-                        className="absolute top-4 right-4 inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full"
-                        style={{ background: "rgba(200,162,74,0.14)", color: "#A0843A", border: "1px solid rgba(200,162,74,0.3)" }}
-                      >
-                        {badge.ia && <Sparkles className="w-3 h-3" aria-hidden />}
-                        {badge.text}
-                      </span>
-                    )}
+                    {/* Top-right badges: Free + Premium/IA */}
+                    <div className="absolute top-4 right-4 flex items-center gap-1.5">
+                      {t.free && (
+                        <span
+                          className="inline-flex items-center text-[11px] font-bold px-2 py-0.5 rounded-full"
+                          style={{ background: "rgba(22,163,74,0.10)", color: "#15803D", border: "1px solid rgba(22,163,74,0.25)" }}
+                        >
+                          Grátis
+                        </span>
+                      )}
+                      {badge && !t.free && (
+                        <span
+                          className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full"
+                          style={{ background: "rgba(200,162,74,0.14)", color: "#A0843A", border: "1px solid rgba(200,162,74,0.3)" }}
+                        >
+                          {badge.ia && <Sparkles className="w-3 h-3" aria-hidden />}
+                          {badge.text}
+                        </span>
+                      )}
+                    </div>
+
                     <span
                       className="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
                       style={{ background: "rgba(200,162,74,0.12)" }}
@@ -370,11 +444,22 @@ export default function FerramentasPage() {
                     <span className="text-sm text-brand-ink/70 mt-1 leading-relaxed flex-1">
                       {t.desc}
                     </span>
+
+                    {/* Area badge */}
+                    {t.area && areaColor && (
+                      <span
+                        className="inline-flex items-center self-start text-[11px] font-semibold px-2 py-0.5 rounded-full mt-2"
+                        style={{ background: areaColor.bg, color: areaColor.text }}
+                      >
+                        {t.area}
+                      </span>
+                    )}
+
                     <span
                       className="text-sm font-semibold inline-flex items-center gap-1 mt-3"
                       style={{ color: "#A0843A" }}
                     >
-                      Abrir
+                      {t.free ? "Usar ferramenta" : "Abrir"}
                       <ArrowRight
                         className="w-4 h-4 group-hover:translate-x-0.5 transition"
                         aria-hidden

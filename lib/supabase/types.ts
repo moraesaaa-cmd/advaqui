@@ -352,6 +352,74 @@ export type RecursoPecaRow = {
   texto: string;
 };
 
+// ---------------------------------------------------------------------------
+// Leads, Agentes, Site Audits (migration 001_leads_agents)
+// ---------------------------------------------------------------------------
+export type LeadRow = {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  nome: string | null;
+  telefone: string | null;
+  email: string | null;
+  cidade: string | null;
+  uf: string | null;
+  area_juridica: string | null;
+  resumo: string | null;
+  origem: string | null;
+  ferramenta: string | null;
+  status: string;
+  prioridade: string;
+  responsavel: string | null;
+  observacoes: string | null;
+  etiquetas: string[];
+  proxima_acao: string | null;
+  ai_resumo: string | null;
+  ai_area: string | null;
+  ai_score: number | null;
+  metadata: Record<string, unknown>;
+};
+
+export type AgentLogRow = {
+  id: string;
+  created_at: string;
+  agent_name: string;
+  action: string;
+  status: string;
+  details: Record<string, unknown>;
+  items_processed: number;
+  tokens_used: number;
+  cost_usd: number;
+  duration_ms: number;
+};
+
+export type AgentConfigRow = {
+  id: string;
+  agent_name: string;
+  display_name: string;
+  description: string | null;
+  enabled: boolean;
+  schedule: string | null;
+  last_run: string | null;
+  total_runs: number;
+  total_tokens: number;
+  total_cost: number;
+  settings: Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+};
+
+export type SiteAuditRow = {
+  id: string;
+  created_at: string;
+  audit_type: string;
+  url: string | null;
+  status: string;
+  details: Record<string, unknown>;
+  resolved: boolean;
+  resolved_at: string | null;
+};
+
 export type BlogArticleRow = {
   id: string;
   slug: string;
@@ -524,6 +592,39 @@ export type Database = {
           body: string;
         };
         Update: Partial<BlogArticleRow>;
+        Relationships: [];
+      };
+      // Leads, Agentes, Site Audits (migration 001_leads_agents)
+      leads: {
+        Row: LeadRow;
+        Insert: Partial<LeadRow>;
+        Update: Partial<LeadRow>;
+        Relationships: [];
+      };
+      agent_logs: {
+        Row: AgentLogRow;
+        Insert: Partial<AgentLogRow> & {
+          agent_name: string;
+          action: string;
+        };
+        Update: Partial<AgentLogRow>;
+        Relationships: [];
+      };
+      agent_configs: {
+        Row: AgentConfigRow;
+        Insert: Partial<AgentConfigRow> & {
+          agent_name: string;
+          display_name: string;
+        };
+        Update: Partial<AgentConfigRow>;
+        Relationships: [];
+      };
+      site_audits: {
+        Row: SiteAuditRow;
+        Insert: Partial<SiteAuditRow> & {
+          audit_type: string;
+        };
+        Update: Partial<SiteAuditRow>;
         Relationships: [];
       };
     };
