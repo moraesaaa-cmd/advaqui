@@ -135,7 +135,7 @@ export default async function AdvogadoDashboardPage() {
   const { data: lawyerRow, error: lawyerError } = await admin
     .from("lawyers")
     .select("*")
-    .eq("user_id", user.id)
+    .eq("id", user.id)
     .maybeSingle();
 
   if (lawyerError || !lawyerRow) {

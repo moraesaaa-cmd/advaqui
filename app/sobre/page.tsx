@@ -24,7 +24,7 @@ export default function SobrePage() {
         </p>
         <p>
           Para advogados, oferecemos visibilidade local sem fórmulas complicadas. O cadastro é
-          gratuito e o plano premium garante posição de destaque na página da cidade. Tudo simples,
+          gratuito e o plano premium garante posição de destaque na página da cidade, selo OAB verificada, foto em evidência e atuação em até 10 cidades. Tudo simples,
           tudo transparente, sem letras miúdas.
         </p>
         <p>

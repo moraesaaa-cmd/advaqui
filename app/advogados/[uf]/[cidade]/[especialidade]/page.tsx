@@ -624,7 +624,7 @@ export default async function CitySpecialtyPage({
             É advogado {areaLow} em {city.name}?
           </h2>
           <p className="text-[15px]" style={{ color: "#A9B4C6" }}>
-            Apareça nesta página quando alguém procurar. Leva menos de 1 minuto e não custa nada para começar.
+            Apareça nesta página quando alguém procurar. Leva menos de 2 minutos e não custa nada para começar.
           </p>
           {lawyers.length > 0 && (
             <div className="flex gap-5 mt-4 text-[13px]" style={{ color: "#7E8BA1" }}>

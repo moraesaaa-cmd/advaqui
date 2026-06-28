@@ -304,8 +304,8 @@ export default async function HomePage() {
               Sou advogado e quero aparecer aqui
             </h2>
             <p className="mt-2 text-[15px]" style={{ color: "#A9B4C6" }}>
-              Apareça quando alguém procura advogado na sua cidade. Leva menos de 1
-              minuto para começar.
+              Apareça quando alguém procura advogado na sua cidade. Leva menos de 2
+              minutos para começar.
             </p>
           </div>
           <Link
@@ -313,7 +313,7 @@ export default async function HomePage() {
             className="inline-flex items-center justify-center font-bold rounded-xl px-6 py-3.5 whitespace-nowrap"
             style={{ background: GOLD, color: "#0F1B2D" }}
           >
-            Criar meu perfil grátis
+            Saiba como anunciar
           </Link>
         </div>
       </section>

@@ -193,7 +193,7 @@ export default function CriarPerfilPage() {
           <Sparkles className="w-3.5 h-3.5" aria-hidden /> Assistente de perfil
         </span>
         <h1 className="font-display text-3xl md:text-4xl font-bold text-brand-ink text-balance">
-          Monte seu perfil de advogado em 1 minuto
+          Monte seu perfil de advogado em 2 minutos
         </h1>
         <p className="text-brand-ink/70 mt-3 max-w-xl mx-auto">
           Responda algumas perguntas e veja sua ficha profissional pronta — com

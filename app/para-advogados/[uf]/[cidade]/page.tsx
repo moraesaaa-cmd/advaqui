@@ -135,7 +135,7 @@ export default function ParaAdvogadosCidadePage({
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href={cadastro} className="btn-accent inline-flex items-center gap-2 text-base">
                 <Sparkles className="w-5 h-5" aria-hidden />
-                Criar meu perfil em 1 minuto
+                Criar meu perfil grátis
               </Link>
               <Link
                 href="/lp/advogado-premium#assinar"
@@ -204,7 +204,7 @@ export default function ParaAdvogadosCidadePage({
         <div className="container-tight">
           <div className="text-center mb-10">
             <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-ink">
-              Como funciona — leva menos de 1 minuto
+              Como funciona — leva menos de 2 minutos
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">

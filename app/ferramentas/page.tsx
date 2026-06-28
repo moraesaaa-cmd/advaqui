@@ -325,8 +325,8 @@ export default function FerramentasPage() {
         </h1>
         <p className="text-brand-ink/70 mt-4 text-base md:text-lg leading-relaxed">
           Calcular um prazo, atualizar uma dívida, montar o rascunho de uma
-          peça, entender o passo a passo do seu problema. Tudo gratuito, sem
-          cadastro e funcionando no seu próprio navegador.
+          peça, entender o passo a passo do seu problema. A maioria das
+          ferramentas é gratuita, sem cadastro e funciona direto no navegador.
         </p>
       </header>
 
@@ -376,6 +376,8 @@ export default function FerramentasPage() {
           <div className="flex flex-col gap-3 lg:w-[260px] shrink-0">
             <a
               href="https://multas.advaqui.com"
+              target="_blank"
+              rel="noopener"
               className="inline-flex items-center justify-center gap-2 text-[15px] font-bold px-6 py-3.5 rounded-xl transition hover:brightness-105"
               style={{ background: "#C8A24A", color: "#0F1B2D" }}
             >

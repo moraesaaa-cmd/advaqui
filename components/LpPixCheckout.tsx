@@ -43,6 +43,10 @@ export function LpPixCheckout({ qr, payload, valor, chave, cadastroHref }: Props
         Pague {valor} via Pix para ativar
       </p>
       <p className="mt-1 text-xs text-slate-400">Pagamento único do mês · Sem fidelidade</p>
+      <p className="mt-2 rounded-lg bg-amber-400/10 border border-amber-400/20 px-3 py-2 text-xs text-amber-200">
+        Após o pagamento, crie seu perfil clicando no botão abaixo. A ativação
+        acontece em até 48h após confirmarmos o Pix.
+      </p>
 
       <div className="mt-4 flex justify-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}

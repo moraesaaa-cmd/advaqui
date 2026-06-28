@@ -89,18 +89,11 @@ export default function ParaAdvogadosPage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                href="/criar-perfil"
+                href="/cadastro"
                 className="btn-accent inline-flex items-center gap-2 text-base"
               >
-                <Sparkles className="w-5 h-5" aria-hidden />
-                Montar meu perfil em 1 minuto
-              </Link>
-              <Link
-                href="/cadastro"
-                className="btn-ghost text-white border border-white/25 hover:bg-white/10 inline-flex items-center gap-2"
-              >
                 <UserPlus className="w-5 h-5" aria-hidden />
-                Criar direto no cadastro
+                Criar meu perfil grátis
               </Link>
               <Link
                 href="/planos"
@@ -174,7 +167,7 @@ export default function ParaAdvogadosPage() {
         <div className="container-tight">
           <div className="text-center mb-10">
             <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-ink">
-              Como funciona — leva menos de 1 minuto
+              Como funciona — leva menos de 2 minutos
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -217,17 +210,17 @@ export default function ParaAdvogadosPage() {
           </div>
           <div className="text-center mt-10 flex flex-wrap gap-3 justify-center">
             <Link
-              href="/criar-perfil"
+              href="/cadastro"
               className="btn-accent inline-flex items-center gap-2"
             >
-              <Sparkles className="w-4 h-4" aria-hidden />
-              Montar meu perfil em 1 minuto
+              <UserPlus className="w-4 h-4" aria-hidden />
+              Criar meu perfil grátis
             </Link>
             <Link
-              href="/cadastro"
+              href="/planos"
               className="btn-ghost border border-brand-line inline-flex items-center gap-2"
             >
-              Criar direto no cadastro
+              Ver plano de destaque
               <ArrowRight className="w-4 h-4" aria-hidden />
             </Link>
           </div>

@@ -94,7 +94,7 @@ const faqs = [
   { q: "O AdvAqui cobra comissão por cliente?", a: "Não. O contato é direto entre você e o cliente. Você paga apenas a mensalidade." },
   { q: "Como recebo os clientes?", a: "Seu perfil mostra seu WhatsApp, telefone e e-mail. O cliente fala direto com você." },
   { q: "Preciso saber de tecnologia?", a: "Não. A página profissional é montada para você. Basta preencher seus dados." },
-  { q: "Em quanto tempo apareço?", a: "Assim que o pagamento é confirmado, seu perfil entra em destaque." },
+  { q: "Em quanto tempo apareço?", a: "Após o pagamento do Pix, a ativação acontece em até 48 horas. Na maioria dos casos, em poucas horas." },
   { q: "Posso cancelar?", a: "A qualquer momento, sem multa e sem fidelidade." }
 ];
 
@@ -923,9 +923,9 @@ export default async function LandingAdvogadoPremium() {
             {/* Lado: o que você economiza */}
             <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6">
               <p className="text-sm font-semibold uppercase tracking-wide text-slate-400">
-                O que você economiza
+                Quanto custa aparecer
               </p>
-              <p className="mt-3 text-4xl font-bold text-slate-100 sm:text-5xl">R$ 19,90</p>
+              <p className="mt-3 text-4xl font-bold text-slate-100 sm:text-5xl">{PLAN.priceLabel}</p>
               <p className="mt-1 text-sm text-slate-400">por mês · sem fidelidade · cancele quando quiser</p>
               <p className="mt-4 text-sm text-slate-400">
                 É o valor do Perfil Premium. Sem comissão por cliente e sem cartão de crédito.
@@ -960,7 +960,7 @@ export default async function LandingAdvogadoPremium() {
           <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-slate-800 bg-slate-900/50 p-6 text-center sm:p-8">
             <p className="text-lg font-semibold text-slate-100 sm:text-xl">
               Se um único contrato deixa de acontecer porque você não apareceu primeiro,
-              <span className="text-amber-300"> quanto custou economizar os R$ 19,90?</span>
+              <span className="text-amber-300"> quanto custou economizar os {PLAN.priceLabel}?</span>
             </p>
             <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-400">
               <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="h-4 w-4">
@@ -982,7 +982,7 @@ export default async function LandingAdvogadoPremium() {
               href="#assinar"
               className="inline-block w-full rounded-xl bg-amber-400 px-8 py-4 text-lg font-semibold text-slate-950 transition hover:bg-amber-300 sm:w-auto"
             >
-              Quero aparecer por R$ 19,90/mês →
+              Quero aparecer por {PLAN.priceLabel}/mês →
             </a>
           </div>
         </div>

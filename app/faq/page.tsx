@@ -14,17 +14,17 @@ export const metadata = buildMetadata({
 const FAQS: Array<[string, string]> = [
   [
     "O cadastro é realmente gratuito?",
-    "Sim. Qualquer advogado com OAB ativa pode se cadastrar sem custo. O plano gratuito garante presença no diretório da sua cidade, com nome, OAB e cidade visíveis."
+    "Sim. Qualquer advogado com OAB ativa pode se cadastrar sem custo. O plano gratuito garante presença no diretório da sua cidade, com nome, OAB, cidade, telefone e WhatsApp visíveis."
   ],
   [
     "O que o plano premium oferece?",
-    `O premium coloca seu perfil no topo da página da sua cidade, com selo de destaque, dados completos visíveis (telefone, WhatsApp, endereço) e posição privilegiada. Custa ${formatCurrency(
+    `O premium coloca seu perfil no topo da página da sua cidade, com selo OAB verificada, foto em destaque, até 10 cidades de atuação e links para redes sociais. Custa ${formatCurrency(
       PLAN.price
-    )} por mês, sem fidelidade.`
+    )} por mês, sem fidelidade. Telefone e WhatsApp já são visíveis no plano gratuito.`
   ],
   [
     "Como funciona a ativação do premium?",
-    `Após optar pelo premium no painel, você recebe as instruções de confirmação. A ativação é manual e ocorre em até ${PLAN.activationHours} horas após a sinalização.`
+    `Após o pagamento do Pix, a ativação é manual e ocorre em até ${PLAN.activationHours} horas. Na maioria dos casos, em poucas horas.`
   ],
   [
     "Posso cancelar a qualquer momento?",

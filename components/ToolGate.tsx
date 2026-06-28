@@ -72,7 +72,7 @@ export function ToolGate({
         </Link>
       </div>
       <p className="text-xs text-brand-ink/40 mt-6">
-        O cadastro é gratuito e leva menos de 1 minuto.
+        O cadastro é gratuito e leva menos de 2 minutos.
       </p>
     </div>
   );

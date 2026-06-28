@@ -6,7 +6,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 export const metadata = buildMetadata({
   title: "Planos — apareça primeiro na sua cidade",
   description:
-    "Plano premium do AdvAqui por R$ 19,90/mês. Apareça no topo das buscas da sua cidade, WhatsApp clicável, foto destacada, OAB verificada. Sem fidelidade.",
+    `Plano premium do AdvAqui por ${PLAN.priceLabel}/mês. Apareça no topo das buscas da sua cidade, foto em destaque, OAB verificada, até 10 cidades. Sem fidelidade.`,
   path: "/planos"
 });
 
@@ -19,7 +19,7 @@ const BENEFITS = [
   { icon: "💬", title: "WhatsApp clicável", desc: "Botão verde com mensagem pré-preenchida. Cliente fala com você em 1 clique." },
   { icon: "✓", title: "Selo OAB verificada", desc: "Sinal claro de credibilidade, após validação do nosso time. Mais confiança = mais contratação." },
   { icon: "★", title: "Foto de destaque", desc: "Card maior, borda dourada, foto em evidência. A conversão de busca para clique sobe muito." },
-  { icon: "📍", title: "+10 cidades", desc: "Atende em mais de uma comarca? Apareça nas buscas de cada uma delas." },
+  { icon: "📍", title: "Até 10 cidades", desc: "Atende em mais de uma comarca? Apareça nas buscas de até 10 cidades diferentes." },
   { icon: "🕐", title: "Horários visíveis", desc: "Mostre quando atende. O cliente não desiste achando que você está fechado." },
   { icon: "🔗", title: "Site, Insta, LinkedIn", desc: "Links pras suas redes e site profissional direto no perfil." },
   { icon: "🚫", title: "Sem fidelidade", desc: "Plano mensal. Cancela quando quiser, sem multa e sem permanência." }
@@ -111,14 +111,14 @@ export default function PlanosPage() {
               className="font-bold text-[15px] px-7 py-3.5 rounded-[10px]"
               style={{ background: "#C8A24A", color: "#0F1B2D" }}
             >
-              Ativar premium — {formatCurrency(PLAN.price)}/mês
+              Criar perfil e ativar premium
             </Link>
             <Link
               href="/cadastro"
               className="font-semibold text-[15px] px-6 py-3.5 rounded-[10px] text-white"
               style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)" }}
             >
-              Cadastrar grátis
+              Começar com perfil grátis
             </Link>
           </div>
           <div className="text-[13px] mt-4" style={{ color: "#7E8BA1" }}>
@@ -133,8 +133,8 @@ export default function PlanosPage() {
               <div className="text-[13px]" style={{ color: "#9FB0CB" }}>mais contatos que perfil grátis</div>
             </div>
             <div>
-              <div className="font-display text-[30px]" style={{ color: "#E3C078" }}>1.200+</div>
-              <div className="text-[13px]" style={{ color: "#9FB0CB" }}>advogados já anunciam</div>
+              <div className="font-display text-[30px]" style={{ color: "#E3C078" }}>Nacional</div>
+              <div className="text-[13px]" style={{ color: "#9FB0CB" }}>cobertura em todo o Brasil</div>
             </div>
             <div>
               <div className="font-display text-[30px]" style={{ color: "#E3C078" }}>R$ 0,66</div>
@@ -387,7 +387,7 @@ export default function PlanosPage() {
           </div>
           <div className="grid md:grid-cols-3 gap-5">
             {[
-              { step: "01", title: "Cadastre-se grátis", desc: "Preencha nome, OAB, cidade e especialidades. Menos de 1 minuto." },
+              { step: "01", title: "Cadastre-se grátis", desc: "Preencha nome, OAB, cidade e especialidades. Menos de 2 minutos." },
               { step: "02", title: "Ative o Premium via Pix", desc: `Pague ${formatCurrency(PLAN.price)} no Pix — sem cartão, sem débito automático. Confirmamos em até ${PLAN.activationHours} horas.` },
               { step: "03", title: "Apareça no topo", desc: "Seu perfil sobe ao topo da cidade, com foto, selo OAB e WhatsApp clicável." }
             ].map((s) => (
@@ -411,10 +411,10 @@ export default function PlanosPage() {
           <div className="grid md:grid-cols-2 gap-4">
             {[
               { q: "Preciso ser advogado para cadastrar?", a: "O perfil de advogado exige OAB ativa. Se você não é advogado, pode usar as ferramentas do site criando uma conta gratuita de usuário." },
-              { q: "O perfil gratuito continua existindo?", a: "Sim. O plano gratuito mostra nome, OAB, cidade e 1 especialidade. O Premium adiciona foto de destaque, WhatsApp, múltiplas cidades, selo verificado e posição no topo." },
+              { q: "O perfil gratuito continua existindo?", a: "Sim. O plano gratuito mostra nome, OAB, cidade, telefone, WhatsApp e suas especialidades. O Premium adiciona foto em destaque, posição no topo, selo OAB verificada, até 10 cidades e links para redes sociais." },
               { q: "Posso cancelar a qualquer momento?", a: "Sem fidelidade. Se não renovar o Pix, o perfil volta ao plano gratuito no mês seguinte. Nada é cobrado automaticamente." },
               { q: "Como funciona o pagamento?", a: `Pix mensal de ${formatCurrency(PLAN.price)}. Você recebe o QR Code no painel, paga e o plano é ativado. Sem cartão de crédito, sem débito automático.` },
-              { q: "Posso aparecer em mais de uma cidade?", a: "Com o Premium, você aparece em até 10 cidades diferentes — ideal para quem atende em comarcas vizinhas." },
+              { q: "Posso aparecer em mais de uma cidade?", a: "Com o Premium, você adiciona até 9 cidades extras além da principal, totalizando 10 cidades — ideal para quem atende em comarcas vizinhas." },
               { q: "A OAB é verificada mesmo?", a: "Sim. Nosso time confere o número da OAB antes de conceder o selo. Isso protege tanto você quanto o cliente que busca." },
               { q: "O AdvAqui cobra comissão sobre causas?", a: "Nunca. O cliente fala direto com você. O AdvAqui não intermedia, não cobra percentual e não participa do honorário." },
               { q: "Quanto tempo leva para ativar?", a: `Após o pagamento do Pix, a ativação acontece em até ${PLAN.activationHours} horas. Na maioria dos casos, em poucas horas.` }
@@ -454,14 +454,14 @@ export default function PlanosPage() {
                 className="inline-block font-bold text-base px-[30px] py-[15px] rounded-[11px]"
                 style={{ background: "#C8A24A", color: "#0F1B2D" }}
               >
-                Ativar premium agora
+                Criar perfil e ativar premium
               </Link>
               <Link
                 href="/cadastro"
                 className="inline-block font-semibold text-base px-[26px] py-[15px] rounded-[11px]"
                 style={{ border: "1px solid rgba(255,255,255,0.25)", color: "white" }}
               >
-                Começar com o plano grátis
+                Começar grátis
               </Link>
             </div>
           </div>

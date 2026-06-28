@@ -25,22 +25,22 @@ export function RecrutaAdvogadoCTA() {
           <p className="text-brand-bg/85 mt-3 text-base leading-relaxed">
             Apareça quando alguém procura um advogado na sua cidade.{" "}
             <strong className="text-brand-accent">
-              Leva menos de 1 minuto e não custa nada para começar.
+              Leva menos de 2 minutos e não custa nada para começar.
             </strong>
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
-              href="/para-advogados"
+              href="/cadastro"
               className="btn-accent inline-flex items-center gap-2"
             >
-              Quero aparecer no AdvAqui
+              Criar meu perfil grátis
               <ArrowRight className="w-4 h-4" aria-hidden />
             </Link>
             <Link
-              href="/cadastro"
+              href="/para-advogados"
               className="btn-ghost text-white border border-white/25 hover:bg-white/10 inline-flex items-center gap-2"
             >
-              Criar meu perfil grátis
+              Saiba mais
             </Link>
           </div>
         </div>
