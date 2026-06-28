@@ -12,10 +12,10 @@
 };
 
 export const PIX = {
-  key: process.env.PIX_KEY || "",
-  receiverName: process.env.PIX_RECEIVER_NAME || "AdvAqui",
-  receiverCity: process.env.PIX_RECEIVER_CITY || "JEQUITINHONHA",
-  amount: Number(process.env.PIX_AMOUNT || "19.90")
+  key: process.env.NEXT_PUBLIC_PIX_KEY || "",
+  receiverName: process.env.NEXT_PUBLIC_PIX_RECEIVER_NAME || "AdvAqui",
+  receiverCity: process.env.NEXT_PUBLIC_PIX_RECEIVER_CITY || "JEQUITINHONHA",
+  amount: Number(process.env.NEXT_PUBLIC_PIX_AMOUNT || "19.90")
 };
 
 export const PLAN = {
