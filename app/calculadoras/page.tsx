@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Calculator, ChevronRight, Scale } from "lucide-react";
+import { Calculator, ChevronRight, Scale, ArrowRight } from "lucide-react";
 import { CALCULADORAS } from "@/lib/data/calculadoras";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
@@ -70,6 +70,61 @@ export default function CalculadorasHubPage() {
             </Link>
           ))}
         </div>
+      </section>
+
+      <section className="mt-10 rounded-2xl bg-brand-bg border border-brand-line p-6">
+        <h2 className="font-display text-xl font-bold text-brand-ink mb-3">
+          Leitura recomendada
+        </h2>
+        <div className="grid sm:grid-cols-3 gap-3">
+          <Link
+            href="/blog/fui-demitido-sem-justa-causa"
+            className="rounded-lg border border-brand-line bg-white p-4 hover:border-brand-accent transition group"
+          >
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-brand-ink/50">Blog</span>
+            <p className="text-sm font-semibold text-brand-ink group-hover:text-brand-deep mt-1">
+              Fui demitido sem justa causa: direitos e rescisão
+            </p>
+          </Link>
+          <Link
+            href="/blog/como-pedir-pensao-alimenticia"
+            className="rounded-lg border border-brand-line bg-white p-4 hover:border-brand-accent transition group"
+          >
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-brand-ink/50">Blog</span>
+            <p className="text-sm font-semibold text-brand-ink group-hover:text-brand-deep mt-1">
+              Como pedir pensão alimentícia
+            </p>
+          </Link>
+          <Link
+            href="/blog/inss-negou-beneficio-o-que-fazer"
+            className="rounded-lg border border-brand-line bg-white p-4 hover:border-brand-accent transition group"
+          >
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-brand-ink/50">Blog</span>
+            <p className="text-sm font-semibold text-brand-ink group-hover:text-brand-deep mt-1">
+              INSS negou benefício: o que fazer
+            </p>
+          </Link>
+        </div>
+      </section>
+
+      <section
+        className="mt-6 rounded-2xl px-6 py-5 flex items-center justify-between gap-5 flex-wrap"
+        style={{ background: "#0F1B2D" }}
+      >
+        <div>
+          <p className="text-white font-semibold">Precisa de ajuda profissional?</p>
+          <p className="text-sm" style={{ color: "#A9B4C6" }}>
+            Encontre advogados verificados na sua cidade — contato direto, sem intermediário.
+          </p>
+        </div>
+        <Link
+          href="/advogados"
+          className="inline-flex items-center gap-2 text-[15px] font-bold px-5 py-3 rounded-xl shrink-0"
+          style={{ background: "#C8A24A", color: "#0F1B2D" }}
+        >
+          Buscar advogado
+          <ArrowRight className="w-4 h-4" aria-hidden />
+        </Link>
       </section>
 
       <JsonLd
