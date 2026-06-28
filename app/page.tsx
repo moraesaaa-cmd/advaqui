@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { Check, Scale, FileText, Calculator, ArrowRight } from "lucide-react";
 import { SearchBox } from "@/components/SearchBox";
 import { GeoPersonalize } from "@/components/GeoPersonalize";
 import { ResolverAgora } from "@/components/ResolverAgora";
@@ -8,60 +8,50 @@ import { getProblemaIndex } from "@/lib/data/problema-index";
 
 export const revalidate = 600;
 
-// Recriação 1:1 do Home.dc.html do handoff "Melhorias para advaqui.com"
-// (Apex / claude_design). Ordem das seções e conteúdo conforme o protótipo:
-// Hero → Orientação inteligente → Como funciona → Blog + Modelos → CTA advogado.
-// Dourado do design nos detalhes; navy #0F1B2D nos blocos escuros.
-// (Componentes ResolverAgora/IntentGrid/HomeFaq seguem no codebase, fora da
-// home, como no design.)
 const GOLD = "#C8A24A";
 const GOLD_EYEBROW = "#A0843A";
-
-// Chips do hero — cada um leva ao hub de problemas jurídicos (rota existente).
-const HERO_CHIPS = [
-  "fui demitido e não recebi nada",
-  "meu nome está negativado",
-  "o INSS negou meu benefício",
-  "caí em um golpe do pix",
-  "quero me divorciar"
-];
-
 
 const HOW_STEPS = [
   {
     n: "01",
     t: "Busque por cidade",
-    d: "Digite o nome da sua cidade ou escolha o estado no mapa do Brasil."
+    d: "Digite o nome da sua cidade e veja advogados com OAB verificada."
   },
   {
     n: "02",
     t: "Filtre por especialidade",
-    d: "Trabalhista, família, previdenciário, criminal, civil — as principais áreas."
+    d: "Trabalhista, família, previdenciário, criminal, civil — escolha a área."
   },
   {
     n: "03",
     t: "Fale direto pelo WhatsApp",
-    d: "Cada perfil traz telefone, e-mail e WhatsApp clicável. Sem taxa, sem comissão."
+    d: "Cada perfil traz telefone, e-mail e WhatsApp clicável."
   }
 ];
 
-// Chips de modelos & ferramentas — rotas reais do site.
-const MODELOS = [
-  { label: "Procuração particular", href: "/modelos/procuracao-particular-geral" },
-  { label: "Contrato de locação", href: "/modelos/contrato-de-locacao-residencial-simples" },
-  { label: "Recibo de pagamento", href: "/modelos/recibo-pagamento-quitacao" },
-  { label: "União estável", href: "/modelos/declaracao-de-uniao-estavel" },
-  { label: "Calculadora de rescisão", href: "/calculadoras" },
-  { label: "Calculadora de prazos", href: "/calculadora-prazos" }
+const AREAS_POPULARES = [
+  { label: "Trabalhista", href: "/advogados-de/trabalhista", icon: "briefcase" },
+  { label: "Família", href: "/advogados-de/familia", icon: "heart" },
+  { label: "Criminal", href: "/advogados-de/criminal", icon: "shield" },
+  { label: "Previdenciário", href: "/advogados-de/previdenciario", icon: "clock" },
+  { label: "Consumidor", href: "/advogados-de/consumidor", icon: "shopping" },
+  { label: "Civil", href: "/advogados-de/civil", icon: "file" },
+];
+
+const FERRAMENTAS = [
+  { label: "Calculadora de rescisão", href: "/calculadoras", Icon: Calculator },
+  { label: "Calculadora de prazos", href: "/calculadora-prazos", Icon: Calculator },
+  { label: "Modelos de documentos", href: "/modelos", Icon: FileText },
+  { label: "Problemas jurídicos", href: "/problemas-juridicos", Icon: Scale },
 ];
 
 export default async function HomePage() {
-  const latestArticles = getAllArticles().slice(0, 3);
+  const latestArticles = getAllArticles().slice(0, 4);
   const problemas = getProblemaIndex();
 
   return (
     <>
-      {/* HERO */}
+      {/* ── HERO ── busca por cidade, limpo e focado */}
       <section
         className="relative text-white overflow-hidden"
         style={{
@@ -81,34 +71,8 @@ export default async function HomePage() {
               "radial-gradient(ellipse at center, rgba(212,170,84,0.22), transparent 70%)"
           }}
         />
-        <div
-          aria-hidden
-          className="absolute pointer-events-none"
-          style={{
-            bottom: -220,
-            right: "8%",
-            width: 560,
-            height: 440,
-            background:
-              "radial-gradient(ellipse at center, rgba(46,158,107,0.16), transparent 70%)"
-          }}
-        />
-        <div className="relative container-tight py-16 md:py-24">
+        <div className="relative container-tight py-14 md:py-20">
           <div className="max-w-3xl mx-auto text-center">
-            <span
-              className="inline-flex items-center gap-2 rounded-full text-xs font-semibold px-3.5 py-1.5 mb-6"
-              style={{
-                background: "rgba(212,170,84,0.16)",
-                border: "1px solid rgba(212,170,84,0.38)",
-                color: "#F0CE84"
-              }}
-            >
-              <span
-                className="inline-block w-1.5 h-1.5 rounded-full"
-                style={{ background: "#34C77B", boxShadow: "0 0 8px rgba(52,199,123,0.8)" }}
-              />
-              Advogados com OAB verificada em todo o Brasil
-            </span>
             <h1 className="font-display font-semibold text-4xl md:text-6xl leading-[1.08] tracking-tight text-balance">
               Encontre o{" "}
               <span
@@ -125,42 +89,26 @@ export default async function HomePage() {
               na sua cidade
             </h1>
             <p
-              className="mt-5 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto"
+              className="mt-4 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto"
               style={{ color: "#BBC7DC" }}
             >
-              O diretório que mostra advogados por cidade e área — com OAB, endereço
-              e WhatsApp. Sem cadastro do cliente, sem comissão, sem intermediário.
+              Diretório gratuito com OAB verificada em 5.570+ cidades.
+              Contato direto, sem intermediário.
             </p>
-            <div className="mt-8 max-w-xl mx-auto">
+            <div className="mt-7 max-w-xl mx-auto">
               <SearchBox />
             </div>
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-              {HERO_CHIPS.map((c) => (
-                <Link
-                  key={c}
-                  href="/problemas-juridicos"
-                  className="rounded-full text-[13px] px-3.5 py-1.5 transition hover:bg-white/15"
-                  style={{
-                    background: "rgba(255,255,255,0.08)",
-                    border: "1px solid rgba(255,255,255,0.14)",
-                    color: "#C8D2E2"
-                  }}
-                >
-                  {c}
-                </Link>
-              ))}
-            </div>
             <div
-              className="mt-9 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[13.5px]"
+              className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px]"
               style={{ color: "#A6B3C9" }}
             >
               {[
-                "Contato direto, sem intermediário",
+                "OAB conferida em cada perfil",
                 "100% gratuito para você",
-                "OAB conferida em cada perfil"
+                "Sem cadastro, sem comissão"
               ].map((t) => (
-                <span key={t} className="inline-flex items-center gap-2">
-                  <Check className="w-4 h-4" style={{ color: "#34C77B" }} aria-hidden />
+                <span key={t} className="inline-flex items-center gap-1.5">
+                  <Check className="w-3.5 h-3.5" style={{ color: "#34C77B" }} aria-hidden />
                   {t}
                 </span>
               ))}
@@ -169,21 +117,61 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* PERSONALIZAÇÃO — CTA local baseado na última cidade pesquisada */}
+      {/* ── GEO ── CTA local (só aparece se já buscou cidade antes) */}
       <GeoPersonalize />
 
-      {/* ORIENTAÇÃO INTELIGENTE — componente interativo */}
+      {/* ── ÁREAS POPULARES ── acesso rápido por especialidade */}
+      <section className="container-tight pt-10 md:pt-14">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-display text-lg md:text-xl font-semibold text-brand-ink">
+            Áreas mais procuradas
+          </h2>
+          <Link
+            href="/advogados"
+            className="text-sm font-medium text-brand-deep hover:text-brand-accent2 transition flex items-center gap-1"
+          >
+            Ver todas <ArrowRight className="w-3.5 h-3.5" aria-hidden />
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+          {AREAS_POPULARES.map((a) => (
+            <Link
+              key={a.href}
+              href={a.href}
+              className="group flex flex-col items-center gap-2 rounded-2xl border border-brand-line bg-white p-4 hover:border-brand-accent hover:shadow-card transition text-center"
+            >
+              <span
+                className="flex items-center justify-center w-10 h-10 rounded-xl group-hover:scale-105 transition"
+                style={{ background: "rgba(200,162,74,0.1)" }}
+              >
+                <Scale className="w-5 h-5 text-brand-accent" aria-hidden />
+              </span>
+              <span className="text-sm font-medium text-brand-ink group-hover:text-brand-deep transition">
+                {a.label}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ── PONTE ── transição para o ResolverAgora */}
+      <section className="container-tight pt-10 md:pt-14">
+        <div className="text-center mb-1">
+          <p className="text-sm font-medium text-brand-ink/50">
+            Não sabe que tipo de advogado procurar? Descreva sua situação abaixo.
+          </p>
+        </div>
+      </section>
+
+      {/* ── ORIENTAÇÃO INTELIGENTE ── componente interativo */}
       <ResolverAgora items={problemas} />
 
-      {/* COMO FUNCIONA — bloco navy */}
-      <section className="container-tight pt-14 md:pt-16">
+      {/* ── COMO FUNCIONA ── 3 passos, bloco navy */}
+      <section className="container-tight pt-10 md:pt-14">
         <div className="rounded-3xl text-white p-8 md:p-11" style={{ background: "#0F1B2D" }}>
           <h2 className="font-display text-2xl md:text-3xl font-semibold tracking-tight">
             Como funciona
           </h2>
-          <p className="mt-1.5 text-[15px]" style={{ color: "#A9B4C6" }}>
-            Sem cadastro do cliente, sem intermediação. Você busca, encontra, contrata direto.
-          </p>
           <div className="mt-8 grid md:grid-cols-3 gap-8">
             {HOW_STEPS.map(({ n, t, d }) => (
               <div key={n}>
@@ -200,59 +188,60 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* BLOG + MODELOS — 2 colunas */}
-      <section className="container-tight pt-14 md:pt-16">
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white border border-brand-line rounded-2xl p-7 md:p-8">
-            <div
-              className="text-xs font-bold uppercase tracking-wider mb-2.5"
-              style={{ color: GOLD_EYEBROW }}
+      {/* ── FERRAMENTAS GRATUITAS ── acesso rápido */}
+      <section className="container-tight pt-10 md:pt-14">
+        <h2 className="font-display text-lg md:text-xl font-semibold text-brand-ink mb-4">
+          Ferramentas gratuitas
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {FERRAMENTAS.map(({ label, href, Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className="group flex items-center gap-3 rounded-2xl border border-brand-line bg-white p-4 hover:border-brand-accent hover:shadow-card transition"
             >
-              Blog jurídico
-            </div>
-            <h3 className="font-display text-xl md:text-2xl font-semibold text-brand-ink tracking-tight mb-3">
-              Seus direitos sem juridiquês
-            </h3>
-            <div>
-              {latestArticles.map((a) => (
-                <Link
-                  key={a.slug}
-                  href={`/blog/${a.slug}`}
-                  className="block py-3 border-b border-brand-line text-[14.5px] font-medium text-brand-ink hover:text-brand-deep transition"
-                >
-                  {a.title}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="bg-white border border-brand-line rounded-2xl p-7 md:p-8">
-            <div
-              className="text-xs font-bold uppercase tracking-wider mb-2.5"
-              style={{ color: GOLD_EYEBROW }}
-            >
-              Modelos &amp; ferramentas
-            </div>
-            <h3 className="font-display text-xl md:text-2xl font-semibold text-brand-ink tracking-tight mb-4">
-              Documentos prontos pra usar
-            </h3>
-            <div className="flex flex-wrap gap-2.5">
-              {MODELOS.map((m) => (
-                <Link
-                  key={m.href}
-                  href={m.href}
-                  className="text-[13.5px] px-3.5 py-2 rounded-lg text-brand-ink/80 hover:text-brand-deep transition"
-                  style={{ background: "#F1F0EA" }}
-                >
-                  {m.label}
-                </Link>
-              ))}
-            </div>
-          </div>
+              <Icon className="w-5 h-5 text-brand-deep/60 group-hover:text-brand-accent transition shrink-0" aria-hidden />
+              <span className="text-sm font-medium text-brand-ink group-hover:text-brand-deep transition">
+                {label}
+              </span>
+            </Link>
+          ))}
         </div>
       </section>
 
-      {/* CTA ADVOGADO — faixa navy, botão dourado */}
-      <section className="container-tight py-14 md:py-16">
+      {/* ── BLOG ── artigos recentes em lista compacta */}
+      <section className="container-tight pt-10 md:pt-14">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-display text-lg md:text-xl font-semibold text-brand-ink">
+            Blog jurídico
+          </h2>
+          <Link
+            href="/blog"
+            className="text-sm font-medium text-brand-deep hover:text-brand-accent2 transition flex items-center gap-1"
+          >
+            Ver todos <ArrowRight className="w-3.5 h-3.5" aria-hidden />
+          </Link>
+        </div>
+        <div className="grid md:grid-cols-2 gap-3">
+          {latestArticles.map((a) => (
+            <Link
+              key={a.slug}
+              href={`/blog/${a.slug}`}
+              className="group flex items-start gap-3 rounded-2xl border border-brand-line bg-white p-4 hover:border-brand-accent hover:shadow-card transition"
+            >
+              <span className="flex-1 min-w-0">
+                <span className="text-[14.5px] font-medium text-brand-ink group-hover:text-brand-deep transition block leading-snug line-clamp-2">
+                  {a.title}
+                </span>
+              </span>
+              <ArrowRight className="w-4 h-4 text-brand-ink/30 group-hover:text-brand-accent mt-0.5 shrink-0 transition" aria-hidden />
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CTA ADVOGADO ── faixa navy, botão dourado */}
+      <section className="container-tight py-10 md:py-14">
         <div
           className="rounded-3xl text-white p-8 md:p-11 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
           style={{ background: "linear-gradient(110deg, #1B2D49, #0F1B2D)" }}
@@ -262,17 +251,26 @@ export default async function HomePage() {
               Sou advogado e quero aparecer aqui
             </h2>
             <p className="mt-2 text-[15px]" style={{ color: "#A9B4C6" }}>
-              Apareça quando alguém procura advogado na sua cidade. Leva menos de 2
-              minutos para começar.
+              Apareça quando alguém busca advogado na sua cidade.
+              Cadastro gratuito em menos de 2 minutos.
             </p>
           </div>
-          <Link
-            href="/para-advogados"
-            className="inline-flex items-center justify-center font-bold rounded-xl px-6 py-3.5 whitespace-nowrap"
-            style={{ background: GOLD, color: "#0F1B2D" }}
-          >
-            Saiba como anunciar
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link
+              href="/cadastro"
+              className="inline-flex items-center justify-center font-bold rounded-xl px-6 py-3.5 whitespace-nowrap"
+              style={{ background: GOLD, color: "#0F1B2D" }}
+            >
+              Criar perfil grátis
+            </Link>
+            <Link
+              href="/lp/advogado-premium"
+              className="inline-flex items-center justify-center font-semibold rounded-xl px-6 py-3.5 whitespace-nowrap border-2 text-white hover:bg-white/10 transition"
+              style={{ borderColor: "rgba(200,162,74,0.4)" }}
+            >
+              Ver plano Premium
+            </Link>
+          </div>
         </div>
       </section>
     </>
