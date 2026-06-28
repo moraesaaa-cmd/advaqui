@@ -152,19 +152,15 @@ export async function GET(req: NextRequest) {
         prioridade = "alta";
       }
 
-      const updateData: Record<string, unknown> = {
-        ai_resumo: analysis.resumo,
-        ai_area: analysis.area,
-        ai_score: score,
-        proxima_acao: analysis.proxima_acao,
-      };
-      if (prioridade) {
-        updateData.prioridade = prioridade;
-      }
-
       const { error: updateError } = await supabase
         .from("leads")
-        .update(updateData)
+        .update({
+          ai_resumo: analysis.resumo,
+          ai_area: analysis.area,
+          ai_score: score,
+          proxima_acao: analysis.proxima_acao,
+          ...(prioridade ? { prioridade } : {}),
+        })
         .eq("id", lead.id);
 
       if (updateError) {
