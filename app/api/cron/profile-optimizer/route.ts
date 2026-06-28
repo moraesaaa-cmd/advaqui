@@ -16,7 +16,7 @@ interface ProfileSuggestion {
 
 async function analyzeProfile(lawyer: {
   name: string;
-  short_summary: string | null;
+  short_summary?: string | null;
   bio: string | null;
   specialties: string[] | null;
   target_city: string | null;
