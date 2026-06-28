@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Public_Sans, Newsreader } from "next/font/google";
 import { Suspense } from "react";
+import dynamic from "next/dynamic";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -12,6 +13,11 @@ import { GoogleAdsTag } from "@/components/GoogleAdsTag";
 import { PageViewTracker } from "@/components/PageViewTracker";
 import { orgSchema, websiteSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
+
+const TriagemChat = dynamic(() =>
+  import("@/components/TriagemChat").then((m) => ({ default: m.TriagemChat })),
+  { ssr: false }
+);
 
 // Tipografia do redesign (claude_design): Public Sans (corpo) + Newsreader
 // (títulos serif). Mantemos os NOMES das variáveis (--font-inter/--font-fraunces)
@@ -104,6 +110,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Suspense fallback={null}>
           <PageViewTracker />
         </Suspense>
+        <TriagemChat />
       </body>
     </html>
   );

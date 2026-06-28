@@ -305,6 +305,17 @@ function badgeFor(href: string): { text: string; ia?: boolean } | null {
 export default function FerramentasPage() {
   return (
     <main className="container-tight py-12 md:py-16">
+      {/* Breadcrumb */}
+      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-brand-ink/60">
+        <ol className="flex items-center gap-1.5">
+          <li>
+            <Link href="/" className="hover:text-brand-ink transition">Home</Link>
+          </li>
+          <li><ChevronRight className="w-3.5 h-3.5 inline" aria-hidden /></li>
+          <li className="text-brand-ink font-medium" aria-current="page">Ferramentas</li>
+        </ol>
+      </nav>
+
       <header className="max-w-2xl mb-12">
         <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: GOLD }}>
           Ferramentas
@@ -473,17 +484,87 @@ export default function FerramentasPage() {
         ))}
       </div>
 
+      {/* CTA para advogados */}
+      <section
+        className="mt-16 rounded-2xl border p-8 md:p-10 text-center"
+        style={{ borderColor: "#E6E1D6", background: "rgba(200,162,74,0.04)" }}
+      >
+        <h2 className="font-display text-xl md:text-2xl font-semibold text-brand-ink tracking-tight">
+          É advogado? Cadastre-se e apareça para clientes que usam essas ferramentas
+        </h2>
+        <p className="text-brand-ink/70 mt-2 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+          Quem usa uma checklist ou triagem está a um passo de contratar. Monte seu perfil e receba contatos diretos.
+        </p>
+        <Link
+          href="/para-advogados"
+          className="inline-flex items-center gap-2 mt-5 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-105"
+          style={{ background: "#C8A24A", color: "#0F1B2D" }}
+        >
+          Criar meu perfil grátis
+          <ArrowRight className="w-4 h-4" aria-hidden />
+        </Link>
+      </section>
+
       <p className="text-xs text-brand-ink/50 mt-12 max-w-2xl">
         As ferramentas do AdvAqui são de apoio e têm caráter informativo. Para
         decisões sobre o seu caso, fale com um advogado — cada situação tem
         detalhes que mudam o resultado.
       </p>
 
+      {/* Breadcrumb */}
       <JsonLd
         data={breadcrumbSchema([
           { name: "Início", url: "/" },
           { name: "Ferramentas", url: "/ferramentas" }
         ])}
+      />
+
+      {/* ItemList — ferramentas de checklist/triagem */}
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Ferramentas Jurídicas Gratuitas",
+          description: "Checklists, simuladores e triagens jurídicas gratuitas. Organize seus documentos e descubra seus direitos.",
+          numberOfItems: 5,
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Checklist: Recurso de Multa",
+              url: `${SITE.url}/ferramentas/checklist-recurso-multa`,
+              description: "Verifique se tem tudo para recorrer"
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Checklist: Limpar Nome",
+              url: `${SITE.url}/ferramentas/checklist-limpar-nome`,
+              description: "Passo a passo para sair do SPC/Serasa"
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: "Checklist: Pensão Alimentícia",
+              url: `${SITE.url}/ferramentas/checklist-pensao-alimenticia`,
+              description: "Documentos para pedir pensão"
+            },
+            {
+              "@type": "ListItem",
+              position: 4,
+              name: "Checklist: Guarda de Filhos",
+              url: `${SITE.url}/ferramentas/checklist-documentos-guarda`,
+              description: "Preparação para ação de guarda"
+            },
+            {
+              "@type": "ListItem",
+              position: 5,
+              name: "Triagem: Mandado de Segurança",
+              url: `${SITE.url}/ferramentas/triagem-mandado-seguranca`,
+              description: "Descubra se cabe MS no seu caso"
+            }
+          ]
+        }}
       />
     </main>
   );
