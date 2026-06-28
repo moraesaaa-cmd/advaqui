@@ -11,7 +11,7 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
 import { citySpecialtyIntro } from "@/lib/data/templates";
 import { getUsefulDocsForSpecialties } from "@/lib/data/specialty-descriptions";
 import { getProblemaIndex } from "@/lib/data/problema-index";
-import { relatedCapitalsForSpecialty } from "@/lib/seo/internal-links";
+import { relatedCapitalsForSpecialty, relatedArticlesForSpecialty, toolsForSpecialty } from "@/lib/seo/internal-links";
 import { getSpecialtyContent } from "@/lib/data/specialty-content";
 import type { SpecialtyUrgency } from "@/lib/data/specialty-content";
 import { nearbyCities } from "@/lib/data/cities";
@@ -490,6 +490,68 @@ export default async function CitySpecialtyPage({
           </div>
         </section>
       )}
+
+      {/* BLOG + FERRAMENTAS — interlinking por especialidade */}
+      {(() => {
+        const blogPosts = relatedArticlesForSpecialty(sp.slug, 3);
+        const tools = toolsForSpecialty(sp.slug, 3);
+        if (blogPosts.length === 0 && tools.length === 0) return null;
+        return (
+          <section className="pt-[42px] pb-2">
+            {blogPosts.length > 0 && (
+              <>
+                <h2 className="font-display font-semibold text-[23px] tracking-tight mb-4">
+                  Artigos sobre direito {areaLow}
+                </h2>
+                <div className="grid sm:grid-cols-3 gap-2.5 mb-6">
+                  {blogPosts.map((a) => (
+                    <Link
+                      key={a.slug}
+                      href={`/blog/${a.slug}`}
+                      className="bg-white rounded-[11px] px-[17px] py-[15px] hover:border-brand-accent transition"
+                      style={{ border: "1px solid #E4E2DA" }}
+                    >
+                      <div className="text-[11px] font-semibold uppercase tracking-wider mb-1" style={{ color: "#8A93A3" }}>
+                        Blog · {a.readingMinutes} min
+                      </div>
+                      <div className="text-[14.5px] font-medium leading-snug" style={{ color: "#1A2433" }}>
+                        {a.title}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </>
+            )}
+            {tools.length > 0 && (
+              <>
+                <h2 className="font-display font-semibold text-[23px] tracking-tight mb-4">
+                  Ferramentas de {areaLow}
+                </h2>
+                <div className="grid sm:grid-cols-3 gap-2.5">
+                  {tools.map((t) => (
+                    <Link
+                      key={t.href}
+                      href={t.href}
+                      className="bg-white rounded-[11px] px-[17px] py-[15px] hover:border-brand-accent transition"
+                      style={{ border: "1px solid #E4E2DA" }}
+                    >
+                      <div className="text-[11px] font-semibold uppercase tracking-wider mb-1" style={{ color: "#C8A24A" }}>
+                        Ferramenta
+                      </div>
+                      <div className="text-[14.5px] font-medium leading-snug" style={{ color: "#1A2433" }}>
+                        {t.label}
+                      </div>
+                      <div className="text-[12px] mt-1" style={{ color: "#6B7689" }}>
+                        {t.desc}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </>
+            )}
+          </section>
+        );
+      })()}
 
       {/* ADVOGADOS EM CIDADES PRÓXIMAS */}
       {nearby.length > 0 && (

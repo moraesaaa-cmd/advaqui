@@ -194,6 +194,67 @@ export function relatedArticlesForSpecialty(
     .slice(0, limit);
 }
 
+type ToolLink = { href: string; label: string; desc: string };
+
+const SPECIALTY_TOOLS: Record<string, ToolLink[]> = {
+  trabalhista: [
+    { href: "/calculadoras", label: "Calculadora de rescisão", desc: "Calcule verbas rescisórias, FGTS e multa" },
+    { href: "/seguro-desemprego", label: "Simulador de seguro-desemprego", desc: "Parcelas e valor pela tabela oficial" },
+    { href: "/diagnostico", label: "Diagnóstico trabalhista", desc: "Descubra seus direitos em 6 perguntas" },
+  ],
+  familia: [
+    { href: "/divorcio", label: "Divórcio: cartório ou Justiça?", desc: "Descubra o caminho certo em 4 perguntas" },
+    { href: "/ferramentas/checklist-pensao-alimenticia", label: "Checklist: pensão alimentícia", desc: "Documentos para pedir pensão" },
+    { href: "/ferramentas/checklist-documentos-guarda", label: "Checklist: guarda de filhos", desc: "Preparação para ação de guarda" },
+  ],
+  civil: [
+    { href: "/correcao-monetaria", label: "Correção monetária", desc: "Atualize valores pela inflação oficial" },
+    { href: "/calculadora-prazos", label: "Calculadora de prazos", desc: "Vencimento em dias úteis ou corridos" },
+    { href: "/ferramentas/checklist-limpar-nome", label: "Checklist: limpar nome", desc: "Passo a passo para sair do SPC/Serasa" },
+  ],
+  criminal: [
+    { href: "/calculadora-prazos", label: "Calculadora de prazos", desc: "Prazos processuais em dias úteis" },
+    { href: "/glossario", label: "Glossário jurídico", desc: "Termos do direito em linguagem simples" },
+    { href: "/triagem", label: "Triagem jurídica", desc: "Qual advogado procurar para o seu caso" },
+  ],
+  previdenciario: [
+    { href: "/previdencia", label: "Simulador de aposentadoria", desc: "Regras de transição e cálculo de pontuação" },
+    { href: "/calculadora-prazos", label: "Calculadora de prazos", desc: "Prazos para recurso ao INSS" },
+    { href: "/triagem", label: "Triagem jurídica", desc: "Descubra o próximo passo do seu caso" },
+  ],
+  consumidor: [
+    { href: "/ferramentas/checklist-limpar-nome", label: "Checklist: limpar nome", desc: "Saia do SPC/Serasa passo a passo" },
+    { href: "/correcao-monetaria", label: "Correção monetária", desc: "Atualize o valor da sua reclamação" },
+    { href: "/atualizar-valor", label: "Atualizar um valor", desc: "Correção, juros e multa sobre uma dívida" },
+  ],
+  imobiliario: [
+    { href: "/imobiliario", label: "Comprar imóvel com segurança", desc: "Checklist de documentos e certidões" },
+    { href: "/correcao-monetaria", label: "Correção monetária", desc: "Atualize valores de contrato pela inflação" },
+    { href: "/modelos", label: "Modelos de contrato", desc: "Locação, distrato, comodato e outros" },
+  ],
+};
+
+export function toolsForSpecialty(specialtySlug: string, limit = 3): ToolLink[] {
+  return (SPECIALTY_TOOLS[specialtySlug] ?? []).slice(0, limit);
+}
+
+export function toolsForArticle(article: Article, limit = 3): ToolLink[] {
+  const specs = specialtiesForArticle(article);
+  if (specs.length === 0) return [];
+  const seen = new Set<string>();
+  const out: ToolLink[] = [];
+  for (const sp of specs) {
+    for (const t of SPECIALTY_TOOLS[sp.slug] ?? []) {
+      if (!seen.has(t.href)) {
+        seen.add(t.href);
+        out.push(t);
+      }
+      if (out.length >= limit) return out;
+    }
+  }
+  return out;
+}
+
 /**
  * Modelos relacionados a um artigo — caminho inverso do mapeamento acima.
  * Usado no artigo do blog: "Documentos prontos pra esse tema".

@@ -17,7 +17,8 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 import {
   capitalsForArticle,
-  relatedTemplatesForArticle
+  relatedTemplatesForArticle,
+  toolsForArticle
 } from "@/lib/seo/internal-links";
 import {
   isArtigoLocalizavel
@@ -439,6 +440,36 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                     className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
                   >
                     {c.city.name}/{c.state.uf}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
+
+        {/* Interlinking SEO — ferramentas relacionadas ao tema do artigo */}
+        {(() => {
+          const tools = toolsForArticle(article, 3);
+          if (tools.length === 0) return null;
+          return (
+            <section className="mt-10">
+              <h2 className="font-display text-2xl font-bold text-brand-ink mb-4">
+                Ferramentas úteis para este tema
+              </h2>
+              <div className="grid sm:grid-cols-3 gap-3">
+                {tools.map((t) => (
+                  <Link
+                    key={t.href}
+                    href={t.href}
+                    className="card hover:border-brand-accent transition group"
+                  >
+                    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-800 mb-2">
+                      Ferramenta
+                    </span>
+                    <h3 className="font-display text-sm md:text-base font-bold text-brand-ink group-hover:text-brand-deep leading-snug">
+                      {t.label}
+                    </h3>
+                    <p className="text-xs text-brand-ink/60 mt-1">{t.desc}</p>
                   </Link>
                 ))}
               </div>

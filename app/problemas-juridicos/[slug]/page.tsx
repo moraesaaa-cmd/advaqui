@@ -22,7 +22,7 @@ import { findTemaStj } from "@/lib/data/jurisprudencia-temas";
 import { findGuiaByArea } from "@/lib/data/guias";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { getCidadesPrioritarias } from "@/lib/data/cidades-prioritarias";
-import { relatedArticlesForSpecialty } from "@/lib/seo/internal-links";
+import { relatedArticlesForSpecialty, toolsForSpecialty } from "@/lib/seo/internal-links";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
@@ -327,6 +327,35 @@ export default function ProblemaPage({ params }: { params: { slug: string } }) {
           </div>
         )}
       </section>
+
+      {/* Ferramentas relacionadas */}
+      {(() => {
+        const tools = areasObj[0] ? toolsForSpecialty(areasObj[0].slug, 3) : [];
+        if (tools.length === 0) return null;
+        return (
+          <section className="card mb-6">
+            <h2 className="font-display text-xl font-bold text-brand-ink mb-3">
+              Ferramentas que podem ajudar
+            </h2>
+            <div className="space-y-2">
+              {tools.map((t) => (
+                <Link
+                  key={t.href}
+                  href={t.href}
+                  className="block group rounded-lg border border-brand-line p-3 hover:border-brand-deep/40 hover:bg-brand-bg/30 transition"
+                >
+                  <p className="font-semibold text-sm text-brand-ink group-hover:text-brand-deep transition">
+                    {t.label}
+                  </p>
+                  <p className="text-xs text-brand-ink/65 mt-0.5">
+                    {t.desc}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* Encontre ajuda na sua cidade — links para as 50 cidades prioritárias */}
       <section className="card mb-6">
