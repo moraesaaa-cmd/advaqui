@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
     let query = supabase
       .from("lawyers")
       .select("id, name, slug, target_city, target_uf, specialties, plan_status")
-      .eq("approved", true);
+      .eq("verified_oab", true);
 
     if (uf) query = query.eq("target_uf", uf);
 
@@ -71,13 +71,13 @@ export async function GET(req: NextRequest) {
     const scored = lawyers
       .map((l) => {
         let score = 0;
-        const specs = (l.specialties as string[]) || [];
+        const specs = Array.isArray(l.specialties) ? l.specialties : [];
 
-        if (specs.some((s) => s.toLowerCase().includes(areaLower) || areaLower.includes(s.toLowerCase()))) {
+        if (areaLower && specs.some((s: string) => s.toLowerCase().includes(areaLower) || areaLower.includes(s.toLowerCase()))) {
           score += 50;
         }
 
-        const lCity = ((l.target_city as string) || "").toLowerCase();
+        const lCity = (l.target_city || "").toLowerCase();
         if (cidadeLower && lCity === cidadeLower) score += 30;
 
         if (l.plan_status === "active") score += 20;
