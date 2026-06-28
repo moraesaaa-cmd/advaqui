@@ -15,7 +15,8 @@ import { relatedCapitalsForSpecialty } from "@/lib/seo/internal-links";
 import { getSpecialtyContent } from "@/lib/data/specialty-content";
 import type { SpecialtyUrgency } from "@/lib/data/specialty-content";
 import { nearbyCities } from "@/lib/data/cities";
-import { AlertTriangle, Clock, Info } from "lucide-react";
+import { getStateResources } from "@/lib/data/local-resources";
+import { AlertTriangle, Clock, Info, ExternalLink } from "lucide-react";
 
 // Sempre ao vivo (force-dynamic): o advogado por especialidade na cidade
 // reflete o cadastro na hora, sem cache que congele.
@@ -45,7 +46,7 @@ export async function generateMetadata({
     return buildMetadata({ title: "Especialidade", description: "Não encontrado", noIndex: true });
   return buildMetadata({
     title: `Advogado ${sp.name} em ${city.name}/${st.uf}`,
-    description: `Veja perfis de advogados com atuação em ${sp.name} em ${city.name}/${st.uf}. Consulte OAB, região atendida e canais de contato.`,
+    description: `Encontre advogado ${sp.name.toLowerCase()} em ${city.name}, ${st.uf} — perfis com OAB verificada, WhatsApp e contato direto. Compare profissionais e fale sem intermediário.`,
     path: `/advogados/${st.uf.toLowerCase()}/${city.slug}/${sp.slug}`
   });
 }
@@ -514,47 +515,116 @@ export default async function CitySpecialtyPage({
         </section>
       )}
 
-      {/* RECURSOS ÚTEIS — tribunal, glossário, guias */}
-      <section className="pt-[42px] pb-2">
-        <h2 className="font-display font-semibold text-[23px] tracking-tight mb-4">
-          Recursos jurídicos em {city.name}
-        </h2>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2.5">
-          <Link
-            href={`/tribunais/${st.uf.toLowerCase()}/${city.slug}`}
-            className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
-            style={{ border: "1px solid #E4E2DA" }}
-          >
-            <span className="text-lg">🏛️</span>
-            <div>
-              <div className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>Fórum e Comarca</div>
-              <div className="text-[12px]" style={{ color: "#6B7689" }}>{city.name}/{st.uf}</div>
+      {/* ÓRGÃOS E RECURSOS — dados reais por estado */}
+      {(() => {
+        const res = getStateResources(st.uf);
+        if (!res) return null;
+        return (
+          <section className="pt-[42px] pb-2">
+            <h2 className="font-display font-semibold text-[23px] tracking-tight mb-2">
+              Órgãos úteis em {city.name}, {st.uf}
+            </h2>
+            <p className="text-sm mb-4" style={{ color: "#6B7689" }}>
+              Comarca de {city.name} — Justiça Estadual de {st.name}
+            </p>
+            <div className="grid sm:grid-cols-2 gap-2.5">
+              <a
+                href={res.tj.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
+                style={{ border: "1px solid #E4E2DA" }}
+              >
+                <span className="text-lg">🏛️</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>{res.tj.name}</div>
+                  <div className="text-[12px]" style={{ color: "#6B7689" }}>Tribunal de Justiça — processos, pautas, jurisprudência</div>
+                </div>
+                <ExternalLink className="w-3.5 h-3.5 text-brand-ink/30 shrink-0" aria-hidden />
+              </a>
+              <a
+                href={res.oab.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
+                style={{ border: "1px solid #E4E2DA" }}
+              >
+                <span className="text-lg">⚖️</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>{res.oab.name}</div>
+                  <div className="text-[12px]" style={{ color: "#6B7689" }}>Consulte inscrição de advogado, denúncias, tabela de honorários</div>
+                </div>
+                <ExternalLink className="w-3.5 h-3.5 text-brand-ink/30 shrink-0" aria-hidden />
+              </a>
+              <a
+                href={res.defensoria.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
+                style={{ border: "1px solid #E4E2DA" }}
+              >
+                <span className="text-lg">🛡️</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>{res.defensoria.name}</div>
+                  <div className="text-[12px]" style={{ color: "#6B7689" }}>Assistência jurídica gratuita para quem não pode pagar advogado</div>
+                </div>
+                <ExternalLink className="w-3.5 h-3.5 text-brand-ink/30 shrink-0" aria-hidden />
+              </a>
+              <a
+                href={res.procon.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
+                style={{ border: "1px solid #E4E2DA" }}
+              >
+                <span className="text-lg">📋</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>{res.procon.name}</div>
+                  <div className="text-[12px]" style={{ color: "#6B7689" }}>Reclamações de consumidor, mediação, orientação gratuita</div>
+                </div>
+                <ExternalLink className="w-3.5 h-3.5 text-brand-ink/30 shrink-0" aria-hidden />
+              </a>
             </div>
-          </Link>
-          <Link
-            href={`/guias/${sp.slug}`}
-            className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
-            style={{ border: "1px solid #E4E2DA" }}
-          >
-            <span className="text-lg">📘</span>
-            <div>
-              <div className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>Guia de {sp.name}</div>
-              <div className="text-[12px]" style={{ color: "#6B7689" }}>Passo a passo para leigos</div>
+            <div className="grid sm:grid-cols-3 gap-2.5 mt-2.5">
+              <a
+                href={res.pje}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
+                style={{ border: "1px solid #E4E2DA" }}
+              >
+                <span className="text-lg">💻</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>PJe / e-SAJ</div>
+                  <div className="text-[12px]" style={{ color: "#6B7689" }}>Processo eletrônico</div>
+                </div>
+              </a>
+              <Link
+                href={`/guias/direito-${sp.slug === "criminal" ? "criminal" : sp.slug === "familia" ? "de-familia" : sp.slug}`}
+                className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
+                style={{ border: "1px solid #E4E2DA" }}
+              >
+                <span className="text-lg">📘</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>Guia de {sp.name}</div>
+                  <div className="text-[12px]" style={{ color: "#6B7689" }}>Passo a passo</div>
+                </div>
+              </Link>
+              <Link
+                href="/glossario"
+                className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
+                style={{ border: "1px solid #E4E2DA" }}
+              >
+                <span className="text-lg">📖</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>Glossário jurídico</div>
+                  <div className="text-[12px]" style={{ color: "#6B7689" }}>Termos em linguagem simples</div>
+                </div>
+              </Link>
             </div>
-          </Link>
-          <Link
-            href="/glossario"
-            className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
-            style={{ border: "1px solid #E4E2DA" }}
-          >
-            <span className="text-lg">📖</span>
-            <div>
-              <div className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>Glossário jurídico</div>
-              <div className="text-[12px]" style={{ color: "#6B7689" }}>Termos em linguagem simples</div>
-            </div>
-          </Link>
-        </div>
-      </section>
+          </section>
+        );
+      })()}
 
       {/* FAQ */}
       <section id="faq" className="pt-[42px] pb-2 scroll-mt-20">

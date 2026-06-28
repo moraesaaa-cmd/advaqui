@@ -33,7 +33,7 @@ export async function generateMetadata({
     return buildMetadata({ title: "Cidade", description: "Cidade não encontrada", noIndex: true });
   return buildMetadata({
     title: `Advogados em ${city.name}/${st.uf}`,
-    description: `Encontre perfis de advogados em ${city.name}/${st.uf}, com OAB, áreas de atuação, região atendida e canais de contato.`,
+    description: `Encontre advogados em ${city.name}, ${st.uf} — perfis com OAB verificada, telefone, WhatsApp e contato direto. Trabalhista, família, criminal e mais. 100% gratuito.`,
     path: `/advogados/${st.uf.toLowerCase()}/${city.slug}`
   });
 }
