@@ -377,6 +377,7 @@ export type LeadRow = {
   ai_resumo: string | null;
   ai_area: string | null;
   ai_score: number | null;
+  matched_lawyer_id: string | null;
   metadata: Record<string, unknown>;
 };
 

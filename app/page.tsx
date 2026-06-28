@@ -2,7 +2,9 @@ import Link from "next/link";
 import { Check } from "lucide-react";
 import { SearchBox } from "@/components/SearchBox";
 import { GeoPersonalize } from "@/components/GeoPersonalize";
+import { ResolverAgora } from "@/components/ResolverAgora";
 import { getAllArticles } from "@/lib/data/articles";
+import { getProblemaIndex } from "@/lib/data/problema-index";
 
 export const revalidate = 600;
 
@@ -24,11 +26,6 @@ const HERO_CHIPS = [
   "quero me divorciar"
 ];
 
-const ORIENTACAO_STEPS = [
-  { n: "1", t: "Confira as verbas que a empresa deve pagar" },
-  { n: "2", t: "Reúna CTPS, contracheques e termo de rescisão" },
-  { n: "3", t: "Procure um advogado trabalhista na sua cidade" }
-];
 
 const HOW_STEPS = [
   {
@@ -60,6 +57,7 @@ const MODELOS = [
 
 export default async function HomePage() {
   const latestArticles = getAllArticles().slice(0, 3);
+  const problemas = getProblemaIndex();
 
   return (
     <>
@@ -174,48 +172,8 @@ export default async function HomePage() {
       {/* PERSONALIZAÇÃO — CTA local baseado na última cidade pesquisada */}
       <GeoPersonalize />
 
-      {/* ORIENTAÇÃO INTELIGENTE — card do design (2 colunas) */}
-      <section className="container-tight pt-14 md:pt-16">
-        <div className="bg-white border border-brand-line rounded-3xl p-8 md:p-10 grid md:grid-cols-2 gap-10 items-center">
-          <div>
-            <div
-              className="text-xs font-bold uppercase tracking-wider mb-3"
-              style={{ color: GOLD_EYEBROW }}
-            >
-              Orientação inteligente
-            </div>
-            <h2 className="font-display text-2xl md:text-3xl font-semibold tracking-tight text-brand-ink leading-tight">
-              Conte o que aconteceu — mostramos seu caminho em segundos
-            </h2>
-            <p className="mt-3.5 text-brand-ink/65 leading-relaxed">
-              Escreva do seu jeito, sem juridiquês. A gente entende a linguagem do
-              dia a dia e mostra o passo a passo da sua situação — e onde achar um
-              advogado.
-            </p>
-          </div>
-          <div className="bg-brand-bg border border-brand-line rounded-2xl p-5">
-            <div className="bg-white border border-brand-line rounded-xl px-4 py-3 text-sm text-brand-ink/80 mb-3">
-              “fui demitido e não recebi nada”
-            </div>
-            <div className="flex flex-col gap-2.5">
-              {ORIENTACAO_STEPS.map((s) => (
-                <div
-                  key={s.n}
-                  className="flex items-center gap-3 text-sm text-brand-ink"
-                >
-                  <span
-                    className="w-[22px] h-[22px] rounded-full flex items-center justify-center text-[11px] font-bold text-white shrink-0"
-                    style={{ background: "#0F1B2D" }}
-                  >
-                    {s.n}
-                  </span>
-                  {s.t}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ORIENTAÇÃO INTELIGENTE — componente interativo */}
+      <ResolverAgora items={problemas} />
 
       {/* COMO FUNCIONA — bloco navy */}
       <section className="container-tight pt-14 md:pt-16">
