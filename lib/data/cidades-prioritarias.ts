@@ -226,3 +226,8 @@ export function cidadesPrioritariasMesmaRegiao(
 export function topCapitais(limit = 12): CidadePrioritaria[] {
   return getCidadesPrioritarias().filter((c) => c.tipo === "capital").slice(0, limit);
 }
+
+/** Subset para SSG — 5 capitais. ISR gera o resto sob demanda. */
+export function getCidadesSSG(): CidadePrioritaria[] {
+  return getCidadesPrioritarias().filter((c) => c.tipo === "capital").slice(0, 5);
+}

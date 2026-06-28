@@ -17,6 +17,7 @@ import {
 } from "@/lib/data/calculadoras";
 import {
   getCidadesPrioritarias,
+  getCidadesSSG,
   cidadesPrioritariasMesmaRegiao
 } from "@/lib/data/cidades-prioritarias";
 import { findCity } from "@/lib/data/cities";
@@ -45,7 +46,7 @@ export const dynamic = "force-dynamic";
 const CALC_SLUGS = CALCULADORAS.map((c) => c.slug);
 
 export function generateStaticParams() {
-  const cidades = getCidadesPrioritarias();
+  const cidades = getCidadesSSG();
   const params: Array<{ slug: string; cidade: string }> = [];
   for (const c of CALC_SLUGS) {
     for (const cid of cidades) {

@@ -18,6 +18,7 @@ import {
 import { findCity } from "@/lib/data/cities";
 import {
   getCidadesPrioritarias,
+  getCidadesSSG,
   cidadesPrioritariasMesmaRegiao
 } from "@/lib/data/cidades-prioritarias";
 import { findProblema } from "@/lib/data/problemas-juridicos";
@@ -48,7 +49,7 @@ import { SITE } from "@/lib/config";
 export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
-  const cidades = getCidadesPrioritarias();
+  const cidades = getCidadesSSG();
   const params: Array<{ slug: string; cidade: string }> = [];
   for (const t of GLOSSARIO) {
     for (const c of cidades) {

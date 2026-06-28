@@ -16,6 +16,7 @@ import {
 } from "@/lib/data/templates-docs";
 import {
   getCidadesPrioritarias,
+  getCidadesSSG,
   cidadesPrioritariasMesmaRegiao
 } from "@/lib/data/cidades-prioritarias";
 import { findCity } from "@/lib/data/cities";
@@ -52,7 +53,7 @@ export const dynamic = "force-dynamic";
 const TEMPLATE_SLUGS = getAllTemplates().map((t) => t.slug);
 
 export function generateStaticParams() {
-  const cidades = getCidadesPrioritarias();
+  const cidades = getCidadesSSG();
   const params: Array<{ slug: string; cidade: string }> = [];
   for (const t of TEMPLATE_SLUGS) {
     for (const c of cidades) {

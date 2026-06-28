@@ -19,6 +19,7 @@ import {
 } from "@/lib/data/custos-juridicos";
 import {
   getCidadesPrioritarias,
+  getCidadesSSG,
   cidadesPrioritariasMesmaRegiao
 } from "@/lib/data/cidades-prioritarias";
 import { findCity } from "@/lib/data/cities";
@@ -58,7 +59,7 @@ export const dynamic = "force-dynamic";
 const CUSTO_SLUGS = CUSTOS.map((c) => c.slug);
 
 export function generateStaticParams() {
-  const cidades = getCidadesPrioritarias();
+  const cidades = getCidadesSSG();
   const params: Array<{ servico: string; cidade: string }> = [];
   for (const c of CUSTO_SLUGS) {
     for (const cid of cidades) {

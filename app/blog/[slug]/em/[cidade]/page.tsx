@@ -22,6 +22,7 @@ import {
 } from "@/lib/data/articles-cidades";
 import {
   getCidadesPrioritarias,
+  getCidadesSSG,
   cidadesPrioritariasMesmaRegiao
 } from "@/lib/data/cidades-prioritarias";
 import { findCity } from "@/lib/data/cities";
@@ -62,7 +63,7 @@ import { SITE } from "@/lib/config";
 export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
-  const cidades = getCidadesPrioritarias();
+  const cidades = getCidadesSSG();
   const params: Array<{ slug: string; cidade: string }> = [];
   for (const art of getArtigosLocalizaveis()) {
     for (const c of cidades) {

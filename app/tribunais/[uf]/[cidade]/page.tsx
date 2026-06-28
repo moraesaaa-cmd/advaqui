@@ -13,6 +13,7 @@ import {
 import { findTribunalUf, ORGAOS_FEDERAIS } from "@/lib/data/tribunais";
 import {
   getCidadesPrioritarias,
+  getCidadesSSG,
   cidadesPrioritariasMesmaRegiao
 } from "@/lib/data/cidades-prioritarias";
 import { findCity, findCapital } from "@/lib/data/cities";
@@ -51,7 +52,7 @@ import { breadcrumbSchema } from "@/lib/seo/schema";
 export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
-  const cidades = getCidadesPrioritarias();
+  const cidades = getCidadesSSG();
   return cidades.map((c) => ({
     uf: c.uf.toLowerCase(),
     cidade: c.slug

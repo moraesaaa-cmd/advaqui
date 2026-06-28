@@ -156,18 +156,13 @@ export async function GET(req: NextRequest) {
 
       const newReadingMinutes = estimateReadingMinutes(enhanced.body);
 
-      const updateData: Record<string, unknown> = {
-        body: enhanced.body,
-        reading_minutes: newReadingMinutes
-      };
-
-      if (enhanced.excerpt) {
-        updateData.excerpt = enhanced.excerpt.slice(0, 160);
-      }
-
       const { error } = await supabase
         .from("blog_articles")
-        .update(updateData)
+        .update({
+          body: enhanced.body,
+          reading_minutes: newReadingMinutes,
+          ...(enhanced.excerpt ? { excerpt: enhanced.excerpt.slice(0, 160) } : {})
+        })
         .eq("id", article.id);
 
       if (error) {

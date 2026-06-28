@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { TEMAS_STJ, findTemaStj } from "@/lib/data/jurisprudencia-temas";
 import { findCity } from "@/lib/data/cities";
-import { getCidadesPrioritarias, cidadesPrioritariasMesmaRegiao } from "@/lib/data/cidades-prioritarias";
+import { getCidadesPrioritarias, getCidadesSSG, cidadesPrioritariasMesmaRegiao } from "@/lib/data/cidades-prioritarias";
 import { findGuiaByArea } from "@/lib/data/guias";
 import { findProblema } from "@/lib/data/problemas-juridicos";
 import { findGlossarioTermo } from "@/lib/data/glossario";
@@ -42,7 +42,7 @@ export const dynamic = "force-dynamic";
 const MIN_DECISOES_INDEXAVEIS = 3;
 
 export function generateStaticParams() {
-  const cidades = getCidadesPrioritarias();
+  const cidades = getCidadesSSG();
   const params: Array<{ slug: string; cidade: string }> = [];
   for (const t of TEMAS_STJ) {
     for (const c of cidades) {

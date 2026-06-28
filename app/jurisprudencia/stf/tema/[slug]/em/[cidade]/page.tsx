@@ -12,6 +12,7 @@ import { TEMAS_STF, findTemaStf } from "@/lib/data/jurisprudencia-temas-stf";
 import { findCity } from "@/lib/data/cities";
 import {
   getCidadesPrioritarias,
+  getCidadesSSG,
   cidadesPrioritariasMesmaRegiao
 } from "@/lib/data/cidades-prioritarias";
 import { findGuiaByArea } from "@/lib/data/guias";
@@ -44,7 +45,7 @@ export const dynamic = "force-dynamic";
 const MIN_DECISOES_INDEXAVEIS = 3;
 
 export function generateStaticParams() {
-  const cidades = getCidadesPrioritarias();
+  const cidades = getCidadesSSG();
   const params: Array<{ slug: string; cidade: string }> = [];
   for (const t of TEMAS_STF) {
     for (const c of cidades) {

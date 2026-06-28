@@ -18,6 +18,7 @@ import {
   relatedProblemas
 } from "@/lib/data/problemas-juridicos";
 import { findCity, getAllCities, nearbyCities } from "@/lib/data/cities";
+import { getCidadesSSG } from "@/lib/data/cidades-prioritarias";
 import { findGlossarioTermo } from "@/lib/data/glossario";
 import { findTemaStj } from "@/lib/data/jurisprudencia-temas";
 import { findGuiaByArea } from "@/lib/data/guias";
@@ -57,7 +58,7 @@ export const dynamicParams = true;
 const PROBLEMA_SLUGS = PROBLEMAS.map((p) => p.slug);
 
 export function generateStaticParams() {
-  const capitals = getAllCities().filter((c) => c.isCapital);
+  const capitals = getCidadesSSG();
   const params: Array<{ slug: string; cidade: string }> = [];
   for (const slug of PROBLEMA_SLUGS) {
     for (const c of capitals) {

@@ -14,6 +14,7 @@ import { SPECIALTIES, findSpecialty } from "@/lib/data/specialties";
 import { SPECIALTY_INFO } from "@/lib/data/specialty-descriptions";
 import {
   getCidadesPrioritarias,
+  getCidadesSSG,
   cidadesPrioritariasMesmaRegiao
 } from "@/lib/data/cidades-prioritarias";
 import { findCity, nearbyCities } from "@/lib/data/cities";
@@ -52,7 +53,7 @@ import { SITE } from "@/lib/config";
 export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
-  const cidades = getCidadesPrioritarias();
+  const cidades = getCidadesSSG();
   const params: Array<{ area: string; cidade: string }> = [];
   for (const sp of SPECIALTIES) {
     for (const c of cidades) {

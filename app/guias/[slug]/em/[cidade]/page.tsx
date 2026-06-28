@@ -13,6 +13,7 @@ import {
 import { GUIAS, findGuia } from "@/lib/data/guias";
 import {
   getCidadesPrioritarias,
+  getCidadesSSG,
   cidadesPrioritariasMesmaRegiao
 } from "@/lib/data/cidades-prioritarias";
 import { findCity } from "@/lib/data/cities";
@@ -54,7 +55,7 @@ export const dynamic = "force-dynamic";
 const GUIA_SLUGS = GUIAS.map((g) => g.slug);
 
 export function generateStaticParams() {
-  const cidades = getCidadesPrioritarias();
+  const cidades = getCidadesSSG();
   const params: Array<{ slug: string; cidade: string }> = [];
   for (const g of GUIA_SLUGS) {
     for (const c of cidades) {
