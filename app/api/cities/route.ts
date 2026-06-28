@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAllCities } from "@/lib/data/cities";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
  * Endpoint server-side para busca de cidades.
@@ -82,7 +83,29 @@ export async function GET(req: Request) {
 
   const sorted = [...prefixCapitals, ...prefixOther, ...infixCapitals, ...infixOther].slice(0, limit);
 
-  return NextResponse.json(sorted, {
+  let enriched = sorted;
+  try {
+    const supabase = createAdminClient();
+    const { data: counts } = await supabase
+      .from("lawyers")
+      .select("target_city, target_uf")
+      .in("target_city", sorted.map((c) => c.name))
+      .eq("verified_oab", true);
+
+    if (counts) {
+      const countMap = new Map<string, number>();
+      for (const row of counts) {
+        const key = `${row.target_city}-${row.target_uf}`;
+        countMap.set(key, (countMap.get(key) || 0) + 1);
+      }
+      enriched = sorted.map((c) => ({
+        ...c,
+        lawyerCount: countMap.get(`${c.name}-${c.uf}`) || 0,
+      }));
+    }
+  } catch {}
+
+  return NextResponse.json(enriched, {
     headers: { "Cache-Control": "public, max-age=3600, s-maxage=3600" }
   });
 }

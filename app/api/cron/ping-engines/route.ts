@@ -8,25 +8,112 @@ export const maxDuration = 60;
 const CRON_SECRET = process.env.CRON_SECRET || "";
 const SITE_URL = "https://advaqui.com";
 
-const SITEMAPS = [
-  `${SITE_URL}/sitemap.xml`,
-  `${SITE_URL}/sitemap-advogados/sitemap.xml`,
-  `${SITE_URL}/sitemap-artigos/sitemap.xml`,
-  `${SITE_URL}/sitemap-problemas-cidades/sitemap.xml`,
+const KEY_PAGES = [
+  SITE_URL,
+  `${SITE_URL}/advogados`,
+  `${SITE_URL}/ferramentas`,
+  `${SITE_URL}/planos`,
+  `${SITE_URL}/para-advogados`,
+  `${SITE_URL}/blog`,
+  `${SITE_URL}/problemas-juridicos`,
+  `${SITE_URL}/calculadoras`,
+  `${SITE_URL}/glossario`,
+  `${SITE_URL}/jurisprudencia`,
+  `${SITE_URL}/guias`,
+  `${SITE_URL}/modelos`,
+  `${SITE_URL}/quanto-custa`,
+  `${SITE_URL}/triagem`,
+  `${SITE_URL}/diagnostico`,
+  `${SITE_URL}/recurso-de-multa`,
 ];
 
-const PING_TARGETS = [
-  (url: string) => `https://www.google.com/ping?sitemap=${encodeURIComponent(url)}`,
-  (url: string) => `https://www.bing.com/ping?sitemap=${encodeURIComponent(url)}`,
-  (url: string) => `http://www.google.com/webmasters/sitemaps/ping?sitemap=${encodeURIComponent(url)}`,
-];
+type PingResult = { target: string; ok: boolean; status: number };
 
-async function pingUrl(url: string): Promise<{ url: string; ok: boolean; status: number }> {
+async function submitIndexNow(
+  key: string,
+  urls: string[]
+): Promise<PingResult> {
   try {
-    const res = await fetch(url, { method: "GET", signal: AbortSignal.timeout(10000) });
-    return { url, ok: res.ok, status: res.status };
+    const res = await fetch("https://api.indexnow.org/indexnow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        host: "advaqui.com",
+        key,
+        keyLocation: `${SITE_URL}/${key}.txt`,
+        urlList: urls,
+      }),
+      signal: AbortSignal.timeout(15000),
+    });
+    return { target: "indexnow", ok: res.ok || res.status === 202, status: res.status };
   } catch {
-    return { url, ok: false, status: 0 };
+    return { target: "indexnow", ok: false, status: 0 };
+  }
+}
+
+async function submitBingIndexNow(
+  key: string,
+  urls: string[]
+): Promise<PingResult> {
+  try {
+    const res = await fetch("https://www.bing.com/indexnow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        host: "advaqui.com",
+        key,
+        keyLocation: `${SITE_URL}/${key}.txt`,
+        urlList: urls,
+      }),
+      signal: AbortSignal.timeout(15000),
+    });
+    return { target: "bing-indexnow", ok: res.ok || res.status === 202, status: res.status };
+  } catch {
+    return { target: "bing-indexnow", ok: false, status: 0 };
+  }
+}
+
+async function submitYandexIndexNow(
+  key: string,
+  urls: string[]
+): Promise<PingResult> {
+  try {
+    const res = await fetch("https://yandex.com/indexnow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        host: "advaqui.com",
+        key,
+        keyLocation: `${SITE_URL}/${key}.txt`,
+        urlList: urls,
+      }),
+      signal: AbortSignal.timeout(15000),
+    });
+    return { target: "yandex-indexnow", ok: res.ok || res.status === 202, status: res.status };
+  } catch {
+    return { target: "yandex-indexnow", ok: false, status: 0 };
+  }
+}
+
+async function submitNaverIndexNow(
+  key: string,
+  urls: string[]
+): Promise<PingResult> {
+  try {
+    const res = await fetch("https://searchadvisor.naver.com/indexnow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        host: "advaqui.com",
+        key,
+        keyLocation: `${SITE_URL}/${key}.txt`,
+        urlList: urls,
+      }),
+      signal: AbortSignal.timeout(15000),
+    });
+    return { target: "naver-indexnow", ok: res.ok || res.status === 202, status: res.status };
+  } catch {
+    return { target: "naver-indexnow", ok: false, status: 0 };
   }
 }
 
@@ -37,41 +124,38 @@ export async function GET(req: NextRequest) {
   }
 
   const startTime = Date.now();
-  const results: Array<{ url: string; ok: boolean; status: number }> = [];
+  const results: PingResult[] = [];
 
-  for (const sitemap of SITEMAPS) {
-    for (const buildUrl of PING_TARGETS) {
-      const pingResult = await pingUrl(buildUrl(sitemap));
-      results.push(pingResult);
-    }
+  const indexNowKey = process.env.INDEXNOW_KEY;
+  if (!indexNowKey) {
+    const durationMs = Date.now() - startTime;
+    const supabase = createAdminClient();
+    await supabase.from("agent_logs").insert({
+      agent_name: "ping_engines",
+      action: "ping_sitemaps",
+      status: "skipped",
+      details: { reason: "INDEXNOW_KEY não configurada no .env.local" },
+      items_processed: 0,
+      duration_ms: durationMs,
+    });
+    return NextResponse.json({
+      ok: true,
+      message: "INDEXNOW_KEY não configurada — configure no .env.local do VPS",
+      succeeded: 0,
+      failed: 0,
+      durationMs,
+    });
   }
 
-  // IndexNow para Bing/Yandex — notifica URLs recentes
-  const indexNowKey = process.env.INDEXNOW_KEY;
-  if (indexNowKey) {
-    try {
-      const res = await fetch("https://api.indexnow.org/indexnow", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          host: "advaqui.com",
-          key: indexNowKey,
-          keyLocation: `${SITE_URL}/${indexNowKey}.txt`,
-          urlList: [
-            SITE_URL,
-            `${SITE_URL}/advogados`,
-            `${SITE_URL}/ferramentas`,
-            `${SITE_URL}/planos`,
-            `${SITE_URL}/para-advogados`,
-            `${SITE_URL}/blog`,
-            `${SITE_URL}/problemas-juridicos`,
-          ],
-        }),
-      });
-      results.push({ url: "indexnow", ok: res.ok, status: res.status });
-    } catch {
-      results.push({ url: "indexnow", ok: false, status: 0 });
-    }
+  const submissions = await Promise.allSettled([
+    submitIndexNow(indexNowKey, KEY_PAGES),
+    submitBingIndexNow(indexNowKey, KEY_PAGES),
+    submitYandexIndexNow(indexNowKey, KEY_PAGES),
+    submitNaverIndexNow(indexNowKey, KEY_PAGES),
+  ]);
+
+  for (const s of submissions) {
+    results.push(s.status === "fulfilled" ? s.value : { target: "unknown", ok: false, status: 0 });
   }
 
   const succeeded = results.filter((r) => r.ok).length;
@@ -81,9 +165,9 @@ export async function GET(req: NextRequest) {
   const supabase = createAdminClient();
   await supabase.from("agent_logs").insert({
     agent_name: "ping_engines",
-    action: "ping_sitemaps",
-    status: failed === results.length ? "error" : "success",
-    details: { succeeded, failed, results },
+    action: "indexnow_submit",
+    status: succeeded > 0 ? "success" : "error",
+    details: { succeeded, failed, urls_submitted: KEY_PAGES.length, results },
     items_processed: succeeded,
     duration_ms: durationMs,
   });

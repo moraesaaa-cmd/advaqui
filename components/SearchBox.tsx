@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search, MapPin, ChevronRight, Loader2, Star, Globe } from "lucide-react";
 
-type Hit = { name: string; slug: string; uf: string; isCapital: boolean };
+type Hit = { name: string; slug: string; uf: string; isCapital: boolean; lawyerCount?: number };
 
 type GroupedHits = { uf: string; state: string; cities: Hit[] }[];
 
@@ -233,6 +233,11 @@ export function SearchBox() {
                         {r.isCapital && (
                           <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full shrink-0">
                             <Star className="w-2.5 h-2.5" aria-hidden /> capital
+                          </span>
+                        )}
+                        {typeof r.lawyerCount === "number" && r.lawyerCount > 0 && (
+                          <span className="text-[10px] font-medium text-brand-deep/70 bg-brand-deep/8 px-1.5 py-0.5 rounded-full shrink-0">
+                            {r.lawyerCount} adv.
                           </span>
                         )}
                       </span>

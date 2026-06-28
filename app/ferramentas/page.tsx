@@ -32,7 +32,7 @@ import {
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { SITE } from "@/lib/config";
+import { SITE, PLAN } from "@/lib/config";
 
 export const metadata = buildMetadata({
   title: "Ferramentas Jurídicas Gratuitas",
@@ -402,7 +402,7 @@ export default function FerramentasPage() {
       </section>
 
       <div className="space-y-14">
-        {GROUPS.map((group) => (
+        {GROUPS.map((group, groupIdx) => (
           <section key={group.title}>
             <div className="flex items-center gap-3 mb-5">
               <div>
@@ -482,6 +482,62 @@ export default function FerramentasPage() {
                 );
               })}
             </div>
+
+            {/* Cross-sell: após "Entender e pesquisar" */}
+            {groupIdx === 2 && (
+              <div
+                className="mt-8 rounded-2xl border p-6 md:p-8 flex flex-col md:flex-row items-center gap-5"
+                style={{ borderColor: "rgba(200,162,74,0.3)", background: "rgba(200,162,74,0.04)" }}
+              >
+                <div className="flex-1">
+                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: GOLD }}>
+                    Precisa de um advogado?
+                  </p>
+                  <p className="text-brand-ink font-display font-semibold text-lg">
+                    Usou a ferramenta? Encontre o advogado certo na sua cidade
+                  </p>
+                  <p className="text-sm text-brand-ink/60 mt-1">
+                    Pesquise por área de atuação e cidade — contato direto, sem intermediário.
+                  </p>
+                </div>
+                <Link
+                  href="/advogados"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-105 shrink-0"
+                  style={{ background: "#C8A24A", color: "#0F1B2D" }}
+                >
+                  Buscar advogado
+                  <ArrowRight className="w-4 h-4" aria-hidden />
+                </Link>
+              </div>
+            )}
+
+            {/* Cross-sell: após "Checklists e triagens" */}
+            {groupIdx === 3 && (
+              <div
+                className="mt-8 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-5"
+                style={{ background: "linear-gradient(135deg, #0F1B2D 0%, #1B2D49 100%)" }}
+              >
+                <div className="flex-1 text-white">
+                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#E3C078" }}>
+                    Plano Premium
+                  </p>
+                  <p className="font-display font-semibold text-lg">
+                    Recurso de multa com IA + revisor de petições + até 10 cidades
+                  </p>
+                  <p className="text-sm mt-1" style={{ color: "#9FB0C6" }}>
+                    Tudo por {PLAN.priceLabel}/mês — ativação em até {PLAN.activationHours}h.
+                  </p>
+                </div>
+                <Link
+                  href="/planos"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-105 shrink-0"
+                  style={{ background: "#C8A24A", color: "#0F1B2D" }}
+                >
+                  Ver planos
+                  <ArrowRight className="w-4 h-4" aria-hidden />
+                </Link>
+              </div>
+            )}
           </section>
         ))}
       </div>
@@ -497,14 +553,23 @@ export default function FerramentasPage() {
         <p className="text-brand-ink/70 mt-2 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
           Quem usa uma checklist ou triagem está a um passo de contratar. Monte seu perfil e receba contatos diretos.
         </p>
-        <Link
-          href="/para-advogados"
-          className="inline-flex items-center gap-2 mt-5 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-105"
-          style={{ background: "#C8A24A", color: "#0F1B2D" }}
-        >
-          Criar meu perfil grátis
-          <ArrowRight className="w-4 h-4" aria-hidden />
-        </Link>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-5">
+          <Link
+            href="/cadastro"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-105"
+            style={{ background: "#C8A24A", color: "#0F1B2D" }}
+          >
+            Criar meu perfil grátis
+            <ArrowRight className="w-4 h-4" aria-hidden />
+          </Link>
+          <Link
+            href="/planos"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-semibold border transition hover:bg-brand-line/40"
+            style={{ borderColor: "#E6E1D6", color: "#A0843A" }}
+          >
+            Ver plano Premium
+          </Link>
+        </div>
       </section>
 
       <p className="text-xs text-brand-ink/50 mt-12 max-w-2xl">

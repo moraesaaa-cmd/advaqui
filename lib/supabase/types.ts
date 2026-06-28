@@ -98,6 +98,9 @@ export type LawyerRow = {
   allow_questions?: boolean | null;
   accent_color?: string | null;
   header_layout?: string | null;
+
+  profile_score?: number | null;
+  profile_suggestions?: string[] | null;
 };
 
 export type MessageSource = "contact_form" | "support" | "admin_to_user";
