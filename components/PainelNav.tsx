@@ -4,28 +4,38 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, FileText, HelpCircle, Palette, CreditCard, BookOpen, Users, Bot, User, BarChart3 } from "lucide-react";
 
-const TABS = [
-  { href: "/painel", label: "Dashboard", Icon: BarChart3, exact: true },
+type Tab = {
+  href: string;
+  label: string;
+  Icon: typeof BarChart3;
+  exact?: boolean;
+  adminOnly?: boolean;
+};
+
+const TABS: Tab[] = [
+  { href: "/painel", label: "Dashboard", Icon: BarChart3, exact: true, adminOnly: true },
   { href: "/painel/advogado", label: "Meu painel", Icon: LayoutDashboard },
   { href: "/painel/meu-perfil", label: "Meu perfil", Icon: User },
   { href: "/painel/pagamento", label: "Pagamento", Icon: CreditCard },
   { href: "/painel/artigos", label: "Artigos", Icon: FileText },
-  { href: "/painel/blog", label: "Blog", Icon: BookOpen },
   { href: "/painel/perguntas", label: "Perguntas", Icon: HelpCircle },
   { href: "/painel/aparencia", label: "Aparência", Icon: Palette },
-  { href: "/painel/leads", label: "Leads", Icon: Users },
-  { href: "/painel/agentes", label: "Agentes", Icon: Bot }
+  { href: "/painel/blog", label: "Blog", Icon: BookOpen, adminOnly: true },
+  { href: "/painel/leads", label: "Leads", Icon: Users, adminOnly: true },
+  { href: "/painel/agentes", label: "Agentes", Icon: Bot, adminOnly: true },
 ];
 
-export function PainelNav() {
+export function PainelNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
   const active = (href: string, exact?: boolean) =>
     exact ? pathname === href : pathname.startsWith(href);
 
+  const visibleTabs = isAdmin ? TABS : TABS.filter((t) => !t.adminOnly);
+
   return (
     <div className="sticky top-16 z-30 bg-brand-bg/95 backdrop-blur border-b border-brand-line">
       <nav className="container-tight flex items-center gap-1 overflow-x-auto" aria-label="Painel">
-        {TABS.map((t) => {
+        {visibleTabs.map((t) => {
           const on = active(t.href, t.exact);
           return (
             <Link
