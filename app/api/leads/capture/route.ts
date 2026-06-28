@@ -191,7 +191,7 @@ export async function POST(req: Request) {
         resumo: resumo || null,
         origem: origem || null,
         ferramenta: ferramenta || null,
-        metadata: metadata,
+        ...(metadata ? { metadata } : {}),
       })
       .select("id")
       .single();
