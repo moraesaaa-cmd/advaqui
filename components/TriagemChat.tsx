@@ -20,6 +20,8 @@ interface TriageResult {
   uf?: string;
   urgencia?: string;
   resumo?: string;
+  nome?: string;
+  telefone?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -286,12 +288,20 @@ export function TriagemChat() {
         .join(" | ")
         .slice(0, 2000);
 
+    // Sem nome nem telefone o lead nao e contactavel e o /api/leads/capture
+    // rejeita (422). O prompt da IA agora coleta nome + WhatsApp; so gravamos
+    // quando ha ao menos um contato — caso contrario o lead seria perdido de
+    // qualquer forma e gerar 422 silencioso nao ajuda ninguem.
+    const nome = (t.nome || "").trim();
+    const telefone = (t.telefone || "").trim();
+    if (!nome && !telefone) return;
+
     fetch("/api/leads/capture", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        nome: "",
-        telefone: "",
+        nome,
+        telefone,
         email: "",
         cidade: t.cidade || "",
         uf: t.uf || "",
