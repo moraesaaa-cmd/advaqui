@@ -5,7 +5,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { AtivarPremiumCTA } from "@/components/PlanosCTAs";
 
 export const metadata = buildMetadata({
-  title: "Planos — apareça primeiro na sua cidade",
+  title: "Plano Premium para advogados — apareça primeiro na sua cidade",
   description:
     `Plano premium do AdvAqui por ${PLAN.priceLabel}/mês. Apareça no topo das buscas da sua cidade, foto em destaque, OAB verificada, até 10 cidades. Sem fidelidade.`,
   path: "/planos"

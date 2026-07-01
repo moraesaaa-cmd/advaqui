@@ -42,18 +42,18 @@ function clamp(v: unknown, n: number): string {
 
 /** Traduz código de erro da IA para mensagem amigável em português. */
 function mensagemErroIA(erro?: string): string {
-  if (!erro) return "Não foi possível gerar com IA agora. Use o gerador padrão abaixo.";
+  if (!erro) return "Não foi possível gerar agora. Use o gerador padrão abaixo.";
   if (erro === "sem_chave")
-    return "O serviço de inteligência artificial está temporariamente indisponível. Use o gerador padrão abaixo.";
+    return "O serviço está temporariamente indisponível. Use o gerador padrão abaixo.";
   if (erro === "vazio")
-    return "A IA não conseguiu gerar o texto. Tente novamente ou use o gerador padrão.";
+    return "Não foi possível gerar o texto agora. Tente novamente ou use o gerador padrão.";
   if (/timeout|abort/i.test(erro))
     return "A geração demorou mais que o esperado. Tente novamente em alguns instantes.";
   if (/_429/.test(erro))
     return "O serviço está com muita demanda no momento. Aguarde um minuto e tente novamente.";
   if (/_5\d{2}/.test(erro))
-    return "O serviço de IA está instável no momento. Tente novamente em alguns instantes.";
-  return "Não foi possível gerar com IA agora. Use o gerador padrão abaixo.";
+    return "O serviço está instável no momento. Tente novamente em alguns instantes.";
+  return "Não foi possível gerar agora. Use o gerador padrão abaixo.";
 }
 
 export async function POST(req: Request) {

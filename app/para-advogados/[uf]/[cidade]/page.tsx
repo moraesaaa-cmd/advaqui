@@ -138,7 +138,7 @@ export default function ParaAdvogadosCidadePage({
                 Criar meu perfil grátis
               </Link>
               <Link
-                href="/lp/advogado-premium#assinar"
+                href="/planos"
                 className="btn-ghost text-white border border-white/25 hover:bg-white/10 inline-flex items-center gap-2"
               >
                 Ver o plano de destaque ({PLAN.priceLabel}/mês)
@@ -304,7 +304,7 @@ export default function ParaAdvogadosCidadePage({
               ))}
             </ul>
             <Link
-              href="/lp/advogado-premium#assinar"
+              href="/planos"
               className="btn-accent w-full justify-center inline-flex items-center gap-2 mt-6"
             >
               Ativar destaque

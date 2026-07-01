@@ -414,7 +414,7 @@ export default async function HomePage() {
               anonHref="/cadastro"
             />
             <Link
-              href="/lp/advogado-premium"
+              href="/planos"
               className="inline-flex items-center justify-center font-semibold rounded-xl px-6 py-3.5 whitespace-nowrap border-2 text-white hover:bg-white/10 transition"
               style={{ borderColor: "rgba(200,162,74,0.4)" }}
             >

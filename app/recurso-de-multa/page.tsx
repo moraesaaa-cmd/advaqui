@@ -88,7 +88,7 @@ export default function RecursoMultaPage() {
         </div>
       </header>
 
-      {/* Destaque — versão com IA */}
+      {/* Destaque — versão completa (12+ páginas) */}
       <section
         className="rounded-2xl text-white p-6 md:p-7 mb-6 relative overflow-hidden"
         style={{ background: "linear-gradient(135deg,#0F1B2D 0%,#16263F 60%,#1B3A5C 100%)" }}
@@ -99,13 +99,13 @@ export default function RecursoMultaPage() {
               className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full mb-3"
               style={{ background: "rgba(200,162,74,0.16)", color: "#E3C078", border: "1px solid rgba(200,162,74,0.35)" }}
             >
-              Novo: recurso com Inteligência Artificial
+Novo: recurso completo em minutos
             </span>
             <h2 className="font-display text-xl md:text-2xl font-semibold tracking-tight leading-tight mb-2">
               Quer um recurso mais completo, com 12+ páginas e fundamentação aprofundada?
             </h2>
             <p className="text-[14px] leading-relaxed" style={{ color: "#B9C4D6" }}>
-              A IA gera uma peça densa, com teses específicas para sua infração, preliminares,
+              Gere uma peça densa, com teses específicas para sua infração, preliminares,
               mérito aprofundado e pedidos — pronta para revisar e protocolar.
             </p>
           </div>
@@ -115,7 +115,7 @@ export default function RecursoMultaPage() {
               className="inline-flex items-center justify-center gap-2 text-[14px] font-bold px-5 py-3 rounded-xl transition hover:brightness-105"
               style={{ background: "#C8A24A", color: "#0F1B2D" }}
             >
-              Gerar com IA — R$ 9,90
+Gerar recurso completo — R$ 9,90
             </a>
             <span className="text-[11px] text-center" style={{ color: "#7E8BA1" }}>
               Até 3 recursos por compra

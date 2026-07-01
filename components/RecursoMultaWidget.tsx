@@ -206,7 +206,7 @@ export function RecursoMultaWidget() {
       });
       const json = await res.json();
       if (json.ok && json.texto) setAiTexto(json.texto);
-      else setAiErro(json.mensagem || "Não foi possível gerar com IA. Use o modelo padrão.");
+      else setAiErro(json.mensagem || "Não foi possível gerar agora. Use o modelo padrão.");
     } catch {
       setAiErro("Falha de conexão. Use o modelo padrão abaixo.");
     } finally {
@@ -366,18 +366,18 @@ export function RecursoMultaWidget() {
         >
           {aiLoading ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" aria-hidden /> Gerando com IA...
+              <Loader2 className="w-4 h-4 animate-spin" aria-hidden /> Gerando...
             </>
           ) : (
             <>
-              <Sparkles className="w-4 h-4" aria-hidden /> Gerar peça completa com IA
+              <Sparkles className="w-4 h-4" aria-hidden /> Gerar peça completa
             </>
           )}
         </button>
         <p className="text-[11px] text-brand-ink/50 mt-1.5 text-center">
-          A IA monta a peça com a fundamentação do CTB a partir dos seus dados.
+          A peça é montada com a fundamentação do CTB a partir dos seus dados.
           Sempre revise antes de protocolar. Já existe o modelo padrão abaixo,
-          mesmo sem IA.
+          disponível a qualquer momento.
         </p>
         {aiErro && (
           <p className="mt-2 rounded-lg border-l-4 border-amber-400 bg-amber-50 p-2.5 text-xs text-amber-900">
@@ -392,7 +392,7 @@ export function RecursoMultaWidget() {
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-ink/55 inline-flex items-center gap-1.5">
             {aiTexto ? (
               <>
-                <Sparkles className="w-3.5 h-3.5 text-brand-accent2" aria-hidden /> Recurso gerado por IA
+                <Sparkles className="w-3.5 h-3.5 text-brand-accent2" aria-hidden /> Recurso completo gerado
               </>
             ) : (
               "Recurso gerado (modelo)"

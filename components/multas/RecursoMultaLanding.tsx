@@ -95,7 +95,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Como eu gero o meu recurso?",
-    a: "Depois do pagamento via Pix e do cadastro, o seu painel é liberado. Lá você preenche os dados da multa e a inteligência artificial gera o recurso na hora, pronto para baixar, imprimir e protocolar."
+    a: "Depois do pagamento via Pix e do cadastro, o seu painel é liberado. Lá você preenche os dados da multa e o recurso é gerado na hora, pronto para baixar, imprimir e protocolar."
   },
   {
     q: "O recurso garante o cancelamento da multa?",
@@ -103,7 +103,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "O que está incluso no plano de R$9,90?",
-    a: "Pagamento único, sem renovação automática, que libera o seu painel para gerar até 3 recursos completos com a IA, na hora, com a fundamentação do CTB, das súmulas do STJ e das Resoluções do CONTRAN."
+    a: "Pagamento único, sem renovação automática, que libera o seu painel para gerar até 3 recursos completos na hora, com a fundamentação do CTB, das súmulas do STJ e das Resoluções do CONTRAN."
   },
   {
     q: "Preciso de advogado para recorrer de multa?",
@@ -625,7 +625,7 @@ export function RecursoMultaLanding(): ReactNode {
                   margin: "0 0 22px"
                 }}
               >
-                Multado injustamente? Gere o seu recurso com IA.
+                Multado injustamente? Gere o seu recurso completo.
               </h1>
               <p
                 style={{
@@ -636,7 +636,7 @@ export function RecursoMultaLanding(): ReactNode {
                   margin: "0 0 32px"
                 }}
               >
-                Responda algumas perguntas, a inteligência artificial analisa o seu caso e gera uma
+                Responda algumas perguntas, o sistema analisa o seu caso e gera uma
                 peça técnica com a tese e a fundamentação corretas. Conteste os pontos da sua CNH e
                 questione o que considera indevido, com os fundamentos certos.
               </p>
@@ -683,7 +683,7 @@ export function RecursoMultaLanding(): ReactNode {
               >
                 {[
                   { v: "~2 min", l: "Para analisar o seu caso" },
-                  { v: "Em segundos", l: "A peça gerada pela IA" },
+                  { v: "Em segundos", l: "A peça gerada automaticamente" },
                   { v: "3 fases", l: "Defesa · JARI · CETRAN" }
                 ].map((s) => (
                   <div key={s.l}>
@@ -758,7 +758,7 @@ export function RecursoMultaLanding(): ReactNode {
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {[
                   { t: "Conte sobre a multa", s: "Infração, fase e alguns dados." },
-                  { t: "A IA analisa o caso", s: "Identifica as teses cabíveis na hora." },
+                  { t: "O sistema analisa o caso", s: "Identifica as teses cabíveis na hora." },
                   { t: "Gere o recurso no painel", s: "Pronto para baixar e protocolar." }
                 ].map((it, i) => (
                   <div key={it.t} style={{ display: "flex", gap: 13, alignItems: "flex-start" }}>
@@ -826,7 +826,7 @@ export function RecursoMultaLanding(): ReactNode {
             <span>✓ A tese certa para a sua infração</span>
             <span>✓ Artigos, súmulas e Resoluções citados</span>
             <span>✓ Defenda os pontos da sua CNH</span>
-            <span>✓ Peça gerada em segundos pela IA, no seu painel</span>
+            <span>✓ Peça gerada em segundos, no seu painel</span>
           </div>
         </div>
 
@@ -1220,7 +1220,7 @@ export function RecursoMultaLanding(): ReactNode {
                       margin: "0 auto 22px"
                     }}
                   >
-                    A IA cruzou os dados da sua autuação com o CTB, as súmulas do STJ e as Resoluções
+                    O sistema cruzou os dados da sua autuação com o CTB, as súmulas do STJ e as Resoluções
                     do CONTRAN. Veja o que ela encontrou:
                   </p>
                 </div>
@@ -1293,7 +1293,7 @@ export function RecursoMultaLanding(): ReactNode {
                     textAlign: "center"
                   }}
                 >
-                  A decisão final é do órgão de trânsito. A IA monta a peça com os fundamentos
+                  A decisão final é do órgão de trânsito. O sistema monta a peça com os fundamentos
                   certos para o seu caso, pronta para você revisar e protocolar.
                 </div>
               </div>
@@ -1382,7 +1382,7 @@ export function RecursoMultaLanding(): ReactNode {
                   <div style={{ display: "flex", flexDirection: "column", gap: 11, fontSize: 14 }}>
                     {[
                       <>Até <strong>3 recursos</strong> completos</>,
-                      "Gerados pela IA com a tese certa",
+                      "Gerados automaticamente com a tese certa",
                       "Artigos, súmulas e Resoluções citados",
                       "No seu painel, prontos para baixar"
                     ].map((t, i) => (
@@ -1671,7 +1671,7 @@ export function RecursoMultaLanding(): ReactNode {
                       margin: "0 auto 22px"
                     }}
                   >
-                    A IA está montando a peça completa com a fundamentação do seu caso.
+                    O sistema está montando a peça completa com a fundamentação do seu caso.
                     Incluso no seu plano Premium AdvAqui.
                   </p>
                 ) : (
@@ -1697,7 +1697,7 @@ export function RecursoMultaLanding(): ReactNode {
                       }}
                     >
                       Tudo acontece no seu painel: assim que o acesso for liberado, você gera os seus
-                      recursos (até 3) na hora, com a IA. Guarde o link abaixo para voltar quando quiser.
+                      recursos (até 3) na hora. Guarde o link abaixo para voltar quando quiser.
                     </p>
 
                     <a
@@ -2054,7 +2054,7 @@ export function RecursoMultaLanding(): ReactNode {
               <div style={{ display: "flex", flexDirection: "column", gap: 11, fontSize: 14 }}>
                 {[
                   "Até 3 recursos completos",
-                  "Gerados na hora pela IA jurídica",
+                  "Gerados na hora, automaticamente",
                   "Você mesmo gera no seu painel",
                   "Sem renovação automática"
                 ].map((t) => (
@@ -2211,7 +2211,7 @@ export function RecursoMultaLanding(): ReactNode {
               </div>
               <p style={{ fontSize: 13, lineHeight: 1.6, margin: "0 0 12px" }}>
                 Recurso de multa de trânsito on-line: análise gratuita e a peça pronta, gerada por
-                IA com a fundamentação do CTB. Um serviço AdvAqui.
+                Recurso com a fundamentação do CTB. Um serviço AdvAqui.
               </p>
               <a
                 href="https://advaqui.com/criar-perfil"
