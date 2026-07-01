@@ -29,7 +29,11 @@ function useAuthKind(): AuthState {
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/auth/me", { cache: "no-store" })
+    // Timeout: se o servidor não responder em 6s, cai em "anonymous" — evita
+    // o CTA ficar preso em "loading" (invisível) indefinidamente.
+    const ctrl = new AbortController();
+    const to = setTimeout(() => ctrl.abort(), 6000);
+    fetch("/api/auth/me", { cache: "no-store", signal: ctrl.signal })
       .then((res) => (res.ok ? res.json() : { kind: "anonymous" }))
       .then(
         (data: {
@@ -53,9 +57,12 @@ function useAuthKind(): AuthState {
       )
       .catch(() => {
         if (!cancelled) setAuth({ kind: "anonymous" });
-      });
+      })
+      .finally(() => clearTimeout(to));
     return () => {
       cancelled = true;
+      clearTimeout(to);
+      ctrl.abort();
     };
   }, []);
 

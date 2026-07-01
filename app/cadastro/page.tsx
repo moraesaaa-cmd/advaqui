@@ -812,8 +812,10 @@ export default function CadastroPage() {
                   className="mt-1"
                 />
                 <span className="text-sm text-brand-ink/80">
-                  Consinto com o tratamento dos meus dados pessoais conforme a LGPD (Lei
-                  13.709/2018) para as finalidades descritas na Política de privacidade.
+                  Consinto com o tratamento e a exibição pública dos meus dados
+                  profissionais (nome, OAB, contatos e áreas) no diretório, conforme a
+                  LGPD (Lei 13.709/2018). Posso pedir acesso, correção ou exclusão a
+                  qualquer momento, como descrito na Política de privacidade.
                 </span>
               </label>
               {errors.acceptLgpd && (
