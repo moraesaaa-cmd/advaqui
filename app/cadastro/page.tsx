@@ -474,6 +474,19 @@ export default function CadastroPage() {
                 />
                 {errors.phone && <p className="text-red-600 text-xs mt-1">{errors.phone}</p>}
               </div>
+              <div>
+                <label htmlFor="r-cpf" className="label">CPF (opcional)</label>
+                <input
+                  id="r-cpf"
+                  className="input"
+                  value={form.cpf}
+                  onChange={(e) => u("cpf", e.target.value.replace(/\D/g, "").slice(0, 11))}
+                  inputMode="numeric"
+                  placeholder="Somente números"
+                  autoComplete="off"
+                />
+                {errors.cpf && <p className="text-red-600 text-xs mt-1">{errors.cpf}</p>}
+              </div>
             </div>
             <div>
               <label htmlFor="r-email" className="label">E-mail</label>

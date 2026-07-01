@@ -301,7 +301,7 @@ export default async function ProfessionalPage({
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 text-white text-[15px] font-semibold px-[26px] py-[13px] rounded-[10px]"
-                  style={{ background: "#25623F" }}
+                  style={{ background: "#25D366" }}
                 >
                   <MessageCircle className="w-4 h-4" aria-hidden /> Falar agora
                 </a>
@@ -680,7 +680,7 @@ export default async function ProfessionalPage({
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 text-white text-[14.5px] font-semibold py-3 rounded-[10px] mt-[18px]"
-                  style={{ background: "#25623F" }}
+                  style={{ background: "#25D366" }}
                 >
                   <MessageCircle className="w-4 h-4" aria-hidden /> Falar no WhatsApp
                 </a>

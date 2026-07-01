@@ -274,7 +274,7 @@ export default function PlanosPage() {
                 </div>
                 <div className="flex gap-2">
                   <span className="flex-1 text-center text-[13px] font-semibold text-white py-2.5 rounded-[9px]" style={{ background: "#0F1B2D" }}>📞 Ligar</span>
-                  <span className="flex-1 text-center text-[13px] font-semibold text-white py-2.5 rounded-[9px]" style={{ background: "#25623F" }}>💬 WhatsApp</span>
+                  <span className="flex-1 text-center text-[13px] font-semibold text-white py-2.5 rounded-[9px]" style={{ background: "#25D366" }}>💬 WhatsApp</span>
                 </div>
               </div>
             </div>
