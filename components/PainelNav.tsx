@@ -34,7 +34,8 @@ export function PainelNav({ isAdmin = false }: { isAdmin?: boolean }) {
 
   return (
     <div className="sticky top-16 z-30 bg-brand-bg/95 backdrop-blur border-b border-brand-line">
-      <nav className="container-tight flex items-center gap-1 overflow-x-auto" aria-label="Painel">
+      <div className="relative">
+      <nav className="container-tight flex items-center gap-1 overflow-x-auto scroll-smooth" aria-label="Painel">
         {visibleTabs.map((t) => {
           const on = active(t.href, t.exact);
           return (
@@ -43,7 +44,7 @@ export function PainelNav({ isAdmin = false }: { isAdmin?: boolean }) {
               href={t.href}
               aria-current={on ? "page" : undefined}
               className={`relative inline-flex items-center gap-2 px-3.5 py-3 text-sm font-medium whitespace-nowrap transition ${
-                on ? "text-brand-ink" : "text-brand-ink/55 hover:text-brand-ink"
+                on ? "text-brand-ink" : "text-brand-ink/70 hover:text-brand-ink"
               }`}
             >
               <t.Icon className="w-4 h-4" aria-hidden />
@@ -58,6 +59,11 @@ export function PainelNav({ isAdmin = false }: { isAdmin?: boolean }) {
           );
         })}
       </nav>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-brand-bg to-transparent sm:hidden"
+        />
+      </div>
     </div>
   );
 }

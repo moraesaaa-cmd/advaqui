@@ -12,7 +12,13 @@ export function GeoPersonalize() {
   useEffect(() => {
     try {
       const raw = localStorage.getItem("advaqui_last_city");
-      if (raw) setCity(JSON.parse(raw));
+      if (!raw) return;
+      const p = JSON.parse(raw);
+      // Só usa se tiver os 3 campos — evita quebrar o render (city.uf.toLowerCase)
+      // quando o valor salvo está corrompido/incompleto.
+      if (p && typeof p.name === "string" && typeof p.slug === "string" && typeof p.uf === "string") {
+        setCity(p);
+      }
     } catch {}
   }, []);
 

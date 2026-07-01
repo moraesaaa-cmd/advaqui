@@ -60,7 +60,7 @@ const WALL_B = [
 
 function TestimonialCard({ t }: { t: (typeof WALL_A)[number] }) {
   return (
-    <div className="w-[330px] shrink-0 bg-white border border-brand-line rounded-2xl p-5">
+    <div className="w-[min(330px,88vw)] shrink-0 bg-white border border-brand-line rounded-2xl p-5">
       <div className="text-[13px] mb-2.5" style={{ color: "#C8A24A" }}>★★★★★</div>
       <p className="text-sm leading-relaxed mb-3" style={{ color: "#3C485A" }}>{t.text}</p>
       <div className="flex items-center gap-2.5">
@@ -292,9 +292,9 @@ export default function PlanosPage() {
               Marketplaces jurídicos no Brasil
             </h2>
           </div>
-          <div className="bg-white border border-brand-line rounded-2xl overflow-hidden">
+          <div className="bg-white border border-brand-line rounded-2xl overflow-x-auto">
             <div
-              className="grid grid-cols-[1.7fr_1fr_1fr_1fr] text-white px-[22px] py-[15px] text-[13px] font-semibold"
+              className="grid grid-cols-[1.7fr_1fr_1fr_1fr] min-w-[560px] text-white px-[22px] py-[15px] text-[13px] font-semibold"
               style={{ background: "#0F1B2D" }}
             >
               <span>Item</span>
@@ -305,7 +305,7 @@ export default function PlanosPage() {
             {COMPARE.map((c) => (
               <div
                 key={c.item}
-                className="grid grid-cols-[1.7fr_1fr_1fr_1fr] px-[22px] py-3.5 text-sm items-center"
+                className="grid grid-cols-[1.7fr_1fr_1fr_1fr] min-w-[560px] px-[22px] py-3.5 text-sm items-center"
                 style={{ borderTop: "1px solid #EDEBE3" }}
               >
                 <span style={{ color: "#1A2433" }}>{c.item}</span>

@@ -341,12 +341,6 @@ export default function CadastroPage() {
       return;
     }
 
-    // Aguarda 1800ms pra trigger handle_new_user() criar a linha em
-    // public.lawyers (a função roda síncrona no Postgres mas o cliente
-    // pode receber a resposta antes do commit ser visível). Margem maior
-    // evita o race em que o signIn ocorre antes de a linha existir.
-    await new Promise((resolve) => setTimeout(resolve, 1800));
-
     // Garante sessão ativa antes de redirecionar. Se Confirm Email
     // estiver desativado, signUp já retorna data.session, mas em alguns
     // cenários (race) pode vir null. Forçamos signIn como fallback.
@@ -373,6 +367,20 @@ export default function CadastroPage() {
         router.refresh();
         return;
       }
+    }
+
+    // Espera a linha em public.lawyers existir (trigger handle_new_user),
+    // com retry/backoff — substitui a espera fixa de 1800ms e evita o
+    // "perfil não encontrado" ao cair no painel sob carga. Retorna assim
+    // que o perfil responde OK (normalmente em <1s).
+    for (let i = 0; i < 6; i++) {
+      try {
+        const r = await fetch("/api/painel/profile", { cache: "no-store" });
+        if (r.ok) break;
+      } catch {
+        // rede instável — tenta de novo no próximo ciclo
+      }
+      await new Promise((res) => setTimeout(res, 600));
     }
 
     // AUTOMÁTICO: no instante do cadastro, dispara a revalidação das páginas

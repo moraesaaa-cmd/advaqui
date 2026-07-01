@@ -464,7 +464,8 @@ export function TriagemChat() {
         bg-white border border-brand-line
         animate-in"
       role="dialog"
-      aria-label="Chat de triagem jurídica"
+      aria-modal="true"
+      aria-label="Advogado Online — atendimento AdvAqui"
     >
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-brand-ink text-white shrink-0">
@@ -494,7 +495,13 @@ export function TriagemChat() {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 overscroll-contain bg-brand-bg">
+      <div
+        className="flex-1 overflow-y-auto px-4 py-3 space-y-3 overscroll-contain bg-brand-bg"
+        role="log"
+        aria-live="polite"
+        aria-atomic="false"
+        aria-label="Mensagens do chat"
+      >
         {messages.map((msg) => (
           <div
             key={msg.id}

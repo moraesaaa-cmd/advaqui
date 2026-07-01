@@ -162,7 +162,7 @@ export function SearchBox() {
             onFocus={() => setOpen(true)}
             onKeyDown={handleKeyDown}
             placeholder="Digite sua cidade — ex: São Paulo, Curitiba, Salvador…"
-            className="flex-1 px-5 py-4 text-base text-brand-ink placeholder:text-brand-ink/40 outline-none"
+            className="flex-1 px-5 py-4 text-base text-brand-ink placeholder:text-brand-ink/60 outline-none"
             autoComplete="off"
             aria-label="Buscar advogados pela cidade"
             aria-autocomplete="list"
