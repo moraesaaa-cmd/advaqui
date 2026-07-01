@@ -187,6 +187,7 @@ export async function POST(req: NextRequest) {
     // Clean the response: remove the JSON markers from the display message
     const displayContent = content
       .replace(/%%%TRIAGE_JSON%%%[\s\S]*?%%%END_TRIAGE_JSON%%%/, "")
+      .replace(/\n{3,}/g, "\n\n")
       .trim();
 
     return NextResponse.json({
