@@ -43,6 +43,7 @@ const COLUMNS: Array<{ title: string; links: Array<{ href: string; label: string
       { href: "/cadastro", label: "Cadastrar advogado" },
       { href: "/blog", label: "Blog" },
       { href: "/marketing-juridico", label: "Marketing jurídico" },
+      { href: "/selo", label: "Selo AdvAqui" },
       { href: "/sobre", label: "Sobre" },
       { href: "/faq", label: "FAQ" },
       { href: "/contato", label: "Contato" }

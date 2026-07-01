@@ -26,7 +26,9 @@ import {
   Clock,
   Inbox,
   UserX,
-  KeyRound
+  KeyRound,
+  Pencil,
+  ChevronDown
 } from "lucide-react";
 import { formatDate } from "@/lib/utils/format";
 import { toast } from "@/components/Toast";
@@ -384,6 +386,10 @@ export default function AdminPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [fullData, setFullData] = useState<Record<string, unknown> | null>(null);
   const [loadingFull, setLoadingFull] = useState(false);
+
+  // Estado puramente visual: qual linha da lista de cadastros está expandida
+  // pelo botão "Gerenciar" (revela todas as ações da linha).
+  const [manageId, setManageId] = useState<string | null>(null);
 
   const viewFullLawyer = async (id: string) => {
     if (expandedId === id) {
@@ -848,7 +854,7 @@ export default function AdminPage() {
             </button>
           </div>
         </div>
-        <div className="relative mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="relative mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             {
               label: "Cadastros",
@@ -885,19 +891,19 @@ export default function AdminPage() {
           ].map(({ label, value, Icon, iconBg, iconColor, accent }) => (
             <div
               key={label}
-              className="rounded-2xl bg-white/[0.07] p-4 flex items-start gap-3"
+              className="rounded-2xl bg-white/[0.07] p-5 md:p-6 flex items-start gap-4"
               style={{ border: `1px solid ${accent}` }}
             >
               <span
-                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
                 style={{ background: iconBg }}
               >
                 <Icon className="w-5 h-5" style={{ color: iconColor }} aria-hidden />
               </span>
               <div className="min-w-0">
-                <p className="font-display text-3xl font-semibold leading-none">{value}</p>
+                <p className="font-display text-4xl font-semibold leading-none">{value}</p>
                 <p
-                  className="text-[11px] uppercase tracking-wide mt-1.5 truncate"
+                  className="text-[11px] uppercase tracking-wide mt-2 truncate"
                   style={{ color: "#A9B4C6" }}
                 >
                   {label}
@@ -942,7 +948,7 @@ export default function AdminPage() {
         </div>
       </details>
 
-      <div className="inline-flex gap-1.5 mb-6 flex-wrap rounded-2xl bg-brand-line/40 border border-brand-line p-1.5">
+      <div className="sticky top-3 z-30 inline-flex gap-1.5 mb-6 flex-wrap rounded-2xl bg-white/90 backdrop-blur border border-brand-line p-1.5 shadow-sm">
         {TABS.map(({ id, label, Icon }) => (
           <button
             key={id}
@@ -970,7 +976,11 @@ export default function AdminPage() {
 
       {tab === "users" && (
         <div>
-          <div className="flex flex-col sm:flex-row gap-3 mb-4">
+          {/* Barra única: contagem + busca + filtro de status */}
+          <div className="flex flex-col md:flex-row md:items-center gap-3 mb-5">
+            <p className="text-sm font-semibold text-brand-ink whitespace-nowrap md:pr-2">
+              {filteredUsers.length} cadastro(s)
+            </p>
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-3.5 w-4 h-4 text-brand-ink/40" aria-hidden />
               <input
@@ -981,7 +991,7 @@ export default function AdminPage() {
               />
             </div>
             <select
-              className="input sm:max-w-xs"
+              className="input md:max-w-[220px]"
               value={filter}
               onChange={(e) => setFilter(e.target.value as "all" | PlanStatus)}
             >
@@ -993,95 +1003,131 @@ export default function AdminPage() {
               <option value="cancelled">Cancelado</option>
             </select>
           </div>
-          <p className="text-sm text-brand-ink/60 mb-3">
-            {filteredUsers.length} cadastro(s) encontrado(s)
-          </p>
 
-          <div className="space-y-3">
+          <div className="rounded-2xl border border-brand-line bg-white divide-y divide-brand-line/70 overflow-hidden">
             {filteredUsers.map((u) => (
-              <article key={u.id} className="card">
-                <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
-                  <div className="flex items-start gap-4">
-                    {/* Avatar do advogado — admin precisa ver a foto enviada.
-                        Mostra a foto real se houver, ou círculo com iniciais.
-                        A cor da borda acompanha o status do plano. */}
-                    {u.photo_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={u.photo_url}
-                        alt={`Foto de ${u.name}`}
-                        loading="lazy"
-                        decoding="async"
-                        className={`w-16 h-16 sm:w-[4.5rem] sm:h-[4.5rem] rounded-full object-cover border-2 bg-brand-bg flex-shrink-0 shadow-sm ${STATUS_BADGE[u.plan_status].ring}`}
-                      />
-                    ) : (
-                      <div
-                        className={`w-16 h-16 sm:w-[4.5rem] sm:h-[4.5rem] rounded-full bg-brand-deep/10 border-2 flex items-center justify-center flex-shrink-0 font-display font-bold text-brand-deep text-xl shadow-sm ${STATUS_BADGE[u.plan_status].ring}`}
-                      >
-                        {(u.name || "")
-                          .split(/\s+/)
-                          .filter(Boolean)
-                          .slice(0, 2)
-                          .map((w) => w[0]?.toUpperCase())
-                          .join("") || "?"}
-                      </div>
-                    )}
-                    <div className="min-w-0">
-                      <p className="font-display font-bold text-brand-ink text-base sm:text-lg leading-snug">
-                        {u.name}
-                      </p>
-                      <p className="text-sm text-brand-ink/60">
-                        OAB/{u.oab_uf} {u.oab} — {u.city_name}/{u.uf}
-                      </p>
-                      {u.featured && (
-                        <p className="text-[11px] font-semibold text-amber-700 inline-flex items-center gap-1 mt-1">
-                          <Star className="w-3 h-3 fill-current" aria-hidden /> Em destaque
-                        </p>
-                      )}
+              <article
+                key={u.id}
+                className="px-4 sm:px-5 py-3.5 transition-colors hover:bg-brand-bg/40"
+              >
+                {/* Linha recolhida — avatar + identificação + status + ações rápidas */}
+                <div className="flex flex-wrap items-center gap-3">
+                  {u.photo_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={u.photo_url}
+                      alt={`Foto de ${u.name}`}
+                      loading="lazy"
+                      decoding="async"
+                      className={`w-10 h-10 rounded-full object-cover border-2 bg-brand-bg flex-shrink-0 ${STATUS_BADGE[u.plan_status].ring}`}
+                    />
+                  ) : (
+                    <div
+                      className={`w-10 h-10 rounded-full bg-brand-deep/10 border-2 flex items-center justify-center flex-shrink-0 font-display font-bold text-brand-deep text-sm ${STATUS_BADGE[u.plan_status].ring}`}
+                    >
+                      {(u.name || "")
+                        .split(/\s+/)
+                        .filter(Boolean)
+                        .slice(0, 2)
+                        .map((w) => w[0]?.toUpperCase())
+                        .join("") || "?"}
                     </div>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-brand-ink text-sm leading-snug truncate">
+                      {u.name}
+                      {u.featured && (
+                        <Star
+                          className="inline-block w-3.5 h-3.5 ml-1.5 -mt-0.5 text-amber-500 fill-current"
+                          aria-label="Em destaque"
+                        />
+                      )}
+                    </p>
+                    <p className="text-xs text-brand-ink/55 truncate">
+                      OAB/{u.oab_uf} {u.oab} — {u.city_name}/{u.uf}
+                    </p>
                   </div>
                   <span
-                    className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide ${STATUS_BADGE[u.plan_status].badge}`}
+                    className={`hidden lg:inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide flex-shrink-0 ${STATUS_BADGE[u.plan_status].badge}`}
                   >
                     {STATUS_BADGE[u.plan_status].label}
                   </span>
+                  <div className="flex flex-wrap items-center gap-1.5 flex-shrink-0">
+                    <a
+                      href={`/advogado/${u.slug}`}
+                      target="_blank"
+                      rel="noopener"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-brand-ink border border-brand-line bg-white hover:bg-brand-bg"
+                    >
+                      <Eye className="w-3.5 h-3.5" aria-hidden /> Ver perfil
+                    </a>
+                    {(u.plan_status === "pending" ||
+                      u.plan_status === "free" ||
+                      u.plan_status === "expired") && (
+                      <button
+                        onClick={() => activatePremium(u.id)}
+                        disabled={busy}
+                        className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-500 disabled:opacity-50"
+                      >
+                        Ativar premium
+                      </button>
+                    )}
+                    {u.plan_status === "active" && (
+                      <button
+                        onClick={() => deactivatePremium(u.id)}
+                        disabled={busy}
+                        className="px-3 py-1.5 bg-orange-500 text-white rounded-lg text-xs font-medium hover:bg-orange-400 disabled:opacity-50"
+                      >
+                        Desativar premium
+                      </button>
+                    )}
+                    <button
+                      onClick={() => toggleFeatured(u.id, u.featured)}
+                      disabled={busy}
+                      className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium disabled:opacity-50 ${
+                        u.featured
+                          ? "bg-brand-accent text-brand-ink"
+                          : "border border-brand-line bg-white text-brand-ink hover:bg-brand-bg"
+                      }`}
+                    >
+                      <Star className="w-3 h-3" aria-hidden />
+                      {u.featured ? "Destacado" : "Destacar"}
+                    </button>
+                    <button
+                      onClick={() => setManageId(manageId === u.id ? null : u.id)}
+                      aria-expanded={manageId === u.id}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                        manageId === u.id
+                          ? "bg-brand-ink text-white"
+                          : "border border-brand-line bg-white text-brand-ink hover:bg-brand-bg"
+                      }`}
+                    >
+                      Gerenciar
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 transition-transform ${
+                          manageId === u.id ? "rotate-180" : ""
+                        }`}
+                        aria-hidden
+                      />
+                    </button>
+                  </div>
                 </div>
-                <dl className="text-xs text-brand-ink/70 grid sm:grid-cols-2 gap-1 mb-3">
+
+                {manageId === u.id && (
+                <div className="mt-4 pt-4 border-t border-brand-line/70 space-y-4">
+                <span
+                  className={`lg:hidden inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide ${STATUS_BADGE[u.plan_status].badge}`}
+                >
+                  {STATUS_BADGE[u.plan_status].label}
+                </span>
+                <dl className="text-xs text-brand-ink/70 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-1.5">
                   <div>E-mail — {u.email}</div>
                   <div>Telefone — {u.phone || "—"}</div>
                   <div>Cadastro — {formatDate(u.created_at)}</div>
                   <div>Pagamento — {formatDate(u.payment_date)}</div>
                   <div>Vencimento — {formatDate(u.plan_end_date)}</div>
                 </dl>
-                <div className="flex flex-wrap gap-2">
-                  <a
-                    href={`/advogado/${u.slug}`}
-                    target="_blank"
-                    rel="noopener"
-                    className="px-3 py-1.5 bg-brand-ink text-white rounded-lg text-xs font-semibold hover:bg-brand-deep inline-flex items-center gap-1.5"
-                  >
-                    <Eye className="w-3.5 h-3.5" aria-hidden /> Ver perfil
-                  </a>
-                  {(u.plan_status === "pending" ||
-                    u.plan_status === "free" ||
-                    u.plan_status === "expired") && (
-                    <button
-                      onClick={() => activatePremium(u.id)}
-                      disabled={busy}
-                      className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-500 disabled:opacity-50"
-                    >
-                      Ativar premium
-                    </button>
-                  )}
-                  {u.plan_status === "active" && (
-                    <button
-                      onClick={() => deactivatePremium(u.id)}
-                      disabled={busy}
-                      className="px-3 py-1.5 bg-orange-500 text-white rounded-lg text-xs font-medium hover:bg-orange-400 disabled:opacity-50"
-                    >
-                      Desativar premium
-                    </button>
-                  )}
+                <div className="flex flex-wrap items-center gap-2">
                   {/* Seletor manual de status — Fase 5.
                       Permite admin forçar gratuito/pendente/ativo/vencido/cancelado
                       independente dos botões Ativar/Desativar (que mexem em datas). */}
@@ -1104,18 +1150,6 @@ export default function AdminPage() {
                     </select>
                   </label>
                   <button
-                    onClick={() => toggleFeatured(u.id, u.featured)}
-                    disabled={busy}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium inline-flex items-center gap-1 disabled:opacity-50 ${
-                      u.featured
-                        ? "bg-brand-accent text-brand-ink"
-                        : "bg-brand-line text-brand-ink hover:bg-brand-line/70"
-                    }`}
-                  >
-                    <Star className="w-3 h-3" aria-hidden />
-                    {u.featured ? "Destacado" : "Destacar"}
-                  </button>
-                  <button
                     onClick={() => toggleVerifiedOab(u.id, u.verified_oab)}
                     disabled={busy}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium disabled:opacity-50 ${
@@ -1135,15 +1169,16 @@ export default function AdminPage() {
                       <Mail className="w-3 h-3" aria-hidden /> Convidar pra premium
                     </a>
                   )}
-                  <details className="w-full mt-1 rounded-xl border-2 border-brand-accent/40 bg-amber-50/50 px-3 py-2">
-                    <summary className="cursor-pointer text-xs font-bold text-brand-ink select-none hover:text-brand-deep">
-                      ✎ Editar dados do perfil (nome, telefone, cidade, site, foto...) — clique para abrir
-                    </summary>
-                    <div className="flex flex-wrap gap-2 mt-2">
+                </div>
+                <section className="rounded-xl border border-brand-line bg-brand-bg/40 px-4 py-3.5">
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-brand-ink/55 mb-3 inline-flex items-center gap-1.5">
+                      <Pencil className="w-3 h-3" aria-hidden /> Editar dados do perfil
+                    </p>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
                   <button
                     onClick={() => editLawyerField(u.id, "name", "Novo nome completo", u.name)}
                     disabled={busy}
-                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
                     title="Editar nome do advogado"
                   >
                     Editar nome
@@ -1151,7 +1186,7 @@ export default function AdminPage() {
                   <button
                     onClick={() => editLawyerField(u.id, "phone", "Novo telefone", u.phone || "")}
                     disabled={busy}
-                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
                     title="Editar telefone do advogado"
                   >
                     Editar telefone
@@ -1159,7 +1194,7 @@ export default function AdminPage() {
                   <button
                     onClick={() => editMainCity(u.id, u.uf, u.city_name)}
                     disabled={busy}
-                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
                     title="Editar cidade principal (UF + nome + slug juntos)"
                   >
                     Editar cidade principal
@@ -1167,7 +1202,7 @@ export default function AdminPage() {
                   <button
                     onClick={() => editLawyerField(u.id, "oab", "Novo número OAB", u.oab)}
                     disabled={busy}
-                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
                     title="Editar número OAB"
                   >
                     Editar OAB
@@ -1177,7 +1212,7 @@ export default function AdminPage() {
                       editLawyerField(u.id, "address", "Novo endereço profissional", u.address || "")
                     }
                     disabled={busy}
-                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
                     title="Editar endereço profissional"
                   >
                     Editar endereço
@@ -1187,7 +1222,7 @@ export default function AdminPage() {
                       editLawyerField(u.id, "bio", "Nova bio (até 500 chars)", u.bio || "")
                     }
                     disabled={busy}
-                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
                     title="Editar bio do advogado"
                   >
                     Editar bio
@@ -1195,7 +1230,7 @@ export default function AdminPage() {
                   <button
                     onClick={() => editExtraCities(u.id, u.name, u.extra_cities)}
                     disabled={busy}
-                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
                     title="Editar cidades adicionais de atendimento (até 9, formato UF,slug,nome)"
                   >
                     Editar cidades extras
@@ -1211,7 +1246,7 @@ export default function AdminPage() {
                       )
                     }
                     disabled={busy}
-                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
                     title="Editar horários de atendimento (premium)"
                   >
                     Editar horários
@@ -1226,7 +1261,7 @@ export default function AdminPage() {
                       )
                     }
                     disabled={busy}
-                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
                     title="Editar URL do site (premium)"
                   >
                     Editar site
@@ -1241,7 +1276,7 @@ export default function AdminPage() {
                       )
                     }
                     disabled={busy}
-                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
                     title="Editar Instagram (premium)"
                   >
                     Editar Instagram
@@ -1256,7 +1291,7 @@ export default function AdminPage() {
                       )
                     }
                     disabled={busy}
-                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
                     title="Editar LinkedIn (premium)"
                   >
                     Editar LinkedIn
@@ -1271,7 +1306,7 @@ export default function AdminPage() {
                       )
                     }
                     disabled={busy}
-                    className="px-3 py-1.5 bg-brand-line text-brand-ink rounded-lg text-xs font-medium hover:bg-brand-line/70 disabled:opacity-50"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
                     title="Trocar a URL da foto do advogado"
                   >
                     Editar foto (URL)
@@ -1280,14 +1315,14 @@ export default function AdminPage() {
                     <button
                       onClick={() => removeUserPhoto(u.id, u.name)}
                       disabled={busy}
-                      className="px-3 py-1.5 bg-red-50 text-red-700 rounded-lg text-xs font-medium hover:bg-red-100 disabled:opacity-50"
+                      className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-red-700 bg-red-50 border border-red-100 hover:bg-red-100 disabled:opacity-50"
                       title="Remover foto do perfil (apaga do Storage e zera coluna)"
                     >
                       Remover foto
                     </button>
                   )}
                     </div>
-                  </details>
+                </section>
                   {/* Bloco discreto — ações de conta/acesso e operações sensíveis.
                       Mantém os mesmos handlers, só agrupadas visualmente. */}
                   <div className="w-full mt-1 rounded-xl border border-brand-line/70 bg-brand-bg/30 px-3 py-2 flex flex-wrap items-center gap-2">
@@ -1334,7 +1369,6 @@ export default function AdminPage() {
                       <Trash2 className="w-3 h-3" aria-hidden /> Excluir
                     </button>
                   </div>
-                </div>
 
                 {expandedId === u.id && (
                   <div className="mt-4 pt-4 border-t border-brand-line">
@@ -1386,11 +1420,13 @@ export default function AdminPage() {
                     )}
                   </div>
                 )}
+                </div>
+                )}
               </article>
             ))}
 
             {filteredUsers.length === 0 && (
-              <div className="card text-center py-12">
+              <div className="text-center py-14 px-4">
                 <span className="w-14 h-14 rounded-full bg-brand-line/50 flex items-center justify-center mx-auto mb-3">
                   <UserX className="w-7 h-7 text-brand-ink/35" aria-hidden />
                 </span>

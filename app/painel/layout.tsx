@@ -3,7 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { ADMIN_CREDENTIALS } from "@/lib/config";
 import { isAdminRequest } from "@/lib/auth/adminSession";
-import { PainelNav } from "@/components/PainelNav";
+import { PainelShell } from "@/components/painel/PainelShell";
 
 export const metadata: Metadata = {
   robots: {
@@ -57,10 +57,5 @@ export default async function PainelLayout({ children }: { children: React.React
     !!user?.email &&
     user.email.toLowerCase() === ADMIN_CREDENTIALS.email.toLowerCase();
 
-  return (
-    <>
-      <PainelNav isAdmin={isAdmin} />
-      {children}
-    </>
-  );
+  return <PainelShell isAdmin={isAdmin}>{children}</PainelShell>;
 }

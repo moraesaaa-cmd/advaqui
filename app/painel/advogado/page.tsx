@@ -255,459 +255,386 @@ export default async function AdvogadoDashboardPage() {
   const dashOffset = circumference - (profileScore / 100) * circumference;
 
   /* --- Render ------------------------------------------------------ */
+  const metrics = [
+    {
+      label: "Perfil completo",
+      value: `${profileScore}%`,
+      sub:
+        profileScore >= 80
+          ? "Ótimo nível"
+          : `${missingFields.length} campo${missingFields.length !== 1 ? "s" : ""} pendente${missingFields.length !== 1 ? "s" : ""}`,
+      Icon: User,
+    },
+    {
+      label: "Visitas este mês",
+      value: String(monthViews ?? 0),
+      sub: "no seu perfil, sem bots",
+      Icon: Eye,
+    },
+    {
+      label: "Leads na região",
+      value: String(matchedLeadsCount),
+      sub: targetCity ? `${targetCity}/${targetUf}` : "configure sua cidade",
+      Icon: Users,
+    },
+    {
+      label: "Artigos publicados",
+      value: String(myArticles ?? 0),
+      sub: "de sua autoria",
+      Icon: FileText,
+    },
+    ...(premiumDaysLeft !== null
+      ? [
+          {
+            label: "Premium restante",
+            value: `${premiumDaysLeft}d`,
+            sub: premiumDaysLeft <= 5 ? "renove em breve" : "dias de destaque",
+            Icon: Clock,
+          },
+        ]
+      : []),
+  ];
+
   return (
-    <div className="container-tight py-10">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-10 lg:py-12">
       {/* ============================================================= */}
-      {/* HERO HEADER                                                    */}
+      {/* PAGE HEADER                                                    */}
       {/* ============================================================= */}
-      <section
-        className="rounded-3xl text-white p-6 md:p-8 mb-6 relative overflow-hidden"
-        style={{
-          background:
-            "linear-gradient(135deg,#0F1B2D 0%,#16263F 60%,#1B2D49 100%)",
-        }}
-      >
-        <div
-          aria-hidden
-          className="absolute pointer-events-none"
-          style={{
-            top: -120,
-            right: -40,
-            width: 360,
-            height: 300,
-            background:
-              "radial-gradient(ellipse at center, rgba(200,162,74,0.18), transparent 70%)",
-          }}
-        />
-        <div className="relative flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p
-              className="text-xs font-bold uppercase tracking-wider mb-1.5"
-              style={{ color: "#E3C078" }}
-            >
-              Painel do advogado
-            </p>
-            <div className="flex flex-wrap items-center gap-3">
-              <h1 className="font-display text-3xl md:text-4xl font-semibold tracking-tight">
-                Ola, {firstName}
-              </h1>
-              {isPremium ? (
-                <span
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide"
-                  style={{
-                    background: "rgba(200,162,74,0.18)",
-                    border: "1px solid rgba(200,162,74,0.5)",
-                    color: "#E3C078",
-                  }}
-                >
-                  <Crown
-                    className="w-3.5 h-3.5"
-                    style={{ color: "#C8A24A" }}
-                    aria-hidden
-                  />
-                  Premium
-                </span>
-              ) : (
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide bg-white/10 border border-white/20 text-white/70">
-                  Gratis
-                </span>
-              )}
-            </div>
-            <p className="text-sm mt-1.5" style={{ color: "#A9B4C6" }}>
-              {isPremium
-                ? "Plano premium ativo -- voce aparece em destaque."
-                : "Cadastro gratuito ativo."}
-            </p>
+      <header className="flex flex-wrap items-end justify-between gap-4 mb-8">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="font-display text-2xl md:text-3xl font-bold tracking-tight text-brand-ink">
+              Olá, {firstName}
+            </h1>
+            {isPremium ? (
+              <span
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide"
+                style={{
+                  background: "rgba(200,162,74,0.12)",
+                  border: "1px solid rgba(200,162,74,0.4)",
+                  color: "#8A6D25",
+                }}
+              >
+                <Crown className="w-3.5 h-3.5" style={{ color: "#C8A24A" }} aria-hidden />
+                Premium
+              </span>
+            ) : (
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide bg-brand-ink/5 border border-brand-line text-brand-ink/60">
+                Grátis
+              </span>
+            )}
           </div>
+          <p className="text-sm text-brand-ink/60 mt-1.5">
+            {isPremium
+              ? "Plano premium ativo — você aparece em destaque nas buscas."
+              : "Cadastro gratuito ativo. Veja abaixo como fortalecer sua presença."}
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
           <Link
             href={`/advogado/${lawyerSlug}`}
             target="_blank"
-            className="inline-flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg text-white border border-white/20 hover:bg-white/10 transition"
+            className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2.5 rounded-xl text-brand-ink border border-brand-line bg-white hover:bg-brand-bg transition"
           >
             <ExternalLink className="w-4 h-4" aria-hidden />
-            Ver perfil publico
+            Ver perfil público
+          </Link>
+          <Link
+            href="/painel/meu-perfil"
+            className="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl transition hover:opacity-90"
+            style={{ background: "#0F1B2D", color: "#FFFFFF" }}
+          >
+            <User className="w-4 h-4" aria-hidden />
+            Editar perfil
           </Link>
         </div>
+      </header>
 
-        {/* Stats row */}
-        <div
-          className={`relative mt-5 grid grid-cols-2 gap-3 ${
-            premiumDaysLeft !== null ? "md:grid-cols-5" : "md:grid-cols-4"
-          }`}
-        >
-          {[
-            {
-              label: "Perfil completo",
-              value: `${profileScore}%`,
-              sub:
-                profileScore >= 80
-                  ? "otimo"
-                  : `${missingFields.length} campo${missingFields.length !== 1 ? "s" : ""} pendente${missingFields.length !== 1 ? "s" : ""}`,
-              Icon: User,
-            },
-            {
-              label: "Visitas este mes",
-              value: String(monthViews ?? 0),
-              sub: "no seu perfil",
-              Icon: Eye,
-            },
-            {
-              label: "Leads na regiao",
-              value: String(matchedLeadsCount),
-              sub: targetCity
-                ? `${targetCity}/${targetUf}`
-                : "configure sua cidade",
-              Icon: Users,
-            },
-            {
-              label: "Artigos publicados",
-              value: String(myArticles ?? 0),
-              sub: "de sua autoria",
-              Icon: FileText,
-            },
-            ...(premiumDaysLeft !== null
-              ? [
-                  {
-                    label: "Premium restante",
-                    value: `${premiumDaysLeft}d`,
-                    sub:
-                      premiumDaysLeft <= 5
-                        ? "renove em breve"
-                        : "dias de destaque",
-                    Icon: Clock,
-                  },
-                ]
-              : []),
-          ].map((m) => (
-            <div
-              key={m.label}
-              className="rounded-2xl bg-white/[0.07] border border-white/10 p-4"
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <m.Icon
-                  className="w-3.5 h-3.5"
-                  style={{ color: "#7E8BA1" }}
-                  aria-hidden
-                />
-                <p
-                  className="text-[11px] uppercase tracking-wide"
-                  style={{ color: "#7E8BA1" }}
-                >
-                  {m.label}
-                </p>
-              </div>
-              <p className="font-display text-2xl font-semibold mt-1">
-                {m.value}
+      {/* ============================================================= */}
+      {/* METRIC CARDS                                                   */}
+      {/* ============================================================= */}
+      <section
+        className={`grid grid-cols-2 gap-3 md:gap-4 mb-8 ${
+          premiumDaysLeft !== null ? "lg:grid-cols-5" : "lg:grid-cols-4"
+        }`}
+        aria-label="Métricas do perfil"
+      >
+        {metrics.map((m) => (
+          <div
+            key={m.label}
+            className="rounded-2xl border border-brand-line bg-white p-5"
+          >
+            <div className="flex items-center gap-2">
+              <m.Icon className="w-4 h-4 text-brand-ink/40" aria-hidden />
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-brand-ink/50">
+                {m.label}
               </p>
-              {m.sub && (
-                <p
-                  className="text-[11px] mt-0.5"
-                  style={{ color: "#9FB0CB" }}
-                >
-                  {m.sub}
-                </p>
-              )}
             </div>
-          ))}
-        </div>
+            <p className="font-display text-3xl font-bold text-brand-ink mt-3 tabular-nums">
+              {m.value}
+            </p>
+            <p className="text-xs text-brand-ink/50 mt-1">{m.sub}</p>
+          </div>
+        ))}
       </section>
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* ============================================================= */}
-        {/* LEFT COLUMN (2/3)                                              */}
+        {/* MAIN COLUMN                                                    */}
         {/* ============================================================= */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* ------------------------------------------------------------- */}
-          {/* PROFILE COMPLETENESS                                           */}
-          {/* ------------------------------------------------------------- */}
-          <section className="rounded-2xl border border-brand-line bg-white overflow-hidden">
-            <div className="px-6 py-4 border-b border-brand-line/60 bg-gradient-to-r from-brand-bg to-white">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-brand-deep/10 flex items-center justify-center">
-                  <TrendingUp
-                    className="w-5 h-5 text-brand-deep"
-                    aria-hidden
-                  />
+        <div className="lg:col-span-8 space-y-6">
+          {/* VISITS + LEADS */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="rounded-2xl border border-brand-line bg-white p-6">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-xl bg-brand-deep/[0.06] flex items-center justify-center">
+                  <Eye className="w-5 h-5 text-brand-deep" aria-hidden />
                 </div>
                 <div>
-                  <h2 className="font-display text-lg font-bold text-brand-ink">
-                    Forca do perfil
-                  </h2>
-                  <p className="text-xs text-brand-ink/60">
-                    Perfis completos recebem mais contatos
+                  <p className="text-sm font-semibold text-brand-ink">
+                    Visitas ao perfil
+                  </p>
+                  <p className="text-xs text-brand-ink/50">
+                    Este mês (excluindo bots)
                   </p>
                 </div>
               </div>
+              <p className="font-display text-4xl font-bold text-brand-ink tabular-nums">
+                {monthViews ?? 0}
+              </p>
+              <p className="text-xs text-brand-ink/50 mt-1.5">
+                Visitantes únicos em /advogado/{lawyerSlug}
+              </p>
             </div>
 
-            <div className="p-6">
-              <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
-                {/* Ring chart */}
-                <div className="flex-shrink-0 relative w-24 h-24">
-                  <svg
-                    className="w-24 h-24 -rotate-90"
-                    viewBox="0 0 96 96"
-                    aria-hidden
-                  >
-                    <circle
-                      cx="48"
-                      cy="48"
-                      r="40"
-                      fill="none"
-                      strokeWidth="8"
-                      className={scoreRingTrack(profileScore)}
-                    />
-                    <circle
-                      cx="48"
-                      cy="48"
-                      r="40"
-                      fill="none"
-                      strokeWidth="8"
-                      strokeLinecap="round"
-                      className={scoreRingFill(profileScore)}
-                      strokeDasharray={circumference}
-                      strokeDashoffset={dashOffset}
-                    />
-                  </svg>
-                  <span
-                    className={`absolute inset-0 flex items-center justify-center font-display text-xl font-bold ${scoreColor(profileScore)}`}
-                  >
-                    {profileScore}%
-                  </span>
+            <div className="rounded-2xl border border-brand-line bg-white p-6">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-xl bg-brand-deep/[0.06] flex items-center justify-center">
+                  <Users className="w-5 h-5 text-brand-deep" aria-hidden />
                 </div>
-
-                {/* Checklist */}
-                <div className="flex-1 min-w-0">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-                    {profileFields.map((field) => (
-                      <div
-                        key={field.label}
-                        className="flex items-center gap-2 text-sm"
-                      >
-                        {field.filled ? (
-                          <CheckCircle2
-                            className="w-4 h-4 text-emerald-500 flex-shrink-0"
-                            aria-hidden
-                          />
-                        ) : (
-                          <XCircle
-                            className="w-4 h-4 text-red-400 flex-shrink-0"
-                            aria-hidden
-                          />
-                        )}
-                        <span
-                          className={
-                            field.filled
-                              ? "text-brand-ink/70 line-through"
-                              : "text-brand-ink font-medium"
-                          }
-                        >
-                          {field.label}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  {missingFields.length > 0 && (
-                    <Link
-                      href="/painel/meu-perfil#meu-perfil"
-                      className="inline-flex items-center gap-1.5 mt-4 text-xs font-semibold text-brand-deep hover:text-brand-accent transition"
-                    >
-                      Completar perfil{" "}
-                      <ArrowRight className="w-3 h-3" aria-hidden />
-                    </Link>
-                  )}
+                <div>
+                  <p className="text-sm font-semibold text-brand-ink">
+                    Leads na sua região
+                  </p>
+                  <p className="text-xs text-brand-ink/50">
+                    {targetCity
+                      ? `${targetCity}/${targetUf}`
+                      : "Cidade não configurada"}
+                  </p>
                 </div>
               </div>
+              <p className="font-display text-4xl font-bold text-brand-ink tabular-nums">
+                {matchedLeadsCount}
+              </p>
+              <p className="text-xs text-brand-ink/50 mt-1.5">
+                Pessoas buscando advogado na região
+              </p>
+            </div>
+          </div>
 
-              {/* Progress bar */}
-              <div className="mt-6">
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs font-medium text-brand-ink/60">
-                    {filledCount} de {profileFields.length} campos preenchidos
-                  </span>
-                  <span
-                    className={`text-xs font-bold tabular-nums ${scoreColor(profileScore)}`}
-                  >
-                    {profileScore}%
-                  </span>
+          {/* ARTICLES */}
+          <section className="rounded-2xl border border-brand-line bg-white p-6">
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-brand-deep/[0.06] flex items-center justify-center">
+                  <BookOpen className="w-5 h-5 text-brand-deep" aria-hidden />
                 </div>
-                <div className="h-2.5 rounded-full bg-brand-bg overflow-hidden">
+                <div>
+                  <h2 className="font-display text-lg font-bold text-brand-ink">
+                    Seus artigos
+                  </h2>
+                  <p className="text-xs text-brand-ink/50">
+                    Conteúdo publicado no blog
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/painel/artigos"
+                className="inline-flex items-center gap-1.5 text-sm font-medium px-3.5 py-2 rounded-lg border border-brand-line text-brand-ink hover:bg-brand-bg transition"
+              >
+                Gerenciar <ArrowRight className="w-3.5 h-3.5" aria-hidden />
+              </Link>
+            </div>
+
+            {(myArticles ?? 0) === 0 ? (
+              <div className="rounded-xl border border-dashed border-brand-line bg-brand-bg/50 px-6 py-10 text-center">
+                <div className="w-12 h-12 rounded-full bg-brand-deep/[0.06] flex items-center justify-center mx-auto mb-3">
+                  <FileText className="w-5 h-5 text-brand-deep/60" aria-hidden />
+                </div>
+                <p className="text-sm font-semibold text-brand-ink">
+                  Você ainda não publicou artigos
+                </p>
+                <p className="text-xs text-brand-ink/50 mt-1 max-w-sm mx-auto">
+                  Artigos aumentam sua autoridade e aparecem no seu perfil
+                  profissional.
+                </p>
+                {isPremium && (
+                  <Link
+                    href="/painel/artigos"
+                    className="inline-flex items-center gap-2 mt-4 text-sm font-semibold px-4 py-2.5 rounded-xl transition hover:opacity-90"
+                    style={{ background: "#C8A24A", color: "#0F1B2D" }}
+                  >
+                    Escrever primeiro artigo
+                    <ArrowRight className="w-4 h-4" aria-hidden />
+                  </Link>
+                )}
+              </div>
+            ) : (
+              <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-5 flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                  <BookOpen className="w-6 h-6 text-emerald-600" aria-hidden />
+                </div>
+                <div>
+                  <p className="text-2xl font-display font-bold text-emerald-800 tabular-nums">
+                    {myArticles}
+                  </p>
+                  <p className="text-xs text-emerald-700">
+                    artigo{(myArticles ?? 0) !== 1 ? "s" : ""} publicado
+                    {(myArticles ?? 0) !== 1 ? "s" : ""}
+                  </p>
+                </div>
+              </div>
+            )}
+          </section>
+
+          {/* TIPS FOR MISSING FIELDS */}
+          {missingFields.length > 0 && (
+            <section className="rounded-2xl border border-amber-200/70 bg-amber-50/60 p-6">
+              <div className="flex items-center gap-2 mb-3">
+                <Lightbulb className="w-4 h-4 text-amber-600" aria-hidden />
+                <h2 className="text-sm font-bold text-amber-800 uppercase tracking-wide">
+                  Como melhorar seu perfil
+                </h2>
+              </div>
+              <ul className="space-y-2">
+                {missingFields.slice(0, 3).map((field) => (
+                  <li
+                    key={field.label}
+                    className="text-sm text-brand-ink/70 leading-relaxed flex items-start gap-2.5"
+                  >
+                    <ArrowRight
+                      className="w-3.5 h-3.5 text-amber-500 mt-1 flex-shrink-0"
+                      aria-hidden
+                    />
+                    {FIELD_TIPS[field.label] ??
+                      `Preencha o campo "${field.label}".`}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </div>
+
+        {/* ============================================================= */}
+        {/* SIDE COLUMN                                                    */}
+        {/* ============================================================= */}
+        <aside className="lg:col-span-4 space-y-6">
+          {/* PROFILE COMPLETENESS (side card) */}
+          <section className="rounded-2xl border border-brand-line bg-white p-6">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-brand-deep/[0.06] flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-brand-deep" aria-hidden />
+              </div>
+              <div>
+                <h2 className="font-display text-lg font-bold text-brand-ink">
+                  Força do perfil
+                </h2>
+                <p className="text-xs text-brand-ink/50">
+                  Perfis completos recebem mais contatos
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-5">
+              <div className="flex-shrink-0 relative w-24 h-24">
+                <svg className="w-24 h-24 -rotate-90" viewBox="0 0 96 96" aria-hidden>
+                  <circle
+                    cx="48"
+                    cy="48"
+                    r="40"
+                    fill="none"
+                    strokeWidth="8"
+                    className={scoreRingTrack(profileScore)}
+                  />
+                  <circle
+                    cx="48"
+                    cy="48"
+                    r="40"
+                    fill="none"
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                    className={scoreRingFill(profileScore)}
+                    strokeDasharray={circumference}
+                    strokeDashoffset={dashOffset}
+                  />
+                </svg>
+                <span
+                  className={`absolute inset-0 flex items-center justify-center font-display text-xl font-bold ${scoreColor(profileScore)}`}
+                >
+                  {profileScore}%
+                </span>
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-brand-ink">
+                  {filledCount} de {profileFields.length} campos
+                </p>
+                <p className="text-xs text-brand-ink/50 mt-0.5">
+                  preenchidos no seu perfil
+                </p>
+                <div className="h-2 rounded-full bg-brand-bg overflow-hidden mt-3">
                   <div
                     className={`h-full rounded-full transition-all duration-500 ${scoreBg(profileScore)}`}
                     style={{ width: `${Math.max(profileScore, 2)}%` }}
                   />
                 </div>
               </div>
+            </div>
 
-              {/* Tips for missing fields */}
-              {missingFields.length > 0 && (
-                <div className="mt-4 rounded-xl bg-amber-50/70 border border-amber-200/70 p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Lightbulb
-                      className="w-4 h-4 text-amber-600"
+            <ul className="mt-5 space-y-1.5 border-t border-brand-line/60 pt-4">
+              {profileFields.map((field) => (
+                <li key={field.label} className="flex items-center gap-2 text-sm">
+                  {field.filled ? (
+                    <CheckCircle2
+                      className="w-4 h-4 text-emerald-500 flex-shrink-0"
                       aria-hidden
                     />
-                    <p className="text-xs font-bold text-amber-800 uppercase tracking-wide">
-                      Como melhorar seu perfil
-                    </p>
-                  </div>
-                  <ul className="space-y-1.5">
-                    {missingFields.slice(0, 3).map((field) => (
-                      <li
-                        key={field.label}
-                        className="text-xs text-brand-ink/70 leading-relaxed flex items-start gap-2"
-                      >
-                        <ArrowRight
-                          className="w-3 h-3 text-amber-500 mt-0.5 flex-shrink-0"
-                          aria-hidden
-                        />
-                        {FIELD_TIPS[field.label] ??
-                          `Preencha o campo "${field.label}".`}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* ------------------------------------------------------------- */}
-          {/* VIEWS + LEADS SUMMARY                                          */}
-          {/* ------------------------------------------------------------- */}
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div className="rounded-2xl border border-brand-line bg-white p-5">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-                  <Eye className="w-5 h-5 text-blue-600" aria-hidden />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-brand-ink">
-                    Visitas ao perfil
-                  </p>
-                  <p className="text-[11px] text-brand-ink/50">
-                    Este mes (excluindo bots)
-                  </p>
-                </div>
-              </div>
-              <p className="font-display text-4xl font-bold text-brand-ink">
-                {monthViews ?? 0}
-              </p>
-              <p className="text-xs text-brand-ink/50 mt-1">
-                Visitantes unicos em /advogado/{lawyerSlug}
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-brand-line bg-white p-5">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
-                  <Users className="w-5 h-5 text-emerald-600" aria-hidden />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-brand-ink">
-                    Leads na sua regiao
-                  </p>
-                  <p className="text-[11px] text-brand-ink/50">
-                    {targetCity
-                      ? `${targetCity}/${targetUf}`
-                      : "Cidade nao configurada"}
-                  </p>
-                </div>
-              </div>
-              <p className="font-display text-4xl font-bold text-brand-ink">
-                {matchedLeadsCount}
-              </p>
-              <p className="text-xs text-brand-ink/50 mt-1">
-                Pessoas buscando advogado na regiao
-              </p>
-            </div>
-          </div>
-
-          {/* ------------------------------------------------------------- */}
-          {/* ARTICLES CARD                                                  */}
-          {/* ------------------------------------------------------------- */}
-          <section className="rounded-2xl border border-brand-line bg-white p-5">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
-                  <BookOpen
-                    className="w-5 h-5 text-purple-600"
-                    aria-hidden
-                  />
-                </div>
-                <div>
-                  <h2 className="font-display text-base font-bold text-brand-ink">
-                    Seus artigos
-                  </h2>
-                  <p className="text-[11px] text-brand-ink/50">
-                    Conteudo publicado no blog
-                  </p>
-                </div>
-              </div>
-              <Link
-                href="/painel/artigos"
-                className="text-xs font-medium text-brand-deep hover:text-brand-accent transition inline-flex items-center gap-1"
-              >
-                Gerenciar <ArrowRight className="w-3 h-3" aria-hidden />
-              </Link>
-            </div>
-
-            {(myArticles ?? 0) === 0 ? (
-              <div className="rounded-xl bg-brand-bg/60 border border-brand-line/50 p-4 text-center">
-                <FileText
-                  className="w-8 h-8 text-brand-ink/20 mx-auto mb-2"
-                  aria-hidden
-                />
-                <p className="text-sm text-brand-ink/60">
-                  Voce ainda nao publicou artigos.
-                </p>
-                <p className="text-xs text-brand-ink/40 mt-1">
-                  Artigos aumentam sua autoridade e aparecem no seu
-                  perfil profissional.
-                </p>
-                {isPremium && (
-                  <Link
-                    href="/painel/artigos"
-                    className="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-brand-deep hover:text-brand-accent transition"
+                  ) : (
+                    <XCircle
+                      className="w-4 h-4 text-red-400 flex-shrink-0"
+                      aria-hidden
+                    />
+                  )}
+                  <span
+                    className={
+                      field.filled
+                        ? "text-brand-ink/50 line-through"
+                        : "text-brand-ink font-medium"
+                    }
                   >
-                    Escrever primeiro artigo{" "}
-                    <ArrowRight className="w-3 h-3" aria-hidden />
-                  </Link>
-                )}
-              </div>
-            ) : (
-              <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-4 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                  <BookOpen
-                    className="w-6 h-6 text-emerald-600"
-                    aria-hidden
-                  />
-                </div>
-                <div>
-                  <p className="text-2xl font-display font-bold text-emerald-800">
-                    {myArticles}
-                  </p>
-                  <p className="text-xs text-emerald-700">
-                    artigo{(myArticles ?? 0) !== 1 ? "s" : ""} publicado{(myArticles ?? 0) !== 1 ? "s" : ""}
-                  </p>
-                </div>
-              </div>
+                    {field.label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            {missingFields.length > 0 && (
+              <Link
+                href="/painel/meu-perfil#meu-perfil"
+                className="mt-5 flex items-center justify-center gap-2 w-full text-sm font-semibold px-4 py-2.5 rounded-xl transition hover:opacity-90"
+                style={{ background: "#0F1B2D", color: "#FFFFFF" }}
+              >
+                Completar perfil
+                <ArrowRight className="w-4 h-4" aria-hidden />
+              </Link>
             )}
           </section>
-        </div>
 
-        {/* ============================================================= */}
-        {/* RIGHT COLUMN (1/3)                                             */}
-        {/* ============================================================= */}
-        <aside className="space-y-6">
-          {/* ------------------------------------------------------------- */}
-          {/* PREMIUM CTA or STATUS                                          */}
-          {/* ------------------------------------------------------------- */}
+          {/* PREMIUM CTA or STATUS */}
           {isPremium ? (
             <div
-              className="rounded-2xl p-5 text-white relative overflow-hidden"
+              className="rounded-2xl p-6 text-white relative overflow-hidden"
               style={{
-                background:
-                  "linear-gradient(135deg,#0F1B2D 0%,#1B2D49 100%)",
+                background: "linear-gradient(135deg,#0F1B2D 0%,#1B2D49 100%)",
               }}
             >
               <div
@@ -724,11 +651,7 @@ export default async function AdvogadoDashboardPage() {
               />
               <div className="relative">
                 <div className="flex items-center gap-2 mb-2">
-                  <Star
-                    className="w-5 h-5"
-                    style={{ color: "#C8A24A" }}
-                    aria-hidden
-                  />
+                  <Star className="w-5 h-5" style={{ color: "#C8A24A" }} aria-hidden />
                   <span
                     className="text-xs font-bold uppercase tracking-wider"
                     style={{ color: "#E3C078" }}
@@ -737,55 +660,55 @@ export default async function AdvogadoDashboardPage() {
                   </span>
                 </div>
                 <p className="text-sm" style={{ color: "#A9B4C6" }}>
-                  Seu perfil aparece em destaque nas buscas. Continue
-                  criando conteudo para maximizar resultados.
+                  Seu perfil aparece em destaque nas buscas. Continue criando
+                  conteúdo para maximizar resultados.
                 </p>
                 <Link
                   href="/painel/pagamento"
-                  className="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold hover:opacity-80 transition"
+                  className="inline-flex items-center gap-1.5 mt-4 text-xs font-semibold hover:opacity-80 transition"
                   style={{ color: "#E3C078" }}
                 >
-                  Detalhes do plano{" "}
-                  <ArrowRight className="w-3 h-3" aria-hidden />
+                  Detalhes do plano <ArrowRight className="w-3 h-3" aria-hidden />
                 </Link>
               </div>
             </div>
           ) : (
-            <div className="rounded-2xl border-2 border-amber-300 bg-gradient-to-br from-amber-50 to-white p-5">
+            <div className="rounded-2xl border border-brand-line bg-white p-6">
               <div className="flex items-center gap-2 mb-3">
-                <Sparkles
-                  className="w-5 h-5 text-amber-500"
-                  aria-hidden
-                />
-                <p className="text-sm font-bold text-brand-ink">
-                  Faca seu perfil se destacar
+                <Sparkles className="w-5 h-5" style={{ color: "#C8A24A" }} aria-hidden />
+                <p className="font-display text-base font-bold text-brand-ink">
+                  Faça seu perfil se destacar
                 </p>
               </div>
-              <ul className="text-xs text-brand-ink/70 space-y-1.5 mb-4">
-                <li className="flex items-start gap-2">
+              <ul className="text-sm text-brand-ink/70 space-y-2 mb-5">
+                <li className="flex items-start gap-2.5">
                   <CheckCircle2
-                    className="w-3.5 h-3.5 text-amber-500 mt-0.5 flex-shrink-0"
+                    className="w-4 h-4 mt-0.5 flex-shrink-0"
+                    style={{ color: "#C8A24A" }}
                     aria-hidden
                   />
-                  Apareca primeiro nas buscas da sua cidade
+                  Apareça primeiro nas buscas da sua cidade
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2.5">
                   <CheckCircle2
-                    className="w-3.5 h-3.5 text-amber-500 mt-0.5 flex-shrink-0"
+                    className="w-4 h-4 mt-0.5 flex-shrink-0"
+                    style={{ color: "#C8A24A" }}
                     aria-hidden
                   />
                   Publique artigos com sua autoria
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2.5">
                   <CheckCircle2
-                    className="w-3.5 h-3.5 text-amber-500 mt-0.5 flex-shrink-0"
+                    className="w-4 h-4 mt-0.5 flex-shrink-0"
+                    style={{ color: "#C8A24A" }}
                     aria-hidden
                   />
-                  Apareca em ate 10 cidades diferentes
+                  Apareça em até 10 cidades diferentes
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2.5">
                   <CheckCircle2
-                    className="w-3.5 h-3.5 text-amber-500 mt-0.5 flex-shrink-0"
+                    className="w-4 h-4 mt-0.5 flex-shrink-0"
+                    style={{ color: "#C8A24A" }}
                     aria-hidden
                   />
                   Ferramentas com IA desbloqueadas
@@ -793,11 +716,8 @@ export default async function AdvogadoDashboardPage() {
               </ul>
               <Link
                 href="/painel/pagamento"
-                className="flex items-center justify-center gap-2 w-full font-bold text-sm px-5 py-3 rounded-xl transition"
-                style={{
-                  background: "#C8A24A",
-                  color: "#0F1B2D",
-                }}
+                className="flex items-center justify-center gap-2 w-full font-bold text-sm px-5 py-3 rounded-xl transition hover:opacity-90"
+                style={{ background: "#C8A24A", color: "#0F1B2D" }}
               >
                 <CreditCard className="w-4 h-4" aria-hidden />
                 Ativar premium
@@ -805,51 +725,39 @@ export default async function AdvogadoDashboardPage() {
             </div>
           )}
 
-          {/* ------------------------------------------------------------- */}
-          {/* QUICK LINKS                                                    */}
-          {/* ------------------------------------------------------------- */}
+          {/* QUICK LINKS */}
           <section className="rounded-2xl border border-brand-line bg-white overflow-hidden">
-            <div className="px-5 py-4 border-b border-brand-line/60 bg-gradient-to-r from-brand-bg to-white">
+            <div className="px-6 py-4 border-b border-brand-line/60">
               <h2 className="font-display text-base font-bold text-brand-ink">
-                Acesso rapido
+                Acesso rápido
               </h2>
             </div>
-            <div className="p-2 space-y-0.5">
+            <div className="p-2">
               {[
                 {
                   href: "/painel/meu-perfil",
                   label: "Editar meu perfil",
                   Icon: User,
-                  iconBg: "bg-brand-deep/8",
-                  iconColor: "text-brand-deep",
                 },
                 {
                   href: "/painel/artigos",
                   label: "Gerenciar artigos",
                   Icon: FileText,
-                  iconBg: "bg-purple-50",
-                  iconColor: "text-purple-600",
                 },
                 {
                   href: "/painel/aparencia",
-                  label: "Aparencia do perfil",
+                  label: "Aparência do perfil",
                   Icon: Sparkles,
-                  iconBg: "bg-amber-50",
-                  iconColor: "text-amber-600",
                 },
                 {
                   href: "/painel/pagamento",
                   label: "Pagamento e plano",
                   Icon: CreditCard,
-                  iconBg: "bg-emerald-50",
-                  iconColor: "text-emerald-600",
                 },
                 {
                   href: `/advogado/${lawyerSlug}`,
-                  label: "Ver perfil publico",
+                  label: "Ver perfil público",
                   Icon: ExternalLink,
-                  iconBg: "bg-blue-50",
-                  iconColor: "text-blue-600",
                   external: true,
                 },
               ].map((item) => (
@@ -859,13 +767,8 @@ export default async function AdvogadoDashboardPage() {
                   target={item.external ? "_blank" : undefined}
                   className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-brand-bg transition group"
                 >
-                  <div
-                    className={`w-8 h-8 rounded-lg ${item.iconBg} flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition`}
-                  >
-                    <item.Icon
-                      className={`w-4 h-4 ${item.iconColor}`}
-                      aria-hidden
-                    />
+                  <div className="w-8 h-8 rounded-lg bg-brand-deep/[0.06] flex items-center justify-center flex-shrink-0">
+                    <item.Icon className="w-4 h-4 text-brand-deep" aria-hidden />
                   </div>
                   <span className="text-sm font-medium text-brand-ink">
                     {item.label}
@@ -879,21 +782,16 @@ export default async function AdvogadoDashboardPage() {
             </div>
           </section>
 
-          {/* ------------------------------------------------------------- */}
-          {/* VISIBILITY TIP                                                 */}
-          {/* ------------------------------------------------------------- */}
-          <div className="rounded-2xl bg-brand-deep/5 border border-brand-deep/20 p-5">
-            <Star
-              className="w-5 h-5 text-brand-accent mb-2"
-              aria-hidden
-            />
+          {/* VISIBILITY TIP */}
+          <div className="rounded-2xl bg-brand-deep/5 border border-brand-deep/20 p-6">
+            <Star className="w-5 h-5 text-brand-accent mb-2" aria-hidden />
             <p className="text-sm font-semibold text-brand-deep">
               Dica de visibilidade
             </p>
-            <p className="text-xs text-brand-ink/70 mt-1 leading-relaxed">
+            <p className="text-xs text-brand-ink/70 mt-1.5 leading-relaxed">
               {profileScore < 80
-                ? `Seu perfil esta ${profileScore}% completo. Complete os campos em falta para aparecer melhor nos resultados de busca.`
-                : "Perfil bem completo. Publique artigos e mantenha seus dados atualizados para manter a relevancia."}
+                ? `Seu perfil está ${profileScore}% completo. Complete os campos em falta para aparecer melhor nos resultados de busca.`
+                : "Perfil bem completo. Publique artigos e mantenha seus dados atualizados para manter a relevância."}
             </p>
           </div>
         </aside>
