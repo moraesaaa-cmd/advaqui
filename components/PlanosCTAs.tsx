@@ -184,3 +184,38 @@ export function AtivarPremiumCTA({
     </Link>
   );
 }
+
+/**
+ * CTA de cadastro que respeita o login. Para páginas de captação de advogado
+ * (cidade, especialidade): anônimo vê o convite de cadastro; advogado logado
+ * vê "Ir para meu painel"; admin vê "Painel admin". Evita convidar quem já
+ * tem conta a se recadastrar.
+ */
+export function CadastroCTA({
+  anonLabel,
+  className,
+  style
+}: {
+  anonLabel: string;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  const auth = useAuthKind();
+
+  let href = "/cadastro";
+  let label = anonLabel;
+
+  if (auth.kind === "lawyer") {
+    href = "/painel/advogado";
+    label = "Ir para meu painel";
+  } else if (auth.kind === "admin") {
+    href = "/admin";
+    label = "Painel admin";
+  }
+
+  return (
+    <Link href={href} className={className} style={style}>
+      {label}
+    </Link>
+  );
+}

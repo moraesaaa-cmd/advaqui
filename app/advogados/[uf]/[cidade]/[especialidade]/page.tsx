@@ -6,6 +6,7 @@ import { SPECIALTIES, findSpecialty } from "@/lib/data/specialties";
 import { getLawyersBySpecialty, sortLawyers } from "@/lib/data/lawyers";
 import { LawyerCard } from "@/components/LawyerCard";
 import { JsonLd } from "@/components/JsonLd";
+import { CadastroCTA } from "@/components/PlanosCTAs";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { citySpecialtyIntro } from "@/lib/data/templates";
@@ -310,13 +311,11 @@ export default async function CitySpecialtyPage({
                   Ver {areaLow} em {capital.name}
                 </Link>
               )}
-              <Link
-                href="/cadastro"
+              <CadastroCTA
+                anonLabel="É advogado? Cadastre-se grátis"
                 className="inline-flex items-center text-sm font-bold px-4 py-2.5 rounded-lg"
                 style={{ background: "#C8A24A", color: "#0F1B2D" }}
-              >
-                É advogado? Cadastre-se grátis
-              </Link>
+              />
             </div>
           </div>
         ) : (
@@ -764,13 +763,11 @@ export default async function CitySpecialtyPage({
             </div>
           )}
         </div>
-        <Link
-          href="/cadastro"
-          className="text-[15px] font-bold px-6 py-3.5 rounded-[10px] whitespace-nowrap"
+        <CadastroCTA
+          anonLabel="Criar meu perfil grátis"
+          className="inline-block text-[15px] font-bold px-6 py-3.5 rounded-[10px] whitespace-nowrap"
           style={{ background: "#C8A24A", color: "#0F1B2D" }}
-        >
-          Criar meu perfil grátis
-        </Link>
+        />
       </section>
 
       <JsonLd

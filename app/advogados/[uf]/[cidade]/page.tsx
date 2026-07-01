@@ -12,6 +12,7 @@ import { breadcrumbSchema, cityServiceSchema } from "@/lib/seo/schema";
 import { cityIntro } from "@/lib/data/templates";
 import { topCitiesForState } from "@/lib/seo/internal-links";
 import { CidadeRecursos } from "@/components/CidadeRecursos";
+import { CadastroCTA } from "@/components/PlanosCTAs";
 
 // SEMPRE AO VIVO (force-dynamic): o advogado recém-cadastrado aparece NA HORA,
 // sem depender de cache/ISR — que congelava esta página (e escondia o cadastro)
@@ -227,13 +228,11 @@ export default async function CityPage({
             ) : null}
 
             <div className="flex flex-wrap gap-3 pt-4 border-t border-brand-line">
-              <Link
-                href="/cadastro"
+              <CadastroCTA
+                anonLabel={`É advogado em ${city.name}? Cadastre-se grátis`}
                 className="inline-flex items-center text-sm font-bold px-4 py-2.5 rounded-lg"
                 style={{ background: "#C8A24A", color: "#0F1B2D" }}
-              >
-                É advogado em {city.name}? Cadastre-se grátis
-              </Link>
+              />
               <Link
                 href={`/advogados/${st.uf.toLowerCase()}`}
                 className="inline-flex items-center text-sm font-semibold px-4 py-2.5 rounded-lg text-brand-deep bg-white"
@@ -465,13 +464,11 @@ export default async function CityPage({
             </div>
           )}
         </div>
-        <Link
-          href="/cadastro"
-          className="text-[15px] font-bold px-6 py-3.5 rounded-[10px] whitespace-nowrap"
+        <CadastroCTA
+          anonLabel="Criar meu perfil grátis"
+          className="inline-block text-[15px] font-bold px-6 py-3.5 rounded-[10px] whitespace-nowrap"
           style={{ background: "#C8A24A", color: "#0F1B2D" }}
-        >
-          Criar meu perfil grátis
-        </Link>
+        />
       </section>
 
       <JsonLd
