@@ -431,23 +431,22 @@ export default function FerramentasPage() {
               Multa de trânsito? Receba o recurso completo, pronto para protocolar
             </h2>
             <p className="text-[15px] md:text-base leading-relaxed max-w-[640px]" style={{ color: "#C4CDDC" }}>
-              Recurso elaborado sob medida para o seu caso (defesa prévia, JARI ou
-              CETRAN), fundamentado no Código de Trânsito Brasileiro, a partir dos
-              dados da sua multa. Pague uma vez — R$ 9,90 via Pix — ou tenha acesso
-              incluído no plano Premium de advogado.
+              Você informa os dados da multa e recebe o recurso elaborado sob
+              medida para o seu caso (defesa prévia, JARI ou CETRAN), fundamentado
+              no Código de Trânsito Brasileiro — pronto para protocolar.
             </p>
             <ul className="flex flex-wrap gap-x-5 gap-y-2 mt-5 text-[13px]" style={{ color: "#C4CDDC" }}>
               <li className="inline-flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4" style={{ color: GOLD_LIGHT }} aria-hidden />
-                Até 3 recursos por R$ 9,90
+                Pagamento ÚNICO de R$ 9,90 via Pix — sem mensalidade
               </li>
               <li className="inline-flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4" style={{ color: GOLD_LIGHT }} aria-hidden />
-                Peça completa e fundamentada no CTB
+                Vale para até 3 recursos
               </li>
               <li className="inline-flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4" style={{ color: GOLD_LIGHT }} aria-hidden />
-                Incluído no Premium ({PLAN.priceLabel}/mês)
+                Não quer pagar? Use o modelo grátis
               </li>
             </ul>
           </div>
@@ -487,13 +486,17 @@ export default function FerramentasPage() {
           Como funciona o acesso
         </h2>
         <p className="text-sm text-brand-ink/65 mb-5">
-          Três formas de usar o AdvAqui — sem pegadinha, sem fidelidade.
+          Três formas de usar o AdvAqui, cada uma para um público — sem pegadinha,
+          sem fidelidade.
         </p>
         <div className="grid md:grid-cols-3 gap-4">
           <div
             className="rounded-2xl border-2 p-6 flex flex-col"
             style={{ borderColor: "rgba(200,162,74,0.45)", background: "#FAF7F0" }}
           >
+            <p className="text-[11px] font-bold uppercase tracking-wider mb-1" style={{ color: GOLD_TEXT }}>
+              Para qualquer pessoa
+            </p>
             <div className="flex items-center justify-between mb-3">
               <span className="font-display font-semibold text-brand-ink text-lg">Conta grátis</span>
               <Badge kind="conta" />
@@ -516,6 +519,9 @@ export default function FerramentasPage() {
             className="rounded-2xl p-6 flex flex-col text-white"
             style={{ background: NAVY }}
           >
+            <p className="text-[11px] font-bold uppercase tracking-wider mb-1" style={{ color: GOLD_LIGHT }}>
+              Para quem levou multa
+            </p>
             <div className="flex items-center justify-between mb-3">
               <span className="font-display font-semibold text-lg">Recurso de multa</span>
               <span
@@ -527,8 +533,9 @@ export default function FerramentasPage() {
             </div>
             <p className="text-sm leading-relaxed flex-1" style={{ color: "#C4CDDC" }}>
               A peça completa, elaborada sob medida e fundamentada no CTB, pronta
-              para protocolar. Pagamento único via Pix libera até 3 recursos.
-              Também está incluído no Premium.
+              para protocolar. Pagamento ÚNICO de R$ 9,90 via Pix (não é
+              mensalidade) libera até 3 recursos. Advogado com plano Premium não
+              paga — já está incluído no plano.
             </p>
             <a
               href="https://multas.advaqui.com"
@@ -545,15 +552,18 @@ export default function FerramentasPage() {
             className="rounded-2xl border-2 p-6 flex flex-col"
             style={{ borderColor: GOLD, background: "rgba(200,162,74,0.06)" }}
           >
+            <p className="text-[11px] font-bold uppercase tracking-wider mb-1" style={{ color: GOLD_TEXT }}>
+              Só para advogados
+            </p>
             <div className="flex items-center justify-between mb-3">
-              <span className="font-display font-semibold text-brand-ink text-lg">Premium — advogados</span>
+              <span className="font-display font-semibold text-brand-ink text-lg">Plano Premium</span>
               <Badge kind="premium" />
             </div>
             <p className="text-sm text-brand-ink/75 leading-relaxed flex-1">
               {PLAN.priceLabel}/mês via Pix, sem fidelidade: perfil no topo da sua
               cidade, selo de destaque, WhatsApp no card, bio de 500 caracteres,
               cidades extras, revisor de petições e o recurso de multa completo
-              incluído.
+              incluído (sem pagar os R$ 9,90).
             </p>
             <Link
               href="/planos"

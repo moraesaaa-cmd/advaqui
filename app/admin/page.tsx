@@ -1054,6 +1054,14 @@ export default function AdminPage() {
                   <div>Vencimento — {formatDate(u.plan_end_date)}</div>
                 </dl>
                 <div className="flex flex-wrap gap-2">
+                  <a
+                    href={`/advogado/${u.slug}`}
+                    target="_blank"
+                    rel="noopener"
+                    className="px-3 py-1.5 bg-brand-ink text-white rounded-lg text-xs font-semibold hover:bg-brand-deep inline-flex items-center gap-1.5"
+                  >
+                    <Eye className="w-3.5 h-3.5" aria-hidden /> Ver perfil
+                  </a>
                   {(u.plan_status === "pending" ||
                     u.plan_status === "free" ||
                     u.plan_status === "expired") && (
@@ -1127,9 +1135,9 @@ export default function AdminPage() {
                       <Mail className="w-3 h-3" aria-hidden /> Convidar pra premium
                     </a>
                   )}
-                  <details className="w-full mt-1 rounded-xl border border-brand-line bg-brand-bg/40 px-3 py-2">
-                    <summary className="cursor-pointer text-xs font-semibold text-brand-ink/80 select-none">
-                      ✎ Editar dados do perfil
+                  <details className="w-full mt-1 rounded-xl border-2 border-brand-accent/40 bg-amber-50/50 px-3 py-2">
+                    <summary className="cursor-pointer text-xs font-bold text-brand-ink select-none hover:text-brand-deep">
+                      ✎ Editar dados do perfil (nome, telefone, cidade, site, foto...) — clique para abrir
                     </summary>
                     <div className="flex flex-wrap gap-2 mt-2">
                   <button
