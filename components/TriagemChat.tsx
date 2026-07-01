@@ -297,6 +297,9 @@ export function TriagemChat() {
       setMessages((prev) => [...prev, errMsg]);
     } finally {
       setLoading(false);
+      // Mantém o foco no campo após enviar — evita ter que clicar de novo
+      // no chat a cada mensagem.
+      setTimeout(() => inputRef.current?.focus(), 0);
     }
   }, [input, loading, messages, minimized]);
 
@@ -458,7 +461,7 @@ export function TriagemChat() {
       className="fixed bottom-0 right-0 sm:bottom-5 sm:right-5 z-50 flex flex-col
         w-full h-full sm:w-[400px] sm:h-[560px] sm:max-h-[80vh]
         sm:rounded-2xl overflow-hidden shadow-2xl
-        bg-brand-bg border border-brand-line
+        bg-white border border-brand-line
         animate-in"
       role="dialog"
       aria-label="Chat de triagem jurídica"
@@ -491,7 +494,7 @@ export function TriagemChat() {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 overscroll-contain">
+      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 overscroll-contain bg-brand-bg">
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -558,13 +561,12 @@ export function TriagemChat() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Descreva sua situação..."
-            disabled={loading}
+            placeholder="Digite aqui a sua mensagem..."
             rows={1}
-            className="flex-1 resize-none rounded-xl border border-brand-line bg-brand-bg px-3 py-2.5 text-sm
-              text-brand-ink placeholder:text-brand-ink/40
-              focus:outline-none focus:ring-2 focus:ring-brand-accent/40 focus:border-brand-accent
-              disabled:opacity-50 max-h-24 overflow-y-auto"
+            className="flex-1 resize-none rounded-xl border-2 border-brand-line bg-brand-bg px-3 py-2.5 text-sm
+              text-brand-ink placeholder:text-brand-ink/50
+              focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent
+              max-h-24 overflow-y-auto"
             style={{ minHeight: "40px" }}
           />
           <button
