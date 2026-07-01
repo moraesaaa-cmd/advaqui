@@ -1,3 +1,4 @@
+import { RELEASE_DATE } from "@/lib/seo/lastmod";
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/config";
 import { GUIAS } from "@/lib/data/guias";
@@ -22,7 +23,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   const cities = getAllCities();
   const lastMod = guia.atualizado_em
     ? new Date(guia.atualizado_em)
-    : new Date();
+    : RELEASE_DATE;
   return cities.map((c) => ({
     url: `${base}/guias/${guia.slug}/em/${c.slug}-${c.uf.toLowerCase()}`,
     changeFrequency: "monthly",

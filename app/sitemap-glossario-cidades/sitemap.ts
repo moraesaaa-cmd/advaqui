@@ -1,3 +1,4 @@
+import { RELEASE_DATE } from "@/lib/seo/lastmod";
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/config";
 import { GLOSSARIO } from "@/lib/data/glossario";
@@ -17,7 +18,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   const termo = GLOSSARIO[id];
   if (!termo) return [];
   const cities = getAllCities();
-  const lastMod = termo.atualizado_em ? new Date(termo.atualizado_em) : new Date();
+  const lastMod = termo.atualizado_em ? new Date(termo.atualizado_em) : RELEASE_DATE;
   return cities.map((c) => ({
     url: `${base}/glossario/${termo.slug}/em/${c.slug}-${c.uf.toLowerCase()}`,
     changeFrequency: "monthly",

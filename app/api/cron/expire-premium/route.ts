@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import {
+  revalidateLawyerPages,
+  type RevalidatableLawyer
+} from "@/lib/painel/revalidate";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -25,7 +29,9 @@ export async function GET(req: NextRequest) {
 
   const { data: vencidos, error: selErr } = await supabase
     .from("lawyers")
-    .select("id, name, email, plan_end_date")
+    .select(
+      "id, name, email, plan_end_date, slug, uf, city_slug, target_uf, target_city, extra_cities, specialties"
+    )
     .eq("plan_status", "active")
     .not("plan_end_date", "is", null)
     .lt("plan_end_date", nowIso);
@@ -46,6 +52,15 @@ export async function GET(req: NextRequest) {
 
   if (updErr) {
     return NextResponse.json({ ok: false, error: updErr.message }, { status: 500 });
+  }
+
+  // Revalida as páginas de cada advogado expirado (perfil, home, /advogados,
+  // estado/cidade/especialidade, sitemap). Sem isso, páginas com ISR (ex.:
+  // /advogado/[slug] com revalidate=3600, /advogados/[uf] com 3600, home e
+  // /advogados com 600) continuavam exibindo o selo/topo premium por até 1h
+  // depois da expiração.
+  for (const l of vencidos) {
+    revalidateLawyerPages(l as unknown as RevalidatableLawyer);
   }
 
   return NextResponse.json({

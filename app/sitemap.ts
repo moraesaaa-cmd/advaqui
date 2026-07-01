@@ -1,3 +1,4 @@
+import { RELEASE_DATE } from "@/lib/seo/lastmod";
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/config";
 import { STATES } from "@/lib/data/states";
@@ -32,7 +33,7 @@ export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = SITE.url.replace(/\/$/, "");
-  const now = new Date();
+  const now = RELEASE_DATE;
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${base}/`, changeFrequency: "daily", priority: 1.0, lastModified: now },

@@ -1,3 +1,4 @@
+import { RELEASE_DATE } from "@/lib/seo/lastmod";
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/config";
 import { SPECIALTIES } from "@/lib/data/specialties";
@@ -18,7 +19,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   const sp = SPECIALTIES[id];
   if (!sp) return [];
   const cities = getAllCities();
-  const now = new Date();
+  const now = RELEASE_DATE;
   return cities.map((c) => ({
     url: `${base}/advogados-de/${sp.slug}/em/${c.slug}-${c.uf.toLowerCase()}`,
     changeFrequency: "weekly",

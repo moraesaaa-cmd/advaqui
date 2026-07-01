@@ -1,3 +1,4 @@
+import { RELEASE_DATE } from "@/lib/seo/lastmod";
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/config";
 import { STATES } from "@/lib/data/states";
@@ -19,7 +20,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   const st = STATES[id];
   if (!st) return [];
   const cities = citiesByUf(st.uf);
-  const now = new Date();
+  const now = RELEASE_DATE;
   const out: MetadataRoute.Sitemap = [];
   for (const c of cities) {
     for (const sp of SPECIALTIES) {

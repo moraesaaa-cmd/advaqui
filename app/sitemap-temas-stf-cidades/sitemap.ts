@@ -1,3 +1,4 @@
+import { RELEASE_DATE } from "@/lib/seo/lastmod";
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/config";
 import { TEMAS_STF } from "@/lib/data/jurisprudencia-temas-stf";
@@ -21,6 +22,6 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
     url: `${base}/jurisprudencia/stf/tema/${tema.slug}/em/${c.slug}-${c.uf.toLowerCase()}`,
     changeFrequency: "monthly",
     priority: c.isCapital ? 0.6 : 0.4,
-    lastModified: new Date()
+    lastModified: RELEASE_DATE
   }));
 }

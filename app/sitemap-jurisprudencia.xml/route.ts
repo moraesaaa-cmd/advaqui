@@ -1,3 +1,4 @@
+import { RELEASE_DATE } from "@/lib/seo/lastmod";
 import { SITE } from "@/lib/config";
 import { getIndexableDecisoesForSitemap } from "@/lib/data/jurisprudencia";
 
@@ -34,7 +35,7 @@ function escapeXml(value: string): string {
 
 export async function GET() {
   const base = SITE.url.replace(/\/$/, "");
-  const now = new Date().toISOString();
+  const now = RELEASE_DATE.toISOString();
 
   const entries: string[] = [];
 

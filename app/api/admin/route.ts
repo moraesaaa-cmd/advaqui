@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { isAdminRequest } from "@/lib/auth/adminSession";
+import { revalidateLawyerPagesById } from "@/lib/painel/revalidate";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { LawyerRow } from "@/lib/supabase/types";
 import {
@@ -21,66 +22,12 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /**
- * Revalida páginas afetadas por uma mudança no perfil do advogado.
- * Chamado após activate/deactivate-premium, toggle-featured, toggle-verified-oab
- * e delete-lawyer para evitar cache de até 1h no SSG das páginas de cidade/UF/perfil.
+ * Revalidação unificada (lib/painel/revalidate.ts) — mesma implementação do
+ * painel e do cron expire-premium. Cobre perfil, home, /advogados, sitemap,
+ * páginas de estado/cidade/especialidade e /advogados-de/[area]/em/[cidade],
+ * com specialties normalizadas para o slug canônico das rotas.
  */
-async function revalidateLawyerPages(lawyerId: string): Promise<void> {
-  try {
-    const supabase = createAdminClient();
-    const { data } = await supabase
-      .from("lawyers")
-      .select("slug,uf,city_slug,target_uf,target_city,extra_cities,specialties")
-      .eq("id", lawyerId)
-      .maybeSingle();
-    if (!data) return;
-    const paths = new Set<string>();
-    paths.add("/");
-    paths.add(`/advogado/${data.slug}`);
-    paths.add(`/p/${data.slug}`);
-    paths.add("/advogados");
-
-    const specs = Array.isArray(data.specialties)
-      ? (data.specialties as string[])
-      : [];
-
-    // Coleta TODAS as cidades onde o lawyer aparece (principal, target, extras)
-    type CityPair = { uf: string; slug: string };
-    const cityPairs: CityPair[] = [];
-    cityPairs.push({ uf: data.uf as string, slug: data.city_slug as string });
-    if (data.target_uf && data.target_city) {
-      cityPairs.push({ uf: data.target_uf as string, slug: data.target_city as string });
-    }
-    const extras = Array.isArray(data.extra_cities) ? data.extra_cities : [];
-    for (const c of extras as Array<{ uf?: string; slug?: string }>) {
-      if (c && typeof c.uf === "string" && typeof c.slug === "string") {
-        cityPairs.push({ uf: c.uf, slug: c.slug });
-      }
-    }
-
-    // Para cada cidade: índice + página + especialidades do user
-    for (const pair of cityPairs) {
-      const ufLower = pair.uf.toLowerCase();
-      paths.add(`/advogados/${ufLower}`);
-      paths.add(`/advogados/${ufLower}/${pair.slug}`);
-      for (const sp of specs) {
-        if (typeof sp === "string" && sp) {
-          paths.add(`/advogados/${ufLower}/${pair.slug}/${sp}`);
-        }
-      }
-    }
-
-    for (const path of paths) {
-      try {
-        revalidatePath(path);
-      } catch (err) {
-        console.error("[admin] revalidatePath failed for", path, err);
-      }
-    }
-  } catch (err) {
-    console.error("[admin] revalidateLawyerPages failed", err);
-  }
-}
+const revalidateLawyerPages = revalidateLawyerPagesById;
 
 /**
  * Endpoint admin unificado. Recebe `{ action: string, ...payload }` via POST.

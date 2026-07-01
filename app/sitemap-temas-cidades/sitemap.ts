@@ -1,3 +1,4 @@
+import { RELEASE_DATE } from "@/lib/seo/lastmod";
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/config";
 import { TEMAS_STJ } from "@/lib/data/jurisprudencia-temas";
@@ -21,7 +22,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   const tema = TEMAS_STJ[id];
   if (!tema) return [];
   const cities = getAllCities();
-  const now = new Date();
+  const now = RELEASE_DATE;
   return cities.map((c) => ({
     url: `${base}/jurisprudencia/stj/tema/${tema.slug}/em/${c.slug}-${c.uf.toLowerCase()}`,
     changeFrequency: "weekly",

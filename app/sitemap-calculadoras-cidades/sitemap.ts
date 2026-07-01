@@ -1,3 +1,4 @@
+import { RELEASE_DATE } from "@/lib/seo/lastmod";
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/config";
 import { CALCULADORAS } from "@/lib/data/calculadoras";
@@ -21,6 +22,6 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
     url: `${base}/calculadoras/${calc.slug}/em/${c.slug}-${c.uf.toLowerCase()}`,
     changeFrequency: "monthly",
     priority: c.isCapital ? 0.65 : 0.5,
-    lastModified: new Date()
+    lastModified: RELEASE_DATE
   }));
 }

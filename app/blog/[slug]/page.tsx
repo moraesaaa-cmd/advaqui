@@ -531,7 +531,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           authorSlug ? `${SITE.url}/advogado/${authorSlug}` : null
         )}
       />
-      <JsonLd data={faqJsonLd(article.faq)} />
+      {article.faq.length > 0 && <JsonLd data={faqJsonLd(article.faq)} />}
       <JsonLd
         data={breadcrumbSchema([
           { name: "Brasil", url: "/" },

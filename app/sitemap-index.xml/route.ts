@@ -1,4 +1,5 @@
 import { getAllSitemapUrls } from "@/lib/seo/all-sitemaps";
+import { RELEASE_DATE } from "@/lib/seo/lastmod";
 
 export const runtime = "nodejs";
 export const dynamic = "force-static";
@@ -17,7 +18,12 @@ export async function GET() {
   const body =
     `<?xml version="1.0" encoding="UTF-8"?>\n` +
     `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-    urls.map((u) => `  <sitemap><loc>${escapeXml(u)}</loc></sitemap>`).join("\n") +
+    urls
+      .map(
+        (u) =>
+          `  <sitemap><loc>${escapeXml(u)}</loc><lastmod>${RELEASE_DATE.toISOString()}</lastmod></sitemap>`
+      )
+      .join("\n") +
     `\n</sitemapindex>\n`;
 
   return new Response(body, {

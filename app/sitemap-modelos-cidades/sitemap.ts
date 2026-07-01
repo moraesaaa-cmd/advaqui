@@ -1,3 +1,4 @@
+import { RELEASE_DATE } from "@/lib/seo/lastmod";
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/config";
 import { getAllTemplates } from "@/lib/data/templates-docs";
@@ -26,6 +27,6 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
     url: `${base}/modelos/${tpl.slug}/em/${c.slug}-${c.uf.toLowerCase()}`,
     changeFrequency: "monthly",
     priority: c.isCapital ? 0.7 : 0.55,
-    lastModified: new Date()
+    lastModified: RELEASE_DATE
   }));
 }

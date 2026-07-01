@@ -1,3 +1,4 @@
+import { RELEASE_DATE } from "@/lib/seo/lastmod";
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/config";
 import { PROBLEMAS } from "@/lib/data/problemas-juridicos";
@@ -24,7 +25,7 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
   const cities = getAllCities();
   const lastMod = problema.atualizado_em
     ? new Date(problema.atualizado_em)
-    : new Date();
+    : RELEASE_DATE;
   return cities.map((c) => ({
     url: `${base}/problemas-juridicos/${problema.slug}/em/${c.slug}-${c.uf.toLowerCase()}`,
     changeFrequency: "monthly",

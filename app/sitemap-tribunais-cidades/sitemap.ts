@@ -1,3 +1,4 @@
+import { RELEASE_DATE } from "@/lib/seo/lastmod";
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/config";
 import { getAllCities } from "@/lib/data/cities";
@@ -15,6 +16,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${base}/tribunais/${c.uf.toLowerCase()}/${c.slug}`,
     changeFrequency: "yearly",
     priority: c.isCapital ? 0.7 : 0.5,
-    lastModified: new Date()
+    lastModified: RELEASE_DATE
   }));
 }

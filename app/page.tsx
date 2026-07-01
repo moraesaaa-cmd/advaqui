@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Check, Scale, FileText, Calculator, ArrowRight, Shield, Zap, Brain, Globe, X } from "lucide-react";
+import { Check, Scale, FileText, Calculator, ArrowRight } from "lucide-react";
 import { SearchBox } from "@/components/SearchBox";
 import { GeoPersonalize } from "@/components/GeoPersonalize";
 import { ResolverAgora } from "@/components/ResolverAgora";
@@ -46,40 +46,6 @@ const FERRAMENTAS = [
   { label: "Calculadora de prazos", href: "/calculadora-prazos", Icon: Calculator },
   { label: "Modelos de documentos", href: "/modelos", Icon: FileText },
   { label: "Problemas jurídicos", href: "/problemas-juridicos", Icon: Scale },
-];
-
-const DIFERENCIAIS = [
-  {
-    Icon: Brain,
-    title: "IA que entende o seu problema",
-    desc: "Descreva o que aconteceu com suas palavras. Nosso sistema identifica a área jurídica e sugere o caminho, sem linguagem técnica."
-  },
-  {
-    Icon: Shield,
-    title: "OAB verificada em cada perfil",
-    desc: "Todo advogado passa por verificação de inscrição junto à OAB antes de aparecer nos resultados."
-  },
-  {
-    Icon: Globe,
-    title: "5.570+ cidades cobertas",
-    desc: "Cobertura real em todos os 27 estados brasileiros. Encontre um profissional perto de você."
-  },
-  {
-    Icon: Zap,
-    title: "Contato direto, sem intermediário",
-    desc: "WhatsApp, telefone e e-mail do advogado visíveis no perfil. Você fala direto, nós não ficamos no meio."
-  },
-];
-
-const COMPARE = [
-  { feature: "Busca por cidade + especialidade", advaqui: true, outros: true },
-  { feature: "OAB verificada em cada perfil", advaqui: true, outros: false },
-  { feature: "Contato direto (sem plataforma no meio)", advaqui: true, outros: false },
-  { feature: "Orientação por IA para leigos", advaqui: true, outros: false },
-  { feature: "Calculadoras e modelos gratuitos", advaqui: true, outros: false },
-  { feature: "Gratuito para o cliente", advaqui: true, outros: true },
-  { feature: "Sem comissão sobre honorários", advaqui: true, outros: false },
-  { feature: "Guias passo a passo por problema", advaqui: true, outros: false },
 ];
 
 export default async function HomePage() {
@@ -275,80 +241,6 @@ export default async function HomePage() {
               <ArrowRight className="w-4 h-4 text-brand-ink/30 group-hover:text-brand-accent mt-0.5 shrink-0 transition" aria-hidden />
             </Link>
           ))}
-        </div>
-      </section>
-
-      {/* ── DIFERENCIAIS ── por que AdvAqui */}
-      <section className="container-tight pt-10 md:pt-14">
-        <div className="text-center mb-8">
-          <h2 className="font-display text-2xl md:text-3xl font-semibold text-brand-ink tracking-tight">
-            Por que o AdvAqui é diferente
-          </h2>
-          <p className="text-brand-ink/60 mt-2 text-sm md:text-base max-w-2xl mx-auto">
-            Tecnologia a serviço do acesso à justiça — não de intermediação.
-          </p>
-        </div>
-        <div className="grid md:grid-cols-2 gap-4">
-          {DIFERENCIAIS.map(({ Icon, title, desc }) => (
-            <div
-              key={title}
-              className="flex gap-4 rounded-2xl border border-brand-line bg-white p-5 hover:shadow-card transition"
-            >
-              <span
-                className="flex items-center justify-center w-11 h-11 rounded-xl shrink-0"
-                style={{ background: "rgba(200,162,74,0.1)" }}
-              >
-                <Icon className="w-5 h-5 text-brand-accent" aria-hidden />
-              </span>
-              <div>
-                <h3 className="font-display font-semibold text-base text-brand-ink mb-1">
-                  {title}
-                </h3>
-                <p className="text-sm text-brand-ink/65 leading-relaxed">{desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── COMPARATIVO ── AdvAqui vs outros diretórios */}
-      <section className="container-tight pt-10 md:pt-14">
-        <div className="rounded-3xl border border-brand-line bg-white overflow-hidden">
-          <div className="p-6 md:p-8 pb-0">
-            <h2 className="font-display text-xl md:text-2xl font-semibold text-brand-ink tracking-tight">
-              AdvAqui vs. outros diretórios
-            </h2>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm mt-4">
-              <thead>
-                <tr className="border-b border-brand-line">
-                  <th className="text-left px-6 md:px-8 py-3 text-brand-ink/50 font-medium">Recurso</th>
-                  <th className="text-center px-4 py-3 font-bold text-brand-deep">AdvAqui</th>
-                  <th className="text-center px-4 py-3 text-brand-ink/40 font-medium">Outros</th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMPARE.map(({ feature, advaqui, outros }) => (
-                  <tr key={feature} className="border-b border-brand-line/50 last:border-b-0">
-                    <td className="px-6 md:px-8 py-3 text-brand-ink">{feature}</td>
-                    <td className="text-center px-4 py-3">
-                      {advaqui
-                        ? <Check className="w-5 h-5 text-emerald-500 mx-auto" aria-label="Sim" />
-                        : <X className="w-5 h-5 text-red-400 mx-auto" aria-label="Não" />
-                      }
-                    </td>
-                    <td className="text-center px-4 py-3">
-                      {outros
-                        ? <Check className="w-5 h-5 text-emerald-500 mx-auto" aria-label="Sim" />
-                        : <X className="w-5 h-5 text-red-400 mx-auto" aria-label="Não" />
-                      }
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </div>
       </section>
 

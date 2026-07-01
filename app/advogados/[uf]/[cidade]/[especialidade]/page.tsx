@@ -779,17 +779,19 @@ export default async function CitySpecialtyPage({
           { name: sp.name, url: `/advogados/${st.uf.toLowerCase()}/${city.slug}/${sp.slug}` }
         ])}
       />
-      <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: faqs.map((f) => ({
-            "@type": "Question",
-            name: f.q,
-            acceptedAnswer: { "@type": "Answer", text: f.a }
-          }))
-        }}
-      />
+      {faqs.length > 0 && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((f) => ({
+              "@type": "Question",
+              name: f.q,
+              acceptedAnswer: { "@type": "Answer", text: f.a }
+            }))
+          }}
+        />
+      )}
     </div>
   );
 }
