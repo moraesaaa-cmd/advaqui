@@ -25,10 +25,10 @@ export async function GET(req: NextRequest) {
 
   const { data: vencidos, error: selErr } = await supabase
     .from("lawyers")
-    .select("id, name, email, plan_end")
+    .select("id, name, email, plan_end_date")
     .eq("plan_status", "active")
-    .not("plan_end", "is", null)
-    .lt("plan_end", nowIso);
+    .not("plan_end_date", "is", null)
+    .lt("plan_end_date", nowIso);
 
   if (selErr) {
     return NextResponse.json({ ok: false, error: selErr.message }, { status: 500 });
@@ -51,6 +51,6 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     ok: true,
     expired: ids.length,
-    lawyers: vencidos.map((l) => ({ name: l.name, email: l.email, plan_end: l.plan_end }))
+    lawyers: vencidos.map((l) => ({ name: l.name, email: l.email, plan_end: l.plan_end_date }))
   });
 }
