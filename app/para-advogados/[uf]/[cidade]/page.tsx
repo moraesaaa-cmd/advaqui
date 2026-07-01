@@ -43,10 +43,11 @@ export async function generateMetadata({
     });
   }
   return buildMetadata({
-    title: `Advogado em ${city.name}, ${st.uf}? Apareça para quem procura na sua cidade`,
+    title: `Advogado em destaque em ${city.name}, ${st.uf} — apareça no topo das buscas`,
     description:
-      `Todo dia há gente procurando advogado em ${city.name}/${st.uf}. Crie seu perfil no AdvAqui e ` +
-      `apareça nas buscas da sua cidade e área — contato direto, sem comissão e sem leilão de leads.`,
+      `Quem procura advogado em ${city.name}/${st.uf} encontra primeiro os perfis em destaque. ` +
+      `Ative o plano Premium do AdvAqui e apareça no topo das buscas da sua cidade — WhatsApp ` +
+      `direto, selo de OAB verificada, sem comissão e sem fidelidade.`,
     path: `/para-advogados/${st.uf.toLowerCase()}/${city.slug}`
   });
 }
