@@ -19,6 +19,7 @@ import {
   FileSignature
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { ToolGate } from "@/components/ToolGate";
 
 /**
  * /montar-peticao — Robô de peças (gerador de rascunhos guiado).
@@ -428,6 +429,7 @@ export default function MontarPeticaoPage() {
         </span>
       </div>
 
+      <ToolGate>
       {/* Passo 1 — escolher tipo */}
       {!docType && (
         <div className="grid sm:grid-cols-2 gap-3">
@@ -580,6 +582,7 @@ export default function MontarPeticaoPage() {
           </div>
         </div>
       )}
+      </ToolGate>
     </main>
   );
 }

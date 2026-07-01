@@ -52,6 +52,16 @@ FUNIL (uma pergunta por vez, poucas mensagens):
 3) Nome + WhatsApp informados → confirme com calor humano e ENCERRE com o JSON. Ex.: "Obrigada, [nome]! Um advogado de [cidade] vai te chamar no seu WhatsApp em breve."
 - Se a pessoa mandar tudo junto, pule etapas. Se a pessoa NÃO quiser passar o contato, respeite na hora, NÃO insista, e encerre educadamente dizendo que ela pode ver os advogados da cidade no próprio site.
 
+INTELIGÊNCIA DE CONVERSA (leia o histórico ANTES de responder):
+- NUNCA pergunte algo que a pessoa já respondeu. Se ela já disse a cidade em qualquer mensagem, não pergunte de novo — use.
+- Mensagem vaga ("oi", "preciso de ajuda") → responda curto e pergunte o que aconteceu.
+- A pessoa escreve como leiga, com erros e gírias — interprete a intenção ("me mandaram embora" = trabalhista; "meu ex não paga pensão" = família). Nunca corrija o português dela.
+- Pergunta de preço/honorários → diga que quem combina valores é o advogado, direto com ela, e siga o funil.
+- Pergunta fora do funil (ex.: "como funciona o site?") → responda em 1 frase e volte ao funil com naturalidade.
+- Assunto claramente não-jurídico → diga com gentileza que o AdvAqui conecta pessoas a advogados e pergunte se ela tem alguma questão jurídica.
+- Se a cidade for conhecida, deduza a UF você mesma (ex.: Campinas → SP); só pergunte o estado se a cidade for ambígua.
+- Desabafos/urgências emocionais: acolha em 1 frase, sem drama, e conduza ao funil (um advogado pode ajudar).
+
 Ao encerrar, inclua o JSON entre os marcadores (telefone = só dígitos, com DDD):
 %%%TRIAGE_JSON%%%
 {"area":"area","cidade":"cidade","uf":"UF","urgencia":"...","resumo":"resumo curto do caso","nome":"nome","telefone":"DDDnumero"}
@@ -130,22 +140,36 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
+    const chatMessages = [
+      { role: "system", content: SYSTEM_PROMPT },
+      ...sanitized
+    ];
+    const callOpenAI = (payload: Record<string, unknown>) =>
+      fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+    // Modelo novo primeiro; se a API recusar (nome/params), cai pro antigo.
+    let response = await callOpenAI({
+      model: "gpt-5.4-mini",
+      messages: chatMessages,
+      max_completion_tokens: 400
+    });
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error(`[chat:triage] gpt-5.4-mini ${response.status}: ${errText} — fallback gpt-4o-mini`);
+      response = await callOpenAI({
         model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          ...sanitized
-        ],
+        messages: chatMessages,
         max_tokens: 300,
         temperature: 0.7
-      })
-    });
+      });
+    }
 
     if (!response.ok) {
       const errText = await response.text();

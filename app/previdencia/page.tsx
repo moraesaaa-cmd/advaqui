@@ -4,6 +4,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { CalculadoraWidget } from "@/components/CalculadoraWidget";
+import { ToolGate } from "@/components/ToolGate";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -86,8 +87,10 @@ export default function PrevidenciaPage() {
         </div>
       </header>
 
-      {/* Calculadora de pontos (reaproveita o widget das calculadoras) */}
-      <CalculadoraWidget slug="aposentadoria-tempo-contribuicao" />
+      {/* Calculadora de pontos — usar exige conta grátis (página segue indexável) */}
+      <ToolGate>
+        <CalculadoraWidget slug="aposentadoria-tempo-contribuicao" />
+      </ToolGate>
 
       <section className="card mb-6">
         <h2 className="font-display text-xl font-bold text-brand-ink mb-4">

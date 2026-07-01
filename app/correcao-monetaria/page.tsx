@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { CorrecaoMonetariaWidget } from "@/components/CorrecaoMonetariaWidget";
+import { ToolGate } from "@/components/ToolGate";
 
 export const metadata: Metadata = buildMetadata({
   title: "Correção monetária pelo IPCA, INPC e IGP-M",
@@ -13,7 +14,9 @@ export const metadata: Metadata = buildMetadata({
 export default function CorrecaoMonetariaPage() {
   return (
     <>
-      <CorrecaoMonetariaWidget />
+      <ToolGate>
+        <CorrecaoMonetariaWidget />
+      </ToolGate>
       <div className="container-narrow pb-10">
         <section className="rounded-2xl bg-brand-bg border border-brand-line p-6 mb-4">
           <h2 className="font-display text-lg font-bold text-brand-ink mb-3">

@@ -4,6 +4,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { ConsultaProcesso } from "@/components/ConsultaProcesso";
+import { ToolGate } from "@/components/ToolGate";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -16,7 +17,7 @@ import { SITE } from "@/lib/config";
 export const revalidate = 604800;
 
 const DESC =
-  "Consulte grátis o andamento de um processo pelo número (padrão CNJ). Veja classe, órgão julgador e as movimentações, usando a base pública oficial do DataJud (CNJ). Sem cadastro.";
+  "Consulte grátis o andamento de um processo pelo número (padrão CNJ). Veja classe, órgão julgador e as movimentações, usando a base pública oficial do DataJud (CNJ). Cadastro gratuito.";
 
 export const metadata = buildMetadata({
   title: "Consulta de processos — andamento pelo número (CNJ)",
@@ -58,13 +59,15 @@ export default function ProcessosPage() {
             <p className="text-base text-brand-ink/85 mt-3 leading-relaxed">
               Acompanhe o andamento de um processo pelo número, direto da base
               pública oficial do CNJ (DataJud). Digite o número no padrão CNJ e
-              veja as movimentações em ordem. Grátis e sem cadastro.
+              veja as movimentações em ordem. Grátis — basta criar sua conta.
             </p>
           </div>
         </div>
       </header>
 
-      <ConsultaProcesso />
+      <ToolGate>
+        <ConsultaProcesso />
+      </ToolGate>
 
       <section className="card mb-6">
         <h2 className="font-display text-xl font-bold text-brand-ink mb-4 inline-flex items-center gap-2">

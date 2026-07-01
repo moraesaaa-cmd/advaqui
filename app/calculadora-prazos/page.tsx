@@ -8,6 +8,7 @@ import {
   ArrowRight,
   CheckCircle2
 } from "lucide-react";
+import { ToolGate } from "@/components/ToolGate";
 
 /**
  * /calculadora-prazos — Calculadora de prazos processuais.
@@ -168,6 +169,7 @@ export default function CalculadoraPrazosPage() {
         </p>
       </div>
 
+      <ToolGate>
       <div className="card space-y-5">
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
@@ -277,6 +279,7 @@ export default function CalculadoraPrazosPage() {
           </span>
         </div>
       </div>
+      </ToolGate>
 
       <div className="mt-6 rounded-2xl border border-brand-line bg-brand-bg/40 p-5 text-center">
         <p className="text-sm text-brand-ink/75">

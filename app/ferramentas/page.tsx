@@ -296,9 +296,20 @@ const GOLD = "#C8A24A";
 // Selos por ferramenta (sem mexer nos dados): IA / Premium nos destaques.
 // Obs.: o /recurso-de-multa do grid é o gerador GRÁTIS por modelo (sem IA) —
 // a versão com IA é o produto pago em destaque no topo (multas.advaqui.com).
+const GATED_TOOLS = new Set([
+  "/calculadora-prazos",
+  "/correcao-monetaria",
+  "/atualizar-valor",
+  "/calculadoras",
+  "/previdencia",
+  "/processos",
+  "/montar-peticao"
+]);
+
 function badgeFor(href: string): { text: string; ia?: boolean } | null {
   if (href === "/recurso-de-multa") return { text: "Grátis", ia: false };
   if (href === "/revisor-peticao") return { text: "Premium · IA", ia: true };
+  if (GATED_TOOLS.has(href)) return { text: "Grátis com conta", ia: false };
   return null;
 }
 
@@ -325,8 +336,8 @@ export default function FerramentasPage() {
         </h1>
         <p className="text-brand-ink/70 mt-4 text-base md:text-lg leading-relaxed">
           Calcular um prazo, atualizar uma dívida, montar o rascunho de uma
-          peça, entender o passo a passo do seu problema. A maioria das
-          ferramentas é gratuita, sem cadastro e funciona direto no navegador.
+          peça, entender o passo a passo do seu problema. As ferramentas são
+          gratuitas — basta criar sua conta (leva 2 minutos) para usar.
         </p>
       </header>
 

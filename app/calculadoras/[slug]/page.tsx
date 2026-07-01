@@ -20,6 +20,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { CalculadoraWidget } from "@/components/CalculadoraWidget";
+import { ToolGate } from "@/components/ToolGate";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, howToSchema } from "@/lib/seo/schema";
 
@@ -88,8 +89,11 @@ export default function CalculadoraPage({
         </div>
       </article>
 
-      {/* Calculadora interativa de verdade — a pessoa digita e o site calcula */}
-      <CalculadoraWidget slug={calc.slug} />
+      {/* Calculadora interativa — usar exige conta grátis (conteúdo da página
+          segue 100% público e indexável; só a interação é gateada) */}
+      <ToolGate>
+        <CalculadoraWidget slug={calc.slug} />
+      </ToolGate>
 
       <article className="card mb-6">
         <section className="p-4 rounded-xl bg-brand-deep/5 border border-brand-deep/20">
