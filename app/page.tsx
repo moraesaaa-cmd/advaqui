@@ -128,7 +128,7 @@ export default async function HomePage() {
             </h1>
             <p
               className="mt-4 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto"
-              style={{ color: "#BBC7DC" }}
+              style={{ color: "#CBD5E6" }}
             >
               Diretório gratuito com OAB verificada em 5.570+ cidades.
               Contato direto, sem intermediário.
@@ -138,7 +138,7 @@ export default async function HomePage() {
             </div>
             <div
               className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px]"
-              style={{ color: "#A6B3C9" }}
+              style={{ color: "#CBD5E6" }}
             >
               {[
                 "OAB conferida em cada perfil",
@@ -217,7 +217,7 @@ export default async function HomePage() {
                   {n}
                 </div>
                 <h3 className="font-semibold text-[16.5px] mb-1.5">{t}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: "#A9B4C6" }}>
+                <p className="text-sm leading-relaxed" style={{ color: "#CBD5E6" }}>
                   {d}
                 </p>
               </div>
@@ -380,7 +380,7 @@ export default async function HomePage() {
                 <p className="font-display text-3xl md:text-4xl font-bold" style={{ color: "#F0CE84" }}>
                   {n}
                 </p>
-                <p className="text-sm mt-1" style={{ color: "#A9B4C6" }}>{label}</p>
+                <p className="text-sm mt-1" style={{ color: "#CBD5E6" }}>{label}</p>
               </div>
             ))}
           </div>
@@ -400,7 +400,7 @@ export default async function HomePage() {
             <h2 className="font-display text-2xl md:text-3xl font-semibold leading-tight">
               Sou advogado e quero aparecer aqui
             </h2>
-            <p className="mt-2 text-[15px]" style={{ color: "#A9B4C6" }}>
+            <p className="mt-2 text-[15px]" style={{ color: "#CBD5E6" }}>
               Apareça quando alguém busca advogado na sua cidade.
               Cadastro gratuito em menos de 2 minutos.
             </p>

@@ -59,6 +59,7 @@ export function SearchBox() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
+  const [searchError, setSearchError] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const showPopular = open && q.trim().length < 2 && hits.length === 0;
@@ -71,20 +72,29 @@ export function SearchBox() {
     if (term.length < 2) {
       setHits([]);
       setLoading(false);
+      setSearchError(false);
       return;
     }
     const ctrl = new AbortController();
     setLoading(true);
     const t = setTimeout(() => {
       fetch(`/api/cities?q=${encodeURIComponent(term)}&limit=12`, { signal: ctrl.signal })
-        .then((r) => (r.ok ? r.json() : []))
+        .then((r) => {
+          if (!r.ok) throw new Error("http_" + r.status);
+          return r.json();
+        })
         .then((data: Hit[]) => {
           setHits(data);
+          setSearchError(false);
           setLoading(false);
           setActiveIdx(-1);
         })
         .catch((err) => {
-          if (err?.name !== "AbortError") setLoading(false);
+          if (err?.name !== "AbortError") {
+            setHits([]);
+            setSearchError(true);
+            setLoading(false);
+          }
         });
     }, 200);
     return () => {
@@ -266,7 +276,9 @@ export function SearchBox() {
       {open && q.trim().length >= 2 && !loading && hits.length === 0 && (
         <div className="absolute z-50 left-0 right-0 mt-2 bg-white rounded-2xl shadow-card border border-brand-line p-4">
           <p className="text-sm text-brand-ink/60 mb-3">
-            Nenhuma cidade encontrada com &quot;{q}&quot;.
+            {searchError
+              ? "Não conseguimos buscar as cidades agora. Verifique sua conexão e tente novamente."
+              : `Nenhuma cidade encontrada com "${q}".`}
           </p>
           <div className="flex flex-wrap gap-2">
             <Link

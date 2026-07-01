@@ -582,7 +582,7 @@ export function TriagemChat() {
             aria-label="Enviar mensagem"
             className="flex items-center justify-center w-10 h-10 rounded-xl bg-brand-ink text-white
               hover:bg-brand-deep transition-colors
-              disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+              disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
           >
             <Send className="w-4 h-4" />
           </button>

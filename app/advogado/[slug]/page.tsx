@@ -229,7 +229,7 @@ export default async function ProfessionalPage({
       <div style={{ background: "linear-gradient(110deg,#0F1B2D 0%,#1B2D49 100%)" }} className="text-white">
         <div className="max-w-[1140px] mx-auto px-7 pt-[34px]">
           {/* breadcrumb */}
-          <div className="flex gap-2 items-center text-[13px] mb-6 flex-wrap" style={{ color: "#9FB0CB" }}>
+          <div className="flex gap-2 items-center text-[13px] mb-6 flex-wrap" style={{ color: "#CBD5E6" }}>
             <Link href={`/advogados/${l.uf.toLowerCase()}/${l.citySlug}`} className="hover:text-white">
               {l.cityName}, {l.uf}
             </Link>
@@ -286,7 +286,7 @@ export default async function ProfessionalPage({
                   </span>
                 )}
               </div>
-              <div className="flex gap-[18px] mt-3.5 text-[13.5px] flex-wrap" style={{ color: "#9FB0CB" }}>
+              <div className="flex gap-[18px] mt-3.5 text-[13.5px] flex-wrap" style={{ color: "#CBD5E6" }}>
                 {l.verifiedOab && <span>✓ OAB verificada</span>}
                 {modalLabel && <span>{modalLabel}</span>}
                 <span>📍 {l.cityName}/{l.uf}</span>
@@ -305,7 +305,7 @@ export default async function ProfessionalPage({
                 >
                   <MessageCircle className="w-4 h-4" aria-hidden /> Falar agora
                 </a>
-                <span className="text-center text-[12.5px]" style={{ color: "#9FB0CB" }}>
+                <span className="text-center text-[12.5px]" style={{ color: "#CBD5E6" }}>
                   Sem custo de contato
                 </span>
               </div>
