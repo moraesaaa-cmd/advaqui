@@ -157,8 +157,8 @@ export function TriagemChat() {
     }
   }, []);
 
-  // Convite automático: mostra o balão após 7s se o visitante ainda não
-  // abriu o chat nesta sessão e não o dispensou antes.
+  // Convite automático: aparece logo ao abrir o site (~1,5s, após a hidratação)
+  // se o visitante ainda não abriu o chat nesta sessão e não o dispensou antes.
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
@@ -166,7 +166,7 @@ export function TriagemChat() {
     } catch {
       return;
     }
-    const t = setTimeout(() => setTeaser(true), 7000);
+    const t = setTimeout(() => setTeaser(true), 1500);
     return () => clearTimeout(t);
   }, []);
 
@@ -383,12 +383,12 @@ export function TriagemChat() {
     return (
       <>
         {teaser && (
-          <div className="fixed bottom-24 right-5 z-50 max-w-[260px] animate-in">
-            <div className="relative rounded-2xl rounded-br-md bg-white border border-brand-line shadow-xl px-4 py-3 pr-8">
+          <div className="fixed bottom-24 right-5 z-50 max-w-[270px] animate-in">
+            <div className="relative rounded-2xl rounded-br-md bg-brand-ink border border-brand-deep shadow-2xl px-4 py-3 pr-8">
               <button
                 onClick={dismissTeaser}
                 aria-label="Dispensar convite"
-                className="absolute top-1.5 right-1.5 p-1 rounded-lg text-brand-ink/40 hover:bg-brand-line/40 hover:text-brand-ink transition-colors"
+                className="absolute top-1.5 right-1.5 p-1 rounded-lg text-white/60 hover:bg-white/10 hover:text-white transition-colors"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -396,13 +396,17 @@ export function TriagemChat() {
                 onClick={handleOpen}
                 className="text-left"
               >
-                <p className="text-sm font-semibold text-brand-ink leading-snug">
+                <p className="text-sm font-bold text-brand-accent leading-snug">
                   Precisa de um advogado?
                 </p>
-                <p className="text-xs text-brand-ink/70 mt-0.5 leading-snug">
+                <p className="text-xs text-white/80 mt-0.5 leading-snug">
                   Faça uma triagem gratuita em 2 minutos e veja quem pode te ajudar.
                 </p>
               </button>
+              <span
+                aria-hidden
+                className="absolute -bottom-1.5 right-6 w-3 h-3 rotate-45 bg-brand-ink border-b border-r border-brand-deep"
+              />
             </div>
           </div>
         )}
