@@ -80,8 +80,8 @@ export default async function AdminLeadsPage() {
         </span>
       </div>
       <p className="text-sm text-brand-ink/70 mt-2">
-        Pessoas que pediram contato pelo chat "Advogado Online", ferramentas ou
-        formulários. Fale com cada uma no WhatsApp em 1 clique.
+        Pessoas que pediram contato pelo chat Advogado Online, por ferramentas
+        ou formulários. Fale com cada uma no WhatsApp em 1 clique.
       </p>
 
       {error && (
