@@ -29,6 +29,7 @@ interface TriageResult {
 // ---------------------------------------------------------------------------
 const STORAGE_KEY = "advaqui_triage_chat";
 const SESSION_KEY = "advaqui_triage_session";
+const TEASER_KEY = "advaqui_triage_teaser_dismissed";
 
 function generateId(): string {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -139,6 +140,10 @@ export function TriagemChat() {
   const [triage, setTriage] = useState<TriageResult | null>(null);
   const [unread, setUnread] = useState(0);
   const [mounted, setMounted] = useState(false);
+  // Balão-convite: a maioria dos visitantes nunca clica no botão do chat.
+  // Um convite discreto após alguns segundos aumenta a captação de leads
+  // sem ser intrusivo (dispensável e aparece 1x por sessão).
+  const [teaser, setTeaser] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -149,6 +154,28 @@ export function TriagemChat() {
     const saved = loadChat();
     if (saved.length > 0) {
       setMessages(saved);
+    }
+  }, []);
+
+  // Convite automático: mostra o balão após 7s se o visitante ainda não
+  // abriu o chat nesta sessão e não o dispensou antes.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      if (sessionStorage.getItem(TEASER_KEY)) return;
+    } catch {
+      return;
+    }
+    const t = setTimeout(() => setTeaser(true), 7000);
+    return () => clearTimeout(t);
+  }, []);
+
+  const dismissTeaser = useCallback(() => {
+    setTeaser(false);
+    try {
+      sessionStorage.setItem(TEASER_KEY, "1");
+    } catch {
+      // ignora
     }
   }, []);
 
@@ -175,6 +202,12 @@ export function TriagemChat() {
     setOpen(true);
     setMinimized(false);
     setUnread(0);
+    setTeaser(false);
+    try {
+      sessionStorage.setItem(TEASER_KEY, "1");
+    } catch {
+      // ignora
+    }
     if (messages.length === 0) {
       setMessages([{ ...WELCOME_MESSAGE, ts: Date.now() }]);
     }
@@ -335,18 +368,59 @@ export function TriagemChat() {
   // -- Floating button (chat closed) --
   if (!open) {
     return (
-      <button
-        onClick={handleOpen}
-        aria-label="Abrir chat de triagem"
-        className="fixed bottom-5 right-5 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-brand-ink text-white shadow-lg hover:bg-brand-deep transition-all duration-200 hover:scale-105 active:scale-95"
-      >
-        <MessageCircle className="w-6 h-6" />
-        {unread > 0 && (
-          <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 rounded-full bg-brand-accent text-brand-ink text-xs font-bold">
-            {unread > 9 ? "9+" : unread}
-          </span>
+      <>
+        {teaser && (
+          <div className="fixed bottom-24 right-5 z-50 max-w-[260px] animate-in">
+            <div className="relative rounded-2xl rounded-br-md bg-white border border-brand-line shadow-xl px-4 py-3 pr-8">
+              <button
+                onClick={dismissTeaser}
+                aria-label="Dispensar convite"
+                className="absolute top-1.5 right-1.5 p-1 rounded-lg text-brand-ink/40 hover:bg-brand-line/40 hover:text-brand-ink transition-colors"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={handleOpen}
+                className="text-left"
+              >
+                <p className="text-sm font-semibold text-brand-ink leading-snug">
+                  Precisa de um advogado?
+                </p>
+                <p className="text-xs text-brand-ink/70 mt-0.5 leading-snug">
+                  Faça uma triagem gratuita em 2 minutos e veja quem pode te ajudar.
+                </p>
+              </button>
+            </div>
+          </div>
         )}
-      </button>
+        <button
+          onClick={handleOpen}
+          aria-label="Abrir chat de triagem"
+          className="fixed bottom-5 right-5 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-brand-ink text-white shadow-lg hover:bg-brand-deep transition-all duration-200 hover:scale-105 active:scale-95"
+        >
+          <MessageCircle className="w-6 h-6" />
+          {unread > 0 && (
+            <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 rounded-full bg-brand-accent text-brand-ink text-xs font-bold">
+              {unread > 9 ? "9+" : unread}
+            </span>
+          )}
+        </button>
+        <style jsx>{`
+          .animate-in {
+            animation: teaserUp 260ms ease-out;
+          }
+          @keyframes teaserUp {
+            from {
+              opacity: 0;
+              transform: translateY(10px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}</style>
+      </>
     );
   }
 
