@@ -2,6 +2,7 @@ import Link from "next/link";
 import { PLAN } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { AtivarPremiumCTA } from "@/components/PlanosCTAs";
 
 export const metadata = buildMetadata({
   title: "Planos — apareça primeiro na sua cidade",
@@ -106,13 +107,11 @@ export default function PlanosPage() {
             fidelidade.
           </p>
           <div className="flex gap-3 justify-center items-center flex-wrap">
-            <Link
-              href="/cadastro"
+            <AtivarPremiumCTA
               className="font-bold text-[15px] px-7 py-3.5 rounded-[10px]"
               style={{ background: "#C8A24A", color: "#0F1B2D" }}
-            >
-              Criar perfil e ativar premium
-            </Link>
+              origem="planos-hero"
+            />
             <Link
               href="/cadastro"
               className="font-semibold text-[15px] px-6 py-3.5 rounded-[10px] text-white"
@@ -449,13 +448,11 @@ export default function PlanosPage() {
               {formatCurrency(PLAN.price)}/mês · Pix · sem fidelidade · cancele quando quiser
             </p>
             <div className="flex gap-3 justify-center flex-wrap">
-              <Link
-                href="/cadastro"
+              <AtivarPremiumCTA
                 className="inline-block font-bold text-base px-[30px] py-[15px] rounded-[11px]"
                 style={{ background: "#C8A24A", color: "#0F1B2D" }}
-              >
-                Criar perfil e ativar premium
-              </Link>
+                origem="planos-rodape"
+              />
               <Link
                 href="/cadastro"
                 className="inline-block font-semibold text-base px-[26px] py-[15px] rounded-[11px]"

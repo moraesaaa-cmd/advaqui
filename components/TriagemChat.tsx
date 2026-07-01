@@ -115,7 +115,7 @@ const WELCOME_MESSAGE: ChatMessage = {
   id: "welcome",
   role: "assistant",
   content:
-    "Olá! Sou o assistente do AdvAqui. Em 2 minutos, descubro qual advogado pode te ajudar. Qual é a sua situação?",
+    "Oi! Sou a Marina, do Advogado Online. Me conta rapidinho o que aconteceu que eu já vejo qual advogado pode te ajudar. 🙂",
   ts: Date.now(),
 };
 
@@ -326,7 +326,17 @@ export function TriagemChat() {
     // quando ha ao menos um contato — caso contrario o lead seria perdido de
     // qualquer forma e gerar 422 silencioso nao ajuda ninguem.
     const nome = (t.nome || "").trim();
-    const telefone = (t.telefone || "").trim();
+    let telefone = (t.telefone || "").trim();
+    // Fallback robusto: se o modelo não colocou o telefone no JSON, tenta
+    // extrair um número (com DDD) do que a pessoa digitou. Evita perder o lead.
+    if (!telefone) {
+      const userText = msgs
+        .filter((m) => m.role === "user")
+        .map((m) => m.content)
+        .join("  ");
+      const match = userText.match(/(?:\(?\d{2}\)?[\s.-]?)?9?\d{4}[\s.-]?\d{4}/);
+      if (match) telefone = match[0].replace(/\D/g, "");
+    }
     if (!nome && !telefone) return;
 
     fetch("/api/leads/capture", {
@@ -432,7 +442,7 @@ export function TriagemChat() {
         className="fixed bottom-5 right-5 z-50 flex items-center gap-2 px-4 py-3 rounded-full bg-brand-ink text-white shadow-lg hover:bg-brand-deep transition-all duration-200"
       >
         <MessageCircle className="w-5 h-5" />
-        <span className="text-sm font-medium">Triagem jurídica</span>
+        <span className="text-sm font-medium">Advogado Online</span>
         {unread > 0 && (
           <span className="flex items-center justify-center w-5 h-5 rounded-full bg-brand-accent text-brand-ink text-xs font-bold">
             {unread > 9 ? "9+" : unread}
@@ -458,8 +468,8 @@ export function TriagemChat() {
         <div className="flex items-center gap-2">
           <MessageCircle className="w-5 h-5 text-brand-accent" />
           <div>
-            <p className="text-sm font-semibold leading-tight">Triagem jurídica</p>
-            <p className="text-[11px] text-white/60 leading-tight">AdvAqui</p>
+            <p className="text-sm font-semibold leading-tight">Advogado Online</p>
+            <p className="text-[11px] text-white/60 leading-tight">Marina • Atendimento AdvAqui</p>
           </div>
         </div>
         <div className="flex items-center gap-1">

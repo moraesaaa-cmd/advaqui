@@ -130,3 +130,57 @@ export function PlanosCTAPremium() {
     </Link>
   );
 }
+
+/**
+ * CTA de Premium adaptável a login, para reaproveitar em qualquer página
+ * (home, /planos, páginas de cidade) mantendo o estilo do local via className.
+ *
+ * - Anônimo         → "Criar perfil e ativar premium" → /cadastro
+ * - Advogado free   → "Ativar Premium agora"          → /painel/pagamento
+ * - Advogado pending→ "Pagamento em análise"          → /painel
+ * - Advogado premium→ "Você já é premium"             → /painel
+ * - Admin           → "Ir para o painel admin"        → /admin
+ *
+ * Resolve o erro em que o advogado JÁ LOGADO via "Criar perfil e ativar
+ * premium" (sem sentido — ele já tem perfil) e não achava como pagar.
+ */
+export function AtivarPremiumCTA({
+  className,
+  style,
+  origem = "planos",
+  anonLabel = "Criar perfil e ativar premium",
+  anonHref
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+  origem?: string;
+  anonLabel?: string;
+  anonHref?: string;
+}) {
+  const auth = useAuthKind();
+
+  let href = anonHref || `/cadastro?origem=${origem}`;
+  let label = anonLabel;
+
+  if (auth.kind === "lawyer") {
+    if (auth.planStatus === "active") {
+      href = "/painel";
+      label = "✓ Você já é premium · Ver painel";
+    } else if (auth.planStatus === "pending") {
+      href = "/painel";
+      label = "Pagamento em análise · Ver painel";
+    } else {
+      href = "/painel/pagamento";
+      label = "Ativar Premium agora";
+    }
+  } else if (auth.kind === "admin") {
+    href = "/admin";
+    label = "Ir para o painel admin";
+  }
+
+  return (
+    <Link href={href} className={className} style={style}>
+      {label}
+    </Link>
+  );
+}

@@ -766,6 +766,13 @@ export default function AdminPage() {
           </div>
           <div className="flex items-center gap-2">
             <a
+              href="/admin/leads"
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white border border-white/20 hover:bg-white/10 transition"
+              title="Leads recebidos pelo chat, ferramentas e formulários — com WhatsApp em 1 clique"
+            >
+              <Mail className="w-4 h-4" aria-hidden /> Leads
+            </a>
+            <a
               href="/admin/crescimento"
               className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white border border-white/20 hover:bg-white/10 transition"
               title="Robô de crescimento: convites de Premium gerados por IA para advogados em plano grátis (envio por WhatsApp em 1 clique)"

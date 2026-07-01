@@ -4,6 +4,7 @@ import { SearchBox } from "@/components/SearchBox";
 import { GeoPersonalize } from "@/components/GeoPersonalize";
 import { ResolverAgora } from "@/components/ResolverAgora";
 import { HomeFaq } from "@/components/HomeFaq";
+import { AtivarPremiumCTA } from "@/components/PlanosCTAs";
 import { getAllArticles } from "@/lib/data/articles";
 import { getProblemaIndex } from "@/lib/data/problema-index";
 import { getAllCities } from "@/lib/data/cities";
@@ -405,13 +406,13 @@ export default async function HomePage() {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
-            <Link
-              href="/cadastro"
+            <AtivarPremiumCTA
               className="inline-flex items-center justify-center font-bold rounded-xl px-6 py-3.5 whitespace-nowrap"
               style={{ background: GOLD, color: "#0F1B2D" }}
-            >
-              Criar perfil grátis
-            </Link>
+              origem="home"
+              anonLabel="Criar perfil grátis"
+              anonHref="/cadastro"
+            />
             <Link
               href="/lp/advogado-premium"
               className="inline-flex items-center justify-center font-semibold rounded-xl px-6 py-3.5 whitespace-nowrap border-2 text-white hover:bg-white/10 transition"
