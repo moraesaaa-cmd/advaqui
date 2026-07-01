@@ -107,6 +107,16 @@ export default function RecursoMultaCidadePage({
         </ul>
       </section>
 
+      {c.contextoEstadual && (
+        <section className="card mb-6">
+          <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+            <Scale className="w-5 h-5 text-brand-deep" aria-hidden />
+            Recorrer de multa em {city.state}
+          </h2>
+          <p className="text-sm md:text-base text-brand-ink/85 leading-relaxed">{c.contextoEstadual}</p>
+        </section>
+      )}
+
       {/* Como funciona em <cidade> */}
       <section className="card mb-6">
         <h2 className="font-display text-xl font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
