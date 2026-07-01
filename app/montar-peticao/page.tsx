@@ -553,7 +553,7 @@ export default function MontarPeticaoPage() {
                     Rascunho completo exclusivo Premium
                   </p>
                   <p className="text-xs text-brand-ink/60 mb-3 max-w-sm text-center">
-                    Assine o AdvAqui Premium para gerar o texto completo, copiar e usar em todas as ferramentas com IA.
+                    Assine o AdvAqui Premium para gerar o texto completo, copiar e usar todas as ferramentas exclusivas do plano.
                   </p>
                   <Link
                     href="/painel/pagamento"

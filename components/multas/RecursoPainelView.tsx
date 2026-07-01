@@ -459,7 +459,7 @@ export function RecursoPainelView() {
                   Gerar um novo recurso
                 </h2>
                 <p style={{ fontSize: 13.5, color: "#5A5F6A", margin: "0 0 20px" }}>
-                  Preencha os dados da multa. A IA gera a peça com a tese e a fundamentação corretas.
+                  Preencha os dados da multa. O sistema monta a peça com a tese e a fundamentação corretas.
                 </p>
 
                 <div style={{ marginBottom: 16 }}>
@@ -497,7 +497,7 @@ export function RecursoPainelView() {
                 </div>
 
                 <button type="button" onClick={gerar} disabled={gerando} style={{ ...cta, width: "100%", marginTop: 22, opacity: gerando ? 0.7 : 1, cursor: gerando ? "default" : "pointer" }}>
-                  {gerando ? "Gerando o seu recurso…" : isPremium ? "Gerar recurso com IA — Premium" : `Gerar recurso com IA (resta${restantes === 1 ? "" : "m"} ${restantes})`}
+                  {gerando ? "Gerando o seu recurso…" : isPremium ? "Gerar recurso completo — Premium" : `Gerar recurso completo (resta${restantes === 1 ? "" : "m"} ${restantes})`}
                 </button>
                 {gerErro && <p style={{ color: "#B42318", fontSize: 13, marginTop: 12, textAlign: "center" }}>{gerErro}</p>}
                 <p style={{ fontSize: 11.5, color: "#9AA0AA", marginTop: 12, textAlign: "center", lineHeight: 1.5 }}>

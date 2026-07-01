@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import {
   Calculator,
   CalendarClock,
@@ -27,7 +28,8 @@ import {
   ClipboardCheck,
   ShieldCheck,
   Users,
-  ChevronRight
+  ChevronRight,
+  CheckCircle2
 } from "lucide-react";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/seo/schema";
@@ -277,8 +279,8 @@ const GROUPS: Group[] = [
       },
       {
         href: "/revisor-peticao",
-        label: "Revisor de petições com IA",
-        desc: "Revise ou humanize o texto da sua peça com IA. Recurso do plano premium.",
+        label: "Revisor de petições",
+        desc: "Revise ou humanize o texto da sua peça. Exclusivo do plano Premium.",
         Icon: Sparkles
       },
       {
@@ -291,11 +293,12 @@ const GROUPS: Group[] = [
   }
 ];
 
+const NAVY = "#0F1B2D";
 const GOLD = "#C8A24A";
+const GOLD_LIGHT = "#E3C078";
+const GOLD_TEXT = "#8A6E2B";
 
-// Selos por ferramenta (sem mexer nos dados): IA / Premium nos destaques.
-// Obs.: o /recurso-de-multa do grid é o gerador GRÁTIS por modelo (sem IA) —
-// a versão com IA é o produto pago em destaque no topo (multas.advaqui.com).
+// Ferramentas interativas: grátis, exigem conta gratuita (ToolGate).
 const GATED_TOOLS = new Set([
   "/calculadora-prazos",
   "/correcao-monetaria",
@@ -309,6 +312,7 @@ const GATED_TOOLS = new Set([
   "/triagem",
   "/divorcio",
   "/prazos",
+  "/recurso-de-multa",
   "/ferramentas/checklist-recurso-multa",
   "/ferramentas/checklist-limpar-nome",
   "/ferramentas/checklist-pensao-alimenticia",
@@ -316,11 +320,54 @@ const GATED_TOOLS = new Set([
   "/ferramentas/triagem-mandado-seguranca"
 ]);
 
-function badgeFor(href: string): { text: string; ia?: boolean } | null {
-  if (href === "/recurso-de-multa") return { text: "Grátis", ia: false };
-  if (href === "/revisor-peticao") return { text: "Premium · IA", ia: true };
-  if (GATED_TOOLS.has(href)) return { text: "Grátis com conta", ia: false };
-  return null;
+type BadgeKind = "conta" | "premium" | "gratis";
+
+// Exatamente UM selo por ferramenta, seguindo o modelo de acesso:
+// "Grátis com conta" (interativas com ToolGate), "Premium" (revisor de
+// petições, exclusivo de advogado), "Grátis" (conteúdo aberto).
+function badgeFor(href: string): BadgeKind {
+  if (href === "/revisor-peticao") return "premium";
+  if (GATED_TOOLS.has(href)) return "conta";
+  return "gratis";
+}
+
+const BADGE_STYLES: Record<BadgeKind, { text: string; style: CSSProperties }> = {
+  conta: {
+    text: "Grátis com conta",
+    style: {
+      background: "rgba(200,162,74,0.14)",
+      color: GOLD_TEXT,
+      border: "1px solid rgba(200,162,74,0.45)"
+    }
+  },
+  premium: {
+    text: "Premium",
+    style: {
+      background: GOLD,
+      color: NAVY,
+      border: "1px solid #B08F3E"
+    }
+  },
+  gratis: {
+    text: "Grátis",
+    style: {
+      background: "rgba(22,163,74,0.10)",
+      color: "#15803D",
+      border: "1px solid rgba(22,163,74,0.30)"
+    }
+  }
+};
+
+function Badge({ kind }: { kind: BadgeKind }) {
+  const b = BADGE_STYLES[kind];
+  return (
+    <span
+      className="inline-flex items-center text-[11px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
+      style={b.style}
+    >
+      {b.text}
+    </span>
+  );
 }
 
 export default function FerramentasPage() {
@@ -338,7 +385,7 @@ export default function FerramentasPage() {
       </nav>
 
       <header className="max-w-2xl mb-12">
-        <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: GOLD }}>
+        <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: GOLD_TEXT }}>
           Ferramentas
         </p>
         <h1 className="font-display text-3xl md:text-5xl font-semibold text-brand-ink tracking-tight text-balance leading-[1.08]">
@@ -351,10 +398,10 @@ export default function FerramentasPage() {
         </p>
       </header>
 
-      {/* DESTAQUE — recurso de multa com IA (produto pago, avulso ou Premium) */}
+      {/* DESTAQUE — recurso de multa completo (produto pago, avulso ou Premium) */}
       <section
-        className="rounded-3xl text-white p-7 md:p-9 mb-14 relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg,#0F1B2D 0%,#16263F 60%,#1B2D49 100%)" }}
+        className="rounded-3xl text-white p-7 md:p-9 mb-10 relative overflow-hidden"
+        style={{ background: NAVY }}
       >
         <div
           aria-hidden
@@ -362,61 +409,158 @@ export default function FerramentasPage() {
           style={{
             top: -90,
             right: -40,
-            width: 340,
-            height: 280,
-            background: "radial-gradient(ellipse at center, rgba(200,162,74,0.18), transparent 70%)"
+            width: 380,
+            height: 300,
+            background: "radial-gradient(ellipse at center, rgba(200,162,74,0.25), transparent 70%)"
           }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-x-0 top-0 h-1"
+          style={{ background: `linear-gradient(90deg, ${GOLD} 0%, ${GOLD_LIGHT} 50%, ${GOLD} 100%)` }}
         />
         <div className="relative grid lg:grid-cols-[1fr_auto] gap-7 items-center">
           <div>
             <span
               className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full mb-4"
-              style={{ background: "rgba(200,162,74,0.16)", color: "#E3C078", border: "1px solid rgba(200,162,74,0.35)" }}
+              style={{ background: "rgba(200,162,74,0.18)", color: GOLD_LIGHT, border: "1px solid rgba(200,162,74,0.45)" }}
             >
-              <Sparkles className="w-3.5 h-3.5" aria-hidden /> Recurso com Inteligência Artificial
+              <Car className="w-3.5 h-3.5" aria-hidden /> Recurso de multa completo
             </span>
             <h2 className="font-display text-2xl md:text-[32px] font-semibold tracking-tight leading-[1.1] mb-3">
-              Recorra da sua multa de trânsito com ajuda de IA
+              Multa de trânsito? Receba o recurso completo, pronto para protocolar
             </h2>
             <p className="text-[15px] md:text-base leading-relaxed max-w-[640px]" style={{ color: "#C4CDDC" }}>
-              A IA monta o seu recurso (defesa prévia, JARI ou CETRAN) fundamentado no
-              Código de Trânsito Brasileiro, a partir dos dados da sua multa — pronto para
-              revisar e protocolar. Pague só pela peça (avulso) ou tenha acesso pelo
-              plano Premium.
+              Recurso elaborado sob medida para o seu caso (defesa prévia, JARI ou
+              CETRAN), fundamentado no Código de Trânsito Brasileiro, a partir dos
+              dados da sua multa. Pague uma vez — R$ 9,90 via Pix — ou tenha acesso
+              incluído no plano Premium de advogado.
             </p>
-            <div className="flex flex-wrap gap-4 mt-5 text-[13px]" style={{ color: "#9FB0C6" }}>
-              <span className="inline-flex items-center gap-1.5">
-                <Car className="w-4 h-4" style={{ color: "#E3C078" }} aria-hidden /> Até 3 recursos por R$ 9,90
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4" style={{ color: "#E3C078" }} aria-hidden /> Texto gerado por IA, fundamentado no CTB
-              </span>
-            </div>
+            <ul className="flex flex-wrap gap-x-5 gap-y-2 mt-5 text-[13px]" style={{ color: "#C4CDDC" }}>
+              <li className="inline-flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4" style={{ color: GOLD_LIGHT }} aria-hidden />
+                Até 3 recursos por R$ 9,90
+              </li>
+              <li className="inline-flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4" style={{ color: GOLD_LIGHT }} aria-hidden />
+                Peça completa e fundamentada no CTB
+              </li>
+              <li className="inline-flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4" style={{ color: GOLD_LIGHT }} aria-hidden />
+                Incluído no Premium ({PLAN.priceLabel}/mês)
+              </li>
+            </ul>
           </div>
 
-          <div className="flex flex-col gap-3 lg:w-[260px] shrink-0">
+          <div className="flex flex-col gap-3 lg:w-[280px] shrink-0">
             <a
               href="https://multas.advaqui.com"
               target="_blank"
               rel="noopener"
-              className="inline-flex items-center justify-center gap-2 text-[15px] font-bold px-6 py-3.5 rounded-xl transition hover:brightness-105"
-              style={{ background: "#C8A24A", color: "#0F1B2D" }}
+              className="inline-flex items-center justify-center gap-2 text-[15px] font-bold px-6 py-3.5 rounded-xl transition hover:brightness-110 shadow-lg shadow-black/25"
+              style={{ background: GOLD, color: NAVY }}
             >
-              Gerar meu recurso — R$ 9,90
+              Fazer meu recurso — R$ 9,90
               <ArrowRight className="w-4 h-4" aria-hidden />
             </a>
             <Link
-              href="/planos"
-              className="inline-flex items-center justify-center gap-2 text-[15px] font-semibold px-6 py-3.5 rounded-xl text-white border border-white/25 hover:bg-white/10 transition"
+              href="/recurso-de-multa"
+              className="inline-flex items-center justify-center gap-2 text-[15px] font-semibold px-6 py-3.5 rounded-xl text-white border transition hover:bg-white/10"
+              style={{ borderColor: "rgba(227,192,120,0.6)" }}
             >
-              Ver plano Premium
+              Usar o modelo grátis
             </Link>
             <Link
-              href="/recurso-de-multa"
-              className="text-[12.5px] text-center underline underline-offset-2 hover:text-white transition"
-              style={{ color: "#9FB0C6" }}
+              href="/planos"
+              className="text-[13px] text-center underline underline-offset-2 hover:text-white transition"
+              style={{ color: GOLD_LIGHT }}
             >
-              Prefere o modelo grátis (sem IA)? Use o gerador
+              Sou advogado — ver o plano Premium
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Como funciona o acesso */}
+      <section className="mb-14" aria-labelledby="acesso-title">
+        <h2 id="acesso-title" className="font-display text-2xl font-semibold text-brand-ink tracking-tight mb-1">
+          Como funciona o acesso
+        </h2>
+        <p className="text-sm text-brand-ink/65 mb-5">
+          Três formas de usar o AdvAqui — sem pegadinha, sem fidelidade.
+        </p>
+        <div className="grid md:grid-cols-3 gap-4">
+          <div
+            className="rounded-2xl border-2 p-6 flex flex-col"
+            style={{ borderColor: "rgba(200,162,74,0.45)", background: "#FAF7F0" }}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-display font-semibold text-brand-ink text-lg">Conta grátis</span>
+              <Badge kind="conta" />
+            </div>
+            <p className="text-sm text-brand-ink/75 leading-relaxed flex-1">
+              Libera todas as ferramentas interativas: calculadoras, prazos,
+              consulta de processo, montar petição, checklists, triagens e
+              simuladores. Custa R$ 0 — para sempre.
+            </p>
+            <Link
+              href="/cadastro"
+              className="text-sm font-bold inline-flex items-center gap-1 mt-4"
+              style={{ color: GOLD_TEXT }}
+            >
+              Criar conta grátis <ArrowRight className="w-4 h-4" aria-hidden />
+            </Link>
+          </div>
+
+          <div
+            className="rounded-2xl p-6 flex flex-col text-white"
+            style={{ background: NAVY }}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-display font-semibold text-lg">Recurso de multa</span>
+              <span
+                className="inline-flex items-center text-[11px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
+                style={{ background: "rgba(227,192,120,0.18)", color: GOLD_LIGHT, border: "1px solid rgba(227,192,120,0.5)" }}
+              >
+                Pago — R$ 9,90
+              </span>
+            </div>
+            <p className="text-sm leading-relaxed flex-1" style={{ color: "#C4CDDC" }}>
+              A peça completa, elaborada sob medida e fundamentada no CTB, pronta
+              para protocolar. Pagamento único via Pix libera até 3 recursos.
+              Também está incluído no Premium.
+            </p>
+            <a
+              href="https://multas.advaqui.com"
+              target="_blank"
+              rel="noopener"
+              className="text-sm font-bold inline-flex items-center gap-1 mt-4"
+              style={{ color: GOLD_LIGHT }}
+            >
+              Fazer meu recurso <ArrowRight className="w-4 h-4" aria-hidden />
+            </a>
+          </div>
+
+          <div
+            className="rounded-2xl border-2 p-6 flex flex-col"
+            style={{ borderColor: GOLD, background: "rgba(200,162,74,0.06)" }}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-display font-semibold text-brand-ink text-lg">Premium — advogados</span>
+              <Badge kind="premium" />
+            </div>
+            <p className="text-sm text-brand-ink/75 leading-relaxed flex-1">
+              {PLAN.priceLabel}/mês via Pix, sem fidelidade: perfil no topo da sua
+              cidade, selo de destaque, WhatsApp no card, bio de 500 caracteres,
+              cidades extras, revisor de petições e o recurso de multa completo
+              incluído.
+            </p>
+            <Link
+              href="/planos"
+              className="text-sm font-bold inline-flex items-center gap-1 mt-4"
+              style={{ color: GOLD_TEXT }}
+            >
+              Ver o plano Premium <ArrowRight className="w-4 h-4" aria-hidden />
             </Link>
           </div>
         </div>
@@ -432,7 +576,7 @@ export default function FerramentasPage() {
                 </h2>
                 <p className="text-sm text-brand-ink/65 mt-1">{group.blurb}</p>
               </div>
-              <span className="hidden md:block h-px flex-1 mt-2" style={{ background: "#EFEDE5" }} />
+              <span className="hidden md:block h-px flex-1 mt-2" style={{ background: "rgba(200,162,74,0.35)" }} />
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {group.tools.map((t) => {
@@ -442,37 +586,21 @@ export default function FerramentasPage() {
                   <Link
                     key={t.href}
                     href={t.href}
-                    className="card group relative flex flex-col transition hover:-translate-y-0.5 hover:shadow-cardHover"
+                    className="card group relative flex flex-col transition hover:-translate-y-0.5 hover:shadow-cardHover hover:!border-[#C8A24A]"
                     style={{ borderColor: "#E6E1D6" }}
                   >
-                    {/* Top-right badges: Free + Premium/IA */}
-                    <div className="absolute top-4 right-4 flex items-center gap-1.5">
-                      {t.free && (
-                        <span
-                          className="inline-flex items-center text-[11px] font-bold px-2 py-0.5 rounded-full"
-                          style={{ background: "rgba(22,163,74,0.10)", color: "#15803D", border: "1px solid rgba(22,163,74,0.25)" }}
-                        >
-                          Grátis
-                        </span>
-                      )}
-                      {badge && !t.free && (
-                        <span
-                          className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full"
-                          style={{ background: "rgba(200,162,74,0.14)", color: "#A0843A", border: "1px solid rgba(200,162,74,0.3)" }}
-                        >
-                          {badge.ia && <Sparkles className="w-3 h-3" aria-hidden />}
-                          {badge.text}
-                        </span>
-                      )}
+                    {/* Selo único de acesso */}
+                    <div className="absolute top-4 right-4">
+                      <Badge kind={badge} />
                     </div>
 
                     <span
                       className="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
-                      style={{ background: "rgba(200,162,74,0.12)" }}
+                      style={{ background: NAVY }}
                     >
-                      <t.Icon className="w-5 h-5" style={{ color: GOLD }} aria-hidden />
+                      <t.Icon className="w-5 h-5" style={{ color: GOLD_LIGHT }} aria-hidden />
                     </span>
-                    <span className="font-display font-semibold text-brand-ink">
+                    <span className="font-display font-semibold text-brand-ink pr-24">
                       {t.label}
                     </span>
                     <span className="text-sm text-brand-ink/70 mt-1 leading-relaxed flex-1">
@@ -490,10 +618,10 @@ export default function FerramentasPage() {
                     )}
 
                     <span
-                      className="text-sm font-semibold inline-flex items-center gap-1 mt-3"
-                      style={{ color: "#A0843A" }}
+                      className="text-sm font-bold inline-flex items-center gap-1 mt-3"
+                      style={{ color: GOLD_TEXT }}
                     >
-                      {t.free ? "Usar ferramenta" : "Abrir"}
+                      Usar ferramenta
                       <ArrowRight
                         className="w-4 h-4 group-hover:translate-x-0.5 transition"
                         aria-hidden
@@ -507,11 +635,11 @@ export default function FerramentasPage() {
             {/* Cross-sell: após "Entender e pesquisar" */}
             {groupIdx === 2 && (
               <div
-                className="mt-8 rounded-2xl border p-6 md:p-8 flex flex-col md:flex-row items-center gap-5"
-                style={{ borderColor: "rgba(200,162,74,0.3)", background: "rgba(200,162,74,0.04)" }}
+                className="mt-8 rounded-2xl border-2 p-6 md:p-8 flex flex-col md:flex-row items-center gap-5"
+                style={{ borderColor: "rgba(200,162,74,0.5)", background: "rgba(200,162,74,0.07)" }}
               >
                 <div className="flex-1">
-                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: GOLD }}>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: GOLD_TEXT }}>
                     Precisa de um advogado?
                   </p>
                   <p className="text-brand-ink font-display font-semibold text-lg">
@@ -523,8 +651,8 @@ export default function FerramentasPage() {
                 </div>
                 <Link
                   href="/advogados"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-105 shrink-0"
-                  style={{ background: "#C8A24A", color: "#0F1B2D" }}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-110 shadow-md shadow-black/10 shrink-0"
+                  style={{ background: GOLD, color: NAVY }}
                 >
                   Buscar advogado
                   <ArrowRight className="w-4 h-4" aria-hidden />
@@ -536,23 +664,23 @@ export default function FerramentasPage() {
             {groupIdx === 3 && (
               <div
                 className="mt-8 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-5"
-                style={{ background: "linear-gradient(135deg, #0F1B2D 0%, #1B2D49 100%)" }}
+                style={{ background: NAVY }}
               >
                 <div className="flex-1 text-white">
-                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#E3C078" }}>
-                    Plano Premium
+                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: GOLD_LIGHT }}>
+                    Plano Premium para advogados
                   </p>
                   <p className="font-display font-semibold text-lg">
-                    Recurso de multa com IA + revisor de petições + até 10 cidades
+                    Perfil no topo da cidade + revisor de petições + recurso de multa completo incluído
                   </p>
-                  <p className="text-sm mt-1" style={{ color: "#9FB0C6" }}>
-                    Tudo por {PLAN.priceLabel}/mês — ativação em até {PLAN.activationHours}h.
+                  <p className="text-sm mt-1" style={{ color: "#C4CDDC" }}>
+                    Tudo por {PLAN.priceLabel}/mês, via Pix e sem fidelidade — ativação em até {PLAN.activationHours}h.
                   </p>
                 </div>
                 <Link
                   href="/planos"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-105 shrink-0"
-                  style={{ background: "#C8A24A", color: "#0F1B2D" }}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-110 shadow-lg shadow-black/25 shrink-0"
+                  style={{ background: GOLD, color: NAVY }}
                 >
                   Ver planos
                   <ArrowRight className="w-4 h-4" aria-hidden />
@@ -565,8 +693,8 @@ export default function FerramentasPage() {
 
       {/* CTA para advogados */}
       <section
-        className="mt-16 rounded-2xl border p-8 md:p-10 text-center"
-        style={{ borderColor: "#E6E1D6", background: "rgba(200,162,74,0.04)" }}
+        className="mt-16 rounded-2xl border-2 p-8 md:p-10 text-center"
+        style={{ borderColor: "rgba(200,162,74,0.45)", background: "rgba(200,162,74,0.06)" }}
       >
         <h2 className="font-display text-xl md:text-2xl font-semibold text-brand-ink tracking-tight">
           É advogado? Cadastre-se e apareça para clientes que usam essas ferramentas
@@ -577,16 +705,16 @@ export default function FerramentasPage() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-5">
           <Link
             href="/cadastro"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-105"
-            style={{ background: "#C8A24A", color: "#0F1B2D" }}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-110 shadow-md shadow-black/10"
+            style={{ background: GOLD, color: NAVY }}
           >
             Criar meu perfil grátis
             <ArrowRight className="w-4 h-4" aria-hidden />
           </Link>
           <Link
             href="/planos"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-semibold border transition hover:bg-brand-line/40"
-            style={{ borderColor: "#E6E1D6", color: "#A0843A" }}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-bold border-2 transition hover:bg-white"
+            style={{ borderColor: NAVY, color: NAVY }}
           >
             Ver plano Premium
           </Link>

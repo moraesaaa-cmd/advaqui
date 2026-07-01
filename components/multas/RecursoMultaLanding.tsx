@@ -2210,8 +2210,8 @@ export function RecursoMultaLanding(): ReactNode {
                 </span>
               </div>
               <p style={{ fontSize: 13, lineHeight: 1.6, margin: "0 0 12px" }}>
-                Recurso de multa de trânsito on-line: análise gratuita e a peça pronta, gerada por
-                Recurso com a fundamentação do CTB. Um serviço AdvAqui.
+                Recurso de multa de trânsito on-line: análise gratuita e a peça pronta,
+                elaborada sob medida com a fundamentação do CTB. Um serviço AdvAqui.
               </p>
               <a
                 href="https://advaqui.com/criar-perfil"
