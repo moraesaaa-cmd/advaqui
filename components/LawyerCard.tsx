@@ -135,8 +135,8 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
                 href={wa}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-white text-sm font-semibold px-[22px] py-[11px] rounded-[10px]"
-                style={{ background: "#25623F" }}
+                className="inline-flex items-center gap-2 text-white text-sm font-bold px-[22px] py-[11px] rounded-[10px]"
+                style={{ background: "#25D366" }}
               >
                 <MessageCircle className="w-4 h-4" aria-hidden /> Falar agora
               </a>

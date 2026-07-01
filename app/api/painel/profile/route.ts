@@ -115,6 +115,16 @@ export async function PATCH(req: Request) {
     update.photo_url = optionalText(body.photoUrl, 500);
   }
 
+  // Presença digital + horários: a UI promete "você pode preencher mesmo
+  // gratuito — aparece quando ativar o plano". Então SALVAMOS para todos
+  // (o perfil público já esconde esses campos de quem não é premium). Antes o
+  // servidor descartava/zerava esses campos para não-premium — o advogado
+  // preenchia, salvava e o dado sumia (bug "não salva").
+  if ("website" in body) update.website = optionalUrl(body.website, 250);
+  if ("instagram" in body) update.instagram = normalizeHandle(body.instagram, 60);
+  if ("linkedin" in body) update.linkedin = normalizeHandle(body.linkedin, 100);
+  if ("officeHours" in body) update.office_hours = optionalText(body.officeHours, 200);
+
   // ----- Fase 3 — campos de apresentação (aceitos só pra premium) ---------
 
   /** Normaliza array de strings, dedup, limita por count. */
@@ -153,10 +163,8 @@ export async function PATCH(req: Request) {
     if ("targetUf" in body)
       update.target_uf = optionalText(body.targetUf, 2)?.toUpperCase() || null;
     if ("extraCities" in body) update.extra_cities = normalizeExtraCities(body.extraCities);
-    if ("website" in body) update.website = optionalUrl(body.website, 250);
-    if ("instagram" in body) update.instagram = normalizeHandle(body.instagram, 60);
-    if ("linkedin" in body) update.linkedin = normalizeHandle(body.linkedin, 100);
-    if ("officeHours" in body) update.office_hours = optionalText(body.officeHours, 200);
+    // website/instagram/linkedin/officeHours agora salvam para TODOS (acima) —
+    // não são mais zerados aqui.
 
     // ----- Fase 3 -----
     if ("shortSummary" in body)
@@ -230,10 +238,8 @@ export async function PATCH(req: Request) {
     if ("targetCity" in body) update.target_city = null;
     if ("targetUf" in body) update.target_uf = null;
     if ("extraCities" in body) update.extra_cities = [];
-    if ("website" in body) update.website = null;
-    if ("instagram" in body) update.instagram = null;
-    if ("linkedin" in body) update.linkedin = null;
-    if ("officeHours" in body) update.office_hours = null;
+    // website/instagram/linkedin/officeHours NÃO são mais zerados aqui —
+    // salvam para todos e a exibição pública continua gateada por premium.
   }
 
   // Tenta o UPDATE completo. Se falhar com "column does not exist" (migration

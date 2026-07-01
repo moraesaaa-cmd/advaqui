@@ -115,7 +115,7 @@ const WELCOME_MESSAGE: ChatMessage = {
   id: "welcome",
   role: "assistant",
   content:
-    "Oi! Sou a Marina, do Advogado Online. Me conta rapidinho o que aconteceu que eu já vejo qual advogado pode te ajudar. 🙂",
+    "Oi! Sou a Marina, assistente virtual do AdvAqui 🙂 Te ajudo a encontrar o advogado certo pro seu caso. Me conta rapidinho o que aconteceu?",
   ts: Date.now(),
 };
 
@@ -473,7 +473,7 @@ export function TriagemChat() {
           <MessageCircle className="w-5 h-5 text-brand-accent" />
           <div>
             <p className="text-sm font-semibold leading-tight">Advogado Online</p>
-            <p className="text-[11px] text-white/60 leading-tight">Marina • Atendimento AdvAqui</p>
+            <p className="text-[11px] text-white/60 leading-tight">Marina • assistente virtual do AdvAqui</p>
           </div>
         </div>
         <div className="flex items-center gap-1">

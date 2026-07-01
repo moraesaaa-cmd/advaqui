@@ -179,6 +179,12 @@ export default async function LandingAdvogadoPremium() {
               cadastroHref={CADASTRO}
             />
           </div>
+          <p className="mt-4 text-xs text-white/60 max-w-2xl leading-relaxed">
+            O AdvAqui é um diretório profissional: não intermedia demandas, não
+            distribui clientes e não garante contratações. A visibilidade depende
+            da procura real na sua região, da sua área de atuação e do seu
+            trabalho. O AdvAqui não é escritório de advocacia.
+          </p>
           <p className="mt-4 text-sm text-slate-400">
             {PLAN.priceLabel}/mês · Sem fidelidade · Cancele quando quiser
           </p>
