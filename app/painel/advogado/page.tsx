@@ -17,6 +17,9 @@ import {
   Users,
   BookOpen,
   CreditCard,
+  Crown,
+  Clock,
+  Lightbulb,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -80,8 +83,34 @@ function computeProfileFields(lawyer: Record<string, unknown>): ProfileField[] {
       filled: !!(lawyer.office_hours as string),
       weight: 5,
     },
+    {
+      label: "Website",
+      filled: !!(lawyer.website as string),
+      weight: 5,
+    },
   ];
 }
+
+const FIELD_TIPS: Record<string, string> = {
+  "Foto de perfil":
+    "Adicione sua foto: perfis com foto recebem mais contatos.",
+  "Bio (min. 20 caracteres)":
+    "Escreva uma bio: clientes escolhem quem conta sua historia.",
+  Telefone: "Informe seu telefone para facilitar o contato direto.",
+  WhatsApp:
+    "Cadastre o WhatsApp: e o canal preferido de quem busca advogado.",
+  "Endereco profissional":
+    "Inclua seu endereco: transmite credibilidade e presenca local.",
+  "Areas de atuacao":
+    "Selecione suas areas de atuacao para aparecer nas buscas certas.",
+  "Resumo profissional":
+    "Um resumo curto ajuda o cliente a entender seu diferencial.",
+  "Areas principais":
+    "Defina suas areas principais para ganhar destaque nelas.",
+  "Horario de atendimento":
+    "Informe seu horario de atendimento e evite contatos perdidos.",
+  Website: "Adicione seu site ou pagina profissional, se tiver.",
+};
 
 function computeScore(fields: ProfileField[]): number {
   const totalWeight = fields.reduce((s, f) => s + f.weight, 0);
@@ -168,6 +197,14 @@ export default async function AdvogadoDashboardPage() {
   const planStatus = (lawyer.plan_status as string) || "free";
   const isPremium = planStatus === "active";
 
+  /* --- Premium days remaining --------------------------------------- */
+  const planEndDate = lawyer.plan_end_date as string | null;
+  let premiumDaysLeft: number | null = null;
+  if (isPremium && planEndDate) {
+    const diffMs = new Date(planEndDate).getTime() - Date.now();
+    premiumDaysLeft = Math.max(0, Math.ceil(diffMs / (24 * 60 * 60 * 1000)));
+  }
+
   /* --- Profile completeness ---------------------------------------- */
   const profileFields = computeProfileFields(lawyer);
   const profileScore = computeScore(profileFields);
@@ -250,9 +287,32 @@ export default async function AdvogadoDashboardPage() {
             >
               Painel do advogado
             </p>
-            <h1 className="font-display text-3xl md:text-4xl font-semibold tracking-tight">
-              Ola, {firstName}
-            </h1>
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="font-display text-3xl md:text-4xl font-semibold tracking-tight">
+                Ola, {firstName}
+              </h1>
+              {isPremium ? (
+                <span
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide"
+                  style={{
+                    background: "rgba(200,162,74,0.18)",
+                    border: "1px solid rgba(200,162,74,0.5)",
+                    color: "#E3C078",
+                  }}
+                >
+                  <Crown
+                    className="w-3.5 h-3.5"
+                    style={{ color: "#C8A24A" }}
+                    aria-hidden
+                  />
+                  Premium
+                </span>
+              ) : (
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide bg-white/10 border border-white/20 text-white/70">
+                  Gratis
+                </span>
+              )}
+            </div>
             <p className="text-sm mt-1.5" style={{ color: "#A9B4C6" }}>
               {isPremium
                 ? "Plano premium ativo -- voce aparece em destaque."
@@ -270,7 +330,11 @@ export default async function AdvogadoDashboardPage() {
         </div>
 
         {/* Stats row */}
-        <div className="relative mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div
+          className={`relative mt-5 grid grid-cols-2 gap-3 ${
+            premiumDaysLeft !== null ? "md:grid-cols-5" : "md:grid-cols-4"
+          }`}
+        >
           {[
             {
               label: "Perfil completo",
@@ -301,6 +365,19 @@ export default async function AdvogadoDashboardPage() {
               sub: "de sua autoria",
               Icon: FileText,
             },
+            ...(premiumDaysLeft !== null
+              ? [
+                  {
+                    label: "Premium restante",
+                    value: `${premiumDaysLeft}d`,
+                    sub:
+                      premiumDaysLeft <= 5
+                        ? "renove em breve"
+                        : "dias de destaque",
+                    Icon: Clock,
+                  },
+                ]
+              : []),
           ].map((m) => (
             <div
               key={m.label}
@@ -364,7 +441,7 @@ export default async function AdvogadoDashboardPage() {
             </div>
 
             <div className="p-6">
-              <div className="flex items-center gap-8">
+              <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
                 {/* Ring chart */}
                 <div className="flex-shrink-0 relative w-24 h-24">
                   <svg
@@ -441,6 +518,56 @@ export default async function AdvogadoDashboardPage() {
                   )}
                 </div>
               </div>
+
+              {/* Progress bar */}
+              <div className="mt-6">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xs font-medium text-brand-ink/60">
+                    {filledCount} de {profileFields.length} campos preenchidos
+                  </span>
+                  <span
+                    className={`text-xs font-bold tabular-nums ${scoreColor(profileScore)}`}
+                  >
+                    {profileScore}%
+                  </span>
+                </div>
+                <div className="h-2.5 rounded-full bg-brand-bg overflow-hidden">
+                  <div
+                    className={`h-full rounded-full transition-all duration-500 ${scoreBg(profileScore)}`}
+                    style={{ width: `${Math.max(profileScore, 2)}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Tips for missing fields */}
+              {missingFields.length > 0 && (
+                <div className="mt-4 rounded-xl bg-amber-50/70 border border-amber-200/70 p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lightbulb
+                      className="w-4 h-4 text-amber-600"
+                      aria-hidden
+                    />
+                    <p className="text-xs font-bold text-amber-800 uppercase tracking-wide">
+                      Como melhorar seu perfil
+                    </p>
+                  </div>
+                  <ul className="space-y-1.5">
+                    {missingFields.slice(0, 3).map((field) => (
+                      <li
+                        key={field.label}
+                        className="text-xs text-brand-ink/70 leading-relaxed flex items-start gap-2"
+                      >
+                        <ArrowRight
+                          className="w-3 h-3 text-amber-500 mt-0.5 flex-shrink-0"
+                          aria-hidden
+                        />
+                        {FIELD_TIPS[field.label] ??
+                          `Preencha o campo "${field.label}".`}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </section>
 

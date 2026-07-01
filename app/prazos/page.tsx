@@ -4,6 +4,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { GerenciadorPrazos } from "@/components/GerenciadorPrazos";
+import { ToolGate } from "@/components/ToolGate";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -16,7 +17,7 @@ import { SITE } from "@/lib/config";
 export const revalidate = 604800;
 
 const DESC =
-  "Organize seus prazos e datas-limite com alertas por cor (vencido, urgente, atenção). Roda no seu navegador, sem cadastro. Grátis.";
+  "Organize seus prazos e datas-limite com alertas por cor (vencido, urgente, atenção). Roda no seu navegador. Grátis — basta criar sua conta.";
 
 export const metadata = buildMetadata({
   title: "Gerenciador de prazos — alertas por cor",
@@ -39,13 +40,15 @@ export default function PrazosPage() {
             <p className="text-base text-brand-ink/85 mt-3 leading-relaxed">
               Uma agenda simples para não perder nenhuma data importante —
               audiência, entrega, pagamento, renovação. A cor mostra o que está
-              chegando. Tudo salvo só no seu navegador, sem cadastro.
+              chegando. Tudo salvo só no seu navegador. Grátis — basta criar sua conta.
             </p>
           </div>
         </div>
       </header>
 
-      <GerenciadorPrazos />
+      <ToolGate>
+        <GerenciadorPrazos />
+      </ToolGate>
 
       <section className="card mb-6">
         <h2 className="font-display text-xl font-bold text-brand-ink mb-2">

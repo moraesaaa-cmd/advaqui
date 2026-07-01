@@ -5,6 +5,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 import { ChecklistClient } from "./ChecklistClient";
+import { ToolGate } from "@/components/ToolGate";
 
 /* ------------------------------------------------------------------ */
 /* Metadata (server-side)                                              */
@@ -78,7 +79,9 @@ export default function ChecklistPensaoAlimenticiaPage() {
       </header>
 
       {/* ---- Interactive checklist (client component) ---- */}
-      <ChecklistClient />
+      <ToolGate>
+        <ChecklistClient />
+      </ToolGate>
 
       {/* ---- FAQ ---- */}
       <section className="card mb-6">

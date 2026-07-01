@@ -5,6 +5,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 import { ChecklistClient } from "./ChecklistClient";
+import { ToolGate } from "@/components/ToolGate";
 
 export const revalidate = 604800;
 
@@ -65,7 +66,9 @@ export default function ChecklistGuardaPage() {
         </div>
       </header>
 
-      <ChecklistClient />
+      <ToolGate>
+        <ChecklistClient />
+      </ToolGate>
 
       <section className="card mb-6" id="faq">
         <h2 className="font-display text-xl font-bold text-brand-ink mb-4">

@@ -4,6 +4,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { DivorcioValidador } from "@/components/DivorcioValidador";
+import { ToolGate } from "@/components/ToolGate";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -17,7 +18,7 @@ import { SITE } from "@/lib/config";
 export const revalidate = 604800;
 
 const DESC =
-  "Descubra na hora se o seu divórcio pode ser feito em cartório (mais rápido e barato) ou se precisa ir à Justiça. Responda 4 perguntas. Grátis e sem cadastro.";
+  "Descubra na hora se o seu divórcio pode ser feito em cartório (mais rápido e barato) ou se precisa ir à Justiça. Responda 4 perguntas. Grátis — basta criar sua conta.";
 
 export const metadata = buildMetadata({
   title: "Divórcio em cartório ou na Justiça? Descubra",
@@ -65,7 +66,9 @@ export default function DivorcioPage() {
         </div>
       </header>
 
-      <DivorcioValidador />
+      <ToolGate>
+        <DivorcioValidador />
+      </ToolGate>
 
       <section className="card mb-6">
         <div className="grid sm:grid-cols-2 gap-4">

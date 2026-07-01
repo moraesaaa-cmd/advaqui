@@ -3,6 +3,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { TriagemWidget } from "@/components/TriagemWidget";
+import { ToolGate } from "@/components/ToolGate";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -15,7 +16,7 @@ import { SITE } from "@/lib/config";
 export const revalidate = 604800;
 
 const DESC =
-  "Não sabe que tipo de advogado procurar? Responda 3 perguntas: a triagem do AdvAqui identifica a área do seu caso, a urgência e o próximo passo. Grátis, sem cadastro.";
+  "Não sabe que tipo de advogado procurar? Responda 3 perguntas: a triagem do AdvAqui identifica a área do seu caso, a urgência e o próximo passo. Grátis — basta criar sua conta.";
 
 export const metadata = buildMetadata({
   title: "Triagem jurídica — qual advogado procurar",
@@ -45,7 +46,9 @@ export default function TriagemPage() {
         </div>
       </header>
 
-      <TriagemWidget />
+      <ToolGate>
+        <TriagemWidget />
+      </ToolGate>
 
       <aside
         role="note"

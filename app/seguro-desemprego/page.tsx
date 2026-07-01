@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { SeguroDesempregoWidget } from "@/components/SeguroDesempregoWidget";
+import { ToolGate } from "@/components/ToolGate";
 
 export const metadata: Metadata = buildMetadata({
   title: "Simulador de seguro-desemprego 2026: parcelas e valor",
@@ -14,7 +15,9 @@ export const metadata: Metadata = buildMetadata({
 export default function SeguroDesempregoPage() {
   return (
     <>
-      <SeguroDesempregoWidget />
+      <ToolGate>
+        <SeguroDesempregoWidget />
+      </ToolGate>
       <div className="container-narrow pb-10">
         <section className="rounded-2xl bg-brand-bg border border-brand-line p-6 mb-4">
           <h2 className="font-display text-lg font-bold text-brand-ink mb-3">

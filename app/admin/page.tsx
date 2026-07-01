@@ -22,9 +22,12 @@ import {
   BookOpen,
   Sparkles,
   Eye,
-  EyeOff
+  EyeOff,
+  Clock,
+  Inbox,
+  UserX,
+  KeyRound
 } from "lucide-react";
-import { PlanBadge } from "@/components/PlanBadge";
 import { formatDate } from "@/lib/utils/format";
 import { toast } from "@/components/Toast";
 import { AdminExtraCitiesModal } from "@/components/AdminExtraCitiesModal";
@@ -41,6 +44,42 @@ const TABS = [
 ] as const;
 
 type Tab = (typeof TABS)[number]["id"];
+
+/**
+ * Estilo visual do badge de status do plano no card do advogado.
+ * Premium ativo = âmbar, Gratuito = cinza, Aguardando = laranja,
+ * Vencido = vermelho suave, Cancelado = cinza escuro.
+ */
+const STATUS_BADGE: Record<
+  PlanStatus,
+  { label: string; badge: string; ring: string }
+> = {
+  active: {
+    label: "Premium ativo",
+    badge: "bg-brand-accent/15 text-amber-800 border border-brand-accent/50",
+    ring: "border-brand-accent"
+  },
+  free: {
+    label: "Gratuito",
+    badge: "bg-gray-100 text-gray-600 border border-gray-200",
+    ring: "border-brand-line"
+  },
+  pending: {
+    label: "Aguardando ativação",
+    badge: "bg-orange-50 text-orange-700 border border-orange-200",
+    ring: "border-orange-300"
+  },
+  expired: {
+    label: "Vencido",
+    badge: "bg-red-50 text-red-600 border border-red-200",
+    ring: "border-red-200"
+  },
+  cancelled: {
+    label: "Cancelado",
+    badge: "bg-gray-200 text-gray-700 border border-gray-300",
+    ring: "border-gray-300"
+  }
+};
 
 /**
  * Constrói um link `mailto:` pré-preenchido com texto convidando o advogado
@@ -811,16 +850,59 @@ export default function AdminPage() {
         </div>
         <div className="relative mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: "Cadastros", value: users.length },
-            { label: "Premium ativos", value: users.filter((u) => u.plan_status === "active").length },
-            { label: "Aguardando", value: users.filter((u) => u.plan_status === "pending").length },
-            { label: "Msgs não lidas", value: unread }
-          ].map((m) => (
-            <div key={m.label} className="rounded-2xl bg-white/[0.07] border border-white/10 p-4">
-              <p className="text-[11px] uppercase tracking-wide" style={{ color: "#7E8BA1" }}>
-                {m.label}
-              </p>
-              <p className="font-display text-2xl font-semibold mt-1">{m.value}</p>
+            {
+              label: "Cadastros",
+              value: users.length,
+              Icon: Users,
+              iconBg: "rgba(255,255,255,0.10)",
+              iconColor: "#E8EDF5",
+              accent: "rgba(255,255,255,0.14)"
+            },
+            {
+              label: "Premium ativos",
+              value: users.filter((u) => u.plan_status === "active").length,
+              Icon: Star,
+              iconBg: "rgba(200,162,74,0.18)",
+              iconColor: "#E3C078",
+              accent: "rgba(200,162,74,0.45)"
+            },
+            {
+              label: "Aguardando",
+              value: users.filter((u) => u.plan_status === "pending").length,
+              Icon: Clock,
+              iconBg: "rgba(249,115,22,0.16)",
+              iconColor: "#FDBA74",
+              accent: "rgba(249,115,22,0.45)"
+            },
+            {
+              label: "Msgs não lidas",
+              value: unread,
+              Icon: MessageSquare,
+              iconBg: "rgba(56,132,255,0.16)",
+              iconColor: "#93C5FD",
+              accent: "rgba(56,132,255,0.45)"
+            }
+          ].map(({ label, value, Icon, iconBg, iconColor, accent }) => (
+            <div
+              key={label}
+              className="rounded-2xl bg-white/[0.07] p-4 flex items-start gap-3"
+              style={{ border: `1px solid ${accent}` }}
+            >
+              <span
+                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                style={{ background: iconBg }}
+              >
+                <Icon className="w-5 h-5" style={{ color: iconColor }} aria-hidden />
+              </span>
+              <div className="min-w-0">
+                <p className="font-display text-3xl font-semibold leading-none">{value}</p>
+                <p
+                  className="text-[11px] uppercase tracking-wide mt-1.5 truncate"
+                  style={{ color: "#A9B4C6" }}
+                >
+                  {label}
+                </p>
+              </div>
             </div>
           ))}
         </div>
@@ -860,21 +942,25 @@ export default function AdminPage() {
         </div>
       </details>
 
-      <div className="flex gap-2 mb-6 flex-wrap">
+      <div className="inline-flex gap-1.5 mb-6 flex-wrap rounded-2xl bg-brand-line/40 border border-brand-line p-1.5">
         {TABS.map(({ id, label, Icon }) => (
           <button
             key={id}
             onClick={() => setTab(id)}
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition ${
+            aria-current={tab === id ? "page" : undefined}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm transition ${
               tab === id
-                ? "bg-brand-ink text-white"
-                : "bg-white text-brand-ink border border-brand-line hover:bg-brand-line/40"
+                ? "bg-brand-ink text-white font-semibold shadow-md ring-1 ring-brand-accent/40"
+                : "bg-transparent text-brand-ink/70 font-medium hover:bg-white hover:text-brand-ink"
             }`}
           >
-            <Icon className="w-4 h-4" aria-hidden />
+            <Icon
+              className={`w-4 h-4 ${tab === id ? "text-brand-accent" : ""}`}
+              aria-hidden
+            />
             {label}
             {id === "messages" && unread > 0 && (
-              <span className="px-1.5 py-0.5 rounded-full text-xs bg-brand-accent text-brand-ink">
+              <span className="px-1.5 py-0.5 rounded-full text-xs font-bold bg-brand-accent text-brand-ink">
                 {unread}
               </span>
             )}
@@ -915,9 +1001,10 @@ export default function AdminPage() {
             {filteredUsers.map((u) => (
               <article key={u.id} className="card">
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-4">
                     {/* Avatar do advogado — admin precisa ver a foto enviada.
-                        Mostra a foto real se houver, ou círculo com iniciais. */}
+                        Mostra a foto real se houver, ou círculo com iniciais.
+                        A cor da borda acompanha o status do plano. */}
                     {u.photo_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -925,10 +1012,12 @@ export default function AdminPage() {
                         alt={`Foto de ${u.name}`}
                         loading="lazy"
                         decoding="async"
-                        className="w-14 h-14 rounded-full object-cover border-2 border-brand-line bg-brand-bg flex-shrink-0"
+                        className={`w-16 h-16 sm:w-[4.5rem] sm:h-[4.5rem] rounded-full object-cover border-2 bg-brand-bg flex-shrink-0 shadow-sm ${STATUS_BADGE[u.plan_status].ring}`}
                       />
                     ) : (
-                      <div className="w-14 h-14 rounded-full bg-brand-deep/10 border-2 border-brand-line flex items-center justify-center flex-shrink-0 font-display font-bold text-brand-deep text-base">
+                      <div
+                        className={`w-16 h-16 sm:w-[4.5rem] sm:h-[4.5rem] rounded-full bg-brand-deep/10 border-2 flex items-center justify-center flex-shrink-0 font-display font-bold text-brand-deep text-xl shadow-sm ${STATUS_BADGE[u.plan_status].ring}`}
+                      >
                         {(u.name || "")
                           .split(/\s+/)
                           .filter(Boolean)
@@ -937,14 +1026,25 @@ export default function AdminPage() {
                           .join("") || "?"}
                       </div>
                     )}
-                    <div>
-                      <p className="font-display font-bold text-brand-ink">{u.name}</p>
+                    <div className="min-w-0">
+                      <p className="font-display font-bold text-brand-ink text-base sm:text-lg leading-snug">
+                        {u.name}
+                      </p>
                       <p className="text-sm text-brand-ink/60">
                         OAB/{u.oab_uf} {u.oab} — {u.city_name}/{u.uf}
                       </p>
+                      {u.featured && (
+                        <p className="text-[11px] font-semibold text-amber-700 inline-flex items-center gap-1 mt-1">
+                          <Star className="w-3 h-3 fill-current" aria-hidden /> Em destaque
+                        </p>
+                      )}
                     </div>
                   </div>
-                  <PlanBadge status={u.plan_status} />
+                  <span
+                    className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide ${STATUS_BADGE[u.plan_status].badge}`}
+                  >
+                    {STATUS_BADGE[u.plan_status].label}
+                  </span>
                 </div>
                 <dl className="text-xs text-brand-ink/70 grid sm:grid-cols-2 gap-1 mb-3">
                   <div>E-mail — {u.email}</div>
@@ -952,7 +1052,6 @@ export default function AdminPage() {
                   <div>Cadastro — {formatDate(u.created_at)}</div>
                   <div>Pagamento — {formatDate(u.payment_date)}</div>
                   <div>Vencimento — {formatDate(u.plan_end_date)}</div>
-                  <div>{u.featured && "★ Em destaque manual"}</div>
                 </dl>
                 <div className="flex flex-wrap gap-2">
                   {(u.plan_status === "pending" ||
@@ -1028,30 +1127,6 @@ export default function AdminPage() {
                       <Mail className="w-3 h-3" aria-hidden /> Convidar pra premium
                     </a>
                   )}
-                  <button
-                    onClick={() => changeEmail(u.id, u.email)}
-                    disabled={busy}
-                    className="px-3 py-1.5 bg-sky-50 text-sky-800 rounded-lg text-xs font-medium hover:bg-sky-100 disabled:opacity-50"
-                    title="Trocar o e-mail de login do advogado"
-                  >
-                    Trocar e-mail
-                  </button>
-                  <button
-                    onClick={() => resetPassword(u.id, u.name)}
-                    disabled={busy}
-                    className="px-3 py-1.5 bg-amber-50 text-amber-800 rounded-lg text-xs font-medium hover:bg-amber-100 disabled:opacity-50"
-                    title="Definir uma nova senha — use com cautela, avise o advogado"
-                  >
-                    Resetar senha
-                  </button>
-                  <button
-                    onClick={() => sendMagicLink(u.id, u.name)}
-                    disabled={busy}
-                    className="px-3 py-1.5 bg-purple-50 text-purple-800 rounded-lg text-xs font-medium hover:bg-purple-100 disabled:opacity-50"
-                    title="Gerar link de login passwordless (expira em 1h) — útil quando user esqueceu a senha"
-                  >
-                    Magic link
-                  </button>
                   <details className="w-full mt-1 rounded-xl border border-brand-line bg-brand-bg/40 px-3 py-2">
                     <summary className="cursor-pointer text-xs font-semibold text-brand-ink/80 select-none">
                       ✎ Editar dados do perfil
@@ -1205,21 +1280,52 @@ export default function AdminPage() {
                   )}
                     </div>
                   </details>
-                  <button
-                    onClick={() => viewFullLawyer(u.id)}
-                    disabled={busy}
-                    className="px-3 py-1.5 bg-brand-ink text-white rounded-lg text-xs font-medium hover:bg-brand-ink/90 disabled:opacity-50"
-                    title="Ver tudo: CPF, datas, plano, pagamentos, mensagens enviadas, dados de auth"
-                  >
-                    {expandedId === u.id ? "Fechar detalhes" : "Ver tudo"}
-                  </button>
-                  <button
-                    onClick={() => deleteUser(u.id)}
-                    disabled={busy}
-                    className="px-3 py-1.5 bg-red-50 text-red-700 rounded-lg text-xs font-medium hover:bg-red-100 inline-flex items-center gap-1 disabled:opacity-50"
-                  >
-                    <Trash2 className="w-3 h-3" aria-hidden /> Excluir
-                  </button>
+                  {/* Bloco discreto — ações de conta/acesso e operações sensíveis.
+                      Mantém os mesmos handlers, só agrupadas visualmente. */}
+                  <div className="w-full mt-1 rounded-xl border border-brand-line/70 bg-brand-bg/30 px-3 py-2 flex flex-wrap items-center gap-2">
+                    <span className="text-[10px] font-bold uppercase tracking-wide text-brand-ink/45 mr-1 inline-flex items-center gap-1">
+                      <KeyRound className="w-3 h-3" aria-hidden /> Conta
+                    </span>
+                    <button
+                      onClick={() => changeEmail(u.id, u.email)}
+                      disabled={busy}
+                      className="px-2.5 py-1 rounded-lg text-xs font-medium text-brand-ink/70 border border-brand-line bg-white hover:text-sky-800 hover:border-sky-200 hover:bg-sky-50 disabled:opacity-50"
+                      title="Trocar o e-mail de login do advogado"
+                    >
+                      Trocar e-mail
+                    </button>
+                    <button
+                      onClick={() => resetPassword(u.id, u.name)}
+                      disabled={busy}
+                      className="px-2.5 py-1 rounded-lg text-xs font-medium text-brand-ink/70 border border-brand-line bg-white hover:text-amber-800 hover:border-amber-200 hover:bg-amber-50 disabled:opacity-50"
+                      title="Definir uma nova senha — use com cautela, avise o advogado"
+                    >
+                      Resetar senha
+                    </button>
+                    <button
+                      onClick={() => sendMagicLink(u.id, u.name)}
+                      disabled={busy}
+                      className="px-2.5 py-1 rounded-lg text-xs font-medium text-brand-ink/70 border border-brand-line bg-white hover:text-purple-800 hover:border-purple-200 hover:bg-purple-50 disabled:opacity-50"
+                      title="Gerar link de login passwordless (expira em 1h) — útil quando user esqueceu a senha"
+                    >
+                      Magic link
+                    </button>
+                    <button
+                      onClick={() => viewFullLawyer(u.id)}
+                      disabled={busy}
+                      className="px-2.5 py-1 rounded-lg text-xs font-medium text-brand-ink/70 border border-brand-line bg-white hover:bg-brand-ink hover:text-white hover:border-brand-ink disabled:opacity-50"
+                      title="Ver tudo: CPF, datas, plano, pagamentos, mensagens enviadas, dados de auth"
+                    >
+                      {expandedId === u.id ? "Fechar detalhes" : "Ver tudo"}
+                    </button>
+                    <button
+                      onClick={() => deleteUser(u.id)}
+                      disabled={busy}
+                      className="ml-auto px-2.5 py-1 rounded-lg text-xs font-medium text-red-600/80 border border-transparent hover:bg-red-50 hover:border-red-200 inline-flex items-center gap-1 disabled:opacity-50"
+                    >
+                      <Trash2 className="w-3 h-3" aria-hidden /> Excluir
+                    </button>
+                  </div>
                 </div>
 
                 {expandedId === u.id && (
@@ -1276,9 +1382,19 @@ export default function AdminPage() {
             ))}
 
             {filteredUsers.length === 0 && (
-              <p className="text-center text-brand-ink/50 py-8">
-                Nenhum cadastro encontrado.
-              </p>
+              <div className="card text-center py-12">
+                <span className="w-14 h-14 rounded-full bg-brand-line/50 flex items-center justify-center mx-auto mb-3">
+                  <UserX className="w-7 h-7 text-brand-ink/35" aria-hidden />
+                </span>
+                <p className="font-display font-semibold text-brand-ink/70">
+                  Nenhum cadastro encontrado
+                </p>
+                <p className="text-xs text-brand-ink/50 mt-1">
+                  {search.trim() || filter !== "all"
+                    ? "Tente limpar a busca ou mudar o filtro de status."
+                    : "Os advogados que se cadastrarem aparecem aqui."}
+                </p>
+              </div>
             )}
           </div>
         </div>
@@ -1287,9 +1403,17 @@ export default function AdminPage() {
       {tab === "messages" && (
         <div className="space-y-3">
           {messages.length === 0 && (
-            <p className="text-center text-brand-ink/50 py-12">
-              Nenhuma mensagem recebida ainda.
-            </p>
+            <div className="card text-center py-14">
+              <span className="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-3">
+                <Inbox className="w-7 h-7 text-blue-400" aria-hidden />
+              </span>
+              <p className="font-display font-semibold text-brand-ink/70">
+                Caixa de entrada vazia
+              </p>
+              <p className="text-xs text-brand-ink/50 mt-1">
+                Quando um advogado ou visitante enviar uma mensagem, ela aparece aqui.
+              </p>
+            </div>
           )}
           {messages.map((m) => (
             <article

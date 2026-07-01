@@ -303,7 +303,17 @@ const GATED_TOOLS = new Set([
   "/calculadoras",
   "/previdencia",
   "/processos",
-  "/montar-peticao"
+  "/montar-peticao",
+  "/seguro-desemprego",
+  "/diagnostico",
+  "/triagem",
+  "/divorcio",
+  "/prazos",
+  "/ferramentas/checklist-recurso-multa",
+  "/ferramentas/checklist-limpar-nome",
+  "/ferramentas/checklist-pensao-alimenticia",
+  "/ferramentas/checklist-documentos-guarda",
+  "/ferramentas/triagem-mandado-seguranca"
 ]);
 
 function badgeFor(href: string): { text: string; ia?: boolean } | null {

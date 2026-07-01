@@ -4,6 +4,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { DiagnosticoTrabalhista } from "@/components/DiagnosticoTrabalhista";
+import { ToolGate } from "@/components/ToolGate";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -19,7 +20,7 @@ import { SITE } from "@/lib/config";
 export const revalidate = 604800;
 
 const DESC =
-  "Responda 6 perguntas e descubra, em linguagem clara, quais direitos trabalhistas provavelmente cabem no seu caso, o prazo para agir e os próximos passos. Grátis, sem cadastro.";
+  "Responda 6 perguntas e descubra, em linguagem clara, quais direitos trabalhistas provavelmente cabem no seu caso, o prazo para agir e os próximos passos. Grátis — basta criar sua conta.";
 
 export const metadata = buildMetadata({
   title: "Diagnóstico trabalhista — descubra seus direitos",
@@ -84,7 +85,9 @@ export default function DiagnosticoPage() {
       </header>
 
       {/* O simulador interativo */}
-      <DiagnosticoTrabalhista />
+      <ToolGate>
+        <DiagnosticoTrabalhista />
+      </ToolGate>
 
       {/* Conteúdo estático — SEO + sem-JS */}
       <section className="card mb-6">
