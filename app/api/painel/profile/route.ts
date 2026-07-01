@@ -100,14 +100,15 @@ export async function PATCH(req: Request) {
   // foto fica intacta no banco. Idem pra website, instagram, linkedin,
   // office_hours, target_city, target_uf, extra_cities — só atualiza quando
   // o cliente explicitamente envia.
-  const update: Partial<LawyerRow> = {
-    name,
-    phone: optionalText(body.phone, 30),
-    whatsapp: optionalText(body.whatsapp, 30),
-    address: optionalText(body.address, 250),
-    bio: optionalText(body.bio, 500),
-    specialties: normalizeSpecialties(body.specialties)
-  };
+  // O mesmo vale para os campos básicos: um PATCH parcial (ex.: a página de
+  // Aparência envia só os toggles dela) NÃO pode zerar telefone/WhatsApp/
+  // endereço/bio/especialidades — só atualiza o que veio explicitamente.
+  const update: Partial<LawyerRow> = { name };
+  if ("phone" in body) update.phone = optionalText(body.phone, 30);
+  if ("whatsapp" in body) update.whatsapp = optionalText(body.whatsapp, 30);
+  if ("address" in body) update.address = optionalText(body.address, 250);
+  if ("bio" in body) update.bio = optionalText(body.bio, 500);
+  if ("specialties" in body) update.specialties = normalizeSpecialties(body.specialties);
 
   // photo_url só é alterado se o cliente explicitamente enviou a key.
   // Aceita string vazia/null como "limpar a foto" (UX: PhotoUploader > Remover).
@@ -233,13 +234,12 @@ export async function PATCH(req: Request) {
         (update as Record<string, unknown>).header_layout = c;
     }
   } else {
-    // Quando o user perde o premium, zeramos os campos premium UMA VEZ.
-    // Mas só se vier explicit no body (evita zerar a cada PATCH sem necessidade).
-    if ("targetCity" in body) update.target_city = null;
-    if ("targetUf" in body) update.target_uf = null;
-    if ("extraCities" in body) update.extra_cities = [];
-    // website/instagram/linkedin/officeHours NÃO são mais zerados aqui —
-    // salvam para todos e a exibição pública continua gateada por premium.
+    // Não-premium (inclui "aguardando ativação" e "vencido"): IGNORAR estas
+    // chaves — nem gravar valor novo (feature paga) nem zerar o que já está
+    // salvo. Antes zerávamos aqui, e um advogado pending/expired que salvasse
+    // o perfil (o painel sempre envia extraCities) perdia as cidades extras
+    // definitivamente — ao reativar o premium, o dado tinha sumido.
+    // A exibição pública já é gateada por plan_status; dado guardado não vaza.
   }
 
   // Tenta o UPDATE completo. Se falhar com "column does not exist" (migration

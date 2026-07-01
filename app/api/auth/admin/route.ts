@@ -68,6 +68,28 @@ export async function POST(req: Request) {
     );
   }
 
+  const expectedEmail = (process.env.ADMIN_EMAIL || "").toLowerCase();
+  const expectedPassword = process.env.ADMIN_PASSWORD || "";
+
+  if (!expectedEmail || !expectedPassword) {
+    // Nao vazar detalhe de config pro cliente; motivo real so no log do servidor.
+    console.error("[admin-login] ADMIN_EMAIL/ADMIN_PASSWORD ausentes no ambiente do servidor");
+    return NextResponse.json(
+      { ok: false, error: "Erro interno. Tente novamente mais tarde." },
+      { status: 500 }
+    );
+  }
+
+  // O /login manda TODO login primeiro para cá (para detectar o admin).
+  // E-mail que não é o do admin nunca entra no rate limit — senão advogado
+  // errando a própria senha acumulava 429 aqui e ficava travado no login.
+  if (email.toLowerCase() !== expectedEmail) {
+    return NextResponse.json(
+      { ok: false, error: "E-mail ou senha incorretos" },
+      { status: 401 }
+    );
+  }
+
   const ip = getClientIp(req);
   const key = buildKey(ip, email);
   const now = Date.now();
@@ -82,18 +104,6 @@ export async function POST(req: Request) {
         lockedSeconds: waitSec
       },
       { status: 429 }
-    );
-  }
-
-  const expectedEmail = (process.env.ADMIN_EMAIL || "").toLowerCase();
-  const expectedPassword = process.env.ADMIN_PASSWORD || "";
-
-  if (!expectedEmail || !expectedPassword) {
-    // Nao vazar detalhe de config pro cliente; motivo real so no log do servidor.
-    console.error("[admin-login] ADMIN_EMAIL/ADMIN_PASSWORD ausentes no ambiente do servidor");
-    return NextResponse.json(
-      { ok: false, error: "Erro interno. Tente novamente mais tarde." },
-      { status: 500 }
     );
   }
 

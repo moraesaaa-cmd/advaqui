@@ -87,11 +87,26 @@ contato@AdvAqui.com.br`;
 }
 
 async function callAdmin(payload: Record<string, unknown>) {
-  const res = await fetch("/api/admin", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
+  let res: Response;
+  try {
+    res = await fetch("/api/admin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+  } catch {
+    // Falha de rede: nunca deixar a exceção estourar no handler (travaria o
+    // flag `busy` em true e o painel inteiro ficaria inerte até o F5).
+    toast("Falha de conexão — verifique a internet e tente de novo", "error");
+    return { status: 0, json: { error: "Falha de conexão" } as Record<string, unknown> };
+  }
+  if (res.status === 401) {
+    toast("Sessão de administrador expirada — entre de novo", "error");
+    window.setTimeout(() => {
+      window.location.href = "/login";
+    }, 1600);
+    return { status: 401, json: { error: "Sessão expirada" } as Record<string, unknown> };
+  }
   return { status: res.status, json: await res.json().catch(() => ({})) };
 }
 
@@ -359,8 +374,8 @@ export default function AdminPage() {
     if (r.status === 200) {
       toast("Plano premium ativado");
       await refreshUsers();
-    } else {
-      toast("Erro ao ativar", "error");
+    } else if (r.status !== 401 && r.status !== 0) {
+      toast(String(r.json.error || "Erro ao ativar"), "error");
     }
   };
 
@@ -372,8 +387,8 @@ export default function AdminPage() {
     if (r.status === 200) {
       toast("Plano desativado");
       await refreshUsers();
-    } else {
-      toast("Erro", "error");
+    } else if (r.status !== 401 && r.status !== 0) {
+      toast(String(r.json.error || "Erro ao desativar"), "error");
     }
   };
 
