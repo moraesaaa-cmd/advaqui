@@ -695,7 +695,7 @@ export default async function CitySpecialtyPage({
                 </div>
               </a>
               <Link
-                href={`/guias/direito-${sp.slug === "criminal" ? "criminal" : sp.slug === "familia" ? "de-familia" : sp.slug}`}
+                href={`/guias/direito-${sp.slug === "criminal" ? "criminal" : sp.slug === "familia" ? "de-familia" : sp.slug === "consumidor" ? "do-consumidor" : sp.slug}`}
                 className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
                 style={{ border: "1px solid #E4E2DA" }}
               >

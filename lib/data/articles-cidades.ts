@@ -35,7 +35,10 @@ export const ARTIGOS_LOCALIZAVEIS_SLUGS: string[] = [
   "multa-de-transito-como-recorrer",
   "como-entrar-com-acao-no-juizado-do-consumidor",
   "acordo-trabalhista-vale-a-pena",
-  "acao-de-despejo-como-funciona"
+  "acao-de-despejo-como-funciona",
+  "usucapiao-como-dar-entrada",
+  "bpc-loas-quem-tem-direito",
+  "saque-fgts-modalidades-e-prazos"
 ];
 
 /**

@@ -7,7 +7,7 @@ import { getAllCities } from "@/lib/data/cities";
  * Sitemap secundário — /blog/[slug]/em/[cidade-uf].
  *
  * 1 sitemap por artigo da allow-list × 5571 cidades IBGE.
- * 2 artigos × 5571 = 11.142 URLs.
+ * 13 artigos × 5571 = 72.423 URLs.
  *
  * Quando a allow-list crescer, este sitemap cresce automaticamente.
  */

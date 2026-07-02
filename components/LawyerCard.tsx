@@ -65,7 +65,7 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={lawyer.photoUrl}
-              alt={`Foto de ${lawyer.name}`}
+              alt={lawyer.photoAltText || `Foto de ${lawyer.name}`}
               loading="eager"
               decoding="async"
               className="w-[78px] h-[78px] rounded-full object-cover bg-brand-bg"
@@ -166,7 +166,7 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={lawyer.photoUrl}
-          alt={`Foto de ${lawyer.name}`}
+          alt={lawyer.photoAltText || `Foto de ${lawyer.name}`}
           loading="lazy"
           decoding="async"
           className="w-12 h-12 rounded-full object-cover flex-shrink-0 bg-brand-bg border border-brand-line"

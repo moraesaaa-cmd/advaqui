@@ -249,7 +249,7 @@ export default async function ProfessionalPage({
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={l.photoUrl}
-                alt={`Foto de ${l.name}`}
+                alt={l.photoAltText || `Foto de ${l.name}`}
                 loading="eager"
                 decoding="async"
                 className="w-[108px] h-[108px] rounded-[18px] object-cover flex-shrink-0"

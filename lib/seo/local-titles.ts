@@ -115,6 +115,27 @@ export const BLOG_CIDADE_TEMPLATES: Record<string, LocalTemplate> = {
     h1: (c) => `Ação de despejo em ${c}: prazos e como funciona`,
     description: (c) =>
       `O locador pode pedir despejo por falta de pagamento e o inquilino pode quitar a dívida no prazo legal. Guia em linguagem simples para ${c}.`
+  },
+  "usucapiao-como-dar-entrada": {
+    full: (c) => `Usucapião em ${c}: requisitos e como dar entrada`,
+    short: (c) => `Usucapião em ${c}: como dar entrada`,
+    h1: (c) => `Usucapião em ${c}: requisitos, prazos e como dar entrada`,
+    description: (c) =>
+      `O usucapião pode ser reconhecido direto no cartório de imóveis ou pela Justiça, conforme a posse e os prazos. Guia em linguagem simples para ${c}.`
+  },
+  "bpc-loas-quem-tem-direito": {
+    full: (c) => `BPC/LOAS em ${c}: quem tem direito e como pedir`,
+    short: (c) => `BPC/LOAS em ${c}: como pedir`,
+    h1: (c) => `BPC/LOAS em ${c}: quem tem direito e como pedir`,
+    description: (c) =>
+      `Idosos com 65+ e pessoas com deficiência de baixa renda podem pedir um salário mínimo por mês ao INSS. Guia em linguagem simples para ${c}.`
+  },
+  "saque-fgts-modalidades-e-prazos": {
+    full: (c) => `Saque do FGTS em ${c}: modalidades e prazos`,
+    short: (c) => `Saque do FGTS em ${c}: como sacar`,
+    h1: (c) => `Saque do FGTS em ${c}: todas as modalidades e prazos`,
+    description: (c) =>
+      `Demissão sem justa causa, saque-aniversário, doença grave e casa própria liberam o FGTS, cada um com regra própria. Guia em linguagem simples para ${c}.`
   }
 };
 

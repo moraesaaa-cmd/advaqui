@@ -42,18 +42,22 @@ export const DETRAN: Record<string, { sigla: string; nome: string }> = {
 export const detranOf = (uf: string) =>
   DETRAN[uf.toUpperCase()] || { sigla: "DETRAN", nome: "Departamento Estadual de Trânsito" };
 
-/** Parágrafo de abertura — 5 variantes parametrizadas pela cidade. */
+/**
+ * Parágrafo de abertura — 12 variantes parametrizadas pela cidade.
+ * Regra (playbook Bing/Copilot C1): TODA variante contém a keyword literal
+ * "multa de trânsito em {cidade}" na primeira frase.
+ */
 const INTROS: Array<(c: City) => string> = [
   (c) =>
     `Recebeu uma multa de trânsito em ${c.name}, ${c.uf}, e quer contestar? Você não precisa pagar antes de tentar derrubá-la. ` +
     `A lei garante o direito de recorrer de qualquer autuação, e quem dirige em ${c.name} pode apresentar a defesa por conta própria, no prazo indicado na notificação. ` +
     `Esta página explica como funciona o recurso na prática e gera, de graça, uma peça fundamentada no Código de Trânsito Brasileiro para você revisar e protocolar.`,
   (c) =>
-    `Multas aplicadas em ${c.name} (${c.state}) podem ser questionadas tanto por vícios de forma quanto pelo mérito da infração. ` +
+    `Uma multa de trânsito em ${c.name} (${c.state}) pode ser questionada tanto por vícios de forma quanto pelo mérito da infração. ` +
     `Muita gente paga sem saber que tinha argumentos sólidos para recorrer. ` +
     `Aqui você entende as três fases do recurso, os prazos que mais derrubam pedidos e monta, sem cadastro, o seu recurso com a base legal correta.`,
   (c) =>
-    `Quem foi multado em ${c.name} tem o mesmo direito de defesa de qualquer condutor do país: contestar a autuação antes que a penalidade se consolide. ` +
+    `Quem recebeu uma multa de trânsito em ${c.name} tem o mesmo direito de defesa de qualquer condutor do país: contestar a autuação antes que a penalidade se consolide. ` +
     `O segredo está em respeitar o prazo e apontar os fundamentos certos — falha na notificação, ausência da dupla notificação, erro no auto de infração. ` +
     `Use esta ferramenta gratuita para gerar o seu recurso direcionado à autoridade competente.`,
   (c) =>
@@ -61,29 +65,29 @@ const INTROS: Array<(c: City) => string> = [
     `Antes de pagar, vale conferir se a autuação seguiu todas as exigências legais — e, quando não seguiu, recorrer. ` +
     `Reunimos abaixo o passo a passo do recurso administrativo e um gerador que monta a peça com a fundamentação do CTB, pronta para você protocolar.`,
   (c) =>
-    `Se você dirige em ${c.name} e foi autuado, saiba que recorrer é gratuito e pode ser feito por você mesmo. ` +
+    `Se você levou uma multa de trânsito em ${c.name}, saiba que recorrer é gratuito e pode ser feito por você mesmo. ` +
     `A decisão final é do órgão de trânsito, mas um recurso bem fundamentado, apresentado no prazo, aumenta as chances de revisão. ` +
     `Veja como funciona em ${c.state} e gere o seu recurso agora, sem custo.`,
   (c) =>
-    `Foi flagrado por radar ou autuado por um agente em ${c.name}? Antes de deixar a multa "correr", vale checar se a notificação chegou no prazo e se o auto descreve corretamente a infração. ` +
+    `Flagrado por radar ou autuado por um agente, você pode contestar a multa de trânsito em ${c.name} antes de pagá-la. Vale checar se a notificação chegou no prazo e se o auto descreve corretamente a infração. ` +
     `Esta página reúne o passo a passo do recurso em ${c.state} e monta, sem custo, uma peça pronta para você revisar e protocolar.`,
   (c) =>
-    `Nem toda multa aplicada em ${c.name} resiste a uma análise cuidadosa. Falhas na notificação, na descrição da conduta ou na competência do órgão são motivos frequentes de cancelamento. ` +
+    `Nem toda multa de trânsito em ${c.name} resiste a uma análise cuidadosa. Falhas na notificação, na descrição da conduta ou na competência do órgão são motivos frequentes de cancelamento. ` +
     `Veja como recorrer e monte aqui, de graça, o seu recurso fundamentado no Código de Trânsito Brasileiro.`,
   (c) =>
-    `Receber uma notificação de multa em ${c.name} assusta, mas recorrer é um direito — e não custa nada. O importante é agir dentro do prazo indicado e apontar os fundamentos certos. ` +
+    `Receber a notificação de uma multa de trânsito em ${c.name} assusta, mas recorrer é um direito — e não custa nada. O importante é agir dentro do prazo indicado e apontar os fundamentos certos. ` +
     `Abaixo explicamos cada etapa e disponibilizamos um gerador de recurso para o seu caso.`,
   (c) =>
-    `Em ${c.name}/${c.uf}, muitas autuações são pagas por pura falta de informação. Quem conhece as três fases do recurso e os prazos consegue contestar sozinho, sem intermediário. ` +
+    `Muita multa de trânsito em ${c.name}/${c.uf} é paga por pura falta de informação. Quem conhece as três fases do recurso e os prazos consegue contestar sozinho, sem intermediário. ` +
     `Use o guia e o gerador desta página para preparar a sua defesa.`,
   (c) =>
-    `Multa não é dívida definitiva: é um ato administrativo que pode ser revisto. Se você foi autuado em ${c.name}, confira a regularidade da notificação e, havendo falha, recorra. ` +
+    `Multa de trânsito em ${c.name} não é dívida definitiva: é um ato administrativo que pode ser revisto. Confira a regularidade da notificação que você recebeu e, havendo falha, recorra. ` +
     `Montamos aqui um modelo com a base legal correta para você protocolar.`,
   (c) =>
-    `Condutores de ${c.name} têm três instâncias para contestar uma multa antes de pagá-la. Saber qual usar e quando faz toda a diferença. ` +
+    `Quem quer contestar uma multa de trânsito em ${c.name} tem três instâncias administrativas antes de qualquer pagamento. Saber qual usar e quando faz toda a diferença. ` +
     `Este guia explica o caminho em ${c.state} e gera o seu recurso gratuitamente.`,
   (c) =>
-    `Se a multa que você recebeu em ${c.name} tem algo estranho — data, local, veículo ou notificação —, isso pode ser o fundamento do seu recurso. ` +
+    `Se a sua multa de trânsito em ${c.name} tem algo estranho — data, local, veículo ou notificação —, isso pode ser o fundamento do seu recurso. ` +
     `Entenda como funciona a defesa administrativa e prepare a sua peça aqui, sem pagar nada.`
 ];
 

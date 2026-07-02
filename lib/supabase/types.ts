@@ -110,6 +110,13 @@ export type LawyerRow = {
   moderation_status?: "ok" | "suspect" | null;
   /** Motivo curto quando suspect (uso interno/admin — nunca exibido publicamente). */
   moderation_note?: string | null;
+
+  // ----- Alt-text da foto (migration 0018) ---------------------------------
+  // Opcional (`?:`) porque pode não existir no banco se a migration ainda
+  // não foi aplicada. O cron e o mapper toleram a ausência.
+
+  /** Texto alternativo descritivo da foto de perfil (gerado pelo cron photo-alt-text). */
+  alt_text?: string | null;
 };
 
 export type MessageSource = "contact_form" | "support" | "admin_to_user";

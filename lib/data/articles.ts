@@ -1810,6 +1810,380 @@ export const ARTICLES: Article[] = [
           "É a garantia (art. 5º, XXXVIII, 'c', da Constituição) de que a decisão de mérito é dos jurados. O tribunal pode anular para novo júri, mas não substituir o veredicto pela própria convicção."
       }
     ]
+  },
+  {
+    slug: "usucapiao-como-dar-entrada",
+    title: "Usucapião em 2026: o que é, requisitos, prazos e como dar entrada",
+    excerpt:
+      "Entenda as modalidades de usucapião, os prazos de cada uma, como funciona o usucapião em cartório e quais documentos reunir para dar entrada.",
+    category: "Imobiliário",
+    readingMinutes: 11,
+    publishedAt: "2026-07-01",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "imobiliario",
+    intro:
+      "Quem mora ou usa um imóvel há muitos anos como se fosse dono — cuidando, pagando as contas, sem ninguém contestar — pode ter direito de virar dono de verdade. É isso que o usucapião faz: transforma a posse prolongada em propriedade registrada. Este guia explica, em linguagem simples, quais são as modalidades, os prazos de cada uma, os documentos necessários e o caminho para dar entrada — inclusive a via mais rápida, direto no cartório.",
+    body: [
+      { type: "h2", text: "O que é usucapião e quando ele se aplica?" },
+      {
+        type: "p",
+        text: "Usucapião é a forma de adquirir a propriedade de um bem (imóvel ou móvel) pelo uso prolongado, contínuo e sem oposição, como se você fosse o dono. A lógica da lei é dar função social ao patrimônio: se o dono registrado abandonou o imóvel por anos e outra pessoa passou a ocupá-lo, cuidar dele e tratá-lo como seu, chega um momento em que essa posse se converte em propriedade. As regras principais estão nos arts. 1.238 a 1.244 do Código Civil e, para as modalidades especiais, nos arts. 183 e 191 da Constituição."
+      },
+      {
+        type: "p",
+        text: "Na prática, o usucapião aparece em situações muito comuns: a casa comprada 'de contrato de gaveta' que nunca foi passada para o nome do comprador, o terreno herdado informalmente e ocupado pela família há décadas, o lote sem matrícula em loteamento antigo, o imóvel cedido verbalmente que o dono nunca mais reclamou. Em todos esses casos, o usucapião pode ser o caminho para regularizar o registro."
+      },
+      { type: "h2", text: "Quais são as modalidades de usucapião e seus prazos?" },
+      {
+        type: "p",
+        text: "O prazo de posse exigido varia conforme a modalidade. As principais são:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Extraordinária (art. 1.238 do CC): 15 anos de posse, sem precisar de justo título nem boa-fé. Cai para 10 anos se o possuidor mora no imóvel ou nele realizou obras e serviços produtivos",
+          "Ordinária (art. 1.242 do CC): 10 anos de posse, com justo título (ex.: contrato de compra e venda não registrado) e boa-fé. Cai para 5 anos se o imóvel foi adquirido onerosamente com registro depois cancelado e o possuidor mora nele ou fez investimentos",
+          "Especial urbana (art. 1.240 do CC e art. 183 da CF): 5 anos de posse de imóvel urbano de até 250 m², usado para moradia própria ou da família, desde que o possuidor não seja dono de outro imóvel",
+          "Especial rural (art. 1.239 do CC e art. 191 da CF): 5 anos de posse de área rural de até 50 hectares, tornada produtiva pelo trabalho do possuidor e usada como moradia, sem ser dono de outro imóvel",
+          "Familiar (art. 1.240-A do CC): 2 anos de posse exclusiva de imóvel urbano de até 250 m² dividido com ex-cônjuge ou ex-companheiro que abandonou o lar, usado para moradia, sem ter outro imóvel",
+          "Coletiva (Estatuto da Cidade, Lei 10.257/2001): para núcleos urbanos ocupados por população de baixa renda, quando não é possível identificar o terreno de cada possuidor"
+        ]
+      },
+      { type: "h2", text: "Quais são os requisitos para usucapir um imóvel?" },
+      {
+        type: "p",
+        text: "Independentemente da modalidade, alguns requisitos se repetem e precisam ser comprovados:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Posse mansa e pacífica — ninguém contestou a ocupação (nem o dono registrado, nem vizinhos, nem herdeiros) durante todo o prazo",
+          "Posse contínua e sem interrupção — o possuidor não abandonou o imóvel no meio do caminho. A lei permite somar o tempo de posse do antecessor (ex.: de quem lhe vendeu por contrato de gaveta)",
+          "Posse com intenção de dono (animus domini) — quem ocupa como inquilino, caseiro ou por empréstimo (comodato) não conta prazo, porque reconhece que o dono é outro",
+          "Decurso do prazo legal da modalidade escolhida",
+          "Nas modalidades especiais: metragem máxima, uso para moradia e não ser proprietário de outro imóvel"
+        ]
+      },
+      {
+        type: "callout",
+        text: "Imóveis públicos não podem ser usucapidos, em nenhuma modalidade e por mais longa que seja a ocupação (art. 183, § 3º, e art. 191, parágrafo único, da Constituição). Terrenos da União, do estado ou do município seguem caminhos próprios de regularização fundiária, não o usucapião."
+      },
+      { type: "h2", text: "O que é usucapião extrajudicial e como funciona no cartório?" },
+      {
+        type: "p",
+        text: "Desde 2015 (art. 216-A da Lei 6.015/73, incluído pelo CPC), o usucapião pode ser reconhecido diretamente no cartório de registro de imóveis, sem processo judicial — é o chamado usucapião extrajudicial. É a via mais rápida quando não há briga: costuma resolver em meses, enquanto o processo judicial pode levar anos. O passo a passo é este:"
+      },
+      {
+        type: "ol",
+        items: [
+          "Contratar advogado — a lei exige que o pedido no cartório seja assinado por advogado, mesmo sendo extrajudicial",
+          "Lavrar a ata notarial no tabelionato de notas — o tabelião atesta o tempo de posse e as circunstâncias da ocupação, com base em documentos e na visita ao imóvel",
+          "Providenciar planta e memorial descritivo do imóvel, assinados por profissional habilitado (engenheiro ou arquiteto com ART/RRT) e, quando possível, pelos confinantes (vizinhos de divisa)",
+          "Reunir certidões negativas de ações possessórias e reivindicatórias em nome do possuidor",
+          "Protocolar o requerimento no cartório de registro de imóveis da circunscrição do imóvel",
+          "O cartório notifica o proprietário registrado, os confinantes e as Fazendas Públicas (União, estado e município) para se manifestarem",
+          "Sem impugnação, o oficial registra a propriedade em nome do possuidor. Havendo impugnação fundamentada, o caso é remetido à via judicial"
+        ]
+      },
+      { type: "h2", text: "Quais documentos preciso para dar entrada no usucapião?" },
+      {
+        type: "ul",
+        items: [
+          "RG, CPF e comprovante de estado civil do possuidor (e do cônjuge, se casado)",
+          "Ata notarial atestando o tempo de posse (na via extrajudicial)",
+          "Planta e memorial descritivo do imóvel assinados por profissional habilitado",
+          "Provas da posse ao longo do tempo: contas de água, luz e IPTU pagas, contrato de compra e venda 'de gaveta', recibos de reforma, fotos datadas, declarações de vizinhos",
+          "Certidão da matrícula do imóvel (ou certidão de que não há matrícula), emitida pelo cartório de registro de imóveis",
+          "Certidões negativas de ações possessórias em nome do requerente",
+          "Justo título, quando a modalidade exigir (ex.: compromisso de compra e venda)"
+        ]
+      },
+      { type: "h2", text: "Quanto tempo demora e quanto custa o usucapião?" },
+      {
+        type: "p",
+        text: "Na via extrajudicial, com documentação completa e sem impugnação, o reconhecimento costuma sair em alguns meses — o prazo varia conforme o cartório e as notificações. Na via judicial, o processo costuma levar de 2 a 5 anos, dependendo da comarca e de haver ou não disputa. Os custos envolvem emolumentos do tabelionato (ata notarial) e do registro de imóveis, honorários do profissional que assina a planta, eventuais custas judiciais e os honorários do advogado — os valores variam por estado e pelo valor do imóvel. Quem não tem condições de pagar pode requerer gratuidade, tanto na Justiça quanto, em várias hipóteses, nos emolumentos de cartório."
+      },
+      { type: "h2", text: "Quando o usucapião precisa ir para a Justiça?" },
+      {
+        type: "p",
+        text: "A via judicial é o caminho quando o proprietário registrado, um confinante ou a Fazenda Pública impugna o pedido no cartório, quando há disputa sobre a posse (invasão contestada, briga entre herdeiros), quando não se localizam pessoas que precisam ser notificadas ou quando o caso exige produção de provas mais complexas, como testemunhas e perícia. No processo judicial, o juiz analisa as provas, ouve os interessados e, ao final, a sentença que reconhece o usucapião é levada a registro no cartório de imóveis — com o mesmo efeito da via extrajudicial."
+      },
+      { type: "h2", text: "Quando procurar um advogado?" },
+      {
+        type: "p",
+        text: "Sempre — no usucapião o advogado é obrigatório por lei, tanto na via judicial quanto na extrajudicial. Além da exigência formal, a escolha da modalidade correta muda o prazo exigido (de 15 para 10, 5 ou até 2 anos) e a estratégia de prova. Um advogado da área imobiliária avalia qual modalidade se encaixa no seu caso, organiza as provas da posse e conduz o procedimento no cartório ou na Justiça. A consulta inicial costuma esclarecer, já de saída, se o seu tempo de posse é suficiente."
+      }
+    ],
+    faq: [
+      {
+        question: "Quem mora de aluguel pode pedir usucapião do imóvel?",
+        answer:
+          "Não. O inquilino reconhece que o dono é outro (paga aluguel justamente por isso), então a posse dele não tem intenção de dono e não conta prazo para usucapião. O mesmo vale para caseiros e para quem recebeu o imóvel emprestado (comodato)."
+      },
+      {
+        question: "Pagar IPTU por muitos anos garante o usucapião?",
+        answer:
+          "Pagar IPTU é uma prova importante de que você trata o imóvel como seu, mas sozinho não basta. É preciso comprovar também a posse mansa, contínua e com intenção de dono pelo prazo da modalidade escolhida."
+      },
+      {
+        question: "Posso usucapir imóvel de herança ocupado só por mim?",
+        answer:
+          "Em regra, o herdeiro que ocupa o imóvel da herança possui em nome de todos os herdeiros. O STJ, porém, admite usucapião por um herdeiro quando ele exerce posse exclusiva, com intenção de dono e sem oposição dos demais pelo prazo legal. É situação que exige análise cuidadosa das provas."
+      },
+      {
+        question: "Terreno sem matrícula ou sem escritura pode ser usucapido?",
+        answer:
+          "Pode. O usucapião é justamente um dos caminhos para regularizar imóvel sem registro: a sentença judicial ou o reconhecimento extrajudicial gera a abertura de matrícula em nome do possuidor no cartório de imóveis."
+      },
+      {
+        question: "O usucapião extrajudicial é aceito em todo o Brasil?",
+        answer:
+          "Sim. O art. 216-A da Lei 6.015/73 vale em todo o país e o procedimento é regulamentado pelo Provimento 65/2017 do CNJ. Qualquer cartório de registro de imóveis está apto a processar o pedido da sua circunscrição."
+      }
+    ]
+  },
+  {
+    slug: "bpc-loas-quem-tem-direito",
+    title: "BPC/LOAS em 2026: quem tem direito, qual o valor e como pedir no INSS",
+    excerpt:
+      "Veja os requisitos do BPC para idosos e pessoas com deficiência, como funciona a renda por pessoa, o CadÚnico e o que fazer se o INSS negar.",
+    category: "Previdenciário",
+    readingMinutes: 10,
+    publishedAt: "2026-07-01",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "previdenciario",
+    intro:
+      "O BPC — Benefício de Prestação Continuada, conhecido como LOAS — garante um salário mínimo por mês a idosos com 65 anos ou mais e a pessoas com deficiência de qualquer idade que vivem em famílias de baixa renda. Ele não exige nenhuma contribuição ao INSS, o que o torna a principal proteção de quem nunca conseguiu contribuir. Este guia explica quem tem direito, como se calcula a renda da família, o papel do CadÚnico, o passo a passo do pedido e o que fazer quando o INSS nega.",
+    body: [
+      { type: "h2", text: "O que é o BPC/LOAS e qual é o valor do benefício?" },
+      {
+        type: "p",
+        text: "O BPC é um benefício assistencial previsto no art. 20 da Lei 8.742/93 (a Lei Orgânica da Assistência Social — por isso o apelido 'LOAS') e no art. 203, V, da Constituição. O valor é de um salário mínimo por mês. Por ser assistencial, e não previdenciário, ele não exige carência nem contribuições ao INSS — mas também não paga 13º salário e não gera pensão por morte para os dependentes."
+      },
+      { type: "h2", text: "Quem tem direito ao BPC: idoso e pessoa com deficiência" },
+      {
+        type: "p",
+        text: "Dois grupos podem receber o benefício, desde que cumpram o critério de renda:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Idoso com 65 anos ou mais, homem ou mulher, que comprove baixa renda familiar",
+          "Pessoa com deficiência de qualquer idade — inclusive crianças — com impedimento de longo prazo (a lei considera longo prazo o mínimo de 2 anos) de natureza física, mental, intelectual ou sensorial que, em interação com barreiras, dificulte a participação plena na sociedade em igualdade de condições"
+        ]
+      },
+      {
+        type: "p",
+        text: "Para a pessoa com deficiência, o INSS faz duas avaliações: a perícia médica, que analisa o impedimento, e a avaliação social, que analisa as barreiras enfrentadas no dia a dia (escola, trabalho, transporte, dependência de cuidados). Não é preciso ser 'incapaz para toda atividade' — o que se avalia é o conjunto do impedimento com as barreiras sociais."
+      },
+      { type: "h2", text: "Como funciona o cálculo da renda por pessoa da família?" },
+      {
+        type: "p",
+        text: "A regra geral do art. 20, § 3º, da Lei 8.742/93 é: a renda mensal da família, dividida pelo número de integrantes, deve ser inferior a 1/4 do salário mínimo por pessoa. Contam como família, para esse cálculo, as pessoas que vivem sob o mesmo teto: o requerente, cônjuge ou companheiro, pais (ou madrasta/padrasto), irmãos solteiros, filhos e enteados solteiros e menores tutelados."
+      },
+      {
+        type: "p",
+        text: "Algumas rendas ficam de fora da conta. O BPC já recebido por um idoso da família não entra no cálculo do BPC de outro idoso, e a Lei 14.176/2021 também manda desconsiderar, em situações específicas, benefícios de até um salário mínimo recebidos por outro idoso ou pessoa com deficiência da casa. Gastos comprovados com remédios, fraldas, alimentação especial e consultas podem ser abatidos na análise."
+      },
+      {
+        type: "callout",
+        text: "A renda um pouco acima de 1/4 do salário mínimo não fecha a porta automaticamente. A Lei 14.176/2021 autoriza ampliar o limite para até 1/2 salário mínimo por pessoa conforme o grau da deficiência, o comprometimento do orçamento com saúde e a vulnerabilidade da família — e a Justiça, há anos, aceita provar a miserabilidade por outros meios além do número frio da renda."
+      },
+      { type: "h2", text: "O que é o CadÚnico e por que ele é obrigatório?" },
+      {
+        type: "p",
+        text: "O Cadastro Único (CadÚnico) é o registro do governo federal que identifica as famílias de baixa renda. Desde 2016, estar inscrito no CadÚnico, com os dados atualizados nos últimos 2 anos, é requisito obrigatório para pedir e para continuar recebendo o BPC. A inscrição é gratuita e feita no CRAS (Centro de Referência de Assistência Social) do seu município, levando os documentos de todos que moram na casa. Antes de dar entrada no benefício, confira se o cadastro da família está atualizado — pedido com CadÚnico desatualizado é negado sem nem passar pela análise da renda."
+      },
+      { type: "h2", text: "Como pedir o BPC no INSS passo a passo?" },
+      {
+        type: "ol",
+        items: [
+          "Inscreva ou atualize o CadÚnico da família no CRAS do seu município",
+          "Reúna os documentos: RG e CPF de todos da casa, comprovante de residência, comprovantes de renda e, no caso de deficiência, laudos, exames e receitas médicas",
+          "Faça o pedido pelo aplicativo ou site Meu INSS (serviço 'Benefício Assistencial') ou pelo telefone 135 — não precisa ir à agência para protocolar",
+          "No caso de pessoa com deficiência, aguarde o agendamento da perícia médica e da avaliação social e compareça levando todos os laudos originais",
+          "Acompanhe o andamento pelo Meu INSS. O prazo regular de análise é de até 90 dias, mas pode variar",
+          "Se aprovado, o pagamento começa a contar da data do requerimento — valores do período de análise são pagos de forma retroativa"
+        ]
+      },
+      { type: "h2", text: "O INSS negou o BPC: o que fazer agora?" },
+      {
+        type: "p",
+        text: "A negativa não é o fim do caminho — uma parte grande dos pedidos é negada na via administrativa e depois revertida. Os motivos mais comuns são renda considerada acima do limite, perícia que não reconheceu o impedimento de longo prazo e CadÚnico desatualizado. Diante da negativa, existem três caminhos:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Recurso administrativo à Junta de Recursos, no prazo de 30 dias contados da ciência da decisão — feito pelo próprio Meu INSS, sem custo",
+          "Novo requerimento, quando o problema era documental (ex.: CadÚnico vencido, laudo incompleto) e já foi corrigido",
+          "Ação judicial no Juizado Especial Federal — para causas de até 60 salários mínimos não há custas nem obrigação de advogado, e o juiz determina nova perícia e pode mandar avaliar a real situação socioeconômica da família, com critérios mais amplos que os do INSS"
+        ]
+      },
+      { type: "h2", text: "O BPC pode ser cortado? Como funciona a revisão?" },
+      {
+        type: "p",
+        text: "Pode. O BPC é revisto periodicamente para verificar se as condições que deram origem ao benefício continuam existindo — a lei prevê reavaliação a cada 2 anos. Na prática, os cortes mais comuns acontecem por CadÚnico desatualizado, mudança na renda da família ou não comparecimento a convocações do INSS. Se o benefício for bloqueado ou cessado, o beneficiário deve ser notificado antes e tem direito de se defender, apresentando documentos, e de recorrer da decisão — inclusive na Justiça, se necessário. Manter o CadÚnico em dia a cada 2 anos é a melhor forma de evitar sustos."
+      },
+      { type: "h2", text: "Quando procurar um advogado?" },
+      {
+        type: "p",
+        text: "Procure orientação profissional se o pedido foi negado por renda e a família tem gastos altos com saúde, se a perícia não reconheceu uma deficiência bem documentada, se o benefício foi cortado sem explicação clara ou se o caso envolve discussão sobre quem compõe a família para o cálculo. Um advogado previdenciário sabe montar a prova da vulnerabilidade (laudos, orçamento familiar, relatórios do CRAS) e escolher entre recurso administrativo e ação judicial. Quem não pode pagar tem direito à Defensoria Pública da União."
+      }
+    ],
+    faq: [
+      {
+        question: "O BPC/LOAS é uma aposentadoria?",
+        answer:
+          "Não. O BPC é benefício assistencial: não exige contribuição, não paga 13º salário e não deixa pensão por morte. A aposentadoria é benefício previdenciário, exige contribuições e gera esses direitos. Quem recebe BPC pode, no futuro, trocar por aposentadoria se completar os requisitos."
+      },
+      {
+        question: "Preciso ter contribuído com o INSS para receber o BPC?",
+        answer:
+          "Não. O BPC não exige nenhuma contribuição prévia. Os requisitos são apenas a condição de idoso (65+) ou pessoa com deficiência, a baixa renda familiar e a inscrição atualizada no CadÚnico."
+      },
+      {
+        question: "Criança com autismo tem direito ao BPC?",
+        answer:
+          "Pode ter. A lei reconhece a pessoa com transtorno do espectro autista como pessoa com deficiência (Lei 12.764/2012). O direito depende da avaliação do impedimento de longo prazo, das barreiras enfrentadas pela criança e do critério de renda da família."
+      },
+      {
+        question: "Quem recebe BPC pode trabalhar com carteira assinada?",
+        answer:
+          "Se o beneficiário com deficiência começar a trabalhar, o BPC fica suspenso — não cancelado — e pode ser reativado sem nova perícia se o emprego terminar (art. 21-A da Lei 8.742/93). Já a renda do trabalho de outros membros da família entra no cálculo e pode levar à revisão do benefício."
+      },
+      {
+        question: "Posso acumular o BPC com outro benefício?",
+        answer:
+          "Em regra, não. O BPC não pode ser acumulado com aposentadoria, pensão ou outro benefício da Seguridade Social, exceto os de assistência médica e a pensão especial de natureza indenizatória. Programas como o Bolsa Família têm regras próprias de convivência com o BPC."
+      }
+    ]
+  },
+  {
+    slug: "saque-fgts-modalidades-e-prazos",
+    title: "Saque do FGTS em 2026: todas as modalidades, calendário e prazos",
+    excerpt:
+      "Demissão, saque-aniversário, doença grave, casa própria: veja todas as situações que liberam o FGTS, o calendário e a trava de 2 anos.",
+    category: "Trabalhista",
+    readingMinutes: 10,
+    publishedAt: "2026-07-01",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "trabalhista",
+    intro:
+      "O FGTS é o dinheiro que o empregador deposita todo mês em uma conta vinculada no nome do trabalhador — mas esse dinheiro só pode ser sacado nas situações que a lei autoriza. Entre demissão, saque-aniversário, compra da casa própria e doença grave, as regras mudam bastante e uma escolha errada (como aderir ao saque-aniversário sem entender a trava de 2 anos) pode bloquear o saldo justamente na hora em que você mais precisa. Este guia explica todas as modalidades, prazos e cuidados.",
+    body: [
+      { type: "h2", text: "O que é o FGTS e quem tem direito?" },
+      {
+        type: "p",
+        text: "O Fundo de Garantia do Tempo de Serviço, criado pela Lei 8.036/90, funciona assim: todo mês o empregador deposita 8% do salário bruto em uma conta vinculada na Caixa, em nome do trabalhador (2% no contrato de aprendizagem e 11,2% no doméstico, somando FGTS e antecipação da multa). O depósito é obrigação da empresa — não é descontado do seu salário. Têm direito os trabalhadores com carteira assinada (CLT), domésticos, rurais, temporários, intermitentes, avulsos e safreiros. O saldo rende atualização monetária mais juros e distribuição de resultados do fundo."
+      },
+      { type: "h2", text: "Em quais situações posso sacar o FGTS?" },
+      {
+        type: "p",
+        text: "O art. 20 da Lei 8.036/90 lista as hipóteses de saque. As principais são:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Demissão sem justa causa — saque integral do saldo + multa de 40% paga pela empresa",
+          "Rescisão por acordo entre empregado e empregador (art. 484-A da CLT) — saque de até 80% do saldo + multa de 20%",
+          "Término de contrato por prazo determinado (incluindo o temporário)",
+          "Extinção da empresa ou falecimento do empregador individual",
+          "Aposentadoria concedida pelo INSS",
+          "Doença grave — trabalhador ou dependente com câncer (neoplasia maligna), HIV ou em estágio terminal de doença grave",
+          "Compra da casa própria, amortização ou quitação de financiamento habitacional (regras do SFH)",
+          "Conta sem depósito por 3 anos seguidos fora do regime do FGTS",
+          "Idade igual ou superior a 70 anos",
+          "Falecimento do trabalhador — o saldo vai aos dependentes ou sucessores",
+          "Desastre natural (calamidade pública reconhecida) no município, conforme regulamentação",
+          "Saque-aniversário — retirada de parte do saldo todo ano, no mês do aniversário, para quem optar por essa sistemática"
+        ]
+      },
+      {
+        type: "callout",
+        text: "Quem pede demissão não saca o FGTS e não recebe a multa de 40% — o saldo fica na conta rendendo até aparecer outra hipótese legal de saque (como a compra da casa própria, aposentadoria ou os 3 anos fora do regime). Demissão por justa causa também não libera o saque."
+      },
+      { type: "h2", text: "Como funciona o saque-aniversário do FGTS?" },
+      {
+        type: "p",
+        text: "Criado pela Lei 13.932/2019, o saque-aniversário permite retirar uma parte do saldo todos os anos, no mês do seu aniversário. A adesão é opcional e feita pelo aplicativo FGTS. O valor segue uma tabela por faixa de saldo: quem tem pouco saldo saca um percentual maior (até 50% para saldos de até R$ 500), e quem tem saldo alto saca percentual menor (5% acima de R$ 20 mil) mais uma parcela fixa adicional. Quem não faz nada permanece automaticamente na sistemática tradicional, chamada saque-rescisão."
+      },
+      { type: "h2", text: "Qual é o calendário do saque-aniversário?" },
+      {
+        type: "p",
+        text: "O dinheiro fica disponível do primeiro dia útil do mês do seu aniversário até o último dia útil do segundo mês seguinte — uma janela de aproximadamente 3 meses. Exemplo: quem faz aniversário em março pode sacar de início de março até o fim de maio. Se não sacar dentro da janela, o valor volta para a conta do FGTS e segue rendendo; a próxima chance é no ano seguinte. O crédito pode ser feito automaticamente em conta indicada no aplicativo FGTS."
+      },
+      { type: "h2", text: "Saque-aniversário vale a pena? Entenda a trava de 2 anos" },
+      {
+        type: "p",
+        text: "Aqui mora o maior risco da escolha. Quem adere ao saque-aniversário e é demitido sem justa causa recebe apenas a multa de 40% — o saldo da conta fica bloqueado para saque por rescisão. E não dá para voltar atrás de uma hora para outra: quem pede o retorno ao saque-rescisão só volta à sistemática antiga no primeiro dia do 25º mês após o pedido — na prática, uma espera de 2 anos. Ou seja: se você aderir hoje e for demitido no ano que vem, não saca o saldo integral."
+      },
+      {
+        type: "p",
+        text: "O saque-aniversário costuma fazer sentido para quem tem estabilidade maior no emprego, quer uma renda anual extra ou pretende usar o valor para quitar dívidas caras. Costuma ser má escolha para quem está em emprego instável, em setor com muitas demissões, ou quer manter o FGTS como reserva de emergência para o desemprego. Cuidado redobrado com a antecipação do saque-aniversário oferecida por bancos: é um empréstimo com juros que compromete os saques dos próximos anos e usa o seu FGTS como garantia."
+      },
+      { type: "h2", text: "Saque-rescisão ou saque-aniversário: qual a diferença na prática?" },
+      {
+        type: "ul",
+        items: [
+          "Saque-rescisão (padrão): não saca nada anualmente, mas na demissão sem justa causa retira todo o saldo + multa de 40%",
+          "Saque-aniversário: retira um percentual todo ano, mas na demissão sem justa causa recebe só a multa de 40% e o saldo permanece bloqueado",
+          "Nos dois casos continuam liberados os saques por casa própria, aposentadoria, doença grave e demais hipóteses do art. 20",
+          "A troca de sistemática pode ser pedida a qualquer momento pelo app, mas o retorno ao saque-rescisão só produz efeito depois de 24 meses (primeiro dia do 25º mês)"
+        ]
+      },
+      { type: "h2", text: "Como sacar o FGTS na prática?" },
+      {
+        type: "ol",
+        items: [
+          "Baixe o aplicativo FGTS (da Caixa) e faça o login com CPF e senha",
+          "Confira o saldo de todas as contas vinculadas (empregos atuais e antigos)",
+          "Verifique se a sua situação se encaixa em uma hipótese de saque — o app mostra os saques disponíveis",
+          "Solicite o saque pelo próprio app, anexando documentos quando exigido (ex.: laudo médico na doença grave), e indique conta bancária de qualquer banco para o crédito, sem custo",
+          "Na demissão sem justa causa, a liberação costuma ser automática a partir dos dados da rescisão informados pela empresa; se não cair, procure a Caixa com o termo de rescisão",
+          "Prazo: o crédito costuma ocorrer em até 5 dias úteis após a solicitação aprovada"
+        ]
+      },
+      { type: "h2", text: "A empresa não depositou o FGTS: o que fazer?" },
+      {
+        type: "p",
+        text: "Confira os depósitos regularmente pelo aplicativo FGTS ou pelo extrato da Caixa — atraso e falta de depósito são mais comuns do que parecem, principalmente em empresas em dificuldade. Se encontrar meses faltando, os caminhos são: cobrar formalmente a empresa (por escrito), denunciar ao Ministério do Trabalho pelo canal gov.br, e cobrar os valores na Justiça do Trabalho, com correção. O prazo para cobrar é de 5 anos, contados de cada depósito não feito, respeitado o limite de 2 anos após o fim do contrato (STF, decisão de 2014 que mudou a prescrição do FGTS). Depósitos em falta prejudicam a multa de 40%, o saque na demissão e o uso do fundo na casa própria — não deixe acumular."
+      },
+      { type: "h2", text: "Quando procurar um advogado?" },
+      {
+        type: "p",
+        text: "Procure um advogado trabalhista se a empresa deixou de depositar o FGTS e não regulariza após a cobrança, se você foi demitido e o saque não foi liberado, se a multa de 40% foi calculada sobre saldo menor que o devido, ou se contratou antecipação de saque-aniversário com condições que não foram bem explicadas. Diferenças de FGTS costumam ser cobradas junto com outras verbas na reclamação trabalhista, e a consulta inicial costuma ser gratuita."
+      }
+    ],
+    faq: [
+      {
+        question: "Posso cancelar o saque-aniversário e voltar ao saque-rescisão?",
+        answer:
+          "Pode, a qualquer momento, pelo aplicativo FGTS. Mas a mudança não é imediata: o retorno ao saque-rescisão só passa a valer no primeiro dia do 25º mês após o pedido — cerca de 2 anos de espera. Nesse intervalo, em caso de demissão, você recebe apenas a multa de 40%."
+      },
+      {
+        question: "Quem pede demissão consegue sacar o FGTS?",
+        answer:
+          "Não. No pedido de demissão o saldo fica retido na conta, rendendo normalmente, até surgir outra hipótese legal: novo saque por demissão em emprego futuro, compra da casa própria, aposentadoria, doença grave ou 3 anos seguidos sem depósito na conta."
+      },
+      {
+        question: "Quais doenças permitem sacar o FGTS?",
+        answer:
+          "A lei autoriza o saque quando o trabalhador ou dependente tem câncer (neoplasia maligna), HIV ou está em estágio terminal de qualquer doença grave. O pedido é feito com laudo médico detalhado. Algumas decisões judiciais ampliam o saque para outras doenças graves, caso a caso."
+      },
+      {
+        question: "Posso usar o FGTS para quitar ou amortizar financiamento da casa?",
+        answer:
+          "Pode, se o financiamento estiver no SFH e forem cumpridos os requisitos: 3 anos de trabalho sob o regime do FGTS (somando períodos), não ter outro financiamento ativo no SFH nem imóvel residencial na mesma região. O FGTS pode abater prestações, amortizar ou quitar o saldo devedor."
+      },
+      {
+        question: "A antecipação do saque-aniversário em banco é segura?",
+        answer:
+          "É uma operação de crédito regulamentada, mas com custo: você toma emprestado hoje os saques dos próximos anos, paga juros e o FGTS fica bloqueado como garantia. Compare o custo efetivo total com outras linhas antes de contratar e desconfie de ofertas por telefone ou mensagens pedindo dados pessoais."
+      }
+    ]
   }
 ];
 

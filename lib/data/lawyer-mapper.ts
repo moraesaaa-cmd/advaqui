@@ -56,6 +56,8 @@ export type Lawyer = {
   extraCities: ExtraCity[];
   /** Foto de perfil (URL pública). */
   photoUrl?: string;
+  /** Alt-text descritivo da foto (migration 0018). Fallback: "Foto de {nome}". */
+  photoAltText?: string;
   /** Site profissional (premium only — vai pra perfil público). */
   website?: string;
   /** Instagram handle (sem @). */
@@ -160,6 +162,7 @@ export const mapLawyerRow = (
     targetUf: row.target_uf || undefined,
     extraCities: extras,
     photoUrl: (row as { photo_url?: string | null }).photo_url || undefined,
+    photoAltText: (row as { alt_text?: string | null }).alt_text || undefined,
     website: (row as { website?: string | null }).website || undefined,
     instagram: (row as { instagram?: string | null }).instagram || undefined,
     linkedin: (row as { linkedin?: string | null }).linkedin || undefined,
