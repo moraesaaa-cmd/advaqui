@@ -194,7 +194,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Extract triage JSON if present
-    let triage: {
+    type TriagePayload = {
       area?: string;
       cidade?: string;
       uf?: string;
@@ -204,7 +204,8 @@ export async function POST(req: NextRequest) {
       telefone?: string;
       ctaUrl?: string;
       ctaLabel?: string;
-    } | null = null;
+    };
+    let triage: TriagePayload | null = null;
 
     const jsonMatch = content.match(
       /%%%TRIAGE_JSON%%%([\s\S]*?)%%%END_TRIAGE_JSON%%%/
@@ -213,11 +214,11 @@ export async function POST(req: NextRequest) {
       try {
         const parsed: unknown = JSON.parse(jsonMatch[1].trim());
         if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
-          triage = parsed as NonNullable<typeof triage>;
+          const base = parsed as TriagePayload;
           // Link final validado no SERVIDOR contra especialidades e cidades
           // reais — o cliente usa ctaUrl/ctaLabel em vez de montar a URL.
-          const { ctaUrl, ctaLabel } = resolveCtaUrl(triage);
-          triage = { ...triage, ctaUrl, ctaLabel };
+          const { ctaUrl, ctaLabel } = resolveCtaUrl(base);
+          triage = { ...base, ctaUrl, ctaLabel };
         } else {
           console.error(
             `[chat:triage] TRIAGE_JSON não é objeto — conteúdo bruto: ${jsonMatch[1].trim().slice(0, 500)}`
