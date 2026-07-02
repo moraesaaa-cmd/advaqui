@@ -37,8 +37,33 @@ import { ArticleTool } from "@/components/ArticleTools";
 export const dynamicParams = true;
 export const revalidate = 21600;
 
+type RelatedQuestion = { question: string; answer: string };
+
+/**
+ * Valida related_questions vindo do jsonb (migration 0017). Tolera coluna
+ * ausente (undefined), null, formato inesperado — devolve [] nesses casos.
+ */
+function parseRelatedQuestions(raw: unknown): RelatedQuestion[] {
+  if (!Array.isArray(raw)) return [];
+  const out: RelatedQuestion[] = [];
+  for (const item of raw) {
+    if (!item || typeof item !== "object") continue;
+    const o = item as Record<string, unknown>;
+    if (typeof o.question === "string" && o.question.trim() && typeof o.answer === "string" && o.answer.trim()) {
+      out.push({ question: o.question.trim(), answer: o.answer.trim() });
+    }
+  }
+  return out;
+}
+
+type DBArticleExtras = {
+  _authorId?: string | null;
+  _authorSlug?: string | null;
+  _relatedQuestions?: RelatedQuestion[];
+};
+
 /** Busca artigo no banco (blog_articles) pelo slug. */
-async function getArticleFromDB(slug: string): Promise<(Article & { _authorId?: string | null; _authorSlug?: string | null }) | null> {
+async function getArticleFromDB(slug: string): Promise<(Article & DBArticleExtras) | null> {
   try {
     const supabase = createAdminClient();
     const { data } = await supabase
@@ -76,8 +101,11 @@ async function getArticleFromDB(slug: string): Promise<(Article & { _authorId?: 
       faq: [],
       _source: "db" as const,
       _authorId: data.author_id || null,
-      _authorSlug: authorSlug
-    } as Article & { _authorId?: string | null; _authorSlug?: string | null };
+      _authorSlug: authorSlug,
+      _relatedQuestions: parseRelatedQuestions(
+        (data as Record<string, unknown>).related_questions
+      )
+    } as Article & DBArticleExtras;
   } catch {
     return null;
   }
@@ -234,6 +262,12 @@ export default async function ArticlePage({ params }: { params: { slug: string }
   const authorId = "_authorId" in article ? (article as Article & { _authorId?: string | null })._authorId : null;
   const authorSlug = "_authorSlug" in article ? (article as Article & { _authorSlug?: string | null })._authorSlug : null;
 
+  // Perguntas relacionadas (só artigos do banco, migration 0017)
+  const relatedQuestions: RelatedQuestion[] =
+    "_relatedQuestions" in article
+      ? (article as Article & DBArticleExtras)._relatedQuestions || []
+      : [];
+
   const related = getRelatedArticles(article.slug, 3);
   const publishedDate = new Date(article.publishedAt).toLocaleDateString("pt-BR", {
     day: "2-digit",
@@ -334,6 +368,35 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                 </div>
               ))}
             </dl>
+          </section>
+        )}
+
+        {relatedQuestions.length > 0 && (
+          <section className="mt-12 rounded-2xl bg-brand-bg border border-brand-line p-6">
+            <h2 className="font-display text-2xl font-bold text-brand-ink mb-4">
+              Perguntas relacionadas
+            </h2>
+            <div className="space-y-3">
+              {relatedQuestions.map((item, i) => (
+                <details
+                  key={i}
+                  className="group border-b border-brand-line last:border-0 pb-3 last:pb-0"
+                >
+                  <summary className="cursor-pointer font-semibold text-brand-ink list-none flex items-start justify-between gap-3 hover:text-brand-deep transition">
+                    <span>{item.question}</span>
+                    <span
+                      aria-hidden
+                      className="text-brand-deep flex-shrink-0 transition-transform group-open:rotate-90"
+                    >
+                      →
+                    </span>
+                  </summary>
+                  <p className="mt-2 text-brand-ink/80 text-sm leading-relaxed">
+                    {item.answer}
+                  </p>
+                </details>
+              ))}
+            </div>
           </section>
         )}
 
@@ -567,6 +630,9 @@ export default async function ArticlePage({ params }: { params: { slug: string }
         )}
       />
       {article.faq.length > 0 && <JsonLd data={faqJsonLd(article.faq)} />}
+      {/* FAQPage das perguntas relacionadas — mesmo array renderizado acima.
+          Artigos do banco têm faq vazio, então nunca há dois FAQPage na página. */}
+      {relatedQuestions.length > 0 && <JsonLd data={faqJsonLd(relatedQuestions)} />}
       <JsonLd
         data={breadcrumbSchema([
           { name: "Brasil", url: "/" },

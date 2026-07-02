@@ -433,6 +433,12 @@ export type SiteAuditRow = {
   resolved_at: string | null;
 };
 
+/** Item de "Perguntas relacionadas" de um artigo do blog (migration 0017). */
+export type RelatedQuestion = {
+  question: string;
+  answer: string;
+};
+
 export type BlogArticleRow = {
   id: string;
   slug: string;
@@ -450,6 +456,8 @@ export type BlogArticleRow = {
   author_id: string | null;
   author_name: string | null;
   meta_description: string | null;
+  /** Migration 0017 — coluna pode ainda não existir no banco; código tolera ausência. */
+  related_questions: RelatedQuestion[] | null;
 };
 
 /**
