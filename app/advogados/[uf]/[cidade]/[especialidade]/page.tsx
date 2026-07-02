@@ -10,6 +10,7 @@ import { CadastroCTA } from "@/components/PlanosCTAs";
 import { buildMetadata, fitTitle } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { citySpecialtyIntro } from "@/lib/data/templates";
+import { cityFaqByKeys } from "@/lib/data/faq-cidades";
 import { getUsefulDocsForSpecialties } from "@/lib/data/specialty-descriptions";
 import { getProblemaIndex } from "@/lib/data/problema-index";
 import { relatedCapitalsForSpecialty, relatedArticlesForSpecialty, toolsForSpecialty } from "@/lib/seo/internal-links";
@@ -162,7 +163,19 @@ export default async function CitySpecialtyPage({
       a: `Boa parte dos atos hoje é digital, pelo Processo Judicial Eletrônico (PJe). Audiências podem ser presenciais ou por videoconferência, conforme o caso e a Vara. O advogado orienta o que é necessário.`
     }
   ];
-  const faqs = [...(spContent?.faqs ?? []), ...genericFaqs];
+  // Perguntas do banco determinístico de cidade (variante estável por hash do
+  // slug) que NÃO se sobrepõem às genéricas desta página — reaproveita o mesmo
+  // conteúdo da página de cidade sem duplicar "quanto custa"/prazo/fórum.
+  const cityBankFaqs = cityFaqByKeys(
+    {
+      cityName: city.name,
+      uf: st.uf,
+      citySlug: city.slug,
+      variantSeed: `${city.slug}/${sp.slug}`
+    },
+    ["propria-cidade", "registro-oab"]
+  );
+  const faqs = [...(spContent?.faqs ?? []), ...genericFaqs, ...cityBankFaqs];
 
   const jump = [
     { href: "#advogados", label: `Ver advogados (${lawyers.length})`, primary: true },

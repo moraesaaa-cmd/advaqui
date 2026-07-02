@@ -101,6 +101,15 @@ export type LawyerRow = {
 
   profile_score?: number | null;
   profile_suggestions?: string[] | null;
+
+  // ----- Moderação de cadastros (migration 0016) ---------------------------
+  // Opcionais (`?:`) porque podem não existir no banco se a migration ainda
+  // não foi aplicada. O cron tolera a ausência (log + segue).
+
+  /** Resultado da moderação automática do cadastro: 'ok' | 'suspect' | null (não moderado). */
+  moderation_status?: "ok" | "suspect" | null;
+  /** Motivo curto quando suspect (uso interno/admin — nunca exibido publicamente). */
+  moderation_note?: string | null;
 };
 
 export type MessageSource = "contact_form" | "support" | "admin_to_user";

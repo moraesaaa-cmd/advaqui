@@ -1052,6 +1052,14 @@ export default function AdminPage() {
                   >
                     {STATUS_BADGE[u.plan_status].label}
                   </span>
+                  {u.moderation_status === "suspect" && (
+                    <span
+                      title={u.moderation_note || "Cadastro com sinais suspeitos"}
+                      className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-red-50 text-red-600 border border-red-200 flex-shrink-0 cursor-help"
+                    >
+                      Suspeito
+                    </span>
+                  )}
                   <div className="flex flex-wrap items-center gap-1.5 flex-shrink-0">
                     <a
                       href={`/advogado/${u.slug}`}

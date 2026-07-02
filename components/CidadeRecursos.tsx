@@ -9,6 +9,7 @@ import {
   ShieldCheck
 } from "lucide-react";
 import { JsonLd } from "@/components/JsonLd";
+import { cityFaq } from "@/lib/data/faq-cidades";
 
 /**
  * CidadeRecursos — bloco ADITIVO na página de cidade (/advogados/[uf]/[cidade]).
@@ -83,19 +84,15 @@ export function CidadeRecursos({
     }
   ];
 
+  // FAQ = 1 pergunta local fixa + banco determinístico por cidade
+  // (lib/data/faq-cidades.ts, variante estável por hash do slug) + 2 perguntas
+  // locais fixas. O JSON-LD FAQPage abaixo é gerado DESTE MESMO array.
   const faq: Array<{ q: string; a: string }> = [
     {
       q: `Como encontrar um advogado em ${local}?`,
       a: `No AdvAqui você escolhe a área de atuação (trabalhista, família, criminal, previdenciário e outras) na lista desta página e vê os perfis disponíveis em ${cityName}. Cada perfil traz o número da OAB, as áreas de atuação e o contato direto — sem intermediação e sem comissão. Se ainda não houver profissional cadastrado em ${cityName}, é possível ver advogados de cidades próximas que atendem a região.`
     },
-    {
-      q: `Quanto custa um advogado em ${cityName}?`,
-      a: `O valor depende da área e da complexidade do caso. Muitos advogados cobram por hora, por ato ou um percentual do resultado (honorários de êxito). Consulte as faixas de referência na página "Quanto custa" do AdvAqui e use as calculadoras gratuitas (rescisão, FGTS, pensão) para estimar valores antes de contratar.`
-    },
-    {
-      q: `Como verificar se o advogado em ${cityName} tem OAB ativa?`,
-      a: `Confirme a inscrição na Consulta Pública da Ordem dos Advogados do Brasil, em cna.oab.org.br, pelo nome ou número da OAB. No AdvAqui, o número da OAB aparece em cada perfil para facilitar essa conferência. Inscrição ativa e regular é o requisito básico para um advogado atuar.`
-    },
+    ...cityFaq({ cityName, uf, citySlug }),
     {
       q: `Preciso ir ao fórum de ${cityName} para resolver meu problema?`,
       a: `Nem sempre. Muitas situações se resolvem antes da Justiça — por acordo, no Procon, em cartório ou pelo Juizado Especial. Quando o caso vai a juízo, ele costuma tramitar na comarca de ${cityName}${region ? ` (${region})` : ""}. Veja a página do fórum e da comarca para endereços e varas, e os guias por área para entender o caminho.`
@@ -176,17 +173,19 @@ export function CidadeRecursos({
         </p>
       </div>
 
-      <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: faq.map((item) => ({
-            "@type": "Question",
-            name: item.q,
-            acceptedAnswer: { "@type": "Answer", text: item.a }
-          }))
-        }}
-      />
+      {faq.length > 0 && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faq.map((item) => ({
+              "@type": "Question",
+              name: item.q,
+              acceptedAnswer: { "@type": "Answer", text: item.a }
+            }))
+          }}
+        />
+      )}
     </section>
   );
 }
