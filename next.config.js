@@ -48,7 +48,12 @@ const nextConfig = {
       // /p/[slug] legado -> /advogado/[slug] (URL canonica do perfil desde Maio/2026).
       // 301 declarativo no nivel de roteamento (mais confiavel que o permanentRedirect
       // no componente, que estava devolvendo 200 com canonical pra home). Preserva ranking.
-      { source: "/p/:slug", destination: "/advogado/:slug", permanent: true }
+      { source: "/p/:slug", destination: "/advogado/:slug", permanent: true },
+      // Pedido do dono (Jul/2026): a pagina institucional /para-advogados foi
+      // absorvida pela /planos (menu "Para advogados" agora aponta pra /planos).
+      // 301 exato: NAO afeta a familia programatica /para-advogados/{uf}/{cidade},
+      // que continua indexavel.
+      { source: "/para-advogados", destination: "/planos", permanent: true }
     ];
   }
 };

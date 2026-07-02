@@ -37,7 +37,7 @@ export function RecrutaAdvogadoCTA() {
               <ArrowRight className="w-4 h-4" aria-hidden />
             </Link>
             <Link
-              href="/para-advogados"
+              href="/planos"
               className="btn-ghost text-white border border-white/25 hover:bg-white/10 inline-flex items-center gap-2"
             >
               Saiba mais

@@ -352,7 +352,7 @@ export default async function BlogHubPage() {
             </p>
           </div>
           <div>
-            <Link href="/para-advogados" className="inline-flex w-full justify-center btn-accent text-base">
+            <Link href="/planos" className="inline-flex w-full justify-center btn-accent text-base">
               Quero aparecer no AdvAqui
             </Link>
           </div>

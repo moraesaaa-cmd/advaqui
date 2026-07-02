@@ -44,8 +44,7 @@ const GROUPS: Array<{ label: string; items: Array<{ href: string; label: string;
 ];
 
 const TRAILING: Array<{ href: string; label: string }> = [
-  { href: "/para-advogados", label: "Para advogados" },
-  { href: "/planos", label: "Planos" }
+  { href: "/planos", label: "Para advogados" }
 ];
 
 type SessionState =

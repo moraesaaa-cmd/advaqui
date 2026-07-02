@@ -37,8 +37,7 @@ const COLUMNS: Array<{ title: string; links: Array<{ href: string; label: string
   {
     title: "AdvAqui",
     links: [
-      { href: "/planos", label: "Planos" },
-      { href: "/para-advogados", label: "Para advogados" },
+      { href: "/planos", label: "Para advogados" },
       { href: "/criar-perfil", label: "Montar meu perfil" },
       { href: "/cadastro", label: "Cadastrar advogado" },
       { href: "/blog", label: "Blog" },
