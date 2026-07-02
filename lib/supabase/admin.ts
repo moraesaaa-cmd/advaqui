@@ -13,7 +13,7 @@ import type { Database } from "./types";
  *   const admin = createAdminClient();
  *   const { data: lawyers } = await admin.from("lawyers").select("*");
  */
-export function createAdminClient() {
+export function createAdminClient(options: { noStore?: boolean } = {}) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const secret = process.env.SUPABASE_SECRET_KEY;
   if (!url || !secret) {
@@ -25,6 +25,19 @@ export function createAdminClient() {
     auth: {
       autoRefreshToken: false,
       persistSession: false
-    }
+    },
+    // noStore: bypassa o Data Cache do Next (fetch patchado cacheia GETs do
+    // PostgREST quando a URL se repete entre requests). Obrigatório em rotas
+    // de cron/admin que releem dados que elas mesmas acabaram de gravar —
+    // sem isso o SELECT volta congelado num snapshot antigo enquanto o
+    // UPDATE (PATCH, nunca cacheado) segue funcionando.
+    ...(options.noStore
+      ? {
+          global: {
+            fetch: (input: RequestInfo | URL, init?: RequestInit) =>
+              fetch(input, { ...init, cache: "no-store" })
+          }
+        }
+      : {})
   });
 }

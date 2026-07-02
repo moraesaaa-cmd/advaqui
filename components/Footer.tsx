@@ -45,6 +45,7 @@ const COLUMNS: Array<{ title: string; links: Array<{ href: string; label: string
       { href: "/marketing-juridico", label: "Marketing jurídico" },
       { href: "/selo", label: "Selo AdvAqui" },
       { href: "/sobre", label: "Sobre" },
+      { href: "/como-verificamos", label: "Como verificamos os cadastros" },
       { href: "/faq", label: "FAQ" },
       { href: "/contato", label: "Contato" }
     ]

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { SITE } from "@/lib/config";
 
@@ -30,6 +31,50 @@ export default function SobrePage() {
         <p>
           Acreditamos que a advocacia brasileira merece uma vitrine profissional, limpa e funcional,
           sem complexidade desnecessária.
+        </p>
+
+        <h2 className="font-display text-2xl font-semibold text-brand-ink pt-4">
+          Como conferimos quem entra no diretório
+        </h2>
+        <p>
+          Todo perfil publicado informa o número de inscrição na OAB, que fica visível para
+          qualquer visitante conferir no cadastro oficial da Ordem. Explicamos o passo a passo
+          dessa conferência — e o que o selo &quot;OAB verificada&quot; significa — na página{" "}
+          <Link
+            href="/como-verificamos"
+            className="text-brand-primary underline underline-offset-2 hover:text-brand-deep"
+          >
+            Como verificamos os cadastros
+          </Link>
+          .
+        </p>
+
+        <h2 className="font-display text-2xl font-semibold text-brand-ink pt-4">
+          Quem responde pelo site
+        </h2>
+        <p>
+          O {SITE.name} é mantido pela equipe {SITE.name}, responsável pela operação do site, pela
+          conferência dos cadastros e pelo atendimento aos visitantes e advogados.
+          {/* TODO: quando houver CNPJ/razão social formalizada, incluir aqui:
+              "operado por [RAZÃO SOCIAL], CNPJ [XX.XXX.XXX/XXXX-XX]".
+              Não inventar — dado não consta no código/config do projeto. */}
+        </p>
+        <p>
+          Fale com a gente pela{" "}
+          <Link
+            href="/contato"
+            className="text-brand-primary underline underline-offset-2 hover:text-brand-deep"
+          >
+            página de contato
+          </Link>{" "}
+          ou pelo e-mail{" "}
+          <a
+            href={`mailto:${SITE.email}`}
+            className="text-brand-primary underline underline-offset-2 hover:text-brand-deep"
+          >
+            {SITE.email}
+          </a>
+          . Respondemos dúvidas, pedidos de correção de dados e reportes sobre perfis.
         </p>
       </div>
     </div>

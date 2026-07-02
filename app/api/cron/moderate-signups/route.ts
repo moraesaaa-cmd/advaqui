@@ -130,7 +130,10 @@ export async function GET(req: NextRequest) {
   }
 
   const backfill = req.nextUrl.searchParams.get("backfill") === "1";
-  const supabase = createAdminClient();
+  // noStore: no modo backfill a URL do SELECT é idêntica entre chamadas (sem
+  // o cutoff de created_at), então o fetch patchado do Next serve o resultado
+  // do Data Cache — a rota relia sempre o mesmo lote já moderado.
+  const supabase = createAdminClient({ noStore: true });
   const cutoffIso = new Date(Date.now() - WINDOW_HOURS * 60 * 60 * 1000).toISOString();
   const baseCols =
     "id, name, email, phone, whatsapp, oab, oab_uf, city_name, uf, created_at";
