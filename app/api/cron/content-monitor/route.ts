@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
 
-  const supabase = createAdminClient();
+  const supabase = createAdminClient({ noStore: true });
 
   try {
     // ── 1. Load previous run count from agent_configs ──────────────

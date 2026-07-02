@@ -133,7 +133,7 @@ export async function GET(req: NextRequest) {
   const countParam = req.nextUrl.searchParams.get("count");
   const count = Math.min(Math.max(1, parseInt(countParam || "2", 10) || 2), 5);
 
-  const supabase = createAdminClient();
+  const supabase = createAdminClient({ noStore: true });
 
   const { data: existingFaqs } = await supabase
     .from("blog_articles")

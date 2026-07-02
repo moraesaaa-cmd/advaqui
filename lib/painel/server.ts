@@ -71,7 +71,10 @@ export async function getCurrentLawyer(): Promise<AuthResult> {
     };
   }
 
-  const admin = createAdminClient();
+  // noStore: este SELECT roda em GET route handlers do painel com URL
+  // constante por usuário — sem no-store, o Data Cache devolve o perfil
+  // congelado depois de um PUT/PATCH que o alterou.
+  const admin = createAdminClient({ noStore: true });
   const { data, error } = await admin
     .from("lawyers")
     .select("*")

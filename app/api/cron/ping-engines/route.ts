@@ -129,7 +129,7 @@ export async function GET(req: NextRequest) {
   const indexNowKey = process.env.INDEXNOW_KEY;
   if (!indexNowKey) {
     const durationMs = Date.now() - startTime;
-    const supabase = createAdminClient();
+    const supabase = createAdminClient({ noStore: true });
     await supabase.from("agent_logs").insert({
       agent_name: "ping_engines",
       action: "ping_sitemaps",
@@ -162,7 +162,7 @@ export async function GET(req: NextRequest) {
   const failed = results.filter((r) => !r.ok).length;
   const durationMs = Date.now() - startTime;
 
-  const supabase = createAdminClient();
+  const supabase = createAdminClient({ noStore: true });
   await supabase.from("agent_logs").insert({
     agent_name: "ping_engines",
     action: "indexnow_submit",

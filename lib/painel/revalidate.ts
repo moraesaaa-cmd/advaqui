@@ -132,7 +132,10 @@ export function revalidateLawyerPages(lawyer: RevalidatableLawyer): void {
  */
 export async function revalidateLawyerPagesById(lawyerId: string): Promise<void> {
   try {
-    const supabase = createAdminClient();
+    // noStore: read-after-write — o caller acabou de ALTERAR esse lawyer e
+    // este SELECT precisa ver o estado novo (ex.: slug alterado) para
+    // revalidar os paths certos. URL constante por id = cacheável sem isso.
+    const supabase = createAdminClient({ noStore: true });
     const { data } = await supabase
       .from("lawyers")
       .select("slug,uf,city_slug,target_uf,target_city,extra_cities,specialties")

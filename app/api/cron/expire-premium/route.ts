@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "Não autorizado" }, { status: 401 });
   }
 
-  const supabase = createAdminClient();
+  const supabase = createAdminClient({ noStore: true });
   const nowIso = new Date().toISOString();
 
   const { data: vencidos, error: selErr } = await supabase

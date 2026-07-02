@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="96" viewBox="0 0 280 96" role="img" aria-label="Perfil verificado no AdvAqui">
+  <rect x="1.5" y="1.5" width="277" height="93" rx="12" fill="#0F1B2D" stroke="#C8A24A" stroke-width="3"/>
+  <path d="M48 18 L72 27 V47 C72 62 61 73 48 78 C35 73 24 62 24 47 V27 Z" fill="none" stroke="#C8A24A" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M38 47 L45.5 54.5 L59 39" fill="none" stroke="#C8A24A" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="86" y="45" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="700" fill="#FBF9F4">AdvAqui</text>
+  <text x="86" y="70" font-family="Arial, Helvetica, sans-serif" font-size="16" letter-spacing="0.4" fill="#C8A24A">Perfil verificado</text>
+</svg>

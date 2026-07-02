@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   }
 
   const startTime = Date.now();
-  const supabase = createAdminClient();
+  const supabase = createAdminClient({ noStore: true });
 
   const { data: leads, error: fetchError } = await supabase
     .from("leads")

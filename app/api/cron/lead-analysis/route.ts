@@ -88,7 +88,7 @@ export async function GET(req: NextRequest) {
   }
 
   const startTime = Date.now();
-  const supabase = createAdminClient();
+  const supabase = createAdminClient({ noStore: true });
 
   // Fetch unanalyzed leads
   const { data: leads, error: fetchError } = await supabase

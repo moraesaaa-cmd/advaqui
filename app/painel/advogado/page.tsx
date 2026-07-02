@@ -10,6 +10,7 @@ import {
   FileText,
   Star,
   ArrowRight,
+  BadgeCheck,
   CheckCircle2,
   XCircle,
   ExternalLink,
@@ -780,6 +781,31 @@ export default async function AdvogadoDashboardPage() {
                 </Link>
               ))}
             </div>
+          </section>
+
+          {/* SELO PARA O SITE */}
+          <section className="rounded-2xl border border-brand-line bg-white p-6">
+            <div className="flex items-center gap-2 mb-2">
+              <BadgeCheck
+                className="w-5 h-5"
+                style={{ color: "#C8A24A" }}
+                aria-hidden
+              />
+              <h2 className="font-display text-base font-bold text-brand-ink">
+                Selo para seu site
+              </h2>
+            </div>
+            <p className="text-xs text-brand-ink/70 leading-relaxed">
+              Mostre no seu site que seu perfil foi verificado no AdvAqui. O
+              código HTML já vem pronto, com link para o seu perfil.
+            </p>
+            <Link
+              href="/selo"
+              className="inline-flex items-center gap-1.5 mt-3 text-sm font-semibold text-brand-deep hover:opacity-80 transition"
+            >
+              Pegar meu selo
+              <ArrowRight className="w-3.5 h-3.5" aria-hidden />
+            </Link>
           </section>
 
           {/* VISIBILITY TIP */}

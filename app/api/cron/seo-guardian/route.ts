@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const supabase = createAdminClient();
+  const supabase = createAdminClient({ noStore: true });
   const startTime = Date.now();
   const results: CheckResult[] = [];
   let interventions = 0;

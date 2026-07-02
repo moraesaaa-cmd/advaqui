@@ -107,7 +107,7 @@ export async function GET(req: NextRequest) {
   );
 
   const durationMs = Date.now() - startTime;
-  const supabase = createAdminClient();
+  const supabase = createAdminClient({ noStore: true });
 
   await supabase.from("agent_logs").insert({
     agent_name: "site_health",

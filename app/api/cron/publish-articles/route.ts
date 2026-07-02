@@ -24,7 +24,7 @@ function estimateReadingMinutes(html: string): number {
 }
 
 async function getUsedTopicIndices(): Promise<Set<number>> {
-  const supabase = createAdminClient();
+  const supabase = createAdminClient({ noStore: true });
   const { data } = await supabase
     .from("blog_articles")
     .select("topic_index")
@@ -157,7 +157,7 @@ export async function GET(req: NextRequest) {
   const countParam = req.nextUrl.searchParams.get("count");
   const count = Math.min(Math.max(1, parseInt(countParam || "1", 10) || 1), 5);
 
-  const supabase = createAdminClient();
+  const supabase = createAdminClient({ noStore: true });
   const used = await getUsedTopicIndices();
 
   const available = BLOG_TOPICS

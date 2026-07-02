@@ -112,7 +112,7 @@ export async function GET(req: NextRequest) {
   const limitParam = req.nextUrl.searchParams.get("limit");
   const limit = Math.min(Math.max(1, parseInt(limitParam || "3", 10) || 3), 5);
 
-  const supabase = createAdminClient();
+  const supabase = createAdminClient({ noStore: true });
 
   const { data: shortArticles } = await supabase
     .from("blog_articles")
