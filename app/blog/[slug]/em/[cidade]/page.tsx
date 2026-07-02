@@ -30,7 +30,12 @@ import { getLawyersForCity } from "@/lib/data/lawyers";
 import { LawyerCard } from "@/components/LawyerCard";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
-import { buildMetadata } from "@/lib/seo/metadata";
+import { buildMetadata, fitTitle } from "@/lib/seo/metadata";
+import {
+  BLOG_CIDADE_TEMPLATES,
+  blogCidadeFallback,
+  fitDescription
+} from "@/lib/seo/local-titles";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 
@@ -103,11 +108,21 @@ export async function generateMetadata({
       noIndex: true
     });
   }
-  const titleLocal = `${article.title} — Guia para ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
-  const descLocal = `${article.excerpt} Veja como aplicar em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}, com advogados locais.`;
+  // Fórmula de CTR: pergunta/ação + cidade no início, por tema.
+  // Mapa determinístico slug → template; fallback genérico pra slugs novos.
+  const tpl = BLOG_CIDADE_TEMPLATES[article.slug];
+  const variants = tpl
+    ? {
+        full: tpl.full(cidadeInfo.cidadeNome),
+        short: tpl.short(cidadeInfo.cidadeNome),
+        description: tpl.description(cidadeInfo.cidadeNome)
+      }
+    : blogCidadeFallback(article.title, article.excerpt, cidadeInfo.cidadeNome);
+  const fitted = fitTitle(variants.full, variants.short);
   return buildMetadata({
-    title: titleLocal,
-    description: descLocal.slice(0, 160),
+    title: fitted.title,
+    absoluteTitle: fitted.absoluteTitle,
+    description: fitDescription(variants.description),
     path: `/blog/${article.slug}/em/${params.cidade}`
   });
 }
@@ -219,7 +234,13 @@ export default async function ArticleCidadePage({
     6
   );
 
-  const titleLocal = `${article.title} — Guia para ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
+  // H1 na forma de pergunta/ação do template do tema (mantém a cidade);
+  // fallback: título original do artigo. Corpo do artigo NÃO muda.
+  const tplPage = BLOG_CIDADE_TEMPLATES[article.slug];
+  const h1Local = tplPage ? tplPage.h1(cidadeInfo.cidadeNome) : article.title;
+  const titleLocal = tplPage
+    ? tplPage.full(cidadeInfo.cidadeNome)
+    : `${article.title} — Guia para ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
 
   return (
     <div className="container-tight py-10">
@@ -237,7 +258,7 @@ export default async function ArticleCidadePage({
             {article.category}
           </span>
           <h1 className="font-display text-3xl md:text-5xl font-bold text-brand-ink mt-4 leading-tight">
-            {article.title}
+            {h1Local}
           </h1>
           <p className="text-sm text-brand-ink/55 mt-2 inline-flex items-center gap-1">
             <MapPin className="w-4 h-4" aria-hidden />

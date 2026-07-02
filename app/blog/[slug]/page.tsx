@@ -16,7 +16,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 import {
-  capitalsForArticle,
+  specialtiesForArticle,
   relatedTemplatesForArticle,
   toolsForArticle,
   cidadesPrioritariasForContent,
@@ -424,11 +424,16 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           </section>
         )}
 
-        {/* Interlinking SEO — capitais com a especialidade do artigo */}
+        {/* Interlinking SEO — capitais com a especialidade do artigo.
+            Conjunto rotacionado por hash(slug do artigo) via
+            cidadesPrioritariasForContent — cada artigo linka capitais
+            diferentes, determinístico entre builds. */}
         {(() => {
-          const caps = capitalsForArticle(article, 6);
+          const specs = specialtiesForArticle(article);
+          if (specs.length === 0) return null;
+          const spec = specs[0];
+          const caps = cidadesPrioritariasForContent(article.slug, 6, 6);
           if (caps.length === 0) return null;
-          const spec = caps[0].specialty;
           return (
             <section className="mt-12">
               <h2 className="font-display text-2xl font-bold text-brand-ink mb-4">
@@ -437,11 +442,11 @@ export default async function ArticlePage({ params }: { params: { slug: string }
               <div className="flex flex-wrap gap-2">
                 {caps.map((c) => (
                   <Link
-                    key={`${c.state.uf}-${c.city.slug}`}
-                    href={`/advogados/${c.state.uf.toLowerCase()}/${c.city.slug}/${c.specialty.slug}`}
+                    key={`${c.uf}-${c.slug}`}
+                    href={`/advogados/${c.uf.toLowerCase()}/${c.slug}/${spec.slug}`}
                     className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
                   >
-                    {c.city.name}/{c.state.uf}
+                    {c.nome_completo}
                   </Link>
                 ))}
               </div>
@@ -454,7 +459,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             Conjunto de capitais + cidades prioritárias rotacionado por
             hash(slug do artigo) — varia entre artigos, estável entre builds. */}
         {(() => {
-          if (capitalsForArticle(article, 6).length > 0) return null;
+          if (specialtiesForArticle(article).length > 0) return null;
           const cidades = cidadesPrioritariasForContent(article.slug, 8);
           if (cidades.length === 0) return null;
           return (

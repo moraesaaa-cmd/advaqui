@@ -439,7 +439,7 @@ export default function GuiaPage({ params }: { params: { slug: string } }) {
         </p>
         {especialidade && (
           <Link
-            href={`/advogados/${especialidade.slug}`}
+            href={`/advogados-de/${especialidade.slug}`}
             className="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-brand-deep text-white hover:bg-brand-deep/90 transition"
           >
             Ver advogados de {especialidade.name}

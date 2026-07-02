@@ -25,7 +25,12 @@ import { getLawyersForCity } from "@/lib/data/lawyers";
 import { LawyerCard } from "@/components/LawyerCard";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
-import { buildMetadata } from "@/lib/seo/metadata";
+import { buildMetadata, fitTitle } from "@/lib/seo/metadata";
+import {
+  GUIA_CIDADE_TEMPLATES,
+  guiaCidadeFallback,
+  fitDescription
+} from "@/lib/seo/local-titles";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 
@@ -94,11 +99,26 @@ export async function generateMetadata({
       noIndex: true
     });
   }
-  const tituloLocal = `${guia.titulo} em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
-  const descricaoLocal = `${guia.tagline} Veja como funciona em ${cidadeInfo.cidadeNome}/${cidadeInfo.uf}, com advogados que atuam na área e na cidade.`;
+  // Fórmula de CTR: tema + cidade + ação, por guia (mapa determinístico);
+  // fallback genérico pra guias novos sem template.
+  const tpl = GUIA_CIDADE_TEMPLATES[guia.slug];
+  const variants = tpl
+    ? {
+        full: tpl.full(cidadeInfo.cidadeNome),
+        short: tpl.short(cidadeInfo.cidadeNome),
+        description: tpl.description(cidadeInfo.cidadeNome)
+      }
+    : guiaCidadeFallback(
+        guia.titulo,
+        guia.tagline,
+        cidadeInfo.cidadeNome,
+        cidadeInfo.uf
+      );
+  const fitted = fitTitle(variants.full, variants.short);
   return buildMetadata({
-    title: tituloLocal,
-    description: descricaoLocal.slice(0, 160),
+    title: fitted.title,
+    absoluteTitle: fitted.absoluteTitle,
+    description: fitDescription(variants.description),
     path: `/guias/${guia.slug}/em/${params.cidade}`
   });
 }
@@ -152,7 +172,12 @@ export default async function GuiaPorCidadePage({
     .filter(Boolean)
     .slice(0, 5);
 
-  const tituloLocal = `${guia.titulo} em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
+  // H1 na mesma forma do title otimizado (template do tema, com cidade);
+  // fallback: forma antiga "{Guia} em {Cidade}, {UF}".
+  const tplPage = GUIA_CIDADE_TEMPLATES[guia.slug];
+  const tituloLocal = tplPage
+    ? tplPage.h1(cidadeInfo.cidadeNome)
+    : `${guia.titulo} em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
   const ufLower = cidadeInfo.uf.toLowerCase();
 
   return (
