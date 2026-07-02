@@ -13,10 +13,10 @@ import { citySpecialtyIntro } from "@/lib/data/templates";
 import { cityFaqByKeys } from "@/lib/data/faq-cidades";
 import { getUsefulDocsForSpecialties } from "@/lib/data/specialty-descriptions";
 import { getProblemaIndex } from "@/lib/data/problema-index";
-import { relatedCapitalsForSpecialty, relatedArticlesForSpecialty, toolsForSpecialty } from "@/lib/seo/internal-links";
+import { relatedCapitalsForSpecialty, relatedArticlesForSpecialty, toolsForSpecialty, neighborAnchor } from "@/lib/seo/internal-links";
 import { getSpecialtyContent } from "@/lib/data/specialty-content";
 import type { SpecialtyUrgency } from "@/lib/data/specialty-content";
-import { nearbyCities } from "@/lib/data/cities";
+import { neighborCities } from "@/lib/data/cities";
 import { getStateResources } from "@/lib/data/local-resources";
 import { AlertTriangle, Clock, Info, ExternalLink } from "lucide-react";
 
@@ -147,7 +147,9 @@ export default async function CitySpecialtyPage({
   const docs = getUsefulDocsForSpecialties([sp.slug], 5);
 
   const spContent = getSpecialtyContent(sp.slug);
-  const nearby = nearbyCities(city, 6);
+  // Vizinhas REAIS — mesma microrregião do IBGE; bloco curto (5 links)
+  // apontando para a MESMA especialidade nas cidades vizinhas.
+  const nearby = neighborCities(st.uf, city.slug, 5);
 
   const genericFaqs = [
     {
@@ -584,24 +586,24 @@ export default async function CitySpecialtyPage({
         );
       })()}
 
-      {/* ADVOGADOS EM CIDADES PRÓXIMAS */}
+      {/* CIDADES VIZINHAS — mesma microrregião IBGE, mesma especialidade */}
       {nearby.length > 0 && (
         <section className="pt-[42px] pb-2">
-          <h2 className="font-display font-semibold text-[23px] tracking-tight mb-4">
-            Advogado {areaLow} em cidades próximas a {city.name}
+          <h2 className="font-display font-semibold text-[23px] tracking-tight mb-2">
+            Advogado {areaLow} em cidades vizinhas atendidas
           </h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+          <p className="text-[15px] mb-4" style={{ color: "#5A6678" }}>
+            Profissionais da região de {city.name} costumam atender também nas cidades ao redor.
+          </p>
+          <div className="flex flex-wrap gap-2">
             {nearby.map((nc) => (
               <Link
                 key={nc.slug}
                 href={`/advogados/${nc.uf.toLowerCase()}/${nc.slug}/${sp.slug}`}
-                className="bg-white rounded-[11px] px-[17px] py-[15px] flex items-center gap-3 hover:border-brand-accent transition"
-                style={{ border: "1px solid #E4E2DA" }}
+                className="text-[13.5px] px-[13px] py-2 rounded-lg font-medium text-brand-ink/80 hover:text-brand-deep transition"
+                style={{ background: "#F1F0EA" }}
               >
-                <span className="font-bold text-[15px]" style={{ color: "#274472" }}>→</span>
-                <span className="text-[14.5px] font-medium" style={{ color: "#1A2433" }}>
-                  {nc.name}/{nc.uf}
-                </span>
+                {neighborAnchor(`${city.slug}/${sp.slug}`, nc)}
               </Link>
             ))}
           </div>

@@ -26,6 +26,10 @@ export type City = {
   state: string;
   region: string;
   isCapital: boolean;
+  /** id da microrregião IBGE (scripts/enrich-microrregiao.mjs) */
+  microId?: number;
+  /** id da mesorregião IBGE (scripts/enrich-microrregiao.mjs) */
+  mesoId?: number;
 };
 
 const STATE_NAMES: Record<string, string> = {
@@ -97,7 +101,7 @@ const CAPITAL_SLUGS: Record<string, string> = {
   TO: "palmas"
 };
 
-type RawCity = { i: number; n: string; s: string; u: string };
+type RawCity = { i: number; n: string; s: string; u: string; mi?: number; me?: number };
 const RAW = raw as ReadonlyArray<RawCity>;
 
 const toCity = (r: RawCity): City => ({
@@ -107,7 +111,9 @@ const toCity = (r: RawCity): City => ({
   uf: r.u,
   state: STATE_NAMES[r.u] || r.u,
   region: STATE_REGIONS[r.u] || "",
-  isCapital: CAPITAL_SLUGS[r.u] === r.s
+  isCapital: CAPITAL_SLUGS[r.u] === r.s,
+  microId: r.mi,
+  mesoId: r.me
 });
 
 let _all: City[] | null = null;
@@ -198,6 +204,62 @@ export const CITIES: ReadonlyArray<City> = all();
  * Não é proximidade geográfica real — é fallback rápido para linkagem interna
  * em páginas de cidade sem advogado. Uma versão futura pode usar lat/long.
  */
+/**
+ * Hash determinístico de string (djb2, sempre positivo).
+ * Usado para variar ordem e anchors de linkagem interna entre cidades
+ * sem sortear nada em runtime — mesmo input, mesmo output, sempre.
+ */
+export const cityHash = (s: string): number => {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) {
+    h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+  }
+  return Math.abs(h);
+};
+
+/**
+ * Cidades vizinhas REAIS — mesma microrregião do IBGE (exclui a própria).
+ * Se a microrregião tiver menos de 3 vizinhas, completa com a mesorregião;
+ * em último caso, completa com cidades da mesma UF (ordem alfabética ao
+ * redor, como nearbyCities). Ordem determinística por hash(origem:destino)
+ * para o bloco variar entre cidades sem parecer aleatório entre builds.
+ */
+export const neighborCities = (uf: string, slug: string, n = 6): City[] => {
+  const city = findCity(uf, slug);
+  if (!city) return [];
+  const sameUf = citiesByUf(city.uf);
+
+  const picked: City[] = [];
+  const seen = new Set<string>([city.slug]);
+  const add = (list: City[]) => {
+    for (const c of list) {
+      if (!seen.has(c.slug)) {
+        seen.add(c.slug);
+        picked.push(c);
+      }
+    }
+  };
+
+  if (city.microId != null) {
+    add(sameUf.filter((c) => c.microId === city.microId));
+  }
+  if (picked.length < 3 && city.mesoId != null) {
+    add(sameUf.filter((c) => c.mesoId === city.mesoId));
+  }
+  if (picked.length < 3) {
+    add(nearbyCities(city, n));
+  }
+
+  return picked
+    .slice()
+    .sort((a, b) => {
+      const ha = cityHash(`${city.slug}:${a.slug}`);
+      const hb = cityHash(`${city.slug}:${b.slug}`);
+      return ha === hb ? a.slug.localeCompare(b.slug) : ha - hb;
+    })
+    .slice(0, n);
+};
+
 export const nearbyCities = (city: City, limit = 8): City[] => {
   const list = citiesByUf(city.uf);
   const idx = list.findIndex((c) => c.slug === city.slug);

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { findState } from "@/lib/data/states";
-import { findCity, nearbyCities, findCapital } from "@/lib/data/cities";
+import { findCity, neighborCities, findCapital } from "@/lib/data/cities";
 import {
   getLawyersForCity,
   sortLawyers,
@@ -15,7 +15,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata, fitTitle } from "@/lib/seo/metadata";
 import { breadcrumbSchema, cityServiceSchema } from "@/lib/seo/schema";
 import { cityIntro } from "@/lib/data/templates";
-import { topCitiesForState } from "@/lib/seo/internal-links";
+import { topCitiesForState, neighborAnchor } from "@/lib/seo/internal-links";
 import { CidadeRecursos } from "@/components/CidadeRecursos";
 import { CadastroCTA } from "@/components/PlanosCTAs";
 
@@ -85,7 +85,8 @@ export default async function CityPage({
   const isEmpty = allLawyers.length === 0;
   const onlineCount = sorted.filter((l) => l.serviceModalities?.includes("online")).length;
 
-  const neighbors = nearbyCities(city, 6);
+  // Vizinhas REAIS — mesma microrregião do IBGE (T9/T10 do playbook SEO).
+  const neighbors = neighborCities(st.uf, city.slug, 8);
   const capital = findCapital(st.uf);
 
   // Quando a cidade está vazia, sugerimos cidades vizinhas MAIORES (top cities
@@ -101,7 +102,7 @@ export default async function CityPage({
   const jump = [
     { href: "#advogados", label: `Ver advogados (${allLawyers.length})`, primary: true },
     { href: "#areas", label: "Áreas de atuação" },
-    ...(neighbors.length > 0 ? [{ href: "#proximas", label: "Cidades próximas" }] : [])
+    ...(neighbors.length > 0 ? [{ href: "#proximas", label: "Cidades vizinhas" }] : [])
   ];
 
   return (
@@ -351,12 +352,15 @@ export default async function CityPage({
         </div>
       </section>
 
-      {/* CIDADES PRÓXIMAS */}
+      {/* CIDADES VIZINHAS — mesma microrregião IBGE, anchors rotacionados */}
       {neighbors.length > 0 && (
         <section id="proximas" className="pt-[42px] scroll-mt-20">
-          <h2 className="font-display font-semibold text-[23px] tracking-tight mb-4">
-            Cidades próximas em {st.name}
+          <h2 className="font-display font-semibold text-[23px] tracking-tight mb-2">
+            Cidades vizinhas atendidas
           </h2>
+          <p className="text-[15px] mb-4" style={{ color: "#5A6678" }}>
+            Muitos advogados da região de {city.name} atendem clientes das cidades ao redor.
+          </p>
           <div className="flex flex-wrap gap-2">
             {neighbors.map((c) => (
               <Link
@@ -365,7 +369,7 @@ export default async function CityPage({
                 className="text-[13.5px] px-[13px] py-2 rounded-lg font-medium text-brand-ink/80 hover:text-brand-deep transition"
                 style={{ background: "#F1F0EA" }}
               >
-                {c.name}
+                {neighborAnchor(city.slug, c)}
               </Link>
             ))}
           </div>

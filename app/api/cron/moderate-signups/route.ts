@@ -107,6 +107,12 @@ const COLUMN_MISSING_RE = /column .* does not exist|could not find .* column/i;
  * resultado em moderation_status/moderation_note. Se a migration 0016 ainda
  * não foi aplicada (colunas ausentes), loga e segue sem falhar — mesmo
  * padrão de tolerância do painel de perfil.
+ *
+ * Modo backfill: com ?backfill=1, ignora a janela de 26h e busca TODOS os
+ * lawyers com moderation_status IS NULL (histórico ainda não moderado),
+ * mantendo o limite de 40 por execução. Rode repetidamente até `checked: 0`.
+ * Se a migration 0016 estiver pendente, o backfill não se aplica (não há
+ * coluna para filtrar) e o retry usa a janela de 26h normal.
  */
 export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get("token") || "";
@@ -123,6 +129,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  const backfill = req.nextUrl.searchParams.get("backfill") === "1";
   const supabase = createAdminClient();
   const cutoffIso = new Date(Date.now() - WINDOW_HOURS * 60 * 60 * 1000).toISOString();
   const baseCols =
@@ -130,13 +137,13 @@ export async function GET(req: NextRequest) {
 
   // Tenta filtrar por moderation_status IS NULL (só não-moderados). Se a
   // coluna não existe (migration 0016 pendente), refaz só pela janela de 26h.
+  // No modo backfill, ignora a janela e pega qualquer não-moderado.
   let moderationColsAvailable = true;
   let candidates: Candidate[] = [];
 
-  const first = await supabase
-    .from("lawyers")
-    .select(baseCols)
-    .gte("created_at", cutoffIso)
+  let firstQuery = supabase.from("lawyers").select(baseCols);
+  if (!backfill) firstQuery = firstQuery.gte("created_at", cutoffIso);
+  const first = await firstQuery
     .is("moderation_status", null)
     .order("created_at", { ascending: true })
     .limit(MAX_BATCH);

@@ -21,7 +21,7 @@
 
 import { SPECIALTIES, type Specialty } from "@/lib/data/specialties";
 import { STATES, type State } from "@/lib/data/states";
-import { citiesByUf, type City } from "@/lib/data/cities";
+import { citiesByUf, cityHash, type City } from "@/lib/data/cities";
 import { ARTICLES, type Article } from "@/lib/data/articles";
 import { TEMPLATES, type Template } from "@/lib/data/templates-docs";
 
@@ -84,6 +84,23 @@ export function topCitiesForState(state: State, limit = 9): City[] {
   const capital = all.find((c) => c.isCapital);
   const rest = all.filter((c) => !c.isCapital);
   return [...(capital ? [capital] : []), ...rest].slice(0, limit);
+}
+
+/**
+ * Anchor text rotacionado para links de cidades vizinhas.
+ *
+ * 4 padrões, escolhidos por hash(slugOrigem + slugDestino) % 4 — o anchor
+ * de um mesmo par origem→destino nunca muda entre builds (determinístico),
+ * mas varia entre pares, evitando um site inteiro com anchors idênticos.
+ */
+export function neighborAnchor(originSlug: string, target: City): string {
+  const patterns = [
+    `Advogados em ${target.name}`,
+    `${target.name} — ${target.uf}`,
+    `veja profissionais em ${target.name}`,
+    `atendimento em ${target.name}`
+  ];
+  return patterns[cityHash(originSlug + target.slug) % 4];
 }
 
 /**
