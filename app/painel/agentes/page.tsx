@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { ADMIN_CREDENTIALS } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Agentes — Painel AdvAqui"
@@ -97,6 +100,13 @@ function timeAgo(iso: string | null): string {
 /* ------------------------------------------------------------------ */
 
 export default async function AgentesPage() {
+  /* --- Auth guard (admin only) -------------------------------------- */
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user?.email || user.email.toLowerCase() !== ADMIN_CREDENTIALS.email.toLowerCase()) {
+    redirect("/painel/advogado");
+  }
+
   const admin = createAdminClient();
 
   /* --- Fetch agents ------------------------------------------------ */

@@ -2,6 +2,7 @@ import { cache } from "react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { LawyerRow, PublicLawyer } from "@/lib/supabase/types";
 import { type Lawyer, mapLawyerRow } from "@/lib/data/lawyer-mapper";
+import { logAdminAction } from "@/lib/data/audit";
 import { PIX } from "@/lib/config";
 
 /**
@@ -598,9 +599,44 @@ export async function adminDeleteLawyer(
   lawyerId: string
 ): Promise<{ ok: boolean; error?: string }> {
   const admin = createAdminClient();
+
+  // Captura os dados do alvo ANTES do delete — depois a linha não existe
+  // mais e o log de auditoria ficaria sem nome/email/OAB.
+  const { data: target } = await admin
+    .from("lawyers")
+    .select("name,email,oab")
+    .eq("id", lawyerId)
+    .maybeSingle();
+
+  // Remove avatares órfãos do Storage — mesma lista de caminhos usada na
+  // action "remove-photo" em app/api/admin/route.ts (jpg/png/webp por id).
+  // Falha aqui NÃO aborta a exclusão: o cadastro sai do ar de qualquer jeito.
+  try {
+    const possible = [`${lawyerId}.jpg`, `${lawyerId}.png`, `${lawyerId}.webp`];
+    const { error: storageError } = await admin.storage
+      .from("avatars")
+      .remove(possible);
+    if (storageError) {
+      console.warn(
+        "adminDeleteLawyer: avatares não removidos do Storage:",
+        storageError.message
+      );
+    }
+  } catch (err) {
+    console.warn("adminDeleteLawyer: falha ao remover avatares do Storage", err);
+  }
+
   // Apaga em auth.users (cascade apaga lawyers via FK)
   const { error } = await admin.auth.admin.deleteUser(lawyerId);
   if (error) return { ok: false, error: error.message };
+
+  // Auditoria — nunca lança (tratada dentro de logAdminAction).
+  await logAdminAction("delete-lawyer", lawyerId, {
+    name: target?.name ?? null,
+    email: target?.email ?? null,
+    oab: target?.oab ?? null
+  });
+
   return { ok: true };
 }
 

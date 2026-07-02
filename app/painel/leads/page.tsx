@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { ADMIN_CREDENTIALS } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Leads — Painel AdvAqui"
@@ -40,6 +43,7 @@ type Lead = {
 
 const STATUS_LABELS: Record<string, string> = {
   novo: "Novo",
+  qualificado: "Qualificado",
   em_analise: "Em analise",
   contato_realizado: "Contato realizado",
   aguardando_docs: "Aguardando docs",
@@ -51,6 +55,7 @@ const STATUS_LABELS: Record<string, string> = {
 
 const STATUS_COLORS: Record<string, string> = {
   novo: "bg-blue-100 text-blue-800",
+  qualificado: "bg-teal-100 text-teal-800",
   em_analise: "bg-amber-100 text-amber-800",
   contato_realizado: "bg-purple-100 text-purple-800",
   aguardando_docs: "bg-orange-100 text-orange-800",
@@ -120,6 +125,13 @@ export default async function LeadsPage({
 }: {
   searchParams: Promise<SearchParams>;
 }) {
+  /* --- Auth guard (admin only) -------------------------------------- */
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user?.email || user.email.toLowerCase() !== ADMIN_CREDENTIALS.email.toLowerCase()) {
+    redirect("/painel/advogado");
+  }
+
   const params = await searchParams;
   const admin = createAdminClient();
 

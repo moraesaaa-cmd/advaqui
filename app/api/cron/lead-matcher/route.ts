@@ -46,23 +46,34 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ ok: true, message: "Nenhum lead novo", matched: 0 });
   }
 
+  // Pool de advogados buscado uma única vez (o filtro por UF é feito em JS,
+  // com fallback target_uf → uf e target_city → city_name do cadastro —
+  // target_* só existe preenchido para premium, o que esvaziava o pool).
+  const { data: lawyers, error: lawyersError } = await supabase
+    .from("lawyers")
+    .select("id, name, slug, target_city, target_uf, city_name, uf, specialties, plan_status")
+    .eq("verified_oab", true)
+    .limit(200);
+
+  if (lawyersError) {
+    console.error("[cron:lead-matcher] fetch lawyers failed:", lawyersError.message);
+    await supabase.from("agent_logs").insert({
+      agent_name: "lead_matcher",
+      action: "fetch_lawyers",
+      status: "error",
+      details: { error: lawyersError.message },
+    });
+    return NextResponse.json({ ok: false, error: lawyersError.message }, { status: 500 });
+  }
+
   let matched = 0;
 
   for (const lead of leads) {
     const area = lead.ai_area || lead.area_juridica || "";
-    const cidade = lead.cidade || "";
-    const uf = lead.uf || "";
+    const cidade = (lead.cidade || "").trim();
+    const uf = (lead.uf || "").trim().toUpperCase();
 
     if (!area && !cidade) continue;
-
-    let query = supabase
-      .from("lawyers")
-      .select("id, name, slug, target_city, target_uf, specialties, plan_status")
-      .eq("verified_oab", true);
-
-    if (uf) query = query.eq("target_uf", uf);
-
-    const { data: lawyers } = await query.limit(50);
     if (!lawyers || lawyers.length === 0) continue;
 
     const areaLower = area.toLowerCase();
@@ -70,6 +81,10 @@ export async function GET(req: NextRequest) {
 
     const scored = lawyers
       .map((l) => {
+        // Fallback: área de atuação declarada (premium) ou cidade/UF do cadastro
+        const effectiveUf = ((l.target_uf || l.uf || "") as string).trim().toUpperCase();
+        const effectiveCity = ((l.target_city || l.city_name || "") as string).trim().toLowerCase();
+
         let score = 0;
         const specs = Array.isArray(l.specialties) ? l.specialties : [];
 
@@ -77,13 +92,13 @@ export async function GET(req: NextRequest) {
           score += 50;
         }
 
-        const lCity = (l.target_city || "").toLowerCase();
-        if (cidadeLower && lCity === cidadeLower) score += 30;
+        if (cidadeLower && effectiveCity === cidadeLower) score += 30;
 
         if (l.plan_status === "active") score += 20;
 
-        return { lawyer: l, score };
+        return { lawyer: l, score, effectiveUf };
       })
+      .filter((s) => !uf || s.effectiveUf === uf)
       .filter((s) => s.score >= 30)
       .sort((a, b) => b.score - a.score)
       .slice(0, 5);
@@ -100,7 +115,21 @@ export async function GET(req: NextRequest) {
       })
       .eq("id", lead.id);
 
-    if (!updateError) {
+    if (updateError) {
+      // Antes o erro era engolido — a CHECK de status derrubava 100% dos
+      // updates em silêncio. Agora todo updateError vira log.
+      console.error("[cron:lead-matcher] update lead failed:", lead.id, updateError.message);
+      await supabase.from("agent_logs").insert({
+        agent_name: "lead_matcher",
+        action: "match_lead",
+        status: "error",
+        details: {
+          lead_id: lead.id,
+          lawyer_id: topMatch.id,
+          error: updateError.message,
+        },
+      });
+    } else {
       matched++;
       await supabase.from("agent_logs").insert({
         agent_name: "lead_matcher",

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import type { LeadRow } from "@/lib/supabase/types";
 
 /**
  * POST /api/leads/capture
@@ -51,13 +52,15 @@ function isRateLimited(ip: string): boolean {
 }
 
 function getClientIp(req: Request): string {
+  // Atrás do nosso próprio nginx, x-real-ip é o IP do cliente; no
+  // x-forwarded-for, o PRIMEIRO IP da lista é o cliente original.
+  const realIp = (req.headers.get("x-real-ip") || "").trim();
+  if (realIp) return realIp;
   const xff = req.headers.get("x-forwarded-for") || "";
   const parts = xff.split(",").map((s) => s.trim()).filter(Boolean);
-  return (
-    req.headers.get("x-real-ip") ||
-    (parts.length ? parts[parts.length - 1] : "") ||
-    "anon"
-  );
+  if (parts.length > 0) return parts[0];
+  console.warn("[leads:capture] IP do cliente indisponível — rate limit agregado em 'anon'");
+  return "anon";
 }
 
 // ---------------------------------------------------------------------------
@@ -168,6 +171,30 @@ export async function POST(req: Request) {
     }
   }
 
+  // transcript: array de mensagens da conversa do chat (coluna JSONB da
+  // migration 0019). Valida forma, limita a 40 itens de até 1000 chars e
+  // ignora o campo inteiro se o total serializado passar de 30 KB.
+  type TranscriptItem = { role: "user" | "assistant"; content: string; ts?: number };
+  let transcript: TranscriptItem[] | null = null;
+  if (Array.isArray(body.transcript)) {
+    const items: TranscriptItem[] = [];
+    for (const entry of body.transcript as unknown[]) {
+      if (items.length >= 40) break;
+      if (!entry || typeof entry !== "object" || Array.isArray(entry)) continue;
+      const o = entry as Record<string, unknown>;
+      if ((o.role === "user" || o.role === "assistant") && typeof o.content === "string") {
+        items.push({
+          role: o.role,
+          content: o.content.slice(0, 1000),
+          ...(typeof o.ts === "number" && Number.isFinite(o.ts) ? { ts: o.ts } : {}),
+        });
+      }
+    }
+    if (items.length > 0 && JSON.stringify(items).length <= 30000) {
+      transcript = items;
+    }
+  }
+
   // Validacao: ao menos nome OU telefone
   if (!nome && !telefone) {
     return NextResponse.json(
@@ -179,20 +206,25 @@ export async function POST(req: Request) {
   // Insert
   try {
     const admin = createAdminClient();
+    // A coluna leads.transcript (JSONB) vem da migration 0019 e ainda não
+    // consta em LeadRow — o payload é tipado com a extensão até o types.ts
+    // ser regenerado.
+    const insertPayload: Partial<LeadRow> & { transcript?: TranscriptItem[] } = {
+      nome: nome || null,
+      telefone: telefone || null,
+      email: email || null,
+      cidade: cidade || null,
+      uf: uf || null,
+      area_juridica: area_juridica || null,
+      resumo: resumo || null,
+      origem: origem || null,
+      ferramenta: ferramenta || null,
+      ...(metadata ? { metadata } : {}),
+      ...(transcript ? { transcript } : {}),
+    };
     const { data: lead, error } = await admin
       .from("leads")
-      .insert({
-        nome: nome || null,
-        telefone: telefone || null,
-        email: email || null,
-        cidade: cidade || null,
-        uf: uf || null,
-        area_juridica: area_juridica || null,
-        resumo: resumo || null,
-        origem: origem || null,
-        ferramenta: ferramenta || null,
-        ...(metadata ? { metadata } : {}),
-      })
+      .insert(insertPayload)
       .select("id")
       .single();
 

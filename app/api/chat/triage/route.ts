@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { resolveCtaUrl } from "@/lib/chat/cta";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -66,6 +67,8 @@ Ao encerrar, inclua o JSON entre os marcadores (telefone = só dígitos, com DDD
 %%%TRIAGE_JSON%%%
 {"area":"area","cidade":"cidade","uf":"UF","urgencia":"...","resumo":"resumo curto do caso","nome":"nome","telefone":"DDDnumero"}
 %%%END_TRIAGE_JSON%%%
+
+REGRA DO JSON: a "uf" é OBRIGATÓRIA sempre que "cidade" estiver preenchida — deduza a UF pela cidade (ex.: Campinas → SP, Belo Horizonte → MG). Só deixe "uf" vazia se não houver cidade ou se a cidade for ambígua e a pessoa não disser o estado.
 
 Depois do JSON, diga só: "Pode deixar que já encaminhei pro advogado. 🙂"
 
@@ -197,6 +200,10 @@ export async function POST(req: NextRequest) {
       uf?: string;
       urgencia?: string;
       resumo?: string;
+      nome?: string;
+      telefone?: string;
+      ctaUrl?: string;
+      ctaLabel?: string;
     } | null = null;
 
     const jsonMatch = content.match(
@@ -204,9 +211,24 @@ export async function POST(req: NextRequest) {
     );
     if (jsonMatch?.[1]) {
       try {
-        triage = JSON.parse(jsonMatch[1].trim());
+        const parsed: unknown = JSON.parse(jsonMatch[1].trim());
+        if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+          triage = parsed as NonNullable<typeof triage>;
+          // Link final validado no SERVIDOR contra especialidades e cidades
+          // reais — o cliente usa ctaUrl/ctaLabel em vez de montar a URL.
+          const { ctaUrl, ctaLabel } = resolveCtaUrl(triage);
+          triage = { ...triage, ctaUrl, ctaLabel };
+        } else {
+          console.error(
+            `[chat:triage] TRIAGE_JSON não é objeto — conteúdo bruto: ${jsonMatch[1].trim().slice(0, 500)}`
+          );
+        }
       } catch {
-        // JSON malformado — ignora silenciosamente
+        // JSON malformado — logar o bruto para medir a taxa de perda de leads
+        // (a Marina diz "já encaminhei" mesmo quando o parse falha).
+        console.error(
+          `[chat:triage] falha ao parsear TRIAGE_JSON — conteúdo bruto: ${jsonMatch[1].trim().slice(0, 500)}`
+        );
       }
     }
 

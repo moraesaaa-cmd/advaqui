@@ -17,6 +17,7 @@ import {
   adminMarkMessageRead,
   adminReplyMessage
 } from "@/lib/data/messages";
+import { logAdminAction, listAuditLogs } from "@/lib/data/audit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -45,7 +46,30 @@ const revalidateLawyerPages = revalidateLawyerPagesById;
  *  - delete-lawyer { id }
  *  - mark-message-read { id }
  *  - reply-message { id, reply }
+ *  - delete-message { id }
+ *  - list-audit-logs (últimas 100 ações administrativas)
+ *
+ * Auditoria: os cases mutadores gravam em audit_logs via logAdminAction
+ * (lib/data/audit.ts). Falha no log nunca quebra a ação principal.
  */
+
+/**
+ * Busca nome/email do advogado alvo para enriquecer o log de auditoria.
+ * Nunca lança — em caso de erro devolve objeto vazio (o log sai só com o id).
+ */
+async function lawyerLogDetails(id: string): Promise<Record<string, unknown>> {
+  try {
+    const admin = createAdminClient();
+    const { data } = await admin
+      .from("lawyers")
+      .select("name,email")
+      .eq("id", id)
+      .maybeSingle();
+    return { name: data?.name ?? null, email: data?.email ?? null };
+  } catch {
+    return {};
+  }
+}
 
 type Payload = {
   action?: string;
@@ -92,13 +116,26 @@ export async function POST(req: Request) {
     case "activate-premium": {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
       const result = await adminActivatePremium(body.id, body.days);
-      if (result.ok) await revalidateLawyerPages(body.id);
+      if (result.ok) {
+        await revalidateLawyerPages(body.id);
+        await logAdminAction("activate-premium", body.id, {
+          ...(await lawyerLogDetails(body.id)),
+          dias: body.days ?? 30
+        });
+      }
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
     }
     case "deactivate-premium": {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
       const result = await adminDeactivatePremium(body.id);
-      if (result.ok) await revalidateLawyerPages(body.id);
+      if (result.ok) {
+        await revalidateLawyerPages(body.id);
+        await logAdminAction(
+          "deactivate-premium",
+          body.id,
+          await lawyerLogDetails(body.id)
+        );
+      }
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
     }
     case "set-plan-status": {
@@ -125,12 +162,17 @@ export async function POST(req: Request) {
         );
       }
 
+      // Contexto do alvo pra auditoria — buscado ANTES da mutação (no caso
+      // de erro, nada é logado; no sucesso, log em cada branch abaixo).
+      const planLogDetails = { ...(await lawyerLogDetails(body.id)), status };
+
       if (status === "active") {
         const result = await adminActivatePremium(body.id);
         if (!result.ok) {
           return NextResponse.json(result, { status: 500 });
         }
         await revalidateLawyerPages(body.id);
+        await logAdminAction("set-plan-status", body.id, planLogDetails);
         return NextResponse.json({ ok: true });
       }
 
@@ -156,6 +198,7 @@ export async function POST(req: Request) {
           }
         }
         await revalidateLawyerPages(body.id);
+        await logAdminAction("set-plan-status", body.id, planLogDetails);
         return NextResponse.json({ ok: true });
       }
 
@@ -172,24 +215,39 @@ export async function POST(req: Request) {
         );
       }
       await revalidateLawyerPages(body.id);
+      await logAdminAction("set-plan-status", body.id, planLogDetails);
       return NextResponse.json({ ok: true });
     }
     case "toggle-featured": {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
       const result = await adminToggleFeatured(body.id, !!body.value);
-      if (result.ok) await revalidateLawyerPages(body.id);
+      if (result.ok) {
+        await revalidateLawyerPages(body.id);
+        await logAdminAction("toggle-featured", body.id, {
+          ...(await lawyerLogDetails(body.id)),
+          destaque: !!body.value
+        });
+      }
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
     }
     case "toggle-verified-oab": {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
       const result = await adminToggleVerifiedOab(body.id, !!body.value);
-      if (result.ok) await revalidateLawyerPages(body.id);
+      if (result.ok) {
+        await revalidateLawyerPages(body.id);
+        await logAdminAction("toggle-verified-oab", body.id, {
+          ...(await lawyerLogDetails(body.id)),
+          verificada: !!body.value
+        });
+      }
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
     }
     case "delete-lawyer": {
       if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
       // Revalida ANTES do delete (depois não existe mais o lawyer para buscar slugs)
       await revalidateLawyerPages(body.id);
+      // Auditoria: gravada DENTRO de adminDeleteLawyer (lib/data/lawyers.ts),
+      // que captura nome/email/oab antes do delete. Não logar aqui de novo.
       const result = await adminDeleteLawyer(body.id);
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
     }
@@ -215,6 +273,8 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: false, error: "ID e email obrigatórios" }, { status: 400 });
       const admin = createAdminClient();
       const newEmail = body.email.trim().toLowerCase();
+      // Captura o e-mail ANTERIOR antes de sobrescrever (para o log).
+      const previous = await lawyerLogDetails(body.id);
       // Atualiza auth.users (canonical) + public.lawyers (espelho)
       const { error: authError } = await admin.auth.admin.updateUserById(body.id, {
         email: newEmail,
@@ -231,6 +291,11 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: false, error: rowError.message }, { status: 500 });
       }
       await revalidateLawyerPages(body.id);
+      await logAdminAction("set-email", body.id, {
+        name: previous.name ?? null,
+        email_anterior: previous.email ?? null,
+        email_novo: newEmail
+      });
       return NextResponse.json({ ok: true });
     }
     case "set-password": {
@@ -249,6 +314,12 @@ export async function POST(req: Request) {
       if (error) {
         return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       }
+      // Auditoria: registra QUE a senha foi trocada — nunca a senha em si.
+      await logAdminAction(
+        "set-password",
+        body.id,
+        await lawyerLogDetails(body.id)
+      );
       return NextResponse.json({ ok: true });
     }
     case "send-magic-link": {
@@ -434,6 +505,10 @@ export async function POST(req: Request) {
         }
       }
       await revalidateLawyerPages(body.id);
+      await logAdminAction("update-lawyer", body.id, {
+        ...(await lawyerLogDetails(body.id)),
+        campos: Object.keys(filtered)
+      });
       return NextResponse.json({ ok: true });
     }
     case "remove-photo": {
@@ -451,11 +526,46 @@ export async function POST(req: Request) {
         .eq("id", body.id);
       if (error && /column .+ does not exist/i.test(error.message)) {
         // Migration pendente — não há nada a fazer no banco
+        await logAdminAction(
+          "remove-photo",
+          body.id,
+          await lawyerLogDetails(body.id)
+        );
         return NextResponse.json({ ok: true });
       }
       if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       await revalidateLawyerPages(body.id);
+      await logAdminAction(
+        "remove-photo",
+        body.id,
+        await lawyerLogDetails(body.id)
+      );
       return NextResponse.json({ ok: true });
+    }
+    case "delete-message": {
+      if (!body.id) return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
+      const admin = createAdminClient();
+      // Captura o remetente ANTES do delete (para o log de auditoria).
+      const { data: msg } = await admin
+        .from("messages")
+        .select("from_name,from_email,subject")
+        .eq("id", body.id)
+        .maybeSingle();
+      const { error } = await admin.from("messages").delete().eq("id", body.id);
+      if (error) {
+        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      }
+      await logAdminAction("delete-message", body.id, {
+        remetente: msg?.from_name ?? null,
+        email: msg?.from_email ?? null,
+        assunto: msg?.subject ?? null
+      });
+      return NextResponse.json({ ok: true });
+    }
+    case "list-audit-logs": {
+      // Últimas 100 ações administrativas (exibidas na aba Resumo do /admin).
+      const logs = await listAuditLogs(100);
+      return NextResponse.json({ ok: true, logs });
     }
     case "list-articles": {
       const supabase = createAdminClient();
@@ -486,6 +596,9 @@ export async function POST(req: Request) {
         .update({ status: "rejected" })
         .eq("id", body.id);
       if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      // O artigo pode ter estado publicado — revalida a listagem do blog
+      // para ele sumir de lá imediatamente.
+      revalidatePath("/blog");
       return NextResponse.json({ ok: true, status: "rejected" });
     }
     case "toggle-article-status": {
@@ -493,13 +606,18 @@ export async function POST(req: Request) {
       const supabase = createAdminClient();
       const { data: article } = await supabase
         .from("blog_articles")
-        .select("status")
+        .select("status,published_at")
         .eq("id", body.id)
         .maybeSingle();
       if (!article) return NextResponse.json({ ok: false, error: "Artigo não encontrado" }, { status: 404 });
       const newStatus = article.status === "published" ? "draft" : "published";
       const update: { status: string; published_at?: string } = { status: newStatus };
-      if (newStatus === "published" && !article.status) update.published_at = new Date().toISOString();
+      // BUG FIX (Julho/2026): a condição antiga era `!article.status`, que
+      // nunca é true (status sempre existe) — artigos publicados via toggle
+      // ficavam sem published_at. O certo é checar published_at.
+      if (newStatus === "published" && !article.published_at) {
+        update.published_at = new Date().toISOString();
+      }
       const { error } = await supabase.from("blog_articles").update(update).eq("id", body.id);
       if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       revalidatePath("/blog");

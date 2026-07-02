@@ -7,6 +7,10 @@ export const maxDuration = 120;
 
 const CRON_SECRET = process.env.CRON_SECRET || "";
 
+// Após 3 falhas de análise, o lead é marcado com metadata.ai_skip=true e sai
+// da fila — evita que um lead problemático bloqueie os demais para sempre.
+const MAX_AI_ATTEMPTS = 3;
+
 interface LeadAnalysis {
   resumo: string;
   area: string;
@@ -90,14 +94,15 @@ export async function GET(req: NextRequest) {
   const startTime = Date.now();
   const supabase = createAdminClient({ noStore: true });
 
-  // Fetch unanalyzed leads
-  const { data: leads, error: fetchError } = await supabase
+  // Fetch unanalyzed leads — qualquer status. (O lead-matcher pode marcar
+  // 'qualificado' antes da análise; exigir status='novo' deixava esses leads
+  // sem ai_resumo para sempre.) Leads com metadata.ai_skip ficam fora da fila.
+  const { data: rawLeads, error: fetchError } = await supabase
     .from("leads")
-    .select("id, nome, area_juridica, resumo, cidade, uf, ferramenta")
+    .select("id, nome, area_juridica, resumo, cidade, uf, ferramenta, metadata")
     .is("ai_resumo", null)
-    .eq("status", "novo")
     .order("created_at", { ascending: true })
-    .limit(10);
+    .limit(30);
 
   if (fetchError) {
     await supabase.from("agent_logs").insert({
@@ -112,21 +117,58 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  if (!leads || leads.length === 0) {
+  // Filtra os que já esgotaram as tentativas (metadata.ai_skip) e limita o lote.
+  const leads = (rawLeads ?? [])
+    .filter((l) => {
+      const meta = (l.metadata ?? {}) as Record<string, unknown>;
+      return meta.ai_skip !== true;
+    })
+    .slice(0, 10);
+
+  if (leads.length === 0) {
     await supabase.from("agent_logs").insert({
       agent_name: "lead_analyzer",
       action: "run",
       status: "skipped",
-      details: { reason: "Nenhum lead novo para analisar" },
+      details: { reason: "Nenhum lead pendente de análise" },
       items_processed: 0,
       duration_ms: Date.now() - startTime,
     });
     return NextResponse.json({
       ok: true,
-      message: "Nenhum lead novo para analisar",
+      message: "Nenhum lead pendente de análise",
       analyzed: 0,
     });
   }
+
+  // Registra a falha de análise no metadata do lead; na 3ª tentativa marca
+  // ai_skip para o lead sair da fila (evita head-of-line blocking).
+  const registerFailure = async (lead: {
+    id: string;
+    metadata: Record<string, unknown> | null;
+  }): Promise<void> => {
+    const meta =
+      lead.metadata && typeof lead.metadata === "object"
+        ? (lead.metadata as Record<string, unknown>)
+        : {};
+    const previous = typeof meta.ai_attempts === "number" ? meta.ai_attempts : 0;
+    const attempts = previous + 1;
+    const newMeta: Record<string, unknown> = { ...meta, ai_attempts: attempts };
+    if (attempts >= MAX_AI_ATTEMPTS) newMeta.ai_skip = true;
+
+    const { error: metaError } = await supabase
+      .from("leads")
+      .update({ metadata: newMeta })
+      .eq("id", lead.id);
+
+    if (metaError) {
+      console.error(
+        "[cron:lead-analysis] failure bookkeeping failed:",
+        lead.id,
+        metaError.message
+      );
+    }
+  };
 
   let totalTokens = 0;
   let analyzed = 0;
@@ -164,12 +206,18 @@ export async function GET(req: NextRequest) {
         .eq("id", lead.id);
 
       if (updateError) {
+        console.error(
+          "[cron:lead-analysis] update lead failed:",
+          lead.id,
+          updateError.message
+        );
         await supabase.from("agent_logs").insert({
           agent_name: "lead_analyzer",
           action: "update_lead",
           status: "error",
           details: { lead_id: lead.id, error: updateError.message },
         });
+        await registerFailure(lead);
         results.push({ ok: false, leadId: lead.id, error: updateError.message });
         failed++;
         continue;
@@ -194,12 +242,14 @@ export async function GET(req: NextRequest) {
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : "Erro desconhecido";
 
+      console.error("[cron:lead-analysis] analyze failed:", lead.id, errorMsg);
       await supabase.from("agent_logs").insert({
         agent_name: "lead_analyzer",
         action: "analyze_lead",
         status: "error",
         details: { lead_id: lead.id, error: errorMsg },
       });
+      await registerFailure(lead);
 
       results.push({ ok: false, leadId: lead.id, error: errorMsg });
       failed++;

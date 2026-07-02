@@ -224,23 +224,22 @@ export default async function AdvogadoDashboardPage() {
     .gte("visited_at", monthStart.toISOString())
     .eq("is_bot", false);
 
-  /* --- Leads matched to area/city ---------------------------------- */
-  const specialties = (lawyer.specialties as string[]) ?? [];
+  /* --- Leads matched to region -------------------------------------- */
+  // Fallback: cidade-alvo (premium) → cidade do cadastro. Sem cidade alguma,
+  // a métrica mostra 0 — nunca o total global do site, que seria enganoso.
   const targetCity = (lawyer.target_city as string) || "";
   const targetUf = (lawyer.target_uf as string) || "";
+  const regionCity = targetCity || ((lawyer.city_name as string) || "");
+  const regionUf = targetUf || ((lawyer.uf as string) || "");
 
   let matchedLeadsCount = 0;
 
-  if (specialties.length > 0 || targetCity) {
-    let leadsQuery = admin
+  if (regionCity && regionUf) {
+    const { count } = await admin
       .from("leads")
-      .select("*", { count: "exact", head: true });
-
-    if (targetCity && targetUf) {
-      leadsQuery = leadsQuery.eq("cidade", targetCity).eq("uf", targetUf);
-    }
-
-    const { count } = await leadsQuery;
+      .select("*", { count: "exact", head: true })
+      .ilike("cidade", regionCity)
+      .ilike("uf", regionUf);
     matchedLeadsCount = count ?? 0;
   }
 
@@ -275,7 +274,7 @@ export default async function AdvogadoDashboardPage() {
     {
       label: "Leads na região",
       value: String(matchedLeadsCount),
-      sub: targetCity ? `${targetCity}/${targetUf}` : "configure sua cidade",
+      sub: regionCity ? `${regionCity}/${regionUf}` : "configure sua cidade",
       Icon: Users,
     },
     {
@@ -418,8 +417,8 @@ export default async function AdvogadoDashboardPage() {
                     Leads na sua região
                   </p>
                   <p className="text-xs text-brand-ink/50">
-                    {targetCity
-                      ? `${targetCity}/${targetUf}`
+                    {regionCity
+                      ? `${regionCity}/${regionUf}`
                       : "Cidade não configurada"}
                   </p>
                 </div>

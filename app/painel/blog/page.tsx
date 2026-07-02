@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import {
   AlertCircle,
@@ -71,6 +72,7 @@ const STATUS_CONFIG: Record<
 };
 
 export default function PainelBlogPage() {
+  const router = useRouter();
   const [articles, setArticles] = useState<BlogArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [migrationPending, setMigrationPending] = useState(false);
@@ -89,6 +91,11 @@ export default function PainelBlogPage() {
     try {
       const res = await fetch("/api/painel/blog", { cache: "no-store" });
       const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        // Sem sessão válida — página exige advogado autenticado.
+        router.replace("/login?redirect=/painel/blog");
+        return;
+      }
       if (res.status === 503 && data.code === "migration_pending") {
         setMigrationPending(true);
         setArticles([]);
@@ -104,7 +111,7 @@ export default function PainelBlogPage() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     void load();

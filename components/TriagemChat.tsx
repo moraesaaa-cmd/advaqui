@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { MessageCircle, X, Minus, Send, ArrowUpRight } from "lucide-react";
+import { SPECIALTY_SLUGS } from "@/lib/data/specialties";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -22,6 +23,15 @@ interface TriageResult {
   resumo?: string;
   nome?: string;
   telefone?: string;
+  /** Link final já validado no servidor contra especialidades e cidades reais */
+  ctaUrl?: string;
+  ctaLabel?: string;
+}
+
+interface LeadTranscriptItem {
+  role: "user" | "assistant";
+  content: string;
+  ts: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -30,6 +40,12 @@ interface TriageResult {
 const STORAGE_KEY = "advaqui_triage_chat";
 const SESSION_KEY = "advaqui_triage_session";
 const TEASER_KEY = "advaqui_triage_teaser_dismissed";
+const PENDING_LEAD_KEY = "advaqui_lead_pending";
+
+const UF_SLUGS = new Set([
+  "ac", "al", "ap", "am", "ba", "ce", "df", "es", "go", "ma", "mt", "ms", "mg",
+  "pa", "pb", "pr", "pe", "pi", "rj", "rn", "rs", "ro", "rr", "sc", "sp", "se", "to"
+]);
 
 function generateId(): string {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -115,9 +131,47 @@ const WELCOME_MESSAGE: ChatMessage = {
   id: "welcome",
   role: "assistant",
   content:
-    "Oi! Sou a Marina, assistente virtual do AdvAqui 🙂 Te ajudo a encontrar o advogado certo pro seu caso. Me conta rapidinho o que aconteceu?",
+    "Oi! Sou a Marina, assistente virtual do AdvAqui 🙂 Te ajudo a encontrar o advogado certo pro seu caso. Essa conversa fica registrada para eu te conectar ao advogado certo, tá? Me conta rapidinho o que aconteceu?",
   ts: Date.now(),
 };
+
+/**
+ * Envia o lead com até 2 novas tentativas (backoff 1s/3s) em falha de rede,
+ * 429 ou 5xx. Se todas falharem, guarda o payload em sessionStorage para
+ * reenviar no próximo mount do componente — o lead não se perde à toa.
+ */
+async function postLeadWithRetry(payload: Record<string, unknown>): Promise<void> {
+  const delays = [1000, 3000];
+  for (let attempt = 0; attempt <= delays.length; attempt++) {
+    try {
+      const res = await fetch("/api/leads/capture", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        try {
+          sessionStorage.removeItem(PENDING_LEAD_KEY);
+        } catch {
+          // ignora
+        }
+        return;
+      }
+      // 4xx (exceto 429) = payload rejeitado pelo servidor — repetir não resolve.
+      if (res.status !== 429 && res.status < 500) return;
+    } catch {
+      // Falha de rede — tenta de novo com backoff.
+    }
+    if (attempt < delays.length) {
+      await new Promise((resolve) => setTimeout(resolve, delays[attempt]));
+    }
+  }
+  try {
+    sessionStorage.setItem(PENDING_LEAD_KEY, JSON.stringify(payload));
+  } catch {
+    // sessionStorage cheio/indisponível — sem o que fazer
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Component
@@ -154,6 +208,17 @@ export function TriagemChat() {
     const saved = loadChat();
     if (saved.length > 0) {
       setMessages(saved);
+    }
+    // Reenvia lead que ficou pendente por falha de rede/servidor.
+    try {
+      const raw = sessionStorage.getItem(PENDING_LEAD_KEY);
+      if (raw) {
+        const pending = JSON.parse(raw) as Record<string, unknown>;
+        sessionStorage.removeItem(PENDING_LEAD_KEY);
+        void postLeadWithRetry(pending);
+      }
+    } catch {
+      // payload corrompido — descarta
     }
   }, []);
 
@@ -278,8 +343,8 @@ export function TriagemChat() {
 
         if (data.triage) {
           setTriage(data.triage);
-          // Capture lead
-          captureLead(data.triage, updatedMessages);
+          // Capture lead — inclui a resposta final da assistente no transcript
+          captureLead(data.triage, [...updatedMessages, assistantMsg]);
         }
 
         // Increment unread if minimized
@@ -314,7 +379,7 @@ export function TriagemChat() {
     [sendMessage]
   );
 
-  // Capture lead (fire-and-forget)
+  // Capture lead (assíncrono, com retry e fila de pendência — ver postLeadWithRetry)
   function captureLead(t: TriageResult, msgs: ChatMessage[]) {
     const resumo =
       t.resumo ||
@@ -331,49 +396,60 @@ export function TriagemChat() {
     const nome = (t.nome || "").trim();
     let telefone = (t.telefone || "").trim();
     // Fallback robusto: se o modelo não colocou o telefone no JSON, tenta
-    // extrair um número (com DDD) do que a pessoa digitou. Evita perder o lead.
+    // extrair um número do que a pessoa digitou. O DDD é obrigatório
+    // (10-11 dígitos) — sem isso, "processo 1234 5678" viraria telefone.
     if (!telefone) {
       const userText = msgs
         .filter((m) => m.role === "user")
         .map((m) => m.content)
         .join("  ");
-      const match = userText.match(/(?:\(?\d{2}\)?[\s.-]?)?9?\d{4}[\s.-]?\d{4}/);
-      if (match) telefone = match[0].replace(/\D/g, "");
+      const match = userText.match(/\(?\d{2}\)?[\s.-]?9?\d{4}[\s.-]?\d{4}/);
+      if (match) {
+        const digits = match[0].replace(/\D/g, "");
+        if (digits.length === 10 || digits.length === 11) telefone = digits;
+      }
     }
     if (!nome && !telefone) return;
 
-    fetch("/api/leads/capture", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        nome,
-        telefone,
-        email: "",
-        cidade: t.cidade || "",
-        uf: t.uf || "",
-        area_juridica: t.area || "",
-        resumo,
-        origem: "triagem_chat",
-        ferramenta: "chat_ia",
-        metadata: {
-          urgencia: t.urgencia || "",
-          sessionId: getSessionId(),
-          messageCount: msgs.length,
-        },
-      }),
-    }).catch(() => {
-      // fire-and-forget — lead capture failure must not affect UX
+    // Transcript completo da conversa (sem a mensagem de boas-vindas),
+    // incluindo a resposta final da assistente.
+    const transcript: LeadTranscriptItem[] = msgs
+      .filter((m) => m.id !== "welcome")
+      .map((m) => ({ role: m.role, content: m.content.slice(0, 1000), ts: m.ts }));
+
+    void postLeadWithRetry({
+      nome,
+      telefone,
+      email: "",
+      cidade: t.cidade || "",
+      uf: t.uf || "",
+      area_juridica: t.area || "",
+      resumo,
+      origem: "triagem_chat",
+      ferramenta: "chat_ia",
+      transcript,
+      metadata: {
+        urgencia: t.urgencia || "",
+        sessionId: getSessionId(),
+        messageCount: msgs.length,
+      },
     });
   }
 
-  // Build CTA link
+  // Build CTA link — SÓ fallback: o link oficial vem validado do servidor em
+  // triage.ctaUrl. Aqui validamos a área contra os slugs reais de
+  // lib/data/specialties e nunca chutamos UF — melhor um link mais genérico
+  // que uma página de erro.
   function buildCtaUrl(t: TriageResult): string {
-    const uf = (t.uf || "mg").toLowerCase();
+    const uf = (t.uf || "").trim().toLowerCase();
+    const ufValida = UF_SLUGS.has(uf);
     const cidade = cidadeToSlug(t.cidade || "");
     const area = areaToSlug(t.area || "");
-    if (cidade && area) return `/advogados/${uf}/${cidade}/${area}`;
-    if (cidade) return `/advogados/${uf}/${cidade}`;
-    return `/advogados/${uf}`;
+    const areaValida = SPECIALTY_SLUGS.includes(area);
+    if (ufValida && cidade && areaValida) return `/advogados/${uf}/${cidade}/${area}`;
+    if (ufValida && cidade) return `/advogados/${uf}/${cidade}`;
+    if (ufValida) return `/advogados/${uf}`;
+    return "/advogados";
   }
 
   if (hidden || !mounted) return null;
@@ -543,16 +619,16 @@ export function TriagemChat() {
           </div>
         )}
 
-        {/* CTA after triage */}
-        {triage && triage.area && (
+        {/* CTA after triage — usa o link validado no servidor quando presente */}
+        {triage && (triage.ctaUrl || triage.area) && (
           <div className="flex justify-start">
             <div className="max-w-[85%] space-y-2">
               <a
-                href={buildCtaUrl(triage)}
+                href={triage.ctaUrl || buildCtaUrl(triage)}
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-accent text-brand-ink text-sm font-semibold hover:brightness-110 transition-all"
               >
                 <ArrowUpRight className="w-4 h-4" />
-                Encontrar advogado
+                {triage.ctaLabel || "Encontrar advogado"}
               </a>
               <p className="text-[11px] text-brand-ink/50 leading-snug px-1">
                 Triagem informativa — não substitui orientação de um advogado.

@@ -28,14 +28,22 @@ import {
   UserX,
   KeyRound,
   Pencil,
-  ChevronDown
+  ChevronDown,
+  FileText,
+  X
 } from "lucide-react";
-import { formatDate } from "@/lib/utils/format";
+import { formatDate, formatCurrency } from "@/lib/utils/format";
 import { toast } from "@/components/Toast";
 import { AdminExtraCitiesModal } from "@/components/AdminExtraCitiesModal";
 import type { ExtraCity } from "@/components/AdminExtraCitiesModal";
 import { AdminEditModal, type AdminEditConfig } from "@/components/AdminEditModal";
-import type { LawyerRow, MessageRow, PlanStatus } from "@/lib/supabase/types";
+import { SPECIALTIES } from "@/lib/data/specialties";
+import type {
+  LawyerRow,
+  MessageRow,
+  PlanHistoryRow,
+  PlanStatus
+} from "@/lib/supabase/types";
 
 const TABS = [
   { id: "users", label: "Cadastros", Icon: Users },
@@ -82,6 +90,205 @@ const STATUS_BADGE: Record<
     ring: "border-gray-300"
   }
 };
+
+/** Data + hora em pt-BR (ex.: "02/07/2026 14:35") para o detalhe "Ver tudo". */
+function fmtDateTimeBR(v: unknown): string {
+  if (typeof v !== "string" || !v) return "—";
+  const d = new Date(v);
+  if (Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
+}
+
+/** Rótulos pt-BR dos status do histórico de pagamentos (plan_history). */
+const PLAN_HISTORY_LABELS: Record<string, string> = {
+  pending: "Aguardando",
+  confirmed: "Confirmado",
+  expired: "Vencido",
+  cancelled: "Cancelado",
+  refunded: "Reembolsado"
+};
+
+/** Rótulos pt-BR das ações registradas em audit_logs (aba Resumo). */
+const AUDIT_ACTION_LABELS: Record<string, string> = {
+  "activate-premium": "Ativou premium",
+  "deactivate-premium": "Desativou premium",
+  "set-plan-status": "Alterou status do plano",
+  "toggle-featured": "Alterou destaque",
+  "toggle-verified-oab": "Alterou verificação OAB",
+  "delete-lawyer": "Excluiu cadastro",
+  "set-email": "Trocou e-mail de login",
+  "set-password": "Redefiniu senha",
+  "update-lawyer": "Editou dados do perfil",
+  "remove-photo": "Removeu foto",
+  "delete-message": "Excluiu mensagem"
+};
+
+/** Par rótulo/valor usado nas seções legíveis do "Ver tudo". */
+function DetailRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="min-w-0">
+      <dt className="text-[10px] font-bold uppercase tracking-wide text-brand-ink/45">
+        {label}
+      </dt>
+      <dd className="text-xs text-brand-ink break-words">{value || "—"}</dd>
+    </div>
+  );
+}
+
+/**
+ * Detalhe completo do advogado ("Ver tudo") em seções LEGÍVEIS em português —
+ * substitui o antigo despejo de JSON em <pre>. O dump técnico continua
+ * disponível no <details> "Dados técnicos (JSON)" no fim, pra não perder nada.
+ */
+function LawyerFullDetails({ data }: { data: Record<string, unknown> }) {
+  const lw = (data.lawyer ?? {}) as Partial<LawyerRow>;
+  const auth = (data.authUser ?? null) as {
+    email_confirmed_at?: string | null;
+    last_sign_in_at?: string | null;
+    created_at?: string | null;
+  } | null;
+  const hist = Array.isArray(data.planHistory)
+    ? (data.planHistory as Array<Partial<PlanHistoryRow>>)
+    : [];
+  const msgs = Array.isArray(data.messages)
+    ? (data.messages as Array<Partial<MessageRow>>)
+    : [];
+  const planLabel = lw.plan_status
+    ? STATUS_BADGE[lw.plan_status].label
+    : "—";
+
+  return (
+    <div className="space-y-3">
+      <section className="rounded-xl border border-brand-line bg-white p-4">
+        <h5 className="text-[11px] font-bold uppercase tracking-wide text-brand-deep mb-2.5">
+          Dados pessoais
+        </h5>
+        <dl className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-2.5">
+          <DetailRow label="Nome" value={lw.name || "—"} />
+          <DetailRow label="CPF" value={lw.cpf || "—"} />
+          <DetailRow
+            label="OAB"
+            value={lw.oab ? `OAB/${lw.oab_uf || "?"} ${lw.oab}` : "—"}
+          />
+          <DetailRow label="E-mail" value={lw.email || "—"} />
+          <DetailRow label="Telefone" value={lw.phone || "—"} />
+          <DetailRow label="WhatsApp" value={lw.whatsapp || "—"} />
+          <DetailRow
+            label="Cidade"
+            value={lw.city_name ? `${lw.city_name}/${lw.uf || "?"}` : "—"}
+          />
+          <DetailRow label="Endereço" value={lw.address || "—"} />
+        </dl>
+      </section>
+
+      <section className="rounded-xl border border-brand-line bg-white p-4">
+        <h5 className="text-[11px] font-bold uppercase tracking-wide text-brand-deep mb-2.5">
+          Conta
+        </h5>
+        <dl className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2.5">
+          <DetailRow
+            label="E-mail confirmado em"
+            value={fmtDateTimeBR(auth?.email_confirmed_at)}
+          />
+          <DetailRow
+            label="Último acesso"
+            value={fmtDateTimeBR(auth?.last_sign_in_at)}
+          />
+          <DetailRow label="Criado em" value={fmtDateTimeBR(auth?.created_at)} />
+        </dl>
+      </section>
+
+      <section className="rounded-xl border border-brand-line bg-white p-4">
+        <h5 className="text-[11px] font-bold uppercase tracking-wide text-brand-deep mb-2.5">
+          Plano
+        </h5>
+        <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-2.5">
+          <DetailRow label="Status" value={planLabel} />
+          <DetailRow label="Início" value={formatDate(lw.plan_start_date)} />
+          <DetailRow label="Fim" value={formatDate(lw.plan_end_date)} />
+          <DetailRow label="Destaque" value={lw.featured ? "Sim" : "Não"} />
+        </dl>
+        {hist.length > 0 ? (
+          <div className="mt-3 overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="text-left text-[10px] uppercase tracking-wide text-brand-ink/45 border-b border-brand-line">
+                  <th className="py-1.5 pr-3 font-bold">Data</th>
+                  <th className="py-1.5 pr-3 font-bold">Valor</th>
+                  <th className="py-1.5 font-bold">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {hist.map((h, i) => (
+                  <tr
+                    key={h.id || i}
+                    className="border-b border-brand-line/50 last:border-0"
+                  >
+                    <td className="py-1.5 pr-3 text-brand-ink/85">
+                      {formatDate(h.created_at)}
+                    </td>
+                    <td className="py-1.5 pr-3 text-brand-ink/85">
+                      {typeof h.amount === "number" ? formatCurrency(h.amount) : "—"}
+                    </td>
+                    <td className="py-1.5 text-brand-ink/85">
+                      {(h.status && PLAN_HISTORY_LABELS[h.status]) || h.status || "—"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="mt-2.5 text-xs text-brand-ink/50 italic">
+            Nenhum pagamento registrado.
+          </p>
+        )}
+      </section>
+
+      <section className="rounded-xl border border-brand-line bg-white p-4">
+        <h5 className="text-[11px] font-bold uppercase tracking-wide text-brand-deep mb-2.5">
+          Mensagens enviadas pelo advogado ({msgs.length})
+        </h5>
+        {msgs.length === 0 ? (
+          <p className="text-xs text-brand-ink/50 italic">
+            Nenhuma mensagem enviada.
+          </p>
+        ) : (
+          <ul className="space-y-2 max-h-72 overflow-y-auto">
+            {msgs.map((m, i) => (
+              <li
+                key={m.id || i}
+                className="rounded-lg border border-brand-line/70 bg-brand-bg/40 p-2.5"
+              >
+                <p className="text-[11px] text-brand-ink/55">
+                  {formatDate(m.created_at)}
+                  {m.subject ? ` · ${m.subject}` : ""}
+                </p>
+                <p className="text-xs text-brand-ink/85 whitespace-pre-wrap mt-0.5">
+                  {m.body || ""}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <details className="rounded-xl border border-brand-line bg-brand-bg p-3">
+        <summary className="cursor-pointer text-xs font-semibold text-brand-deep">
+          Dados técnicos (JSON)
+        </summary>
+        <pre className="mt-2 text-[11px] text-brand-ink/80 whitespace-pre-wrap break-all bg-white p-2 rounded border border-brand-line max-h-96 overflow-y-auto">
+          {JSON.stringify(data, null, 2)}
+        </pre>
+      </details>
+
+      <p className="text-[11px] text-brand-ink/50 italic">
+        A senha NÃO é visível (fica guardada de forma protegida no Supabase Auth).
+        Use &quot;Resetar senha&quot; ou &quot;Magic link&quot; para dar acesso ao advogado.
+      </p>
+    </div>
+  );
+}
 
 /**
  * Constrói um link `mailto:` pré-preenchido com texto convidando o advogado
@@ -172,6 +379,40 @@ export default function AdminPage() {
 
   // Modal genérico de edição (substitui os window.prompt de entrada de texto).
   const [editModal, setEditModal] = useState<AdminEditConfig | null>(null);
+
+  // Modal de "Áreas de atuação" — checkboxes das specialties canônicas.
+  // (AdminEditModal só suporta campos de texto, então este é dedicado.)
+  const [specialtiesModal, setSpecialtiesModal] = useState<{
+    id: string;
+    name: string;
+    selected: string[];
+  } | null>(null);
+
+  // Últimas ações administrativas (audit_logs) — exibidas na aba Resumo.
+  type AuditLogItem = {
+    id: string;
+    admin_email: string;
+    action: string;
+    target_id: string | null;
+    target_type: string | null;
+    details: Record<string, unknown> | null;
+    created_at: string;
+  };
+  const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>([]);
+  const [auditLoaded, setAuditLoaded] = useState(false);
+
+  // Recarrega o histórico toda vez que a aba Resumo é aberta (ações feitas
+  // nas outras abas aparecem sem precisar de F5).
+  useEffect(() => {
+    if (tab !== "stats") return;
+    (async () => {
+      const r = await callAdmin({ action: "list-audit-logs" });
+      if (r.status === 200 && Array.isArray(r.json.logs)) {
+        setAuditLogs(r.json.logs as AuditLogItem[]);
+      }
+      setAuditLoaded(true);
+    })();
+  }, [tab]);
 
   // Blog — lista de artigos gerados
   type BlogArticle = {
@@ -495,6 +736,25 @@ export default function AdminPage() {
     if (r.status === 200) await refreshMessages();
   };
 
+  const deleteMessage = async (id: string, fromName: string) => {
+    if (
+      !confirm(
+        `Excluir a mensagem de ${fromName || "remetente desconhecido"}? Esta ação não pode ser desfeita.`
+      )
+    )
+      return;
+    if (busy) return;
+    setBusy(true);
+    const r = await callAdmin({ action: "delete-message", id });
+    setBusy(false);
+    if (r.status === 200) {
+      toast("Mensagem excluída");
+      await refreshMessages();
+    } else if (r.status !== 401 && r.status !== 0) {
+      toast(String(r.json.error || "Erro ao excluir mensagem"), "error");
+    }
+  };
+
   const submitReply = async (id: string) => {
     if (replyText.trim().length < 5) return;
     setBusy(true);
@@ -779,6 +1039,28 @@ export default function AdminPage() {
       }
     } else {
       toast(r.json.error || "Erro ao atualizar cidades", "error");
+    }
+  };
+
+  /**
+   * Persiste as áreas de atuação marcadas no modal de checkboxes.
+   * Usa o mesmo endpoint update-lawyer (specialties está na whitelist).
+   */
+  const saveSpecialties = async () => {
+    if (!specialtiesModal || busy) return;
+    setBusy(true);
+    const r = await callAdmin({
+      action: "update-lawyer",
+      id: specialtiesModal.id,
+      fields: { specialties: specialtiesModal.selected }
+    });
+    setBusy(false);
+    if (r.status === 200) {
+      toast(`Áreas de atuação atualizadas (${specialtiesModal.selected.length})`);
+      setSpecialtiesModal(null);
+      await refreshUsers();
+    } else if (r.status !== 401 && r.status !== 0) {
+      toast(String(r.json.error || "Erro ao atualizar áreas"), "error");
     }
   };
 
@@ -1102,6 +1384,28 @@ export default function AdminPage() {
                       {u.featured ? "Destacado" : "Destacar"}
                     </button>
                     <button
+                      onClick={() => viewFullLawyer(u.id)}
+                      disabled={busy}
+                      aria-expanded={expandedId === u.id}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition disabled:opacity-50 ${
+                        expandedId === u.id
+                          ? "bg-brand-deep text-white"
+                          : "border border-brand-line bg-white text-brand-ink hover:bg-brand-bg"
+                      }`}
+                      title="Ver todos os dados do cadastro: CPF, datas, plano, pagamentos, mensagens"
+                    >
+                      <FileText className="w-3.5 h-3.5" aria-hidden />
+                      {expandedId === u.id ? "Fechar" : "Ver tudo"}
+                    </button>
+                    <button
+                      onClick={() => deleteUser(u.id)}
+                      disabled={busy}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-red-600 border border-red-200 bg-white hover:bg-red-50 disabled:opacity-50"
+                      title="Excluir este cadastro (pede confirmação)"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" aria-hidden /> Excluir
+                    </button>
+                    <button
                       onClick={() => setManageId(manageId === u.id ? null : u.id)}
                       aria-expanded={manageId === u.id}
                       className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
@@ -1198,6 +1502,30 @@ export default function AdminPage() {
                     title="Editar telefone do advogado"
                   >
                     Editar telefone
+                  </button>
+                  <button
+                    onClick={() =>
+                      editLawyerField(u.id, "whatsapp", "WhatsApp (com DDD)", u.whatsapp || "")
+                    }
+                    disabled={busy}
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
+                    title="Editar número de WhatsApp (botão do card premium)"
+                  >
+                    Editar WhatsApp
+                  </button>
+                  <button
+                    onClick={() =>
+                      setSpecialtiesModal({
+                        id: u.id,
+                        name: u.name,
+                        selected: Array.isArray(u.specialties) ? u.specialties : []
+                      })
+                    }
+                    disabled={busy}
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-ink bg-white border border-brand-line hover:border-brand-deep/40 hover:bg-brand-bg disabled:opacity-50"
+                    title="Marcar/desmarcar as áreas de atuação do advogado"
+                  >
+                    Áreas de atuação
                   </button>
                   <button
                     onClick={() => editMainCity(u.id, u.uf, u.city_name)}
@@ -1378,6 +1706,11 @@ export default function AdminPage() {
                     </button>
                   </div>
 
+                </div>
+                )}
+
+                {/* Detalhe completo ("Ver tudo") — fora do bloco Gerenciar,
+                    pra abrir também pelo botão sempre visível da linha. */}
                 {expandedId === u.id && (
                   <div className="mt-4 pt-4 border-t border-brand-line">
                     <h4 className="font-display text-sm font-bold text-brand-ink mb-2">
@@ -1386,49 +1719,8 @@ export default function AdminPage() {
                     {loadingFull && (
                       <p className="text-xs text-brand-ink/60">Carregando...</p>
                     )}
-                    {fullData && (
-                      <div className="space-y-3">
-                        <details open className="rounded-lg bg-brand-bg p-3">
-                          <summary className="cursor-pointer text-xs font-semibold text-brand-deep">
-                            Perfil completo (lawyers)
-                          </summary>
-                          <pre className="mt-2 text-[11px] text-brand-ink/80 whitespace-pre-wrap break-all bg-white p-2 rounded border border-brand-line max-h-96 overflow-y-auto">
-                            {JSON.stringify(fullData.lawyer, null, 2)}
-                          </pre>
-                        </details>
-                        <details className="rounded-lg bg-brand-bg p-3">
-                          <summary className="cursor-pointer text-xs font-semibold text-brand-deep">
-                            Auth (login, e-mail confirmado, ultimo acesso)
-                          </summary>
-                          <pre className="mt-2 text-[11px] text-brand-ink/80 whitespace-pre-wrap break-all bg-white p-2 rounded border border-brand-line max-h-96 overflow-y-auto">
-                            {JSON.stringify(fullData.authUser, null, 2)}
-                          </pre>
-                        </details>
-                        <details className="rounded-lg bg-brand-bg p-3">
-                          <summary className="cursor-pointer text-xs font-semibold text-brand-deep">
-                            Histórico de pagamentos ({Array.isArray(fullData.planHistory) ? fullData.planHistory.length : 0})
-                          </summary>
-                          <pre className="mt-2 text-[11px] text-brand-ink/80 whitespace-pre-wrap break-all bg-white p-2 rounded border border-brand-line max-h-96 overflow-y-auto">
-                            {JSON.stringify(fullData.planHistory, null, 2)}
-                          </pre>
-                        </details>
-                        <details className="rounded-lg bg-brand-bg p-3">
-                          <summary className="cursor-pointer text-xs font-semibold text-brand-deep">
-                            Mensagens enviadas pelo advogado ({Array.isArray(fullData.messages) ? fullData.messages.length : 0})
-                          </summary>
-                          <pre className="mt-2 text-[11px] text-brand-ink/80 whitespace-pre-wrap break-all bg-white p-2 rounded border border-brand-line max-h-96 overflow-y-auto">
-                            {JSON.stringify(fullData.messages, null, 2)}
-                          </pre>
-                        </details>
-                        <p className="text-[11px] text-brand-ink/50 italic">
-                          Senha NÃO é visível (armazenada como hash bcrypt no Supabase Auth).
-                          Use o botao &quot;Resetar senha&quot; acima para definir uma nova.
-                        </p>
-                      </div>
-                    )}
+                    {fullData && <LawyerFullDetails data={fullData} />}
                   </div>
-                )}
-                </div>
                 )}
               </article>
             ))}
@@ -1479,14 +1771,25 @@ export default function AdminPage() {
                     {formatDate(m.created_at)} {m.from_email ? `· ${m.from_email}` : ""}
                   </p>
                 </div>
-                {!m.read && (
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  {!m.read && (
+                    <button
+                      onClick={() => markRead(m.id)}
+                      className="text-xs text-brand-deep font-medium"
+                    >
+                      Marcar como lida
+                    </button>
+                  )}
                   <button
-                    onClick={() => markRead(m.id)}
-                    className="text-xs text-brand-deep font-medium"
+                    onClick={() => deleteMessage(m.id, m.from_name)}
+                    disabled={busy}
+                    aria-label={`Excluir mensagem de ${m.from_name}`}
+                    title="Excluir esta mensagem (pede confirmação)"
+                    className="inline-flex items-center justify-center w-7 h-7 rounded-lg text-red-600 border border-transparent hover:bg-red-50 hover:border-red-200 disabled:opacity-50"
                   >
-                    Marcar como lida
+                    <Trash2 className="w-3.5 h-3.5" aria-hidden />
                   </button>
-                )}
+                </div>
               </div>
               <p className="text-sm text-brand-ink/85 whitespace-pre-wrap">{m.body}</p>
               {m.reply && (
@@ -2033,6 +2336,51 @@ export default function AdminPage() {
                   {cancelled} cadastro(s) com plano cancelado.
                 </p>
               )}
+
+              {/* Últimas ações administrativas (audit_logs) */}
+              <section className="card">
+                <h3 className="font-display text-base font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-brand-deep" aria-hidden />
+                  Últimas ações do painel
+                </h3>
+                {!auditLoaded ? (
+                  <p className="text-xs text-brand-ink/55 italic">Carregando…</p>
+                ) : auditLogs.length === 0 ? (
+                  <p className="text-xs text-brand-ink/55 italic">
+                    Nenhuma ação registrada ainda. As próximas ações
+                    administrativas (ativar plano, editar, excluir…) aparecem
+                    aqui.
+                  </p>
+                ) : (
+                  <ul className="text-xs divide-y divide-brand-line/60">
+                    {auditLogs.slice(0, 30).map((l) => {
+                      const d = l.details || {};
+                      const target =
+                        (typeof d.name === "string" && d.name) ||
+                        (typeof d.remetente === "string" && d.remetente) ||
+                        (typeof d.email === "string" && d.email) ||
+                        l.target_id ||
+                        "—";
+                      return (
+                        <li
+                          key={l.id}
+                          className="flex flex-wrap items-center gap-x-3 gap-y-0.5 py-1.5"
+                        >
+                          <span className="text-brand-ink/50 whitespace-nowrap">
+                            {fmtDateTimeBR(l.created_at)}
+                          </span>
+                          <span className="font-medium text-brand-ink">
+                            {AUDIT_ACTION_LABELS[l.action] || l.action}
+                          </span>
+                          <span className="text-brand-ink/65 truncate">
+                            {target}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </section>
             </div>
           );
         })()}
@@ -2054,6 +2402,86 @@ export default function AdminPage() {
           busy={busy}
           onClose={() => setEditModal(null)}
         />
+      )}
+
+      {/* Modal de áreas de atuação — checkboxes das specialties canônicas */}
+      {specialtiesModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40"
+          onClick={() => setSpecialtiesModal(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            className="w-full max-w-md rounded-2xl bg-white border border-brand-line p-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-3 mb-1">
+              <h3 className="font-display text-lg font-bold text-brand-ink">
+                Áreas de atuação
+              </h3>
+              <button
+                onClick={() => setSpecialtiesModal(null)}
+                aria-label="Fechar"
+                className="text-brand-ink/50 hover:text-brand-ink transition"
+              >
+                <X className="w-5 h-5" aria-hidden />
+              </button>
+            </div>
+            <p className="text-sm text-brand-ink/65 mb-3">
+              Marque as áreas em que {specialtiesModal.name} atua.
+            </p>
+            <div className="grid grid-cols-2 gap-1.5 max-h-72 overflow-y-auto pr-1">
+              {SPECIALTIES.map((s) => {
+                const checked = specialtiesModal.selected.includes(s.slug);
+                return (
+                  <label
+                    key={s.slug}
+                    className={`inline-flex items-center gap-2 px-2.5 py-1.5 rounded-md border text-sm cursor-pointer transition ${
+                      checked
+                        ? "border-brand-deep bg-brand-deep/5 text-brand-ink font-medium"
+                        : "border-brand-line text-brand-ink/75 hover:bg-brand-bg"
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() =>
+                        setSpecialtiesModal((m) =>
+                          m
+                            ? {
+                                ...m,
+                                selected: checked
+                                  ? m.selected.filter((x) => x !== s.slug)
+                                  : [...m.selected, s.slug]
+                              }
+                            : m
+                        )
+                      }
+                      className="accent-[#264E70]"
+                    />
+                    {s.name}
+                  </label>
+                );
+              })}
+            </div>
+            <div className="flex justify-end gap-2 mt-4">
+              <button
+                onClick={() => setSpecialtiesModal(null)}
+                className="btn-ghost border border-brand-line text-sm"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => void saveSpecialties()}
+                disabled={busy}
+                className="btn-primary text-sm disabled:opacity-50"
+              >
+                Salvar áreas
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
