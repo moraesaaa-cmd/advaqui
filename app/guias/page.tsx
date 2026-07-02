@@ -12,7 +12,7 @@ export const revalidate = 604800;
 export const metadata = buildMetadata({
   title: "Guias por área do direito",
   description:
-    "Guias pilar por área — direito do consumidor, família, trabalho, previdenciário, civil, criminal, imobiliário, tributário, empresarial e digital. Tudo conectado a problemas reais.",
+    "Guias pilar por área — consumidor, família, trabalho, previdenciário, civil, criminal, imobiliário, tributário, empresarial, digital, eleitoral, militar, internacional, ambiental e administrativo.",
   path: "/guias"
 });
 

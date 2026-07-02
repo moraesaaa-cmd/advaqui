@@ -607,6 +607,312 @@ export const GUIAS: Guia[] = [
     temas_jurisprudencia: ["responsabilidade-civil", "consumidor"],
     modelos: ["notificacao-extrajudicial"],
     atualizado_em: "2026-05-21"
+  },
+  {
+    slug: "direito-eleitoral",
+    area_slug: "eleitoral",
+    titulo: "Guia de direito eleitoral",
+    tagline: "Candidaturas, prestação de contas, propaganda e crimes eleitorais — as regras do jogo democrático explicadas com clareza.",
+    introducao: [
+      "O direito eleitoral é o ramo que organiza as eleições no Brasil: quem pode ser candidato, como funciona a campanha, o que a propaganda pode e não pode fazer, como as contas devem ser prestadas e o que acontece quando alguma regra é violada. As normas principais estão no Código Eleitoral (Lei 4.737/1965), na Lei das Eleições (Lei 9.504/1997) e na Lei de Inelegibilidades (LC 64/1990, alterada pela Lei da Ficha Limpa).",
+      "A área não interessa só a políticos. O eleitor comum também lida com ela — título de eleitor, justificativa de voto, multa por ausência — e quem participa de campanha (candidato, partido, tesoureiro, cabo eleitoral) assume responsabilidades jurídicas concretas. Uma marca da área é a velocidade: os prazos eleitorais costumam ser contados em poucos dias, não em meses."
+    ],
+    publico_principal: "ambos",
+    temas_centrais: [
+      {
+        titulo: "Elegibilidade e registro de candidatura",
+        descricao:
+          "Para ser candidato é preciso cumprir condições previstas na Constituição — como nacionalidade brasileira, pleno exercício dos direitos políticos, domicílio eleitoral na circunscrição, filiação partidária e idade mínima, que varia conforme o cargo. O registro pode ser impugnado perante a Justiça Eleitoral."
+      },
+      {
+        titulo: "Inelegibilidades e Ficha Limpa",
+        descricao:
+          "Certas situações impedem a candidatura — como condenações por órgão colegiado nos casos previstos na Lei da Ficha Limpa (LC 135/2010) e contas de gestão rejeitadas em hipóteses específicas. Cada caso exige análise técnica."
+      },
+      {
+        titulo: "Prestação de contas de campanha",
+        descricao:
+          "Candidatos e partidos são obrigados a prestar contas de tudo que arrecadaram e gastaram na campanha. Contas desaprovadas podem gerar consequências sérias, inclusive impacto na quitação eleitoral."
+      },
+      {
+        titulo: "Propaganda eleitoral",
+        descricao:
+          "A propaganda só é permitida no período definido em lei e segue regras sobre meios, horários e conteúdo. Propaganda antecipada ou irregular pode gerar multa e remoção do conteúdo."
+      },
+      {
+        titulo: "Crimes eleitorais",
+        descricao:
+          "Compra de votos, boca de urna no dia da eleição, falsificação de documento para fins eleitorais e outras condutas são crimes com processo perante a Justiça Eleitoral."
+      }
+    ],
+    quando_procurar: [
+      "Antes de lançar candidatura — para verificar condições de elegibilidade e evitar indeferimento do registro",
+      "Ao montar a campanha — arrecadação, gastos e prestação de contas têm regras detalhadas",
+      "Ao receber notificação, representação ou citação da Justiça Eleitoral — os prazos são muito curtos",
+      "Quando o título de eleitor é cancelado ou há pendência que impede emissão de documentos"
+    ],
+    glossario: ["prescricao", "mandado-de-seguranca"],
+    modelos: ["procuracao-ad-judicia"],
+    faq: [
+      {
+        q: "O que acontece se eu não votar?",
+        a: "O voto é obrigatório para quem tem entre 18 e 70 anos (facultativo para jovens de 16 e 17, maiores de 70 e analfabetos). Quem não vota nem justifica paga uma multa de valor baixo. Quem deixa de votar, justificar ou pagar a multa por três eleições consecutivas pode ter o título cancelado."
+      },
+      {
+        q: "Posso justificar o voto depois da eleição?",
+        a: "Sim. Quem estava fora do seu domicílio eleitoral no dia da votação pode justificar pelo aplicativo e-Título ou em cartório eleitoral, dentro do prazo fixado pela Justiça Eleitoral para cada turno."
+      },
+      {
+        q: "Contas de campanha desaprovadas impedem nova candidatura?",
+        a: "Depende do caso. A desaprovação de contas pode gerar consequências como devolução de valores e reflexos na quitação eleitoral, e certas situações podem levar à inelegibilidade. É tema técnico que exige análise do caso concreto por advogado."
+      }
+    ],
+    atualizado_em: "2026-07-01"
+  },
+  {
+    slug: "direito-militar",
+    area_slug: "militar",
+    titulo: "Guia de direito militar",
+    tagline: "Justiça Militar, processos disciplinares, crimes militares e direitos de quem veste farda — em linguagem clara.",
+    introducao: [
+      "O direito militar rege a vida jurídica dos integrantes das Forças Armadas (Exército, Marinha e Aeronáutica) e das forças auxiliares dos estados (Polícia Militar e Corpo de Bombeiros Militar). As normas centrais são o Código Penal Militar (Decreto-Lei 1.001/1969) e o Código de Processo Penal Militar (Decreto-Lei 1.002/1969), além dos regulamentos disciplinares de cada corporação.",
+      "A área tem duas frentes principais: a criminal, julgada pela Justiça Militar (da União ou dos estados, conforme o caso), e a disciplinar/administrativa, que corre dentro da própria corporação — punições, conselhos de disciplina e de justificação, promoções e reformas. Nas duas frentes, o militar tem direito a defesa, e agir cedo faz diferença."
+    ],
+    publico_principal: "cidadao",
+    temas_centrais: [
+      {
+        titulo: "Justiça Militar: quem julga o quê",
+        descricao:
+          "A Justiça Militar da União julga crimes militares envolvendo as Forças Armadas. As Justiças Militares estaduais julgam policiais e bombeiros militares dos estados — e não julgam civis. Saber qual Justiça é competente é o primeiro passo de qualquer defesa."
+      },
+      {
+        titulo: "Crimes militares",
+        descricao:
+          "O Código Penal Militar tipifica condutas próprias da vida na caserna — como deserção, abandono de posto e insubordinação — e também versões militares de crimes comuns, quando praticados nas situações que a lei define."
+      },
+      {
+        titulo: "Processos disciplinares",
+        descricao:
+          "Transgressões disciplinares são apuradas dentro da corporação, com base no regulamento de cada força. Podem resultar em advertência, detenção disciplinar e outros efeitos na carreira. O contraditório e a ampla defesa se aplicam."
+      },
+      {
+        titulo: "Conselho de disciplina e conselho de justificação",
+        descricao:
+          "Procedimentos que podem levar à exclusão de praças (conselho de disciplina) ou à perda do posto de oficiais (conselho de justificação). São o momento mais grave da vida administrativa do militar — a defesa técnica é decisiva."
+      },
+      {
+        titulo: "Direitos do militar",
+        descricao:
+          "Promoções, reforma, remuneração, pensão militar e reintegração têm regras próprias, diferentes das dos servidores civis. Muitos litígios envolvem revisão de atos administrativos da corporação."
+      }
+    ],
+    quando_procurar: [
+      "Ao ser intimado, indiciado ou preso por suposto crime militar — a defesa técnica é direito desde o início",
+      "Ao ser submetido a conselho de disciplina ou de justificação, que podem custar a carreira",
+      "Diante de punição disciplinar que pareça ilegal ou desproporcional",
+      "Em questões de promoção, reforma, pensão militar ou reintegração"
+    ],
+    glossario: ["habeas-corpus", "prescricao"],
+    temas_jurisprudencia: ["criminal"],
+    modelos: ["procuracao-ad-judicia"],
+    faq: [
+      {
+        q: "Civil pode ser julgado pela Justiça Militar?",
+        a: "Pela Justiça Militar estadual, não — ela julga apenas policiais e bombeiros militares. Na esfera da União, o civil pode ser julgado pela Justiça Militar em hipóteses específicas de crime militar previstas em lei. Cada caso exige análise."
+      },
+      {
+        q: "Punição disciplinar pode ser questionada na Justiça?",
+        a: "A Constituição restringe o uso do habeas corpus contra o mérito de punições disciplinares militares, mas a legalidade do ato — competência, procedimento, direito de defesa — pode ser controlada pelo Judiciário."
+      },
+      {
+        q: "Oficial pode perder o posto por decisão administrativa?",
+        a: "Não. Pela Constituição, o oficial só perde o posto e a patente por decisão de tribunal militar competente, nas hipóteses legais. Para praças, a exclusão pode ocorrer após conselho de disciplina, com direito de defesa."
+      }
+    ],
+    atualizado_em: "2026-07-01"
+  },
+  {
+    slug: "direito-internacional",
+    area_slug: "internacional",
+    titulo: "Guia de direito internacional",
+    tagline: "Cidadania, vistos, contratos internacionais, sentenças estrangeiras e adoção internacional — quando seu caso cruza fronteiras.",
+    introducao: [
+      "O direito internacional, na prática do dia a dia, aparece sempre que uma situação jurídica envolve mais de um país: um brasileiro que quer reconhecer cidadania estrangeira, um casal divorciado no exterior que precisa validar o divórcio no Brasil, uma empresa que fecha contrato com fornecedor de fora, uma família em processo de adoção internacional.",
+      "Duas ideias organizam quase tudo na área: documentos de um país precisam ser formalizados para valer no outro (apostilamento e tradução juramentada) e decisões judiciais estrangeiras, em regra, precisam passar por homologação no Brasil antes de produzir efeitos aqui. Com os documentos certos e o caminho certo, processos que parecem impossíveis viram procedimento."
+    ],
+    publico_principal: "ambos",
+    temas_centrais: [
+      {
+        titulo: "Cidadania e nacionalidade",
+        descricao:
+          "Reconhecimento de cidadania estrangeira (italiana, portuguesa e outras) depende da lei do país de origem e exige reconstruir a cadeia de documentos da família — certidões de nascimento, casamento e óbito, muitas vezes de gerações atrás."
+      },
+      {
+        titulo: "Vistos e migração",
+        descricao:
+          "A entrada e a permanência de estrangeiros no Brasil seguem a Lei de Migração (Lei 13.445/2017) — vistos, autorização de residência, naturalização. Já o visto para brasileiros no exterior segue as regras do país de destino."
+      },
+      {
+        titulo: "Homologação de sentença estrangeira",
+        descricao:
+          "Decisão judicial de outro país (divórcio litigioso, guarda, condenações) em regra só produz efeitos no Brasil após homologação pelo Superior Tribunal de Justiça (STJ). O divórcio consensual simples é exceção: pode ser averbado diretamente no cartório."
+      },
+      {
+        titulo: "Contratos internacionais",
+        descricao:
+          "Contratos entre partes de países diferentes precisam definir com clareza a lei aplicável, o foro (ou arbitragem) e a moeda. Uma cláusula mal redigida pode transformar uma cobrança simples em litígio caro em jurisdição distante."
+      },
+      {
+        titulo: "Adoção internacional",
+        descricao:
+          "Regida pelo ECA e pela Convenção de Haia de 1993, é medida excepcional: só ocorre quando esgotadas as possibilidades de adoção no Brasil, e sempre com intermediação das autoridades centrais dos países envolvidos."
+      }
+    ],
+    quando_procurar: [
+      "Antes de iniciar processo de cidadania estrangeira — a análise prévia dos documentos evita anos de retrabalho",
+      "Quando precisar validar no Brasil um divórcio, sentença ou documento emitido no exterior",
+      "Antes de assinar contrato com empresa ou pessoa de outro país",
+      "Em processos de adoção internacional ou disputas de guarda envolvendo países diferentes"
+    ],
+    modelos: ["procuracao-ad-judicia", "notificacao-extrajudicial"],
+    faq: [
+      {
+        q: "Meu divórcio feito no exterior vale no Brasil?",
+        a: "O divórcio consensual simples (que só dissolve o casamento) pode ser averbado diretamente no cartório de registro civil, sem homologação. Se a decisão tratar de guarda, partilha de bens ou pensão, ou se o divórcio foi litigioso, em regra é preciso homologar a sentença no STJ."
+      },
+      {
+        q: "O que é apostilamento?",
+        a: "É um selo previsto na Convenção da Apostila de Haia que certifica a autenticidade de um documento público para uso em outro país signatário. No Brasil, é feito em cartórios autorizados. Documentos em língua estrangeira geralmente exigem também tradução juramentada."
+      },
+      {
+        q: "Posso adotar uma criança de outro país por conta própria?",
+        a: "Não. A adoção internacional exige procedimento formal perante as autoridades centrais dos dois países, na forma do ECA e da Convenção de Haia. Adoções fora desse caminho não são reconhecidas e podem configurar crime."
+      }
+    ],
+    atualizado_em: "2026-07-01"
+  },
+  {
+    slug: "direito-ambiental",
+    area_slug: "ambiental",
+    titulo: "Guia de direito ambiental",
+    tagline: "Multas do IBAMA, licenciamento, crimes ambientais e responsabilidade — o que produtores, empresas e cidadãos precisam saber.",
+    introducao: [
+      "O direito ambiental regula a relação entre atividade humana e meio ambiente: o que precisa de licença, o que é infração, o que é crime e quem responde pelos danos. As normas centrais são a Política Nacional do Meio Ambiente (Lei 6.938/1981), a Lei de Crimes Ambientais (Lei 9.605/1998) e o decreto que regula as infrações administrativas federais (Decreto 6.514/2008), além das leis estaduais e municipais.",
+      "Uma particularidade importante: quem causa dano ambiental pode responder em três esferas ao mesmo tempo — administrativa (multa e embargo), civil (obrigação de reparar o dano) e penal (crime ambiental). São responsabilidades independentes: pagar a multa não livra da reparação, e reparar não livra do processo penal. Por isso a defesa precisa olhar o quadro completo."
+    ],
+    publico_principal: "ambos",
+    temas_centrais: [
+      {
+        titulo: "Multas e autos de infração (IBAMA e órgãos estaduais)",
+        descricao:
+          "Auto de infração ambiental pode ser contestado por defesa administrativa dentro do prazo indicado no próprio auto — em regra, 20 dias na esfera federal. Há também possibilidade de recurso e, em certos casos, de conversão da multa em serviços de preservação ambiental."
+      },
+      {
+        titulo: "Licenciamento ambiental",
+        descricao:
+          "Atividades potencialmente poluidoras precisam de licença — tipicamente em três etapas: licença prévia (LP), de instalação (LI) e de operação (LO). Operar sem licença ou em desacordo com ela gera multa, embargo e pode configurar crime."
+      },
+      {
+        titulo: "Crimes ambientais",
+        descricao:
+          "A Lei 9.605/1998 tipifica crimes contra a fauna, a flora, de poluição e contra o ordenamento urbano. Pessoas jurídicas também podem ser responsabilizadas penalmente por crime ambiental — uma peculiaridade da área."
+      },
+      {
+        titulo: "Responsabilidade civil ambiental",
+        descricao:
+          "A obrigação de reparar o dano ambiental é objetiva: independe de culpa. Ela também acompanha o imóvel — quem compra terra com passivo ambiental pode ser obrigado a recuperá-la, mesmo sem ter causado o dano."
+      },
+      {
+        titulo: "Áreas protegidas e Código Florestal",
+        descricao:
+          "Áreas de preservação permanente (APP), reserva legal e o Cadastro Ambiental Rural (CAR) impõem obrigações a proprietários rurais. Regularizar evita multa, embargo e restrições de crédito."
+      }
+    ],
+    quando_procurar: [
+      "Ao receber auto de infração, multa ou embargo de órgão ambiental — o prazo de defesa é curto",
+      "Antes de iniciar atividade que possa exigir licenciamento ambiental",
+      "Ao comprar imóvel rural — o passivo ambiental acompanha a propriedade",
+      "Ao ser intimado em inquérito ou ação penal por crime ambiental"
+    ],
+    glossario: ["responsabilidade-civil", "prescricao"],
+    temas_jurisprudencia: ["responsabilidade-civil"],
+    modelos: ["procuracao-ad-judicia", "notificacao-extrajudicial"],
+    faq: [
+      {
+        q: "Recebi uma multa do IBAMA. Pagar resolve tudo?",
+        a: "Não necessariamente. A multa é só a esfera administrativa. Pode haver ainda a obrigação civil de reparar o dano e, em certos casos, processo penal. Vale analisar a defesa administrativa antes de pagar — o auto pode ter vícios — e verificar a possibilidade de conversão da multa em serviços ambientais."
+      },
+      {
+        q: "Comprei um sítio com desmatamento antigo. O problema é meu?",
+        a: "Pode ser. A obrigação de recuperar a área acompanha o imóvel, mesmo que o dano tenha sido causado pelo dono anterior. Por isso a análise ambiental antes da compra é tão importante quanto a análise da matrícula."
+      },
+      {
+        q: "Dano ambiental prescreve?",
+        a: "O STF decidiu que a pretensão de reparação civil de dano ambiental é imprescritível — a obrigação de reparar não desaparece com o tempo. Multas administrativas e crimes seguem prazos próprios, que devem ser analisados caso a caso."
+      }
+    ],
+    atualizado_em: "2026-07-01"
+  },
+  {
+    slug: "direito-administrativo",
+    area_slug: "administrativo",
+    titulo: "Guia de direito administrativo",
+    tagline: "Concursos, servidores públicos, PAD, licitações, improbidade e desapropriação — seus direitos diante do poder público.",
+    introducao: [
+      "O direito administrativo regula a relação entre o cidadão e o poder público: concursos, servidores, licitações, contratos administrativos, desapropriações e a responsabilidade de agentes públicos. As leis mais citadas são o estatuto dos servidores federais (Lei 8.112/1990), a nova Lei de Licitações (Lei 14.133/2021) e a Lei de Improbidade Administrativa (Lei 8.429/1992, reformada em 2021) — estados e municípios têm estatutos próprios.",
+      "O princípio que organiza a área é simples de entender: a Administração só pode fazer o que a lei permite, e todos os seus atos podem ser controlados. Edital de concurso descumprido, punição sem defesa, licitação dirigida, desapropriação com indenização injusta — tudo isso pode ser questionado, administrativamente e na Justiça, dentro dos prazos legais."
+    ],
+    publico_principal: "ambos",
+    temas_centrais: [
+      {
+        titulo: "Concursos públicos",
+        descricao:
+          "O edital vincula a Administração e os candidatos. Eliminações irregulares, mudanças de regra no meio do certame e preterição na nomeação podem ser questionadas. O STF reconhece que o aprovado dentro do número de vagas do edital tem, em regra, direito à nomeação."
+      },
+      {
+        titulo: "Servidor público e PAD",
+        descricao:
+          "O processo administrativo disciplinar (PAD) apura infrações funcionais e pode levar até a demissão. O servidor tem direito ao contraditório e à ampla defesa em todas as fases — vícios no procedimento podem anular a punição."
+      },
+      {
+        titulo: "Licitações e contratos administrativos",
+        descricao:
+          "A Lei 14.133/2021 rege as compras públicas. Empresas podem impugnar editais, recorrer de julgamentos e questionar sanções como multa e impedimento de licitar."
+      },
+      {
+        titulo: "Improbidade administrativa",
+        descricao:
+          "A Lei 8.429/1992, após a reforma de 2021, passou a exigir dolo (intenção) para condenação por improbidade. As sanções são graves — perda da função, suspensão de direitos políticos, multa — e a defesa técnica é indispensável."
+      },
+      {
+        titulo: "Desapropriação",
+        descricao:
+          "O poder público pode desapropriar por necessidade ou utilidade pública, ou interesse social, mediante indenização — em regra prévia, justa e em dinheiro. O valor oferecido pode ser discutido judicialmente, com perícia."
+      }
+    ],
+    quando_procurar: [
+      "Ao ser eliminado ou preterido em concurso público de forma que pareça contrariar o edital ou a lei",
+      "Ao ser notificado em sindicância ou PAD — a defesa desde o início evita nulidades e punições injustas",
+      "Ao receber citação em ação de improbidade administrativa",
+      "Em desapropriação com valor de indenização abaixo do de mercado"
+    ],
+    glossario: ["mandado-de-seguranca", "prescricao"],
+    modelos: ["procuracao-ad-judicia"],
+    faq: [
+      {
+        q: "Fui aprovado no concurso mas não fui nomeado. Tenho direito?",
+        a: "Se você foi aprovado dentro do número de vagas previsto no edital, o STF reconhece, em regra, direito subjetivo à nomeação dentro do prazo de validade do concurso. Fora das vagas, o direito só surge em situações específicas, como preterição. Cada caso exige análise."
+      },
+      {
+        q: "Qual o prazo para entrar com mandado de segurança?",
+        a: "120 dias contados da ciência do ato que violou o direito. Passado esse prazo, o mandado de segurança não cabe mais — mas outras ações judiciais podem continuar possíveis, conforme o caso."
+      },
+      {
+        q: "Ações contra o poder público têm prazo?",
+        a: "Em regra, a pretensão contra a Fazenda Pública prescreve em 5 anos (Decreto 20.910/1932). Há exceções e particularidades — na dúvida, não deixe o tempo passar."
+      }
+    ],
+    atualizado_em: "2026-07-01"
   }
 ];
 
@@ -1071,6 +1377,216 @@ export const GUIA_CONTEUDO: Record<string, GuiaConteudo> = {
       { titulo: "Remoção de conteúdo", detalhe: "Conteúdo ofensivo, falso ou íntimo sem autorização pode ser removido por ordem judicial — e há regras especiais para imagens íntimas." },
       { titulo: "Direitos da LGPD", detalhe: "Você pode pedir a uma empresa acesso, correção e exclusão dos seus dados, e saber com quem foram compartilhados." },
       { titulo: "Indenização por vazamento", detalhe: "Vazamento ou uso indevido de dados pessoais pode gerar responsabilização da empresa e indenização." }
+    ]
+  },
+
+  "direito-eleitoral": {
+    como_funciona: [
+      "A Justiça Eleitoral é organizada em três níveis: os cartórios e juízes eleitorais nas cidades, os Tribunais Regionais Eleitorais (TREs) nos estados e o Tribunal Superior Eleitoral (TSE) em Brasília. Ela cuida de tudo: do seu título de eleitor ao registro de candidaturas, da propaganda às contas de campanha e aos crimes eleitorais.",
+      "Para o eleitor, os assuntos mais comuns são título, transferência de domicílio, justificativa de voto e regularização de pendências. Para quem entra na disputa política, o jogo muda: registro de candidatura, arrecadação e gasto de recursos, propaganda e prestação de contas seguem regras minuciosas, e os prazos para se defender de impugnações e representações costumam ser de poucos dias."
+    ],
+    passo_a_passo: [
+      { titulo: "Regularize sua situação eleitoral", detalhe: "Consulte a situação do título no site do TSE ou no aplicativo e-Título. Pendências de votação ou multas podem travar emissão de passaporte, posse em concurso e outros atos." },
+      { titulo: "Se perdeu uma eleição, justifique", detalhe: "A justificativa pode ser feita pelo e-Título ou em cartório eleitoral, dentro do prazo fixado para cada turno. Quem não justifica paga multa de valor baixo — mas acumular pendências pode cancelar o título." },
+      { titulo: "Vai ser candidato? Comece cedo", detalhe: "Verifique filiação partidária, domicílio eleitoral e possíveis causas de inelegibilidade com antecedência. Problemas descobertos no registro de candidatura podem ser fatais para a campanha." },
+      { titulo: "Organize as contas desde o primeiro dia", detalhe: "Toda arrecadação e todo gasto de campanha devem passar pela conta bancária específica e ser documentados. A prestação de contas desorganizada é uma das maiores fontes de problema pós-eleição." },
+      { titulo: "Recebeu notificação? Não espere", detalhe: "Representações e impugnações eleitorais têm prazos de defesa muito curtos, às vezes de poucos dias. Procure advogado imediatamente ao ser notificado." }
+    ],
+    prazos: [
+      { prazo: "Dias, não meses", descricao: "Os prazos do processo eleitoral (defesas, recursos, impugnações) são contados em poucos dias e costumam correr de forma acelerada em ano de eleição." },
+      { prazo: "Por turno", descricao: "A justificativa de ausência às urnas tem prazo próprio fixado pela Justiça Eleitoral para cada turno da eleição." },
+      { prazo: "3 eleições", descricao: "Quem deixa de votar, justificar ou pagar a multa por três eleições consecutivas pode ter o título de eleitor cancelado." }
+    ],
+    documentos: [
+      "Título de eleitor ou e-Título",
+      "Comprovantes de justificativa ou quitação de multas",
+      "Para candidatos: certidões exigidas para o registro de candidatura",
+      "Extratos da conta bancária de campanha e notas fiscais de gastos",
+      "Notificações e intimações recebidas da Justiça Eleitoral"
+    ],
+    custos: [
+      "Regularização do título e justificativa: gratuitas (multa por ausência tem valor baixo)",
+      "Campanhas: contador e advogado eleitoral são investimentos praticamente obrigatórios",
+      "Processos eleitorais: honorários conforme a complexidade e a urgência"
+    ],
+    erros_comuns: [
+      "Deixar pendências eleitorais acumularem até travarem passaporte ou posse em concurso",
+      "Fazer propaganda antes do período permitido e colecionar multas",
+      "Misturar dinheiro pessoal com recursos de campanha sem registro adequado",
+      "Perder prazos de defesa por não acompanhar as intimações da Justiça Eleitoral"
+    ],
+    direitos_chave: [
+      { titulo: "Voto facultativo", detalhe: "O voto só é obrigatório entre 18 e 70 anos. Jovens de 16 e 17, maiores de 70 e analfabetos votam se quiserem — sem multa por ausência." },
+      { titulo: "Defesa no registro e nas representações", detalhe: "Impugnação de candidatura e representações eleitorais garantem direito de defesa — mas os prazos são curtíssimos e a resposta precisa ser técnica." },
+      { titulo: "Quitação eleitoral", detalhe: "Estar quite com a Justiça Eleitoral é condição para uma série de atos da vida civil. Consultar e regularizar a situação é simples e gratuito." }
+    ]
+  },
+
+  "direito-militar": {
+    como_funciona: [
+      "O militar vive sob dois sistemas de regras ao mesmo tempo. O primeiro é o penal militar: crimes previstos no Código Penal Militar são processados pela Justiça Militar — a da União, para as Forças Armadas, e as estaduais, para policiais e bombeiros militares. O segundo é o disciplinar: transgressões do dia a dia são punidas dentro da própria corporação, conforme o regulamento de cada força.",
+      "Os casos mais graves da vida administrativa passam pelos conselhos: o conselho de disciplina pode levar à exclusão de praças, e o conselho de justificação pode levar à perda do posto de oficiais — este, por decisão de tribunal, como garante a Constituição. Em todos esses procedimentos o militar tem direito a defesa, e a atuação desde a primeira notificação costuma definir o resultado."
+    ],
+    passo_a_passo: [
+      { titulo: "Identifique a natureza do problema", detalhe: "Crime militar, transgressão disciplinar e questão administrativa (promoção, reforma, pensão) seguem caminhos totalmente diferentes. O enquadramento correto define a estratégia." },
+      { titulo: "Guarde toda a documentação", detalhe: "Notificações, portarias, boletins internos, termos de depoimento. Na esfera militar, o papel conta muito — e prazos e formalidades são levados a sério." },
+      { titulo: "Não preste declarações sem orientação", detalhe: "Em sindicâncias, inquéritos policiais militares (IPM) e conselhos, o que se declara no início pesa até o fim. O direito de ser assistido por advogado vale desde a primeira hora." },
+      { titulo: "Apresente defesa em todas as fases", detalhe: "Sindicância, IPM, processo disciplinar e conselho têm momentos próprios de defesa. Deixar passar uma fase sem se manifestar enfraquece as seguintes." },
+      { titulo: "Avalie o controle judicial", detalhe: "Punições e decisões administrativas ilegais — sem defesa, sem competência, fora do procedimento — podem ser levadas ao Judiciário. A análise da legalidade é sempre possível." }
+    ],
+    prazos: [
+      { prazo: "Curtos e formais", descricao: "Prazos de defesa em procedimentos disciplinares e conselhos são fixados nos regulamentos de cada força e costumam ser curtos — a contagem começa da notificação." },
+      { prazo: "Recursos internos", descricao: "Punições disciplinares admitem recurso na via hierárquica, com prazos próprios de cada regulamento. Esgotar a via interna pode ser importante antes de ir à Justiça." },
+      { prazo: "5 anos", descricao: "Em regra, ações contra a Fazenda Pública (revisão de atos, diferenças de remuneração, reforma) prescrevem em 5 anos." }
+    ],
+    documentos: [
+      "Notificações, portarias e boletins internos relacionados ao caso",
+      "Cópia do procedimento (sindicância, IPM, PAD ou conselho), quando acessível",
+      "Assentamentos funcionais e histórico de carreira",
+      "Termos de depoimento já prestados",
+      "Regulamento disciplinar da corporação (para conferir enquadramento e rito)"
+    ],
+    custos: [
+      "Defesas administrativas internas: sem custas — o custo é o advogado",
+      "Ações judiciais: custas conforme o valor; cabe pedido de justiça gratuita",
+      "Processos criminais militares: a defesa técnica é indispensável; quem não pode pagar tem direito a defensor"
+    ],
+    erros_comuns: [
+      "Assinar termos e prestar declarações sem ler ou sem orientação jurídica",
+      "Tratar o conselho de disciplina como formalidade — ele pode encerrar a carreira",
+      "Perder prazos internos de recurso e chegar tarde ao Judiciário",
+      "Não guardar cópia dos documentos do procedimento"
+    ],
+    direitos_chave: [
+      { titulo: "Defesa em todas as instâncias", detalhe: "Contraditório e ampla defesa valem também na caserna: nenhuma punição grave pode ser aplicada sem oportunidade real de defesa." },
+      { titulo: "Garantia do posto e da patente", detalhe: "Oficial só perde posto e patente por decisão de tribunal militar, nas hipóteses previstas na Constituição — não por ato administrativo isolado." },
+      { titulo: "Controle judicial da legalidade", detalhe: "Mesmo com limites ao habeas corpus quanto ao mérito de punições disciplinares, a legalidade do ato — procedimento, competência, defesa — sempre pode ser examinada pela Justiça." }
+    ]
+  },
+
+  "direito-internacional": {
+    como_funciona: [
+      "Quando um caso envolve dois países, a pergunta central é sempre: o que vale onde? Documentos brasileiros não valem automaticamente no exterior, nem os estrangeiros aqui — é preciso apostilamento (o selo da Convenção de Haia, feito em cartório) e, para documentos em outra língua, tradução juramentada. Decisões judiciais estrangeiras, em regra, precisam ser homologadas pelo STJ antes de produzir efeitos no Brasil.",
+      "Os casos mais comuns no dia a dia são reconhecimento de cidadania estrangeira (que depende da lei do país de origem e de uma cadeia completa de certidões da família), validação de divórcios feitos no exterior, vistos e residência de estrangeiros no Brasil (Lei de Migração) e contratos com empresas de fora. Em todos eles, organizar os documentos certos, na ordem certa, é metade do trabalho."
+    ],
+    passo_a_passo: [
+      { titulo: "Mapeie os documentos necessários", detalhe: "Cidadania, homologação e vistos são, antes de tudo, processos documentais. Liste o que existe, o que falta e onde buscar (cartórios, consulados, arquivos no exterior)." },
+      { titulo: "Apostile e traduza", detalhe: "Documento público de um país signatário da Convenção de Haia precisa de apostila para valer no outro. Documentos em língua estrangeira exigem tradução juramentada no Brasil." },
+      { titulo: "Verifique se precisa homologar", detalhe: "Sentença estrangeira, em regra, exige homologação no STJ. Exceção prática importante: divórcio consensual simples pode ser averbado direto no cartório de registro civil." },
+      { titulo: "Em contratos, defina lei e foro antes de assinar", detalhe: "Cláusulas de lei aplicável, foro ou arbitragem e moeda de pagamento decidem, na prática, quem terá vantagem se algo der errado. Negocie antes — depois é tarde." },
+      { titulo: "Use os canais oficiais", detalhe: "Vistos e residência passam pela Polícia Federal e consulados; adoção internacional passa pelas autoridades centrais. Atalhos fora do procedimento oficial não são reconhecidos." }
+    ],
+    prazos: [
+      { prazo: "Meses a anos", descricao: "Processos de cidadania e homologação dependem de órgãos de dois países — a preparação documental correta desde o início é o que mais reduz o tempo total." },
+      { prazo: "Validade dos vistos", descricao: "Vistos e autorizações de residência têm prazos de validade e de renovação próprios. Perder a data pode significar recomeçar o processo ou ficar em situação irregular." },
+      { prazo: "Prescrição conforme a lei aplicável", descricao: "Em contratos internacionais, o prazo para cobrar depende da lei escolhida no contrato — mais um motivo para ler a cláusula de lei aplicável com atenção." }
+    ],
+    documentos: [
+      "Certidões de nascimento, casamento e óbito da cadeia familiar (para cidadania)",
+      "Sentença estrangeira completa e certidão de trânsito em julgado (para homologação)",
+      "Apostilas de Haia e traduções juramentadas",
+      "Passaporte e comprovantes de estada (para vistos e residência)",
+      "Contratos, propostas e trocas de mensagens (em disputas contratuais)"
+    ],
+    custos: [
+      "Apostilamento e tradução juramentada: custos por documento, em cartório e com tradutor público",
+      "Homologação no STJ: custas judiciais e honorários advocatícios",
+      "Busca de certidões no exterior: varia muito conforme o país e a época dos registros"
+    ],
+    erros_comuns: [
+      "Juntar documentos sem apostila ou sem tradução juramentada e ter o processo devolvido",
+      "Presumir que a sentença estrangeira vale no Brasil automaticamente",
+      "Assinar contrato internacional sem olhar a cláusula de foro e de lei aplicável",
+      "Tentar adoção internacional fora do procedimento oficial das autoridades centrais"
+    ],
+    direitos_chave: [
+      { titulo: "Divórcio consensual sem homologação", detalhe: "O divórcio consensual simples feito no exterior pode ser averbado diretamente no cartório brasileiro, sem passar pelo STJ — economia real de tempo e dinheiro." },
+      { titulo: "Direitos do migrante", detalhe: "A Lei de Migração assegura ao estrangeiro em situação regular acesso a serviços públicos e caminhos formais de regularização e naturalização." },
+      { titulo: "Arbitragem internacional", detalhe: "Empresas podem eleger arbitragem para resolver disputas de contratos internacionais — sentenças arbitrais estrangeiras também passam por homologação no STJ para execução no Brasil." }
+    ]
+  },
+
+  "direito-ambiental": {
+    como_funciona: [
+      "O sistema ambiental brasileiro funciona em três esferas independentes. Na administrativa, órgãos como IBAMA, ICMBio e os órgãos estaduais aplicam multas, embargos e apreensões. Na civil, quem causa dano é obrigado a repará-lo — e essa responsabilidade é objetiva, ou seja, não depende de provar culpa. Na penal, a Lei 9.605/1998 pune crimes contra fauna, flora e de poluição, alcançando inclusive empresas.",
+      "Para quem recebe um auto de infração, o caminho começa na defesa administrativa: o prazo vem indicado no próprio auto (em regra, 20 dias na esfera federal) e a peça pode apontar vícios formais, erro de enquadramento e desproporcionalidade da multa. Em paralelo, vale avaliar a conversão da multa em serviços ambientais e, sempre, o quadro completo — porque resolver uma esfera não encerra as outras."
+    ],
+    passo_a_passo: [
+      { titulo: "Leia o auto de infração com atenção", detalhe: "Confira o enquadramento legal, a descrição dos fatos, o valor da multa e — principalmente — o prazo de defesa indicado no documento. Ele é curto." },
+      { titulo: "Reúna provas da sua versão", detalhe: "Fotos com data, licenças e autorizações existentes, CAR, notas fiscais, laudos. A defesa administrativa é a chance de corrigir erros de fato do órgão fiscalizador." },
+      { titulo: "Apresente a defesa no prazo", detalhe: "A defesa administrativa pode reduzir ou anular a multa e evita a inscrição do débito em dívida ativa. Perder o prazo fecha a porta mais barata de solução." },
+      { titulo: "Avalie a conversão da multa", detalhe: "Na esfera federal há previsão de conversão da multa em serviços de preservação e recuperação ambiental, com desconto — vale simular antes de simplesmente pagar." },
+      { titulo: "Regularize a atividade", detalhe: "Licença ambiental, CAR e recuperação de áreas degradadas estancam o problema na origem. Sem regularização, novas autuações são questão de tempo." }
+    ],
+    prazos: [
+      { prazo: "Em regra 20 dias", descricao: "Prazo de defesa contra auto de infração ambiental federal (Decreto 6.514/2008), contado da ciência. Órgãos estaduais têm prazos próprios — confira sempre no auto." },
+      { prazo: "Sem prazo", descricao: "A obrigação civil de reparar dano ambiental é imprescritível, segundo o STF — ela não desaparece com o passar dos anos e acompanha o imóvel." },
+      { prazo: "Etapas da licença", descricao: "Licença prévia, de instalação e de operação têm validades e condições próprias. Operar com licença vencida equivale, na prática, a operar sem licença." }
+    ],
+    documentos: [
+      "Auto de infração e notificações recebidas",
+      "Licenças, autorizações e Cadastro Ambiental Rural (CAR)",
+      "Matrícula do imóvel e documentos da área",
+      "Fotos, laudos e relatórios técnicos da área ou da atividade",
+      "Comprovantes de medidas de recuperação já adotadas"
+    ],
+    custos: [
+      "Defesa administrativa: sem custas — o custo é o advogado e eventuais laudos técnicos",
+      "Conversão de multa: pode reduzir o valor devido, conforme regulamento",
+      "Ação judicial: custas conforme o valor; perícia ambiental costuma ser o item mais caro"
+    ],
+    erros_comuns: [
+      "Ignorar o auto de infração e deixar a multa virar dívida ativa",
+      "Pagar a multa achando que isso encerra a obrigação de reparar o dano",
+      "Comprar imóvel rural sem verificar passivo ambiental, embargo e CAR",
+      "Operar com licença vencida ou descumprir condicionantes da licença"
+    ],
+    direitos_chave: [
+      { titulo: "Defesa e recurso administrativos", detalhe: "Todo auto de infração ambiental pode ser contestado, com direito a defesa e recurso antes de qualquer cobrança definitiva." },
+      { titulo: "Conversão da multa", detalhe: "A legislação federal permite converter multa ambiental em serviços de preservação e recuperação, com redução do valor — alternativa que muita gente desconhece." },
+      { titulo: "Responsabilidade que acompanha o imóvel", detalhe: "Funciona nos dois sentidos: quem compra área degradada assume o passivo, mas quem vai comprar tem o direito de exigir a documentação ambiental antes de fechar negócio." }
+    ]
+  },
+
+  "direito-administrativo": {
+    como_funciona: [
+      "Direito administrativo é o campo dos conflitos entre o cidadão (ou a empresa) e o poder público. A regra de ouro: a Administração só pode agir conforme a lei, e todos os seus atos podem ser revistos — primeiro na via administrativa (recursos, impugnações, pedidos de reconsideração) e depois na Justiça. Concursos, PAD, licitações, improbidade e desapropriação são os temas que mais geram disputa.",
+      "Dois instrumentos aparecem o tempo todo na área: o mandado de segurança, ação rápida contra ato ilegal de autoridade (com prazo de 120 dias), e o processo administrativo, onde contraditório e ampla defesa são obrigatórios. Quem conhece os prazos — 120 dias para o mandado de segurança, 5 anos para a maioria das ações contra a Fazenda — sai na frente."
+    ],
+    passo_a_passo: [
+      { titulo: "Documente o ato que prejudicou você", detalhe: "Publicação no diário oficial, resultado do concurso, notificação do PAD, decisão da licitação. A data da ciência do ato define o início dos prazos." },
+      { titulo: "Use primeiro a via administrativa", detalhe: "Recursos administrativos são gratuitos, têm prazos definidos no edital ou na lei e resolvem muitos casos sem processo judicial. Mas atenção: em regra, não suspendem o prazo do mandado de segurança." },
+      { titulo: "Em PAD, constitua defesa desde a notificação", detalhe: "O servidor tem direito a acompanhar todo o processo, produzir provas e se manifestar. Vícios de procedimento — como cerceamento de defesa — podem anular a punição." },
+      { titulo: "Avalie o mandado de segurança", detalhe: "Contra ato ilegal e comprovável por documentos, o mandado de segurança é o caminho mais rápido — mas o prazo de 120 dias da ciência do ato não espera." },
+      { titulo: "Nas demais situações, ação ordinária", detalhe: "Quando há necessidade de provas mais complexas (perícia em desapropriação, por exemplo) ou o prazo do mandado de segurança passou, a ação comum contra o ente público é o caminho." }
+    ],
+    prazos: [
+      { prazo: "120 dias", descricao: "Prazo para impetrar mandado de segurança, contado da ciência do ato ilegal. Passado o prazo, restam as ações ordinárias." },
+      { prazo: "5 anos", descricao: "Prazo geral de prescrição das pretensões contra a Fazenda Pública (Decreto 20.910/1932) — cobranças, anulações, indenizações." },
+      { prazo: "Prazos do edital", descricao: "Em concursos e licitações, recursos contra questões, resultados e julgamentos seguem os prazos do edital — frequentemente de 2 a 5 dias." }
+    ],
+    documentos: [
+      "Edital do concurso ou da licitação e suas retificações",
+      "Publicações oficiais e comprovantes da data de ciência do ato",
+      "Notificações, portarias e cópia do processo administrativo (PAD)",
+      "Provas do prejuízo (classificação, propostas, laudos de avaliação)",
+      "Protocolos de recursos administrativos já apresentados"
+    ],
+    custos: [
+      "Recursos administrativos: gratuitos, em regra",
+      "Mandado de segurança: custas judiciais, sem honorários de sucumbência em regra",
+      "Ações ordinárias: custas conforme o valor; em desapropriação, a perícia é item relevante"
+    ],
+    erros_comuns: [
+      "Deixar passar os 120 dias do mandado de segurança esperando resposta de recurso administrativo",
+      "Assinar ciência de decisões do PAD sem ler nem guardar cópia",
+      "Não impugnar o edital no prazo e tentar discutir a regra só depois da reprovação",
+      "Aceitar o valor da desapropriação sem avaliação técnica independente"
+    ],
+    direitos_chave: [
+      { titulo: "Nomeação dentro das vagas", detalhe: "O STF reconhece que o candidato aprovado dentro do número de vagas do edital tem, em regra, direito à nomeação no prazo de validade do concurso." },
+      { titulo: "Ampla defesa no PAD", detalhe: "Nenhum servidor pode ser punido sem processo com contraditório e ampla defesa. Punição aplicada com vício de procedimento pode ser anulada." },
+      { titulo: "Indenização justa na desapropriação", detalhe: "A indenização deve ser justa e, em regra, prévia e em dinheiro. O valor oferecido pelo poder público pode ser discutido judicialmente com perícia." }
     ]
   }
 };

@@ -213,6 +213,41 @@ export const GUIA_CIDADE_TEMPLATES: Record<string, LocalTemplate> = {
     h1: (c) => `Direito digital em ${c}: golpes, dados e internet`,
     description: (c) =>
       `Golpe pelo Pix, vazamento de dados e ofensas na internet geram responsabilização com base na LGPD e no Marco Civil. Guia em linguagem simples para ${c}.`
+  },
+  "direito-eleitoral": {
+    full: (c) => `Direito eleitoral em ${c}: título, candidatura, contas`,
+    short: (c) => `Eleitoral em ${c}: guia da área`,
+    h1: (c) => `Direito eleitoral em ${c}: título, candidatura e contas`,
+    description: (c) =>
+      `Título de eleitor, justificativa de voto, registro de candidatura e prestação de contas seguem regras e prazos curtos. Guia em linguagem simples para ${c}.`
+  },
+  "direito-militar": {
+    full: (c) => `Direito militar em ${c}: defesa e disciplina`,
+    short: (c) => `Militar em ${c}: defesa e disciplina`,
+    h1: (c) => `Direito militar em ${c}: defesa, disciplina e carreira`,
+    description: (c) =>
+      `Crimes militares, punições disciplinares e conselhos de disciplina garantem direito de defesa em todas as fases. Guia em linguagem simples para ${c}.`
+  },
+  "direito-internacional": {
+    full: (c) => `Direito internacional em ${c}: cidadania e vistos`,
+    short: (c) => `Internacional em ${c}: cidadania`,
+    h1: (c) => `Direito internacional em ${c}: cidadania, vistos e sentenças`,
+    description: (c) =>
+      `Cidadania estrangeira, vistos, contratos internacionais e homologação de sentença seguem procedimentos definidos. Guia em linguagem simples para ${c}.`
+  },
+  "direito-ambiental": {
+    full: (c) => `Direito ambiental em ${c}: multas e licenciamento`,
+    short: (c) => `Ambiental em ${c}: multas e licenças`,
+    h1: (c) => `Direito ambiental em ${c}: multas, licenças e defesa`,
+    description: (c) =>
+      `Auto de infração do IBAMA pode ser contestado por defesa administrativa dentro do prazo, com possível conversão da multa. Guia em linguagem simples para ${c}.`
+  },
+  "direito-administrativo": {
+    full: (c) => `Direito administrativo em ${c}: concursos e servidor`,
+    short: (c) => `Administrativo em ${c}: concursos`,
+    h1: (c) => `Direito administrativo em ${c}: concursos, PAD e licitações`,
+    description: (c) =>
+      `Eliminação em concurso, PAD e atos do poder público podem ser revistos por recurso ou ação judicial, com prazos definidos. Guia em linguagem simples para ${c}.`
   }
 };
 

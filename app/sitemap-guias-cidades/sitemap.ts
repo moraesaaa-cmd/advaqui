@@ -8,7 +8,7 @@ import { getAllCities } from "@/lib/data/cities";
  * Sitemap secundário — /guias/[slug]/em/[cidade-uf].
  *
  * 1 sitemap por guia × 5571 cidades IBGE.
- * 10 guias × 5571 = 55.710 URLs.
+ * 15 guias × 5571 = 83.565 URLs.
  *
  * Quando adicionarmos novos guias, este sitemap cresce automaticamente.
  */
