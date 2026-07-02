@@ -24,7 +24,7 @@ import LeadBriefButton from "@/components/LeadBriefButton";
  * cookie HMAC de admin, igual ao restante do painel.
  */
 
-type TranscriptMessage = { role: string; content: string; ts?: string };
+type TranscriptMessage = { role: string; content: string; ts?: number };
 
 type MatchedLawyer = { name: string; slug: string };
 
@@ -132,7 +132,7 @@ function fmtData(iso: string | null): string {
 }
 
 /** Horário curto (HH:MM) de uma mensagem do transcript; "" se ts inválido. */
-function fmtHora(ts?: string): string {
+function fmtHora(ts?: number): string {
   if (!ts) return "";
   const d = new Date(ts);
   if (Number.isNaN(d.getTime())) return "";

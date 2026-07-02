@@ -398,6 +398,8 @@ export type LeadRow = {
   ai_score: number | null;
   matched_lawyer_id: string | null;
   metadata: Record<string, unknown>;
+  /** Diálogo completo lead x chatbot Marina — array {role, content, ts} (migration 0019) */
+  transcript: Array<{ role: string; content: string; ts?: number }> | null;
 };
 
 export type AgentLogRow = {

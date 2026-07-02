@@ -41,10 +41,8 @@ const LEAD_STATUSES = [
 /** Valores aceitos pela CHECK constraint de leads.prioridade. */
 const PRIORIDADES = ["baixa", "normal", "alta", "urgente"] as const;
 
-type TranscriptMessage = { role: string; content: string; ts?: string };
-
-/** LeadRow + coluna transcript (migration 0019, ainda fora de types.ts). */
-type LeadDbRow = LeadRow & { transcript: TranscriptMessage[] | null };
+/** transcript consta em LeadRow (types.ts) desde a migration 0019. */
+type LeadDbRow = LeadRow;
 
 /** Identificação gravada no audit_logs (painel tem um único admin). */
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@advaqui.com";

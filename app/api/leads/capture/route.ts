@@ -206,10 +206,7 @@ export async function POST(req: Request) {
   // Insert
   try {
     const admin = createAdminClient();
-    // A coluna leads.transcript (JSONB) vem da migration 0019 e ainda não
-    // consta em LeadRow — o payload é tipado com a extensão até o types.ts
-    // ser regenerado.
-    const insertPayload: Partial<LeadRow> & { transcript?: TranscriptItem[] } = {
+    const insertPayload: Partial<LeadRow> = {
       nome: nome || null,
       telefone: telefone || null,
       email: email || null,
