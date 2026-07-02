@@ -12,7 +12,7 @@ import {
   ShieldCheck,
   Sparkles
 } from "lucide-react";
-import { SITE } from "@/lib/config";
+import { PLAN, SITE } from "@/lib/config";
 import { findCapital, type City } from "@/lib/data/cities";
 import { STATES } from "@/lib/data/states";
 
@@ -38,6 +38,29 @@ const DIFERENCIAIS = [
   "Seu contato (telefone e WhatsApp) visível para quem precisa",
   "Você cria, edita e pausa seu perfil quando quiser"
 ];
+
+const COMPARATIVO = [
+  {
+    hoje: "Anúncio pago cobra por clique e para de aparecer quando o saldo acaba.",
+    comAdvaqui:
+      "Seu perfil fica no ar 24 horas por dia, em páginas que já aparecem no Google para a sua cidade."
+  },
+  {
+    hoje: "Depender só de indicação limita você ao seu círculo de contatos.",
+    comAdvaqui:
+      "Quem pesquisa advogado na sua cidade encontra seu perfil e fala direto com você."
+  },
+  {
+    hoje: "Um site próprio leva meses para começar a ranquear no Google.",
+    comAdvaqui:
+      "O AdvAqui já tem milhares de páginas locais indexáveis trabalhando pelo seu perfil."
+  }
+];
+
+// Preço por dia arredondado para cima (10 centavos) — garante que a frase
+// "menos de R$ X por dia" continue verdadeira mesmo se o valor do plano mudar.
+const PRICE_PER_DAY_CEIL = Math.ceil((PLAN.price / PLAN.cycleDays) * 10) / 10;
+const PRICE_PER_DAY_LABEL = `R$ ${PRICE_PER_DAY_CEIL.toFixed(2).replace(".", ",")}`;
 
 const FAQ = [
   {
@@ -311,6 +334,73 @@ export default function ParaAdvogadosPage() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Comparativo — alternativa atual vs. AdvAqui */}
+      <section className="bg-white border-y border-brand-line py-16">
+        <div className="container-tight max-w-4xl">
+          <div className="text-center mb-10 max-w-2xl mx-auto">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-ink">
+              Compare com o que você já usa para ser encontrado
+            </h2>
+            <p className="text-brand-ink/65 mt-3">
+              Anúncio, indicação e site próprio funcionam — mas cada um tem um
+              limite. Veja o que muda com um perfil no AdvAqui.
+            </p>
+          </div>
+          <div className="hidden md:grid md:grid-cols-2 gap-4 mb-3 px-1">
+            <p className="text-xs font-bold uppercase tracking-wide text-brand-ink/50">
+              Como costuma ser hoje
+            </p>
+            <p className="text-xs font-bold uppercase tracking-wide text-brand-deep">
+              Com o AdvAqui
+            </p>
+          </div>
+          <div className="space-y-4">
+            {COMPARATIVO.map((row) => (
+              <div
+                key={row.hoje}
+                className="grid md:grid-cols-2 rounded-2xl border border-brand-line overflow-hidden"
+              >
+                <div className="bg-brand-bg/60 p-5 border-b md:border-b-0 md:border-r border-brand-line">
+                  <p className="md:hidden text-xs font-bold uppercase tracking-wide text-brand-ink/50 mb-1.5">
+                    Como costuma ser hoje
+                  </p>
+                  <p className="text-sm text-brand-ink/70 leading-relaxed">
+                    {row.hoje}
+                  </p>
+                </div>
+                <div className="bg-white p-5">
+                  <p className="md:hidden text-xs font-bold uppercase tracking-wide text-brand-deep mb-1.5">
+                    Com o AdvAqui
+                  </p>
+                  <p className="text-sm text-brand-ink/85 leading-relaxed flex items-start gap-2">
+                    <CheckCircle2
+                      className="w-4 h-4 mt-0.5 text-brand-deep flex-shrink-0"
+                      aria-hidden
+                    />
+                    {row.comAdvaqui}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 rounded-2xl border border-brand-line bg-brand-bg/40 p-6 md:flex md:items-center md:justify-between gap-6">
+            <p className="text-sm text-brand-ink/80 leading-relaxed">
+              O perfil é gratuito. O plano de destaque, opcional, custa{" "}
+              <strong className="text-brand-ink">{PLAN.priceLabel}</strong> por
+              mês — menos de {PRICE_PER_DAY_LABEL} por dia. Sem fidelidade:
+              cancele quando quiser.
+            </p>
+            <Link
+              href="/planos"
+              className="btn-accent inline-flex items-center gap-2 mt-4 md:mt-0 flex-shrink-0"
+            >
+              Ver o plano de destaque
+              <ArrowRight className="w-4 h-4" aria-hidden />
+            </Link>
+          </div>
         </div>
       </section>
 

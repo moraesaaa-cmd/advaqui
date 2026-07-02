@@ -25,6 +25,10 @@ import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import {
+  cidadesPrioritariasForContent,
+  cityContentAnchor
+} from "@/lib/seo/internal-links";
 import { SITE } from "@/lib/config";
 
 export const revalidate = 604800;
@@ -443,6 +447,37 @@ export default function GuiaPage({ params }: { params: { slug: string } }) {
           </Link>
         )}
       </aside>
+
+      {/* T13 — spokes geográficos: guia (hub temático) → páginas de cidade.
+          Conjunto de capitais + cidades prioritárias rotacionado por
+          hash(slug do guia) — cada guia linka cidades diferentes,
+          determinístico entre builds. Anchors variados por hash. */}
+      <section className="card mb-6">
+        <h2 className="font-display text-xl font-bold text-brand-ink mb-2">
+          Encontre advogado na sua cidade
+        </h2>
+        <p className="text-sm text-brand-ink/75 mb-3 leading-relaxed">
+          Veja profissionais
+          {especialidade ? ` de ${especialidade.name.toLowerCase()}` : ""} que
+          atuam nas principais cidades do país. O diretório cobre todas as
+          cidades brasileiras.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {cidadesPrioritariasForContent(g.slug, 8).map((c) => (
+            <Link
+              key={`${c.uf}-${c.slug}`}
+              href={
+                especialidade
+                  ? `/advogados/${c.uf.toLowerCase()}/${c.slug}/${especialidade.slug}`
+                  : `/advogados/${c.uf.toLowerCase()}/${c.slug}`
+              }
+              className="text-sm px-3 py-1.5 rounded-lg border border-brand-line bg-white text-brand-ink/80 hover:text-brand-deep hover:border-brand-deep/40 transition"
+            >
+              {cityContentAnchor(g.slug, c, especialidade?.name)}
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <aside
         role="note"

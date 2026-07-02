@@ -18,7 +18,9 @@ import { SITE } from "@/lib/config";
 import {
   capitalsForArticle,
   relatedTemplatesForArticle,
-  toolsForArticle
+  toolsForArticle,
+  cidadesPrioritariasForContent,
+  cityContentAnchor
 } from "@/lib/seo/internal-links";
 import {
   isArtigoLocalizavel
@@ -440,6 +442,34 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                     className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
                   >
                     {c.city.name}/{c.state.uf}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
+
+        {/* T13 — bloco "Encontre advogado na sua cidade" pra artigos SEM
+            bloco de capitais (categoria fora do mapa, ex: Tribunal do Júri).
+            Conjunto de capitais + cidades prioritárias rotacionado por
+            hash(slug do artigo) — varia entre artigos, estável entre builds. */}
+        {(() => {
+          if (capitalsForArticle(article, 6).length > 0) return null;
+          const cidades = cidadesPrioritariasForContent(article.slug, 8);
+          if (cidades.length === 0) return null;
+          return (
+            <section className="mt-12">
+              <h2 className="font-display text-2xl font-bold text-brand-ink mb-4">
+                Encontre advogado na sua cidade
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {cidades.map((c) => (
+                  <Link
+                    key={`${c.uf}-${c.slug}`}
+                    href={`/advogados/${c.uf.toLowerCase()}/${c.slug}`}
+                    className="chip text-brand-ink hover:bg-brand-deep hover:text-white hover:border-brand-deep transition"
+                  >
+                    {cityContentAnchor(article.slug, c)}
                   </Link>
                 ))}
               </div>

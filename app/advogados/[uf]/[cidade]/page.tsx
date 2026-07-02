@@ -15,7 +15,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata, fitTitle } from "@/lib/seo/metadata";
 import { breadcrumbSchema, cityServiceSchema } from "@/lib/seo/schema";
 import { cityIntro } from "@/lib/data/templates";
-import { topCitiesForState, neighborAnchor } from "@/lib/seo/internal-links";
+import { topCitiesForState, neighborAnchor, guiasUteisForCity } from "@/lib/seo/internal-links";
 import { CidadeRecursos } from "@/components/CidadeRecursos";
 import { CadastroCTA } from "@/components/PlanosCTAs";
 
@@ -474,6 +474,49 @@ export default async function CityPage({
               </div>
               <ArrowRight
                 className="w-4 h-4 flex-shrink-0 text-brand-ink/30 group-hover:text-brand-accent transition"
+                aria-hidden
+              />
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* GUIAS ÚTEIS — T13: hub geográfico → spokes temáticos localizados.
+          Links pra versão localizada do artigo (/blog/[slug]/em/[cidade-uf]),
+          que existe pra toda cidade IBGE. Seleção e anchors determinísticos
+          por hash(cidade) — variam entre cidades, estáveis entre builds. */}
+      <section className="pt-[42px] scroll-mt-20">
+        <h2
+          className="font-display font-semibold text-[23px] tracking-tight mb-2"
+          style={{ color: "#0F1B2D" }}
+        >
+          Guias úteis para quem mora em {city.name}
+        </h2>
+        <p className="text-[15px] mb-5" style={{ color: "#5A6678" }}>
+          Conteúdo em linguagem simples sobre os problemas jurídicos mais comuns,
+          aplicado à realidade de {city.name}/{st.uf}.
+        </p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          {guiasUteisForCity(city.slug, st.uf, 6).map((g) => (
+            <Link
+              key={g.href}
+              href={g.href}
+              className="group bg-white rounded-[14px] p-4 flex items-start justify-between gap-3 hover:shadow-md transition"
+              style={{ border: "1px solid #E4E2DA" }}
+            >
+              <div>
+                <h3
+                  className="font-display font-semibold text-[15px] mb-1 leading-snug"
+                  style={{ color: "#0F1B2D" }}
+                >
+                  {g.label}
+                </h3>
+                <p className="text-[13px] leading-relaxed" style={{ color: "#5A6678" }}>
+                  {g.desc}
+                </p>
+              </div>
+              <ArrowRight
+                className="w-4 h-4 flex-shrink-0 mt-1 text-brand-ink/30 group-hover:text-brand-accent transition"
                 aria-hidden
               />
             </Link>

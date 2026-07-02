@@ -24,6 +24,10 @@ import { STATES, type State } from "@/lib/data/states";
 import { citiesByUf, cityHash, type City } from "@/lib/data/cities";
 import { ARTICLES, type Article } from "@/lib/data/articles";
 import { TEMPLATES, type Template } from "@/lib/data/templates-docs";
+import {
+  getCidadesPrioritarias,
+  type CidadePrioritaria
+} from "@/lib/data/cidades-prioritarias";
 
 /**
  * Capitais de outros estados onde encontrar advogado da mesma especialidade.
@@ -270,6 +274,195 @@ export function toolsForArticle(article: Article, limit = 3): ToolLink[] {
     }
   }
   return out;
+}
+
+/**
+ * T13 — Guias úteis por cidade (hub geográfico → spokes temáticos).
+ *
+ * Cada página de cidade linka 4-6 artigos LOCALIZADOS do blog
+ * (/blog/[slug]/em/[cidade-uf]) — a versão localizada existe pra toda
+ * cidade IBGE (rota force-dynamic), então o link nunca é 404.
+ *
+ * Pool ordenado por volume de busca: os 6 primeiros são os temas de maior
+ * demanda (demissão, pensão, negativação, multa, inventário, aluguel).
+ * A escolha rotaciona por hash(uf:citySlug) — determinística por cidade,
+ * variada entre cidades. Anchors rotacionam por hash(citySlug+slug).
+ *
+ * Todos os slugs existem em lib/data/articles-cidades.ts
+ * (ARTIGOS_LOCALIZAVEIS_SLUGS) — allow-list dos artigos com versão local.
+ */
+export type GuiaUtilLink = { href: string; label: string; desc: string };
+
+const GUIAS_UTEIS_POOL: Array<{
+  slug: string;
+  anchors: string[];
+  desc: string;
+}> = [
+  // === Temas de maior busca (prioridade) ===
+  {
+    slug: "fui-demitido-sem-justa-causa",
+    anchors: [
+      "Demitido sem justa causa: seus direitos",
+      "Direitos na demissão sem justa causa",
+      "Fui demitido: o que devo receber"
+    ],
+    desc: "Verbas rescisórias, FGTS, multa de 40% e prazos"
+  },
+  {
+    slug: "como-pedir-pensao-alimenticia",
+    anchors: [
+      "Como pedir pensão alimentícia",
+      "Pensão alimentícia: como funciona o pedido",
+      "Guia da pensão alimentícia"
+    ],
+    desc: "Para filhos, ex-cônjuges e pais idosos — passo a passo"
+  },
+  {
+    slug: "banco-cobrou-taxa-indevida",
+    anchors: [
+      "Cobrança indevida e nome negativado",
+      "Banco cobrou taxa indevida: o que fazer",
+      "Como contestar cobrança indevida"
+    ],
+    desc: "Restituição, negativação em SPC/Serasa e dano moral"
+  },
+  {
+    slug: "multa-de-transito-como-recorrer",
+    anchors: [
+      "Como recorrer de multa de trânsito",
+      "Recurso de multa de trânsito: guia",
+      "Multa de trânsito: prazos e defesa"
+    ],
+    desc: "Defesa prévia, JARI e prazos do recurso"
+  },
+  {
+    slug: "como-fazer-inventario",
+    anchors: [
+      "Inventário: como fazer e quanto custa",
+      "Guia do inventário passo a passo",
+      "Inventário judicial e extrajudicial"
+    ],
+    desc: "Prazos, custos e quando vale o cartório"
+  },
+  {
+    slug: "acao-de-despejo-como-funciona",
+    anchors: [
+      "Ação de despejo e aluguel atrasado",
+      "Despejo: o que diz a lei do inquilinato",
+      "Aluguel: direitos de locador e inquilino"
+    ],
+    desc: "Prazos da ação de despejo e como se proteger"
+  },
+  // === Demais temas localizáveis ===
+  {
+    slug: "como-pedir-divorcio",
+    anchors: [
+      "Como pedir divórcio",
+      "Divórcio: cartório ou Justiça",
+      "Guia do divórcio: custos e prazos"
+    ],
+    desc: "Extrajudicial, judicial, custos e documentos"
+  },
+  {
+    slug: "inss-negou-beneficio-o-que-fazer",
+    anchors: [
+      "INSS negou o benefício: o que fazer",
+      "Benefício negado pelo INSS: próximos passos",
+      "Recurso contra o INSS"
+    ],
+    desc: "Recurso administrativo e ação judicial"
+  },
+  {
+    slug: "como-entrar-com-acao-no-juizado-do-consumidor",
+    anchors: [
+      "Ação no Juizado do Consumidor",
+      "Como acionar o Juizado Especial",
+      "Juizado do consumidor: passo a passo"
+    ],
+    desc: "Causas até 20 salários mínimos, sem custas iniciais"
+  },
+  {
+    slug: "acordo-trabalhista-vale-a-pena",
+    anchors: [
+      "Acordo trabalhista: como avaliar",
+      "Acordo trabalhista: o que observar",
+      "Antes de assinar o acordo trabalhista"
+    ],
+    desc: "Como avaliar a proposta da empresa"
+  }
+];
+
+export function guiasUteisForCity(
+  citySlug: string,
+  uf: string,
+  limit = 6
+): GuiaUtilLink[] {
+  const cityParam = `${citySlug}-${uf.toLowerCase()}`;
+  const top = GUIAS_UTEIS_POOL.slice(0, 6);
+  const rest = GUIAS_UTEIS_POOL.slice(6);
+  const h = cityHash(`${uf}:${citySlug}`);
+  const nTop = Math.min(4, limit, top.length);
+  const picked: typeof GUIAS_UTEIS_POOL = [];
+  for (let i = 0; i < nTop; i++) picked.push(top[(h + i) % top.length]);
+  for (let i = 0; i < limit - nTop && i < rest.length; i++) {
+    picked.push(rest[(h + i) % rest.length]);
+  }
+  return picked.map((g) => ({
+    href: `/blog/${g.slug}/em/${cityParam}`,
+    label: g.anchors[cityHash(citySlug + g.slug) % g.anchors.length],
+    desc: g.desc
+  }));
+}
+
+/**
+ * T13 — cidades pra bloco "Encontre advogado na sua cidade" em conteúdo
+ * estático (artigos do blog, guias). Mistura capitais + cidades grandes
+ * do interior (lista curada de 50 em lib/data/cidades-prioritarias.ts),
+ * rotacionando por hash(seed) — cada artigo/guia linka um conjunto
+ * diferente, determinístico entre builds.
+ */
+export function cidadesPrioritariasForContent(
+  seed: string,
+  limit = 8,
+  capitalsShare = 5
+): CidadePrioritaria[] {
+  const all = getCidadesPrioritarias();
+  const caps = all.filter((c) => c.tipo === "capital");
+  const interior = all.filter((c) => c.tipo !== "capital");
+  const h = cityHash(seed);
+  const out: CidadePrioritaria[] = [];
+  const nCaps = Math.min(capitalsShare, limit, caps.length);
+  for (let i = 0; i < nCaps; i++) out.push(caps[(h + i) % caps.length]);
+  for (let i = 0; i < limit - nCaps && i < interior.length; i++) {
+    out.push(interior[(h + i) % interior.length]);
+  }
+  return out;
+}
+
+/**
+ * Anchor rotacionado pra link conteúdo → cidade (mesma lógica do
+ * neighborAnchor): 4 padrões por hash(seed+slug), estável entre builds.
+ */
+export function cityContentAnchor(
+  seed: string,
+  c: CidadePrioritaria,
+  areaName?: string
+): string {
+  const area = areaName ? areaName.toLowerCase() : "";
+  const patterns = area
+    ? [
+        `Advogado ${area} em ${c.nome_completo}`,
+        `Advogados em ${c.nome_completo}`,
+        `Advogado de ${area} em ${c.nome_completo}`,
+        `Encontrar advogado em ${c.nome_completo}`
+      ]
+    : [
+        `Advogado em ${c.nome_completo}`,
+        `Advogados em ${c.nome_completo}`,
+        `Encontrar advogado em ${c.nome_completo}`,
+        `Profissionais em ${c.nome_completo}`
+      ];
+  return patterns[cityHash(seed + c.slug) % patterns.length];
 }
 
 /**
