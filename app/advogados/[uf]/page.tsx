@@ -119,7 +119,7 @@ export default async function StatePage({ params }: { params: { uf: string } }) 
                   <p className="font-display text-base font-bold text-brand-ink">
                     {c.name}
                     {c.isCapital && (
-                      <span className="ml-1.5 text-xs text-brand-accent2">capital</span>
+                      <span className="ml-1.5 text-xs text-brand-accentText">capital</span>
                     )}
                   </p>
                   <p className="text-xs text-brand-ink/55 mt-0.5">

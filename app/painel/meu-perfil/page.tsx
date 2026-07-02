@@ -750,7 +750,7 @@ export default function PainelPage() {
                             <Lock className="w-2.5 h-2.5" aria-hidden /> Premium
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-brand-accent/15 text-brand-accent">
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-brand-accent/15 text-brand-accentText">
                             <Sparkles className="w-2.5 h-2.5" aria-hidden /> IA
                           </span>
                         )
@@ -769,7 +769,7 @@ export default function PainelPage() {
                     {locked && (
                       <Link
                         href="/painel/pagamento"
-                        className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-brand-accent hover:text-brand-deep transition"
+                        className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-brand-accentText hover:text-brand-deep transition"
                       >
                         Desbloquear <Star className="w-2.5 h-2.5" aria-hidden />
                       </Link>
@@ -896,7 +896,7 @@ export default function PainelPage() {
                       type="button"
                       onClick={improveProfileWithAI}
                       disabled={aiLoading}
-                      className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-brand-accent/15 text-brand-accent hover:bg-brand-accent/25 transition disabled:opacity-50"
+                      className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-brand-accent/15 text-brand-accentText hover:bg-brand-accent/25 transition disabled:opacity-50"
                     >
                       <Sparkles className="w-3.5 h-3.5" aria-hidden />
                       {aiLoading ? "Gerando sugestões..." : "Melhorar apresentação com IA"}

@@ -69,7 +69,7 @@ export function HomeFaq() {
                 {item.q}
                 <span
                   aria-hidden
-                  className="flex-shrink-0 text-brand-accent2 text-2xl leading-none group-open:rotate-45 transition-transform"
+                  className="flex-shrink-0 text-brand-accentText text-2xl leading-none group-open:rotate-45 transition-transform"
                 >
                   +
                 </span>

@@ -115,7 +115,7 @@ function ResultsInner() {
                     <span className="text-brand-ink">
                       {c.name}, {c.uf}
                       {c.isCapital && (
-                        <span className="ml-1.5 text-xs text-brand-accent2">capital</span>
+                        <span className="ml-1.5 text-xs text-brand-accentText">capital</span>
                       )}
                     </span>
                   </span>

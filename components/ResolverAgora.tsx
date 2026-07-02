@@ -316,7 +316,7 @@ export function ResolverAgora({ items }: { items: ProblemaIndexItem[] }) {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-60" />
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-accent2" />
               </span>
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-accent2">
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-accentText">
                 <Sparkles className="w-4 h-4" aria-hidden />
                 Orientação inteligente
               </span>
@@ -436,7 +436,7 @@ export function ResolverAgora({ items }: { items: ProblemaIndexItem[] }) {
                           <span className="text-sm text-brand-ink/65 mt-0.5 block leading-snug line-clamp-2">
                             {it.intencao}
                           </span>
-                          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-accent2 mt-2">
+                          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-accentText mt-2">
                             Ver o passo a passo
                             <ArrowRight
                               className="w-4 h-4 group-hover:translate-x-0.5 transition"

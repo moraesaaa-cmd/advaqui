@@ -7,6 +7,32 @@ type PageMetaInput = {
   path?: string;
   image?: string;
   noIndex?: boolean;
+  /**
+   * Quando true, usa o título EXATO (sem o sufixo " — AdvAqui" do template
+   * do layout). Usado em páginas com título longo (cidade/especialidade
+   * extensas) onde o sufixo estouraria o corte de ~58 chars do Google.
+   */
+  absoluteTitle?: boolean;
+};
+
+/**
+ * Escolhe a variante de título que cabe no corte do Google (~58 chars):
+ * 1) fórmula completa + marca (template do layout);
+ * 2) fórmula completa sem marca (absoluto);
+ * 3) versão curta sem marca (absoluto).
+ */
+export const fitTitle = (
+  full: string,
+  short: string,
+  max = 58
+): { title: string; absoluteTitle: boolean } => {
+  if (`${full} — ${SITE.name}`.length <= max) {
+    return { title: full, absoluteTitle: false };
+  }
+  if (full.length <= max) {
+    return { title: full, absoluteTitle: true };
+  }
+  return { title: short, absoluteTitle: true };
 };
 
 /**
@@ -21,12 +47,12 @@ type PageMetaInput = {
 export const buildMetadata = (input: PageMetaInput): Metadata => {
   const trailingSiteName = new RegExp(`\\s*(—|-)\\s*${SITE.name}\\s*$`, "i");
   const shortTitle = input.title.replace(trailingSiteName, "").trim();
-  const fullTitle = `${shortTitle} — ${SITE.name}`;
+  const fullTitle = input.absoluteTitle ? shortTitle : `${shortTitle} — ${SITE.name}`;
   const url = input.path ? `${SITE.url}${input.path}` : SITE.url;
   const image = input.image || `${SITE.url}/opengraph-image`;
 
   return {
-    title: shortTitle,
+    title: input.absoluteTitle ? { absolute: shortTitle } : shortTitle,
     description: input.description,
     alternates: { canonical: url },
     openGraph: {

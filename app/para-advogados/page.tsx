@@ -327,7 +327,7 @@ export default function ParaAdvogadosPage() {
             >
               <summary className="cursor-pointer list-none flex items-center justify-between gap-3 font-semibold text-brand-ink">
                 {f.q}
-                <span className="text-brand-accent2 group-open:rotate-45 transition text-xl leading-none">
+                <span className="text-brand-accentText group-open:rotate-45 transition text-xl leading-none">
                   +
                 </span>
               </summary>

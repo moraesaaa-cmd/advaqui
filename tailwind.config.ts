@@ -22,6 +22,12 @@ const config: Config = {
           //  brand-ink em texto preto sobre o amber (CTAs principais).
           accent: "#F59E0B",
           accent2: "#FBBF24",
+          // Contraste (ver DESIGN.md): accent/accent2 REPROVAM como texto
+          // sobre fundo claro (~2:1). Para TEXTO âmbar em fundo claro usar
+          // accentText (4.8:1 sobre creme). accentSoft é a variante clara
+          // para texto âmbar sobre navy (brand-ink/deep).
+          accentText: "#8A6E2B",
+          accentSoft: "#E3C078",
           bg: "#FBF9F4",
           line: "#E6E1D6"
         }

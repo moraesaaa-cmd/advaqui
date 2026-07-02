@@ -142,7 +142,7 @@ const renderSection = (section: ArticleSection, idx: number) => {
       return (
         <ul
           key={idx}
-          className="mb-5 space-y-2 pl-5 list-disc marker:text-brand-accent2"
+          className="mb-5 space-y-2 pl-5 list-disc marker:text-brand-accentText"
         >
           {section.items.map((item, i) => (
             <li key={i} className="text-brand-ink/85 leading-relaxed">

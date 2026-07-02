@@ -29,7 +29,7 @@ function Perspectiva({
   const [escolha, setEscolha] = useState<"A" | "B" | null>(null);
   return (
     <div className="my-7 rounded-2xl border-2 border-brand-accent/40 bg-white p-5 md:p-6 shadow-card">
-      <div className="flex items-center gap-2 text-brand-accent2 mb-2">
+      <div className="flex items-center gap-2 text-brand-accentText mb-2">
         <Vote className="w-5 h-5" aria-hidden />
         <span className="text-xs font-bold uppercase tracking-wider">
           E você, de que lado está?
@@ -214,7 +214,7 @@ function Revela({
 }: Extract<ArticleToolData, { tool: "revela" }>) {
   return (
     <div className="my-7 rounded-2xl border border-brand-line bg-white p-5 md:p-6">
-      <div className="flex items-center gap-2 text-brand-accent2 mb-3">
+      <div className="flex items-center gap-2 text-brand-accentText mb-3">
         <Lightbulb className="w-5 h-5" aria-hidden />
         <span className="text-sm font-bold uppercase tracking-wide">
           {titulo}
@@ -228,7 +228,7 @@ function Revela({
           >
             <summary className="cursor-pointer list-none flex items-center justify-between gap-3 font-semibold text-brand-ink text-sm">
               {it.termo}
-              <span className="text-brand-accent2 group-open:rotate-45 transition text-lg leading-none">
+              <span className="text-brand-accentText group-open:rotate-45 transition text-lg leading-none">
                 +
               </span>
             </summary>

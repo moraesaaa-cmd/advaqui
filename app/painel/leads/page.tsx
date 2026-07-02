@@ -571,7 +571,7 @@ function LeadRow({ lead }: { lead: Lead }) {
               )}
               {lead.ai_resumo && (
                 <div className="rounded-xl border border-brand-accent/30 bg-brand-accent/5 p-3">
-                  <span className="text-xs font-semibold text-brand-accent uppercase tracking-wide">
+                  <span className="text-xs font-semibold text-brand-accentText uppercase tracking-wide">
                     Analise da IA
                   </span>
                   <p className="text-brand-ink/80 leading-relaxed mt-1">

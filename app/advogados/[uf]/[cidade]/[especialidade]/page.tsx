@@ -7,7 +7,7 @@ import { getLawyersBySpecialty, sortLawyers } from "@/lib/data/lawyers";
 import { LawyerCard } from "@/components/LawyerCard";
 import { JsonLd } from "@/components/JsonLd";
 import { CadastroCTA } from "@/components/PlanosCTAs";
-import { buildMetadata } from "@/lib/seo/metadata";
+import { buildMetadata, fitTitle } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { citySpecialtyIntro } from "@/lib/data/templates";
 import { getUsefulDocsForSpecialties } from "@/lib/data/specialty-descriptions";
@@ -45,9 +45,25 @@ export async function generateMetadata({
   const sp = findSpecialty(params.especialidade);
   if (!st || !city || !sp)
     return buildMetadata({ title: "Especialidade", description: "Não encontrado", noIndex: true });
+
+  const areaLow = sp.name.toLowerCase();
+  // TITLE — keyword exata no início; se estourar ~58 chars, cai para a
+  // versão curta sem o sufixo de marca.
+  const { title, absoluteTitle } = fitTitle(
+    `Advogado ${areaLow} em ${city.name} — compare e fale direto`,
+    `Advogado ${areaLow} em ${city.name}`
+  );
+
+  // DESCRIPTION — keyword na primeira frase, 140–155 chars.
+  let description = `Encontre advogado ${areaLow} em ${city.name}: perfis com OAB, WhatsApp e contato direto. Compare profissionais e fale sem intermediário.`;
+  if (description.length > 155) {
+    description = `Encontre advogado ${areaLow} em ${city.name}: perfis com OAB, WhatsApp e contato direto. Fale sem intermediário.`;
+  }
+
   return buildMetadata({
-    title: `Advogado ${sp.name} em ${city.name}/${st.uf}`,
-    description: `Encontre advogado ${sp.name.toLowerCase()} em ${city.name}, ${st.uf} — perfis com OAB verificada, WhatsApp e contato direto. Compare profissionais e fale sem intermediário.`,
+    title,
+    absoluteTitle,
+    description,
     path: `/advogados/${st.uf.toLowerCase()}/${city.slug}/${sp.slug}`
   });
 }
@@ -181,8 +197,11 @@ export default async function CitySpecialtyPage({
             Diretório verificado · OAB/{st.uf}
           </div>
           <h1 className="font-display font-semibold text-3xl md:text-[42px] leading-[1.08] tracking-tight mb-4">
-            Advogado {areaLow} em {city.name}, {st.uf}
+            Advogado {areaLow} em {city.name}, {st.uf} — compare e fale direto
           </h1>
+          <p className="text-[16px] font-medium mb-2.5" style={{ color: "#274472" }}>
+            Perfis com registro na OAB. Contato direto, sem intermediário.
+          </p>
           <p className="text-[17px] leading-relaxed max-w-[560px]" style={{ color: "#3C485A" }}>
             {citySpecialtyIntro(city, st, sp)}
           </p>

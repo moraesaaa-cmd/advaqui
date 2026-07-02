@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { LawyerRow, PublicLawyer } from "@/lib/supabase/types";
 import { type Lawyer, mapLawyerRow } from "@/lib/data/lawyer-mapper";
@@ -100,11 +101,40 @@ function isPubliclyVisible(row: {
 }
 
 /**
+ * Conta quantos advogados da lista realmente atendem a cidade (uf+slug),
+ * seja pela cidade principal, pelo target_* legado ou por extra_cities.
+ *
+ * Serve para distinguir advogado REAL do fallback de rede (kellsons/barbara)
+ * que `getLawyersForCity` injeta em cidade vazia: o perfil de rede injetado
+ * NÃO tem vínculo com a cidade, então não conta; já nas cidades em que esses
+ * mesmos perfis atendem de verdade (ex.: Almenara/MG), contam normalmente.
+ */
+export function countRealLawyersForCity(
+  list: Lawyer[],
+  uf: string,
+  citySlug: string
+): number {
+  const ufUpper = uf.toUpperCase();
+  const slugLower = citySlug.toLowerCase();
+  return list.filter((l) => {
+    if (l.uf?.toUpperCase() === ufUpper && l.citySlug?.toLowerCase() === slugLower) return true;
+    if (l.targetUf?.toUpperCase() === ufUpper && l.targetCity?.toLowerCase() === slugLower) return true;
+    return l.extraCities.some(
+      (c) => c.uf.toUpperCase() === ufUpper && c.slug.toLowerCase() === slugLower
+    );
+  }).length;
+}
+
+/**
  * Lista advogados de uma cidade específica (uf+slug).
  * Inclui também advogados com `target_city/target_uf` apontando para essa cidade
  * (advogados redirecionados manualmente pelo admin).
+ *
+ * Envolvida em `cache()` do React: numa mesma request (rota force-dynamic),
+ * generateMetadata e o componente da página compartilham UMA query — sem
+ * custo duplicado no Supabase.
  */
-export async function getLawyersForCity(
+export const getLawyersForCity = cache(async function getLawyersForCity(
   uf: string,
   citySlug: string
 ): Promise<Lawyer[]> {
@@ -200,7 +230,7 @@ export async function getLawyersForCity(
     if (aFeat !== bFeat) return bFeat - aFeat;
     return a.name.localeCompare(b.name, "pt-BR");
   });
-}
+});
 
 /**
  * Filtra advogados de uma cidade que tenham uma especialidade específica.

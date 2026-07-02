@@ -664,7 +664,7 @@ export default function CadastroPage() {
                             <MapPin className="w-3.5 h-3.5 text-brand-ink/40" aria-hidden />
                             <span>{c.name}</span>
                             {c.isCapital && (
-                              <span className="ml-1 text-[10px] uppercase tracking-wider text-brand-accent2 font-semibold">
+                              <span className="ml-1 text-[10px] uppercase tracking-wider text-brand-accentText font-semibold">
                                 capital
                               </span>
                             )}

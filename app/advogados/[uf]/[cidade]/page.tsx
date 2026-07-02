@@ -3,11 +3,16 @@ import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { findState } from "@/lib/data/states";
 import { findCity, nearbyCities, findCapital } from "@/lib/data/cities";
-import { getLawyersForCity, sortLawyers, getLawyerCountsByCity } from "@/lib/data/lawyers";
+import {
+  getLawyersForCity,
+  sortLawyers,
+  getLawyerCountsByCity,
+  countRealLawyersForCity
+} from "@/lib/data/lawyers";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { LawyerCard } from "@/components/LawyerCard";
 import { JsonLd } from "@/components/JsonLd";
-import { buildMetadata } from "@/lib/seo/metadata";
+import { buildMetadata, fitTitle } from "@/lib/seo/metadata";
 import { breadcrumbSchema, cityServiceSchema } from "@/lib/seo/schema";
 import { cityIntro } from "@/lib/data/templates";
 import { topCitiesForState } from "@/lib/seo/internal-links";
@@ -32,9 +37,34 @@ export async function generateMetadata({
   const city = findCity(params.uf, params.cidade);
   if (!st || !city)
     return buildMetadata({ title: "Cidade", description: "Cidade não encontrada", noIndex: true });
+
+  // Mesma query da página — cache() do React deduplica na mesma request.
+  const lawyers = await getLawyersForCity(st.uf, city.slug);
+  const realCount = countRealLawyersForCity(lawyers, st.uf, city.slug);
+
+  // TITLE — keyword exata no início + número real quando houver.
+  const full =
+    realCount > 0
+      ? `Advogado em ${city.name} — ${realCount} ${realCount === 1 ? "perfil" : "perfis"} por área`
+      : `Advogado em ${city.name} e região — encontre por área`;
+  const { title, absoluteTitle } = fitTitle(full, `Advogado em ${city.name}`);
+
+  // DESCRIPTION — keyword na primeira frase + até 3 áreas presentes na página.
+  const presentSlugs = new Set(lawyers.flatMap((l) => l.specialties));
+  const presentAreas = SPECIALTIES.filter((sp) => presentSlugs.has(sp.slug))
+    .slice(0, 3)
+    .map((sp) => sp.name.toLowerCase());
+  const areas = presentAreas.length > 0 ? presentAreas : ["trabalhista", "família", "criminal"];
+  let description = "";
+  for (let n = areas.length; n >= 1; n--) {
+    description = `Encontre advogados em ${city.name}: ${areas.slice(0, n).join(", ")}. Perfis com OAB, contato direto pelo WhatsApp. Veja quem atende na sua região.`;
+    if (description.length <= 155) break;
+  }
+
   return buildMetadata({
-    title: `Advogados em ${city.name}/${st.uf}`,
-    description: `Encontre advogados em ${city.name}, ${st.uf} — perfis com OAB verificada, telefone, WhatsApp e contato direto. Trabalhista, família, criminal e mais. 100% gratuito.`,
+    title,
+    absoluteTitle,
+    description,
     path: `/advogados/${st.uf.toLowerCase()}/${city.slug}`
   });
 }
@@ -99,8 +129,11 @@ export default async function CityPage({
             {city.isCapital && <span style={{ color: "#A0843A" }}>· Capital</span>}
           </div>
           <h1 className="font-display font-semibold text-3xl md:text-[42px] leading-[1.08] tracking-tight mb-4">
-            Advogados em {city.name}, {st.uf}
+            Advogados em {city.name}, {st.uf} — encontre por área e fale direto
           </h1>
+          <p className="text-[16px] font-medium mb-2.5" style={{ color: "#274472" }}>
+            Perfis com registro na OAB. Contato direto, sem intermediário.
+          </p>
           <p className="text-[17px] leading-relaxed max-w-[560px]" style={{ color: "#3C485A" }}>
             {cityIntro(city, st)}
           </p>
@@ -197,7 +230,7 @@ export default async function CityPage({
                         <p className="font-display text-base font-bold text-brand-ink">
                           Advogados em {c.name}
                           {c.isCapital && (
-                            <span className="ml-1.5 text-xs text-brand-accent2 font-normal">capital</span>
+                            <span className="ml-1.5 text-xs text-brand-accentText font-normal">capital</span>
                           )}
                         </p>
                         <p className="text-xs text-brand-ink/55 mt-0.5">{c.region || st.name}</p>

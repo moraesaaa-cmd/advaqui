@@ -61,7 +61,7 @@ export function PerfilAntesDepois() {
 
       {/* DEPOIS — perfil premium */}
       <div>
-        <p className="text-xs font-bold uppercase tracking-wider text-brand-accent2 mb-2 text-center">
+        <p className="text-xs font-bold uppercase tracking-wider text-brand-accentText mb-2 text-center">
           Perfil premium
         </p>
         <div className="relative rounded-2xl border-2 border-brand-accent bg-white p-5 shadow-cardHover overflow-hidden">

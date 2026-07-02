@@ -124,7 +124,7 @@ export default async function TribunaisCidadePage({
               <MapPin className="w-3.5 h-3.5" aria-hidden />
               {city.name} · {st.name}
               {isCapital && (
-                <span className="ml-2 chip text-xs text-brand-accent2 border-brand-accent/40">
+                <span className="ml-2 chip text-xs text-brand-accentText border-brand-accent/40">
                   Capital
                 </span>
               )}

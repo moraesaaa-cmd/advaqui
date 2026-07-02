@@ -325,7 +325,7 @@ export default function ParaAdvogadosCidadePage({
             <details key={f.q} className="group rounded-xl border border-brand-line bg-white p-4">
               <summary className="cursor-pointer list-none flex items-center justify-between gap-3 font-semibold text-brand-ink">
                 {f.q}
-                <span className="text-brand-accent2 group-open:rotate-45 transition text-xl leading-none">+</span>
+                <span className="text-brand-accentText group-open:rotate-45 transition text-xl leading-none">+</span>
               </summary>
               <p className="mt-2 text-sm text-brand-ink/75 leading-relaxed">{f.a}</p>
             </details>
