@@ -1405,6 +1405,431 @@ export const GLOSSARIO: GlossarioTermo[] = [
     areas: ["trabalhista"],
     ver_tambem: ["rescisao", "aposentadoria", "acidente-de-trabalho"],
     atualizado_em: "2026-06-18"
+  },
+  // ——— Eleitoral ———
+  {
+    slug: "inelegibilidade",
+    termo: "Inelegibilidade",
+    variacoes: ["ficha limpa", "candidato inelegível", "lei da ficha limpa"],
+    definicao_curta:
+      "Situação jurídica que impede uma pessoa de se candidatar a cargo eletivo, de forma temporária, por razões previstas na Constituição ou em lei complementar.",
+    explicacao: [
+      "Inelegibilidade é o impedimento de disputar eleição. Não se confunde com perda dos direitos políticos: a pessoa inelegível continua podendo votar — ela só não pode ser votada enquanto durar o impedimento.",
+      "As hipóteses estão na Constituição e na Lei Complementar 64/1990, alterada pela chamada Lei da Ficha Limpa (LC 135/2010). Entre os exemplos mais conhecidos estão condenações criminais por órgão colegiado em certos crimes, rejeição de contas de gestão pública em situações específicas e abuso de poder econômico ou político reconhecido pela Justiça Eleitoral.",
+      "A inelegibilidade em regra é temporária — a lei fixa períodos de impedimento que variam conforme a hipótese. Também existem inelegibilidades ligadas a parentesco e ao exercício de cargos (a chamada inelegibilidade reflexa e a necessidade de desincompatibilização, quando o ocupante de certo cargo precisa se afastar antes da eleição para poder concorrer).",
+      "Saber se alguém é ou não inelegível costuma exigir análise técnica: a mesma condenação pode gerar inelegibilidade em um caso e não gerar em outro, dependendo do crime, do órgão que decidiu e de eventuais recursos. Antes de lançar ou impugnar uma candidatura, procure sempre um advogado."
+    ],
+    exemplos: [
+      "Ex-prefeito com contas de gestão rejeitadas pelo tribunal de contas, em hipótese prevista em lei, que tem o registro de candidatura indeferido",
+      "Pessoa condenada por órgão colegiado por crime listado na Lei da Ficha Limpa que fica impedida de concorrer pelo período legal",
+      "Parente próximo do chefe do Executivo que pretende disputar cargo na mesma circunscrição e esbarra na inelegibilidade reflexa"
+    ],
+    areas: ["eleitoral"],
+    ver_tambem: ["prestacao-de-contas-eleitoral", "compra-de-votos", "mandado-de-seguranca"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "prestacao-de-contas-eleitoral",
+    termo: "Prestação de contas eleitoral",
+    variacoes: ["contas de campanha", "prestação de contas de campanha", "contas eleitorais"],
+    definicao_curta:
+      "Obrigação de candidatos e partidos de declarar à Justiça Eleitoral tudo o que arrecadaram e gastaram na campanha.",
+    explicacao: [
+      "Todo candidato e todo partido político são obrigados a prestar contas da campanha à Justiça Eleitoral — mesmo quem não arrecadou nem gastou nada, e mesmo quem desistiu ou teve o registro indeferido. A regra geral está na Lei das Eleições (Lei 9.504/1997) e em resoluções do TSE editadas a cada eleição.",
+      "A prestação de contas informa a origem de cada receita (doações, recursos do fundo eleitoral, recursos próprios) e o destino de cada gasto. A Justiça Eleitoral examina os documentos e pode aprovar as contas, aprová-las com ressalvas, desaprová-las ou julgá-las não prestadas.",
+      "As consequências variam. Contas desaprovadas podem gerar obrigação de devolver valores e outros reflexos; contas julgadas não prestadas costumam impedir a obtenção da quitação eleitoral, que é condição para disputar eleições seguintes. Em situações mais graves, indícios de irregularidade podem dar origem a ações específicas na Justiça Eleitoral.",
+      "Os prazos são curtos e a documentação é detalhada — recibos eleitorais, extratos bancários da conta de campanha, notas fiscais. Quem participa de campanha, mesmo pequena, deve organizar as contas desde o primeiro dia e procurar sempre um advogado ou contador com experiência eleitoral."
+    ],
+    exemplos: [
+      "Candidato a vereador que não teve gastos e mesmo assim precisa apresentar prestação de contas para não ficar sem quitação eleitoral",
+      "Campanha que recebeu doação sem emitir recibo eleitoral e tem as contas desaprovadas",
+      "Partido que perde acesso a recursos por não prestar contas no prazo"
+    ],
+    areas: ["eleitoral"],
+    ver_tambem: ["inelegibilidade", "propaganda-antecipada", "compra-de-votos"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "propaganda-antecipada",
+    termo: "Propaganda eleitoral antecipada",
+    variacoes: ["campanha antecipada", "propaganda extemporânea", "pedido antecipado de voto"],
+    definicao_curta:
+      "Propaganda eleitoral feita antes do período permitido em lei, sujeita a multa aplicada pela Justiça Eleitoral.",
+    explicacao: [
+      "A propaganda eleitoral só é permitida a partir da data fixada na Lei das Eleições (Lei 9.504/1997) — em regra, a partir de 16 de agosto do ano da eleição. Pedir votos antes disso configura propaganda antecipada, sujeita a multa tanto para quem faz quanto para quem se beneficia, quando comprovado o prévio conhecimento.",
+      "Nem toda manifestação política antes do período é proibida. A própria lei (art. 36-A) permite, antes da campanha, atos como menção à pretensa candidatura, exaltação de qualidades pessoais, participação em entrevistas e debates — desde que não haja pedido explícito de voto. A fronteira entre o que pode e o que não pode é uma das discussões mais frequentes da Justiça Eleitoral, e a jurisprudência evolui a cada ciclo eleitoral.",
+      "A punição típica é multa, aplicada em representação proposta por candidato, partido, coligação ou pelo Ministério Público Eleitoral. Em casos graves, a conduta pode ser examinada também sob a ótica do abuso de poder, com consequências mais sérias.",
+      "Pré-candidatos, marqueteiros e até apoiadores que impulsionam conteúdo nas redes sociais devem ter cautela redobrada — publicações pagas fora do período e do formato permitidos geram risco real de multa. Na dúvida sobre uma peça ou publicação, procure sempre um advogado eleitoral antes de veicular."
+    ],
+    exemplos: [
+      "Pré-candidato que distribui panfletos pedindo votos meses antes do período de campanha",
+      "Publicação impulsionada em rede social com pedido explícito de voto antes de 16 de agosto",
+      "Pré-candidata que participa de entrevista falando de suas propostas, sem pedir votos — conduta em regra permitida pelo art. 36-A"
+    ],
+    areas: ["eleitoral"],
+    ver_tambem: ["compra-de-votos", "prestacao-de-contas-eleitoral", "inelegibilidade"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "compra-de-votos",
+    termo: "Compra de votos (captação ilícita de sufrágio)",
+    variacoes: ["captação ilícita de sufrágio", "corrupção eleitoral", "compra de voto"],
+    definicao_curta:
+      "Dar, oferecer ou prometer bem ou vantagem ao eleitor em troca do voto — conduta que é ao mesmo tempo crime eleitoral e causa de cassação.",
+    explicacao: [
+      "Comprar votos é oferecer, prometer ou entregar dinheiro, bens ou qualquer vantagem ao eleitor para obter seu voto (ou sua abstenção). A conduta é tratada em duas frentes: como crime de corrupção eleitoral, previsto no Código Eleitoral (art. 299), e como captação ilícita de sufrágio, prevista na Lei das Eleições (art. 41-A da Lei 9.504/1997).",
+      "As duas frentes são independentes. Na esfera criminal, quem compra (e também quem vende) o voto responde a processo penal perante a Justiça Eleitoral. Na esfera eleitoral, a representação por captação ilícita pode levar à multa e à cassação do registro ou do diploma do candidato beneficiado — ou seja, o candidato pode perder o mandato mesmo sem condenação criminal.",
+      "Não é preciso que o candidato entregue a vantagem pessoalmente: a jurisprudência admite a responsabilização quando há participação ou anuência dele, o que sempre depende de prova. Doações de campanha regulares, programas sociais públicos e promessas genéricas de campanha não se confundem, por si sós, com compra de votos — a linha divisória é técnica e examinada caso a caso.",
+      "Quem presencia ou é vítima de compra de votos pode denunciar ao Ministério Público Eleitoral ou à Justiça Eleitoral. Quem é acusado deve constituir defesa imediatamente, porque os prazos eleitorais são muito curtos. Procure sempre um advogado."
+    ],
+    exemplos: [
+      "Cabo eleitoral que distribui cestas básicas pedindo o voto em determinado candidato",
+      "Candidato que promete emprego a eleitores específicos em troca de votos",
+      "Eleitor que recebe dinheiro para fotografar o próprio voto como prova"
+    ],
+    areas: ["eleitoral", "criminal"],
+    ver_tambem: ["inelegibilidade", "propaganda-antecipada", "prestacao-de-contas-eleitoral"],
+    atualizado_em: "2026-07-02"
+  },
+  // ——— Militar ———
+  {
+    slug: "crime-militar",
+    termo: "Crime militar",
+    variacoes: ["crime propriamente militar", "crime impropriamente militar", "código penal militar"],
+    definicao_curta:
+      "Conduta definida como crime no Código Penal Militar, julgada pela Justiça Militar quando presentes as situações previstas em lei.",
+    explicacao: [
+      "Crime militar é aquele previsto no Código Penal Militar (Decreto-Lei 1.001/1969) e praticado nas situações que a própria lei define — por exemplo, por militar em serviço, em lugar sujeito à administração militar ou contra militar em função. É o critério legal, e não o simples fato de o autor ser militar, que define se o crime é militar ou comum.",
+      "Costuma-se distinguir os crimes propriamente militares — que só um militar pode cometer, como deserção e abandono de posto — dos impropriamente militares, que têm equivalente na lei penal comum (furto, lesão corporal, peculato), mas se tornam militares quando praticados nas circunstâncias previstas no Código.",
+      "A competência para julgar varia: a Justiça Militar da União julga os crimes militares envolvendo as Forças Armadas (e, em hipóteses legais específicas, pode julgar civis); as Justiças Militares estaduais julgam policiais e bombeiros militares — e nunca julgam civis. Nos crimes dolosos contra a vida de civil praticados por militares estaduais, a competência em regra é do Tribunal do Júri.",
+      "Definir se um fato é crime militar ou comum muda o tribunal, o procedimento e até as penas aplicáveis. É uma das primeiras análises que a defesa precisa fazer — procure sempre um advogado com experiência na área."
+    ],
+    exemplos: [
+      "Militar das Forças Armadas que abandona o posto durante o serviço",
+      "Policial militar acusado de lesão corporal contra colega de farda em serviço",
+      "Militar que responde por deserção após não se apresentar no prazo legal"
+    ],
+    areas: ["militar", "criminal"],
+    ver_tambem: ["transgressao-disciplinar", "conselho-de-justificacao", "habeas-corpus"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "conselho-de-justificacao",
+    termo: "Conselho de justificação",
+    variacoes: ["conselho de disciplina", "perda de posto e patente", "exclusão de militar"],
+    definicao_curta:
+      "Procedimento administrativo que apura se um oficial militar é incapaz de permanecer na corporação, podendo levar o caso ao tribunal competente para decidir sobre a perda do posto.",
+    explicacao: [
+      "O conselho de justificação é o procedimento em que a corporação apura se um oficial acusado de conduta grave — ofensa ao decoro, à honra ou ao dever militar — tem condições de permanecer na ativa ou na inatividade remunerada. No âmbito federal, é regulado pela Lei 5.836/1972; forças estaduais têm leis próprias.",
+      "É o momento mais grave da vida administrativa de um oficial. O nome vem da lógica do procedimento: o oficial é chamado a se justificar perante um conselho formado por oficiais de posto superior. Ao final, o conselho opina, e a autoridade pode arquivar o caso, aplicar medidas administrativas ou remeter o processo ao tribunal militar competente.",
+      "A Constituição garante que o oficial só perde o posto e a patente por decisão de tribunal militar de caráter permanente — a exclusão não pode ser puramente administrativa. Para as praças (soldados, cabos, sargentos), o procedimento equivalente é o conselho de disciplina, com regras próprias.",
+      "Durante todo o procedimento valem o contraditório e a ampla defesa: acesso aos autos, produção de provas, acompanhamento por advogado. Vícios no procedimento podem levar à anulação. Quem é submetido a conselho deve procurar defesa técnica imediatamente."
+    ],
+    exemplos: [
+      "Oficial da PM acusado de conduta incompatível com a função que é submetido a conselho de justificação",
+      "Conselho que conclui pela remessa do caso ao Tribunal de Justiça Militar para decidir sobre a perda do posto",
+      "Praça com anos de serviço submetida a conselho de disciplina por acusação de transgressão grave"
+    ],
+    areas: ["militar", "administrativo"],
+    ver_tambem: ["transgressao-disciplinar", "crime-militar", "processo-administrativo-disciplinar"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "transgressao-disciplinar",
+    termo: "Transgressão disciplinar militar",
+    variacoes: ["punição disciplinar militar", "falta disciplinar", "regulamento disciplinar"],
+    definicao_curta:
+      "Violação de dever militar prevista no regulamento disciplinar da corporação, punida administrativamente, sem natureza de crime.",
+    explicacao: [
+      "Transgressão disciplinar é a infração aos deveres e à ética militar prevista no regulamento disciplinar de cada força — Exército, Marinha, Aeronáutica e as polícias e bombeiros militares dos estados têm regulamentos próprios. Difere do crime militar: a transgressão é apurada e punida dentro da própria corporação, sem processo penal.",
+      "As punições típicas incluem advertência, repreensão, detenção e prisão disciplinar, além de reflexos na carreira, como impacto no comportamento e em promoções. Transgressões acumuladas ou graves podem levar a procedimentos mais sérios, como o conselho de disciplina.",
+      "Mesmo na esfera disciplinar, o militar tem direito ao contraditório e à ampla defesa. A Constituição restringe o uso do habeas corpus quanto ao mérito das punições disciplinares militares, mas o Judiciário pode controlar a legalidade do ato — competência da autoridade, procedimento correto, oportunidade de defesa, proporcionalidade.",
+      "Uma mesma conduta pode, em tese, configurar transgressão e crime militar ao mesmo tempo, com apurações distintas. Diante de qualquer notificação disciplinar, o militar deve guardar os documentos, observar os prazos (que são curtos) e procurar sempre um advogado."
+    ],
+    exemplos: [
+      "Policial militar punido com repreensão por atraso reiterado ao serviço",
+      "Militar que responde a procedimento disciplinar por desrespeito a superior hierárquico",
+      "Punição disciplinar anulada pela Justiça porque o militar não teve oportunidade de defesa"
+    ],
+    areas: ["militar", "administrativo"],
+    ver_tambem: ["crime-militar", "conselho-de-justificacao", "habeas-corpus"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "reforma-militar",
+    termo: "Reforma e reserva militar",
+    variacoes: ["reforma do militar", "reserva remunerada", "inatividade militar"],
+    definicao_curta:
+      "Formas de inatividade do militar: na reserva ele pode ser convocado de volta; na reforma, o desligamento do serviço é definitivo.",
+    explicacao: [
+      "Militares não se aposentam como os trabalhadores civis — eles passam à inatividade, que tem duas formas. Na reserva (em regra remunerada), o militar deixa o serviço ativo mas permanece à disposição da força, podendo ser convocado de volta em situações previstas em lei. Na reforma, o desligamento é definitivo: o reformado não pode mais ser convocado.",
+      "A passagem para a inatividade pode ocorrer a pedido, após o tempo mínimo de serviço, ou de ofício — por idade-limite do posto ou graduação, por incapacidade física ou, em caráter punitivo, por decisão nos procedimentos disciplinares cabíveis. A reforma por incapacidade tem regras próprias, e a remuneração pode variar conforme a causa da incapacidade ter ou não relação com o serviço.",
+      "As regras principais dos militares federais estão no Estatuto dos Militares (Lei 6.880/1980), com alterações relevantes na reestruturação de 2019 (Lei 13.954/2019), que mudou tempo mínimo e regras de transição. Policiais e bombeiros militares seguem as leis do seu estado, também alteradas nos últimos anos.",
+      "Litígios comuns envolvem reforma por incapacidade negada, grau de invalidez, remuneração na inatividade e pensão militar. Como as regras mudaram recentemente e há transições em curso, cada caso exige conferência da norma aplicável — procure sempre um advogado."
+    ],
+    exemplos: [
+      "Militar que atinge a idade-limite do posto e passa compulsoriamente para a reserva remunerada",
+      "Policial militar que sofre acidente em serviço e pede reforma por incapacidade",
+      "Militar da reserva convocado de volta ao serviço ativo em situação prevista em lei"
+    ],
+    areas: ["militar", "previdenciario"],
+    ver_tambem: ["conselho-de-justificacao", "transgressao-disciplinar", "aposentadoria"],
+    atualizado_em: "2026-07-02"
+  },
+  // ——— Internacional ———
+  {
+    slug: "homologacao-de-sentenca-estrangeira",
+    termo: "Homologação de sentença estrangeira",
+    variacoes: ["homologação de decisão estrangeira", "validar divórcio no exterior", "sentença estrangeira no Brasil"],
+    definicao_curta:
+      "Procedimento no STJ que faz uma decisão judicial de outro país produzir efeitos no Brasil.",
+    explicacao: [
+      "Uma decisão judicial proferida em outro país, em regra, não vale automaticamente no Brasil. Para produzir efeitos aqui — ser executada, averbada em registro, usada como título — ela precisa ser homologada pelo Superior Tribunal de Justiça (STJ), em procedimento previsto na Constituição, no Código de Processo Civil e no regimento do próprio tribunal.",
+      "O STJ não reexamina o mérito da decisão estrangeira: verifica requisitos formais, como ter sido proferida por autoridade competente, com citação regular da parte, estar eficaz no país de origem e não ofender a ordem pública brasileira. Os documentos precisam vir formalizados — em regra com apostilamento (ou legalização consular, conforme o país) e tradução juramentada.",
+      "Há uma exceção prática importante: o divórcio consensual simples, que apenas dissolve o casamento, pode ser averbado diretamente no cartório de registro civil, sem homologação. Se a decisão estrangeira tratar também de guarda de filhos, partilha de bens ou pensão, ou se o divórcio foi litigioso, a homologação no STJ volta a ser o caminho.",
+      "Depois de homologada, a decisão é cumprida pela Justiça Federal. O procedimento é documental e técnico — um papel faltando ou uma tradução irregular pode atrasar tudo. Procure sempre um advogado antes de reunir a documentação."
+    ],
+    exemplos: [
+      "Brasileira divorciada litigiosamente nos Estados Unidos que precisa homologar a sentença para partilhar bens situados no Brasil",
+      "Divórcio consensual simples feito em Portugal averbado diretamente no cartório, sem passar pelo STJ",
+      "Sentença estrangeira de pensão alimentícia homologada para ser cobrada no Brasil"
+    ],
+    areas: ["internacional", "familia", "civil"],
+    ver_tambem: ["apostilamento", "divorcio", "naturalizacao"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "apostilamento",
+    termo: "Apostilamento (Apostila de Haia)",
+    variacoes: ["apostila de haia", "apostilar documento", "legalização de documento estrangeiro"],
+    definicao_curta:
+      "Certificação feita em cartório que autentica um documento público para uso em outro país signatário da Convenção da Apostila de Haia.",
+    explicacao: [
+      "O apostilamento é o selo (apostila) que certifica a autenticidade de um documento público — certidão de nascimento, diploma, sentença, procuração com firma reconhecida — para que ele seja aceito em outro país. Foi criado pela Convenção da Apostila de Haia, de 1961, em vigor para o Brasil desde 2016, e substituiu a antiga legalização consular entre os países signatários.",
+      "No Brasil, o apostilamento é feito em cartórios autorizados pelo Conselho Nacional de Justiça (CNJ). O documento brasileiro apostilado passa a ser aceito nos demais países da Convenção sem etapas consulares; da mesma forma, documentos estrangeiros apostilados no país de origem são aceitos aqui. Cada documento é apostilado individualmente e o serviço tem custo por ato, conforme a tabela de emolumentos.",
+      "A apostila autentica a origem do documento — assinatura, cargo de quem assinou, selo — mas não traduz o conteúdo. Documentos em língua estrangeira para uso no Brasil em regra precisam também de tradução juramentada; documentos brasileiros para uso no exterior podem precisar de tradução conforme a exigência do país de destino.",
+      "Se o país de destino não for signatário da Convenção, o caminho continua sendo a legalização consular tradicional. Antes de reunir documentos para processos como cidadania, casamento no exterior ou homologação de sentença, vale confirmar as exigências exatas — procure sempre um advogado ou o consulado competente."
+    ],
+    exemplos: [
+      "Certidões de nascimento apostiladas no Brasil para processo de cidadania italiana",
+      "Diploma universitário apostilado para validação de estudos em Portugal",
+      "Sentença estrangeira apostilada no país de origem e traduzida por tradutor juramentado para homologação no STJ"
+    ],
+    areas: ["internacional", "civil"],
+    ver_tambem: ["homologacao-de-sentenca-estrangeira", "naturalizacao", "visto-humanitario"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "naturalizacao",
+    termo: "Naturalização",
+    variacoes: ["naturalização brasileira", "virar cidadão brasileiro", "nacionalidade brasileira"],
+    definicao_curta:
+      "Processo pelo qual um estrangeiro adquire a nacionalidade brasileira, cumprindo os requisitos da Constituição e da Lei de Migração.",
+    explicacao: [
+      "Naturalização é o caminho para o estrangeiro se tornar brasileiro. As regras estão na Constituição e na Lei de Migração (Lei 13.445/2017), que prevê modalidades diferentes: ordinária, extraordinária, especial e provisória — cada uma com requisitos próprios de tempo de residência, idade e vínculos com o país.",
+      "Na modalidade ordinária, os requisitos centrais costumam ser residência no Brasil pelo prazo legal (em regra quatro anos, reduzível em hipóteses como ter cônjuge ou filho brasileiro), capacidade civil, comunicação em língua portuguesa e ausência de condenação penal (ou reabilitação). A extraordinária atende quem reside no Brasil há mais de quinze anos ininterruptos, sem condenação penal.",
+      "O pedido é processado pelo Ministério da Justiça, em procedimento hoje amplamente digital. O naturalizado passa a ter, em regra, os mesmos direitos do brasileiro nato, com poucas exceções previstas na própria Constituição — como a impossibilidade de ocupar certos cargos (Presidente da República, por exemplo).",
+      "Não se confunde com o reconhecimento de nacionalidade de origem (como a cidadania italiana ou portuguesa por descendência), que segue a lei do outro país. Prazos, provas de residência e certidões exigem organização — procure sempre um advogado para avaliar a modalidade adequada ao seu caso."
+    ],
+    exemplos: [
+      "Estrangeiro casado com brasileira que pede naturalização ordinária com prazo de residência reduzido",
+      "Imigrante que vive no Brasil há mais de quinze anos e pede naturalização extraordinária",
+      "Filho de estrangeiros que veio criança para o Brasil e pede naturalização ao atingir a maioridade"
+    ],
+    areas: ["internacional", "administrativo"],
+    ver_tambem: ["visto-humanitario", "apostilamento", "homologacao-de-sentenca-estrangeira"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "visto-humanitario",
+    termo: "Visto humanitário (acolhida humanitária)",
+    variacoes: ["acolhida humanitária", "visto temporário humanitário", "refúgio e acolhida"],
+    definicao_curta:
+      "Visto temporário concedido a pessoas de países em grave crise — conflito, desastre ou violação de direitos humanos — para viver regularmente no Brasil.",
+    explicacao: [
+      "O visto humanitário (tecnicamente, visto temporário para acolhida humanitária) é previsto na Lei de Migração (Lei 13.445/2017). Ele permite que pessoas de países atingidos por grave instabilidade — conflito armado, desastre ambiental, calamidade ou violação grave de direitos humanos — entrem e residam regularmente no Brasil.",
+      "Os países e situações contemplados são definidos pelo governo em atos conjuntos dos ministérios competentes, que fixam requisitos e prazos. Ao longo dos anos, já houve regulamentações para nacionais de países como Haiti, Síria, Ucrânia e Afeganistão — a lista muda conforme o cenário internacional, e é preciso verificar a norma vigente para cada nacionalidade.",
+      "Não se confunde com o refúgio. O refúgio é regido pela Lei 9.474/1997, é pedido já em território brasileiro a qualquer tempo, é gratuito e depende de reconhecimento da condição de refugiado (fundado temor de perseguição, entre outras hipóteses). O visto humanitário é um visto — normalmente solicitado em consulado — e não exige prova individual de perseguição. Uma mesma pessoa pode, conforme o caso, ter os dois caminhos disponíveis.",
+      "Quem recebe acolhida humanitária pode pedir autorização de residência e, com o tempo e os requisitos legais, buscar a naturalização. Documentação de países em crise costuma ser incompleta, e as normas mudam com frequência — procure sempre um advogado ou as organizações de apoio a migrantes."
+    ],
+    exemplos: [
+      "Família ucraniana que obtém visto de acolhida humanitária durante o conflito no país",
+      "Nacional do Haiti que veio ao Brasil com visto humanitário após desastre e depois pede autorização de residência",
+      "Afegão que chega ao Brasil com visto humanitário e, já no país, avalia com advogado se pede também o reconhecimento como refugiado"
+    ],
+    areas: ["internacional"],
+    ver_tambem: ["naturalizacao", "apostilamento", "homologacao-de-sentenca-estrangeira"],
+    atualizado_em: "2026-07-02"
+  },
+  // ——— Ambiental ———
+  {
+    slug: "auto-de-infracao-ambiental",
+    termo: "Auto de infração ambiental",
+    variacoes: ["multa ambiental", "multa do ibama", "infração ambiental"],
+    definicao_curta:
+      "Documento lavrado por órgão ambiental (IBAMA, órgãos estaduais ou municipais) que registra uma infração e pode aplicar multa, embargo e outras sanções.",
+    explicacao: [
+      "O auto de infração ambiental é o ato pelo qual a fiscalização registra que alguém descumpriu norma de proteção ambiental. Na esfera federal, as infrações e sanções estão no Decreto 6.514/2008, que regulamenta a Lei de Crimes Ambientais (Lei 9.605/1998); estados e municípios têm normas próprias para suas fiscalizações.",
+      "As sanções vão além da multa: advertência, embargo da obra ou atividade, apreensão de bens e produtos, suspensão de atividades, demolição. A multa é calculada conforme a gravidade e os parâmetros da norma, e pode alcançar valores altos — mas o auto não é o fim da história: ele abre um processo administrativo em que o autuado pode se defender.",
+      "A defesa administrativa deve ser apresentada no prazo indicado no próprio auto — na esfera federal, em regra 20 dias — e pode apontar vícios formais (descrição genérica, enquadramento errado, competência) e questões de mérito. Da decisão cabe recurso. Em vários casos a norma admite a conversão da multa em serviços de preservação ambiental, com desconto, e há programas de regularização conforme a época.",
+      "Pagar a multa não encerra as outras esferas: a obrigação civil de reparar o dano e eventual processo penal por crime ambiental correm de forma independente. Ao receber um auto de infração, guarde tudo, anote o prazo e procure sempre um advogado antes de pagar ou assinar qualquer termo."
+    ],
+    exemplos: [
+      "Produtor rural autuado pelo IBAMA por desmatamento sem autorização, com multa e embargo da área",
+      "Empresa autuada por operar sem licença ambiental que apresenta defesa administrativa no prazo",
+      "Autuado que consegue converter parte da multa em serviços de recuperação ambiental"
+    ],
+    areas: ["ambiental", "administrativo"],
+    ver_tambem: ["licenciamento-ambiental", "tac-ambiental", "area-de-preservacao-permanente", "responsabilidade-civil"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "licenciamento-ambiental",
+    termo: "Licenciamento ambiental",
+    variacoes: ["licença ambiental", "licença prévia", "licença de instalação", "licença de operação"],
+    definicao_curta:
+      "Procedimento em que o órgão ambiental autoriza a instalação e a operação de atividades que utilizam recursos naturais ou podem causar degradação.",
+    explicacao: [
+      "O licenciamento ambiental é a autorização estatal para atividades potencialmente poluidoras ou que usam recursos naturais — indústrias, loteamentos, mineração, granjas, postos de combustível, entre muitas outras. A base está na Política Nacional do Meio Ambiente (Lei 6.938/1981) e em resoluções do CONAMA, com regras complementares estaduais e municipais.",
+      "O modelo clássico tem três etapas: licença prévia (LP), que aprova a viabilidade e a localização do empreendimento; licença de instalação (LI), que autoriza o início das obras; e licença de operação (LO), que autoriza o funcionamento. Empreendimentos de maior impacto exigem estudos ambientais mais completos, como o EIA/RIMA; atividades de menor porte podem ter procedimentos simplificados, conforme a norma local.",
+      "Qual órgão licencia depende da abrangência do impacto: a regra geral (LC 140/2011) distribui as competências entre União (IBAMA), estados e municípios. As licenças têm prazo de validade e condicionantes — obrigações que o empreendedor deve cumprir para manter a licença.",
+      "Operar sem licença, ou descumprir condicionantes, gera multa, embargo e pode configurar crime ambiental. Para quem empreende, o licenciamento deve entrar no planejamento desde o início, porque os prazos de análise variam bastante. Procure sempre um advogado ou consultor ambiental antes de iniciar a atividade."
+    ],
+    exemplos: [
+      "Indústria que obtém LP, LI e LO antes de iniciar a operação da fábrica",
+      "Posto de combustível autuado por operar com a licença de operação vencida",
+      "Loteamento embargado por iniciar obras antes da licença de instalação"
+    ],
+    areas: ["ambiental", "administrativo", "empresarial"],
+    ver_tambem: ["auto-de-infracao-ambiental", "area-de-preservacao-permanente", "tac-ambiental"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "tac-ambiental",
+    termo: "TAC ambiental (termo de ajustamento de conduta)",
+    variacoes: ["termo de ajustamento de conduta", "termo de compromisso ambiental", "acordo com ministério público ambiental"],
+    definicao_curta:
+      "Acordo formal em que quem causou ou pode causar dano ambiental assume obrigações de correção e reparação, evitando ou encerrando ações judiciais.",
+    explicacao: [
+      "O termo de ajustamento de conduta (TAC) é um acordo previsto na Lei da Ação Civil Pública (Lei 7.347/1985) em que o interessado se compromete, perante órgãos legitimados — como o Ministério Público e os órgãos ambientais —, a adequar sua conduta às exigências legais, com prazos e condições definidos.",
+      "Na prática ambiental, o TAC costuma prever obrigações como recuperar a área degradada, implantar controles de poluição, regularizar o licenciamento e, em certos casos, compensações. Assinado, o termo tem eficácia de título executivo extrajudicial: se as obrigações não forem cumpridas, podem ser executadas diretamente na Justiça, sem necessidade de novo processo de conhecimento.",
+      "Para quem está sendo investigado ou processado, o TAC pode ser vantajoso: evita ou encerra litígios longos, dá previsibilidade e demonstra boa-fé. Mas é um compromisso sério — as cláusulas devem ser realistas, com prazos exequíveis, porque o descumprimento gera multa e execução. O TAC também não impede, por si só, as demais esferas de responsabilização, como a penal, que seguem regras próprias.",
+      "Negociar um TAC exige avaliar o custo das obrigações, o passivo real e as alternativas. Antes de assinar (ou recusar) um termo proposto pelo Ministério Público ou pelo órgão ambiental, procure sempre um advogado."
+    ],
+    exemplos: [
+      "Empresa que assina TAC com o Ministério Público comprometendo-se a instalar estação de tratamento de efluentes",
+      "Produtor rural que firma termo para recuperar área de preservação permanente desmatada, com cronograma de plantio",
+      "TAC descumprido que é executado judicialmente com cobrança da multa prevista no termo"
+    ],
+    areas: ["ambiental", "civil", "administrativo"],
+    ver_tambem: ["auto-de-infracao-ambiental", "area-de-preservacao-permanente", "responsabilidade-civil"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "area-de-preservacao-permanente",
+    termo: "Área de preservação permanente (APP)",
+    variacoes: ["app", "mata ciliar", "área protegida", "código florestal"],
+    definicao_curta:
+      "Área protegida por lei — como margens de rios, nascentes, topos de morro e encostas — cuja vegetação em regra não pode ser removida.",
+    explicacao: [
+      "Área de preservação permanente (APP) é a área protegida pelo Código Florestal (Lei 12.651/2012) com a função de preservar recursos hídricos, o solo, a biodiversidade e a estabilidade do terreno. Exemplos típicos: faixas ao longo de rios e córregos (com largura que varia conforme a largura do curso d'água), entorno de nascentes e lagos, topos de morro, encostas íngremes e restingas.",
+      "Em regra, a vegetação da APP deve ser mantida, e a área não pode ser ocupada ou explorada. A lei admite intervenção apenas em hipóteses restritas — utilidade pública, interesse social ou atividades de baixo impacto definidas na norma —, mediante autorização. A proteção existe tanto em áreas rurais quanto urbanas.",
+      "A APP não se confunde com a reserva legal, que é o percentual do imóvel rural que deve manter vegetação nativa (variável conforme a região do país). Um mesmo imóvel rural pode ter as duas obrigações, declaradas no Cadastro Ambiental Rural (CAR). Para ocupações antigas, o Código Florestal criou regras de regularização com faixas mínimas de recomposição, que dependem do tamanho do imóvel e da data da ocupação.",
+      "Desmatar ou construir em APP gera auto de infração, embargo, obrigação de recuperar a área — que acompanha o imóvel, mesmo para quem comprou o problema pronto — e pode configurar crime ambiental. Antes de comprar imóvel às margens de curso d'água ou intervir em área com vegetação, procure sempre um advogado."
+    ],
+    exemplos: [
+      "Sítio com córrego cuja mata ciliar foi retirada pelo antigo dono — o novo proprietário é notificado a recompor a faixa",
+      "Construção embargada por avançar sobre a faixa de proteção de uma nascente",
+      "Produtor que declara a APP e a reserva legal do imóvel no Cadastro Ambiental Rural"
+    ],
+    areas: ["ambiental", "imobiliario"],
+    ver_tambem: ["auto-de-infracao-ambiental", "licenciamento-ambiental", "tac-ambiental", "usucapiao"],
+    atualizado_em: "2026-07-02"
+  },
+  // ——— Administrativo ———
+  {
+    slug: "processo-administrativo-disciplinar",
+    termo: "Processo administrativo disciplinar (PAD)",
+    variacoes: ["pad", "sindicância", "processo disciplinar de servidor"],
+    definicao_curta:
+      "Procedimento em que a Administração apura infração funcional de servidor público, podendo aplicar penalidades que vão da advertência à demissão.",
+    explicacao: [
+      "O PAD é o instrumento pelo qual o poder público apura se um servidor cometeu infração aos seus deveres funcionais. Para os servidores federais, as regras estão na Lei 8.112/1990; estados e municípios têm estatutos próprios, com estruturas parecidas. Antes do PAD, muitas apurações começam por sindicância, procedimento mais simples que pode resultar em arquivamento, penalidade leve ou instauração do processo disciplinar.",
+      "O PAD federal tem três fases: instauração (portaria que designa a comissão), inquérito administrativo (instrução com provas, interrogatório e defesa escrita) e julgamento pela autoridade competente. As penalidades possíveis vão de advertência e suspensão até demissão, cassação de aposentadoria e destituição de cargo em comissão, conforme a gravidade.",
+      "O servidor tem direito ao contraditório e à ampla defesa em todas as fases — acesso aos autos, produção de provas, acompanhamento por advogado (facultativo, segundo a Súmula Vinculante 5 do STF, mas em geral recomendável em casos graves). Vícios como comissão irregular, cerceamento de defesa e desproporcionalidade da pena podem levar à anulação do processo, na via administrativa ou judicial.",
+      "Ser notificado em sindicância ou PAD não significa condenação — mas os prazos de defesa são curtos e o que se produz no início pesa no resultado. Procure sempre um advogado logo na primeira notificação."
+    ],
+    exemplos: [
+      "Servidor federal que responde a PAD por acusação de abandono de cargo",
+      "Sindicância que conclui pela instauração de processo disciplinar contra servidor acusado de acumulação ilegal de cargos",
+      "Demissão anulada pela Justiça porque a comissão do PAD não permitiu ao servidor produzir provas"
+    ],
+    areas: ["administrativo"],
+    ver_tambem: ["improbidade-administrativa", "mandado-de-seguranca", "nomeacao-em-concurso-publico"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "improbidade-administrativa",
+    termo: "Improbidade administrativa",
+    variacoes: ["ação de improbidade", "lei de improbidade", "lia"],
+    definicao_curta:
+      "Ato ilegal e intencional de agente público que gera enriquecimento ilícito, prejuízo ao erário ou viola princípios da Administração, punido com sanções graves.",
+    explicacao: [
+      "Improbidade administrativa é a conduta do agente público (e de particulares que participem) que se enquadra na Lei 8.429/1992: enriquecimento ilícito, dano ao erário ou violação dos princípios da Administração Pública. Não é crime — é ilícito de natureza civil-administrativa, apurado em ação judicial própria, movida pelo Ministério Público.",
+      "As sanções são severas: perda dos bens acrescidos ilicitamente, ressarcimento do dano, perda da função pública, suspensão dos direitos políticos, multa e proibição de contratar com o poder público — com patamares que variam conforme o tipo de ato.",
+      "A reforma de 2021 (Lei 14.230/2021) mudou pontos centrais: passou a exigir dolo (intenção) para todas as modalidades — a improbidade meramente culposa deixou de existir —, restringiu a modalidade de violação de princípios a uma lista fechada de condutas e alterou regras de prazo. O STF decidiu que a exigência de dolo não se aplica automaticamente a condenações por culpa já definitivas, e a aplicação das novas regras a casos antigos segue gerando discussões — cada processo exige análise individual.",
+      "Improbidade não se confunde com mera ilegalidade ou má gestão: exige desonestidade, intenção. Tanto para quem acusa quanto para quem se defende, é área de alta complexidade técnica. Procure sempre um advogado ao receber citação ou notificação em ação de improbidade."
+    ],
+    exemplos: [
+      "Servidor que recebe propina para facilitar contrato e responde por enriquecimento ilícito",
+      "Gestor que frauda licitação causando prejuízo aos cofres públicos",
+      "Ação de improbidade rejeitada por ausência de prova de dolo após a reforma de 2021"
+    ],
+    areas: ["administrativo", "criminal"],
+    ver_tambem: ["processo-administrativo-disciplinar", "mandado-de-seguranca", "responsabilidade-civil"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "desapropriacao",
+    termo: "Desapropriação",
+    variacoes: ["desapropriação por utilidade pública", "indenização por desapropriação", "imissão na posse"],
+    definicao_curta:
+      "Transferência compulsória de um bem particular para o poder público, por necessidade ou utilidade pública ou interesse social, mediante indenização.",
+    explicacao: [
+      "Desapropriação é o instrumento pelo qual o Estado toma para si um bem particular — em geral um imóvel — para atender a uma finalidade pública: abrir uma estrada, construir uma escola, implantar programa habitacional, fazer reforma agrária. A Constituição exige, em regra, indenização prévia, justa e em dinheiro; as normas gerais estão no Decreto-Lei 3.365/1941 e em leis específicas.",
+      "O procedimento começa com o decreto que declara o bem de utilidade pública ou interesse social. Depois vem a fase de acordo ou de ação judicial: se o proprietário não aceita o valor oferecido, o processo segue com perícia para apurar a indenização justa. O poder público pode obter a posse do imóvel antes do fim do processo (imissão provisória na posse), mediante depósito, enquanto a discussão sobre o valor continua.",
+      "O ponto mais litigioso costuma ser o valor: a indenização deve refletir o preço de mercado, incluindo, conforme o caso, benfeitorias e outras parcelas, com juros e correção. O proprietário em regra não consegue impedir a desapropriação em si — o Judiciário não revisa a conveniência da decisão administrativa —, mas pode discutir vícios do procedimento e, principalmente, o valor.",
+      "Casos especiais têm regras próprias, como a desapropriação para reforma agrária (indenizável em títulos da dívida agrária) e a desapropriação-confisco de áreas com culturas ilegais, sem indenização. Ao ser notificado de desapropriação, não assine acordo sem avaliar o valor de mercado — procure sempre um advogado e, se possível, uma avaliação técnica independente."
+    ],
+    exemplos: [
+      "Casa desapropriada para duplicação de uma avenida, com discussão judicial sobre o valor da indenização",
+      "Poder público que obtém imissão provisória na posse mediante depósito enquanto a perícia apura o valor justo",
+      "Fazenda improdutiva desapropriada para reforma agrária, com indenização em títulos da dívida agrária"
+    ],
+    areas: ["administrativo", "imobiliario", "civil"],
+    ver_tambem: ["usucapiao", "mandado-de-seguranca", "improbidade-administrativa"],
+    atualizado_em: "2026-07-02"
+  },
+  {
+    slug: "nomeacao-em-concurso-publico",
+    termo: "Nomeação em concurso público",
+    variacoes: ["direito à nomeação", "aprovado dentro das vagas", "preterição em concurso", "cadastro de reserva"],
+    definicao_curta:
+      "Ato que convoca o aprovado em concurso para assumir o cargo — quem passa dentro do número de vagas do edital tem, em regra, direito à nomeação.",
+    explicacao: [
+      "A nomeação é o ato pelo qual a Administração convoca o candidato aprovado em concurso para tomar posse no cargo. O STF firmou entendimento de que o candidato aprovado dentro do número de vagas previsto no edital tem, em regra, direito subjetivo à nomeação dentro do prazo de validade do concurso — a Administração escolhe o momento, mas não pode simplesmente deixar de nomear, salvo situações excepcionais e devidamente motivadas.",
+      "Quem fica fora das vagas (cadastro de reserva) tem, em princípio, apenas expectativa de direito. Essa expectativa pode se transformar em direito em situações reconhecidas pela jurisprudência — principalmente a preterição: quando surgem vagas e a Administração as preenche de forma irregular, por exemplo contratando temporários ou terceirizados para as mesmas funções enquanto há aprovados aguardando.",
+      "Outras discussões comuns envolvem eliminação em exame psicotécnico sem critérios objetivos, exclusão por tatuagem ou em investigação social sem base legal, e mudanças de regra depois de publicado o edital — o edital vincula a Administração, e alterações no meio do certame podem ser questionadas.",
+      "O instrumento típico para atacar ilegalidades em concurso é o mandado de segurança, cujo prazo é de 120 dias contados do ato — quem espera demais pode perder essa via. Guarde o edital, as publicações e os comprovantes, e procure sempre um advogado ao identificar a irregularidade."
+    ],
+    exemplos: [
+      "Aprovado em 5º lugar para 10 vagas que não é nomeado dentro da validade do concurso e obtém a nomeação na Justiça",
+      "Candidato do cadastro de reserva que comprova a contratação de temporários para a mesma função e demonstra preterição",
+      "Candidata eliminada em psicotécnico sem critérios objetivos que consegue anular a eliminação"
+    ],
+    areas: ["administrativo"],
+    ver_tambem: ["mandado-de-seguranca", "processo-administrativo-disciplinar", "liminar"],
+    atualizado_em: "2026-07-02"
   }
 ];
 

@@ -651,7 +651,13 @@ export const GUIAS: Guia[] = [
       "Ao receber notificação, representação ou citação da Justiça Eleitoral — os prazos são muito curtos",
       "Quando o título de eleitor é cancelado ou há pendência que impede emissão de documentos"
     ],
-    glossario: ["prescricao", "mandado-de-seguranca"],
+    glossario: [
+      "inelegibilidade",
+      "prestacao-de-contas-eleitoral",
+      "propaganda-antecipada",
+      "compra-de-votos",
+      "mandado-de-seguranca"
+    ],
     modelos: ["procuracao-ad-judicia"],
     faq: [
       {
@@ -712,7 +718,13 @@ export const GUIAS: Guia[] = [
       "Diante de punição disciplinar que pareça ilegal ou desproporcional",
       "Em questões de promoção, reforma, pensão militar ou reintegração"
     ],
-    glossario: ["habeas-corpus", "prescricao"],
+    glossario: [
+      "crime-militar",
+      "conselho-de-justificacao",
+      "transgressao-disciplinar",
+      "reforma-militar",
+      "habeas-corpus"
+    ],
     temas_jurisprudencia: ["criminal"],
     modelos: ["procuracao-ad-judicia"],
     faq: [
@@ -774,6 +786,12 @@ export const GUIAS: Guia[] = [
       "Antes de assinar contrato com empresa ou pessoa de outro país",
       "Em processos de adoção internacional ou disputas de guarda envolvendo países diferentes"
     ],
+    glossario: [
+      "homologacao-de-sentenca-estrangeira",
+      "apostilamento",
+      "naturalizacao",
+      "visto-humanitario"
+    ],
     modelos: ["procuracao-ad-judicia", "notificacao-extrajudicial"],
     faq: [
       {
@@ -834,7 +852,13 @@ export const GUIAS: Guia[] = [
       "Ao comprar imóvel rural — o passivo ambiental acompanha a propriedade",
       "Ao ser intimado em inquérito ou ação penal por crime ambiental"
     ],
-    glossario: ["responsabilidade-civil", "prescricao"],
+    glossario: [
+      "auto-de-infracao-ambiental",
+      "licenciamento-ambiental",
+      "tac-ambiental",
+      "area-de-preservacao-permanente",
+      "responsabilidade-civil"
+    ],
     temas_jurisprudencia: ["responsabilidade-civil"],
     modelos: ["procuracao-ad-judicia", "notificacao-extrajudicial"],
     faq: [
@@ -896,7 +920,13 @@ export const GUIAS: Guia[] = [
       "Ao receber citação em ação de improbidade administrativa",
       "Em desapropriação com valor de indenização abaixo do de mercado"
     ],
-    glossario: ["mandado-de-seguranca", "prescricao"],
+    glossario: [
+      "processo-administrativo-disciplinar",
+      "improbidade-administrativa",
+      "desapropriacao",
+      "nomeacao-em-concurso-publico",
+      "mandado-de-seguranca"
+    ],
     modelos: ["procuracao-ad-judicia"],
     faq: [
       {
