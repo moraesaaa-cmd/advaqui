@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { isAdminRequest } from "@/lib/auth/adminSession";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { buildMetadata } from "@/lib/seo/metadata";
+import LeadBriefButton from "@/components/LeadBriefButton";
 
 /**
  * /admin/leads — caixa de entrada dos leads captados (chat "Advogado Online",
@@ -29,6 +30,7 @@ type Lead = {
   origem: string | null;
   ferramenta: string | null;
   created_at: string | null;
+  ai_resumo: string | null;
 };
 
 function toWa(raw: string): string {
@@ -62,7 +64,7 @@ export default async function AdminLeadsPage() {
   const { data, error } = await admin
     .from("leads")
     .select(
-      "id,nome,telefone,email,cidade,uf,area_juridica,resumo,origem,ferramenta,created_at"
+      "id,nome,telefone,email,cidade,uf,area_juridica,resumo,origem,ferramenta,created_at,ai_resumo"
     )
     .order("created_at", { ascending: false })
     .limit(200);
@@ -135,6 +137,15 @@ export default async function AdminLeadsPage() {
                       {l.resumo}
                     </p>
                   )}
+                  {l.ai_resumo && (
+                    <p className="text-sm text-brand-ink/80 mt-2 bg-brand-deep/5 border border-brand-line rounded-lg px-3 py-2">
+                      <span className="font-semibold text-brand-ink">
+                        Resumo do caso:{" "}
+                      </span>
+                      {l.ai_resumo}
+                    </p>
+                  )}
+                  <LeadBriefButton leadId={l.id} waPhone={wa} />
                 </div>
                 {waUrl && (
                   <a
