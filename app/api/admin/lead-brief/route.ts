@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { isAdminRequest } from "@/lib/auth/adminSession";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { callAI, type ChatMessage } from "@/lib/ai/core";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -110,61 +111,47 @@ export async function POST(req: Request) {
     .filter(Boolean)
     .join("\n");
 
-  const chatMessages = [
+  const chatMessages: ChatMessage[] = [
     { role: "system", content: systemPrompt },
     { role: "user", content: leadData || "Lead sem dados preenchidos" }
   ];
 
-  const callOpenAI = (payload: Record<string, unknown>) =>
-    fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`
-      },
-      body: JSON.stringify(payload)
-    });
-
-  let content = "";
-  try {
-    let response = await callOpenAI({
-      model: "gpt-5.4-mini",
+  // Camada central (lib/ai/core.ts): modelo novo primeiro, fallback pro antigo;
+  // timeout/custo/log em agent_logs.
+  let r = await callAI({
+    feature: "admin_lead_brief",
+    action: "brief",
+    messages: chatMessages,
+    model: "gpt-5.4-mini",
+    maxTokens: 600,
+    json: true,
+    retries: 0,
+    log: false
+  });
+  if (!r.ok) {
+    console.error(`[admin:lead-brief] gpt-5.4-mini falhou (${r.erro}) — fallback gpt-4o-mini`);
+    r = await callAI({
+      feature: "admin_lead_brief",
+      action: "brief",
       messages: chatMessages,
-      max_completion_tokens: 600,
-      response_format: { type: "json_object" }
+      model: "gpt-4o-mini",
+      maxTokens: 600,
+      temperature: 0.3,
+      json: true,
+      retries: 1,
+      details: { lead_id: leadId }
     });
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error(
-        `[admin:lead-brief] gpt-5.4-mini ${response.status}: ${errText} — fallback gpt-4o-mini`
-      );
-      response = await callOpenAI({
-        model: "gpt-4o-mini",
-        messages: chatMessages,
-        max_tokens: 600,
-        temperature: 0.3,
-        response_format: { type: "json_object" }
-      });
-    }
+  }
 
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error(`[admin:lead-brief] OpenAI ${response.status}: ${errText}`);
-      return NextResponse.json(
-        { ok: false, error: "Falha ao gerar mensagem (OpenAI)." },
-        { status: 502 }
-      );
-    }
-
-    const data = await response.json();
-    content = data.choices?.[0]?.message?.content || "";
-  } catch (err) {
-    console.error("[admin:lead-brief] exception na chamada OpenAI", err);
+  if (!r.ok) {
+    console.error(`[admin:lead-brief] OpenAI falhou: ${r.erro}`);
     return NextResponse.json(
-      { ok: false, error: "Erro ao gerar mensagem." },
-      { status: 500 }
+      { ok: false, error: "Falha ao gerar mensagem (OpenAI)." },
+      { status: 502 }
     );
   }
+
+  const content = r.text;
 
   let brief: Brief;
   try {

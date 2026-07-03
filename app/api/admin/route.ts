@@ -18,6 +18,7 @@ import {
   adminReplyMessage
 } from "@/lib/data/messages";
 import { logAdminAction, listAuditLogs } from "@/lib/data/audit";
+import { callAI } from "@/lib/ai/core";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -267,6 +268,64 @@ export async function POST(req: Request) {
         adminEmail
       });
       return NextResponse.json(result, { status: result.ok ? 200 : 500 });
+    }
+    case "draft-message-reply": {
+      // Rascunho de resposta por IA para uma mensagem de contato/suporte.
+      // Não envia nada — só devolve o texto para o admin revisar e editar.
+      if (!body.id)
+        return NextResponse.json({ ok: false, error: "ID ausente" }, { status: 400 });
+      const adminClient = createAdminClient({ noStore: true });
+      const { data: message } = await adminClient
+        .from("messages")
+        .select("from_name, subject, body, source")
+        .eq("id", body.id)
+        .maybeSingle();
+      if (!message)
+        return NextResponse.json(
+          { ok: false, error: "Mensagem não encontrada" },
+          { status: 404 }
+        );
+
+      const primeiroNome =
+        (message.from_name || "").trim().split(/\s+/)[0] || "";
+      const r = await callAI({
+        feature: "admin_message_reply",
+        action: "draft_reply",
+        messages: [
+          {
+            role: "system",
+            content:
+              "Você é o atendimento do AdvAqui (diretório de advogados brasileiro). " +
+              "Redija uma resposta cordial, objetiva e humana para a mensagem recebida, " +
+              "pronta para o atendente revisar e enviar. Português brasileiro, no máximo 5 frases. " +
+              `Comece com "Olá${primeiroNome ? ", " + primeiroNome : ""}!". ` +
+              "NUNCA mencione inteligência artificial, IA, robô ou automação. " +
+              "NUNCA prometa resultado, êxito ou prazo garantido. " +
+              "Se for dúvida jurídica, oriente a pessoa a buscar um advogado no site (sem dar parecer). " +
+              "Devolva apenas o texto da resposta, sem assinatura de nome próprio."
+          },
+          {
+            role: "user",
+            content: [
+              `Canal: ${message.source}`,
+              `De: ${message.from_name}`,
+              message.subject && `Assunto: ${message.subject}`,
+              `Mensagem: ${message.body}`
+            ]
+              .filter(Boolean)
+              .join("\n")
+          }
+        ],
+        maxTokens: 500,
+        temperature: 0.4
+      });
+
+      if (!r.ok)
+        return NextResponse.json(
+          { ok: false, error: "Não foi possível gerar o rascunho agora." },
+          { status: 502 }
+        );
+      return NextResponse.json({ ok: true, draft: r.text });
     }
     case "set-email": {
       if (!body.id || !body.email)

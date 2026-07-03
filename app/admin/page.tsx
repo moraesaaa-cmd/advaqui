@@ -368,6 +368,7 @@ export default function AdminPage() {
   const [filter, setFilter] = useState<"all" | PlanStatus>("all");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
+  const [draftingReply, setDraftingReply] = useState(false);
   const [busy, setBusy] = useState(false);
 
   // Modal de edição de cidades adicionais (Fase 4 — substitui window.prompt).
@@ -752,6 +753,18 @@ export default function AdminPage() {
       await refreshMessages();
     } else if (r.status !== 401 && r.status !== 0) {
       toast(String(r.json.error || "Erro ao excluir mensagem"), "error");
+    }
+  };
+
+  const draftReply = async (id: string) => {
+    setDraftingReply(true);
+    const r = await callAdmin({ action: "draft-message-reply", id });
+    setDraftingReply(false);
+    if (r.status === 200 && r.json?.draft) {
+      setReplyText(String(r.json.draft));
+      toast("Rascunho gerado. Revise antes de enviar.");
+    } else {
+      toast(r.json?.error || "Não foi possível gerar o rascunho.", "error");
     }
   };
 
@@ -1811,13 +1824,22 @@ export default function AdminPage() {
                         onChange={(e) => setReplyText(e.target.value)}
                         autoFocus
                       />
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2">
                         <button
                           onClick={() => submitReply(m.id)}
                           className="btn-primary text-xs"
                           disabled={replyText.trim().length < 5 || busy}
                         >
                           Enviar resposta
+                        </button>
+                        <button
+                          onClick={() => draftReply(m.id)}
+                          className="btn-ghost text-xs border border-brand-accent/50 inline-flex items-center gap-1"
+                          disabled={draftingReply || busy}
+                          title="Gera um rascunho de resposta para você revisar"
+                        >
+                          <Sparkles className="w-3 h-3" aria-hidden />
+                          {draftingReply ? "Gerando..." : "Gerar rascunho"}
                         </button>
                         <button
                           onClick={() => setReplyingTo(null)}
