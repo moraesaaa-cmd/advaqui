@@ -4,7 +4,6 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { DiagnosticoTrabalhista } from "@/components/DiagnosticoTrabalhista";
-import { ToolGate } from "@/components/ToolGate";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -85,9 +84,7 @@ export default function DiagnosticoPage() {
       </header>
 
       {/* O simulador interativo */}
-      <ToolGate>
         <DiagnosticoTrabalhista />
-      </ToolGate>
 
       {/* Conteúdo estático — SEO + sem-JS */}
       <section className="card mb-6">

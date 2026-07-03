@@ -5,7 +5,6 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 import { ChecklistClient } from "./ChecklistClient";
-import { ToolGate } from "@/components/ToolGate";
 
 /**
  * /ferramentas/triagem-mandado-seguranca
@@ -88,9 +87,7 @@ export default function TriagemMandadoSegurancaPage() {
       </header>
 
       {/* ---- Interactive checklist + form + FAQ + links ---- */}
-      <ToolGate>
         <ChecklistClient />
-      </ToolGate>
 
       {/* ---- Disclaimer ---- */}
       <p className="text-xs text-brand-ink/50 mt-8 max-w-2xl">

@@ -23,6 +23,8 @@ const BENEFITS = [
   { icon: "📍", title: "Até 10 cidades", desc: "Atende em mais de uma comarca? Apareça nas buscas de até 10 cidades diferentes." },
   { icon: "🕐", title: "Horários visíveis", desc: "Mostre quando atende. O cliente não desiste achando que você está fechado." },
   { icon: "🔗", title: "Site, Insta, LinkedIn", desc: "Links pras suas redes e site profissional direto no perfil." },
+  { icon: "📝", title: "Revisão de peças", desc: "Aprimore a redação das suas petições — revise gramática, clareza e técnica do texto." },
+  { icon: "✨", title: "Perfil otimizado", desc: "Deixe seu perfil mais completo e claro para quem procura advogado na sua cidade." },
   { icon: "🚫", title: "Sem fidelidade", desc: "Plano mensal. Cancela quando quiser, sem multa e sem permanência." }
 ];
 

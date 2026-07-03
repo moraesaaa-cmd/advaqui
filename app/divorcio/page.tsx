@@ -4,7 +4,6 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { DivorcioValidador } from "@/components/DivorcioValidador";
-import { ToolGate } from "@/components/ToolGate";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -66,9 +65,7 @@ export default function DivorcioPage() {
         </div>
       </header>
 
-      <ToolGate>
         <DivorcioValidador />
-      </ToolGate>
 
       <section className="card mb-6">
         <div className="grid sm:grid-cols-2 gap-4">

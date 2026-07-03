@@ -4,7 +4,6 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { GerenciadorPrazos } from "@/components/GerenciadorPrazos";
-import { ToolGate } from "@/components/ToolGate";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
@@ -46,9 +45,7 @@ export default function PrazosPage() {
         </div>
       </header>
 
-      <ToolGate>
         <GerenciadorPrazos />
-      </ToolGate>
 
       <section className="card mb-6">
         <h2 className="font-display text-xl font-bold text-brand-ink mb-2">

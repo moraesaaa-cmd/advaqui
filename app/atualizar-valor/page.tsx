@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Coins, AlertTriangle, ArrowRight } from "lucide-react";
-import { ToolGate } from "@/components/ToolGate";
 
 /**
  * /atualizar-valor — Calculadora interativa de atualização de valores.
@@ -82,7 +81,6 @@ export default function AtualizarValorPage() {
         </p>
       </div>
 
-      <ToolGate>
       <div className="card space-y-5">
         {field("principal", "Valor principal (R$)", principal, setPrincipal, "Ex.: 1.000,00")}
         <div className="grid sm:grid-cols-2 gap-4">
@@ -144,7 +142,6 @@ export default function AtualizarValorPage() {
           </span>
         </div>
       </div>
-      </ToolGate>
 
       <div className="mt-6 rounded-2xl border border-brand-line bg-brand-bg/40 p-5 text-center">
         <p className="text-sm text-brand-ink/75">

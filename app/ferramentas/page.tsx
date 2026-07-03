@@ -298,26 +298,14 @@ const GOLD = "#C8A24A";
 const GOLD_LIGHT = "#E3C078";
 const GOLD_TEXT = "#8A6E2B";
 
-// Ferramentas interativas: grátis, exigem conta gratuita (ToolGate).
+// Ferramentas que ainda exigem conta gratuita (ToolGate). As calculadoras,
+// simuladores e checklists determinísticos ficam ABERTOS (grátis, sem login)
+// para serem plenamente rastreáveis/indexáveis pelo Google e sem fricção.
+// Só /processos (usa API externa DataJud — evita abuso anônimo) e /triagem
+// (funil da Marina) seguem exigindo conta.
 const GATED_TOOLS = new Set([
-  "/calculadora-prazos",
-  "/correcao-monetaria",
-  "/atualizar-valor",
-  "/calculadoras",
-  "/previdencia",
   "/processos",
-  "/montar-peticao",
-  "/seguro-desemprego",
-  "/diagnostico",
-  "/triagem",
-  "/divorcio",
-  "/prazos",
-  "/recurso-de-multa",
-  "/ferramentas/checklist-recurso-multa",
-  "/ferramentas/checklist-limpar-nome",
-  "/ferramentas/checklist-pensao-alimenticia",
-  "/ferramentas/checklist-documentos-guarda",
-  "/ferramentas/triagem-mandado-seguranca"
+  "/triagem"
 ]);
 
 type BadgeKind = "conta" | "premium" | "gratis";

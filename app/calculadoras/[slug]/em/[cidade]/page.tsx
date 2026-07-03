@@ -25,7 +25,6 @@ import { findSpecialty } from "@/lib/data/specialties";
 import { getLawyersForCity } from "@/lib/data/lawyers";
 import { LawyerCard } from "@/components/LawyerCard";
 import { CalculadoraWidget } from "@/components/CalculadoraWidget";
-import { ToolGate } from "@/components/ToolGate";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -160,9 +159,7 @@ export default async function CalculadoraCidadePage({
         </div>
 
         {/* Calculadora interativa — usar exige conta grátis (página segue indexável) */}
-        <ToolGate>
           <CalculadoraWidget slug={calc.slug} />
-        </ToolGate>
 
         {/* Fórmula */}
         <section className="mt-6 p-4 rounded-xl bg-brand-deep/5 border border-brand-deep/20">

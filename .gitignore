@@ -19,3 +19,6 @@ __pycache__/
 # TS incremental build cache (nao versionar)
 tsconfig.tsbuildinfo
 *.tsbuildinfo
+.next.old
+.next.livebak
+.next.*

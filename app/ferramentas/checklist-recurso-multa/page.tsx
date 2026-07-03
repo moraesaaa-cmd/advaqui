@@ -5,7 +5,6 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 import { ChecklistClient } from "./ChecklistClient";
-import { ToolGate } from "@/components/ToolGate";
 
 /**
  * /ferramentas/checklist-recurso-multa
@@ -86,9 +85,7 @@ export default function ChecklistRecursoMultaPage() {
       </header>
 
       {/* ---- Interactive client component ---- */}
-      <ToolGate>
         <ChecklistClient />
-      </ToolGate>
 
       {/* ---- JSON-LD: Breadcrumb ---- */}
       <JsonLd
