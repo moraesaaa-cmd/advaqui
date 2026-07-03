@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { resolveCtaUrl } from "@/lib/chat/cta";
+import { callAI, logAgentRun, type ChatMessage } from "@/lib/ai/core";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -143,55 +144,66 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const chatMessages = [
+    const chatMessages: ChatMessage[] = [
       { role: "system", content: SYSTEM_PROMPT },
       ...sanitized
     ];
-    const callOpenAI = (payload: Record<string, unknown>) =>
-      fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`
-        },
-        body: JSON.stringify(payload)
-      });
 
-    // Modelo novo primeiro; se a API recusar (nome/params), cai pro antigo.
-    let response = await callOpenAI({
-      model: "gpt-5.4-mini",
+    // Camada central (lib/ai/core.ts): modelo novo primeiro; se a API recusar
+    // (nome/params/erro), cai pro antigo. log:false nas tentativas — o
+    // resultado final é logado uma única vez abaixo.
+    let r = await callAI({
+      feature: "chat_triage",
       messages: chatMessages,
-      max_completion_tokens: 400
+      model: "gpt-5.4-mini",
+      maxTokens: 400,
+      retries: 0,
+      log: false
     });
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error(`[chat:triage] gpt-5.4-mini ${response.status}: ${errText} — fallback gpt-4o-mini`);
-      response = await callOpenAI({
-        model: "gpt-4o-mini",
+    if (!r.ok) {
+      console.error(`[chat:triage] gpt-5.4-mini falhou (${r.erro}) — fallback gpt-4o-mini`);
+      r = await callAI({
+        feature: "chat_triage",
         messages: chatMessages,
-        max_tokens: 300,
-        temperature: 0.7
+        model: "gpt-4o-mini",
+        maxTokens: 300,
+        temperature: 0.7,
+        retries: 1,
+        log: false
       });
     }
 
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error(`[chat:triage] OpenAI ${response.status}: ${errText}`);
+    if (!r.ok) {
+      console.error(`[chat:triage] OpenAI falhou: ${r.erro}`);
+      await logAgentRun("chat_triage", "message", {
+        status: "error",
+        durationMs: r.durationMs,
+        details: { error: r.erro.slice(0, 200) }
+      });
       return NextResponse.json(
         { ok: false, error: "Erro ao processar. Tente novamente." },
         { status: 502 }
       );
     }
 
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || "";
-    const usage = data.usage;
+    const content = r.text;
+    const usage = {
+      prompt_tokens: r.promptTokens,
+      completion_tokens: r.completionTokens,
+      total_tokens: r.totalTokens
+    };
 
-    if (usage) {
-      console.log(
-        `[chat:triage] tokens — prompt: ${usage.prompt_tokens}, completion: ${usage.completion_tokens}, total: ${usage.total_tokens}`
-      );
-    }
+    console.log(
+      `[chat:triage] tokens — prompt: ${usage.prompt_tokens}, completion: ${usage.completion_tokens}, total: ${usage.total_tokens}`
+    );
+    await logAgentRun("chat_triage", "message", {
+      status: "success",
+      itemsProcessed: 1,
+      tokensUsed: r.totalTokens,
+      costUsd: r.costUsd,
+      durationMs: r.durationMs,
+      details: { model: r.model }
+    });
 
     // Extract triage JSON if present
     type TriagePayload = {

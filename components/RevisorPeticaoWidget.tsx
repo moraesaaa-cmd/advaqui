@@ -89,10 +89,10 @@ export function RevisorPeticaoWidget() {
           <Sparkles className="w-3.5 h-3.5" aria-hidden /> Recurso premium
         </span>
         <h1 className="font-display text-3xl md:text-4xl font-bold text-brand-ink text-balance">
-          Revisor e humanizador de petições com IA
+          Revisor e humanizador de petições
         </h1>
         <p className="text-brand-ink/70 mt-3 max-w-xl mx-auto">
-          Cole o texto da sua peça e a IA corrige a redação ou deixa o texto mais
+          Cole o texto da sua peça e receba a redação revisada ou um texto mais
           natural — sem mudar fatos, valores ou pedidos. Para advogados com plano
           premium ativo.
         </p>
@@ -160,7 +160,7 @@ export function RevisorPeticaoWidget() {
           ) : (
             <>
               <Sparkles className="w-4 h-4" aria-hidden />{" "}
-              {modo === "revisar" ? "Revisar com IA" : "Humanizar com IA"}
+              {modo === "revisar" ? "Revisar o texto" : "Humanizar o texto"}
             </>
           )}
         </button>
@@ -182,7 +182,7 @@ export function RevisorPeticaoWidget() {
               <Lock className="w-4 h-4 text-brand-accent" aria-hidden /> Recurso do plano premium
             </p>
             <p className="text-sm text-brand-ink/75 mt-1">
-              O revisor por IA está incluído no plano premium do AdvAqui, junto com
+              A revisão de peças está incluída no plano premium do AdvAqui, junto com
               o destaque na busca e a sua página profissional.
             </p>
             <Link href="/planos" className="btn-primary mt-3 inline-flex">
@@ -229,10 +229,10 @@ export function RevisorPeticaoWidget() {
         <div className="flex items-start gap-2 text-xs p-3 rounded-xl border border-amber-200 bg-amber-50 text-amber-900">
           <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" aria-hidden />
           <span>
-            A IA pode cometer erros e até citar leis ou julgados inexistentes.
-            Confira todas as citações e dados antes de protocolar — a
-            responsabilidade técnica é sempre do advogado. O texto enviado não é
-            armazenado.
+            A revisão automática pode cometer erros e até citar leis ou julgados
+            inexistentes. Confira todas as citações e dados antes de protocolar —
+            a responsabilidade técnica é sempre do advogado. O texto enviado não
+            é armazenado.
           </span>
         </div>
       </div>

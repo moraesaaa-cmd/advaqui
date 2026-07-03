@@ -382,7 +382,8 @@ export default function FerramentasPage() {
         <p className="text-brand-ink/70 mt-4 text-base md:text-lg leading-relaxed">
           Calcular um prazo, atualizar uma dívida, montar o rascunho de uma
           peça, entender o passo a passo do seu problema. As ferramentas são
-          gratuitas — basta criar sua conta (leva 2 minutos) para usar.
+          gratuitas e abertas — use sem cadastro. Só a consulta de processos e
+          a triagem pedem uma conta grátis.
         </p>
       </header>
 
@@ -490,9 +491,9 @@ export default function FerramentasPage() {
               <Badge kind="conta" />
             </div>
             <p className="text-sm text-brand-ink/75 leading-relaxed flex-1">
-              Libera todas as ferramentas interativas: calculadoras, prazos,
-              consulta de processo, montar petição, checklists, triagens e
-              simuladores. Custa R$ 0 — para sempre.
+              As calculadoras, checklists, simuladores e o montar petição já são
+              abertos — não pedem cadastro. A conta grátis libera a consulta de
+              processos e a triagem do seu caso. Custa R$ 0 — para sempre.
             </p>
             <Link
               href="/cadastro"

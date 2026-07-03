@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { callAI, logAgentRun, touchAgentConfig } from "@/lib/ai/core";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,9 +18,6 @@ function wordCount(html: string): number {
 }
 
 async function enhanceArticle(article: { title: string; body: string; category: string; excerpt: string }) {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) throw new Error("OPENAI_API_KEY não configurada");
-
   const currentWords = wordCount(article.body);
   const hasFaq = article.body.toLowerCase().includes("perguntas frequentes");
 
@@ -69,38 +67,30 @@ Retorne APENAS um JSON valido:
   "wordsAdded": numero_aproximado_de_palavras_adicionadas
 }`;
 
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt }
-      ],
-      max_tokens: 16000,
-      temperature: 0.5,
-      response_format: { type: "json_object" }
-    })
+  // Camada central (lib/ai/core.ts): timeout/retry/custo; log do run no GET.
+  const r = await callAI({
+    feature: "article_enhancer",
+    action: "enhance_article",
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userPrompt }
+    ],
+    model: "gpt-4o-mini",
+    maxTokens: 16000,
+    temperature: 0.5,
+    json: true,
+    timeoutMs: 180_000,
+    log: false
   });
 
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`OpenAI ${response.status}: ${errText}`);
-  }
+  if (!r.ok) throw new Error(`OpenAI: ${r.erro}`);
 
-  const data = await response.json();
-  const content = data.choices?.[0]?.message?.content;
-  if (!content) throw new Error("Resposta vazia");
-
-  return JSON.parse(content) as {
+  const parsed = JSON.parse(r.text) as {
     body: string;
     excerpt: string | null;
     wordsAdded: number;
   };
+  return { parsed, tokens: r.totalTokens, costUsd: r.costUsd };
 }
 
 export async function GET(req: NextRequest) {
@@ -131,6 +121,9 @@ export async function GET(req: NextRequest) {
   }
 
   const results: Array<{ ok: boolean; slug: string; wordsAdded?: number; error?: string }> = [];
+  const runStart = Date.now();
+  let runTokens = 0;
+  let runCost = 0;
 
   for (const article of shortArticles) {
     try {
@@ -153,22 +146,30 @@ export async function GET(req: NextRequest) {
         results.push({ ok: true, slug: article.slug, wordsAdded: 0 });
         continue;
       }
+      runTokens += enhanced.tokens;
+      runCost += enhanced.costUsd;
 
-      const newReadingMinutes = estimateReadingMinutes(enhanced.body);
+      const newReadingMinutes = estimateReadingMinutes(enhanced.parsed.body);
 
       const { error } = await supabase
         .from("blog_articles")
         .update({
-          body: enhanced.body,
+          body: enhanced.parsed.body,
           reading_minutes: newReadingMinutes,
-          ...(enhanced.excerpt ? { excerpt: enhanced.excerpt.slice(0, 160) } : {})
+          ...(enhanced.parsed.excerpt
+            ? { excerpt: enhanced.parsed.excerpt.slice(0, 160) }
+            : {})
         })
         .eq("id", article.id);
 
       if (error) {
         results.push({ ok: false, slug: article.slug, error: error.message });
       } else {
-        results.push({ ok: true, slug: article.slug, wordsAdded: enhanced.wordsAdded || 0 });
+        results.push({
+          ok: true,
+          slug: article.slug,
+          wordsAdded: enhanced.parsed.wordsAdded || 0
+        });
       }
 
       await new Promise((r) => setTimeout(r, 2000));
@@ -177,11 +178,31 @@ export async function GET(req: NextRequest) {
     }
   }
 
+  const enhancedCount = results.filter((r) => r.ok && (r.wordsAdded || 0) > 0).length;
+  const failedCount = results.filter((r) => !r.ok).length;
+
+  // Observabilidade do run (agent_logs + placar em agent_configs).
+  await logAgentRun("article_enhancer", "run_complete", {
+    status: failedCount === 0 ? "success" : enhancedCount > 0 ? "success" : "error",
+    itemsProcessed: enhancedCount,
+    tokensUsed: runTokens,
+    costUsd: runCost,
+    durationMs: Date.now() - runStart,
+    details: {
+      failed: failedCount,
+      slugs: results.filter((r) => r.ok && (r.wordsAdded || 0) > 0).map((r) => r.slug)
+    }
+  });
+  await touchAgentConfig("article_enhancer", "Enriquecedor de Artigos", {
+    tokensUsed: runTokens,
+    costUsd: runCost
+  });
+
   return NextResponse.json({
     ok: true,
-    enhanced: results.filter((r) => r.ok && (r.wordsAdded || 0) > 0).length,
+    enhanced: enhancedCount,
     skipped: results.filter((r) => r.ok && (r.wordsAdded || 0) === 0).length,
-    failed: results.filter((r) => !r.ok).length,
+    failed: failedCount,
     results
   });
 }

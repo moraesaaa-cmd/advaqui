@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ADMIN_CREDENTIALS } from "@/lib/config";
+import { AdminAiDiagnostico } from "@/components/AdminAiDiagnostico";
 
 export const metadata: Metadata = {
   title: "Agentes — Painel AdvAqui"
@@ -238,6 +239,9 @@ export default async function AgentesPage() {
           </div>
         </div>
       </section>
+
+      {/* Diagnóstico do site sob demanda (dados reais + análise da IA) */}
+      <AdminAiDiagnostico />
 
       {/* --------------------------------------------------------------- */}
       {/* AGENT CARDS                                                     */}

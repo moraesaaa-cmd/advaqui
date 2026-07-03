@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentLawyer } from "@/lib/painel/server";
+import { callAI } from "@/lib/ai/core";
+import { SPECIALTIES } from "@/lib/data/specialties";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -80,12 +82,15 @@ export async function POST(req: Request) {
       : lawyer.bio || "";
 
   /* ── Prompt OpenAI ── */
+  const validSlugs = SPECIALTIES.map((s) => s.slug);
+
   const systemPrompt =
     "Você é um especialista em marketing jurídico e copywriting. " +
     "Transforme os dados básicos de um perfil de advogado em uma apresentação profissional, " +
     "persuasiva e otimizada para SEO. Escreva em português brasileiro. Seja conciso (máximo 3 parágrafos na bio). " +
     "Não use juridiquês excessivo. Destaque a expertise e como o advogado pode ajudar clientes. " +
-    "Não invente informações — use apenas os dados fornecidos.";
+    "Não invente informações — use apenas os dados fornecidos. " +
+    "Nunca prometa resultado nem use superlativos como 'melhor advogado'.";
 
   const userPrompt = [
     `Nome: ${name || "Não informado"}`,
@@ -94,67 +99,71 @@ export async function POST(req: Request) {
     `Especialidades: ${specialties.length ? specialties.join(", ") : "Não informadas"}`,
     `Bio atual: ${bio || "Nenhuma"}`,
     "",
+    `Áreas válidas do diretório (use SOMENTE estes slugs): ${validSlugs.join(", ")}`,
+    "",
     "Retorne um JSON com esta estrutura:",
     "{",
     '  "bio": "texto da bio melhorada (máximo 500 caracteres)",',
     '  "shortSummary": "resumo curto para SEO (máximo 160 caracteres)",',
-    '  "suggestedTitle": "título profissional, ex: Advogado Trabalhista em Almenara/MG"',
+    '  "suggestedTitle": "título profissional, ex: Advogado Trabalhista em Almenara/MG",',
+    '  "suggestedSpecialties": ["até 3 slugs de áreas RELACIONADAS às atuais que o advogado provavelmente também atende (da lista de áreas válidas), ou [] se não houver sugestão razoável"]',
     "}"
   ].join("\n");
 
-  /* ── Chamada OpenAI ── */
+  /* ── Chamada OpenAI (camada central: timeout/retry/custo/log) ── */
   try {
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) throw new Error("OPENAI_API_KEY não configurada");
-
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: process.env.OPENAI_MODEL || "gpt-4o-mini",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt }
-        ],
-        max_tokens: 1500,
-        temperature: 0.7,
-        response_format: { type: "json_object" }
-      })
+    const r = await callAI({
+      feature: "improve_profile",
+      action: "suggestions",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt }
+      ],
+      maxTokens: 1500,
+      temperature: 0.7,
+      json: true,
+      details: { lawyer_id: lawyer.id }
     });
 
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error("[improve-profile] OpenAI error", response.status, errText);
+    if (!r.ok) {
+      console.error("[improve-profile] OpenAI error", r.erro);
       return NextResponse.json(
         { ok: false, error: "Não foi possível gerar sugestões agora. Tente novamente em alguns instantes." },
         { status: 502 }
       );
     }
 
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content;
-    if (!content) {
-      console.error("[improve-profile] OpenAI returned empty content");
-      return NextResponse.json(
-        { ok: false, error: "Não foi possível gerar sugestões agora. Tente novamente em alguns instantes." },
-        { status: 502 }
-      );
-    }
-
-    const parsed = JSON.parse(content) as {
+    const parsed = JSON.parse(r.text) as {
       bio: string;
       shortSummary: string;
       suggestedTitle: string;
+      suggestedSpecialties?: string[];
     };
+
+    // Sugestão de áreas: valida contra a lista real do diretório, remove as
+    // que o advogado já tem e limita a 3 — a IA nunca inventa área nova.
+    const currentSet = new Set(specialties);
+    const suggestedSpecialties = (
+      Array.isArray(parsed.suggestedSpecialties) ? parsed.suggestedSpecialties : []
+    )
+      .filter(
+        (slug): slug is string =>
+          typeof slug === "string" &&
+          validSlugs.includes(slug) &&
+          !currentSet.has(slug)
+      )
+      .slice(0, 3)
+      .map((slug) => ({
+        slug,
+        name: SPECIALTIES.find((s) => s.slug === slug)?.name || slug
+      }));
 
     // Clamp
     const suggestions = {
       bio: (parsed.bio || "").slice(0, 500),
       shortSummary: (parsed.shortSummary || "").slice(0, 160),
-      suggestedTitle: parsed.suggestedTitle || ""
+      suggestedTitle: parsed.suggestedTitle || "",
+      suggestedSpecialties
     };
 
     return NextResponse.json({ ok: true, suggestions });

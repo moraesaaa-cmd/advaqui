@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { BLOG_TOPICS } from "@/lib/data/blog-topics";
+import { callAI, logAgentRun, touchAgentConfig } from "@/lib/ai/core";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -39,9 +40,6 @@ async function getUsedTopicIndices(): Promise<Set<number>> {
 }
 
 async function generateOne(topic: (typeof BLOG_TOPICS)[number]) {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) throw new Error("OPENAI_API_KEY não configurada");
-
   const systemPrompt = `Voce e um redator juridico brasileiro com 15 anos de experiencia, especialista em SEO e produção de conteudo para o AdvAqui — o maior diretorio de advogados do Brasil.
 
 MISSÃO: Produzir artigos longos, completos e que RANQUEIEM no Google. Cada artigo deve ser a MELHOR resposta da internet para a busca do leitor.
@@ -106,34 +104,27 @@ Retorne APENAS um JSON valido (sem texto fora do JSON):
   ]
 }`;
 
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt }
-      ],
-      max_tokens: 16000,
-      temperature: 0.6,
-      response_format: { type: "json_object" }
-    })
+  // Camada central: timeout/retry/custo/log ficam em lib/ai/core.ts.
+  // log:false aqui — o run inteiro é logado uma vez no fim do GET (evita
+  // uma linha de agent_logs por artigo além da linha do run).
+  const r = await callAI({
+    feature: "article_publisher",
+    action: "generate_article",
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userPrompt }
+    ],
+    model: "gpt-4o-mini",
+    maxTokens: 16000,
+    temperature: 0.6,
+    json: true,
+    timeoutMs: 180_000,
+    log: false
   });
 
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`OpenAI ${response.status}: ${errText}`);
-  }
+  if (!r.ok) throw new Error(`OpenAI: ${r.erro}`);
 
-  const data = await response.json();
-  const content = data.choices?.[0]?.message?.content;
-  if (!content) throw new Error("OpenAI retornou resposta vazia");
-
-  const parsed = JSON.parse(content) as {
+  const parsed = JSON.parse(r.text) as {
     title: string;
     excerpt: string;
     body: string;
@@ -145,7 +136,7 @@ Retorne APENAS um JSON valido (sem texto fora do JSON):
     parsed.excerpt = parsed.excerpt.slice(0, 157) + "...";
   }
 
-  return parsed;
+  return { parsed, tokens: r.totalTokens, costUsd: r.costUsd };
 }
 
 export async function GET(req: NextRequest) {
@@ -176,10 +167,15 @@ export async function GET(req: NextRequest) {
   const selected = shuffled.slice(0, Math.min(count, available.length));
 
   const results: Array<{ ok: boolean; slug?: string; title?: string; error?: string }> = [];
+  const runStart = Date.now();
+  let runTokens = 0;
+  let runCost = 0;
 
   for (const item of selected) {
     try {
-      const generated = await generateOne(item.topic);
+      const { parsed: generated, tokens, costUsd } = await generateOne(item.topic);
+      runTokens += tokens;
+      runCost += costUsd;
       const baseSlug = slugify(generated.title || item.topic.title);
       let finalSlug = baseSlug;
 
@@ -223,11 +219,33 @@ export async function GET(req: NextRequest) {
     }
   }
 
+  const generatedCount = results.filter((r) => r.ok).length;
+  const failedCount = results.filter((r) => !r.ok).length;
+
+  // Observabilidade do run — alimenta agent_logs e o placar em agent_configs
+  // (antes o publisher rodava 10x/dia sem registrar nada: total_runs ficava 0).
+  await logAgentRun("article_publisher", "run_complete", {
+    status: failedCount === 0 ? "success" : generatedCount > 0 ? "success" : "error",
+    itemsProcessed: generatedCount,
+    tokensUsed: runTokens,
+    costUsd: runCost,
+    durationMs: Date.now() - runStart,
+    details: {
+      failed: failedCount,
+      slugs: results.filter((r) => r.ok).map((r) => r.slug),
+      errors: results.filter((r) => !r.ok).map((r) => (r.error || "").slice(0, 120))
+    }
+  });
+  await touchAgentConfig("article_publisher", "Publicador de Artigos", {
+    tokensUsed: runTokens,
+    costUsd: runCost
+  });
+
   return NextResponse.json({
     ok: true,
-    generated: results.filter((r) => r.ok).length,
-    failed: results.filter((r) => !r.ok).length,
-    remaining: available.length - results.filter((r) => r.ok).length,
+    generated: generatedCount,
+    failed: failedCount,
+    remaining: available.length - generatedCount,
     results
   });
 }

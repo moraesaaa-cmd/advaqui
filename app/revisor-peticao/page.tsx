@@ -8,9 +8,9 @@ import { RevisorPeticaoWidget } from "@/components/RevisorPeticaoWidget";
  * e exige plano premium ativo do advogado logado.
  */
 export const metadata: Metadata = buildMetadata({
-  title: "Revisor de petições com IA — revisar e humanizar texto jurídico",
+  title: "Revisor de petições — revisar e humanizar texto jurídico",
   description:
-    "Revise a gramática e a técnica da sua petição ou humanize um texto que ficou robótico, com IA — sem mudar fatos, valores ou pedidos. Recurso premium para advogados no AdvAqui.",
+    "Revise a gramática e a técnica da sua petição ou humanize um texto que ficou robótico — sem mudar fatos, valores ou pedidos. Recurso premium para advogados no AdvAqui.",
   path: "/revisor-peticao"
 });
 

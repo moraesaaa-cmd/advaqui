@@ -189,6 +189,7 @@ export default function PainelPage() {
     bio: string;
     shortSummary: string;
     suggestedTitle: string;
+    suggestedSpecialties?: Array<{ slug: string; name: string }>;
   } | null>(null);
 
   const loadProfile = useCallback(async () => {
@@ -334,7 +335,12 @@ export default function PainelPage() {
     try {
       const data = await requestJson<{
         ok: true;
-        suggestions: { bio: string; shortSummary: string; suggestedTitle: string };
+        suggestions: {
+          bio: string;
+          shortSummary: string;
+          suggestedTitle: string;
+          suggestedSpecialties?: Array<{ slug: string; name: string }>;
+        };
       }>(
         "/api/painel/improve-profile",
         {
@@ -940,6 +946,36 @@ export default function PainelPage() {
                           <p className="text-[11px] font-medium text-brand-ink/60 mb-1">Título profissional sugerido</p>
                           <p className="text-sm text-brand-ink bg-white rounded-lg p-3 border border-brand-line">
                             {aiSuggestions.suggestedTitle}
+                          </p>
+                        </div>
+                      )}
+
+                      {(aiSuggestions.suggestedSpecialties?.length || 0) > 0 && (
+                        <div>
+                          <p className="text-[11px] font-medium text-brand-ink/60 mb-1">
+                            Áreas relacionadas que você talvez também atenda
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {aiSuggestions.suggestedSpecialties!.map((sp) => {
+                              const jaTem = draft.specialties.includes(sp.slug);
+                              return (
+                                <button
+                                  key={sp.slug}
+                                  type="button"
+                                  disabled={jaTem}
+                                  onClick={() => {
+                                    toggleDraftSpec(sp.slug);
+                                    toast(`Área "${sp.name}" adicionada. Revise e salve.`);
+                                  }}
+                                  className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border border-brand-accent/40 bg-white text-brand-ink hover:bg-brand-accent/10 transition disabled:opacity-40"
+                                >
+                                  + {sp.name}
+                                </button>
+                              );
+                            })}
+                          </div>
+                          <p className="text-[10px] text-brand-ink/45 mt-1">
+                            Adicione só as áreas em que você atua de verdade.
                           </p>
                         </div>
                       )}
