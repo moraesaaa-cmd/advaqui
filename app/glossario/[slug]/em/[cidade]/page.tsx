@@ -34,7 +34,7 @@ import { SITE } from "@/lib/config";
 /**
  * /glossario/[slug]/em/[cidade-uf] — termo aplicado à cidade.
  *
- * 135 termos × 5571 cidades IBGE = 752.085 URLs.
+ * 153 termos × 5571 cidades IBGE = 852.363 URLs.
  *
  * Híbrido SSG + ISR:
  *  - SSG nas 50 cidades prioritárias × 20 termos (1000 pré-geradas)

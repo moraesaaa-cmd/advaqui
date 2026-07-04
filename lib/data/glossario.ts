@@ -96,7 +96,7 @@ export const GLOSSARIO: GlossarioTermo[] = [
       "Vítima de acidente que pretende cobrar indenização anos depois"
     ],
     areas: ["civil", "trabalhista", "consumidor"],
-    ver_tambem: ["decadencia", "ação-judicial"],
+    ver_tambem: ["decadencia", "acao-de-cobranca"],
     atualizado_em: "2026-05-21"
   },
   {
@@ -116,7 +116,7 @@ export const GLOSSARIO: GlossarioTermo[] = [
       "Cônjuge abandonado que continuou no imóvel após o outro sair"
     ],
     areas: ["civil", "imobiliario"],
-    ver_tambem: ["posse", "propriedade"],
+    ver_tambem: ["reintegracao-de-posse", "usucapiao-extrajudicial"],
     tema_jurisprudencia: "usucapiao",
     atualizado_em: "2026-05-21"
   },
@@ -137,7 +137,7 @@ export const GLOSSARIO: GlossarioTermo[] = [
       "Filhos que precisam dividir saldo bancário e ações deixadas pela mãe"
     ],
     areas: ["familia", "civil"],
-    ver_tambem: ["heranca", "testamento", "partilha"],
+    ver_tambem: ["espolio", "testamento", "partilha-de-bens"],
     tema_jurisprudencia: "inventario",
     problema: "perdi-um-familiar-e-preciso-fazer-inventario",
     atualizado_em: "2026-05-21"
@@ -326,7 +326,7 @@ export const GLOSSARIO: GlossarioTermo[] = [
       "Operadora telefônica negativa pessoa que cancelou o plano há meses"
     ],
     areas: ["consumidor", "civil"],
-    ver_tambem: ["dano-moral", "spc-serasa"],
+    ver_tambem: ["dano-moral", "nome-negativado"],
     tema_jurisprudencia: "negativacao-indevida",
     problema: "nome-negativado-indevidamente",
     atualizado_em: "2026-05-21"
@@ -370,7 +370,7 @@ export const GLOSSARIO: GlossarioTermo[] = [
       "Preso que sofre maus-tratos no estabelecimento penitenciário (HC quanto às condições)"
     ],
     areas: ["criminal"],
-    ver_tambem: ["prisao-preventiva", "ação-penal"],
+    ver_tambem: ["prisao-em-flagrante", "audiencia-de-custodia"],
     atualizado_em: "2026-05-21"
   },
   {
@@ -410,7 +410,7 @@ export const GLOSSARIO: GlossarioTermo[] = [
       "Tese de repercussão geral sobre matéria tributária"
     ],
     areas: ["civil", "tributario", "criminal"],
-    ver_tambem: ["recurso-especial", "repercussao-geral"],
+    ver_tambem: ["recurso-especial", "acordao"],
     atualizado_em: "2026-05-21"
   },
   {
@@ -430,7 +430,7 @@ export const GLOSSARIO: GlossarioTermo[] = [
       "Acórdão do STF em ação constitucional"
     ],
     areas: ["civil", "criminal", "trabalhista"],
-    ver_tambem: ["recurso-especial", "recurso-extraordinario", "ementa"],
+    ver_tambem: ["recurso-especial", "recurso-extraordinario", "transito-em-julgado"],
     atualizado_em: "2026-05-21"
   },
   {
@@ -2780,6 +2780,392 @@ export const GLOSSARIO: GlossarioTermo[] = [
     ],
     areas: ["familia", "civil"],
     ver_tambem: ["pensao-alimenticia", "penhora", "guarda", "juros-de-mora"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "acao-monitoria",
+    termo: "Ação monitória",
+    variacoes: ["ação monitória", "cobrança por ação monitória"],
+    definicao_curta:
+      "Ação para cobrar dívida representada por documento sem força de título executivo, como cheque prescrito ou contrato assinado.",
+    explicacao: [
+      "A ação monitória é um caminho mais rápido para cobrar quem tem em mãos um documento escrito que prova a dívida, mas que não é um título executivo pronto — como um cheque ou nota promissória já prescritos, um contrato assinado ou um extrato de conta. Serve para dar força de cobrança a esse documento.",
+      "No início, o juiz manda o devedor pagar em prazo curto. Se o devedor paga, o processo termina de forma vantajosa para ele, com redução de custas. Se não paga nem apresenta defesa (os chamados embargos), o documento vira título executivo e a cobrança segue com penhora de bens.",
+      "É diferente da ação de cobrança comum, que costuma ser mais demorada, e da execução, que exige um título já formado. A escolha entre esses caminhos depende do documento que a pessoa tem e do prazo já decorrido.",
+      "Como envolve prazos e a análise do documento, vale procurar um advogado ou a Defensoria Pública para saber qual via é a mais adequada ao seu caso."
+    ],
+    exemplos: [
+      "Credor com cheque prescrito que não pode mais ser executado diretamente",
+      "Empresa que quer cobrar contrato de prestação de serviço assinado e não pago",
+      "Pessoa que tem uma confissão de dívida por escrito, mas sem título executivo"
+    ],
+    areas: ["civil"],
+    ver_tambem: ["acao-de-cobranca", "cumprimento-de-sentenca", "penhora", "juros-de-mora"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "acao-de-alimentos",
+    termo: "Ação de alimentos",
+    variacoes: ["ação de alimentos", "pedido de pensão na Justiça"],
+    definicao_curta:
+      "Ação judicial para fixar ou obter pensão alimentícia de quem tem o dever de prestar alimentos.",
+    explicacao: [
+      "A ação de alimentos é o processo em que se pede à Justiça que fixe a pensão alimentícia devida por quem tem obrigação de sustento — em geral pais em relação a filhos, mas também entre cônjuges e, em certos casos, entre outros parentes.",
+      "O valor não tem tabela fixa. O juiz busca o equilíbrio entre a necessidade de quem recebe e a possibilidade de quem paga (o chamado binômio necessidade-possibilidade). Enquanto o processo corre, o juiz pode fixar alimentos provisórios para garantir o sustento desde logo.",
+      "É possível pedir os alimentos, revisar o valor depois se a situação mudar e cobrar as parcelas atrasadas, inclusive com medidas de execução. Quem tem o dever de pagar e não paga pode sofrer desconto em folha, penhora e até prisão civil pelas parcelas mais recentes.",
+      "Existe a possibilidade de gratuidade de Justiça para quem não pode pagar custas. Procure um advogado ou a Defensoria Pública para orientar o pedido."
+    ],
+    exemplos: [
+      "Mãe que pede pensão do pai para o filho menor de idade",
+      "Filho que busca alimentos dos pais para custear os estudos",
+      "Ex-cônjuge que pede pensão temporária logo após a separação"
+    ],
+    areas: ["familia", "civil"],
+    ver_tambem: ["pensao-alimenticia", "exoneracao-de-alimentos", "guarda", "prisao-por-pensao-alimenticia"],
+    tema_jurisprudencia: "pensao-alimenticia",
+    problema: "pai-nao-paga-pensao",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "exoneracao-de-alimentos",
+    termo: "Exoneração de alimentos",
+    variacoes: ["exoneração de pensão alimentícia", "fim da pensão"],
+    definicao_curta:
+      "Ação para encerrar a obrigação de pagar pensão alimentícia quando deixam de existir os motivos que a justificavam.",
+    explicacao: [
+      "A exoneração de alimentos é o pedido para deixar de pagar a pensão. Ela não acontece de forma automática: mesmo quando some o motivo que justificava a pensão, quem paga precisa, em regra, pedir à Justiça o reconhecimento do fim da obrigação para parar com segurança.",
+      "As situações mais comuns envolvem o filho que atinge a maioridade e passa a poder se sustentar, a conclusão dos estudos, o casamento de quem recebia ou uma mudança relevante na capacidade de quem pagava. A maioridade, por si só, nem sempre encerra a pensão — pode haver continuidade enquanto o filho estuda, por exemplo.",
+      "Parar de pagar por conta própria, sem decisão judicial, é arriscado: as parcelas continuam sendo cobradas e podem levar a penhora e até prisão. O caminho seguro é ajuizar a ação e pedir a suspensão enquanto ela tramita, quando cabível.",
+      "Cada caso depende de provas da mudança de situação. Vale procurar um advogado ou a Defensoria Pública antes de decidir."
+    ],
+    exemplos: [
+      "Pai que quer encerrar a pensão do filho já formado e com emprego",
+      "Quem descobre que o ex-cônjuge que recebia pensão se casou de novo",
+      "Filho que concluiu os estudos e passou a se sustentar"
+    ],
+    areas: ["familia", "civil"],
+    ver_tambem: ["pensao-alimenticia", "acao-de-alimentos", "acao-revisional"],
+    tema_jurisprudencia: "pensao-alimenticia",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "guarda-unilateral",
+    termo: "Guarda unilateral",
+    variacoes: ["guarda exclusiva", "guarda com um dos pais"],
+    definicao_curta:
+      "Modelo em que apenas um dos pais fica com a guarda do filho, cabendo ao outro o direito de convivência e o dever de contribuir.",
+    explicacao: [
+      "Na guarda unilateral, o filho fica sob a responsabilidade principal de apenas um dos pais (o guardião), enquanto o outro mantém o direito de conviver e visitar e o dever de contribuir com o sustento. É diferente da guarda compartilhada, em que as decisões importantes são divididas entre os dois.",
+      "A lei brasileira dá preferência à guarda compartilhada como regra, por entender que a criança se beneficia da presença dos dois. A guarda unilateral costuma ser aplicada quando um dos pais não deseja a guarda ou quando o compartilhamento não atende ao melhor interesse da criança.",
+      "Mesmo quem não tem a guarda continua sendo pai ou mãe: mantém o poder familiar, o direito de convivência e o dever de acompanhar a educação e a saúde do filho. A guarda também pode ser revista se a situação mudar.",
+      "O tema envolve o melhor interesse da criança, avaliado caso a caso. Procure um advogado ou a Defensoria Pública para orientação."
+    ],
+    exemplos: [
+      "Filho que mora com a mãe, e o pai tem convivência em fins de semana alternados",
+      "Pai que assume a guarda quando o outro genitor mora em cidade distante",
+      "Situação em que o compartilhamento se mostra inviável pelo conflito entre os pais"
+    ],
+    areas: ["familia"],
+    ver_tambem: ["guarda", "guarda-compartilhada", "alienacao-parental", "pensao-alimenticia"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "curatela",
+    termo: "Curatela",
+    variacoes: ["curador", "curatela de adulto"],
+    definicao_curta:
+      "Medida de proteção em que a Justiça nomeia alguém para auxiliar ou representar adulto que não consegue expressar sua vontade por si só.",
+    explicacao: [
+      "A curatela é a proteção jurídica de um adulto que, por causa de uma condição de saúde, não consegue praticar sozinho certos atos da vida civil, sobretudo os de conteúdo financeiro e patrimonial. A pessoa nomeada para ajudar é o curador.",
+      "Depois do Estatuto da Pessoa com Deficiência, a curatela passou a ser uma medida extraordinária e proporcional: deve alcançar apenas os atos em que a proteção é realmente necessária, preservando ao máximo a autonomia da pessoa. Em regra, não atinge decisões pessoais como casar, votar ou ter filhos.",
+      "A curatela é definida em processo judicial, com avaliação da situação da pessoa, e pode ser revista. Há ainda a figura da tomada de decisão apoiada, alternativa menos restritiva para quem só precisa de apoio pontual.",
+      "Por envolver direitos sensíveis, o processo exige acompanhamento profissional. Procure um advogado ou a Defensoria Pública."
+    ],
+    exemplos: [
+      "Familiar nomeado curador de idoso com doença que afeta o discernimento",
+      "Pais que buscam a curatela de filho adulto com deficiência intelectual grave",
+      "Curador que administra a aposentadoria de quem não pode fazê-lo sozinho"
+    ],
+    areas: ["civil", "familia"],
+    ver_tambem: ["interdicao", "bpc-loas"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "interdicao",
+    termo: "Interdição",
+    variacoes: ["ação de interdição", "curatela judicial"],
+    definicao_curta:
+      "Processo judicial que reconhece que um adulto precisa de curador para praticar certos atos e define os limites dessa proteção.",
+    explicacao: [
+      "Interdição é o nome tradicional do processo em que a Justiça reconhece que um adulto precisa de proteção para determinados atos e nomeia um curador. Hoje, esse processo é mais bem entendido como a via para estabelecer a curatela, com foco nos atos patrimoniais e negociais.",
+      "Não existe mais a ideia de declarar alguém totalmente incapaz de forma genérica. A decisão deve indicar exatamente quais atos ficam sob apoio ou representação do curador, preservando a autonomia da pessoa naquilo que ela consegue decidir.",
+      "O pedido costuma ser feito por familiares próximos, pelo cônjuge ou companheiro, ou pelo Ministério Público, com avaliação da situação de saúde da pessoa. A medida pode ser revista se o quadro mudar.",
+      "Como afeta direitos importantes, o processo pede orientação de advogado ou da Defensoria Pública."
+    ],
+    exemplos: [
+      "Família que ingressa com pedido para cuidar dos bens de parente com quadro avançado de demência",
+      "Nomeação de curador para gerir o benefício de pessoa em coma prolongado",
+      "Revisão da medida quando a pessoa recupera a capacidade de decidir"
+    ],
+    areas: ["civil", "familia"],
+    ver_tambem: ["curatela", "bpc-loas"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "usucapiao-extrajudicial",
+    termo: "Usucapião extrajudicial",
+    variacoes: ["usucapião em cartório", "usucapião administrativa"],
+    definicao_curta:
+      "Forma de reconhecer a usucapião diretamente no cartório de registro de imóveis, sem processo judicial, quando não há conflito.",
+    explicacao: [
+      "A usucapião extrajudicial permite reconhecer a aquisição de um imóvel pela posse prolongada diretamente no cartório de registro de imóveis, sem precisar de um processo na Justiça. Foi criada para tornar o caminho mais rápido quando não há disputa.",
+      "O pedido é instruído por um advogado e costuma exigir uma planta e um memorial descritivo assinados por profissional habilitado, uma ata notarial feita em cartório que ateste o tempo de posse, e a concordância dos confrontantes (vizinhos) e do antigo proprietário. Faltando concordância ou surgindo impugnação, o caso tende a ir para a via judicial.",
+      "Os requisitos de tempo e de tipo de posse são os mesmos das modalidades de usucapião previstas em lei — o que muda é apenas o procedimento, feito em cartório em vez de perante o juiz. Por isso, continua sendo essencial preencher os requisitos da modalidade aplicável.",
+      "Como envolve documentos técnicos e a análise da posse, a usucapião extrajudicial exige acompanhamento de advogado. Procure orientação profissional."
+    ],
+    exemplos: [
+      "Morador que ocupa há anos um terreno sem registro e cujos vizinhos concordam com a medida",
+      "Comprador que nunca conseguiu a escritura porque o vendedor desapareceu",
+      "Família que quer regularizar imóvel recebido de forma informal há muito tempo"
+    ],
+    areas: ["civil", "imobiliario"],
+    ver_tambem: ["usucapiao", "adjudicacao-compulsoria", "retificacao-de-registro", "reintegracao-de-posse"],
+    tema_jurisprudencia: "usucapiao",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "adjudicacao-compulsoria",
+    termo: "Adjudicação compulsória",
+    variacoes: ["ação de adjudicação compulsória", "outorga de escritura"],
+    definicao_curta:
+      "Ação para obrigar o vendedor a transferir o imóvel já quitado quando ele se recusa a assinar a escritura.",
+    explicacao: [
+      "A adjudicação compulsória é o caminho para quem comprou um imóvel, pagou o combinado, mas não consegue registrar a propriedade porque o vendedor se recusa ou não pode outorgar a escritura definitiva. A decisão judicial pode suprir a assinatura que faltava e permitir o registro.",
+      "É usada em situações comuns de compra e venda feita por contrato ou promessa de compra e venda, sobretudo quando o vendedor desapareceu, faleceu ou simplesmente se nega a formalizar a transferência depois de receber o pagamento.",
+      "Para ter sucesso, o comprador precisa comprovar o contrato e a quitação do preço. Existe também a possibilidade, em certos casos, de fazer o reconhecimento por via administrativa no cartório, quando não há conflito.",
+      "Por depender de documentos e da prova do pagamento, o tema pede orientação de advogado. Procure ajuda profissional antes de agir."
+    ],
+    exemplos: [
+      "Comprador que quitou o imóvel, mas o vendedor se recusa a passar a escritura",
+      "Herdeiro que precisa regularizar imóvel comprado pelo falecido sem escritura",
+      "Quem pagou todas as parcelas de um contrato de gaveta e quer o registro"
+    ],
+    areas: ["civil", "imobiliario"],
+    ver_tambem: ["usucapiao-extrajudicial", "arras", "distrato", "retificacao-de-registro"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "acao-de-despejo-por-falta-de-pagamento",
+    termo: "Ação de despejo por falta de pagamento",
+    variacoes: ["despejo por falta de pagamento", "ação de despejo por aluguel atrasado"],
+    definicao_curta:
+      "Ação em que o locador pede a retomada do imóvel alugado porque o inquilino deixou de pagar o aluguel ou os encargos.",
+    explicacao: [
+      "A ação de despejo por falta de pagamento é o pedido do dono do imóvel (locador) para retomar o bem quando o inquilino atrasa o aluguel ou os encargos, como condomínio e IPTU quando previstos no contrato. É uma das formas mais comuns de despejo.",
+      "A lei do inquilinato costuma permitir que o inquilino evite o despejo pagando o que deve dentro de um prazo, com os acréscimos — é a chamada purgação da mora, que em geral não pode ser repetida a todo momento. Por isso, quitar a dívida no prazo pode manter o contrato de pé.",
+      "O locador pode cumular o pedido de despejo com a cobrança dos valores atrasados. Em algumas situações, especialmente quando há garantia adequada, pode haver pedido de desocupação mais rápida por decisão provisória.",
+      "Tanto para cobrar quanto para se defender, vale procurar um advogado ou a Defensoria Pública, porque prazos e detalhes do contrato fazem diferença."
+    ],
+    exemplos: [
+      "Proprietário que move a ação após meses de aluguel atrasado",
+      "Inquilino que paga a dívida no prazo para continuar no imóvel",
+      "Locador que cobra o aluguel atrasado junto com o pedido de despejo"
+    ],
+    areas: ["imobiliario", "civil"],
+    ver_tambem: ["despejo", "contrato-de-aluguel", "caucao-locaticia", "acao-renovatoria"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "revisao-de-aluguel",
+    termo: "Revisão de aluguel",
+    variacoes: ["ação revisional de aluguel", "revisão do valor do aluguel"],
+    definicao_curta:
+      "Ação para ajustar o valor do aluguel ao preço de mercado quando ele fica defasado durante a locação.",
+    explicacao: [
+      "A revisão de aluguel (ação revisional) serve para reajustar o valor do aluguel ao patamar de mercado quando, com o tempo, ele fica muito acima ou muito abaixo do que se cobra por imóveis semelhantes. Tanto o locador quanto o inquilino podem pedir.",
+      "Ela é diferente do reajuste anual por índice, que apenas corrige a inflação. A revisão discute o próprio valor, e a lei do inquilinato costuma exigir que a locação já dure um tempo mínimo (em regra, três anos do contrato ou do último acordo de valor) antes de se pedir a revisão judicial.",
+      "No processo, o juiz pode fixar um aluguel provisório enquanto se discute o valor definitivo, que costuma ser apurado com base em avaliação. Nada impede, porém, que as partes cheguem a um acordo direto, sem ação.",
+      "Como envolve prazos e avaliação do imóvel, vale procurar um advogado para orientar o pedido ou a defesa."
+    ],
+    exemplos: [
+      "Inquilino de contrato antigo que paga bem acima do mercado atual",
+      "Locador cujo aluguel ficou defasado após anos de valorização da região",
+      "Partes que preferem renegociar o valor sem ir à Justiça"
+    ],
+    areas: ["imobiliario", "civil"],
+    ver_tambem: ["contrato-de-aluguel", "acao-renovatoria", "despejo", "caucao-locaticia"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "dano-moral-por-negativacao",
+    termo: "Dano moral por negativação",
+    variacoes: ["indenização por negativação indevida", "dano moral por nome negativado"],
+    definicao_curta:
+      "Indenização que pode ser devida quando o consumidor tem o nome inscrito indevidamente em cadastro de inadimplentes.",
+    explicacao: [
+      "O dano moral por negativação é a indenização que pode ser devida quando alguém tem o nome inscrito de forma indevida em cadastros de proteção ao crédito, como SPC e Serasa — por exemplo, por dívida já paga, inexistente ou de outra pessoa. A inscrição indevida abala o crédito e a tranquilidade da pessoa.",
+      "Nesses casos, a jurisprudência costuma reconhecer o dano moral pelo simples fato da inscrição indevida, sem exigir prova detalhada do sofrimento. O valor da indenização é fixado pelo juiz, conforme a gravidade e as circunstâncias.",
+      "Há um ponto importante: quando a pessoa já possui outra negativação legítima e anterior, a jurisprudência entende que, em regra, não cabe indenização por dano moral pela nova inscrição indevida, cabendo apenas o cancelamento do registro errado. Por isso vale conferir toda a situação do CPF.",
+      "Além da indenização, é possível exigir a retirada imediata do nome. Para calcular e pedir corretamente, procure um advogado ou a Defensoria Pública."
+    ],
+    exemplos: [
+      "Consumidor negativado por dívida que já havia sido paga",
+      "Pessoa inscrita por engano por conta de fraude com seus dados",
+      "Cliente cobrado e negativado por serviço que nunca contratou"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["dano-moral", "negativacao-indevida", "nome-negativado", "cadastro-positivo"],
+    tema_jurisprudencia: "negativacao-indevida",
+    problema: "nome-negativado-indevidamente",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "cadastro-positivo",
+    termo: "Cadastro positivo",
+    variacoes: ["histórico de crédito positivo", "score de crédito"],
+    definicao_curta:
+      "Banco de dados que reúne o histórico de pagamentos em dia do consumidor para ajudar a avaliar seu crédito.",
+    explicacao: [
+      "O cadastro positivo é um registro que reúne informações sobre os pagamentos feitos em dia — contas, financiamentos e parcelas quitadas — para formar um histórico de bom pagador. A ideia é que quem paga em dia possa ter acesso a crédito melhor e a juros mais baixos.",
+      "Diferente dos cadastros de inadimplentes, que anotam quem deve, o cadastro positivo guarda o lado bom do histórico. A lei prevê a inclusão automática dos consumidores, mas garante o direito de pedir a exclusão a qualquer momento, de graça.",
+      "O consumidor tem direitos importantes: saber quais dados existem sobre ele, corrigir informações erradas e entender de forma geral como o score é calculado. Os gestores do banco de dados devem cuidar da segurança e do uso adequado dessas informações, em linha com a proteção de dados.",
+      "Se você notar informações incorretas ou uso indevido dos seus dados, é possível reclamar e, se preciso, buscar orientação de um advogado ou do Procon."
+    ],
+    exemplos: [
+      "Consumidor que consulta seu histórico para negociar um financiamento",
+      "Cliente que pede a exclusão do cadastro positivo por preferência pessoal",
+      "Pessoa que corrige uma informação errada que derrubava seu score"
+    ],
+    areas: ["consumidor"],
+    ver_tambem: ["nome-negativado", "negativacao-indevida", "superendividamento"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "cumprimento-de-sentenca",
+    termo: "Cumprimento de sentença",
+    variacoes: ["execução de sentença", "fase de cumprimento"],
+    definicao_curta:
+      "Fase do processo em que se cobra, na prática, aquilo que a decisão judicial já reconheceu como devido.",
+    explicacao: [
+      "O cumprimento de sentença é a etapa em que se faz valer, na prática, o que o juiz já decidiu. Depois que a sentença reconhece um direito — por exemplo, o pagamento de um valor —, é nessa fase que se cobra efetivamente a outra parte.",
+      "Quando a condenação é em dinheiro, o devedor costuma ser intimado a pagar em prazo curto (em regra, 15 dias). Não pagando, o valor pode receber acréscimo de multa e honorários, e a cobrança avança com penhora de bens, bloqueio de valores e outras medidas.",
+      "Essa fase acontece dentro do mesmo processo, sem precisar de uma ação nova, e é diferente da execução baseada em título formado fora do processo, como um cheque ou contrato. Também há regras próprias quando a obrigação é de fazer, de não fazer ou de entregar coisa.",
+      "Para conduzir ou se defender no cumprimento de sentença, vale contar com um advogado ou a Defensoria Pública, porque há prazos curtos envolvidos."
+    ],
+    exemplos: [
+      "Vencedor de ação de indenização que cobra o valor fixado na sentença",
+      "Devedor intimado a pagar em 15 dias sob pena de multa",
+      "Credor que pede bloqueio de valores após o não pagamento"
+    ],
+    areas: ["civil"],
+    ver_tambem: ["acao-monitoria", "penhora", "coisa-julgada", "transito-em-julgado"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "garantia-legal-e-contratual",
+    termo: "Garantia legal e contratual",
+    variacoes: ["garantia do produto", "garantia estendida", "garantia contratual"],
+    definicao_curta:
+      "Conjunto formado pela garantia mínima que a lei assegura e pela garantia extra oferecida pelo fornecedor ou fabricante.",
+    explicacao: [
+      "Ao comprar um produto ou serviço, o consumidor conta com dois tipos de garantia que se somam. A garantia legal é a mínima assegurada pelo Código de Defesa do Consumidor, independentemente de qualquer promessa: o produto tem de servir ao que se destina, e há prazos para reclamar de defeitos aparentes ou ocultos.",
+      "Os prazos da garantia legal costumam ser de 30 dias para produtos e serviços não duráveis e de 90 dias para os duráveis, contados, no caso de vício oculto, a partir do momento em que o defeito aparece. Esses prazos existem mesmo que a loja nada prometa.",
+      "Já a garantia contratual é um extra oferecido de forma voluntária pelo fornecedor ou fabricante — como o famoso um ano de garantia do fabricante ou a garantia estendida vendida à parte. Ela se soma à garantia legal e deve vir por escrito, com termo claro sobre o que cobre.",
+      "Na dúvida sobre prazos e coberturas, guarde a nota fiscal e o termo de garantia e, se o problema não for resolvido, procure o Procon ou orientação jurídica."
+    ],
+    exemplos: [
+      "Celular com defeito dentro dos 90 dias da garantia legal",
+      "Fabricante que oferece um ano de garantia além do prazo legal",
+      "Consumidor que contrata garantia estendida na compra de um eletrodoméstico"
+    ],
+    areas: ["consumidor"],
+    ver_tambem: ["garantia-legal", "vicio-do-produto", "fato-do-produto", "recall"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "recall",
+    termo: "Recall",
+    variacoes: ["chamamento", "recall de produto", "campanha de recall"],
+    definicao_curta:
+      "Chamado que o fornecedor faz para consertar ou substituir produto que apresenta risco à saúde ou à segurança do consumidor.",
+    explicacao: [
+      "Recall é o chamamento feito pelo fornecedor ou fabricante para corrigir um produto colocado no mercado que se mostrou perigoso ou defeituoso a ponto de ameaçar a saúde ou a segurança das pessoas. É comum em veículos, alimentos, eletrodomésticos e brinquedos.",
+      "Quando descobre o risco, a empresa tem o dever de comunicar as autoridades e os consumidores de forma ampla e imediata, por anúncios e outros meios, explicando o problema e como resolver. O reparo, a troca ou a devolução do valor devem ser feitos sem custo para o consumidor.",
+      "Atender ao recall é importante para a segurança e não custa nada. O fato de existir recall não afasta a responsabilidade do fornecedor por danos que o produto já tenha causado antes do conserto.",
+      "Se você foi prejudicado por um produto com defeito, mesmo após o recall, pode buscar seus direitos. Procure o Procon ou orientação jurídica."
+    ],
+    exemplos: [
+      "Montadora que convoca donos de um modelo para trocar peça com defeito",
+      "Fabricante de alimento que recolhe lote com risco de contaminação",
+      "Marca de eletrodoméstico que chama clientes por risco de curto-circuito"
+    ],
+    areas: ["consumidor"],
+    ver_tambem: ["fato-do-produto", "vicio-do-produto", "garantia-legal-e-contratual"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "plano-de-saude-negativa-de-cobertura",
+    termo: "Negativa de cobertura de plano de saúde",
+    variacoes: ["plano de saúde negou cobertura", "recusa do plano de saúde"],
+    definicao_curta:
+      "Recusa do plano de saúde em cobrir exame, cirurgia, tratamento ou internação solicitados pelo beneficiário.",
+    explicacao: [
+      "A negativa de cobertura acontece quando o plano de saúde se recusa a autorizar ou pagar um procedimento pedido pelo médico — como exame, cirurgia, internação, medicamento ou terapia. Nem toda negativa é legítima, e há caminhos para contestar.",
+      "O plano deve informar o motivo da recusa, por escrito, quando o consumidor pedir. Muitos casos discutidos envolvem tratamentos indicados pelo médico, urgências e emergências e situações em que a negativa contraria o contrato ou as regras do setor. Cada situação depende do contrato e do quadro clínico.",
+      "Quando há urgência e risco à saúde, é possível pedir à Justiça uma decisão rápida (liminar ou tutela de urgência) para que o procedimento seja autorizado enquanto se discute o mérito. Recusas abusivas também podem gerar indenização por dano moral, conforme o caso.",
+      "Guarde o pedido médico e a negativa por escrito e, além da Justiça, considere reclamar à agência reguladora dos planos. Procure um advogado ou a Defensoria Pública para orientar o pedido."
+    ],
+    exemplos: [
+      "Plano que nega cirurgia indicada pelo médico com cobertura prevista",
+      "Recusa de internação de urgência sob alegação de carência",
+      "Negativa de medicamento ou terapia essencial ao tratamento"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["plano-de-saude", "dano-moral", "tutela-de-urgencia", "liminar"],
+    tema_jurisprudencia: "plano-de-saude",
+    problema: "plano-de-saude-negou-cirurgia",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "aposentadoria-por-idade",
+    termo: "Aposentadoria por idade",
+    variacoes: ["aposentadoria por idade urbana", "aposentadoria por idade rural"],
+    definicao_curta:
+      "Benefício do INSS concedido a quem atinge a idade mínima e cumpre o tempo mínimo de contribuição exigido.",
+    explicacao: [
+      "A aposentadoria por idade é o benefício pago pelo INSS a quem alcança a idade mínima exigida e comprova um tempo mínimo de contribuição (a carência). É uma das formas mais buscadas de aposentadoria pelo trabalhador comum.",
+      "Depois da reforma da Previdência de 2019, as regras mudaram e passaram a conviver com regras de transição para quem já contribuía. Como os requisitos de idade e de tempo variam conforme a data e o tipo de segurado, o ideal é conferir a situação individual antes de pedir.",
+      "Há regra específica para o trabalhador rural, que costuma ter idade mínima menor e pode comprovar a atividade por documentos e outros meios. Já o segurado urbano segue os requisitos gerais de idade e carência.",
+      "O pedido pode ser feito pelo aplicativo ou site Meu INSS. Se o benefício for negado ou vier em valor abaixo do esperado, é possível recorrer. Vale procurar um advogado previdenciário ou a Defensoria Pública para conferir a melhor data e forma de pedir."
+    ],
+    exemplos: [
+      "Trabalhadora urbana que atinge a idade mínima com o tempo de contribuição exigido",
+      "Trabalhador rural que comprova a atividade no campo para se aposentar",
+      "Segurado que se enquadra em regra de transição após a reforma"
+    ],
+    areas: ["previdenciario"],
+    ver_tambem: ["aposentadoria", "tempo-de-contribuicao", "aposentadoria-especial", "revisao-de-beneficio-inss"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "tempo-de-contribuicao",
+    termo: "Tempo de contribuição",
+    variacoes: ["tempo de contribuição no INSS", "contagem de tempo de contribuição"],
+    definicao_curta:
+      "Período em que a pessoa contribuiu para a Previdência, usado para conceder e calcular benefícios do INSS.",
+    explicacao: [
+      "Tempo de contribuição é a soma dos períodos em que a pessoa pagou, ou teve pago em seu nome, a contribuição à Previdência Social. É um dos principais elementos para conceder aposentadorias e outros benefícios e para calcular o valor a receber.",
+      "Entram na conta os períodos de trabalho com carteira assinada, os recolhimentos como autônomo ou contribuinte individual e situações equiparadas previstas em lei. Alguns períodos especiais, como o de trabalho exposto a agentes nocivos, podem ter regras próprias de contagem.",
+      "Depois da reforma da Previdência de 2019, a antiga aposentadoria apenas por tempo de contribuição foi substituída por regras que combinam tempo com idade ou pontos, com transição para quem já contribuía. Por isso, contar corretamente o tempo — inclusive períodos que o INSS às vezes deixa de considerar — faz muita diferença.",
+      "Conferir o CNIS (o extrato de contribuições) e corrigir períodos faltantes é um passo importante. Um advogado previdenciário ou a Defensoria Pública podem ajudar a levantar e comprovar o tempo."
+    ],
+    exemplos: [
+      "Segurado que soma períodos de carteira assinada e de trabalho autônomo",
+      "Trabalhador que descobre período faltando no extrato do INSS",
+      "Pessoa que precisa comprovar tempo especial por exposição a ruído"
+    ],
+    areas: ["previdenciario"],
+    ver_tambem: ["aposentadoria", "aposentadoria-por-idade", "aposentadoria-especial", "revisao-de-beneficio-inss"],
     atualizado_em: "2026-07-04"
   }
 ];

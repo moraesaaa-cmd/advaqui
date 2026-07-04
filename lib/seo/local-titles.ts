@@ -185,6 +185,27 @@ export const BLOG_CIDADE_TEMPLATES: Record<string, LocalTemplate> = {
     h1: (c) => `Acidente de trânsito em ${c}: quem paga o conserto do carro`,
     description: (c) =>
       `Em regra paga quem deu causa à batida; o ressarcimento pode vir por acordo, seguro ou Juizado. Guia em linguagem simples para ${c}.`
+  },
+  "plano-de-saude-negou-cobertura-o-que-fazer": {
+    full: (c) => `Plano de saúde negou cobertura em ${c}? O que fazer`,
+    short: (c) => `Plano negou cobertura em ${c}? O que fazer`,
+    h1: (c) => `Plano de saúde negou cobertura em ${c}? O que fazer`,
+    description: (c) =>
+      `A recusa pode ser abusiva: peça o motivo por escrito e, havendo urgência, busque decisão na Justiça. Guia em linguagem simples para ${c}.`
+  },
+  "como-funciona-a-guarda-compartilhada": {
+    full: (c) => `Guarda compartilhada em ${c}: como funciona`,
+    short: (c) => `Guarda compartilhada em ${c}`,
+    h1: (c) => `Guarda compartilhada em ${c}: como funciona, rotina e pensão`,
+    description: (c) =>
+      `Os pais dividem as decisões sobre os filhos, em regra com uma casa de referência, e ainda pode haver pensão. Guia em linguagem simples para ${c}.`
+  },
+  "aposentadoria-por-idade-regras-e-como-pedir": {
+    full: (c) => `Aposentadoria por idade em ${c}: regras e como pedir`,
+    short: (c) => `Aposentadoria por idade em ${c}`,
+    h1: (c) => `Aposentadoria por idade em ${c}: regras e como pedir ao INSS`,
+    description: (c) =>
+      `Veja a idade e o tempo de contribuição exigidos e como pedir pelo Meu INSS. Guia em linguagem simples para ${c}.`
   }
 };
 

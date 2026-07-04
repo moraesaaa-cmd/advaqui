@@ -45,7 +45,10 @@ export const ARTIGOS_LOCALIZAVEIS_SLUGS: string[] = [
   "inventario-como-fazer-custos-e-prazos",
   "como-dar-entrada-no-inss-pelo-meu-inss",
   "assedio-moral-no-trabalho-o-que-fazer",
-  "acidente-de-transito-quem-paga-o-conserto"
+  "acidente-de-transito-quem-paga-o-conserto",
+  "plano-de-saude-negou-cobertura-o-que-fazer",
+  "como-funciona-a-guarda-compartilhada",
+  "aposentadoria-por-idade-regras-e-como-pedir"
 ];
 
 /**

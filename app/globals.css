@@ -42,7 +42,8 @@
     @apply bg-white rounded-2xl border border-brand-line p-6 shadow-card transition;
   }
   .input {
-    @apply w-full px-4 py-3 rounded-xl border border-brand-line bg-white text-brand-ink placeholder:text-brand-ink/60 outline-none focus:border-brand-deep focus:ring-2 focus:ring-brand-deep/15 transition;
+    /* text-base (16px) evita o zoom automático do iOS ao focar campos. */
+    @apply w-full px-4 py-3 text-base rounded-xl border border-brand-line bg-white text-brand-ink placeholder:text-brand-ink/60 outline-none focus:border-brand-deep focus:ring-2 focus:ring-brand-deep/15 transition;
   }
   .label {
     @apply block text-sm font-medium text-brand-ink mb-1.5;

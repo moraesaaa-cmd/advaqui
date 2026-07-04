@@ -3181,6 +3181,361 @@ export const ARTICLES: Article[] = [
           "O Código Civil prevê, em regra, o prazo de três anos para a pretensão de reparação de danos. Perder esse prazo pode impedir a cobrança judicial, e as provas se perdem com o tempo. Por isso, o ideal é agir o quanto antes."
       }
     ]
+  },
+  {
+    slug: "plano-de-saude-negou-cobertura-o-que-fazer",
+    title: "Plano de saúde negou cobertura: o que fazer para conseguir o tratamento",
+    excerpt:
+      "Recusa de exame, cirurgia ou internação? Veja por que muitas negativas são abusivas, como pedir o motivo por escrito, onde reclamar e como buscar decisão urgente na Justiça.",
+    category: "Consumidor",
+    readingMinutes: 11,
+    publishedAt: "2026-07-04",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "civil",
+    intro:
+      "Quando o plano de saúde negou cobertura de um exame, cirurgia, internação ou remédio indicado pelo médico, a sensação é de impotência — mas nem toda recusa é válida, e existem caminhos concretos para tentar revertê-la. Este guia explica, em linguagem simples, por que muitas negativas são consideradas abusivas, como exigir a resposta por escrito, para onde levar a reclamação e como pedir uma decisão urgente à Justiça quando a saúde não pode esperar.",
+    body: [
+      { type: "h2", text: "Nem toda negativa do plano é válida" },
+      {
+        type: "p",
+        text: "A relação entre você e o plano de saúde é uma relação de consumo. Sobre ela incidem o Código de Defesa do Consumidor e a Lei dos Planos de Saúde (Lei 9.656/1998), além das regras da agência que regula o setor, a ANS. Isso significa que o plano não pode recusar cobertura de qualquer jeito: a negativa precisa ter fundamento legal e contratual, e muitas recusas acabam sendo consideradas abusivas quando contrariam a lei ou deixam o consumidor sem o tratamento de que precisa."
+      },
+      {
+        type: "p",
+        text: "Um ponto central é o respeito à indicação do médico. Em regra, quem define qual é o tratamento adequado é o profissional que acompanha o paciente, não o plano. Recusar um procedimento indicado pelo médico com a justificativa de que existe outro caminho mais barato, por exemplo, é uma das situações mais questionadas."
+      },
+      { type: "h2", text: "Peça sempre o motivo da negativa por escrito" },
+      {
+        type: "p",
+        text: "O primeiro passo prático é exigir que o plano informe o motivo da recusa por escrito, em linguagem clara. Quando você solicita, a operadora deve apresentar a justificativa, indicando as regras do contrato ou da lei em que se baseia. Esse documento é fundamental: é ele que revela se a negativa tem base real e é a principal prova para reclamar depois, seja nos órgãos de defesa do consumidor, seja na Justiça."
+      },
+      {
+        type: "p",
+        text: "Guarde também o número de protocolo de todos os contatos, a data e o horário. Se a recusa foi verbal, por telefone ou pelo aplicativo, registre e peça a confirmação por escrito mesmo assim."
+      },
+      { type: "h2", text: "Negativas mais comuns — e por que costumam ser questionadas" },
+      {
+        type: "ul",
+        items: [
+          "Carência aplicada em caso de urgência ou emergência, quando o atendimento não podia esperar",
+          "Alegação de doença preexistente para negar o tratamento inteiro, sem os limites que a lei estabelece",
+          "Recusa de tratamento indicado pelo médico sob o argumento de que ele não está na lista da ANS",
+          "Negativa de prótese, material ou órtese ligados diretamente a uma cirurgia coberta",
+          "Limite de sessões de terapias (como fisioterapia, fonoaudiologia ou psicologia) contra a indicação médica",
+          "Demora excessiva na autorização, que na prática funciona como uma negativa"
+        ]
+      },
+      { type: "h3", text: "Carência e os casos de urgência e emergência" },
+      {
+        type: "p",
+        text: "Carência é o tempo de espera, contado a partir da contratação, antes de o consumidor ter direito a certos procedimentos. Ela existe e é legal. O que a lei trata de forma especial são as situações de urgência e emergência, com risco imediato à vida ou à saúde: nesses casos, há um prazo de carência bem mais curto, e negar o atendimento de emergência costuma ser considerado abusivo."
+      },
+      { type: "h3", text: "Doença preexistente" },
+      {
+        type: "p",
+        text: "Doença preexistente é aquela que o consumidor já sabia ter ao contratar o plano. A lei permite ao plano exigir um prazo maior (a chamada cobertura parcial temporária) apenas para procedimentos de alta complexidade, cirurgias e leitos de alta tecnologia diretamente ligados à doença informada. Fora disso, e passado esse período, a cobertura é devida. Recusar tudo com base em doença preexistente, sem esses limites, é uma negativa frágil."
+      },
+      { type: "h3", text: "Tratamento fora da lista da ANS" },
+      {
+        type: "p",
+        text: "A ANS mantém uma lista de procedimentos de cobertura obrigatória. Muitas negativas se apoiam no argumento de que o tratamento pedido não está nessa lista. A Lei 14.454/2022 passou a prever critérios para que tratamentos fora da lista também possam ser cobertos, especialmente quando há comprovação de eficácia e indicação médica. Por isso, uma negativa apoiada só no argumento da lista nem sempre se sustenta, e o relatório do médico é decisivo."
+      },
+      { type: "h2", text: "Passo a passo: o que fazer agora" },
+      {
+        type: "ol",
+        items: [
+          "Peça ao seu médico um relatório detalhado, com o diagnóstico (inclusive o CID), a justificativa clínica e por que aquele tratamento é o indicado",
+          "Solicite a negativa por escrito ao plano e guarde o protocolo",
+          "Registre reclamação no SAC e na ouvidoria da operadora, anotando os protocolos",
+          "Abra reclamação na ANS, que pode intermediar e cobrar uma resposta da operadora em prazo curto",
+          "Leve o caso ao Procon, que também pode notificar o plano",
+          "Se houver urgência e risco à saúde, procure a Justiça com pedido de decisão liminar"
+        ]
+      },
+      {
+        type: "callout",
+        text: "Guarde tudo por escrito: pedido médico, negativa, protocolos e mensagens. O relatório do médico, explicando por que o tratamento é necessário e urgente, costuma ser a peça mais importante para reverter a recusa."
+      },
+      { type: "h2", text: "Decisão urgente na Justiça (liminar)" },
+      {
+        type: "p",
+        text: "Quando a saúde não pode esperar, é possível pedir à Justiça uma decisão rápida — chamada de liminar ou tutela de urgência — para obrigar o plano a autorizar o procedimento enquanto o processo é discutido. Havendo relatório médico indicando o risco e a urgência, o juiz pode determinar a cobertura em pouco tempo. Para causas de menor valor, o Juizado Especial Cível é uma via acessível, com atendimento mais rápido e, em regra, sem custas iniciais."
+      },
+      { type: "h2", text: "A negativa pode gerar indenização?" },
+      {
+        type: "p",
+        text: "Além de garantir o tratamento, uma recusa abusiva pode, conforme o caso, dar direito a indenização por dano moral — sobretudo quando a negativa agrava o sofrimento do paciente em um momento delicado. Isso depende das circunstâncias e é avaliado caso a caso; não há valor fixo nem garantia de resultado."
+      },
+      { type: "h2", text: "Onde reclamar além da Justiça" },
+      {
+        type: "p",
+        text: "A ANS recebe reclamações contra operadoras e tem canais próprios de atendimento; muitas vezes a simples abertura da reclamação já destrava a autorização. O Procon atua na defesa do consumidor e pode notificar o plano. Esses caminhos podem ser usados junto com a via judicial, sem excluir um ao outro."
+      },
+      { type: "h2", text: "Quando procurar um advogado" },
+      {
+        type: "p",
+        text: "Para pedidos urgentes na Justiça, o acompanhamento de um advogado ajuda a montar o pedido de liminar e a reunir as provas certas. Casos com internação, cirurgia marcada ou risco à vida pedem agilidade. Quem não pode pagar advogado tem direito à Defensoria Pública. Este texto é informativo e não substitui a orientação de um profissional para o seu caso concreto."
+      }
+    ],
+    faq: [
+      {
+        question: "O plano pode negar tratamento indicado pelo meu médico?",
+        answer:
+          "Em regra, quem define o tratamento adequado é o médico que acompanha o paciente. Negar um procedimento indicado pelo médico costuma ser questionado, principalmente quando a recusa se apoia apenas no argumento de que existe opção mais barata ou de que o tratamento não está na lista da ANS. O relatório médico detalhado é a prova central para contestar."
+      },
+      {
+        question: "O plano negou por carência. Isso é válido?",
+        answer:
+          "A carência é legal, mas tem limites. Em casos de urgência e emergência, com risco à vida ou à saúde, o prazo de espera é bem mais curto, e negar o atendimento nessas situações costuma ser considerado abusivo. Vale exigir a negativa por escrito e verificar se a carência foi aplicada corretamente."
+      },
+      {
+        question: "Dá para conseguir uma decisão rápida na Justiça?",
+        answer:
+          "Sim. Havendo urgência e risco à saúde, é possível pedir uma liminar (tutela de urgência) para que o plano autorize o procedimento enquanto o processo corre. Com relatório médico indicando a urgência, o juiz pode decidir em pouco tempo. Não há, porém, garantia de resultado: cada caso é analisado individualmente."
+      },
+      {
+        question: "A negativa de cobertura dá direito a indenização?",
+        answer:
+          "Pode dar, conforme o caso. Recusas abusivas que agravam o sofrimento do paciente em momento delicado podem gerar dano moral, avaliado caso a caso pelo juiz. Não existe valor fixo nem garantia; o direito à indenização depende das circunstâncias concretas."
+      },
+      {
+        question: "Onde reclamo além da Justiça?",
+        answer:
+          "Você pode reclamar na ANS, agência que regula os planos e pode cobrar resposta da operadora em prazo curto, e no Procon, que atua na defesa do consumidor. Esses canais podem ser usados junto com a via judicial. Em todos eles, guardar a negativa por escrito e os protocolos fortalece a reclamação."
+      }
+    ]
+  },
+  {
+    slug: "como-funciona-a-guarda-compartilhada",
+    title: "Como funciona a guarda compartilhada? Regras, rotina e pensão",
+    excerpt:
+      "Entenda o que é a guarda compartilhada, como ficam a rotina e a moradia dos filhos, se ainda há pensão, como decidir juntos e o que fazer quando os pais não se entendem.",
+    category: "Família",
+    readingMinutes: 11,
+    publishedAt: "2026-07-04",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "familia",
+    intro:
+      "A guarda compartilhada é hoje a regra no Brasil quando os pais se separam, e entender como ela funciona evita muita confusão sobre rotina, moradia e pensão dos filhos. Neste guia, em linguagem simples, você vê o que a lei prevê, como fica o dia a dia da criança, se ainda existe pensão alimentícia e o que dá para fazer quando o diálogo entre os pais é difícil.",
+    body: [
+      { type: "h2", text: "O que é a guarda compartilhada" },
+      {
+        type: "p",
+        text: "Guarda compartilhada é o modelo em que os dois pais dividem a responsabilidade pela criação e pelas decisões importantes da vida dos filhos, mesmo morando em casas diferentes. Ela está prevista no Código Civil e parte de uma ideia simples: o filho tem direito à presença e ao cuidado do pai e da mãe, e as grandes decisões — escola, saúde, atividades — devem ser tomadas em conjunto."
+      },
+      {
+        type: "p",
+        text: "É importante entender que compartilhar a guarda não é o mesmo que dividir o tempo exatamente ao meio. O foco está na responsabilidade conjunta pelas decisões, e não em cronometrar dias iguais na casa de cada um."
+      },
+      { type: "h2", text: "Compartilhada não é a mesma coisa que alternada" },
+      {
+        type: "p",
+        text: "Muita gente confunde guarda compartilhada com guarda alternada. Na guarda alternada, a criança fica um período morando com um dos pais e depois muda para a casa do outro, revezando a moradia — um modelo que costuma ser criticado por instabilizar a rotina do filho. Já na guarda compartilhada, em regra existe uma residência de referência (a casa onde a criança mora no dia a dia), enquanto a responsabilidade pelas decisões é dividida entre os dois. São coisas diferentes."
+      },
+      { type: "h2", text: "É a regra, mas há exceções" },
+      {
+        type: "p",
+        text: "A lei brasileira estabelece a guarda compartilhada como preferência, aplicando-a sempre que possível, ainda que os pais não cheguem a um acordo sobre isso. A ideia é preservar o vínculo do filho com os dois. Existem, porém, exceções: quando um dos pais declara ao juiz que não deseja a guarda, ou quando o compartilhamento não atende ao melhor interesse da criança — por exemplo, em situações de violência ou de risco. Nesses casos, o juiz pode definir a guarda unilateral."
+      },
+      { type: "h2", text: "Como ficam a rotina e a moradia" },
+      {
+        type: "p",
+        text: "Na prática, define-se onde a criança terá a residência de referência e como será a convivência com o outro genitor, de forma equilibrada. Isso inclui dias da semana, fins de semana, férias e datas comemorativas. O objetivo é que o filho conviva de verdade com os dois, sem transformar a rotina em uma disputa. Quando os pais moram em cidades diferentes, a convivência é ajustada à distância, sem que isso afaste a responsabilidade conjunta."
+      },
+      { type: "h2", text: "Ainda existe pensão na guarda compartilhada?" },
+      {
+        type: "p",
+        text: "Sim. Uma confusão muito comum é achar que, na guarda compartilhada, ninguém paga pensão. Não é assim. A obrigação de sustentar o filho continua para os dois, e a pensão serve para equilibrar essa contribuição. O valor leva em conta a necessidade da criança, a renda de cada pai e o tempo que o filho passa com cada um. Ou seja, mesmo dividindo a guarda, pode haver pensão a pagar, especialmente quando há diferença grande de renda entre os pais."
+      },
+      { type: "h2", text: "Como tomar as decisões juntos" },
+      {
+        type: "p",
+        text: "Na guarda compartilhada, as decisões relevantes da vida do filho passam a ser tomadas em conjunto. Entre elas estão:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Escolha e troca de escola",
+          "Tratamentos de saúde e acompanhamento médico",
+          "Viagens, sobretudo para fora do país",
+          "Atividades extracurriculares e formação religiosa",
+          "Mudança de cidade que afete a convivência"
+        ]
+      },
+      { type: "h3", text: "Plano de convivência" },
+      {
+        type: "p",
+        text: "Vale a pena organizar um plano de convivência (às vezes chamado de plano de parentalidade): um combinado, de preferência por escrito, que descreve como será a rotina, quem leva e busca na escola, como serão as férias e como os pais vão se comunicar sobre o filho. Colocar tudo no papel reduz conflitos e dá previsibilidade para a criança."
+      },
+      { type: "h2", text: "Quando os pais não se entendem" },
+      {
+        type: "p",
+        text: "A guarda compartilhada não exige que os pais sejam amigos — exige que consigam decidir juntos o essencial sobre o filho. Quando o diálogo trava, a mediação familiar ajuda a construir acordos, e o juiz pode definir os pontos em que não há consenso. Atenção especial merece a alienação parental, que é quando um dos pais tenta afastar o filho do outro: essa conduta é levada a sério pela Justiça e pode influenciar as decisões sobre a guarda e a convivência."
+      },
+      {
+        type: "callout",
+        text: "Em qualquer discussão sobre guarda, o critério que orienta a decisão é sempre o melhor interesse da criança e do adolescente — não a vontade ou a conveniência dos pais."
+      },
+      { type: "h2", text: "Como definir ou mudar a guarda" },
+      {
+        type: "p",
+        text: "A guarda pode ser definida por acordo entre os pais, levado à Justiça para homologação, ou por decisão judicial quando não há consenso. Ela também não é definitiva: se a situação mudar de forma relevante — nova rotina, mudança de cidade, problemas que afetem o filho —, é possível pedir a revisão. O caminho do acordo, quando viável, costuma ser mais rápido e menos desgastante para a criança."
+      },
+      { type: "h2", text: "Quando procurar ajuda" },
+      {
+        type: "p",
+        text: "Um advogado de família ajuda a redigir o acordo, montar o plano de convivência e conduzir o processo quando não há entendimento. Quem não pode pagar tem direito à Defensoria Pública. Este texto é informativo e não substitui a orientação de um profissional para o seu caso concreto."
+      }
+    ],
+    faq: [
+      {
+        question: "Guarda compartilhada significa dividir o tempo pela metade?",
+        answer:
+          "Não. Compartilhar a guarda é dividir a responsabilidade pelas decisões importantes da vida do filho, e não cronometrar dias iguais na casa de cada um. Em regra existe uma residência de referência, onde a criança mora no dia a dia, enquanto a convivência com o outro genitor é organizada de forma equilibrada."
+      },
+      {
+        question: "Na guarda compartilhada ainda se paga pensão?",
+        answer:
+          "Pode haver, sim. A obrigação de sustentar o filho continua para os dois pais, e a pensão serve para equilibrar essa contribuição conforme a necessidade da criança, a renda de cada um e o tempo que o filho passa com cada pai. Dividir a guarda não elimina automaticamente a pensão."
+      },
+      {
+        question: "Onde a criança mora na guarda compartilhada?",
+        answer:
+          "Em regra, define-se uma residência de referência, que é a casa onde a criança mora no dia a dia. Isso diferencia a guarda compartilhada da guarda alternada, em que o filho fica revezando a moradia entre as casas dos pais. A convivência com o outro genitor é ajustada em dias, fins de semana e férias."
+      },
+      {
+        question: "Dá para ter guarda compartilhada mesmo os pais brigando?",
+        answer:
+          "Sim. A guarda compartilhada não exige que os pais sejam amigos, mas que consigam decidir juntos o essencial sobre o filho. Quando o diálogo trava, a mediação e a decisão judicial ajudam. Só em situações que contrariem o interesse da criança, como violência, é que se afasta o compartilhamento."
+      },
+      {
+        question: "Como mudar a guarda depois de definida?",
+        answer:
+          "A guarda pode ser revista quando a situação muda de forma relevante, como mudança de cidade ou problemas que afetem o filho. O pedido pode ser feito por acordo homologado pela Justiça ou por ação, sempre com foco no melhor interesse da criança."
+      }
+    ]
+  },
+  {
+    slug: "aposentadoria-por-idade-regras-e-como-pedir",
+    title: "Aposentadoria por idade: regras e como pedir ao INSS",
+    excerpt:
+      "Veja a idade mínima e o tempo de contribuição exigidos, as regras de transição, a diferença entre urbano e rural e o passo a passo para pedir pelo Meu INSS.",
+    category: "Previdenciário",
+    readingMinutes: 12,
+    publishedAt: "2026-07-04",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "previdenciario",
+    intro:
+      "A aposentadoria por idade é uma das formas mais comuns de se aposentar pelo INSS, mas depois da reforma da Previdência muita gente ficou em dúvida sobre a idade e o tempo de contribuição que hoje são exigidos. Este guia explica, em linguagem simples, os requisitos atuais, as regras de transição para quem já contribuía, as diferenças entre trabalhador urbano e rural e o passo a passo para dar entrada pelo Meu INSS.",
+    body: [
+      { type: "h2", text: "O que é a aposentadoria por idade" },
+      {
+        type: "p",
+        text: "A aposentadoria por idade é o benefício pago pelo INSS a quem alcança a idade mínima exigida e comprova um tempo mínimo de contribuição. Ela é bastante procurada porque não depende de somar um número muito alto de anos de contribuição, e sim de combinar idade com um tempo mínimo. É o caminho natural para muitos trabalhadores que contribuíram de forma intercalada ao longo da vida."
+      },
+      { type: "h2", text: "Idade mínima e tempo de contribuição hoje" },
+      {
+        type: "p",
+        text: "Depois da reforma da Previdência (Emenda Constitucional 103/2019), a regra geral para o trabalhador urbano passou a exigir 62 anos de idade para as mulheres e 65 anos para os homens. Além da idade, é preciso ter um tempo mínimo de contribuição, que costuma ser de 15 anos. Há uma diferença importante: para o homem que só passou a contribuir depois da reforma, esse tempo mínimo pode ser maior. Como as regras variam conforme a data em que a pessoa começou a contribuir, o ideal é conferir a sua situação individual antes de pedir."
+      },
+      { type: "h2", text: "Regras de transição para quem já contribuía" },
+      {
+        type: "p",
+        text: "Quem já contribuía antes da reforma tem direito a regras de transição, pensadas para não prejudicar quem estava perto de se aposentar. Nos primeiros anos após a reforma, a idade mínima das mulheres subiu de forma gradual até chegar ao patamar atual. Por isso, a idade e o tempo exigidos podem variar de pessoa para pessoa, dependendo de quando ela começou a contribuir. Vale checar qual regra é mais vantajosa no seu caso."
+      },
+      { type: "h2", text: "Trabalhador rural tem regra própria" },
+      {
+        type: "p",
+        text: "O trabalhador rural — incluindo o agricultor familiar, o pescador artesanal e o indígena que trabalham em regime de economia familiar — tem regra mais favorável de idade: costuma ser 55 anos para as mulheres e 60 anos para os homens, com a comprovação de tempo de atividade rural. Essa diferença existe para reconhecer as condições próprias do trabalho no campo."
+      },
+      { type: "h3", text: "Como comprovar o trabalho rural" },
+      {
+        type: "p",
+        text: "A comprovação da atividade rural costuma ser feita por documentos como notas de produtor, contratos, registros sindicais, declarações e outros papéis que mostrem o trabalho no campo ao longo do tempo. Reunir esse material com antecedência é fundamental, porque a falta de provas é um dos principais motivos de negativa nesse tipo de pedido."
+      },
+      { type: "h2", text: "Como o valor é calculado" },
+      {
+        type: "p",
+        text: "Depois da reforma, o cálculo passou a considerar a média de praticamente todos os salários de contribuição a partir de julho de 1994. Sobre essa média aplica-se um percentual que, em regra, parte de um piso e vai aumentando conforme o tempo de contribuição. Na prática, quanto mais tempo de contribuição, maior tende a ser o percentual. Por envolver muitos detalhes, o valor exato depende do histórico de cada pessoa, e vale conferir a conta com cuidado."
+      },
+      { type: "h2", text: "Passo a passo para pedir pelo Meu INSS" },
+      {
+        type: "ol",
+        items: [
+          "Reúna os documentos pessoais e as provas de contribuição e, se for o caso, do trabalho rural",
+          "Confira o seu CNIS (extrato de contribuições) para ver se todos os períodos estão registrados",
+          "Acesse o aplicativo ou o site Meu INSS e entre com a sua conta gov.br",
+          "Escolha a opção de pedir aposentadoria por idade (urbana ou rural, conforme o caso)",
+          "Anexe os documentos solicitados e revise as informações antes de enviar",
+          "Acompanhe o andamento pelo próprio Meu INSS e responda a eventuais exigências no prazo"
+        ]
+      },
+      { type: "h3", text: "Documentos que costumam ser pedidos" },
+      {
+        type: "ul",
+        items: [
+          "Documento de identidade com foto e CPF",
+          "Comprovante de residência",
+          "Carteira de trabalho e outros comprovantes de vínculo e de contribuição",
+          "Carnês de contribuição, para quem contribuiu por conta própria",
+          "Documentos que comprovem a atividade rural, no caso do trabalhador do campo"
+        ]
+      },
+      {
+        type: "callout",
+        text: "Antes de pedir, confira o CNIS com atenção. Períodos de trabalho que não aparecem no extrato podem derrubar o tempo de contribuição e levar à negativa ou a um valor menor. Corrigir isso antes do pedido evita dor de cabeça."
+      },
+      { type: "h2", text: "E se o pedido for negado ou vier em valor baixo?" },
+      {
+        type: "p",
+        text: "Se o INSS negar o benefício ou conceder um valor abaixo do esperado, é possível apresentar recurso administrativo, dirigido às juntas e câmaras de recursos da Previdência, em regra dentro de 30 dias a partir da ciência da decisão. Também é possível levar o caso à Justiça. Em muitos casos, o problema é justamente tempo de contribuição não reconhecido, que pode ser comprovado com documentos adicionais."
+      },
+      { type: "h2", text: "Aposentadoria por idade e outras aposentadorias" },
+      {
+        type: "p",
+        text: "A aposentadoria por idade não é a única forma de se aposentar. Existem regras que combinam tempo de contribuição com idade ou com um sistema de pontos, além de aposentadorias especiais para quem trabalha exposto a agentes nocivos. Às vezes, esperar um pouco mais ou escolher outra regra resulta em um valor bem diferente. Por isso, comparar os caminhos antes de pedir costuma valer a pena."
+      },
+      { type: "h2", text: "Quando procurar ajuda" },
+      {
+        type: "p",
+        text: "Um advogado previdenciário pode ajudar a levantar o tempo de contribuição, escolher a melhor regra e a data mais vantajosa para pedir, além de recorrer quando o benefício é negado. Quem não pode pagar tem direito à Defensoria Pública. Este texto é informativo e não substitui a orientação de um profissional para a sua situação concreta."
+      }
+    ],
+    faq: [
+      {
+        question: "Qual a idade para se aposentar por idade?",
+        answer:
+          "Pela regra geral do trabalhador urbano após a reforma de 2019, são 62 anos para as mulheres e 65 anos para os homens. O trabalhador rural costuma ter idade menor, em torno de 55 anos para mulheres e 60 para homens. Quem já contribuía antes da reforma pode ter regras de transição, por isso vale conferir a situação individual."
+      },
+      {
+        question: "Quantos anos de contribuição eu preciso?",
+        answer:
+          "O tempo mínimo de contribuição costuma ser de 15 anos. Há uma diferença: o homem que só começou a contribuir depois da reforma pode precisar de mais tempo. Como as regras dependem de quando a pessoa começou a contribuir, o ideal é checar o seu caso antes de pedir."
+      },
+      {
+        question: "O trabalhador rural se aposenta mais cedo?",
+        answer:
+          "Sim. O trabalhador rural em regime de economia familiar costuma ter idade mínima menor, em torno de 55 anos para mulheres e 60 anos para homens, com a comprovação do tempo de atividade no campo. Reunir documentos que comprovem esse trabalho é essencial, porque a falta de provas é causa comum de negativa."
+      },
+      {
+        question: "Como peço a aposentadoria por idade?",
+        answer:
+          "O pedido é feito pelo aplicativo ou site Meu INSS, com login pela conta gov.br. Você escolhe a aposentadoria por idade, anexa os documentos e acompanha o andamento pelo próprio sistema. Antes, confira o CNIS para garantir que todos os períodos de contribuição estão registrados."
+      },
+      {
+        question: "O INSS negou o meu pedido. E agora?",
+        answer:
+          "Você pode apresentar recurso administrativo, em regra em até 30 dias da ciência da decisão, ou levar o caso à Justiça. Muitas negativas ocorrem por tempo de contribuição não reconhecido, que pode ser comprovado com documentos adicionais. Vale procurar orientação para reunir as provas certas."
+      },
+      {
+        question: "Qual é o valor da aposentadoria por idade?",
+        answer:
+          "O cálculo considera a média dos salários de contribuição a partir de julho de 1994, com um percentual que aumenta conforme o tempo de contribuição. O valor exato depende do histórico de cada pessoa, então vale conferir a conta com cuidado. Não existe um valor único para todos."
+      }
+    ]
   }
 ];
 

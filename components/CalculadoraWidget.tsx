@@ -277,7 +277,7 @@ export function CalculadoraWidget({ slug }: { slug: string }) {
                   onChange={(e) =>
                     setValues((s) => ({ ...s, [f.name]: e.target.value }))
                   }
-                  className="w-full rounded-lg border-2 border-brand-line bg-white px-3 py-2 text-sm text-brand-ink focus:border-brand-accent focus:outline-none"
+                  className="w-full rounded-lg border-2 border-brand-line bg-white px-3 py-2 text-base text-brand-ink focus:border-brand-accent focus:outline-none"
                 >
                   {f.options!.map((o) => (
                     <option key={o.value} value={o.value}>
@@ -300,7 +300,7 @@ export function CalculadoraWidget({ slug }: { slug: string }) {
                       [f.name]: e.target.value === "" ? "" : Number(e.target.value)
                     }))
                   }
-                  className={`w-full rounded-lg border-2 border-brand-line bg-white py-2 text-sm text-brand-ink focus:border-brand-accent focus:outline-none ${f.suffix ? "pl-10 pr-3" : "px-3"}`}
+                  className={`w-full rounded-lg border-2 border-brand-line bg-white py-2 text-base text-brand-ink focus:border-brand-accent focus:outline-none ${f.suffix ? "pl-10 pr-3" : "px-3"}`}
                 />
               )}
             </div>
