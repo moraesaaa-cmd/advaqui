@@ -444,8 +444,10 @@ export default function FerramentasPage() {
           <li>
             <Link href="/" className="hover:text-brand-ink transition">Home</Link>
           </li>
-          <li><ChevronRight className="w-3.5 h-3.5 inline" aria-hidden /></li>
-          <li className="text-brand-ink font-medium" aria-current="page">Ferramentas</li>
+          <li className="flex items-center gap-1.5" aria-current="page">
+            <ChevronRight className="w-3.5 h-3.5 text-brand-ink/30" aria-hidden />
+            <span className="text-brand-ink font-medium">Ferramentas</span>
+          </li>
         </ol>
       </nav>
 
@@ -468,17 +470,21 @@ export default function FerramentasPage() {
         <ToolsQuickFind items={QUICK_FIND_ITEMS} />
       </div>
 
-      {/* Navegação por categoria (âncoras) */}
-      <nav aria-label="Categorias de ferramentas" className="mb-12 flex flex-wrap gap-2">
-        {GROUPS.map((g) => (
-          <a
-            key={g.id}
-            href={`#${g.id}`}
-            className="rounded-full border border-brand-line bg-white px-4 py-1.5 text-sm font-medium text-brand-ink/80 transition hover:border-brand-accent hover:text-brand-ink"
-          >
-            {g.chip}
-          </a>
-        ))}
+      {/* Navegação por categoria (âncoras) — lista para leitores de tela
+          anunciarem os itens separadamente (evita chips "colados" no texto). */}
+      <nav aria-label="Categorias de ferramentas" className="mb-12">
+        <ul className="flex flex-wrap gap-2">
+          {GROUPS.map((g) => (
+            <li key={g.id}>
+              <a
+                href={`#${g.id}`}
+                className="inline-block rounded-full border border-brand-line bg-white px-4 py-1.5 text-sm font-medium text-brand-ink/80 transition hover:border-brand-accent hover:text-brand-ink"
+              >
+                {g.chip}
+              </a>
+            </li>
+          ))}
+        </ul>
       </nav>
 
       <div className="space-y-14">

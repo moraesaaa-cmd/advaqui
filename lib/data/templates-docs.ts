@@ -66,15 +66,24 @@ export const TEMPLATES: Template[] = [
       "Defina prazo de validade — se não definir, vale por 1 ano (art. 686 do CC) ou até a revogação",
       "Assine e reconheça firma em cartório se a repartição exigir (em geral exigem)"
     ],
-    content: `PROCURAÇÃO PARTICULAR
+    content: `PROCURAÇÃO PARTICULAR PARA FINS GERAIS
+(Instrumento particular de mandato, na forma dos arts. 653 e seguintes do Código Civil)
 
 OUTORGANTE: [NOME COMPLETO DO OUTORGANTE], [nacionalidade], [estado civil], [profissão], portador da Cédula de Identidade RG nº [00.000.000] [órgão emissor]/[UF], inscrito no CPF/MF sob o nº [000.000.000-00], residente e domiciliado à [endereço completo, com bairro, CEP, cidade e UF].
 
-OUTORGADO: [NOME COMPLETO DO OUTORGADO], [nacionalidade], [estado civil], [profissão], portador da Cédula de Identidade RG nº [00.000.000] [órgão emissor]/[UF], inscrito no CPF/MF sob o nº [000.000.000-00], residente e domiciliado à [endereço completo].
+OUTORGADO(A): [NOME COMPLETO DO OUTORGADO], [nacionalidade], [estado civil], [profissão], portador da Cédula de Identidade RG nº [00.000.000] [órgão emissor]/[UF], inscrito no CPF/MF sob o nº [000.000.000-00], residente e domiciliado à [endereço completo].
 
-PODERES: Pelo presente instrumento de procuração particular, o OUTORGANTE nomeia e constitui o OUTORGADO seu bastante procurador, conferindo-lhe os poderes da cláusula "ad negotia" para o fim específico de [DESCREVER OS ATOS ESPECÍFICOS, exemplo: "retirar a Carteira Nacional de Habilitação (CNH) renovada junto ao DETRAN/MG, podendo assinar documentos relacionados, prestar declarações e recolher taxas necessárias"], podendo praticar todos os atos necessários ao bom e fiel cumprimento do presente mandato.
+Pelo presente instrumento particular de procuração, elaborado em conformidade com o art. 654 do Código Civil — contendo o lugar em que foi passado, a qualificação completa do outorgante e do outorgado, a data e a designação e a extensão dos poderes conferidos —, o OUTORGANTE, por sua livre e espontânea vontade, nomeia e constitui seu bastante procurador o OUTORGADO, a quem confere os poderes adiante especificados.
 
-PRAZO DE VALIDADE: A presente procuração terá validade pelo prazo de [PRAZO, ex: "180 (cento e oitenta) dias"] a contar da data de sua assinatura, podendo ser revogada a qualquer momento pelo outorgante mediante comunicação por escrito.
+CLÁUSULA 1ª — DOS PODERES CONFERIDOS (cláusula "ad negotia"). O OUTORGADO fica investido dos poderes da cláusula "ad negotia" para o fim específico de [DESCREVER OS ATOS ESPECÍFICOS, exemplo: "retirar a Carteira Nacional de Habilitação (CNH) já renovada junto ao DETRAN/[UF]", "representar o OUTORGANTE na Assembleia Geral do Condomínio [NOME], com direito a voz e voto", "requerer e retirar segunda via de documentos pessoais junto aos órgãos competentes"], podendo, para o fiel cumprimento do mandato, assinar requerimentos e formulários, apresentar e retirar documentos, prestar e firmar declarações, recolher taxas e emolumentos, dar e receber recibos e praticar todos os demais atos que se fizerem necessários à realização do objeto acima.
+
+CLÁUSULA 2ª — DOS LIMITES DO MANDATO. Os poderes ora outorgados restringem-se à administração ordinária e aos atos expressamente indicados na Cláusula 1ª. Nos exatos termos do art. 661, § 1º, do Código Civil, o presente mandato NÃO abrange os poderes especiais e expressos para alienar, hipotecar, transigir, contrair empréstimos, prestar aval ou fiança, movimentar contas bancárias, receber e dar quitação de valores em dinheiro, renunciar a direitos ou praticar quaisquer outros atos que exorbitem da administração ordinária. [CASO DESEJE CONCEDER ALGUM DESSES PODERES, DESCREVA-O AQUI DE FORMA ESPECÍFICA E EXPRESSA.]
+
+CLÁUSULA 3ª — DO SUBSTABELECIMENTO. [ESCOLHA UMA OPÇÃO: "É VEDADO ao outorgado substabelecer, no todo ou em parte, os poderes ora conferidos" / "Fica AUTORIZADO o substabelecimento dos poderes, com ou sem reserva de iguais poderes, a critério do outorgado, na forma do art. 667 do Código Civil"].
+
+CLÁUSULA 4ª — DA VALIDADE, DA REVOGAÇÃO E DA EXTINÇÃO. A presente procuração vigora pelo prazo de [PRAZO, ex.: "180 (cento e oitenta) dias"] contados da data de sua assinatura, podendo ser revogada a qualquer tempo pelo OUTORGANTE mediante simples comunicação escrita ao OUTORGADO, nos termos dos arts. 682 e 686 do Código Civil. Extingue-se, ainda, o mandato pela morte ou interdição de qualquer das partes, pela mudança de estado que inabilite o outorgante a conferir os poderes ou o outorgado a exercê-los, e pelo término do prazo aqui fixado.
+
+Por estarem assim justos e acordados, firma o OUTORGANTE o presente instrumento.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -110,44 +119,52 @@ CPF: [000.000.000-00]
     ],
     content: `CONTRATO DE LOCAÇÃO RESIDENCIAL
 
-LOCADOR: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], portador da Cédula de Identidade RG nº [00.000.000] [órgão emissor]/[UF], residente e domiciliado à [endereço completo].
+LOCADOR(A): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], portador da Cédula de Identidade RG nº [00.000.000] [órgão emissor]/[UF], residente e domiciliado à [endereço completo].
 
-LOCATÁRIO: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], portador da Cédula de Identidade RG nº [00.000.000] [órgão emissor]/[UF], residente e domiciliado à [endereço completo].
+LOCATÁRIO(A): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], portador da Cédula de Identidade RG nº [00.000.000] [órgão emissor]/[UF], residente e domiciliado à [endereço completo].
 
-FIADOR (se aplicável): [NOME COMPLETO E QUALIFICAÇÃO COMPLETA, incluindo dados do cônjuge se casado].
+FIADOR(A) (se aplicável): [NOME COMPLETO E QUALIFICAÇÃO COMPLETA, incluindo estado civil, CPF, RG, endereço e, se casado, a qualificação e a anuência do cônjuge].
 
-As partes acima qualificadas têm entre si justo e acertado o presente Contrato de Locação Residencial, que se regerá pela Lei nº 8.245/91 e pelas cláusulas seguintes:
+As partes acima qualificadas têm entre si, na melhor forma de direito, justo e contratado o presente Contrato de Locação Residencial, que se regerá pela Lei nº 8.245/91 (Lei do Inquilinato), aplicando-se subsidiariamente o Código Civil, e pelas cláusulas e condições seguintes:
 
-CLÁUSULA 1ª — OBJETO. O LOCADOR cede em locação ao LOCATÁRIO o imóvel residencial situado à [endereço completo do imóvel locado], com [DESCRIÇÃO: ex: "área útil aproximada de 80m², composto por 2 quartos, sala, cozinha, banheiro e área de serviço"].
+CLÁUSULA 1ª — DO OBJETO. O LOCADOR cede ao LOCATÁRIO, para fins exclusivamente residenciais, o imóvel situado à [endereço completo do imóvel locado], assim descrito: [DESCRIÇÃO, ex.: "área útil aproximada de 80 m², composto por 2 (dois) quartos, sala, cozinha, banheiro social e área de serviço"], entregue em perfeitas condições de uso e habitabilidade, conforme laudo de vistoria de entrada que integra este contrato (Anexo I).
 
-CLÁUSULA 2ª — PRAZO. O prazo da locação é de [PRAZO, ex: "30 (trinta) meses"], com início em [DD/MM/AAAA] e término em [DD/MM/AAAA]. Findo o prazo, na ausência de oposição, a locação se prorrogará por prazo indeterminado.
+CLÁUSULA 2ª — DA DESTINAÇÃO. O imóvel destina-se única e exclusivamente à moradia do LOCATÁRIO e de seu núcleo familiar, sendo-lhe vedado alterar-lhe a destinação, nele exercer atividade comercial ou industrial ou abrigar número de pessoas incompatível com sua capacidade, sob pena de rescisão contratual.
 
-CLÁUSULA 3ª — ALUGUEL. O aluguel mensal é de R$ [VALOR] ([valor por extenso]), a ser pago até o dia [DIA] de cada mês, mediante depósito/transferência na conta bancária do LOCADOR: [BANCO], agência [AGÊNCIA], conta corrente [CONTA], em nome de [NOME].
+CLÁUSULA 3ª — DO PRAZO. O prazo da locação é de [PRAZO, ex.: "30 (trinta) meses"], com início em [DD/MM/AAAA] e término em [DD/MM/AAAA]. Findo o prazo ajustado, não havendo oposição do LOCADOR e permanecendo o LOCATÁRIO no imóvel por mais de 30 (trinta) dias, a locação prorrogar-se-á automaticamente por prazo indeterminado, na forma do art. 46, § 1º, da Lei nº 8.245/91.
 
-CLÁUSULA 4ª — REAJUSTE. O aluguel será reajustado anualmente, na data de aniversário do contrato, pela variação do [ÍNDICE: "IGP-M" ou "IPCA"] acumulado nos 12 meses anteriores.
+CLÁUSULA 4ª — DO ALUGUEL. O aluguel mensal é de R$ [VALOR] ([valor por extenso]), a ser pago até o dia [DIA] de cada mês, mediante depósito ou transferência (PIX/TED) na conta de titularidade do LOCADOR: [BANCO], agência [AGÊNCIA], conta corrente [CONTA], titular [NOME]. O comprovante de depósito ou transferência servirá de recibo de quitação do mês respectivo.
 
-CLÁUSULA 5ª — ENCARGOS. Ficam a cargo do LOCATÁRIO o pagamento de: água, luz, gás, telefone, internet, IPTU (em regra), taxa de condomínio (em regra) e demais despesas ordinárias de consumo. As despesas extraordinárias (obras estruturais, pintura externa, fundo de reserva) ficam por conta do LOCADOR.
+CLÁUSULA 5ª — DO REAJUSTE. O valor do aluguel será reajustado anualmente, na menor periodicidade admitida em lei, na data de aniversário do contrato, pela variação acumulada do índice [ÍNDICE: "IGP-M/FGV" ou "IPCA/IBGE"] nos 12 (doze) meses anteriores, ou, na sua falta ou extinção, por outro índice oficial que o substitua.
 
-CLÁUSULA 6ª — GARANTIA. Para garantia das obrigações deste contrato, o LOCATÁRIO oferece [ESCOLHA: "(a) fiança prestada por [NOME DO FIADOR], devidamente qualificado acima e que firma este contrato em solidariedade às obrigações do LOCATÁRIO" / "(b) caução em dinheiro no valor de R$ [VALOR], equivalente a 3 aluguéis, depositada em poupança nominal" / "(c) seguro-fiança contratado junto à [SEGURADORA], apólice nº [NÚMERO]"].
+CLÁUSULA 6ª — DOS ENCARGOS. Nos termos do art. 23 da Lei nº 8.245/91, ficam a cargo do LOCATÁRIO as despesas ordinárias de consumo e de administração do imóvel, tais como água, energia elétrica, gás, telefone, internet, taxa de condomínio (parte ordinária) e IPTU [SE ASSIM AJUSTADO]. As despesas extraordinárias de condomínio (obras de reforma estrutural, pintura de fachadas, instalação de equipamentos de segurança, constituição de fundo de reserva) e os tributos que recaiam sobre a propriedade competem ao LOCADOR, na forma do art. 22 da mesma Lei.
 
-CLÁUSULA 7ª — VISTORIA. O imóvel é entregue ao LOCATÁRIO no estado descrito em laudo de vistoria de entrada, parte integrante deste contrato. Ao final da locação, o imóvel deve ser devolvido no mesmo estado, salvo desgaste natural pelo uso.
+CLÁUSULA 7ª — DA GARANTIA. Para garantia das obrigações assumidas, e observado o art. 37 da Lei nº 8.245/91, que veda a exigência de mais de uma modalidade de garantia num mesmo contrato, o LOCATÁRIO oferece [ESCOLHA UMA ÚNICA MODALIDADE: "(a) FIANÇA prestada por [NOME DO FIADOR], acima qualificado, que assina este instrumento e se obriga como fiador e principal pagador, solidariamente responsável por todas as obrigações do LOCATÁRIO, com renúncia ao benefício de ordem (art. 828 do Código Civil), estendendo-se a fiança até a efetiva devolução das chaves, ainda que a locação se prorrogue por prazo indeterminado" / "(b) CAUÇÃO EM DINHEIRO no valor de R$ [VALOR], equivalente a até 3 (três) meses de aluguel, depositada em caderneta de poupança em nome de ambas as partes, na forma do art. 38, § 2º, da Lei nº 8.245/91, revertendo em benefício do LOCATÁRIO os rendimentos, salvo utilização para quitação de débitos ao final da locação" / "(c) SEGURO-FIANÇA locatícia contratado junto à seguradora [NOME], apólice nº [NÚMERO], vigente por todo o prazo desta locação"].
 
-CLÁUSULA 8ª — MULTA POR DESCUMPRIMENTO. O descumprimento de qualquer cláusula deste contrato implicará multa equivalente a 3 (três) aluguéis vigentes, sem prejuízo da rescisão e cobrança de eventuais perdas e danos.
+CLÁUSULA 8ª — DA VISTORIA E DA CONSERVAÇÃO. O imóvel é recebido no estado descrito no laudo de vistoria de entrada (Anexo I), obrigando-se o LOCATÁRIO a conservá-lo e a restituí-lo, ao término da locação, no mesmo estado em que o recebeu, ressalvados os desgastes naturais decorrentes do uso normal e regular. Cabe ao LOCATÁRIO comunicar de imediato ao LOCADOR o surgimento de qualquer dano ou defeito cuja reparação a este incumba.
 
-CLÁUSULA 9ª — RESCISÃO ANTECIPADA. Caso o LOCATÁRIO devolva o imóvel antes do prazo, pagará multa proporcional ao tempo restante, calculada na forma do art. 4º da Lei 8.245/91.
+CLÁUSULA 9ª — DAS BENFEITORIAS. As benfeitorias necessárias introduzidas pelo LOCATÁRIO, ainda que não autorizadas, e as úteis desde que autorizadas por escrito, serão indenizáveis e permitem o exercício do direito de retenção, na forma do art. 35 da Lei nº 8.245/91. As benfeitorias voluptuárias não serão indenizáveis, podendo ser levantadas ao final, se não afetarem a estrutura do imóvel.
 
-CLÁUSULA 10ª — FORO. Fica eleito o foro da Comarca de [CIDADE]/[UF] para dirimir quaisquer dúvidas oriundas deste contrato.
+CLÁUSULA 10ª — DA VEDAÇÃO À CESSÃO E SUBLOCAÇÃO. É vedado ao LOCATÁRIO ceder, sublocar ou emprestar o imóvel, total ou parcialmente, sem o prévio consentimento por escrito do LOCADOR, sob pena de rescisão (art. 13 da Lei nº 8.245/91).
+
+CLÁUSULA 11ª — DA RESCISÃO ANTECIPADA PELO LOCATÁRIO. Poderá o LOCATÁRIO devolver o imóvel antes do término do prazo, pagando a multa contratual pactuada, que, na forma do art. 4º da Lei nº 8.245/91, será calculada proporcionalmente ao período de cumprimento do contrato. Fica dispensado do pagamento da multa o LOCATÁRIO que necessitar mudar de residência em razão de transferência, pelo empregador, para prestar serviços em localidade diversa, desde que notifique o LOCADOR com antecedência mínima de 30 (trinta) dias.
+
+CLÁUSULA 12ª — DA MULTA POR INFRAÇÃO CONTRATUAL. O descumprimento de qualquer cláusula deste contrato sujeitará a parte infratora ao pagamento de multa equivalente a [ex.: "3 (três)"] aluguéis vigentes, sem prejuízo da rescisão e da apuração de eventuais perdas e danos. A falta de pagamento do aluguel e dos encargos nas datas ajustadas acarretará, além da multa, juros de mora de 1% (um por cento) ao mês e correção monetária.
+
+CLÁUSULA 13ª — DO FORO. Fica eleito o foro da Comarca de [CIDADE]/[UF], onde situado o imóvel, para dirimir quaisquer dúvidas ou controvérsias decorrentes deste contrato, com renúncia a qualquer outro, por mais privilegiado que seja.
+
+E, por estarem justas e contratadas, as partes assinam o presente instrumento em 2 (duas) vias de igual teor e forma, na presença das testemunhas abaixo.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
 _______________________________
-LOCADOR
+LOCADOR(A)
 
 _______________________________
-LOCATÁRIO
+LOCATÁRIO(A)
 
 _______________________________
-FIADOR (se houver)
+FIADOR(A) (se houver)
 
 TESTEMUNHAS:
 
@@ -180,42 +197,53 @@ TESTEMUNHAS:
       "Liste pendências quitadas (IPTU, condomínio, contas de consumo)",
       "Anexe vistoria de saída com fotos do imóvel devolvido"
     ],
-    content: `DISTRATO DE CONTRATO DE LOCAÇÃO
+    content: `DISTRATO DE CONTRATO DE LOCAÇÃO RESIDENCIAL
 
-LOCADOR: [NOME], CPF [000.000.000-00], residente à [endereço].
+LOCADOR(A): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-LOCATÁRIO: [NOME], CPF [000.000.000-00], residente à [endereço].
+LOCATÁRIO(A): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-FIADOR (se houver): [NOME], CPF [000.000.000-00].
+FIADOR(A) (se houver): [NOME COMPLETO], [estado civil], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço completo].
 
-As partes acima qualificadas, na melhor forma de direito, têm justo e contratado o presente DISTRATO DE CONTRATO DE LOCAÇÃO, nos seguintes termos:
+As partes acima qualificadas, na melhor forma de direito, têm entre si justo e acordado o presente DISTRATO DE CONTRATO DE LOCAÇÃO, com fundamento no art. 472 do Código Civil (que autoriza o distrato pela mesma forma exigida para o contrato) e no art. 9º, inciso I, da Lei nº 8.245/91 (rescisão por acordo mútuo), mediante as cláusulas e condições seguintes:
 
-CONSIDERANDO que celebraram em [DATA DO CONTRATO ORIGINAL] o Contrato de Locação Residencial referente ao imóvel sito à [endereço do imóvel];
+CONSIDERANDO que as partes celebraram, em [DATA DO CONTRATO ORIGINAL], Contrato de Locação Residencial referente ao imóvel situado à [endereço do imóvel];
 
-CONSIDERANDO que ambas as partes desejam pôr fim à locação de forma amigável;
+CONSIDERANDO que ambas as partes, de comum acordo e sem qualquer vício de consentimento, desejam pôr fim à relação locatícia de forma amigável, antes do termo final do contrato;
 
-CLÁUSULA 1ª — Pelo presente instrumento, as partes dão por rescindido, de comum acordo, o referido Contrato de Locação, com efeitos a partir desta data.
+CLÁUSULA 1ª — DA RESCISÃO. Pelo presente instrumento, as partes dão por rescindido, de comum acordo, o Contrato de Locação acima identificado, com efeitos a partir desta data, cessando, a partir de então, todas as obrigações recíprocas dele decorrentes, ressalvado o disposto nas cláusulas seguintes.
 
-CLÁUSULA 2ª — A entrega das chaves ocorre nesta data, [DD/MM/AAAA], às [HH:MM], conforme vistoria de saída anexa.
+CLÁUSULA 2ª — DA ENTREGA DAS CHAVES. A entrega das chaves e a efetiva desocupação do imóvel ocorrem nesta data, [DD/MM/AAAA], às [HH:MM] horas, conforme laudo de vistoria de saída anexo, que integra este distrato e comprova o estado de restituição do bem.
 
-CLÁUSULA 3ª — O LOCATÁRIO declara que pagou e quitou todos os aluguéis, encargos (IPTU pro-rata, condomínio, água, luz, gás, telefone e demais contas de consumo) até a data de hoje, conforme comprovantes anexos. O LOCADOR confere a quitação e nada mais terá a reclamar a esse título.
+CLÁUSULA 3ª — DA QUITAÇÃO DOS ALUGUÉIS E ENCARGOS. O LOCATÁRIO declara haver pago e quitado todos os aluguéis, bem como os encargos da locação (IPTU proporcional, cotas de condomínio, água, energia elétrica, gás, telefone e demais contas de consumo) até a presente data, conforme comprovantes anexos. O LOCADOR confere tais pagamentos e outorga ao LOCATÁRIO plena e geral quitação a esse título, nada mais tendo a reclamar.
 
-CLÁUSULA 4ª — Verificadas as condições do imóvel no laudo de vistoria de saída, [ESCOLHA: "(a) o imóvel foi entregue em perfeito estado, sem necessidade de reparos" / "(b) o LOCATÁRIO concorda em arcar com R$ [VALOR] para os reparos descritos na vistoria, valor pago nesta data"].
+CLÁUSULA 4ª — DO ESTADO DO IMÓVEL. Verificadas as condições do imóvel no laudo de vistoria de saída, [ESCOLHA: "(a) o imóvel foi restituído em perfeito estado de conservação, ressalvados os desgastes naturais decorrentes do uso normal, nada havendo a reparar" / "(b) o LOCATÁRIO reconhece a necessidade dos reparos descritos na vistoria e concorda em arcar com o valor de R$ [VALOR], pago nesta data ou compensado com a caução prestada"].
 
-CLÁUSULA 5ª — Em virtude do encerramento da locação, o LOCADOR libera o FIADOR de todas as obrigações decorrentes do contrato original.
+CLÁUSULA 5ª — DA CAUÇÃO (se houver). O valor da caução prestada, acrescido dos rendimentos, [ESCOLHA: "é integralmente devolvido ao LOCATÁRIO nesta data" / "é devolvido ao LOCATÁRIO com a dedução de R$ [VALOR] referente aos reparos da Cláusula 4ª"].
 
-CLÁUSULA 6ª — As partes outorgam-se reciprocamente, plena e geral quitação relativa ao Contrato de Locação ora distratado, nada mais tendo a reclamar uma da outra a qualquer título.
+CLÁUSULA 6ª — DA LIBERAÇÃO DO FIADOR. Em razão do integral encerramento da locação e da quitação de todos os débitos, o LOCADOR declara expressamente LIBERADO o FIADOR de toda e qualquer obrigação decorrente do contrato ora distratado, exonerando-o da garantia prestada.
+
+CLÁUSULA 7ª — DA QUITAÇÃO RECÍPROCA. As partes outorgam-se, mútua e reciprocamente, a mais ampla, plena, rasa, geral e irrevogável quitação de todas as obrigações decorrentes do Contrato de Locação ora rescindido, para nada mais reclamarem uma da outra, a qualquer tempo e a qualquer título, seja em juízo ou fora dele.
+
+CLÁUSULA 8ª — DA LIVRE MANIFESTAÇÃO. As partes declaram firmar o presente distrato de forma livre, consciente e de boa-fé, sem qualquer coação, dolo, erro ou vício de vontade.
+
+E, por estarem assim justas e acordadas, assinam o presente em 2 (duas) vias de igual teor, na presença das testemunhas.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
 _______________________________
-LOCADOR
+LOCADOR(A)
 
 _______________________________
-LOCATÁRIO
+LOCATÁRIO(A)
 
 _______________________________
-FIADOR (se houver)
+FIADOR(A) (se houver)
+
+TESTEMUNHAS:
+
+1. _________________________ Nome: _________________ CPF: _________________
+2. _________________________ Nome: _________________ CPF: _________________
 `,
     notes: [
       "O distrato encerra o contrato — não pode ser revertido depois",
@@ -244,19 +272,25 @@ FIADOR (se houver)
       "Descreva claramente o motivo do pagamento e a referência (data do serviço, número do contrato etc.)",
       "Se for quitação total, escreva isso de forma explícita"
     ],
-    content: `RECIBO DE PAGAMENTO
+    content: `RECIBO DE PAGAMENTO E QUITAÇÃO
 
-Eu, [NOME COMPLETO DE QUEM RECEBE], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço completo], DECLARO ter recebido de [NOME COMPLETO DE QUEM PAGA], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço], a importância de R$ [VALOR] ([valor por extenso]), pagos em [FORMA: "Pix", "dinheiro", "transferência bancária", "cheque nº [NÚMERO] do [BANCO]"], referente a [DESCRIÇÃO DO MOTIVO: ex: "quitação integral do empréstimo realizado em [DATA] no valor de R$ [VALOR ORIGINAL], conforme acordo verbal"; ou "pagamento da reforma do banheiro do imóvel localizado à [endereço], conforme orçamento aprovado em [DATA]"].
+Eu, [NOME COMPLETO DE QUEM RECEBE], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], portador do RG nº [00.000.000] [órgão]/[UF], residente e domiciliado à [endereço completo], na qualidade de CREDOR, DECLARO, para os devidos fins de direito e com fundamento nos arts. 319 e 320 do Código Civil, que RECEBI de [NOME COMPLETO DE QUEM PAGA], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço], na qualidade de DEVEDOR, a importância de R$ [VALOR] ([valor por extenso]).
 
-Para maior clareza, declaro que com o pagamento ora recebido fica [ESCOLHA: "INTEGRALMENTE QUITADA" / "PARCIALMENTE QUITADA, restando saldo devedor de R$ [VALOR REMANESCENTE]"] a obrigação acima descrita, nada mais tendo a reclamar do pagador a esse título, dando-lhe plena, rasa e geral quitação.
+FORMA DE PAGAMENTO: o valor foi pago por meio de [FORMA: "PIX (chave [CHAVE], em [DATA])", "dinheiro em espécie", "transferência bancária (TED/DOC) para a conta [BANCO/AG/CONTA]", "cheque nº [NÚMERO] do [BANCO], cuja quitação fica condicionada à respectiva compensação"].
+
+REFERÊNCIA / MOTIVO: o pagamento refere-se a [DESCRIÇÃO DO MOTIVO, exemplo: "quitação integral do empréstimo pessoal realizado em [DATA], no valor original de R$ [VALOR ORIGINAL]"; ou "pagamento pela reforma do banheiro do imóvel situado à [endereço], conforme orçamento aprovado em [DATA]"; ou "referente à parcela nº [N] do Contrato de [DESCRIÇÃO] firmado em [DATA]"].
+
+DA QUITAÇÃO. Em conformidade com o art. 320 do Código Civil, o presente recibo designa o valor e a espécie da dívida, o nome do devedor, o tempo e o lugar do pagamento, e é firmado pelo credor. Para maior clareza, DECLARO que, com o pagamento ora recebido, fica [ESCOLHA: "INTEGRALMENTE QUITADA a obrigação acima descrita, dando ao devedor plena, rasa, geral e irrevogável quitação, para nada mais reclamar a esse título, a qualquer tempo e sob qualquer fundamento" / "PARCIALMENTE QUITADA a obrigação, remanescendo saldo devedor de R$ [VALOR REMANESCENTE], com vencimento em [DATA], persistindo o débito quanto a esse saldo"].
+
+E, por ser expressão da verdade, firmo o presente recibo, que produzirá seus regulares efeitos jurídicos.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
 _____________________________________
-[NOME COMPLETO]
+[NOME COMPLETO DE QUEM RECEBE]
 CPF: [000.000.000-00]
 
-TESTEMUNHAS (opcional, recomendado para valores acima de R$ 5.000):
+TESTEMUNHAS (opcional, recomendado para valores acima de R$ 5.000,00):
 
 1. _________________________ Nome: _________________ CPF: _________________
 2. _________________________ Nome: _________________ CPF: _________________
@@ -289,13 +323,17 @@ TESTEMUNHAS (opcional, recomendado para valores acima de R$ 5.000):
     ],
     content: `DECLARAÇÃO DE RESIDÊNCIA
 
-Eu, [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], portador da Cédula de Identidade RG nº [00.000.000] [órgão emissor]/[UF], inscrito no CPF/MF sob o nº [000.000.000-00], DECLARO, sob as penas da lei, para os devidos fins, que sou residente e domiciliado no endereço [ENDEREÇO COMPLETO COM BAIRRO, CEP, CIDADE, UF], onde resido há [TEMPO, ex: "2 anos e 6 meses"].
+Eu, [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], portador da Cédula de Identidade RG nº [00.000.000] [órgão emissor]/[UF], inscrito no CPF/MF sob o nº [000.000.000-00], DECLARO, sob as penas da lei e para os devidos fins de direito, com fundamento no art. 1º da Lei nº 7.115/1983 — segundo o qual a declaração destinada a fazer prova de residência, firmada pelo próprio interessado, presume-se verdadeira —, que:
 
-[OPCIONAL] Declaro ainda que o referido endereço figura em contas de consumo (energia elétrica/conta de telefone/conta de água) em nome de [NOME DO TITULAR DAS CONTAS, exemplo: meu pai/minha mãe/proprietário do imóvel onde resido], CPF [000.000.000-00], pessoa com quem mantenho [RELAÇÃO: "vínculo familiar"/"locação"/"hospedagem"], podendo este endereço ser confirmado a qualquer momento.
+1. Sou RESIDENTE E DOMICILIADO no endereço [ENDEREÇO COMPLETO, COM NÚMERO, COMPLEMENTO, BAIRRO, CEP, CIDADE E UF], onde resido de forma habitual e ininterrupta há [TEMPO, ex.: "2 (dois) anos e 6 (seis) meses"].
 
-Estou ciente de que prestar declaração falsa configura o crime previsto no art. 299 do Código Penal (falsidade ideológica) e nos arts. 2º e 3º da Lei nº 7.115/1983.
+2. [OPCIONAL — SE FOR O CASO] O referido endereço consta em contas de consumo (energia elétrica / água / telefone) em nome de [NOME DO TITULAR DAS CONTAS, ex.: "meu pai", "minha mãe", "o proprietário do imóvel em que resido"], inscrito no CPF sob o nº [000.000.000-00], pessoa com quem mantenho [RELAÇÃO: "vínculo familiar", "contrato de locação", "hospedagem gratuita"], podendo tal residência ser confirmada a qualquer momento.
 
-Por ser expressão da verdade, firmo a presente declaração para os fins de [FINALIDADE, exemplo: "comprovação de residência junto à Caixa Econômica Federal para abertura de conta"].
+3. Estou plenamente ciente de que prestar declaração falsa configura o crime de FALSIDADE IDEOLÓGICA, previsto no art. 299 do Código Penal, sujeitando-me, ainda, à responsabilidade civil e administrativa prevista nos arts. 2º e 3º da Lei nº 7.115/1983.
+
+4. A presente declaração destina-se a [FINALIDADE, ex.: "comprovação de residência para abertura de conta-corrente junto ao [BANCO]", "instrução de matrícula escolar", "cadastro em programa social / no SUS"].
+
+Por ser expressão fiel da verdade, firmo a presente declaração.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -331,32 +369,39 @@ RG: [00.000.000] [órgão emissor]/[UF]
       "Indique destino, datas de ida e volta, meio de transporte",
       "Reconheça firma de ambos os pais em cartório"
     ],
-    content: `AUTORIZAÇÃO DE VIAGEM PARA MENOR
+    content: `AUTORIZAÇÃO DE VIAGEM NACIONAL PARA CRIANÇA OU ADOLESCENTE
+(Art. 83 do Estatuto da Criança e do Adolescente — Lei nº 8.069/1990 — e Resolução CNJ nº 295/2019)
 
-Nós abaixo assinados,
+Nós, abaixo assinados, na qualidade de pais e representantes legais do(a) menor adiante identificado(a):
 
-PAI: [NOME COMPLETO DO PAI], [nacionalidade], [estado civil], [profissão], CPF nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo];
+PAI: [NOME COMPLETO DO PAI], [nacionalidade], [estado civil], [profissão], inscrito no CPF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo], telefone [(00) 00000-0000];
 
-MÃE: [NOME COMPLETO DA MÃE], [nacionalidade], [estado civil], [profissão], CPF nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo];
+MÃE: [NOME COMPLETO DA MÃE], [nacionalidade], [estado civil], [profissão], inscrita no CPF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo], telefone [(00) 00000-0000];
 
-na qualidade de pais e responsáveis legais do menor [NOME COMPLETO DA CRIANÇA OU ADOLESCENTE], nascido em [DD/MM/AAAA], natural de [CIDADE]/[UF], inscrito no CPF nº [000.000.000-00] (se tiver) e portador do RG nº [00.000.000] [órgão]/[UF] (se tiver), AUTORIZAMOS expressamente o referido menor a:
+na qualidade de responsáveis legais do(a) menor [NOME COMPLETO DA CRIANÇA OU ADOLESCENTE], nascido(a) em [DD/MM/AAAA], natural de [CIDADE]/[UF], inscrito(a) no CPF nº [000.000.000-00] (se houver) e portador(a) do RG nº [00.000.000] [órgão]/[UF] (se houver), AUTORIZAMOS, de forma expressa, a viagem do(a) referido(a) menor em território nacional, nos seguintes termos:
 
-VIAJAR pelo território nacional brasileiro, com destino a [CIDADE/UF DE DESTINO], no período compreendido entre [DATA DE IDA] e [DATA DE VOLTA], utilizando-se de [MEIO DE TRANSPORTE: "avião", "ônibus rodoviário", "carro particular"].
+DESTINO: [CIDADE/UF DE DESTINO].
+PERÍODO: de [DATA DE IDA] a [DATA DE VOLTA].
+MEIO DE TRANSPORTE: [ex.: "aéreo", "rodoviário", "veículo particular"].
 
-ACOMPANHAMENTO: [ESCOLHA UMA OPÇÃO:]
-( ) Acompanhado pelo Sr.(a) [NOME DO ACOMPANHANTE], CPF [000.000.000-00], residente à [endereço], que tem nossa total confiança;
-( ) Desacompanhado, em viagem [ESCOLA: "escolar promovida por [NOME DA INSTITUIÇÃO]" ou "individual"];
-( ) Acompanhado pelo grupo organizado por [NOME DA ENTIDADE/ESCOLA/IGREJA/CLUBE], sob a responsabilidade do(a) Sr.(a) [NOME DO LÍDER RESPONSÁVEL], CPF [000.000.000-00].
+FORMA DE ACOMPANHAMENTO (assinale UMA opção):
+( ) Acompanhado(a) pelo(a) Sr.(a) [NOME DO ACOMPANHANTE], inscrito no CPF sob o nº [000.000.000-00], RG nº [_______], residente à [endereço], com grau de parentesco/relação de [_______], que goza de nossa inteira confiança e sob cuja responsabilidade fica o(a) menor durante toda a viagem;
+( ) DESACOMPANHADO(A), sob nossa integral responsabilidade;
+( ) Integrando grupo organizado por [NOME DA ENTIDADE / ESCOLA / IGREJA / CLUBE], CNPJ nº [_______], sob a responsabilidade do(a) Sr.(a) [NOME DO RESPONSÁVEL PELO GRUPO], CPF nº [_______], para fins de [viagem escolar / esportiva / religiosa].
 
-A presente autorização tem validade exclusivamente para a viagem acima descrita e o período correspondente.
+OBSERVAÇÃO LEGAL: nos termos do art. 83 do ECA, a autorização judicial é dispensada quando a criança (menor de 12 anos) viajar acompanhada de ascendente ou de parente colateral maior, até o terceiro grau, comprovado o parentesco, ou de pessoa maior, expressamente autorizada pelos pais ou responsável, como no presente instrumento. O(A) adolescente (12 anos completos ou mais) está, em regra, dispensado(a) de autorização para viagem nacional, salvo exigência específica da transportadora.
+
+A presente autorização tem validade exclusivamente para a viagem, o destino e o período acima descritos.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
 _____________________________________
-PAI - [NOME COMPLETO]
+PAI — [NOME COMPLETO]
+CPF: [000.000.000-00]
 
 _____________________________________
-MÃE - [NOME COMPLETO]
+MÃE — [NOME COMPLETO]
+CPF: [000.000.000-00]
 `,
     notes: [
       "Reconhecimento de firma de ambos os pais em cartório é OBRIGATÓRIO para essa autorização",
@@ -388,28 +433,33 @@ MÃE - [NOME COMPLETO]
     ],
     content: `CONTRATO DE PRESTAÇÃO DE SERVIÇOS
 
-CONTRATANTE: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], CPF [000.000.000-00], RG [00.000.000] [órgão]/[UF], residente à [endereço completo].
+CONTRATANTE: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-CONTRATADO: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], CPF [000.000.000-00], RG [00.000.000] [órgão]/[UF], residente à [endereço completo].
+CONTRATADO(A): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-As partes têm justo e contratado o presente Contrato de Prestação de Serviços, regido pelos arts. 593 a 609 do Código Civil e pelas cláusulas seguintes:
+As partes acima qualificadas têm, entre si, justo e contratado o presente Contrato de Prestação de Serviços, regido pelos arts. 593 a 609 do Código Civil e pelas cláusulas seguintes:
 
-CLÁUSULA 1ª — OBJETO. O CONTRATADO se obriga a prestar ao CONTRATANTE os seguintes serviços: [DESCRIÇÃO DETALHADA DO SERVIÇO, exemplo: "pintura completa da residência localizada à [endereço], incluindo paredes internas, tetos e portas, com tinta acrílica branca fosca de marca a ser combinada".
+CLÁUSULA 1ª — DO OBJETO. O CONTRATADO obriga-se a prestar ao CONTRATANTE os seguintes serviços: [DESCRIÇÃO DETALHADA, exemplo: "pintura completa da residência situada à [endereço], compreendendo paredes internas, tetos e portas, com aplicação de duas demãos de tinta acrílica fosca de primeira linha, incluindo o preparo prévio das superfícies (lixamento, massa corrida e selador)"], obrigando-se a executá-los com zelo, diligência e observância das melhores técnicas aplicáveis.
 
-CLÁUSULA 2ª — PRAZO. Os serviços terão início em [DATA] e deverão estar concluídos até [DATA LIMITE], salvo prorrogação acordada por escrito entre as partes.
+CLÁUSULA 2ª — DO PRAZO E DO CRONOGRAMA. Os serviços terão início em [DATA] e deverão estar integralmente concluídos até [DATA LIMITE], admitida a prorrogação apenas mediante acordo escrito ou em razão de caso fortuito ou força maior devidamente comprovados. [SE HOUVER ETAPAS: "As entregas parciais observarão o seguinte cronograma: (a) [ETAPA 1] até [DATA]; (b) [ETAPA 2] até [DATA]."]
 
-CLÁUSULA 3ª — VALOR E PAGAMENTO. O valor total do serviço é de R$ [VALOR] ([valor por extenso]), a ser pago da seguinte forma:
-[ESCOLHA: "(a) integralmente no final, após a entrega dos serviços conforme cláusula 1ª" / "(b) 50% como sinal no início e 50% ao final" / "(c) parcelado em [N] vezes mensais de R$ [VALOR DAS PARCELAS], vencimento todo dia [DIA] do mês"]. O pagamento será efetuado via [Pix/transferência bancária para conta do CONTRATADO: banco [BANCO], agência [AG], conta corrente [CC]].
+CLÁUSULA 3ª — DO VALOR E DA FORMA DE PAGAMENTO. O valor total dos serviços é de R$ [VALOR] ([valor por extenso]), a ser pago da seguinte forma: [ESCOLHA: "(a) integralmente após a conclusão e o aceite dos serviços" / "(b) 50% (cinquenta por cento) a título de sinal, na assinatura deste contrato, e o saldo de 50% (cinquenta por cento) na entrega final" / "(c) em [N] parcelas mensais e sucessivas de R$ [VALOR], vencendo a primeira em [DATA]"]. Os pagamentos serão feitos via [PIX / transferência bancária] para a conta do CONTRATADO: [BANCO], agência [AG], conta corrente [CC].
 
-CLÁUSULA 4ª — MATERIAIS. [ESCOLHA: "(a) Os materiais necessários à execução do serviço serão fornecidos pelo CONTRATANTE" / "(b) Os materiais serão fornecidos pelo CONTRATADO e seu custo já está incluído no valor da cláusula 3ª" / "(c) Os materiais serão fornecidos pelo CONTRATADO e cobrados separadamente mediante apresentação de notas fiscais"].
+CLÁUSULA 4ª — DOS MATERIAIS E EQUIPAMENTOS. [ESCOLHA: "(a) Os materiais e insumos necessários serão fornecidos pelo CONTRATANTE" / "(b) Os materiais serão fornecidos pelo CONTRATADO, já incluído seu custo no valor da Cláusula 3ª" / "(c) Os materiais serão fornecidos pelo CONTRATADO e cobrados à parte, mediante apresentação de notas fiscais"]. Os equipamentos e as ferramentas de trabalho, salvo ajuste em contrário, são de responsabilidade do CONTRATADO.
 
-CLÁUSULA 5ª — GARANTIA. O CONTRATADO oferece garantia de [PRAZO, ex: "90 dias"] sobre a qualidade dos serviços prestados, comprometendo-se a refazer, sem custo, qualquer parte do trabalho que apresentar defeito durante esse prazo.
+CLÁUSULA 5ª — DAS OBRIGAÇÕES DAS PARTES. Obriga-se o CONTRATADO a executar os serviços pessoalmente ou por meio de auxiliares sob sua exclusiva responsabilidade, respeitando prazos e especificações. Obriga-se o CONTRATANTE a franquear o acesso ao local, prestar as informações necessárias e efetuar os pagamentos nas datas ajustadas.
 
-CLÁUSULA 6ª — NATUREZA DA RELAÇÃO. As partes declaram que o presente contrato NÃO gera vínculo empregatício, sendo o CONTRATADO autônomo, responsável exclusivo por seus encargos tributários e previdenciários.
+CLÁUSULA 6ª — DA GARANTIA. O CONTRATADO oferece garantia de [PRAZO, ex.: "90 (noventa) dias"] sobre a qualidade dos serviços, contados da entrega, comprometendo-se a refazer, sem custo adicional, qualquer parte do trabalho que apresente defeito ou vício de execução dentro desse período.
 
-CLÁUSULA 7ª — RESCISÃO. Em caso de descumprimento de qualquer cláusula, a parte prejudicada poderá rescindir o contrato mediante notificação por escrito, com prazo de 10 dias para regularização. Pagamentos já efetuados serão devolvidos pro-rata pelo trabalho não realizado.
+CLÁUSULA 7ª — DA NATUREZA AUTÔNOMA DA RELAÇÃO. As partes declaram, expressamente, que o presente contrato NÃO gera vínculo empregatício, por ausência dos requisitos do art. 3º da CLT (pessoalidade, subordinação, habitualidade e onerosidade em conjunto), atuando o CONTRATADO com autonomia técnica e responsabilizando-se, com exclusividade, por seus tributos e encargos previdenciários.
 
-CLÁUSULA 8ª — FORO. As partes elegem o foro da Comarca de [CIDADE]/[UF] para dirimir qualquer dúvida oriunda deste contrato.
+CLÁUSULA 8ª — DA RESCISÃO. O contrato poderá ser rescindido: (a) por descumprimento de qualquer obrigação, mediante notificação escrita concedendo prazo de 10 (dez) dias para regularização; (b) por resilição unilateral (arts. 599 e 607 do Código Civil), com aviso prévio razoável, hipótese em que serão acertados os valores proporcionais ao trabalho efetivamente realizado. Na rescisão, os pagamentos já efetuados serão ajustados pro rata em relação à parcela do serviço prestada.
+
+CLÁUSULA 9ª — DA MULTA. A parte que der causa à rescisão por descumprimento contratual pagará à outra multa de [ex.: "10% (dez por cento)"] sobre o valor total do contrato, sem prejuízo da apuração de perdas e danos.
+
+CLÁUSULA 10ª — DO FORO. As partes elegem o foro da Comarca de [CIDADE]/[UF] para dirimir qualquer controvérsia decorrente deste contrato.
+
+E, por estarem justas e contratadas, assinam o presente em 2 (duas) vias de igual teor, na presença das testemunhas.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -417,7 +467,7 @@ _______________________________
 CONTRATANTE
 
 _______________________________
-CONTRATADO
+CONTRATADO(A)
 
 TESTEMUNHAS:
 
@@ -452,33 +502,37 @@ TESTEMUNHAS:
     ],
     content: `TERMO DE QUITAÇÃO DE DÉBITO
 
-CREDOR: [NOME COMPLETO], CPF [000.000.000-00], residente à [endereço].
+CREDOR: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-DEVEDOR: [NOME COMPLETO], CPF [000.000.000-00], residente à [endereço].
+DEVEDOR: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-Pelo presente termo, as partes acima qualificadas declaram, na melhor forma de direito, que:
+As partes acima qualificadas, na melhor forma de direito e com fundamento nos arts. 319 a 326 do Código Civil (do pagamento e da quitação), declaram o seguinte:
 
-CONSIDERANDO que entre eles existiu obrigação no valor original de R$ [VALOR ORIGINAL], decorrente de [DESCRIÇÃO DO MOTIVO, exemplo: "empréstimo pessoal celebrado em [DATA]", "prestação de serviços de [DESCRIÇÃO]", "compra de [BEM]"];
+CONSIDERANDO que entre elas existiu obrigação no valor original de R$ [VALOR ORIGINAL] ([valor por extenso]), decorrente de [DESCRIÇÃO DO MOTIVO, exemplo: "empréstimo pessoal celebrado em [DATA]", "saldo remanescente da prestação de serviços de [DESCRIÇÃO]", "compra do bem [DESCRIÇÃO]"];
 
-CONSIDERANDO que o DEVEDOR efetuou o pagamento integral da obrigação em [DATA DO PAGAMENTO], no valor de R$ [VALOR PAGO], por meio de [FORMA: "Pix", "transferência bancária", "dinheiro em espécie", "cheque nº ... do banco ..."];
+CONSIDERANDO que o DEVEDOR efetuou o pagamento da referida obrigação em [DATA DO PAGAMENTO], no valor de R$ [VALOR PAGO], por meio de [FORMA: "PIX", "transferência bancária (TED/DOC)", "dinheiro em espécie", "cheque nº [NÚMERO] do [BANCO]"];
 
-RESOLVEM as partes:
+RESOLVEM firmar o presente Termo de Quitação de Débito, mediante as cláusulas seguintes:
 
-CLÁUSULA 1ª — O CREDOR declara haver recebido em moeda corrente nacional a quantia acima especificada, dando ao DEVEDOR plena, geral e irrevogável quitação da obrigação descrita, para nada mais reclamar a qualquer tempo, a qualquer título.
+CLÁUSULA 1ª — DA QUITAÇÃO. O CREDOR declara haver recebido, em moeda corrente nacional, a quantia acima especificada, e, na forma do art. 320 do Código Civil, outorga ao DEVEDOR quitação [ESCOLHA: "PLENA, GERAL, RASA E IRREVOGÁVEL, extinguindo integralmente a obrigação" / "PARCIAL, remanescendo saldo devedor de R$ [VALOR], com vencimento em [DATA]"], para nada mais reclamar a qualquer título, tempo ou fundamento.
 
-CLÁUSULA 2ª — Em decorrência da quitação ora outorgada, as partes consideram extinta a obrigação, com renúncia recíproca a qualquer direito, ação, reclamação ou pretensão que poderiam ter, uma contra a outra, decorrente da obrigação acima.
+CLÁUSULA 2ª — DA EXTINÇÃO DA OBRIGAÇÃO E DA RENÚNCIA. Em decorrência da quitação ora outorgada, as partes reconhecem extinta a obrigação, renunciando reciprocamente a qualquer direito, ação, pretensão, cobrança ou reclamação, judicial ou extrajudicial, que pudessem ter uma contra a outra em razão da obrigação descrita.
 
-CLÁUSULA 3ª — As partes declaram que firmam o presente termo de forma livre e consciente, sem coação ou vício de vontade.
+CLÁUSULA 3ª — DA INEXISTÊNCIA DE VÍCIOS. As partes declaram firmar o presente Termo de forma livre, consciente e de boa-fé, sem qualquer coação, dolo, erro, lesão ou vício de vontade.
+
+CLÁUSULA 4ª — DA EFICÁCIA. O presente Termo produz efeitos a partir desta data, obrigando as partes, seus herdeiros e sucessores a qualquer título.
+
+E, por estarem assim justas e acordadas, assinam o presente em 2 (duas) vias de igual teor, na presença das testemunhas.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
 _____________________________________
-CREDOR
-[NOME COMPLETO]
+CREDOR — [NOME COMPLETO]
+CPF: [000.000.000-00]
 
 _____________________________________
-DEVEDOR
-[NOME COMPLETO]
+DEVEDOR — [NOME COMPLETO]
+CPF: [000.000.000-00]
 
 TESTEMUNHAS:
 
@@ -517,25 +571,27 @@ TESTEMUNHAS:
 
 DECLARANTES:
 
-[NOME COMPLETO DA PRIMEIRA PESSOA], [nacionalidade], [estado civil anterior — solteiro/divorciado/viúvo], [profissão], CPF [000.000.000-00], RG [00.000.000] [órgão]/[UF], residente à [endereço completo];
+[NOME COMPLETO DO(A) PRIMEIRO(A) COMPANHEIRO(A)], [nacionalidade], [estado civil — solteiro(a)/divorciado(a)/viúvo(a)], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo];
 
 e
 
-[NOME COMPLETO DA SEGUNDA PESSOA], [nacionalidade], [estado civil anterior — solteiro/divorciado/viúvo], [profissão], CPF [000.000.000-00], RG [00.000.000] [órgão]/[UF], residente à [endereço completo],
+[NOME COMPLETO DO(A) SEGUNDO(A) COMPANHEIRO(A)], [nacionalidade], [estado civil — solteiro(a)/divorciado(a)/viúvo(a)], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo];
 
-DECLARAM, na melhor forma de direito, sob as penas da lei, que:
+DECLARAM, na melhor forma de direito e sob as penas da lei, com fundamento no art. 1.723 do Código Civil e no art. 226, § 3º, da Constituição Federal, o seguinte:
 
-1. Convivem em UNIÃO ESTÁVEL desde [DATA DE INÍCIO DA CONVIVÊNCIA], de forma pública, contínua e duradoura, com o objetivo de constituição de família, na forma do art. 1.723 do Código Civil e do art. 226, § 3º da Constituição Federal.
+1. Convivem em UNIÃO ESTÁVEL desde [DATA DE INÍCIO DA CONVIVÊNCIA], de forma pública, contínua, duradoura e com o objetivo de constituição de família, presentes todos os requisitos legais do art. 1.723 do Código Civil.
 
-2. Residem juntos no endereço acima indicado, dividindo despesas, projetos de vida e responsabilidades familiares.
+2. Residem juntos no endereço acima indicado, compartilhando o mesmo teto, as despesas do lar, os projetos de vida e as responsabilidades familiares, com mútua assistência material e afetiva.
 
-3. Quanto ao regime de bens, declaram que a união estável segue o regime de [ESCOLHA: "COMUNHÃO PARCIAL DE BENS" (padrão legal — bens adquiridos durante a união se comunicam, anteriores não) / "SEPARAÇÃO TOTAL DE BENS" / "COMUNHÃO UNIVERSAL DE BENS"].
+3. Inexiste impedimento legal ao reconhecimento da união estável, não incidindo nenhuma das causas do art. 1.521 do Código Civil (ressalvada a hipótese de separação de fato ou judicial, na forma do art. 1.723, § 1º).
 
-4. Esta declaração se destina a [FINALIDADE, exemplo: "comprovação de dependência junto ao INSS para fins de pensão por morte", "inclusão como beneficiário em plano de saúde", "abertura de conta-corrente conjunta", "qualquer finalidade que se fizer necessária"].
+4. Quanto ao REGIME DE BENS, declaram que a união estável observa o regime de [ESCOLHA: "COMUNHÃO PARCIAL DE BENS, regime aplicável por força do art. 1.725 do Código Civil na ausência de contrato escrito — comunicam-se os bens adquiridos onerosamente na constância da união, permanecendo incomunicáveis os anteriores e os recebidos por doação ou herança" / "SEPARAÇÃO TOTAL DE BENS" / "COMUNHÃO UNIVERSAL DE BENS"], conforme ora pactuado por escrito.
 
-5. Declaram, ainda, que estão cientes de que prestar declaração falsa configura crime previsto no art. 299 do Código Penal e nos arts. 2º e 3º da Lei 7.115/1983.
+5. A presente declaração destina-se a [FINALIDADE, ex.: "comprovação da condição de dependente/companheiro(a) junto ao INSS, para fins de pensão por morte", "inclusão como beneficiário(a) em plano de saúde", "abertura de conta-corrente conjunta", "declaração de dependente no Imposto de Renda", "qualquer finalidade legal que se fizer necessária"].
 
-Por ser expressão da verdade, firmam a presente.
+6. Estão cientes de que prestar declaração falsa configura o crime do art. 299 do Código Penal e enseja a responsabilidade dos arts. 2º e 3º da Lei nº 7.115/1983.
+
+Por ser expressão da verdade, firmam a presente declaração.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -579,36 +635,55 @@ TESTEMUNHAS (recomendado):
       "Indique as consequências do não pagamento (protesto, ação judicial)",
       "Envie com Aviso de Recebimento (AR) pelos Correios ou via cartório"
     ],
-    content: `NOTIFICAÇÃO EXTRAJUDICIAL
+    content: `NOTIFICAÇÃO EXTRAJUDICIAL DE COBRANÇA
 
-[NOME DO CREDOR], CPF [000.000.000-00], residente à [endereço completo], DE EM VIRTUDE DO PRESENTE ATO, NOTIFICA, na forma da lei, o(a) Sr.(a) [NOME DO DEVEDOR], CPF [000.000.000-00], residente à [endereço completo], pelos seguintes motivos e fundamentos:
+NOTIFICANTE (credor): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-I. Em [DATA], V. Sa. assumiu obrigação no valor de R$ [VALOR] ([valor por extenso]), referente a [DESCRIÇÃO DA ORIGEM DA DÍVIDA: ex: "empréstimo pessoal celebrado por instrumento particular", "saldo devedor da prestação de serviços contratada em [DATA]", "compra a prazo do bem descrito no contrato anexo"].
+NOTIFICADO(A) (devedor): [NOME COMPLETO], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço completo].
 
-II. A referida obrigação tinha vencimento em [DATA DO VENCIMENTO], conforme [DOCUMENTO COMPROBATÓRIO: "contrato assinado", "nota promissória", "recibo de compra"], anexo a esta notificação.
+O NOTIFICANTE, com fundamento no art. 397 do Código Civil e no art. 726 do Código de Processo Civil, vem, pela presente, NOTIFICAR V. Sa. dos fatos e das razões a seguir expostos:
 
-III. Apesar de inúmeras tentativas amigáveis de cobrança, até a presente data, V. Sa. não efetuou o pagamento, encontrando-se INADIMPLENTE.
+I — DOS FATOS
 
-IV. Em face do exposto, fica V. Sa. NOTIFICADO(A) para, no prazo improrrogável de [PRAZO: ex: "10 (dez) dias úteis"] a contar do recebimento desta, efetuar o pagamento integral do valor de R$ [VALOR ATUALIZADO], acrescido de juros legais (1% ao mês) e correção monetária pelo INPC, totalizando R$ [VALOR FINAL ATUALIZADO], mediante depósito na conta bancária do credor: [BANCO], agência [AGÊNCIA], conta corrente [CONTA], em nome de [NOME].
+1. Em [DATA], V. Sa. assumiu perante o NOTIFICANTE obrigação líquida, certa e exigível no valor original de R$ [VALOR] ([valor por extenso]), decorrente de [DESCRIÇÃO DA ORIGEM, ex.: "contrato de empréstimo pessoal celebrado por instrumento particular", "saldo devedor da prestação de serviços contratada em [DATA]", "compra e venda a prazo do bem descrito no documento anexo"].
 
-V. Decorrido o prazo acima sem o pagamento, o credor adotará as MEDIDAS CABÍVEIS, incluindo, sem limitação:
-   a) protesto extrajudicial do título junto ao Tabelionato de Protesto competente;
-   b) inscrição do nome do devedor nos cadastros de proteção ao crédito (SPC, Serasa);
-   c) ajuizamento de ação judicial de cobrança, com pedido de bloqueio de bens via sistema BACENJUD, RENAJUD e demais ferramentas judiciais;
-   d) cobrança de honorários advocatícios fixados em até 20% sobre o valor devido.
+2. A referida obrigação venceu em [DATA DO VENCIMENTO], conforme [DOCUMENTO COMPROBATÓRIO: "contrato assinado", "nota promissória", "recibo", "comprovantes de transferência"] anexo a esta notificação.
 
-VI. A presente notificação tem efeito de constituir V. Sa. em mora, conforme art. 397 do Código Civil, e gera os efeitos do art. 405 do Código Civil (fluência de juros) a partir da data de seu recebimento.
+3. Apesar das tratativas amigáveis já entabuladas, V. Sa. permanece INADIMPLENTE até a presente data, sem apresentar justificativa idônea.
+
+II — DO DIREITO
+
+4. A obrigação encontra-se vencida e não paga. Tratando-se de obrigação positiva e líquida com termo certo, o inadimplemento constitui o devedor em mora de pleno direito (mora ex re), independentemente de interpelação, na forma do art. 397, caput, do Código Civil; e a presente notificação, de todo modo, formaliza a constituição em mora, também para os fins do parágrafo único do referido artigo.
+
+5. Sobre o débito incidem, desde o vencimento, correção monetária, juros de mora à taxa legal e, se contratualmente previstos, multa e honorários, nos termos dos arts. 389, 394, 395 e 406 do Código Civil, respondendo o devedor pelas perdas e danos decorrentes do atraso.
+
+III — DA EXIGÊNCIA
+
+6. Diante do exposto, fica V. Sa. NOTIFICADO(A) a, no prazo IMPRORROGÁVEL de [PRAZO, ex.: "10 (dez) dias"] a contar do recebimento desta, efetuar o pagamento integral do débito atualizado, no valor de R$ [VALOR ATUALIZADO] (principal acrescido de correção monetária e juros de 1% ao mês), mediante depósito ou transferência na conta do NOTIFICANTE: [BANCO], agência [AGÊNCIA], conta corrente [CONTA], titular [NOME], PIX [CHAVE].
+
+IV — DAS CONSEQUÊNCIAS DO NÃO PAGAMENTO
+
+7. Decorrido o prazo sem a devida quitação, o NOTIFICANTE adotará, independentemente de nova comunicação, as medidas cabíveis, entre as quais, sem limitação:
+   a) o protesto do título ou do documento de dívida junto ao Tabelionato de Protesto competente;
+   b) a inclusão do nome de V. Sa. nos cadastros de proteção ao crédito (SPC, Serasa);
+   c) o ajuizamento da ação judicial de cobrança ou de execução, conforme o caso, com pedido de bloqueio de ativos e de bens (sistemas SISBAJUD, RENAJUD e afins);
+   d) a cobrança das custas processuais e dos honorários advocatícios.
+
+V — DA CONSTITUIÇÃO EM MORA
+
+8. A presente notificação produz o efeito de constituir V. Sa. em mora e de comprovar a ciência inequívoca do débito, para todos os fins de direito.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
 _____________________________________
-[NOME DO CREDOR]
+[NOME DO NOTIFICANTE]
 CPF: [000.000.000-00]
 `,
     notes: [
-      "Envie com AR pelos Correios para ter prova do recebimento — guarde o comprovante",
+      "Envie por AR pelos Correios para ter prova do recebimento — guarde o comprovante",
       "Alternativa: protocolar via Cartório de Títulos e Documentos (mais formal, gera fé pública)",
-      "Não é necessário advogado — mas para valores altos ou casos complexos, recomenda-se"
+      "Não é necessário advogado — mas para valores altos ou casos complexos, recomenda-se",
+      "A notificação recebida constitui o devedor em mora e serve de prova documental em eventual ação"
     ]
   },
   // 11
@@ -633,24 +708,27 @@ CPF: [000.000.000-00]
     ],
     content: `TERMO DE RESCISÃO AMIGÁVEL DE CONTRATO DE PRESTAÇÃO DE SERVIÇOS
 
-CONTRATANTE: [NOME COMPLETO], CPF [000.000.000-00], residente à [endereço].
+CONTRATANTE: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço completo].
 
-CONTRATADO: [NOME COMPLETO], CPF [000.000.000-00], residente à [endereço].
+CONTRATADO(A): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço completo].
 
-As partes acima qualificadas, na melhor forma de direito, têm justo e contratado o presente Termo de Rescisão Amigável, nos seguintes termos:
+As partes acima qualificadas, na melhor forma de direito e com fundamento no art. 472 do Código Civil (que autoriza a resilição bilateral pela mesma forma exigida para o contrato), têm entre si justo e acordado o presente Termo de Rescisão Amigável, mediante as cláusulas seguintes:
 
-CONSIDERANDO que celebraram em [DATA DO CONTRATO ORIGINAL] Contrato de Prestação de Serviços tendo por objeto [DESCRIÇÃO DO SERVIÇO ORIGINAL];
+CONSIDERANDO que celebraram, em [DATA DO CONTRATO ORIGINAL], Contrato de Prestação de Serviços tendo por objeto [DESCRIÇÃO DO SERVIÇO ORIGINAL];
 
-CONSIDERANDO que ambas as partes, por razões de comum acordo, desejam pôr fim ao referido contrato antes de seu termo final;
+CONSIDERANDO que ambas as partes, por razões de comum acordo e sem qualquer vício de consentimento, desejam pôr fim ao referido contrato antes de seu termo final;
 
-CLÁUSULA 1ª — As partes resolvem rescindir o referido Contrato de Prestação de Serviços, com efeitos a partir desta data, sem ônus rescisórios ou multas.
+CLÁUSULA 1ª — DA RESCISÃO. As partes resolvem RESCINDIR, de comum acordo, o Contrato de Prestação de Serviços acima identificado, com efeitos a partir desta data, sem imputação de culpa a qualquer delas e, salvo o disposto na cláusula seguinte, sem incidência de multa ou ônus rescisório.
 
-CLÁUSULA 2ª — Em relação aos serviços parcialmente executados pelo CONTRATADO até a presente data, as partes acordam o seguinte ajuste financeiro:
-[ESCOLHA: "(a) O CONTRATANTE pagará ao CONTRATADO a quantia de R$ [VALOR] referente à proporção do trabalho realizado, valor pago nesta data" / "(b) O CONTRATADO devolverá ao CONTRATANTE a quantia de R$ [VALOR] referente à parte do sinal não utilizada, devolução efetuada nesta data" / "(c) As partes consideram quitadas todas as obrigações pendentes do contrato, sem necessidade de qualquer pagamento adicional"].
+CLÁUSULA 2ª — DO ACERTO FINANCEIRO. Em relação aos serviços parcialmente executados até a presente data, as partes ajustam o seguinte: [ESCOLHA: "(a) o CONTRATANTE pagará ao CONTRATADO a quantia de R$ [VALOR], correspondente à proporção do trabalho efetivamente realizado, valor pago nesta data" / "(b) o CONTRATADO devolverá ao CONTRATANTE a quantia de R$ [VALOR], correspondente à parcela do sinal não utilizada, devolução efetuada nesta data" / "(c) as partes consideram integralmente quitadas as obrigações pendentes, nada mais havendo a pagar de parte a parte"].
 
-CLÁUSULA 3ª — As partes outorgam-se reciprocamente plena, rasa e irrevogável quitação relativa ao Contrato de Prestação de Serviços ora rescindido, nada mais tendo a reclamar uma da outra, a qualquer tempo, a qualquer título.
+CLÁUSULA 3ª — DA ENTREGA DE MATERIAIS E RESULTADOS. O CONTRATADO entrega nesta data ao CONTRATANTE [DESCREVER, se aplicável: "os materiais, arquivos, chaves, senhas e resultados parciais produzidos até aqui"], nada mais retendo em seu poder.
 
-CLÁUSULA 4ª — As partes declaram que firmam o presente Termo de forma livre e consciente, sem coação ou vício de vontade.
+CLÁUSULA 4ª — DA QUITAÇÃO RECÍPROCA. As partes outorgam-se, mútua e reciprocamente, a mais ampla, plena, rasa, geral e irrevogável quitação relativa ao Contrato de Prestação de Serviços ora rescindido, para nada mais reclamarem uma da outra, a qualquer tempo, título ou fundamento.
+
+CLÁUSULA 5ª — DA LIVRE MANIFESTAÇÃO. As partes declaram firmar o presente Termo de forma livre, consciente e de boa-fé, sem coação, dolo, erro ou qualquer vício de vontade.
+
+E, por estarem justas e acordadas, assinam o presente em 2 (duas) vias de igual teor, na presença das testemunhas.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -658,7 +736,7 @@ _____________________________________
 CONTRATANTE
 
 _____________________________________
-CONTRATADO
+CONTRATADO(A)
 
 TESTEMUNHAS (recomendado):
 
@@ -695,37 +773,43 @@ TESTEMUNHAS (recomendado):
     ],
     content: `AUTORIZAÇÃO DE USO DE IMAGEM
 
-Eu, [NOME COMPLETO DO TITULAR DA IMAGEM], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], portador da Cédula de Identidade RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo],
+AUTORIZANTE (titular da imagem): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-AUTORIZO [NOME COMPLETO DO BENEFICIÁRIO OU EMPRESA, CPF/CNPJ, endereço], doravante denominado(a) "AUTORIZADO", a utilizar a minha imagem (foto, vídeo, retrato, voz), nos seguintes termos e condições:
+AUTORIZADO(A) (beneficiário do uso): [NOME COMPLETO ou RAZÃO SOCIAL], CPF/CNPJ nº [000.000.000-00 / 00.000.000/0000-00], com sede/residência à [endereço completo].
 
-1. FINALIDADE: A imagem poderá ser utilizada exclusivamente para [DESCREVER A FINALIDADE, exemplo: "divulgação do evento [NOME DO EVENTO] realizado em [DATA] nas redes sociais oficiais da empresa AUTORIZADA (Instagram, Facebook, site institucional)", "campanha publicitária da empresa AUTORIZADA referente ao produto [PRODUTO]"].
+Pelo presente instrumento, o AUTORIZANTE, no exercício dos direitos de personalidade assegurados pelo art. 5º, incisos V e X, da Constituição Federal e pelo art. 20 do Código Civil, AUTORIZA o AUTORIZADO a utilizar a sua imagem (fotografias, vídeos, retrato e voz), nos termos e limites a seguir:
 
-2. MEIOS DE DIVULGAÇÃO: Internet, redes sociais, e-mail marketing, materiais impressos institucionais (catálogo, panfleto), apresentações comerciais. [REMOVER OS MEIOS QUE NÃO AUTORIZAR].
+CLÁUSULA 1ª — DA FINALIDADE. A imagem poderá ser utilizada EXCLUSIVAMENTE para [DESCREVER A FINALIDADE ESPECÍFICA, ex.: "divulgação do evento [NOME], realizado em [DATA], nos canais oficiais do AUTORIZADO (site institucional, Instagram e Facebook)", "campanha publicitária do produto/serviço [DESCRIÇÃO]"], vedado qualquer uso estranho a esta finalidade.
 
-3. PRAZO: A presente autorização tem validade pelo prazo de [PRAZO, ex: "24 (vinte e quatro) meses"] a contar da data de sua assinatura. Findo o prazo, a imagem deverá ser removida de todos os meios divulgados.
+CLÁUSULA 2ª — DOS MEIOS DE DIVULGAÇÃO. Autorizam-se os seguintes meios [MANTENHA APENAS OS QUE AUTORIZAR]: internet e redes sociais; e-mail marketing; materiais impressos institucionais (catálogos, panfletos, cartazes); apresentações comerciais; peças audiovisuais.
 
-4. ÔNUS: [ESCOLHA: "(a) A autorização é concedida a TÍTULO GRATUITO, sem qualquer remuneração ao autorizante" / "(b) A autorização é concedida em contrapartida ao pagamento de R$ [VALOR], pago nesta data"].
+CLÁUSULA 3ª — DO PRAZO. A presente autorização vigora pelo prazo de [PRAZO, ex.: "24 (vinte e quatro) meses"] a contar desta data. Findo o prazo, o AUTORIZADO deverá cessar novas veiculações e remover a imagem dos meios sob seu controle, ressalvados os exemplares já distribuídos e os usos já realizados de boa-fé.
 
-5. ALTERAÇÕES: O AUTORIZADO compromete-se a não modificar ou editar a imagem de forma que altere o sentido, a dignidade ou a reputação do autorizante.
+CLÁUSULA 4ª — DA CONTRAPARTIDA. [ESCOLHA: "(a) A autorização é concedida a TÍTULO GRATUITO, não fazendo jus o AUTORIZANTE a qualquer remuneração" / "(b) A autorização é concedida mediante o pagamento de R$ [VALOR], quitado nesta data, a título de contrapartida única e integral"].
 
-6. REVOGAÇÃO: A presente autorização pode ser revogada a qualquer tempo, mediante comunicação por escrito, sem efeito sobre os usos já realizados até a data da revogação.
+CLÁUSULA 5ª — DA PRESERVAÇÃO DA HONRA. O AUTORIZADO obriga-se a não editar, montar ou associar a imagem a contextos que atinjam a honra, a dignidade, a reputação ou a intimidade do AUTORIZANTE, nem a utilizá-la de forma vexatória, discriminatória ou ilícita.
 
-7. RESPONSABILIDADE: O AUTORIZADO assume integral responsabilidade pelo uso da imagem nos termos desta autorização, isentando o autorizante de qualquer reclamação de terceiros.
+CLÁUSULA 6ª — DA PROTEÇÃO DE DADOS. Tratando-se a imagem de dado pessoal, o AUTORIZADO compromete-se a observar a Lei nº 13.709/2018 (Lei Geral de Proteção de Dados — LGPD), utilizando a imagem estritamente para a finalidade autorizada.
+
+CLÁUSULA 7ª — DA REVOGAÇÃO. A autorização poderá ser revogada a qualquer tempo, mediante comunicação escrita, sem efeito retroativo sobre os usos regularmente realizados até a data da revogação.
+
+CLÁUSULA 8ª — DA RESPONSABILIDADE. O AUTORIZADO responde integralmente pelo uso da imagem nos limites deste instrumento, ressalvado que o uso indevido ou não autorizado da imagem sujeita o infrator à reparação por dano moral, na forma do art. 20 do Código Civil e do art. 5º, X, da Constituição Federal, sendo, ademais, presumido o dano quando a imagem é veiculada, sem autorização, com finalidade econômica ou comercial (conforme entendimento sumulado do Superior Tribunal de Justiça).
+
+[SE O TITULAR FOR MENOR DE 18 ANOS, A AUTORIZAÇÃO DEVE SER FIRMADA POR AMBOS OS RESPONSÁVEIS LEGAIS.]
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
 _____________________________________
-[NOME COMPLETO DO TITULAR]
+[NOME COMPLETO DO TITULAR / AUTORIZANTE]
 CPF: [000.000.000-00]
 
-[Se menor de 18 anos, assinatura de ambos os responsáveis:]
+Se menor de 18 anos:
 
 _____________________________________
-PAI/RESPONSÁVEL
+PAI / RESPONSÁVEL — CPF: [000.000.000-00]
 
 _____________________________________
-MÃE/RESPONSÁVEL
+MÃE / RESPONSÁVEL — CPF: [000.000.000-00]
 `,
     notes: [
       "Para menores de 18 anos, ambos os pais ou responsáveis devem assinar",
@@ -753,37 +837,33 @@ MÃE/RESPONSÁVEL
       "Estabeleça prazo de confidencialidade (geralmente 2 a 5 anos após o término da relação)",
       "Inclua multa por descumprimento (penalidade financeira é dissuasória)"
     ],
-    content: `TERMO DE CONFIDENCIALIDADE
+    content: `TERMO DE CONFIDENCIALIDADE (ACORDO DE NÃO DIVULGAÇÃO — NDA)
 
-PARTE A: [NOME COMPLETO ou RAZÃO SOCIAL], CPF/CNPJ [000.000.000-00 / 00.000.000/0000-00], com sede/residência à [endereço completo], representada por [se PJ, nome do representante legal].
+PARTE A: [NOME COMPLETO ou RAZÃO SOCIAL], CPF/CNPJ nº [000.000.000-00 / 00.000.000/0000-00], com sede/residência à [endereço completo], neste ato representada por [se pessoa jurídica, nome e qualificação do representante legal].
 
-PARTE B: [NOME COMPLETO ou RAZÃO SOCIAL], CPF/CNPJ [000.000.000-00 / 00.000.000/0000-00], com sede/residência à [endereço completo], representada por [se PJ, nome do representante legal].
+PARTE B: [NOME COMPLETO ou RAZÃO SOCIAL], CPF/CNPJ nº [000.000.000-00 / 00.000.000/0000-00], com sede/residência à [endereço completo], neste ato representada por [se pessoa jurídica, nome e qualificação do representante legal].
 
-As partes acima qualificadas têm entre si justo e contratado o presente Termo de Confidencialidade, regido pelas seguintes cláusulas:
+As partes acima qualificadas, observados os princípios da probidade e da boa-fé objetiva (arts. 113, 187 e 422 do Código Civil), têm entre si justo e contratado o presente Termo de Confidencialidade, mediante as cláusulas seguintes:
 
-CLÁUSULA 1ª — FINALIDADE. As partes mantêm tratativas relacionadas a [DESCREVER A FINALIDADE: ex: "negociação de eventual parceria comercial no segmento de [SEGMENTO]", "prestação de serviços de [SERVIÇO] pela Parte A à Parte B"], no contexto da qual podem ser trocadas informações de caráter sigiloso.
+CLÁUSULA 1ª — DA FINALIDADE. As partes mantêm tratativas relativas a [DESCREVER, ex.: "eventual parceria comercial no segmento de [SEGMENTO]", "prestação de serviços de [SERVIÇO] pela PARTE A à PARTE B"], no contexto das quais poderão trocar informações de caráter sigiloso (a "Finalidade").
 
-CLÁUSULA 2ª — INFORMAÇÃO CONFIDENCIAL. Considera-se "Informação Confidencial" toda e qualquer informação, escrita, verbal, eletrônica ou em qualquer outro meio, identificada como tal ou que, por sua natureza, deva ser tratada como tal, incluindo, sem limitação:
-   a) dados financeiros, contábeis, estratégicos;
-   b) listas de clientes, fornecedores, parceiros;
-   c) processos, métodos, fórmulas, know-how técnico;
-   d) projetos em desenvolvimento;
-   e) qualquer outra informação não pública.
+CLÁUSULA 2ª — DA INFORMAÇÃO CONFIDENCIAL. Considera-se "Informação Confidencial" toda e qualquer informação, escrita, verbal, visual, eletrônica ou em qualquer outro meio, identificada como tal ou que, por sua natureza, deva assim ser tratada, incluindo, sem limitação: (a) dados financeiros, contábeis e estratégicos; (b) listas de clientes, fornecedores e parceiros; (c) processos, métodos, fórmulas, know-how e segredos de negócio; (d) projetos em desenvolvimento; (e) código-fonte e documentação técnica; (f) qualquer outra informação de acesso não público.
 
-CLÁUSULA 3ª — OBRIGAÇÕES. Cada parte se obriga a:
-   a) manter sob estrito sigilo todas as Informações Confidenciais recebidas;
-   b) utilizá-las exclusivamente para a finalidade descrita na cláusula 1ª;
-   c) não divulgar, transferir, ceder, vender ou compartilhar com terceiros, sob qualquer forma;
-   d) restringir o acesso interno apenas aos colaboradores que necessitem das informações, mediante obrigação equivalente de sigilo;
-   e) devolver ou destruir todas as Informações Confidenciais ao final da relação, mediante simples solicitação da parte titular.
+CLÁUSULA 3ª — DAS OBRIGAÇÕES. Cada parte, na condição de receptora, obriga-se a: (a) manter sob estrito sigilo as Informações Confidenciais; (b) utilizá-las exclusivamente para a Finalidade; (c) não as divulgar, transferir, ceder, vender ou compartilhar com terceiros, sob qualquer forma; (d) restringir o acesso interno apenas aos colaboradores que efetivamente necessitem das informações, mediante compromisso equivalente de sigilo; (e) adotar medidas de segurança compatíveis; e (f) devolver ou destruir as Informações Confidenciais ao término da relação ou mediante simples solicitação da parte titular.
 
-CLÁUSULA 4ª — EXCEÇÕES. Não se considera Informação Confidencial: (a) o que já era de domínio público antes do recebimento; (b) o que foi obtido legitimamente de terceiros sem dever de sigilo; (c) o que foi independentemente desenvolvido pela parte receptora; (d) o que precise ser divulgado por imposição legal ou determinação judicial — neste caso, a parte avisará a outra antes da divulgação, quando possível.
+CLÁUSULA 4ª — DAS EXCEÇÕES. Não se sujeitam ao dever de sigilo as informações que: (a) já eram de domínio público antes do recebimento, ou nele ingressaram sem culpa da receptora; (b) foram obtidas licitamente de terceiro sem dever de confidencialidade; (c) foram independentemente desenvolvidas pela receptora; ou (d) devam ser reveladas por imposição legal, regulatória ou por ordem judicial — hipótese em que a receptora comunicará previamente a titular, quando possível, limitando a divulgação ao estritamente exigido.
 
-CLÁUSULA 5ª — PRAZO. A obrigação de confidencialidade vigora durante toda a relação entre as partes e pelo prazo de [PRAZO, ex: "5 (cinco) anos"] após o seu término, qualquer que seja o motivo da extinção.
+CLÁUSULA 5ª — DA PROTEÇÃO DE DADOS. Havendo tratamento de dados pessoais, as partes obrigam-se a observar a Lei nº 13.709/2018 (LGPD).
 
-CLÁUSULA 6ª — PENALIDADE. O descumprimento das obrigações deste termo sujeitará a parte infratora ao pagamento de multa não compensatória no valor de R$ [VALOR DA MULTA, ex: "100.000,00"], sem prejuízo da reparação integral dos danos materiais e morais causados.
+CLÁUSULA 6ª — DO PRAZO. As obrigações de confidencialidade vigoram durante toda a relação entre as partes e pelo prazo de [PRAZO, ex.: "5 (cinco) anos"] após o seu término, qualquer que seja o motivo da extinção.
 
-CLÁUSULA 7ª — FORO. Fica eleito o foro da Comarca de [CIDADE]/[UF] para dirimir qualquer questão decorrente deste termo.
+CLÁUSULA 7ª — DA PENALIDADE E DAS PERDAS E DANOS. O descumprimento de qualquer obrigação deste Termo sujeitará a parte infratora ao pagamento de multa não compensatória de R$ [VALOR DA MULTA], sem prejuízo da reparação integral dos danos materiais e morais causados (arts. 186, 187 e 927 do Código Civil) e das sanções por concorrência desleal previstas na Lei nº 9.279/1996, quando cabíveis.
+
+CLÁUSULA 8ª — DA NÃO CONCESSÃO DE DIREITOS. Este Termo não transfere titularidade nem concede licença sobre as Informações Confidenciais, que permanecem de propriedade exclusiva da parte reveladora.
+
+CLÁUSULA 9ª — DO FORO. Fica eleito o foro da Comarca de [CIDADE]/[UF] para dirimir qualquer controvérsia decorrente deste Termo.
+
+E, por estarem justas e contratadas, assinam o presente em 2 (duas) vias de igual teor, na presença das testemunhas.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -825,23 +905,29 @@ TESTEMUNHAS:
       "Indique se a renúncia é incondicional ou tem alguma ressalva",
       "Para herança, é obrigatório fazer em escritura pública ou termo judicial"
     ],
-    content: `CARTA DE RENÚNCIA
+    content: `CARTA DE RENÚNCIA DE DIREITO
 
-Eu, [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], portador da Cédula de Identidade RG nº [00.000.000] [órgão]/[UF], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço completo], na melhor forma de direito,
+RENUNCIANTE: Eu, [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], portador da Cédula de Identidade RG nº [00.000.000] [órgão]/[UF], inscrito no CPF/MF sob o nº [000.000.000-00], residente e domiciliado à [endereço completo], no pleno gozo da minha capacidade civil e na melhor forma de direito,
 
-DECLARO, de forma livre, consciente e irrevogável, que RENUNCIO ao seguinte direito:
+DECLARO, de forma livre, consciente, espontânea e irrevogável, que RENUNCIO ao seguinte direito:
 
-[DESCREVER COM DETALHE O DIREITO OBJETO DA RENÚNCIA, exemplos:
-"À vaga de Analista Administrativo, código [CÓDIGO], a que fui convocado(a) no Concurso Público nº [NÚMERO] da Prefeitura de [CIDADE]/[UF]"
-"À função de administrador da sociedade empresária [RAZÃO SOCIAL], CNPJ [00.000.000/0000-00], cuja eleição se deu em [DATA]"
-"À indenização que me caberia em razão do Termo de Acordo firmado em [DATA] com [NOME DA OUTRA PARTE]"
-"À quota societária que detenho na sociedade [RAZÃO SOCIAL], correspondente a [PERCENTUAL]% do capital social"]
+[DESCREVER COM PRECISÃO O DIREITO OBJETO DA RENÚNCIA. Exemplos:
+- "À vaga de [CARGO], código [CÓDIGO], para a qual fui convocado(a) no Concurso Público nº [NÚMERO] da [ÓRGÃO/PREFEITURA/ENTIDADE], desistindo definitivamente da nomeação e posse."
+- "À função e ao cargo de administrador da sociedade [RAZÃO SOCIAL], CNPJ nº [00.000.000/0000-00], para o qual fui eleito em [DATA], solicitando a averbação da renúncia na Junta Comercial."
+- "À indenização a que teria direito em razão do Termo/Acordo firmado em [DATA] com [NOME DA OUTRA PARTE]."
+- "À quota social correspondente a [PERCENTUAL]% do capital da sociedade [RAZÃO SOCIAL]."]
 
-Declaro estar plenamente ciente de que esta renúncia é:
-( ) incondicional, irrevogável e produz efeitos imediatos a partir desta data;
-( ) condicionada a [CONDIÇÃO ESPECÍFICA, se aplicável].
+CLÁUSULA DE INTERPRETAÇÃO ESTRITA. Nos termos do art. 114 do Código Civil, a presente renúncia interpreta-se estritamente, alcançando exclusivamente o direito acima especificado, sem se estender a quaisquer outros.
 
-Declaro, ainda, que esta renúncia é feita sem qualquer pressão, coação ou vício de vontade, em pleno gozo das minhas faculdades mentais.
+CONDIÇÕES. Declaro que esta renúncia é:
+( ) INCONDICIONAL, irrevogável e produtora de efeitos imediatos a contar desta data;
+( ) CONDICIONADA a [CONDIÇÃO ESPECÍFICA, se aplicável], somente produzindo efeitos com o implemento da condição.
+
+LIVRE MANIFESTAÇÃO. Declaro, ainda, que a presente renúncia é feita sem qualquer coação, dolo, erro, lesão ou vício de vontade, em pleno gozo das minhas faculdades mentais, ciente de suas consequências jurídicas.
+
+[OBSERVAÇÃO PARA RENÚNCIA À HERANÇA: a renúncia à herança somente é válida quando feita expressamente por escritura pública ou por termo nos autos do inventário (art. 1.806 do Código Civil), não podendo ser parcial, condicional ou a termo (art. 1.808). Este modelo NÃO substitui o ato próprio para esse fim.]
+
+Por ser expressão da verdade, firmo a presente.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -883,29 +969,35 @@ TESTEMUNHAS (recomendado para fortalecer a prova):
       "Defina pagamento, prazo, forma e consequências de descumprimento",
       "Para virar título executivo, assine na presença de duas testemunhas"
     ],
-    content: `TERMO DE ACORDO EXTRAJUDICIAL
+    content: `TERMO DE ACORDO EXTRAJUDICIAL (TRANSAÇÃO)
 
-PARTE A: [NOME COMPLETO], CPF [000.000.000-00], residente à [endereço].
+PARTE A: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-PARTE B: [NOME COMPLETO], CPF [000.000.000-00], residente à [endereço].
+PARTE B: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-As partes acima qualificadas, no exercício de sua plena capacidade civil, na melhor forma de direito, têm entre si justo e contratado o presente Termo de Acordo Extrajudicial, regido pelos arts. 840 e seguintes do Código Civil, com as seguintes cláusulas:
+As partes acima qualificadas, no exercício de sua plena capacidade civil e na melhor forma de direito, têm entre si justo e acordado o presente Termo de Acordo Extrajudicial, na modalidade de TRANSAÇÃO regida pelos arts. 840 a 850 do Código Civil, mediante concessões recíprocas quanto a direitos patrimoniais de caráter privado, nos seguintes termos:
 
-CONSIDERANDO que existe entre as partes [CONTROVÉRSIA / CONFLITO / DISPUTA] originada de [DESCREVER A ORIGEM DO CONFLITO, exemplo: "acidente automobilístico ocorrido em [DATA] na via [LOCAL], em que o veículo da Parte A colidiu com o veículo da Parte B, causando danos materiais"];
+CONSIDERANDO que existe entre as partes controvérsia originada de [DESCREVER A ORIGEM DO CONFLITO, ex.: "acidente automobilístico ocorrido em [DATA], na via [LOCAL], no qual o veículo da PARTE A colidiu com o veículo da PARTE B, causando-lhe danos materiais"];
 
-CONSIDERANDO que ambas as partes desejam pôr fim à controvérsia de forma amigável, sem necessidade de litígio judicial, mediante concessões recíprocas;
+CONSIDERANDO que ambas desejam prevenir ou encerrar o litígio de forma amigável, evitando os custos e a demora de uma demanda judicial;
 
-CLÁUSULA 1ª — OBJETO DO ACORDO. As partes, fazendo concessões recíprocas, encerram em definitivo a controvérsia descrita, nos seguintes termos:
+CLÁUSULA 1ª — DO OBJETO E DAS CONCESSÕES RECÍPROCAS. As partes, mediante concessões mútuas, encerram em definitivo a controvérsia descrita, nos seguintes termos:
+   a) a PARTE A pagará à PARTE B a quantia de R$ [VALOR] ([valor por extenso]), a título de [ex.: "reparação integral dos danos materiais decorrentes do evento"], da seguinte forma: [À VISTA, NESTA DATA / EM [N] PARCELAS MENSAIS DE R$ [VALOR], vencendo a primeira em [DATA], mediante PIX/transferência para a conta [BANCO/AG/CONTA]];
+   b) a PARTE B, em contrapartida, declara que, com o cumprimento do ajustado, ficará plenamente ressarcida de todos os danos decorrentes do evento, outorgando à PARTE A, ao final, quitação geral e irrevogável.
 
-   a) A PARTE A pagará à PARTE B o valor de R$ [VALOR] ([valor por extenso]), referente a [INDICAR O QUE COBRE: "reparação integral dos danos materiais decorrentes do acidente"], a ser pago [À VISTA NESTA DATA / EM [N] PARCELAS MENSAIS DE R$ [VALOR] COM PRIMEIRA PARCELA EM [DATA]];
+CLÁUSULA 2ª — DA RENÚNCIA E DA INTERPRETAÇÃO RESTRITIVA. As partes renunciam, mútua e reciprocamente, a qualquer pretensão, ação judicial, reclamação administrativa, queixa ou representação decorrente exclusivamente do evento descrito. Nos termos do art. 843 do Código Civil, a presente transação interpreta-se restritivamente, alcançando somente a controvérsia aqui tratada.
 
-   b) A PARTE B, em contrapartida, declara que com o pagamento ora ajustado fica plenamente ressarcida de todos os danos decorrentes do evento, dando à PARTE A QUITAÇÃO GERAL E IRREVOGÁVEL.
+CLÁUSULA 3ª — DA QUITAÇÃO. Cumpridas integralmente as obrigações da Cláusula 1ª, as partes se dão mútua, plena, geral e irrevogável quitação quanto ao objeto deste acordo, nada mais tendo a reclamar.
 
-CLÁUSULA 2ª — RENÚNCIA. As partes RENUNCIAM mutuamente a qualquer pretensão, ação judicial, queixa-crime ou reclamação administrativa que poderiam intentar uma contra a outra em razão do evento descrito.
+CLÁUSULA 4ª — DO DESCUMPRIMENTO E DA EXECUÇÃO. Firmado por duas testemunhas, o presente Termo constitui TÍTULO EXECUTIVO EXTRAJUDICIAL, nos termos do art. 784, inciso III, do Código de Processo Civil. Em caso de inadimplemento de qualquer obrigação, a parte prejudicada poderá promover a execução direta do valor devido, com vencimento antecipado das demais parcelas, incidindo multa de 10% (dez por cento) sobre o saldo, juros de mora de 1% ao mês e correção monetária, além das custas e honorários.
 
-CLÁUSULA 3ª — DESCUMPRIMENTO. Em caso de inadimplemento de qualquer das obrigações assumidas neste Termo, a parte prejudicada poderá executar o presente diretamente, na forma do art. 784, IV, do Código de Processo Civil (título executivo extrajudicial), com vencimento antecipado das demais parcelas, acréscimo de multa de 10% sobre o valor inadimplido e juros de mora de 1% ao mês.
+CLÁUSULA 5ª — DA HOMOLOGAÇÃO JUDICIAL. As partes poderão, se desejarem, submeter o presente acordo à homologação judicial, hipótese em que passará a constituir título executivo judicial (art. 515, inciso III, do Código de Processo Civil).
 
-CLÁUSULA 4ª — FORO. Para resolver qualquer questão oriunda deste Termo, as partes elegem o foro da Comarca de [CIDADE]/[UF].
+CLÁUSULA 6ª — DA LIVRE MANIFESTAÇÃO. As partes declaram firmar este Termo de forma livre, consciente e de boa-fé, sem coação, dolo, erro, lesão ou qualquer vício de vontade.
+
+CLÁUSULA 7ª — DO FORO. Elegem as partes o foro da Comarca de [CIDADE]/[UF] para dirimir qualquer questão oriunda deste Termo.
+
+E, por estarem justas e acordadas, assinam o presente em 2 (duas) vias de igual teor, na presença das duas testemunhas abaixo.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -923,7 +1015,8 @@ TESTEMUNHAS (obrigatórias para título executivo extrajudicial — CPC, art. 78
     notes: [
       "Com duas testemunhas, esse termo vira título executivo — em caso de descumprimento, executa direto, sem precisar discutir o mérito",
       "Reconhecimento de firma é altamente recomendado",
-      "Pode ser levado a juiz para homologação, ganhando força adicional de sentença"
+      "Pode ser levado a juiz para homologação, ganhando força adicional de sentença",
+      "A transação só vale sobre direitos patrimoniais disponíveis — não serve para guarda de filhos ou direitos indisponíveis"
     ]
   },
   // 16
@@ -946,36 +1039,41 @@ TESTEMUNHAS (obrigatórias para título executivo extrajudicial — CPC, art. 78
       "Declare se há ônus (gravame, usufruto, reserva)",
       "Verifique a alíquota de ITCMD no seu estado e providencie o pagamento"
     ],
-    content: `DECLARAÇÃO DE DOAÇÃO
+    content: `INSTRUMENTO PARTICULAR DE DOAÇÃO DE BEM MÓVEL
 
-DOADOR: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], CPF [000.000.000-00], RG [00.000.000] [órgão]/[UF], residente à [endereço completo].
+DOADOR: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-DONATÁRIO: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], CPF [000.000.000-00], RG [00.000.000] [órgão]/[UF], residente à [endereço completo].
+DONATÁRIO: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-As partes acima qualificadas, na melhor forma de direito, têm entre si justo e contratado o presente instrumento de Doação, regido pelos arts. 538 a 564 do Código Civil, mediante as seguintes cláusulas:
+As partes acima qualificadas têm, entre si, justo e contratado o presente instrumento de Doação, regido pelos arts. 538 a 564 do Código Civil, mediante as cláusulas seguintes:
 
-CLÁUSULA 1ª — OBJETO. O DOADOR transfere ao DONATÁRIO, a título de doação pura e simples, o seguinte bem:
-[DESCREVER COM PRECISÃO, exemplo: "Veículo marca/modelo [MARCA/MODELO], ano/modelo [ANO/ANO], cor [COR], placa [AAA-0000] (ou Mercosul [AAA0A00]), chassi [CHASSI], RENAVAM [RENAVAM], CRV em nome do DOADOR" / "Quantia em dinheiro no valor de R$ [VALOR], transferida via Pix/TED na conta do DONATÁRIO"].
+CLÁUSULA 1ª — DO OBJETO. O DOADOR, por liberalidade e por conta de seu patrimônio, transfere ao DONATÁRIO, a título de doação pura e simples, o seguinte bem: [DESCREVER COM PRECISÃO, ex.: "veículo marca/modelo [MARCA/MODELO], ano/modelo [ANO/ANO], cor [COR], placa [PLACA], chassi [CHASSI], RENAVAM [RENAVAM], cujo CRV encontra-se em nome do DOADOR" / "quantia em dinheiro de R$ [VALOR], transferida via PIX/TED para a conta do DONATÁRIO"].
 
-CLÁUSULA 2ª — VALOR. O valor estimado do bem doado é de R$ [VALOR] ([valor por extenso]), para fins fiscais e tributários.
+CLÁUSULA 2ª — DO VALOR. Atribui-se ao bem doado, para fins fiscais e tributários, o valor de R$ [VALOR] ([valor por extenso]).
 
-CLÁUSULA 3ª — GRATUIDADE. A doação é feita a título inteiramente gratuito, em vida, motivada pelo afeto entre as partes [SE FOR PARENTE: "decorrente do vínculo familiar de [GRAU DE PARENTESCO]"], sem qualquer encargo ou condição.
+CLÁUSULA 3ª — DA GRATUIDADE. A doação é feita a título inteiramente gratuito, em vida, motivada [SE PARENTE: "pelo vínculo familiar de [GRAU DE PARENTESCO] e pelo afeto entre as partes"], sem qualquer encargo, condição ou contraprestação, ressalvado o disposto na Cláusula 5ª.
 
-CLÁUSULA 4ª — ACEITAÇÃO. O DONATÁRIO aceita a presente doação, declarando recebê-la em perfeito estado.
+CLÁUSULA 4ª — DA ACEITAÇÃO. O DONATÁRIO declara ACEITAR a presente doação, recebendo o bem no estado em que se encontra e dando-se por satisfeito.
 
-CLÁUSULA 5ª — ADIANTAMENTO DA LEGÍTIMA. [INCLUIR APENAS SE FOR DOAÇÃO DE ASCENDENTE A DESCENDENTE OU ENTRE CÔNJUGES: "A presente doação consiste em ADIANTAMENTO DA LEGÍTIMA, devendo ser conferida (trazida à colação) no momento da partilha por morte do DOADOR, nos termos dos arts. 544 e 2.002 do Código Civil"].
+CLÁUSULA 5ª — DO ADIANTAMENTO DA LEGÍTIMA (se aplicável). [INCLUIR SOMENTE SE A DOAÇÃO FOR DE ASCENDENTE A DESCENDENTE OU DE UM CÔNJUGE A OUTRO: "A presente doação importa ADIANTAMENTO DA LEGÍTIMA, devendo o bem ser conferido (trazido à colação) por ocasião da partilha da herança do DOADOR, nos termos dos arts. 544 e 2.002 do Código Civil, salvo dispensa expressa da colação, na forma da lei."]
 
-CLÁUSULA 6ª — ITCMD. O ITCMD (Imposto sobre Transmissão Causa Mortis e Doação) será recolhido pelo [DONATÁRIO/DOADOR] junto à Secretaria da Fazenda do Estado de [UF], conforme a legislação aplicável.
+CLÁUSULA 6ª — DA RESERVA DO NECESSÁRIO À SUBSISTÊNCIA. O DOADOR declara que a presente doação NÃO abrange a totalidade de seus bens, reservando patrimônio ou renda suficientes à própria subsistência, em observância ao art. 548 do Código Civil, e que não excede a parte de que poderia dispor em testamento (art. 549 do Código Civil).
+
+CLÁUSULA 7ª — DO ITCMD. O Imposto sobre a Transmissão Causa Mortis e Doação (ITCMD), tributo estadual previsto no art. 155, inciso I, da Constituição Federal, será recolhido por [DONATÁRIO / DOADOR] junto à Secretaria da Fazenda do Estado de [UF], conforme a alíquota e a legislação estadual aplicáveis.
+
+CLÁUSULA 8ª — DA TRANSFERÊNCIA. As partes obrigam-se a praticar os atos necessários à efetiva transferência do bem [ex.: "assinando o ATPV-e / CRV e promovendo a transferência do veículo junto ao DETRAN/[UF]"], correndo as despesas por conta de [PARTE RESPONSÁVEL].
+
+E, por estarem justas e contratadas, assinam o presente em 2 (duas) vias, na presença das testemunhas.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
 _____________________________________
-DOADOR
-[NOME COMPLETO]
+DOADOR — [NOME COMPLETO]
+CPF: [000.000.000-00]
 
 _____________________________________
-DONATÁRIO
-[NOME COMPLETO]
+DONATÁRIO — [NOME COMPLETO]
+CPF: [000.000.000-00]
 
 TESTEMUNHAS:
 
@@ -1012,52 +1110,47 @@ TESTEMUNHAS:
       "Indique prazo (10 a 15 dias é o usual)",
       "Envie por AR para ter prova do recebimento"
     ],
-    content: `RESPOSTA A COBRANÇA INDEVIDA
+    content: `NOTIFICAÇÃO EXTRAJUDICIAL — RESPOSTA A COBRANÇA INDEVIDA
 
-A
-[NOME DA EMPRESA COBRADORA], CNPJ [00.000.000/0000-00], com sede à [endereço da empresa].
+À
+[NOME/RAZÃO SOCIAL DA EMPRESA COBRADORA], inscrita no CNPJ sob o nº [00.000.000/0000-00], com sede à [endereço da empresa].
+A/C: Departamento Jurídico / Ouvidoria / SAC.
 
-A/C: Departamento Jurídico / Ouvidoria.
+ASSUNTO: Cobrança indevida — exigência de cessação imediata, baixa de restrição e devolução em dobro.
 
-Assunto: Cobrança indevida — exigência de cessação imediata e devolução em dobro.
+NOTIFICANTE: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo], na condição de CONSUMIDOR (art. 2º do CDC).
 
-Prezados Senhores,
+O(A) Notificante vem, respeitosamente, expor e ao final requerer:
 
-Eu, [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], portador da Cédula de Identidade RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo], venho, pela presente, formalmente, expor e requerer o seguinte:
+I — DOS FATOS
 
-I. DA COBRANÇA INDEVIDA
+1. O(A) Notificante vem sofrendo cobrança promovida por essa empresa, referente a [DESCREVER, ex.: "a fatura nº [NÚMERO], no valor de R$ [VALOR], vencida em [DATA]", "tarifa de pacote de serviços debitada mensalmente na conta-corrente nº [NÚMERO], agência [AGÊNCIA], do [BANCO], desde [MÊS/ANO]", "débito automático mensal de 'seguro' no valor de R$ [VALOR]"].
 
-Tenho recebido cobranças desta empresa referentes a [DESCREVER A COBRANÇA, exemplo: "fatura nº [NÚMERO], no valor de R$ [VALOR], com vencimento em [DATA]", "lançamento de tarifa de pacote de serviços em minha conta-corrente nº [NÚMERO], agência [AGÊNCIA], do [BANCO], cobrado mensalmente desde [MÊS/ANO]", "débito automático mensal referente a 'seguro residencial' no valor de R$ [VALOR]"].
+2. A referida cobrança é INDEVIDA, pelas seguintes razões: [DESCREVER COM DATAS, ex.: "jamais contratei o serviço/produto cobrado"; "cancelei o contrato em [DATA], sob o protocolo nº [NÚMERO]"; "já quitei integralmente o valor em [DATA], conforme comprovante anexo"; "o serviço não foi prestado conforme o contratado"; "o valor cobrado diverge do efetivamente pactuado"].
 
-II. DOS FATOS
+II — DO DIREITO
 
-[DESCREVER POR QUE A COBRANÇA É INDEVIDA, com clareza e datas, exemplo:
-"Nunca contratei o referido serviço/produto"
-"Cancelei o contrato em [DATA], conforme protocolo nº [NÚMERO]"
-"Já efetuei o pagamento integral em [DATA], conforme comprovante anexo"
-"O serviço não foi prestado conforme o contratado"
-"O valor cobrado diverge do contrato originalmente firmado"].
+3. A relação é regida pelo Código de Defesa do Consumidor (Lei nº 8.078/1990), aplicável inclusive às instituições financeiras, conforme entendimento sumulado do Superior Tribunal de Justiça.
 
-III. DO DIREITO
+4. A cobrança impugnada viola, em especial: o art. 39, incisos V e XII, do CDC (prática abusiva e cobrança de vantagem manifestamente excessiva); o art. 42, caput (vedação de expor o consumidor a ridículo ou constrangimento na cobrança); e o art. 51 (nulidade de cláusulas abusivas).
 
-A cobrança ora questionada viola o Código de Defesa do Consumidor (Lei 8.078/90), em especial:
-- Art. 39, V e XII — vedação de cobrança abusiva e exigência de vantagem desproporcional;
-- Art. 42 — vedação a cobrança vexatória e direito à repetição em dobro;
-- Art. 42, parágrafo único: "O consumidor cobrado em quantia indevida tem direito à repetição do indébito, por valor igual ao dobro do que pagou em excesso, acrescido de correção monetária e juros legais";
-- Art. 71 (crime de exigência de quantia indevida).
+5. Nos termos do art. 42, parágrafo único, do CDC, "o consumidor cobrado em quantia indevida tem direito à repetição do indébito, por valor igual ao dobro do que pagou em excesso, acrescido de correção monetária e juros legais". Consoante entendimento consolidado do Superior Tribunal de Justiça, a devolução em dobro nas relações de consumo independe da comprovação de má-fé do fornecedor.
 
-IV. DO PEDIDO
+6. A cobrança vexatória ou com ameaça pode, ainda, configurar o crime do art. 71 do CDC.
 
-Diante do exposto, REQUEIRO desta empresa que, no prazo de 10 (dez) dias úteis a contar do recebimento desta:
+III — DO PEDIDO / DA EXIGÊNCIA
 
-a) CESSE IMEDIATAMENTE as cobranças relacionadas à matéria;
-b) ESTORNE ou DEVOLVA EM DOBRO os valores indevidamente cobrados, no total de R$ [VALOR EM DOBRO COM CORREÇÃO], depositados em minha conta-corrente: [BANCO], agência [AG], conta corrente [CC];
-c) RETIRE eventual inscrição do meu nome em órgãos de proteção ao crédito (SPC, Serasa) relacionada a essa cobrança indevida;
-d) COMPROVE por escrito as providências adotadas.
+7. Diante do exposto, REQUER-SE que essa empresa, no prazo de [PRAZO, ex.: "10 (dez) dias"] a contar do recebimento desta:
+   a) CESSE IMEDIATAMENTE toda e qualquer cobrança relativa à matéria;
+   b) ESTORNE ou DEVOLVA EM DOBRO o valor indevidamente cobrado, totalizando R$ [VALOR EM DOBRO, com correção e juros], mediante depósito na conta do(a) Notificante: [BANCO], agência [AG], conta corrente [CC], PIX [CHAVE];
+   c) PROMOVA A BAIXA de eventual inscrição do nome do(a) Notificante nos cadastros de proteção ao crédito (SPC, Serasa) relacionada a essa cobrança;
+   d) COMPROVE, por escrito, as providências adotadas.
 
-Não atendido este pleito, comunico que adotarei as medidas judiciais cabíveis, incluindo ação de obrigação de fazer com pedido de tutela antecipada, devolução em dobro, indenização por danos morais e custas processuais, na forma do Código de Defesa do Consumidor.
+IV — DA ADVERTÊNCIA
 
-Atenciosamente,
+8. Não atendido este pleito no prazo, o(a) Notificante adotará as medidas administrativas e judiciais cabíveis, incluindo reclamação no Procon e na plataforma consumidor.gov.br e ação judicial (Juizado Especial Cível) com pedido de tutela de urgência, devolução em dobro, indenização por danos morais e demais cominações legais.
+
+Termos em que, pede deferimento.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -1065,16 +1158,14 @@ _____________________________________
 [NOME COMPLETO]
 CPF: [000.000.000-00]
 
-Anexos:
-- Cópia do RG e CPF
-- Comprovante(s) da cobrança indevida
-- Comprovante(s) que demonstram a improcedência da cobrança
+Anexos: cópia do RG e CPF; comprovante(s) da cobrança indevida; documentos que demonstram a sua improcedência.
 `,
     notes: [
       "Envie por AR pelos Correios — guarde o comprovante de postagem e o AR de retorno",
       "Mantenha cópia de tudo em arquivo (físico e digital)",
       "Em paralelo, registre no Procon e em consumidor.gov.br — fortalece sua posição",
-      "Se não houver resposta em 30 dias, considere ação no Juizado Especial Cível"
+      "Se não houver resposta em 30 dias, considere ação no Juizado Especial Cível",
+      "Tese útil: nas relações de consumo, o STJ dispensa a prova de má-fé para a devolução em dobro do valor cobrado indevidamente"
     ]
   },
   // 18
@@ -1098,22 +1189,23 @@ Anexos:
       "Pode ser anexada na própria petição inicial ou em peça separada"
     ],
     content: `DECLARAÇÃO DE HIPOSSUFICIÊNCIA
+(Para fins de concessão da gratuidade da justiça — arts. 98 e 99 do CPC e Lei nº 1.060/1950)
 
-Eu, [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], portador da Cédula de Identidade RG nº [00.000.000] [órgão]/[UF], inscrito no CPF/MF sob o nº [000.000.000-00], residente e domiciliado à [endereço completo],
+Eu, [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], portador da Cédula de Identidade RG nº [00.000.000] [órgão]/[UF], inscrito no CPF/MF sob o nº [000.000.000-00], residente e domiciliado à [endereço completo], DECLARO, sob as penas da lei e para os fins dos arts. 98 e 99 do Código de Processo Civil e da Lei nº 1.060/1950, o seguinte:
 
-DECLARO, sob as penas da lei e para os fins do art. 99 do Código de Processo Civil e da Lei 1.060/50, que:
-
-1. NÃO POSSUO condições financeiras de arcar com as custas processuais, taxas judiciárias e honorários advocatícios sem prejuízo do sustento próprio e/ou de minha família;
+1. NÃO POSSUO condições financeiras de arcar com as custas processuais, as taxas judiciárias, as despesas do processo e os honorários advocatícios e periciais sem prejuízo do meu sustento próprio e/ou do de minha família;
 
 2. Atualmente exerço a atividade de [PROFISSÃO/OCUPAÇÃO], auferindo renda mensal aproximada de R$ [VALOR] ([valor por extenso]);
 
-3. Minhas despesas mensais essenciais (moradia, alimentação, transporte, saúde, educação, vestuário) somam aproximadamente R$ [VALOR], conforme posso comprovar quando solicitado;
+3. Minhas despesas mensais essenciais (moradia, alimentação, transporte, saúde, educação e vestuário) consomem, em regra, a totalidade dessa renda, somando cerca de R$ [VALOR];
 
-4. NÃO sou proprietário de bens de valor expressivo que permitam fazer frente às custas do processo;
+4. NÃO sou proprietário de bens de valor expressivo, livres e disponíveis, aptos a fazer frente às despesas do processo;
 
-5. Tenho conhecimento de que prestar declaração falsa configura crime previsto no art. 299 do Código Penal e que, em caso de comprovada falsidade, posso ser condenado(a) ao pagamento de até 10 (dez) vezes o valor das custas, na forma do art. 100, parágrafo único do CPC.
+5. Requeiro, portanto, a concessão dos BENEFÍCIOS DA GRATUIDADE DA JUSTIÇA, que compreendem as isenções previstas no art. 98, § 1º, do Código de Processo Civil;
 
-Por ser expressão da verdade, firmo a presente declaração para que produza seus regulares efeitos jurídicos.
+6. Estou ciente de que, presumindo-se verdadeira a alegação de insuficiência de recursos deduzida por pessoa natural (art. 99, § 3º, do CPC), a parte contrária poderá impugná-la, e de que a prestação de declaração falsa configura o crime do art. 299 do Código Penal, sujeitando-me, ainda, ao pagamento de até o décuplo das despesas processuais a título de multa, na forma do art. 100, parágrafo único, do CPC.
+
+Por ser expressão da verdade, firmo a presente para que produza seus regulares efeitos jurídicos.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -1148,33 +1240,35 @@ RG: [00.000.000] [órgão]/[UF]
       "Defina prazo (determinado ou indeterminado com aviso prévio)",
       "Defina responsabilidades por conservação e despesas"
     ],
-    content: `CONTRATO DE COMODATO
+    content: `CONTRATO DE COMODATO (EMPRÉSTIMO GRATUITO)
 
-COMODANTE: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], CPF [000.000.000-00], RG [00.000.000] [órgão]/[UF], residente à [endereço completo], proprietário do bem objeto deste contrato.
+COMODANTE: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo], proprietário do bem objeto deste contrato.
 
-COMODATÁRIO: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], CPF [000.000.000-00], RG [00.000.000] [órgão]/[UF], residente à [endereço completo].
+COMODATÁRIO: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-As partes acima qualificadas têm entre si justo e contratado o presente Contrato de Comodato, regido pelos arts. 579 a 585 do Código Civil, mediante as cláusulas seguintes:
+As partes acima qualificadas têm, entre si, justo e contratado o presente Contrato de Comodato, regido pelos arts. 579 a 585 do Código Civil, mediante as cláusulas seguintes:
 
-CLÁUSULA 1ª — OBJETO. O COMODANTE cede em comodato GRATUITO ao COMODATÁRIO o seguinte bem: [DESCRIÇÃO DO BEM, exemplo: "Imóvel residencial situado à [endereço completo], composto por 2 quartos, sala, cozinha, banheiro e quintal" / "Veículo marca/modelo [MARCA/MODELO], ano [ANO], placa [PLACA], chassi [CHASSI]"].
+CLÁUSULA 1ª — DO OBJETO. O COMODANTE empresta gratuitamente ao COMODATÁRIO o seguinte bem infungível: [DESCREVER, ex.: "imóvel residencial situado à [endereço completo], composto por [cômodos]" / "veículo marca/modelo [MARCA/MODELO], ano [ANO], placa [PLACA], chassi [CHASSI], RENAVAM [RENAVAM]"], entregue no estado descrito na vistoria anexa.
 
-CLÁUSULA 2ª — GRATUIDADE. O presente contrato é gratuito, não havendo qualquer pagamento de aluguel, prestação ou contrapartida pelo uso do bem cedido.
+CLÁUSULA 2ª — DA GRATUIDADE. O comodato é essencialmente gratuito (art. 579 do Código Civil), inexistindo aluguel, prestação, taxa ou qualquer contraprestação pelo uso do bem, sob pena de descaracterização do comodato.
 
-CLÁUSULA 3ª — PRAZO. O prazo do comodato é de [PRAZO, ex: "12 (doze) meses"], com início em [DATA] e término em [DATA], podendo ser prorrogado mediante acordo por escrito entre as partes. [ALTERNATIVA POR PRAZO INDETERMINADO: "O prazo é INDETERMINADO, podendo o COMODANTE solicitar a devolução mediante aviso prévio de 30 (trinta) dias"].
+CLÁUSULA 3ª — DO PRAZO. O prazo do comodato é de [PRAZO, ex.: "12 (doze) meses"], com início em [DATA] e término em [DATA], prorrogável mediante acordo escrito. [ALTERNATIVA POR PRAZO INDETERMINADO: "O prazo é indeterminado, presumindo-se o necessário ao uso concedido, podendo o COMODANTE reaver o bem mediante aviso prévio de 30 (trinta) dias."]
 
-CLÁUSULA 4ª — USO. O COMODATÁRIO obriga-se a usar o bem exclusivamente para a finalidade de [FINALIDADE, exemplo: "moradia da própria família", "transporte particular", "uso profissional autorizado"], com diligência e cuidado de bom pai de família, conforme art. 582 do Código Civil.
+CLÁUSULA 4ª — DO USO E DA GUARDA. O COMODATÁRIO obriga-se a usar o bem exclusivamente para [FINALIDADE, ex.: "moradia própria e de sua família", "transporte particular", "uso profissional autorizado"], conservando-o como se seu próprio fora, com a diligência exigida pelo art. 582 do Código Civil, sob pena de responder por perdas e danos.
 
-CLÁUSULA 5ª — DESPESAS. Durante o comodato, ficam por conta do COMODATÁRIO todas as despesas de uso ordinário do bem, incluindo [LISTAR: "IPTU, condomínio, água, luz, gás, telefone, manutenção comum" no caso de imóvel / "IPVA, seguro obrigatório DPVAT, combustível, manutenção, pneus" no caso de veículo].
+CLÁUSULA 5ª — DAS DESPESAS ORDINÁRIAS. Correm por conta do COMODATÁRIO todas as despesas de uso e gozo do bem, que, na forma do art. 584 do Código Civil, não poderão ser cobradas do COMODANTE, incluindo [LISTAR: no imóvel — "IPTU, condomínio, água, luz, gás e manutenção comum"; no veículo — "IPVA, licenciamento, seguro, combustível, manutenção e pneus"].
 
-CLÁUSULA 6ª — CONSERVAÇÃO. O COMODATÁRIO obriga-se a conservar o bem em bom estado, respondendo por avarias decorrentes de uso inadequado ou negligência. Desgaste natural pelo uso normal não enseja indenização.
+CLÁUSULA 6ª — DA CONSERVAÇÃO E DA RESPONSABILIDADE. O COMODATÁRIO responde pela guarda e conservação do bem, e, correndo risco de perecer conjuntamente o seu e o alheio, deverá priorizar o salvamento do bem emprestado, sob pena de responder pelo dano, ainda que fortuito, na forma do art. 583 do Código Civil. O desgaste natural decorrente do uso normal não enseja indenização.
 
-CLÁUSULA 7ª — VEDAÇÃO À SUBLOCAÇÃO. É vedado ao COMODATÁRIO emprestar, ceder, sublocar ou de qualquer forma transferir o bem a terceiros sem autorização expressa e por escrito do COMODANTE, sob pena de rescisão imediata do contrato e responsabilização por eventuais danos.
+CLÁUSULA 7ª — DA VEDAÇÃO À CESSÃO. É vedado ao COMODATÁRIO ceder, sublocar, emprestar ou de qualquer modo transferir o bem a terceiros sem autorização expressa e por escrito do COMODANTE, sob pena de rescisão imediata e responsabilização por perdas e danos.
 
-CLÁUSULA 8ª — DEVOLUÇÃO. Findo o prazo ou solicitada a devolução nos termos do contrato, o COMODATÁRIO deverá entregar o bem no mesmo estado em que recebeu, salvo desgaste natural pelo uso.
+CLÁUSULA 8ª — DA DEVOLUÇÃO. Findo o prazo ou solicitada a restituição na forma deste contrato, o COMODATÁRIO restituirá o bem no mesmo estado em que o recebeu, ressalvado o desgaste natural. A retenção indevida caracteriza esbulho e sujeita o comodatário à ação de reintegração de posse, além do aluguel-pena que o COMODANTE vier a arbitrar (art. 582, parte final, do Código Civil).
 
-CLÁUSULA 9ª — RESCISÃO. O comodato pode ser rescindido por qualquer das partes em caso de descumprimento de cláusula contratual, com aviso prévio de 15 (quinze) dias. Em caso de necessidade urgente e imprevista do comodante (art. 581 do CC), poderá pleitear a devolução antecipada.
+CLÁUSULA 9ª — DA RESTITUIÇÃO ANTECIPADA. Em caso de necessidade urgente e imprevista, reconhecida pelo juiz, poderá o COMODANTE suspender o uso e reaver o bem antes do prazo, nos termos do art. 581 do Código Civil.
 
-CLÁUSULA 10ª — FORO. Fica eleito o foro da Comarca de [CIDADE]/[UF] para dirimir qualquer questão decorrente deste contrato.
+CLÁUSULA 10ª — DO FORO. Fica eleito o foro da Comarca de [CIDADE]/[UF] para dirimir qualquer questão decorrente deste contrato.
+
+E, por estarem justas e contratadas, assinam o presente em 2 (duas) vias, na presença das testemunhas.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -1218,32 +1312,33 @@ TESTEMUNHAS:
     ],
     content: `TERMO DE CESSÃO DE DIREITOS
 
-CEDENTE: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], CPF [000.000.000-00], residente à [endereço completo].
+CEDENTE: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-CESSIONÁRIO: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], CPF [000.000.000-00], residente à [endereço completo].
+CESSIONÁRIO: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-DEVEDOR CEDIDO (apenas em cessão de crédito): [NOME COMPLETO], CPF [000.000.000-00], residente à [endereço completo].
+DEVEDOR CEDIDO (somente em cessão de crédito): [NOME COMPLETO], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço completo].
 
-As partes acima qualificadas têm entre si justo e contratado o presente Termo de Cessão de Direitos, regido pelos arts. 286 a 298 do Código Civil, mediante as cláusulas seguintes:
+As partes acima qualificadas têm, entre si, justo e contratado o presente Termo de Cessão de Direitos, regido pelos arts. 286 a 298 do Código Civil, mediante as cláusulas seguintes:
 
-CLÁUSULA 1ª — OBJETO. O CEDENTE cede e transfere ao CESSIONÁRIO o seguinte direito:
-[DESCREVER COM PRECISÃO, exemplos:
-"Crédito de R$ [VALOR] que possui contra o DEVEDOR CEDIDO, decorrente de [origem do crédito, exemplo: 'empréstimo pessoal celebrado em [DATA]']"
-"Posição contratual de COMPRADOR no Contrato de Compra e Venda celebrado em [DATA] com [VENDEDOR], referente a [DESCRIÇÃO DO BEM]"
-"Direitos hereditários que lhe cabem na sucessão de [NOME DO FALECIDO], aberta em [DATA]"
-"Direitos autorais sobre a obra [TÍTULO DA OBRA], registrada em [REGISTRO ou indicação de identificação]"].
+CLÁUSULA 1ª — DO OBJETO. O CEDENTE cede e transfere ao CESSIONÁRIO o seguinte direito: [DESCREVER COM PRECISÃO. Exemplos:
+- "crédito de R$ [VALOR] que detém contra o DEVEDOR CEDIDO, decorrente de [origem, ex.: 'empréstimo celebrado em [DATA]'], com vencimento em [DATA]";
+- "posição contratual de [COMPRADOR/CONTRATANTE] no Contrato de [DESCRIÇÃO] celebrado em [DATA] com [OUTRA PARTE]";
+- "direitos hereditários que lhe cabem na sucessão de [NOME DO FALECIDO], aberta em [DATA]";
+- "direitos patrimoniais de autor sobre a obra [TÍTULO], nos termos da Lei nº 9.610/1998"].
 
-CLÁUSULA 2ª — VALOR DA CESSÃO. [ESCOLHA: "(a) A cessão é feita pelo valor de R$ [VALOR], pago pelo CESSIONÁRIO ao CEDENTE nesta data, via [forma de pagamento]" / "(b) A cessão é feita a TÍTULO GRATUITO, sem qualquer contraprestação"].
+CLÁUSULA 2ª — DO VALOR. [ESCOLHA: "(a) A cessão é ONEROSA, pelo valor de R$ [VALOR], pago pelo CESSIONÁRIO ao CEDENTE nesta data via [forma de pagamento]" / "(b) A cessão é feita a TÍTULO GRATUITO, sem qualquer contraprestação"].
 
-CLÁUSULA 3ª — RESPONSABILIDADE DO CEDENTE. [ESCOLHA: "(a) O CEDENTE responde pela EXISTÊNCIA do crédito/direito cedido, mas NÃO pela solvência do devedor (cessão pro soluto)" / "(b) O CEDENTE responde pela EXISTÊNCIA E SOLVÊNCIA do devedor, na forma do art. 296 do Código Civil (cessão pro solvendo)"].
+CLÁUSULA 3ª — DA RESPONSABILIDADE DO CEDENTE. [ESCOLHA: "(a) Na cessão onerosa, o CEDENTE responde pela EXISTÊNCIA do crédito/direito ao tempo da cessão (art. 295 do Código Civil), mas NÃO pela solvência do devedor (cessão pro soluto)" / "(b) O CEDENTE responde também pela SOLVÊNCIA do devedor, assumindo expressamente essa obrigação nos termos do art. 296 do Código Civil (cessão pro solvendo), limitada ao que recebeu, com juros e despesas"].
 
-CLÁUSULA 4ª — NOTIFICAÇÃO DO DEVEDOR (apenas em cessão de crédito). O CEDENTE compromete-se a notificar formalmente o DEVEDOR CEDIDO da presente cessão, conforme art. 290 do Código Civil, no prazo de 5 (cinco) dias úteis a partir desta data. A partir da notificação, o pagamento deverá ser feito diretamente ao CESSIONÁRIO.
+CLÁUSULA 4ª — DA NOTIFICAÇÃO DO DEVEDOR (somente em cessão de crédito). Nos termos do art. 290 do Código Civil, a cessão não tem eficácia em relação ao devedor senão quando a este notificada. O CEDENTE obriga-se a notificar o DEVEDOR CEDIDO no prazo de [ex.: "5 (cinco) dias"], passando o pagamento, a partir de então, a ser feito diretamente ao CESSIONÁRIO. Antes da notificação, o pagamento feito de boa-fé ao credor originário exonera o devedor.
 
-CLÁUSULA 5ª — DOCUMENTOS. O CEDENTE entrega nesta data ao CESSIONÁRIO todos os documentos comprobatórios do direito cedido, incluindo originais e cópias dos contratos, recibos, notas promissórias e demais provas, sem reserva.
+CLÁUSULA 5ª — DA ENTREGA DE DOCUMENTOS. O CEDENTE entrega nesta data ao CESSIONÁRIO todos os documentos comprobatórios do direito cedido (contratos, títulos, recibos e demais provas), transmitindo-lhe os acessórios do crédito, na forma do art. 287 do Código Civil.
 
-CLÁUSULA 6ª — IRREVOGABILIDADE. A presente cessão é firmada em caráter IRREVOGÁVEL e IRRETRATÁVEL, obrigando as partes e seus sucessores a qualquer título.
+CLÁUSULA 6ª — DA IRREVOGABILIDADE. A presente cessão é firmada em caráter IRREVOGÁVEL e IRRETRATÁVEL, obrigando as partes e seus sucessores a qualquer título.
 
-CLÁUSULA 7ª — FORO. Fica eleito o foro da Comarca de [CIDADE]/[UF] para dirimir qualquer questão decorrente deste contrato.
+CLÁUSULA 7ª — DO FORO. Fica eleito o foro da Comarca de [CIDADE]/[UF] para dirimir qualquer questão decorrente deste Termo.
+
+E, por estarem justas e contratadas, assinam o presente em 2 (duas) vias, na presença das testemunhas.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -1285,9 +1380,20 @@ TESTEMUNHAS:
     ],
     content: `RECIBO DE ALUGUEL
 
-Recebi de [NOME COMPLETO DO INQUILINO], CPF nº [000.000.000-00], a importância de R$ [VALOR] ([VALOR POR EXTENSO]), referente ao aluguel do mês de [MÊS]/[ANO] do imóvel situado à [ENDEREÇO COMPLETO DO IMÓVEL].
+LOCADOR (quem recebe): [NOME COMPLETO], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço].
+LOCATÁRIO (quem paga): [NOME COMPLETO], inscrito no CPF/MF sob o nº [000.000.000-00].
+IMÓVEL LOCADO: [ENDEREÇO COMPLETO DO IMÓVEL].
 
-Para clareza e por ser verdade, firmo o presente recibo, dando plena, geral e irrevogável quitação do valor referente ao período acima.
+RECEBI do LOCATÁRIO acima identificado a importância de R$ [VALOR] ([valor por extenso]), referente ao ALUGUEL do mês de [MÊS]/[ANO] do imóvel acima descrito.
+
+DISCRIMINAÇÃO (se houver encargos, na forma do art. 22, VI, da Lei nº 8.245/91):
+   - Aluguel: R$ [VALOR]
+   - Condomínio: R$ [VALOR]
+   - IPTU (parcela): R$ [VALOR]
+   - Água/Luz/Gás: R$ [VALOR]
+   - TOTAL RECEBIDO: R$ [VALOR TOTAL]
+
+Para clareza e por ser verdade, firmo o presente recibo, dando ao LOCATÁRIO, na forma do art. 320 do Código Civil, plena, geral e irrevogável QUITAÇÃO do valor referente ao período acima, nada mais tendo a reclamar quanto a este mês.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -1321,15 +1427,19 @@ CPF: [000.000.000-00]
     ],
     content: `RECIBO DE DOAÇÃO
 
-DOADOR: [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+DOADOR: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-DONATÁRIO: [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+DONATÁRIO: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-Pelo presente instrumento, o DOADOR declara que doa, de forma espontânea, gratuita e irrevogável, ao DONATÁRIO, o seguinte: [DESCREVER O BEM OU VALOR — ex.: "a quantia de R$ 10.000,00 (dez mil reais)" ou "o veículo marca/modelo, placa, ano"].
+Pelo presente instrumento, e com fundamento no art. 538 do Código Civil (que define a doação como o contrato pelo qual uma pessoa, por liberalidade, transfere bens ou vantagens de seu patrimônio a outra), o DOADOR declara que DOA, de forma espontânea, gratuita e irrevogável, ao DONATÁRIO, o seguinte:
 
-O DONATÁRIO declara aceitar a presente doação.
+[DESCREVER O BEM OU VALOR — ex.: "a quantia de R$ 10.000,00 (dez mil reais), transferida via PIX/TED nesta data" / "o veículo marca/modelo [MARCA/MODELO], ano [ANO], placa [PLACA], RENAVAM [RENAVAM], chassi [CHASSI]" / "os móveis e equipamentos assim descritos: [LISTA]"].
 
-Esta doação não possui qualquer encargo ou condição.
+O DONATÁRIO DECLARA ACEITAR a presente doação, recebendo o bem/valor em perfeito estado.
+
+A presente doação é feita SEM QUALQUER ENCARGO OU CONDIÇÃO. [SE FOR DE ASCENDENTE A DESCENDENTE OU ENTRE CÔNJUGES: "Importa a doação adiantamento da legítima, sujeita à colação, na forma dos arts. 544 e 2.002 do Código Civil."]
+
+O valor atribuído ao bem doado, para fins fiscais, é de R$ [VALOR], podendo incidir o ITCMD (imposto estadual), a ser recolhido conforme a legislação do Estado de [UF].
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -1338,6 +1448,11 @@ DOADOR — [NOME]   CPF: [000.000.000-00]
 
 _____________________________________
 DONATÁRIO — [NOME]   CPF: [000.000.000-00]
+
+TESTEMUNHAS:
+
+1. _________________________ Nome: _________________ CPF: _________________
+2. _________________________ Nome: _________________ CPF: _________________
 `,
     notes: [
       "Doação acima do limite de isenção pode gerar ITCMD (imposto estadual) — confira a alíquota do seu estado",
@@ -1366,11 +1481,18 @@ DONATÁRIO — [NOME]   CPF: [000.000.000-00]
     ],
     content: `RECIBO DE SINAL (ARRAS)
 
-Recebi de [NOME DE QUEM PAGA], CPF nº [000.000.000-00], a quantia de R$ [VALOR] ([VALOR POR EXTENSO]), a título de SINAL (arras) referente ao negócio de [DESCREVER — ex.: "compra e venda do imóvel situado à ..."], cujo valor total é de R$ [VALOR TOTAL].
+QUEM RECEBE (vendedor/promitente): [NOME COMPLETO], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço].
+QUEM PAGA (comprador/promitente): [NOME COMPLETO], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço].
 
-As partes ajustam que: ( ) se o comprador desistir, perderá o sinal; ( ) se o vendedor desistir, devolverá o sinal em dobro. (CC, art. 418)
+RECEBI de QUEM PAGA a quantia de R$ [VALOR] ([valor por extenso]), a título de SINAL (ARRAS), referente ao negócio de [DESCREVER, ex.: "promessa de compra e venda do imóvel situado à [endereço]" / "compra e venda do veículo [MARCA/MODELO/PLACA]"], cujo valor total ajustado é de R$ [VALOR TOTAL].
 
-O valor do sinal será [( ) abatido do preço total / ( ) tratado conforme acordo] na conclusão do negócio.
+NATUREZA DAS ARRAS (assinale UMA opção):
+( ) ARRAS CONFIRMATÓRIAS (arts. 417 a 419 do Código Civil): o negócio está firmado; havendo execução, o sinal será imputado no preço ou devolvido; se QUEM PAGA der causa à inexecução, perderá o sinal; se QUEM RECEBE der causa, devolverá o sinal mais o equivalente, com correção monetária, juros e honorários, admitida ainda indenização suplementar se provado maior prejuízo.
+( ) ARRAS PENITENCIAIS (art. 420 do Código Civil): estipulado o direito de arrependimento; quem se arrepender, se for QUEM PAGA, perde o sinal; se for QUEM RECEBE, devolve-o em dobro; nesse caso, as arras têm função unicamente indenizatória, não cabendo indenização suplementar.
+
+DESTINAÇÃO DO SINAL: o valor será [( ) abatido do preço total na conclusão do negócio / ( ) tratado conforme o acordo acima].
+
+E, por ser verdade, firmam ambas as partes o presente recibo.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -1406,19 +1528,29 @@ QUEM PAGA — [NOME]   CPF: [000.000.000-00]
     ],
     content: `CONTRATO PARTICULAR DE COMPRA E VENDA DE VEÍCULO
 
-VENDEDOR: [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+VENDEDOR: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-COMPRADOR: [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+COMPRADOR: [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-OBJETO: Veículo marca/modelo [MARCA/MODELO], ano [ANO/MODELO], cor [COR], placa [PLACA], RENAVAM nº [RENAVAM], chassi nº [CHASSI].
+As partes têm, entre si, justo e contratado o presente Contrato de Compra e Venda de Veículo, regido pelos arts. 481 e seguintes do Código Civil, mediante as cláusulas seguintes:
 
-PREÇO E PAGAMENTO: O preço ajustado é de R$ [VALOR] ([VALOR POR EXTENSO]), pago da seguinte forma: [DESCREVER — à vista / parcelado / com entrada].
+CLÁUSULA 1ª — DO OBJETO. O VENDEDOR vende ao COMPRADOR o veículo automotor assim descrito: marca/modelo [MARCA/MODELO], ano de fabricação/modelo [ANO/ANO], cor [COR], combustível [COMBUSTÍVEL], placa [PLACA], RENAVAM nº [RENAVAM], chassi nº [CHASSI], hodômetro marcando [QUILOMETRAGEM] km.
 
-ENTREGA E ESTADO: O comprador declara ter vistoriado o veículo e o recebe no estado em que se encontra, ciente de [eventuais avarias, se houver].
+CLÁUSULA 2ª — DO PREÇO E DA FORMA DE PAGAMENTO. O preço certo e ajustado é de R$ [VALOR] ([valor por extenso]), pago da seguinte forma: [DESCREVER, ex.: "à vista, nesta data, via PIX/TED, servindo o comprovante de recibo"; "sinal de R$ [VALOR] nesta data e saldo de R$ [VALOR] em [DATA]"; "parcelado em [N] vezes de R$ [VALOR]"].
 
-TRANSFERÊNCIA: A transferência junto ao DETRAN será providenciada por [VENDEDOR/COMPRADOR] no prazo de [PRAZO] dias, correndo as despesas por conta de [PARTE RESPONSÁVEL].
+CLÁUSULA 3ª — DA ENTREGA E DO ESTADO DO VEÍCULO. O COMPRADOR declara que vistoriou o veículo e o recebe no estado de conservação em que se encontra, ciente de [eventuais avarias/reparos pendentes, se houver: DESCREVER], recebendo-o nesta data com os documentos [CRLV / CRV / ATPV-e] e os itens de série.
 
-DÉBITOS: Multas, IPVA, licenciamento e demais débitos até a data desta venda são de responsabilidade do VENDEDOR; após a entrega, do COMPRADOR.
+CLÁUSULA 4ª — DA GARANTIA E DOS VÍCIOS. Tratando-se de venda entre particulares (não fornecedor), aplica-se a garantia legal contra vícios redibitórios prevista nos arts. 441 a 446 do Código Civil: o VENDEDOR responde pelos defeitos ocultos que tornem o veículo impróprio ao uso ou lhe diminuam o valor, existentes ao tempo da venda e desconhecidos do COMPRADOR, ressalvado o desgaste natural. [SE HOUVER CLÁUSULA DE CIÊNCIA: "O COMPRADOR declara ciência de que se trata de veículo usado, sujeito a desgaste."]
+
+CLÁUSULA 5ª — DA TRANSFERÊNCIA. A transferência da propriedade junto ao órgão de trânsito (DETRAN/[UF]) será providenciada por [VENDEDOR / COMPRADOR] no prazo de [PRAZO, ex.: "30 (trinta) dias"], correndo as despesas (taxas, transferência, vistoria) por conta de [PARTE RESPONSÁVEL]. O VENDEDOR entrega, devidamente preenchido e assinado, o documento hábil à transferência (ATPV-e / CRV).
+
+CLÁUSULA 6ª — DOS DÉBITOS E ENCARGOS. Os débitos incidentes sobre o veículo até a data da tradição (IPVA, licenciamento, multas, seguro obrigatório) são de responsabilidade do VENDEDOR; a partir da entrega, passam à responsabilidade do COMPRADOR. Recomenda-se ao VENDEDOR realizar a comunicação de venda ao órgão de trânsito, nos termos do art. 134 do Código de Trânsito Brasileiro (Lei nº 9.503/1997), para afastar sua responsabilidade solidária por penalidades posteriores.
+
+CLÁUSULA 7ª — DAS DECLARAÇÕES. O VENDEDOR declara que o veículo é de sua legítima propriedade, livre e desembaraçado de ônus não informados, alienação fiduciária ou penhora, ressalvado o que constar expressamente neste contrato.
+
+CLÁUSULA 8ª — DO FORO. Fica eleito o foro da Comarca de [CIDADE]/[UF] para dirimir qualquer questão decorrente deste contrato.
+
+E, por estarem justas e contratadas, assinam o presente em 2 (duas) vias, na presença das testemunhas.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -1429,8 +1561,8 @@ _____________________________________
 COMPRADOR — [NOME]   CPF: [000.000.000-00]
 
 TESTEMUNHAS:
-1. _________________________ CPF: _________________
-2. _________________________ CPF: _________________
+1. _________________________ Nome: _________________ CPF: _________________
+2. _________________________ Nome: _________________ CPF: _________________
 `,
     notes: [
       "Faça a comunicação de venda ao DETRAN para não responder por multas posteriores",
@@ -1459,17 +1591,27 @@ TESTEMUNHAS:
     ],
     content: `CONTRATO DE MÚTUO (EMPRÉSTIMO DE DINHEIRO)
 
-MUTUANTE (quem empresta): [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+MUTUANTE (quem empresta): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-MUTUÁRIO (quem recebe): [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+MUTUÁRIO (quem recebe): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-VALOR: O MUTUANTE empresta ao MUTUÁRIO a quantia de R$ [VALOR] ([VALOR POR EXTENSO]), entregue nesta data por [forma de entrega — transferência/dinheiro].
+As partes têm, entre si, justo e contratado o presente Contrato de Mútuo, regido pelos arts. 586 a 592 do Código Civil, mediante as cláusulas seguintes:
 
-DEVOLUÇÃO: O MUTUÁRIO se obriga a devolver o valor em [à vista até DD/MM/AAAA / em [N] parcelas mensais de R$ [VALOR], vencendo a primeira em DD/MM/AAAA].
+CLÁUSULA 1ª — DO OBJETO E DA ENTREGA. O MUTUANTE empresta ao MUTUÁRIO a quantia de R$ [VALOR] ([valor por extenso]), entregue nesta data por meio de [transferência bancária / PIX / dinheiro em espécie], cujo recebimento o MUTUÁRIO expressamente reconhece, transferindo-se-lhe a propriedade da quantia, na forma do art. 587 do Código Civil.
 
-JUROS E CORREÇÃO: [( ) sem juros / ( ) com juros de [X]% ao mês e correção pelo índice [ÍNDICE]].
+CLÁUSULA 2ª — DA DEVOLUÇÃO. O MUTUÁRIO obriga-se a restituir ao MUTUANTE igual quantia, da seguinte forma: [ESCOLHA: "à vista, até [DD/MM/AAAA]" / "em [N] parcelas mensais e sucessivas de R$ [VALOR], vencendo a primeira em [DD/MM/AAAA] e as demais no mesmo dia dos meses subsequentes"], mediante [PIX / transferência] para a conta do MUTUANTE: [BANCO/AG/CONTA].
 
-INADIMPLEMENTO: Em caso de atraso, incidirá multa de [2%] e juros de mora de [1% ao mês], sem prejuízo da cobrança judicial.
+CLÁUSULA 3ª — DOS JUROS E DA CORREÇÃO. [ESCOLHA: "(a) O empréstimo é gratuito, SEM incidência de juros remuneratórios" / "(b) Incidirão juros remuneratórios de [X]% ao mês e correção monetária pelo índice [ÍNDICE], observados os limites legais aplicáveis aos contratos entre particulares (art. 591 c/c art. 406 do Código Civil)"].
+
+CLÁUSULA 4ª — DO INADIMPLEMENTO. Em caso de atraso, incidirão sobre a parcela vencida multa moratória de [2%] (dois por cento), juros de mora de 1% (um por cento) ao mês e correção monetária, vencendo-se antecipadamente as demais parcelas e ficando a dívida sujeita à cobrança judicial ou à execução.
+
+CLÁUSULA 5ª — DO VENCIMENTO ANTECIPADO. Considerar-se-á antecipadamente vencida a dívida nas hipóteses do art. 333 do Código Civil, entre elas a insolvência do devedor e a cessação ou insuficiência das garantias.
+
+CLÁUSULA 6ª — DO TÍTULO EXECUTIVO. As partes reconhecem que o presente contrato, assinado por elas e por duas testemunhas, constitui TÍTULO EXECUTIVO EXTRAJUDICIAL, na forma do art. 784, inciso III, do Código de Processo Civil.
+
+CLÁUSULA 7ª — DO FORO. Fica eleito o foro da Comarca de [CIDADE]/[UF] para dirimir qualquer questão decorrente deste contrato.
+
+E, por estarem justas e contratadas, assinam o presente em 2 (duas) vias, na presença das testemunhas.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -1480,8 +1622,8 @@ _____________________________________
 MUTUÁRIO — [NOME]   CPF: [000.000.000-00]
 
 TESTEMUNHAS:
-1. _________________________ CPF: _________________
-2. _________________________ CPF: _________________
+1. _________________________ Nome: _________________ CPF: _________________
+2. _________________________ Nome: _________________ CPF: _________________
 `,
     notes: [
       "Este contrato, assinado por 2 testemunhas, é título executivo extrajudicial (facilita a cobrança)",
@@ -1508,21 +1650,25 @@ TESTEMUNHAS:
       "Declarem que não há patrimônio comum nem dependência econômica",
       "Assinem; reconhecimento de firma reforça a prova"
     ],
-    content: `CONTRATO DE NAMORO (DECLARAÇÃO)
+    content: `CONTRATO DE NAMORO (DECLARAÇÃO DE RELACIONAMENTO)
 
-[NOME COMPLETO 1], CPF nº [000.000.000-00], e [NOME COMPLETO 2], CPF nº [000.000.000-00], declaram, para os devidos fins, que:
+PRIMEIRO DECLARANTE: [NOME COMPLETO 1], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-1. Mantêm um relacionamento de NAMORO, pública e socialmente reconhecido como tal;
+SEGUNDO DECLARANTE: [NOME COMPLETO 2], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-2. NÃO têm, no presente momento, o objetivo de constituir família nos moldes da união estável (CC, art. 1.723);
+As partes acima, na qualidade de contratantes capazes e valendo-se da liberdade de contratar (art. 425 do Código Civil), DECLARAM, para os devidos fins de direito, o seguinte:
 
-3. Cada um conserva seu patrimônio próprio, não havendo bens adquiridos em comum nem intenção de comunhão patrimonial;
+CLÁUSULA 1ª — DA NATUREZA DA RELAÇÃO. As partes mantêm relacionamento de NAMORO, pública e socialmente reconhecido como tal, pautado por afeto e companheirismo, porém SEM os requisitos configuradores da união estável.
 
-4. Não há dependência econômica entre as partes, arcando cada um com suas próprias despesas;
+CLÁUSULA 2ª — DA AUSÊNCIA DE OBJETIVO DE CONSTITUIR FAMÍLIA. As partes declaram que, no presente momento, NÃO têm o objetivo de constituição de família nos moldes do art. 1.723 do Código Civil, elemento subjetivo (animus) essencial à caracterização da união estável, razão pela qual o vínculo ora declarado com esta não se confunde.
 
-5. Caso a relação evolua para união estável no futuro, firmarão documento próprio a respeito.
+CLÁUSULA 3ª — DA INDEPENDÊNCIA PATRIMONIAL. Cada parte conserva a titularidade e a administração exclusivas de seu próprio patrimônio, inexistindo bens adquiridos em comum, esforço comum ou qualquer intenção de comunhão patrimonial. Os bens que cada uma adquirir, por qualquer título, pertencerão exclusivamente ao respectivo adquirente.
 
-Por ser expressão da verdade, assinam o presente.
+CLÁUSULA 4ª — DA INEXISTÊNCIA DE DEPENDÊNCIA ECONÔMICA. Não há entre as partes dependência econômica, arcando cada qual com suas próprias despesas, sem obrigação de mútua assistência material.
+
+CLÁUSULA 5ª — DA EVENTUAL EVOLUÇÃO DA RELAÇÃO. Caso a relação evolua e passe a reunir, de fato, os requisitos da união estável, as partes se comprometem a firmar instrumento próprio a respeito, produzindo esta declaração efeitos apenas enquanto retratar fielmente a realidade do relacionamento.
+
+Por ser expressão da verdade, assinam o presente em 2 (duas) vias de igual teor.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -1531,6 +1677,10 @@ _____________________________________
 
 _____________________________________
 [NOME 2]   CPF: [000.000.000-00]
+
+TESTEMUNHAS (recomendado):
+1. _________________________ Nome: _________________ CPF: _________________
+2. _________________________ Nome: _________________ CPF: _________________
 `,
     notes: [
       "O contrato de namoro é um indício, mas não impede que a Justiça reconheça união estável se a convivência tiver, de fato, as características dela",
@@ -1556,24 +1706,31 @@ _____________________________________
       "Conceda o prazo de desocupação previsto em lei/contrato (em geral 30 dias)",
       "Entregue com comprovante (AR, cartório de títulos ou e-mail com confirmação)"
     ],
-    content: `NOTIFICAÇÃO EXTRAJUDICIAL — DESOCUPAÇÃO DE IMÓVEL
+    content: `NOTIFICAÇÃO EXTRAJUDICIAL PARA DESOCUPAÇÃO DE IMÓVEL
 
-De: [NOME DO LOCADOR], CPF nº [000.000.000-00].
-Para: [NOME DO INQUILINO], CPF nº [000.000.000-00].
-Imóvel: [ENDEREÇO COMPLETO DO IMÓVEL LOCADO].
+NOTIFICANTE (locador): [NOME COMPLETO], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço completo].
+NOTIFICADO (locatário): [NOME COMPLETO], inscrito no CPF/MF sob o nº [000.000.000-00].
+IMÓVEL: [ENDEREÇO COMPLETO DO IMÓVEL LOCADO].
 
 Prezado(a) Sr.(a),
 
-Na qualidade de locador do imóvel acima, venho NOTIFICÁ-LO de que o contrato de locação firmado em [DATA] [( ) encerrou-se em [DATA] / ( ) será encerrado], razão pela qual solicito a DESOCUPAÇÃO VOLUNTÁRIA do imóvel no prazo de [30 (trinta)] dias a contar do recebimento desta.
+Na qualidade de locador do imóvel acima, com fundamento na Lei nº 8.245/1991 (Lei do Inquilinato), venho NOTIFICAR V. Sa. nos seguintes termos:
 
-A desocupação deverá ocorrer com a entrega das chaves e do imóvel nas condições contratuais, livre de pessoas e bens, com os aluguéis e encargos quitados.
+I — DA LOCAÇÃO. Entre as partes vigora o Contrato de Locação Residencial firmado em [DATA], com prazo [determinado, encerrado/a encerrar em [DATA] / indeterminado].
 
-Caso a desocupação não ocorra no prazo, serão adotadas as medidas judiciais cabíveis (ação de despejo), com a responsabilização por aluguéis, encargos e custas.
+II — DO FUNDAMENTO E DA DENÚNCIA. [ESCOLHA A HIPÓTESE APLICÁVEL:
+- "Tratando-se de locação por prazo igual ou superior a 30 (trinta) meses, findo o prazo ajustado, a locação cessa de pleno direito, sendo assegurado o prazo de 30 (trinta) dias para a desocupação, na forma do art. 46 da Lei nº 8.245/91."
+- "Tratando-se de locação por prazo indeterminado, o locador denuncia a locação (denúncia vazia), concedendo o prazo de 30 (trinta) dias para a desocupação, na forma do art. 46, § 2º, da Lei nº 8.245/91."
+- "Tratando-se de locação por prazo inferior a 30 meses já prorrogada por prazo indeterminado, a retomada observa as hipóteses do art. 47 da Lei nº 8.245/91."]
+
+III — DA EXIGÊNCIA. Fica V. Sa. NOTIFICADO(A) a DESOCUPAR VOLUNTARIAMENTE o imóvel no prazo de [30 (trinta)] dias a contar do recebimento desta, entregando as chaves e o imóvel nas condições contratuais, livre de pessoas e bens, com os aluguéis e encargos integralmente quitados.
+
+IV — DAS CONSEQUÊNCIAS. Não ocorrendo a desocupação no prazo assinalado, serão adotadas as medidas judiciais cabíveis, notadamente a AÇÃO DE DESPEJO (arts. 59 e seguintes da Lei nº 8.245/91), respondendo V. Sa. pelos aluguéis e encargos até a efetiva entrega das chaves, além das custas processuais e dos honorários advocatícios.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
 _____________________________________
-[NOME DO LOCADOR]
+[NOME DO NOTIFICANTE — LOCADOR]
 CPF: [000.000.000-00]
 `,
     notes: [
@@ -1603,17 +1760,23 @@ CPF: [000.000.000-00]
     ],
     content: `CARTA DE PEDIDO DE DEMISSÃO
 
-À empresa [NOME/RAZÃO SOCIAL DA EMPRESA], CNPJ nº [00.000.000/0000-00].
+À empresa [NOME/RAZÃO SOCIAL DA EMPRESA], inscrita no CNPJ sob o nº [00.000.000/0000-00], com sede à [endereço].
+A/C: Departamento de Recursos Humanos / [NOME DO GESTOR].
 
-Eu, [NOME COMPLETO DO EMPREGADO], CPF nº [000.000.000-00], ocupante do cargo de [CARGO], venho por meio desta solicitar o meu DESLIGAMENTO da empresa, por iniciativa própria, a partir de [DATA].
+Eu, [NOME COMPLETO DO EMPREGADO], inscrito no CPF/MF sob o nº [000.000.000-00], portador da CTPS nº [NÚMERO/SÉRIE] (ou CTPS digital), ocupante do cargo de [CARGO], admitido(a) em [DATA DE ADMISSÃO], venho, por meio desta, SOLICITAR o meu DESLIGAMENTO da empresa, por INICIATIVA PRÓPRIA, com efeitos a partir de [DATA].
 
-Quanto ao aviso prévio:
-( ) Comprometo-me a cumprir o aviso prévio de [30] dias.
-( ) Solicito a DISPENSA do cumprimento do aviso prévio.
+DO AVISO PRÉVIO (art. 487 da CLT), assinale UMA opção:
+( ) COMPROMETO-ME a cumprir o aviso prévio de 30 (trinta) dias, trabalhando normalmente até [DATA];
+( ) SOLICITO a DISPENSA do cumprimento do aviso prévio, ciente de que, não sendo concedida a dispensa pelo empregador, poderá haver o desconto correspondente às verbas rescisórias, na forma do art. 487, § 2º, da CLT.
 
-Solicito a baixa na CTPS e o pagamento das verbas rescisórias devidas no prazo legal.
+Requeiro, ainda:
+   a) a baixa na Carteira de Trabalho (CTPS);
+   b) o pagamento das verbas rescisórias devidas no prazo legal (art. 477, § 6º, da CLT);
+   c) a entrega das guias e dos documentos rescisórios.
 
-Agradeço a oportunidade.
+Declaro que o presente pedido é feito de forma livre e espontânea, sem qualquer coação.
+
+Agradeço a oportunidade e a experiência profissional adquirida.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
@@ -1621,7 +1784,7 @@ _____________________________________
 [NOME COMPLETO DO EMPREGADO]
 CPF: [000.000.000-00]
 
-Recebido pela empresa em ___/___/______  Assinatura: __________________
+RECEBIDO PELA EMPRESA em ___/___/______   Nome/assinatura de quem recebeu: __________________
 `,
     notes: [
       "No pedido de demissão você não recebe seguro-desemprego nem multa de 40% do FGTS, e não saca o FGTS (salvo exceções)",
@@ -1648,25 +1811,34 @@ Recebido pela empresa em ___/___/______  Assinatura: __________________
       "Para viagem internacional, a firma deve ser reconhecida em cartório",
       "Leve duas vias originais"
     ],
-    content: `AUTORIZAÇÃO DE VIAGEM INTERNACIONAL PARA MENOR
+    content: `AUTORIZAÇÃO DE VIAGEM INTERNACIONAL PARA CRIANÇA OU ADOLESCENTE
+(Arts. 83 a 85 do Estatuto da Criança e do Adolescente — Lei nº 8.069/1990 — e Resolução CNJ nº 295/2019)
 
-Eu/Nós, [NOME DO PAI], CPF nº [000.000.000-00], e [NOME DA MÃE], CPF nº [000.000.000-00], na qualidade de responsáveis legais pelo menor [NOME COMPLETO DO MENOR], nascido em [DATA], portador do documento [RG/Passaporte nº], AUTORIZO(AMOS) o referido menor a:
+RESPONSÁVEIS LEGAIS:
+PAI: [NOME COMPLETO DO PAI], [nacionalidade], [estado civil], inscrito no CPF sob o nº [000.000.000-00], RG/Passaporte nº [_______], residente à [endereço completo], telefone [(00) 00000-0000].
+MÃE: [NOME COMPLETO DA MÃE], [nacionalidade], [estado civil], inscrita no CPF sob o nº [000.000.000-00], RG/Passaporte nº [_______], residente à [endereço completo], telefone [(00) 00000-0000].
 
-( ) viajar desacompanhado(a);
-( ) viajar na companhia de [NOME DO ACOMPANHANTE], CPF/Passaporte nº [______], grau de parentesco/relação [______];
-( ) viajar com apenas um dos genitores ([NOME]).
+MENOR: [NOME COMPLETO DO(A) MENOR], nascido(a) em [DD/MM/AAAA], natural de [CIDADE]/[UF], portador(a) do documento de identidade/Passaporte nº [_______].
 
-Destino: [PAÍS/CIDADE].  Período: de [DATA] a [DATA] [ou "por prazo indeterminado", conforme o caso].
+Na qualidade de responsáveis legais, AUTORIZO(AMOS), de forma expressa, a viagem internacional do(a) referido(a) menor, nos termos do ECA e da Resolução CNJ nº 295/2019, na seguinte forma (assinale UMA opção):
 
-A presente autorização é concedida para fins de embarque, desembarque e permanência no exterior, nos termos do ECA e da Resolução CNJ nº 295/2019.
+( ) VIAJAR DESACOMPANHADO(A);
+( ) VIAJAR NA COMPANHIA de [NOME DO ACOMPANHANTE], CPF/Passaporte nº [_______], com grau de parentesco/relação de [_______];
+( ) VIAJAR NA COMPANHIA DE APENAS UM DOS GENITORES, [NOME DO GENITOR ACOMPANHANTE], ficando o outro genitor, ora signatário, ciente e de acordo.
+
+DESTINO: [PAÍS / CIDADE].
+PERÍODO: de [DATA] a [DATA] [ou "por prazo indeterminado, conforme o caso"].
+FINALIDADE: [ex.: "turismo", "intercâmbio", "visita a familiares"].
+
+A presente autorização é concedida para fins de embarque, desembarque, imigração e permanência no exterior durante o período indicado.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
 _____________________________________
-[NOME DO PAI]   CPF: [000.000.000-00]
+PAI — [NOME]   CPF: [000.000.000-00]
 
 _____________________________________
-[NOME DA MÃE]   CPF: [000.000.000-00]
+MÃE — [NOME]   CPF: [000.000.000-00]
 `,
     notes: [
       "Para viagem internacional, é OBRIGATÓRIO reconhecer firma por autenticidade em cartório",
@@ -1694,21 +1866,24 @@ _____________________________________
       "O INSS pode exigir reconhecimento de firma ou formulário próprio"
     ],
     content: `PROCURAÇÃO PARA REPRESENTAÇÃO JUNTO AO INSS
+(Instrumento particular de mandato — arts. 653 e seguintes do Código Civil)
 
-OUTORGANTE (segurado): [NOME COMPLETO], [nacionalidade], [estado civil], CPF nº [000.000.000-00], NIT/PIS nº [00000000000], residente à [ENDEREÇO].
+OUTORGANTE (segurado): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], NIT/PIS/PASEP nº [00000000000], RG nº [00.000.000] [órgão]/[UF], residente e domiciliado à [endereço completo].
 
-OUTORGADO (procurador): [NOME COMPLETO], CPF nº [000.000.000-00], residente à [ENDEREÇO].
+OUTORGADO (procurador): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-PODERES: O outorgante nomeia o outorgado seu procurador para representá-lo perante o Instituto Nacional do Seguro Social (INSS), podendo: requerer e acompanhar benefícios e serviços, agendar e remarcar atendimentos e perícias, apresentar e retirar documentos, prestar e receber informações, interpor recursos administrativos e tomar ciência de decisões.
+Pelo presente instrumento particular, o OUTORGANTE nomeia e constitui seu bastante procurador o OUTORGADO, conferindo-lhe os poderes adiante especificados para representá-lo perante o INSTITUTO NACIONAL DO SEGURO SOCIAL (INSS) e a Perícia Médica Federal:
 
-A presente procuração [não inclui / inclui] poderes para receber valores em nome do outorgante.
+CLÁUSULA 1ª — DOS PODERES. O OUTORGADO fica autorizado a, em nome do OUTORGANTE: requerer, acompanhar e desistir de benefícios e serviços previdenciários; agendar, remarcar e comparecer a atendimentos e perícias médicas; apresentar, protocolar e retirar documentos e requerimentos; prestar e receber informações e comunicações; tomar ciência de exigências e de decisões; interpor recursos administrativos e apresentar defesas; e praticar os demais atos necessários ao andamento do processo administrativo.
 
-Validade: [prazo, ex.: "12 meses"] a contar da assinatura, ou até revogação.
+CLÁUSULA 2ª — DO RECEBIMENTO DE VALORES. A presente procuração [ESCOLHA: "NÃO inclui" / "inclui, de forma expressa,"] poderes para receber, em nome do OUTORGANTE, valores relativos a benefícios. [ATENÇÃO: o recebimento de benefício por procurador está sujeito a regras específicas do INSS, exigindo, em regra, cadastro do procurador/representante legal e renovação periódica.]
+
+CLÁUSULA 3ª — DA VALIDADE. A presente procuração vigora pelo prazo de [ex.: "12 (doze) meses"] a contar da assinatura, ou até a revogação, na forma dos arts. 682 e 686 do Código Civil.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
 _____________________________________
-[NOME DO OUTORGANTE]
+[NOME DO OUTORGANTE — SEGURADO]
 CPF: [000.000.000-00]
 `,
     notes: [
@@ -1738,16 +1913,26 @@ CPF: [000.000.000-00]
     ],
     content: `DECLARAÇÃO DE DEPENDÊNCIA ECONÔMICA
 
-Eu, [NOME COMPLETO DO DECLARANTE], CPF nº [000.000.000-00], residente à [ENDEREÇO], DECLARO, sob as penas da lei, que [NOME DO DEPENDENTE], CPF nº [000.000.000-00], [grau de parentesco/relação — ex.: "minha mãe", "meu companheiro"], depende economicamente de mim desde [DATA/PERÍODO], arcando eu com as despesas de [moradia, alimentação, saúde etc.].
+DECLARANTE (mantenedor): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
 
-Declaro estar ciente de que a falsidade desta declaração configura crime (art. 299 do Código Penal).
+DEPENDENTE: [NOME COMPLETO], [nacionalidade], [estado civil], inscrito no CPF/MF sob o nº [000.000.000-00], residente à [endereço completo].
 
-Por ser verdade, firmo a presente.
+Eu, DECLARANTE acima qualificado, DECLARO, sob as penas da lei e para os devidos fins de direito, que:
+
+1. O(A) DEPENDENTE acima identificado(a), na condição de [GRAU DE PARENTESCO/RELAÇÃO, ex.: "minha mãe", "meu pai", "meu companheiro(a)", "meu enteado(a)"], DEPENDE ECONOMICAMENTE de mim desde [DATA/PERÍODO], vivendo às minhas expensas;
+
+2. Arco, de forma habitual, com as despesas de [DISCRIMINAR, ex.: "moradia, alimentação, vestuário, saúde e medicamentos"] do(a) referido(a) dependente, que [reside comigo no mesmo endereço / não possui renda própria suficiente ao seu sustento];
+
+3. A presente declaração destina-se a [FINALIDADE, ex.: "comprovação de dependência econômica junto ao INSS para fins de pensão por morte", "inclusão como dependente em plano de saúde", "declaração no Imposto de Renda"];
+
+4. Estou ciente de que a falsidade desta declaração configura o crime de falsidade ideológica (art. 299 do Código Penal) e pode acarretar a devolução de valores e demais responsabilizações.
+
+Por ser expressão da verdade, firmo a presente, acompanhada, se possível, de documentos que comprovem o alegado.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
 _____________________________________
-[NOME DO DECLARANTE]   CPF: [000.000.000-00]
+DECLARANTE — [NOME]   CPF: [000.000.000-00]
 
 TESTEMUNHAS:
 1. _________________________ Nome: _____________ CPF: _____________
@@ -1778,28 +1963,41 @@ TESTEMUNHAS:
       "Indique a solução desejada (conserto, troca ou dinheiro de volta)",
       "Conceda prazo e guarde comprovante de envio"
     ],
-    content: `NOTIFICAÇÃO — PRODUTO COM DEFEITO (CDC)
+    content: `NOTIFICAÇÃO EXTRAJUDICIAL — PRODUTO COM VÍCIO/DEFEITO (CDC)
 
-De: [NOME DO CONSUMIDOR], CPF nº [000.000.000-00].
-Para: [NOME/RAZÃO SOCIAL DO FORNECEDOR], CNPJ nº [00.000.000/0000-00].
+NOTIFICANTE (consumidor): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
+NOTIFICADO (fornecedor): [NOME/RAZÃO SOCIAL], inscrito no CNPJ sob o nº [00.000.000/0000-00], com sede à [endereço].
+A/C: SAC / Ouvidoria / Departamento Jurídico.
 
-Adquiri em [DATA] o produto [DESCRIÇÃO — marca, modelo], nota fiscal nº [______], no valor de R$ [VALOR]. O produto apresenta o seguinte defeito: [DESCREVER O DEFEITO].
+I — DOS FATOS
 
-Nos termos do art. 18 do Código de Defesa do Consumidor, o fornecedor tem o prazo de 30 (trinta) dias para sanar o vício. Não sendo resolvido, é meu direito EXIGIR, à minha escolha:
+1. Em [DATA], o(a) Notificante adquiriu do Notificado o produto [DESCRIÇÃO — marca, modelo, nº de série], conforme nota fiscal nº [_______], no valor de R$ [VALOR].
 
-( ) a substituição do produto por outro da mesma espécie em perfeitas condições;
-( ) a restituição imediata da quantia paga, atualizada;
-( ) o abatimento proporcional do preço.
+2. O produto apresenta o seguinte VÍCIO/DEFEITO: [DESCREVER O DEFEITO], o que o torna [impróprio ao uso a que se destina / de valor diminuído].
 
-Solicito, portanto, a seguinte solução: [INDICAR A OPÇÃO ESCOLHIDA], no prazo de [PRAZO] dias.
+3. [SE JÁ HOUVE RECLAMAÇÃO: "O problema foi comunicado ao Notificado em [DATA], sob o protocolo nº [_______], sem solução até o momento."]
 
-Não atendida esta notificação, adotarei as medidas cabíveis junto ao Procon e ao Poder Judiciário (Juizado Especial), com pedido de devolução e indenização.
+II — DO DIREITO
+
+4. A relação é de consumo, regida pela Lei nº 8.078/1990 (CDC). Nos termos do art. 18 do CDC, respondem os fornecedores, solidariamente, pelos vícios de qualidade que tornem o produto impróprio ou lhe diminuam o valor, dispondo de prazo máximo de 30 (trinta) dias para saná-los.
+
+5. Não sanado o vício no prazo legal, faculta-se ao consumidor exigir, ALTERNATIVAMENTE e à sua escolha (art. 18, § 1º, do CDC): (a) a substituição do produto por outro da mesma espécie, em perfeitas condições de uso; (b) a restituição imediata da quantia paga, monetariamente atualizada, sem prejuízo de perdas e danos; ou (c) o abatimento proporcional do preço.
+
+III — DA EXIGÊNCIA
+
+6. Diante do exposto, o(a) Notificante EXIGE a seguinte solução: [INDICAR A OPÇÃO ESCOLHIDA — substituição / restituição do valor / abatimento], no prazo de [PRAZO, ex.: "10 (dez) dias"] a contar do recebimento desta.
+
+IV — DA ADVERTÊNCIA
+
+7. Não atendida a presente, o(a) Notificante adotará as medidas cabíveis junto ao Procon, à plataforma consumidor.gov.br e ao Poder Judiciário (Juizado Especial Cível), com pedido de restituição, cumprimento de obrigação e indenização por perdas e danos.
 
 [CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
 
 _____________________________________
 [NOME DO CONSUMIDOR]
 CPF: [000.000.000-00]
+
+Anexos: nota fiscal; fotos/laudo do defeito; protocolos de atendimento.
 `,
     notes: [
       "Prazo para reclamar: 30 dias (produto não durável) ou 90 dias (durável), a contar da entrega ou do aparecimento do defeito oculto",

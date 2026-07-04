@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { callAI, logAgentRun, touchAgentConfig } from "@/lib/ai/core";
+import { canReplaceBody, sanitizeArticleHtml } from "@/lib/content/article-quality";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -149,12 +150,22 @@ export async function GET(req: NextRequest) {
       runTokens += enhanced.tokens;
       runCost += enhanced.costUsd;
 
-      const newReadingMinutes = estimateReadingMinutes(enhanced.parsed.body);
+      // PORTÃO ANTI-CORRUPÇÃO: só substitui o corpo se o novo for válido, não
+      // encolher e preservar o conteúdo. Antes, uma reescrita ruim (mais curta
+      // ou com HTML quebrado) sobrescrevia um artigo publicado todo dia — a
+      // causa-raiz da "corrupção diária". Se não puder melhorar, deixa como está.
+      const replace = canReplaceBody(article.body || "", enhanced.parsed.body);
+      if (!replace.ok) {
+        results.push({ ok: true, slug: article.slug, wordsAdded: 0, error: `mantido: ${replace.reason}` });
+        continue;
+      }
+      const safeBody = sanitizeArticleHtml(enhanced.parsed.body);
+      const newReadingMinutes = estimateReadingMinutes(safeBody);
 
       const { error } = await supabase
         .from("blog_articles")
         .update({
-          body: enhanced.parsed.body,
+          body: safeBody,
           reading_minutes: newReadingMinutes,
           ...(enhanced.parsed.excerpt
             ? { excerpt: enhanced.parsed.excerpt.slice(0, 160) }

@@ -14,6 +14,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { sanitizeArticleHtml } from "@/lib/content/article-quality";
 import { SITE } from "@/lib/config";
 import {
   specialtiesForArticle,
@@ -258,6 +259,16 @@ export default async function ArticlePage({ params }: { params: { slug: string }
   // Artigos do banco usam HTML cru no body; seed articles usam ArticleSection[]
   const isDBArticle = "_source" in article && (article as Article & { _source?: string })._source === "db";
 
+  // Defesa em profundidade: artigo do banco com corpo vazio/em branco NÃO deve
+  // renderizar como página fantasma indexável (era o sintoma visível da
+  // "corrupção"). Se o body está vazio, tratamos como inexistente.
+  if (
+    isDBArticle &&
+    !(article.body?.[0]?.type === "p" ? (article.body[0].text || "").replace(/<[^>]+>/g, "").trim() : "true")
+  ) {
+    notFound();
+  }
+
   // UGC: extrair dados do autor (advogado) se presentes
   const authorId = "_authorId" in article ? (article as Article & { _authorId?: string | null })._authorId : null;
   const authorSlug = "_authorSlug" in article ? (article as Article & { _authorSlug?: string | null })._authorSlug : null;
@@ -346,7 +357,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           {isDBArticle && article.body.length === 1 && article.body[0].type === "p" ? (
             <div
               className="text-brand-ink/85 leading-relaxed [&>h2]:font-display [&>h2]:text-2xl [&>h2]:md:text-3xl [&>h2]:font-bold [&>h2]:text-brand-ink [&>h2]:mt-10 [&>h2]:mb-4 [&>h3]:font-display [&>h3]:text-xl [&>h3]:font-bold [&>h3]:text-brand-deep [&>h3]:mt-6 [&>h3]:mb-3 [&>p]:mb-4 [&>ul]:mb-5 [&>ul]:space-y-2 [&>ul]:pl-5 [&>ul]:list-disc [&>ol]:mb-5 [&>ol]:space-y-2 [&>ol]:pl-5 [&>ol]:list-decimal"
-              dangerouslySetInnerHTML={{ __html: article.body[0].text }}
+              dangerouslySetInnerHTML={{ __html: sanitizeArticleHtml(article.body[0].text) }}
             />
           ) : (
             article.body.map(renderSection)

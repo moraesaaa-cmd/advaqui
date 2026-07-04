@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { BLOG_TOPICS } from "@/lib/data/blog-topics";
 import { callAI, logAgentRun, touchAgentConfig } from "@/lib/ai/core";
+import { validateArticleBody, sanitizeArticleHtml } from "@/lib/content/article-quality";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -187,6 +188,15 @@ export async function GET(req: NextRequest) {
 
       if (existing) finalSlug = `${baseSlug}-${Date.now().toString(36)}`;
 
+      // PORTÃO ANTI-CORRUPÇÃO: não publica corpo vazio/fino/quebrado. Antes,
+      // um body ruim do modelo virava URL de blog em branco no índice.
+      const check = validateArticleBody(generated.body, { minWords: 900 });
+      if (!check.ok) {
+        results.push({ ok: false, error: `descartado (${check.reason}): ${finalSlug}` });
+        continue;
+      }
+      const safeBody = sanitizeArticleHtml(generated.body);
+
       const { data: article, error } = await supabase
         .from("blog_articles")
         .insert({
@@ -194,8 +204,8 @@ export async function GET(req: NextRequest) {
           title: generated.title || item.topic.title,
           excerpt: generated.excerpt,
           category: item.topic.category,
-          body: generated.body,
-          reading_minutes: estimateReadingMinutes(generated.body),
+          body: safeBody,
+          reading_minutes: estimateReadingMinutes(safeBody),
           author: "Equipe AdvAqui",
           published_at: new Date().toISOString(),
           status: "published",

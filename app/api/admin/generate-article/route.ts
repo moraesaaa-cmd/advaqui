@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { isAdminRequest } from "@/lib/auth/adminSession";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { BLOG_TOPICS } from "@/lib/data/blog-topics";
+import { validateArticleBody, sanitizeArticleHtml } from "@/lib/content/article-quality";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -223,7 +224,15 @@ export async function POST(req: Request) {
       finalSlug = `${baseSlug}-${Date.now().toString(36)}`;
     }
 
-    const readingMinutes = estimateReadingMinutes(generated.body);
+    const qc = validateArticleBody(generated.body, { minWords: 900 });
+    if (!qc.ok) {
+      return NextResponse.json(
+        { ok: false, error: `Artigo descartado pelo controle de qualidade (${qc.reason}).` },
+        { status: 422 }
+      );
+    }
+    const safeBody = sanitizeArticleHtml(generated.body);
+    const readingMinutes = estimateReadingMinutes(safeBody);
 
     // Salva no banco
     const { data: article, error } = await supabase
@@ -233,7 +242,7 @@ export async function POST(req: Request) {
         title: generated.title || topic.title,
         excerpt: generated.excerpt,
         category: topic.category,
-        body: generated.body,
+        body: safeBody,
         reading_minutes: readingMinutes,
         author: "Equipe AdvAqui",
         published_at: new Date().toISOString(),

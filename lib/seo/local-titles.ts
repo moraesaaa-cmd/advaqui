@@ -136,6 +136,34 @@ export const BLOG_CIDADE_TEMPLATES: Record<string, LocalTemplate> = {
     h1: (c) => `Saque do FGTS em ${c}: todas as modalidades e prazos`,
     description: (c) =>
       `Demissão sem justa causa, saque-aniversário, doença grave e casa própria liberam o FGTS, cada um com regra própria. Guia em linguagem simples para ${c}.`
+  },
+  "cnh-suspensa-o-que-fazer": {
+    full: (c) => `CNH suspensa em ${c}? Prazos e como se defender`,
+    short: (c) => `CNH suspensa em ${c}: o que fazer`,
+    h1: (c) => `CNH suspensa em ${c}? Prazos de defesa e como voltar a dirigir`,
+    description: (c) =>
+      `Antes da suspensão você é notificado e pode apresentar defesa e recorrer no prazo da notificação. Guia em linguagem simples para ${c}.`
+  },
+  "pensao-alimenticia-como-calcular": {
+    full: (c) => `Como calcular a pensão alimentícia em ${c}?`,
+    short: (c) => `Calcular pensão alimentícia em ${c}`,
+    h1: (c) => `Como calcular a pensão alimentícia em ${c}: valor, revisão e atraso`,
+    description: (c) =>
+      `O valor da pensão nasce do equilíbrio entre a necessidade de quem recebe e a renda de quem paga. Guia em linguagem simples para ${c}.`
+  },
+  "limpar-nome-negativado-passo-a-passo": {
+    full: (c) => `Limpar o nome negativado em ${c}: passo a passo`,
+    short: (c) => `Limpar o nome em ${c}: SPC e Serasa`,
+    h1: (c) => `Como limpar o nome negativado em ${c}: SPC e Serasa`,
+    description: (c) =>
+      `Consulte seu CPF de graça, negocie pelos canais oficiais e exija a baixa após o pagamento. Guia em linguagem simples para ${c}.`
+  },
+  "inventario-como-fazer-custos-e-prazos": {
+    full: (c) => `Inventário em ${c}: quanto custa e os prazos`,
+    short: (c) => `Inventário em ${c}: custos e prazos`,
+    h1: (c) => `Inventário em ${c}: como fazer, custos e prazos`,
+    description: (c) =>
+      `O maior custo é o ITCMD, somado a cartório ou custas e honorários; o prazo para abrir é de 2 meses. Guia em linguagem simples para ${c}.`
   }
 };
 

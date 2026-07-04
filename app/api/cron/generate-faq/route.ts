@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { callAI, logAgentRun, touchAgentConfig } from "@/lib/ai/core";
+import { validateArticleBody, sanitizeArticleHtml } from "@/lib/content/article-quality";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -163,7 +164,11 @@ export async function GET(req: NextRequest) {
         continue;
       }
 
-      const baseSlug = slugify(generated.title);
+      const baseSlug = slugify(generated.title || `${item.area}-perguntas-frequentes`);
+      if (!baseSlug) {
+        results.push({ ok: false, error: "titulo/slug vazio — descartado" });
+        continue;
+      }
       let finalSlug = baseSlug;
 
       const { data: existing } = await supabase
@@ -174,7 +179,16 @@ export async function GET(req: NextRequest) {
 
       if (existing) finalSlug = `${baseSlug}-${Date.now().toString(36)}`;
 
-      const textOnly = generated.body.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      // PORTÃO ANTI-CORRUPÇÃO: FAQ costuma ser mais curto que artigo, mas ainda
+      // precisa ter substância e HTML íntegro. Mínimo 500 palavras.
+      const check = validateArticleBody(generated.body, { minWords: 500 });
+      if (!check.ok) {
+        results.push({ ok: false, error: `descartado (${check.reason}): ${finalSlug}` });
+        continue;
+      }
+      const safeBody = sanitizeArticleHtml(generated.body);
+
+      const textOnly = safeBody.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
       const readingMin = Math.max(3, Math.round(textOnly.split(" ").length / 200));
 
       const { data: article, error } = await supabase
@@ -184,7 +198,7 @@ export async function GET(req: NextRequest) {
           title: generated.title,
           excerpt: (generated.excerpt || "").slice(0, 160),
           category: item.area,
-          body: generated.body,
+          body: safeBody,
           reading_minutes: readingMin,
           author: "Equipe AdvAqui",
           published_at: new Date().toISOString(),

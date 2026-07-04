@@ -200,10 +200,13 @@ export default async function ProfessionalPage({
   const isFem = (l.name.trim().split(" ")[0] || "").toLowerCase().endsWith("a");
   const advWord = `Advogad${isFem ? "a" : "o"}`;
 
-  const articles =
-    featured && (l.showArticles ?? true) ? await fetchPublishedArticles(l.id) : [];
-  const answeredQuestions =
-    featured && (l.showQuestions ?? true) ? await fetchAnsweredQuestions(l.id) : [];
+  // Artigos e perguntas em PARALELO (antes eram dois awaits sequenciais, o que
+  // dobrava o TTFB e fazia a página cair no fallback de loading com mais
+  // frequência — causa do "Carregando… fora de ordem" percebido pelo usuário).
+  const [articles, answeredQuestions] = await Promise.all([
+    featured && (l.showArticles ?? true) ? fetchPublishedArticles(l.id) : Promise.resolve([]),
+    featured && (l.showQuestions ?? true) ? fetchAnsweredQuestions(l.id) : Promise.resolve([])
+  ]);
 
   // Destaques reais (sem inventar números). Só para premium.
   const modalLabel = (() => {

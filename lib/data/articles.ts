@@ -2184,6 +2184,584 @@ export const ARTICLES: Article[] = [
           "É uma operação de crédito regulamentada, mas com custo: você toma emprestado hoje os saques dos próximos anos, paga juros e o FGTS fica bloqueado como garantia. Compare o custo efetivo total com outras linhas antes de contratar e desconfie de ofertas por telefone ou mensagens pedindo dados pessoais."
       }
     ]
+  },
+  {
+    slug: "cnh-suspensa-o-que-fazer",
+    title: "CNH suspensa em 2026: o que fazer, prazos de defesa e como voltar a dirigir",
+    excerpt:
+      "Entenda quando a CNH é suspensa por pontos ou por infração direta, os prazos para se defender, o curso de reciclagem e a diferença para a cassação.",
+    category: "Trânsito",
+    readingMinutes: 10,
+    publishedAt: "2026-07-04",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "criminal",
+    intro:
+      "A CNH suspensa tira temporariamente o seu direito de dirigir — mas a suspensão não acontece de um dia para o outro. Antes dela existe um processo administrativo em que você é notificado, pode apresentar defesa e recorrer, e enquanto esse processo não termina você continua habilitado. Este guia explica, em linguagem simples, quando a carteira é suspensa (por pontos ou por uma única infração), quais são os prazos de defesa, como funciona o curso de reciclagem e o que diferencia a suspensão da cassação.",
+    body: [
+      { type: "h2", text: "O que significa ter a CNH suspensa?" },
+      {
+        type: "p",
+        text: "A suspensão do direito de dirigir é uma penalidade prevista no Código de Trânsito Brasileiro (Lei 9.503/97): durante o prazo fixado, o condutor fica proibido de dirigir qualquer veículo, e a CNH fica recolhida ou bloqueada no sistema. A habilitação não é apagada — cumprido o prazo e o curso de reciclagem, o direito de dirigir volta. Existem duas portas de entrada para a suspensão: o acúmulo de pontos no período de 12 meses e as chamadas infrações autossuspensivas, em que uma única infração já abre o processo de suspensão."
+      },
+      { type: "h2", text: "Suspensão por pontos: o limite é 20, 30 ou 40?" },
+      {
+        type: "p",
+        text: "Desde a mudança trazida pela Lei 14.071/2020, o limite de pontos que gera suspensão deixou de ser único (os antigos 20 pontos) e passou a depender da gravidade das infrações cometidas nos últimos 12 meses:"
+      },
+      {
+        type: "ul",
+        items: [
+          "20 pontos — se o condutor tiver 2 ou mais infrações gravíssimas no período",
+          "30 pontos — se tiver exatamente 1 infração gravíssima",
+          "40 pontos — se não tiver nenhuma infração gravíssima",
+          "40 pontos, sempre — para quem exerce atividade remunerada ao volante (EAR na CNH: motoristas de aplicativo, taxistas, caminhoneiros, entregadores), independentemente da natureza das infrações",
+          "Valor de cada infração: gravíssima = 7 pontos, grave = 5, média = 4, leve = 3"
+        ]
+      },
+      {
+        type: "p",
+        text: "Quem tem EAR (exerce atividade remunerada) conta ainda com uma válvula de escape: ao atingir de 30 a 39 pontos sem infração autossuspensiva, pode optar por fazer um curso preventivo de reciclagem. Concluído o curso, a pontuação do período é zerada e o processo de suspensão nem chega a ser aberto. É um direito que muitos motoristas profissionais desconhecem — e que só pode ser usado dentro da janela certa."
+      },
+      {
+        type: "callout",
+        text: "Os pontos só entram no prontuário depois que a multa se torna definitiva — ou seja, depois de esgotados os prazos de defesa e recurso daquela infração. Por isso, recorrer das multas em andamento pode impedir que a soma alcance o limite da suspensão."
+      },
+      { type: "h2", text: "Infrações que suspendem a CNH diretamente, sem depender de pontos" },
+      {
+        type: "p",
+        text: "Algumas infrações são tão graves que uma única ocorrência já gera processo de suspensão, não importa quantos pontos o condutor tenha. As mais comuns:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Dirigir sob influência de álcool ou outra substância (art. 165 do CTB) — multa de R$ 2.934,70 e suspensão de 12 meses",
+          "Recusar o teste do bafômetro (art. 165-A do CTB) — mesmas penalidades da embriaguez: multa de R$ 2.934,70 e 12 meses de suspensão",
+          "Excesso de velocidade superior a 50% do limite da via — multa multiplicada e suspensão",
+          "Disputar corrida ou exibição não autorizada ('racha') — multa multiplicada por dez e suspensão",
+          "Realizar manobras perigosas (arrancada brusca, derrapagem, frenagem com deslizamento)",
+          "Conduzir motocicleta sem capacete"
+        ]
+      },
+      {
+        type: "p",
+        text: "Nesses casos, a suspensão anda junto com a multa, mas em processo próprio — e o prazo de suspensão é o previsto para cada infração. Na embriaguez ao volante, além da esfera administrativa, o caso pode virar também processo criminal, dependendo da concentração de álcool constatada ou dos sinais de alteração da capacidade — são caminhos independentes, com defesas separadas."
+      },
+      { type: "h2", text: "Como funciona o processo administrativo de suspensão" },
+      {
+        type: "ol",
+        items: [
+          "Instauração — atingido o limite de pontos (processo aberto pelo Detran onde a CNH está registrada) ou cometida infração autossuspensiva, o órgão de trânsito abre o processo e envia a notificação de instauração",
+          "Defesa prévia — a notificação informa o prazo para apresentar defesa por escrito (em regra, 30 dias; confira sempre a data na sua notificação)",
+          "Julgamento da defesa — se acolhida, o processo é arquivado; se rejeitada, o órgão aplica a penalidade e envia a notificação da penalidade",
+          "Recurso — da decisão que aplica a suspensão cabe recurso administrativo, nas instâncias e prazos indicados na própria notificação",
+          "Início do cumprimento — mantida a penalidade em definitivo, o condutor é notificado para entregar a CNH, e só então começa a correr o prazo de suspensão"
+        ]
+      },
+      {
+        type: "p",
+        text: "Um ponto que gera muita confusão: enquanto o processo administrativo não termina, você pode continuar dirigindo normalmente. A proibição só começa depois da decisão definitiva e da notificação para entrega da carteira. Dirigir antes disso não é irregular; dirigir depois disso é o erro mais caro que existe, como você verá adiante."
+      },
+      { type: "h2", text: "O que alegar na defesa? Argumentos que funcionam" },
+      {
+        type: "p",
+        text: "A defesa no processo de suspensão não é um pedido de clemência — é uma análise técnica do processo e das multas que o alimentam. Os argumentos mais comuns:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Pontuação errada — infrações que ainda estão em fase de defesa ou recurso não podem contar pontos; multas de outro condutor (veículo dirigido por terceiro sem indicação) podem ser questionadas",
+          "Notificação irregular — enviada para endereço desatualizado por falha do órgão, sem prazo razoável ou sem os requisitos formais",
+          "Vícios nas multas de origem — auto de infração com dados errados, aparelho de medição sem aferição válida, agente sem competência",
+          "Prescrição — o órgão tem prazo para instaurar e concluir o processo; a demora excessiva pode extinguir a punição",
+          "Enquadramento errado da infração autossuspensiva — a conduta descrita não corresponde ao artigo aplicado"
+        ]
+      },
+      { type: "h2", text: "Quanto tempo dura a suspensão da CNH?" },
+      {
+        type: "p",
+        text: "Na suspensão por pontos, o prazo vai de 6 meses a 1 ano — e, se o condutor reincidir no período de 12 meses, de 8 meses a 2 anos. Nas infrações autossuspensivas, vale o prazo previsto para cada infração: na embriaguez e na recusa ao bafômetro, por exemplo, são 12 meses. O prazo exato é fixado na decisão do processo administrativo, dentro dessas faixas."
+      },
+      { type: "h2", text: "Curso de reciclagem: o caminho de volta ao volante" },
+      {
+        type: "p",
+        text: "Para voltar a dirigir, não basta esperar o prazo passar. O condutor suspenso precisa: cumprir integralmente o período de suspensão com a CNH entregue ao órgão de trânsito, concluir o curso de reciclagem (30 horas-aula, oferecido presencialmente ou a distância, conforme as regras do Detran do seu estado) e ser aprovado na prova teórica do curso. Feito isso, a CNH é devolvida e o direito de dirigir é restabelecido — sem refazer prova prática e sem tirar nova habilitação."
+      },
+      { type: "h2", text: "Suspensão × cassação: qual a diferença?" },
+      {
+        type: "p",
+        text: "Suspensão e cassação são penalidades diferentes, com consequências muito diferentes. A suspensão é temporária: cumprido o prazo e o curso, o direito volta. A cassação (art. 263 do CTB) anula a habilitação: o condutor cassado só pode voltar a dirigir depois de 2 anos, e ainda assim refazendo todo o processo de habilitação — exames médico e psicológico, prova teórica e prova prática, como um candidato novo."
+      },
+      {
+        type: "ul",
+        items: [
+          "Principal causa de cassação: ser flagrado dirigindo durante o período de suspensão",
+          "Também geram cassação: a reincidência, no prazo de 12 meses, em infrações específicas listadas no CTB (como embriaguez ao volante e racha)",
+          "Dirigir com CNH suspensa ou cassada é ainda infração gravíssima, com multa multiplicada e recolhimento do veículo"
+        ]
+      },
+      {
+        type: "callout",
+        text: "Se a sua CNH foi suspensa, não dirija durante o cumprimento — nem 'só até o mercado'. Um único flagrante transforma uma suspensão de meses em uma cassação de no mínimo 2 anos, com todo o processo de habilitação pela frente."
+      },
+      { type: "h2", text: "Quando procurar um advogado?" },
+      {
+        type: "p",
+        text: "Procure orientação assim que receber a notificação de instauração — os prazos de defesa são curtos e não voltam. A defesa técnica faz mais diferença quando a CNH é instrumento de trabalho (EAR), quando a suspensão nasce de multas que você nem sabia que existiam, quando há erro na contagem de pontos ou quando o caso envolve embriaguez ao volante, que pode ter desdobramento criminal. Um advogado da área analisa o processo, as multas de origem e as notificações em busca de falhas — e orienta sobre o momento certo do curso preventivo de reciclagem, no caso dos motoristas profissionais."
+      }
+    ],
+    faq: [
+      {
+        question: "Posso continuar dirigindo enquanto o processo de suspensão corre?",
+        answer:
+          "Pode. A proibição de dirigir só começa depois da decisão definitiva do processo administrativo e da notificação para entrega da CNH. Até lá, a habilitação segue válida. Depois disso, dirigir gera cassação da carteira."
+      },
+      {
+        question: "Quantos pontos suspendem a CNH?",
+        answer:
+          "Depende da gravidade das infrações nos últimos 12 meses: 20 pontos com 2 ou mais gravíssimas, 30 pontos com 1 gravíssima e 40 pontos sem nenhuma gravíssima. Quem exerce atividade remunerada (EAR) tem limite fixo de 40 pontos."
+      },
+      {
+        question: "Pagar as multas apaga os pontos da carteira?",
+        answer:
+          "Não. O pagamento quita a multa, mas os pontos permanecem no prontuário e são considerados pelo período de 12 meses contados da data de cada infração. O que impede pontos de contarem é a defesa ou o recurso acolhido contra a própria multa."
+      },
+      {
+        question: "O que acontece se eu for pego dirigindo com a CNH suspensa?",
+        answer:
+          "É a situação mais grave: gera cassação da habilitação — você só volta a dirigir após 2 anos e refazendo todos os exames e provas —, além de infração gravíssima com multa multiplicada e recolhimento do veículo."
+      },
+      {
+        question: "Recusar o bafômetro também suspende a CNH?",
+        answer:
+          "Sim. A recusa ao teste é infração autônoma (art. 165-A do CTB) com as mesmas penalidades da embriaguez: multa de R$ 2.934,70 e suspensão do direito de dirigir por 12 meses."
+      },
+      {
+        question: "Depois da suspensão, preciso fazer prova prática de novo?",
+        answer:
+          "Não. Cumprido o prazo, basta concluir o curso de reciclagem de 30 horas-aula e ser aprovado na prova teórica do curso para receber a CNH de volta. Refazer exames e prova prática só é exigido de quem teve a carteira cassada."
+      }
+    ]
+  },
+  {
+    slug: "pensao-alimenticia-como-calcular",
+    title: "Pensão alimentícia em 2026: como calcular o valor, pedir revisão e o que acontece no atraso",
+    excerpt:
+      "Veja como o valor da pensão é definido na prática, os percentuais mais comuns, quando cabe revisão e as consequências do atraso, incluindo a prisão civil.",
+    category: "Família",
+    readingMinutes: 10,
+    publishedAt: "2026-07-04",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "familia",
+    intro:
+      "Calcular a pensão alimentícia não segue tabela pronta nem percentual fixo em lei: o valor nasce do equilíbrio entre a necessidade de quem recebe e a possibilidade de quem paga — o chamado binômio alimentar. Este guia explica, em linguagem simples, como esse cálculo funciona na prática, quais percentuais os juízes costumam aplicar, como pedir revisão quando a vida muda, o que acontece quando a pensão atrasa (incluindo a prisão civil) e como fazer um acordo válido sem brigar na Justiça.",
+    body: [
+      { type: "h2", text: "Como o valor da pensão alimentícia é definido?" },
+      {
+        type: "p",
+        text: "O Código Civil manda fixar os alimentos na proporção das necessidades de quem pede e dos recursos de quem paga. Na prática, o juiz (ou o acordo entre as partes) olha para dois pratos da balança:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Necessidade de quem recebe — idade do filho, escola, alimentação, saúde, moradia, transporte, atividades, remédios de uso contínuo e o padrão de vida que a criança tinha antes da separação",
+          "Possibilidade de quem paga — renda comprovada, outros filhos e dependentes, despesas essenciais próprias e sinais exteriores de riqueza (carro, viagens, imóveis) quando a renda declarada não fecha com o estilo de vida",
+          "Proporcionalidade — o valor não pode sacrificar o sustento de quem paga nem deixar de atender o essencial de quem recebe; os dois genitores contribuem, cada um na medida das suas condições"
+        ]
+      },
+      {
+        type: "p",
+        text: "Importante: quem fica com a guarda também contribui — só que de forma direta, 'in natura', com a rotina de cuidados, moradia e alimentação do dia a dia. A pensão em dinheiro é a parte de quem não mora com o filho."
+      },
+      { type: "h2", text: "Existe percentual fixo? O que os juízes aplicam na prática" },
+      {
+        type: "p",
+        text: "Não existe percentual mínimo nem máximo em lei — qualquer número que você viu por aí ('a lei manda pagar 30%') é mito. O que existe é um costume forense: para um filho, os valores mais comuns ficam entre 20% e 30% dos rendimentos líquidos de quem paga; havendo mais filhos, o percentual total costuma subir, mas não cresce na mesma proporção (dois filhos não significam automaticamente 60%). Cada caso é decidido pelas provas de necessidade e possibilidade."
+      },
+      {
+        type: "p",
+        text: "A forma de fixar também varia conforme a situação de quem paga:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Percentual do salário líquido — comum para quem tem carteira assinada; permite o desconto direto em folha de pagamento, o jeito mais seguro de receber",
+          "Valor fixo em salários mínimos — comum para autônomos, informais e empresários, porque se atualiza sozinho todo ano com o reajuste do mínimo",
+          "Modelo híbrido — um valor em dinheiro mais obrigações pagas diretamente, como plano de saúde e mensalidade escolar"
+        ]
+      },
+      { type: "h2", text: "E se quem paga está desempregado ou não tem renda fixa?" },
+      {
+        type: "p",
+        text: "O desemprego não extingue a obrigação — filho não deixa de comer porque o pagamento da pensão ficou difícil. Nesses casos, a Justiça costuma fixar a pensão em fração do salário mínimo (algo como 15% a 30% do mínimo é frequente, sempre conforme o caso), presumindo que toda pessoa adulta tem capacidade de gerar alguma renda. Para autônomos que declaram pouco mas vivem bem, o juiz pode considerar os sinais exteriores de riqueza e até quebrar sigilos para apurar a renda real."
+      },
+      { type: "h2", text: "A pensão incide sobre 13º, férias e horas extras?" },
+      {
+        type: "p",
+        text: "Quando a pensão é fixada em percentual da remuneração, a jurisprudência entende que ela incide também sobre 13º salário, férias com o terço constitucional e verbas habituais como horas extras — salvo se a decisão ou o acordo disser expressamente o contrário. Sobre verbas de natureza indenizatória (como FGTS e multa rescisória) há divergência, e a resposta depende do que ficou escrito no título. Por isso, na hora do acordo, vale detalhar por escrito sobre o que o percentual incide — evita anos de discussão."
+      },
+      { type: "h2", text: "Como pedir revisão da pensão (para aumentar ou diminuir)?" },
+      {
+        type: "p",
+        text: "O valor da pensão não é eterno: sempre que a necessidade de quem recebe ou a possibilidade de quem paga mudar de forma relevante, cabe ação revisional. Exemplos de quem paga: desemprego prolongado, doença que reduz a capacidade de trabalho, nascimento de outro filho. Exemplos de quem recebe: entrada na escola particular, tratamento de saúde, adolescência (custos maiores). A revisão vale dali para frente — não devolve nem perdoa parcelas passadas."
+      },
+      {
+        type: "callout",
+        text: "O valor NUNCA muda automaticamente. Perder o emprego não autoriza pagar menos por conta própria: até que um juiz revise o valor ou um novo acordo seja homologado, a pensão original continua valendo e a diferença vira dívida executável. Quem precisa reduzir deve agir rápido — e não simplesmente parar de pagar."
+      },
+      { type: "h2", text: "Pensão atrasada: execução, protesto e prisão civil" },
+      {
+        type: "p",
+        text: "A pensão alimentícia é a única dívida no Brasil que ainda leva o devedor à prisão. Quando o pagamento atrasa, quem recebe pode executar a dívida por dois caminhos:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Rito da prisão — para as 3 últimas parcelas vencidas antes do pedido, mais as que vencerem durante o processo: o devedor é intimado a pagar tudo em 3 dias, provar que pagou ou justificar a impossibilidade absoluta; se não convencer, o juiz pode decretar prisão civil de 1 a 3 meses, em regime fechado e separado dos presos comuns",
+          "Rito da penhora — para dívidas mais antigas: bloqueio de contas e aplicações, penhora de bens e até de parte do salário",
+          "Medidas adicionais — protesto da dívida em cartório e inclusão do nome do devedor nos cadastros de inadimplentes (SPC/Serasa)"
+        ]
+      },
+      {
+        type: "p",
+        text: "Dois avisos importantes: a prisão não apaga a dívida — solto, o devedor continua devendo tudo, com juros e correção; e justificativas genéricas ('estou desempregado', 'a situação está difícil') não impedem a prisão — a impossibilidade de pagar precisa ser provada de forma concreta."
+      },
+      { type: "h2", text: "Acordo extrajudicial: dá para resolver sem processo?" },
+      {
+        type: "p",
+        text: "Dá, e costuma ser o caminho mais rápido e barato quando existe diálogo. Um acordo de pensão por escrito, assinado pelas partes e referendado pelos advogados de cada um, pela Defensoria Pública ou pelo Ministério Público, vale como título executivo — ou seja, se for descumprido, pode ser executado direto, sem precisar de um processo para 'provar' a dívida. Ainda assim, muitos casais preferem levar o acordo para homologação do juiz, o que agrega segurança, principalmente quando envolve filhos menores. Sessões de mediação, inclusive nos CEJUSCs do fórum, são gratuitas e ajudam a chegar num valor realista."
+      },
+      { type: "h2", text: "Até quando a pensão é devida?" },
+      {
+        type: "p",
+        text: "A maioridade (18 anos) não encerra a pensão automaticamente — o corte depende de decisão judicial, com direito de o filho se manifestar. Na prática, filhos que estudam (faculdade ou curso técnico) costumam manter a pensão até concluir os estudos, em geral até a faixa dos 24 anos, conforme o caso. A pensão entre ex-cônjuges, quando fixada, tende a ser temporária — o tempo de se recolocar no mercado. E a obrigação alimentar é via de mão dupla na família: filhos adultos podem ser obrigados a pagar alimentos aos pais idosos que necessitem, e os avós podem ser chamados a complementar a pensão dos netos quando os pais comprovadamente não conseguem pagar."
+      },
+      { type: "h2", text: "Quando procurar um advogado?" },
+      {
+        type: "p",
+        text: "Procure orientação para fixar a pensão pela primeira vez, para revisar um valor que ficou fora da realidade, para executar parcelas atrasadas ou para se defender de uma execução. Um advogado de família sabe montar a prova da necessidade e da real capacidade financeira — que é onde essas ações se ganham ou se perdem — e desenhar acordos que evitam anos de litígio. Quem não pode pagar tem direito à Defensoria Pública, e o pedido de pensão costuma tramitar com prioridade quando envolve criança."
+      }
+    ],
+    faq: [
+      {
+        question: "Existe um percentual mínimo ou máximo de pensão previsto em lei?",
+        answer:
+          "Não. A lei manda apenas equilibrar a necessidade de quem recebe com a possibilidade de quem paga. Os percentuais de 20% a 30% dos rendimentos líquidos para um filho são costume da prática forense, não regra — o juiz pode fixar acima ou abaixo conforme as provas."
+      },
+      {
+        question: "Quem está desempregado paga pensão?",
+        answer:
+          "Sim. O desemprego não extingue a obrigação — nesses casos a pensão costuma ser fixada em fração do salário mínimo. Quem perdeu o emprego deve pedir a revisão judicial do valor; parar de pagar por conta própria gera dívida e risco de prisão."
+      },
+      {
+        question: "Atrasar quantas parcelas pode levar à prisão?",
+        answer:
+          "O rito da prisão alcança as 3 últimas parcelas vencidas antes da execução, mais as que vencerem durante o processo. Intimado, o devedor tem 3 dias para pagar, provar o pagamento ou justificar a impossibilidade — se não o fizer, a prisão civil pode ser decretada por 1 a 3 meses."
+      },
+      {
+        question: "A pensão incide sobre o 13º salário?",
+        answer:
+          "Em regra, sim: quando fixada em percentual da remuneração, a pensão incide sobre 13º, férias com o terço e verbas habituais, salvo previsão diferente na decisão ou no acordo. Sobre verbas indenizatórias, como FGTS, depende do que ficou definido no título."
+      },
+      {
+        question: "Filho que fez 18 anos perde a pensão automaticamente?",
+        answer:
+          "Não. O fim da pensão depende de decisão judicial, com oportunidade de o filho se manifestar. Filhos cursando faculdade ou curso técnico costumam manter a pensão até concluir os estudos, conforme a análise do caso."
+      },
+      {
+        question: "Acordo de pensão feito 'no papel' entre os pais vale?",
+        answer:
+          "Um acordo escrito e referendado pelos advogados, pela Defensoria ou pelo Ministério Público vale como título executivo. Acordos meramente verbais ou sem referendo são frágeis: difíceis de provar e de executar. O ideal é formalizar e, de preferência, homologar em juízo."
+      }
+    ]
+  },
+  {
+    slug: "limpar-nome-negativado-passo-a-passo",
+    title: "Como limpar o nome negativado em 2026: passo a passo no SPC e Serasa",
+    excerpt:
+      "Consulte seu CPF de graça, negocie pelos canais oficiais, saiba quando a negativação caduca em 5 anos e o que fazer se negativaram seu nome por engano.",
+    category: "Consumidor",
+    readingMinutes: 10,
+    publishedAt: "2026-07-04",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "civil",
+    intro:
+      "Limpar o nome negativado no SPC e no Serasa tem caminho conhecido: descobrir exatamente o que consta no seu CPF, conferir se cada registro ainda pode estar lá (a negativação caduca em 5 anos), negociar pelos canais oficiais e exigir a baixa após o pagamento. Este guia mostra o passo a passo em linguagem simples — incluindo a diferença entre dívida caducada e prescrita, quando a negativação indevida gera indenização e como reconhecer os golpes de 'limpa nome' que só pioram a sua situação.",
+    body: [
+      { type: "h2", text: "O que significa estar com o nome negativado?" },
+      {
+        type: "p",
+        text: "Nome negativado (ou 'sujo') é o CPF inscrito nos cadastros de inadimplentes — os principais são Serasa, SPC Brasil e Boa Vista. Qualquer credor (loja, banco, operadora, faculdade) pode registrar ali uma dívida vencida e não paga. O efeito prático: crédito negado, cartão recusado, financiamento barrado, dificuldade para parcelar compras e até para alugar imóvel. Antes de negativar, o consumidor tem direito a ser comunicado por escrito — é o Código de Defesa do Consumidor que exige, e o STJ entende que essa comunicação cabe ao órgão do cadastro (Súmula 359), embora dispense o aviso de recebimento na carta (Súmula 404)."
+      },
+      { type: "h2", text: "Passo 1 — Descubra tudo o que consta no seu CPF" },
+      {
+        type: "p",
+        text: "Você não precisa pagar nada para saber por que seu nome está negativado. Consulte gratuitamente:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Site e aplicativo oficiais da Serasa — mostram as dívidas negativadas, o credor, o valor e a data",
+          "Site e aplicativo do SPC Brasil — cadastro alimentado principalmente pelo comércio",
+          "Registrato, do Banco Central — relatório gratuito de dívidas e financiamentos em bancos e financeiras, além de cheques sem fundo",
+          "Anote de cada registro: quem é o credor, o valor, a data de vencimento da dívida original e a data da inclusão no cadastro"
+        ]
+      },
+      { type: "h2", text: "Passo 2 — Confira as datas: a negativação caduca em 5 anos" },
+      {
+        type: "p",
+        text: "O Código de Defesa do Consumidor (art. 43) proíbe que cadastros de proteção ao crédito mantenham informações negativas por mais de 5 anos. O prazo conta do vencimento da dívida, e a exclusão deve ser automática — você não precisa pagar para o registro sair depois dos 5 anos. O STJ reforça essa regra na Súmula 323: a inscrição pode ser mantida por no máximo 5 anos. Se você encontrar no seu CPF uma negativação mais velha que isso, exija a exclusão imediata ao cadastro e ao credor — a manutenção além do prazo é indevida e pode gerar indenização."
+      },
+      { type: "h2", text: "Dívida caducada é dívida perdoada? Caducar × prescrever" },
+      {
+        type: "p",
+        text: "São coisas diferentes, e confundi-las custa caro. Caducar, na linguagem popular, é o registro sair do SPC/Serasa após os 5 anos — mas a dívida em si não desaparece: ela continua existindo e pode ser cobrada amigavelmente. Prescrever é o credor perder o direito de cobrar a dívida na Justiça — para a maioria das dívidas de consumo documentadas (cartão, banco, crediário), o prazo de prescrição também é de 5 anos. Dívida prescrita não pode ser executada judicialmente nem gerar nova negativação, e decisões recentes vêm limitando até a cobrança extrajudicial insistente. Na prática: antes de pagar uma dívida muito antiga, verifique as datas — e saiba que renegociar uma dívida prescrita ou caducada 'renova' o reconhecimento dela, reabrindo caminho para cobrança."
+      },
+      {
+        type: "callout",
+        text: "Cuidado com acordos-relâmpago de dívidas antigas: assinar renegociação ou pagar a primeira parcela de uma dívida já prescrita é ato de reconhecimento que pode reativar a cobrança. Avalie as datas (e, na dúvida, consulte orientação jurídica) ANTES de aceitar a proposta — não depois."
+      },
+      { type: "h2", text: "Passo 3 — Negocie a dívida pelos canais oficiais" },
+      {
+        type: "p",
+        text: "Para dívidas dentro do prazo, a saída é negociar — e o mercado de renegociação nunca teve tanto desconto. Use apenas canais oficiais:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Serasa Limpa Nome e plataforma do SPC — feirões com descontos que frequentemente passam de 50% para pagamento à vista",
+          "Canais do próprio credor — site, aplicativo e centrais de renegociação de bancos e lojas",
+          "Consumidor.gov.br — plataforma pública para negociar e registrar reclamação formal contra a empresa",
+          "Mutirões do Procon e semanas nacionais de renegociação",
+          "Regras de ouro: peça o desconto à vista antes de aceitar parcelamento, exija o acordo por escrito (boleto oficial em nome do credor), guarde todos os comprovantes e desconfie de boleto enviado por WhatsApp"
+        ]
+      },
+      { type: "h2", text: "Passo 4 — Pagou? Exija a baixa em 5 dias úteis" },
+      {
+        type: "p",
+        text: "Quitada a dívida (ou paga a entrada do acordo, conforme o combinado), a negativação não pode continuar. O STJ firmou o entendimento de que cabe ao credor providenciar a exclusão do nome em até 5 dias úteis a partir do pagamento. Se o prazo passar e o registro continuar, guarde o comprovante e cobre formalmente o credor e o cadastro — a manutenção indevida do nome após a quitação é fonte clássica de indenização por dano moral."
+      },
+      { type: "h2", text: "Negativação indevida: quando cabe indenização por dano moral" },
+      {
+        type: "p",
+        text: "Nem toda negativação é legítima. Geram direito à exclusão imediata e, em regra, à indenização por dano moral:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Dívida que não existe — cobrança de contrato que você nunca assinou, serviço nunca contratado",
+          "Fraude com seu CPF — negativação por dívida feita por golpista em seu nome",
+          "Dívida já paga — inclusão ou manutenção do registro após a quitação",
+          "Dívida caducada — registro mantido além dos 5 anos",
+          "Falta de comunicação prévia — negativação sem o aviso por escrito exigido pelo CDC"
+        ]
+      },
+      {
+        type: "p",
+        text: "Nesses casos, o dano moral é presumido — não é preciso provar sofrimento, porque a restrição indevida de crédito por si só configura o dano. A exceção é a Súmula 385 do STJ: quem já possui outra negativação legítima e anterior não recebe indenização pela inscrição indevida — mas mantém o direito de cancelá-la. Essas ações costumam correr no Juizado Especial Cível, sem custas e, para causas de até 20 salários mínimos, sem obrigação de advogado."
+      },
+      { type: "h2", text: "Golpes de 'limpa nome': como reconhecer e fugir" },
+      {
+        type: "p",
+        text: "A promessa de limpar seu nome 'em até 72 horas' mediante pagamento antecipado é golpe — e dos mais comuns do país. Sinais de alerta:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Cobrança antecipada via Pix para pessoa física, com promessa de resultado garantido",
+          "Promessa de 'apagar' dívida legítima do cadastro ou de aumentar o score de crédito — ninguém tem esse poder: a exclusão só acontece pagando, negociando, pelo decurso dos 5 anos ou por decisão judicial",
+          "Suposta 'liminar garantida' ou 'brecha na lei' vendida por perfis de rede social",
+          "Contato por WhatsApp pedindo dados pessoais, senhas ou fotos de documentos",
+          "Se quem oferece o serviço se apresenta como advogado, confira a inscrição no site da OAB — e lembre que advogado sério não promete resultado"
+        ]
+      },
+      { type: "h2", text: "Quando procurar um advogado?" },
+      {
+        type: "p",
+        text: "Procure orientação quando a negativação for indevida (dívida inexistente, fraude, dívida paga ou caducada) e a empresa não resolver na via administrativa; quando você identificar dívida possivelmente prescrita antes de assinar qualquer acordo; ou quando as dívidas viraram bola de neve — a Lei do Superendividamento (Lei 14.181/2021) permite renegociar todas as dívidas de consumo em bloco, num plano de pagamento que preserva o mínimo existencial. O Procon e a Defensoria Pública atendem gratuitamente, e no Juizado Especial as causas menores dispensam custas."
+      }
+    ],
+    faq: [
+      {
+        question: "Paguei a dívida. Em quanto tempo meu nome sai do SPC e da Serasa?",
+        answer:
+          "Pelo entendimento do STJ, o credor deve providenciar a baixa em até 5 dias úteis contados do pagamento. Se o registro continuar depois disso, guarde o comprovante e cobre o credor e o cadastro — a manutenção indevida pode gerar indenização."
+      },
+      {
+        question: "Depois de 5 anos a dívida some sozinha?",
+        answer:
+          "O registro no SPC/Serasa deve ser excluído automaticamente após 5 anos do vencimento — isso é a caducidade do cadastro. A dívida em si, porém, não é perdoada: ela continua existindo, embora em geral também prescreva (perca a cobrança judicial) em prazo semelhante."
+      },
+      {
+        question: "Posso ser negativado sem ser avisado antes?",
+        answer:
+          "Não. O CDC exige comunicação prévia por escrito antes da inscrição, feita pelo órgão do cadastro (Súmula 359 do STJ) — embora não seja exigido aviso de recebimento (Súmula 404). Negativação sem essa comunicação é irregular e pode ser cancelada."
+      },
+      {
+        question: "Negativação indevida gera indenização automática?",
+        answer:
+          "O dano moral por negativação indevida é presumido — não é preciso provar sofrimento. A exceção é quem já tinha outra negativação legítima anterior: nesse caso, pela Súmula 385 do STJ, cabe o cancelamento do registro indevido, mas não a indenização."
+      },
+      {
+        question: "Empresas que prometem limpar o nome pagando uma taxa funcionam?",
+        answer:
+          "Não. Ninguém consegue apagar dívida legítima de cadastro nem 'turbinar' score de crédito. O nome só sai pagando, negociando, pelo decurso dos 5 anos ou por decisão judicial quando o registro é indevido. Pagamento antecipado com promessa de resultado é o formato clássico do golpe."
+      },
+      {
+        question: "Nome limpo significa score alto na hora?",
+        answer:
+          "Não necessariamente. A baixa da negativação remove a restrição, mas o score é recalculado aos poucos, considerando histórico de pagamentos, cadastro positivo e relacionamento com o crédito. Desconfie de qualquer serviço que prometa aumentar o score rapidamente."
+      }
+    ]
+  },
+  {
+    slug: "inventario-como-fazer-custos-e-prazos",
+    title: "Inventário em 2026: como fazer, quanto custa e quais são os prazos",
+    excerpt:
+      "Cartório ou Justiça? Veja quem pode fazer inventário extrajudicial, os custos (ITCMD, cartório, honorários), o prazo de 2 meses e o que trava o processo.",
+    category: "Sucessões",
+    readingMinutes: 11,
+    publishedAt: "2026-07-04",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "civil",
+    intro:
+      "O inventário é o procedimento que transfere oficialmente os bens de quem faleceu para os herdeiros — e, sem ele, a família não consegue vender o imóvel, movimentar as contas nem regularizar nada no nome de ninguém. A boa notícia: quando há acordo entre herdeiros adultos, o inventário pode ser feito em cartório, em semanas ou poucos meses. Este guia explica em linguagem simples a diferença entre inventário judicial e extrajudicial, o prazo de 2 meses para abrir, quanto custa (ITCMD, cartório e honorários) e o que costuma travar o processo.",
+    body: [
+      { type: "h2", text: "O que é o inventário e por que ele é obrigatório?" },
+      {
+        type: "p",
+        text: "Quando alguém morre, seus bens, dívidas e direitos formam o chamado espólio — um patrimônio que ainda está no nome do falecido. O inventário é o procedimento que apura tudo o que existe (imóveis, veículos, contas, investimentos, dívidas), paga o imposto devido e formaliza a partilha entre os herdeiros. Só com o documento final — o formal de partilha (na Justiça) ou a escritura de inventário (no cartório) — é possível registrar o imóvel no nome dos herdeiros, transferir o carro, sacar investimentos e vender qualquer bem. Enquanto o inventário não sai, o patrimônio fica juridicamente travado."
+      },
+      { type: "h2", text: "Inventário em cartório ou na Justiça: qual a diferença?" },
+      {
+        type: "p",
+        text: "Desde a Lei 11.441/2007, o inventário pode ser feito por escritura pública em cartório de notas — o inventário extrajudicial —, que é o caminho mais rápido e geralmente mais barato. Para poder usar o cartório, é preciso preencher os requisitos:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Todos os herdeiros maiores de idade e capazes — havendo herdeiro menor ou incapaz, o caminho tradicional é o judicial",
+          "Acordo total entre os herdeiros sobre a divisão dos bens — uma única divergência já empurra o caso para a Justiça",
+          "Participação obrigatória de advogado, que assina a escritura junto com as partes",
+          "Testamento: em regra exigia inventário judicial, mas as normas do CNJ e dos estados passaram a admitir o cartório quando o testamento já foi processado ou autorizado pelo juiz — o tabelião e o advogado orientam caso a caso"
+        ]
+      },
+      {
+        type: "p",
+        text: "O inventário judicial, por sua vez, é o caminho obrigatório quando há briga entre herdeiros, herdeiro menor ou incapaz, herdeiro que não é localizado ou situações que exigem decisão de juiz. Ele também pode ser escolhido voluntariamente, mesmo quando o cartório seria possível. A diferença prática está no tempo: o extrajudicial, com documentos em ordem e imposto pago, sai em semanas ou poucos meses; o judicial costuma levar de 1 a 5 anos — ou mais, quando há litígio."
+      },
+      { type: "h2", text: "Qual é o prazo para abrir o inventário?" },
+      {
+        type: "p",
+        text: "O Código de Processo Civil fixa o prazo de 2 meses, contados do falecimento, para abrir o inventário. Perder esse prazo não impede de fazer depois — inventário atrasado é feito todos os dias —, mas custa dinheiro: a maioria dos estados cobra multa sobre o ITCMD quando a abertura passa do prazo, com percentuais que crescem conforme a demora. Quanto mais tempo passa, mais caro e mais complicado fica: documentos vencem, bens se deterioram, herdeiros morrem (gerando inventários acumulados) e dívidas do espólio crescem."
+      },
+      { type: "h2", text: "ITCMD: o imposto do inventário" },
+      {
+        type: "p",
+        text: "O ITCMD (Imposto de Transmissão Causa Mortis e Doação) é o imposto estadual que incide sobre a herança. A alíquota varia de estado para estado, respeitado o teto nacional de 8% — em muitos estados fica entre 2% e 8%, às vezes com faixas progressivas conforme o valor herdado. A base de cálculo é o valor dos bens transmitidos, avaliados conforme as regras do estado. Todos os estados preveem isenções — casos comuns envolvem imóvel único de baixo valor usado como moradia da família ou montes de pequeno valor, sempre conforme a lei estadual. O pagamento do ITCMD (ou o reconhecimento da isenção) é condição para concluir o inventário e registrar a partilha."
+      },
+      { type: "h2", text: "Quanto custa um inventário na prática?" },
+      {
+        type: "ul",
+        items: [
+          "ITCMD — o maior custo na maioria dos casos: percentual sobre o valor dos bens, conforme a alíquota do estado",
+          "Emolumentos de cartório (no extrajudicial) — tabela oficial de cada estado, em geral proporcional ao valor do monte partilhado",
+          "Custas judiciais (no judicial) — também proporcionais ao valor da causa, conforme a tabela do tribunal do estado",
+          "Honorários do advogado — livremente combinados; as tabelas da OAB de cada estado servem de referência, e o valor costuma considerar a complexidade e o patrimônio",
+          "Custos acessórios — certidões (imóveis, negativas fiscais), avaliações e eventual regularização de bens com pendências"
+        ]
+      },
+      {
+        type: "p",
+        text: "Quem não tem condições de arcar com os custos pode requerer a gratuidade da justiça no inventário judicial e, por norma do CNJ, a gratuidade da escritura no cartório, mediante declaração de que não pode pagar sem prejuízo do sustento. O ITCMD, porém, segue as regras de isenção de cada estado — vale verificar se o caso se encaixa antes de pagar."
+      },
+      { type: "h2", text: "Passo a passo do inventário extrajudicial (cartório)" },
+      {
+        type: "ol",
+        items: [
+          "Contratar advogado — a participação dele é obrigatória por lei, mesmo no cartório",
+          "Reunir os documentos: certidão de óbito, documentos pessoais do falecido e dos herdeiros, certidão de casamento ou de união, matrículas dos imóveis, documentos de veículos, extratos bancários e de investimentos, e certidões negativas exigidas pelo tabelionato",
+          "Levantar o patrimônio e as dívidas — o que entra, o que se abate e como fica a divisão",
+          "Definir o inventariante — o herdeiro (ou cônjuge) que representa o espólio e assina pela família",
+          "Declarar e recolher o ITCMD na Secretaria da Fazenda do estado (ou obter o reconhecimento da isenção)",
+          "Lavrar a escritura de inventário e partilha no cartório de notas — pode ser feita em qualquer tabelionato do país, independentemente de onde o falecido morava",
+          "Registrar: a escritura vai ao cartório de registro de imóveis (para os imóveis), ao Detran (veículos) e aos bancos (contas e investimentos) para efetivar as transferências"
+        ]
+      },
+      { type: "h2", text: "Passo a passo do inventário judicial" },
+      {
+        type: "ol",
+        items: [
+          "O advogado protocola a petição de abertura na vara competente do último domicílio do falecido",
+          "O juiz nomeia o inventariante, que presta compromisso e apresenta as primeiras declarações (lista de bens, dívidas e herdeiros)",
+          "Herdeiros são citados e a Fazenda estadual é intimada para fiscalizar o ITCMD",
+          "Bens são avaliados quando necessário e eventuais disputas (quem é herdeiro, o que entra na partilha) são decididas pelo juiz",
+          "Recolhe-se o ITCMD e apresenta-se o plano de partilha",
+          "O juiz homologa a partilha por sentença e expede o formal de partilha, que é levado aos registros (imóveis, Detran, bancos)"
+        ]
+      },
+      { type: "h2", text: "O que costuma travar um inventário?" },
+      {
+        type: "ul",
+        items: [
+          "Herdeiro que não concorda com a divisão ou que não é localizado — o consenso é requisito do cartório e a citação é obrigatória na Justiça",
+          "Imóvel irregular — sem matrícula, sem escritura registrada ou 'de contrato de gaveta': muitas vezes é preciso regularizar antes (inclusive por usucapião) para poder partilhar",
+          "Falta de dinheiro para o ITCMD — é possível pedir ao juiz alvará para vender um bem do espólio e pagar o imposto e as despesas",
+          "Dívidas do falecido — precisam ser levantadas e pagas pelo espólio antes da partilha; os herdeiros não respondem com o próprio bolso, mas a herança responde até o seu limite",
+          "Testamento — exige procedimento próprio de abertura e cumprimento antes da partilha",
+          "Bens descobertos depois — não travam o inventário principal: podem ser partilhados depois, em sobrepartilha"
+        ]
+      },
+      { type: "h2", text: "Dá para mexer no dinheiro do falecido antes do inventário?" },
+      {
+        type: "p",
+        text: "Em regra, não — contas e investimentos ficam bloqueados até a partilha. Mas há exceções importantes: valores de FGTS, PIS/Pasep e saldos de pequeno valor deixados pelo falecido podem ser pagos diretamente aos dependentes habilitados ou levantados por alvará judicial, num procedimento bem mais simples que o inventário (Lei 6.858/80). O seguro de vida também fica fora do inventário: é pago diretamente ao beneficiário indicado na apólice, sem entrar na partilha e sem ITCMD na maioria dos estados. Já usar o cartão ou a senha do falecido para 'resolver por fora' é um erro que gera briga entre herdeiros e prestação de contas — tudo o que sair do espólio precisa aparecer no inventário."
+      },
+      {
+        type: "callout",
+        text: "Vender ou prometer vender um bem do espólio antes do fim do inventário exige cautela: o herdeiro pode ceder seus direitos hereditários por escritura pública, mas a venda do bem em si, antes da partilha, depende de alvará judicial. Negócios 'de boca' sobre herança são fonte clássica de litígio — formalize tudo."
+      },
+      { type: "h2", text: "Quando procurar um advogado?" },
+      {
+        type: "p",
+        text: "No inventário, sempre — a lei exige advogado tanto na via judicial quanto na escritura de cartório. Além da exigência formal, é o advogado quem avalia o caminho mais barato e rápido para o caso, confere isenções de ITCMD, organiza a documentação dos bens (inclusive a regularização de imóveis pendentes) e desenha a partilha de forma a prevenir conflitos futuros. Se os herdeiros estiverem de acordo, um único advogado pode representar todos; havendo interesses diferentes, cada grupo deve ter o seu. Quem não pode pagar tem direito à Defensoria Pública."
+      }
+    ],
+    faq: [
+      {
+        question: "Posso fazer inventário sem advogado?",
+        answer:
+          "Não. A participação do advogado é obrigatória por lei nos dois formatos — no processo judicial e na escritura de inventário em cartório. Se os herdeiros estão de acordo, um único advogado pode assistir a todos, o que reduz o custo."
+      },
+      {
+        question: "Existe herança que dispensa inventário?",
+        answer:
+          "Alguns valores escapam do inventário: FGTS, PIS/Pasep e saldos de pequeno valor podem ir aos dependentes por alvará ou procedimento simplificado (Lei 6.858/80), e o seguro de vida é pago direto ao beneficiário da apólice. Para imóveis, veículos e o restante do patrimônio, o inventário é obrigatório."
+      },
+      {
+        question: "O que acontece se ninguém abrir o inventário?",
+        answer:
+          "Os bens ficam travados no nome do falecido: não podem ser vendidos nem transferidos regularmente. Além disso, a maioria dos estados cobra multa sobre o ITCMD pela abertura fora do prazo de 2 meses, e a situação se complica a cada herdeiro que falece sem a partilha anterior resolvida."
+      },
+      {
+        question: "Herdeiro é obrigado a pagar as dívidas do falecido?",
+        answer:
+          "Não com o próprio bolso. As dívidas do falecido são pagas pelo espólio, e os herdeiros respondem apenas até o limite do que receberem de herança. Se as dívidas superam o patrimônio, a herança pode ser insuficiente — mas o patrimônio pessoal dos herdeiros fica protegido."
+      },
+      {
+        question: "Quanto tempo demora um inventário em cartório?",
+        answer:
+          "Com todos os herdeiros de acordo, documentos completos e ITCMD pago (ou isenção reconhecida), a escritura costuma sair em semanas ou poucos meses. O que mais atrasa é a documentação dos bens — imóvel irregular, por exemplo, precisa ser resolvido antes."
+      },
+      {
+        question: "Posso vender o imóvel da herança antes de terminar o inventário?",
+        answer:
+          "A venda do imóvel em si, antes da partilha, depende de alvará judicial. O que o herdeiro pode fazer por conta própria é ceder seus direitos hereditários por escritura pública — o comprador assume o lugar dele no inventário, com os riscos correspondentes. Em qualquer cenário, formalize por escritura e com orientação jurídica."
+      }
+    ]
   }
 ];
 

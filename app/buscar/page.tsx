@@ -162,7 +162,21 @@ function ResultsInner() {
 
 export default function BuscarPage() {
   return (
-    <Suspense fallback={<div className="container-tight py-10">Carregando…</div>}>
+    <Suspense
+      fallback={
+        <div className="container-tight py-10 animate-pulse" aria-hidden>
+          <div className="h-4 w-24 rounded bg-brand-line/70" />
+          <div className="mt-5 h-8 w-2/3 max-w-md rounded-lg bg-brand-line/70" />
+          <div className="mt-5 h-12 w-full rounded-xl bg-brand-line/50" />
+          <div className="mt-8 space-y-2">
+            <div className="h-14 w-full rounded-xl bg-brand-line/40" />
+            <div className="h-14 w-full rounded-xl bg-brand-line/40" />
+            <div className="h-14 w-full rounded-xl bg-brand-line/40" />
+          </div>
+          <span className="sr-only" role="status">Carregando busca</span>
+        </div>
+      }
+    >
       <ResultsInner />
     </Suspense>
   );

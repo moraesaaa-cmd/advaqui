@@ -38,7 +38,11 @@ export const ARTIGOS_LOCALIZAVEIS_SLUGS: string[] = [
   "acao-de-despejo-como-funciona",
   "usucapiao-como-dar-entrada",
   "bpc-loas-quem-tem-direito",
-  "saque-fgts-modalidades-e-prazos"
+  "saque-fgts-modalidades-e-prazos",
+  "cnh-suspensa-o-que-fazer",
+  "pensao-alimenticia-como-calcular",
+  "limpar-nome-negativado-passo-a-passo",
+  "inventario-como-fazer-custos-e-prazos"
 ];
 
 /**

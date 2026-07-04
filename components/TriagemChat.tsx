@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { MessageCircle, X, Minus, Send, ArrowUpRight } from "lucide-react";
+import { MessageCircle, X, Minus, Send, ArrowUpRight, BadgeCheck } from "lucide-react";
 import { SPECIALTY_SLUGS } from "@/lib/data/specialties";
 
 // ---------------------------------------------------------------------------
@@ -47,6 +47,17 @@ const UF_SLUGS = new Set([
   "pa", "pb", "pr", "pe", "pi", "rj", "rn", "rs", "ro", "rr", "sc", "sp", "se", "to"
 ]);
 
+/** Respostas rápidas do primeiro passo — digitar do zero é a maior fricção
+ *  do funil; um toque numa situação comum dispara a conversa na hora. */
+const QUICK_OPTIONS = [
+  "Fui demitido(a)",
+  "Divórcio ou pensão",
+  "Multa ou CNH",
+  "INSS negou meu benefício",
+  "Comprei e deu problema",
+  "Outro assunto"
+];
+
 function generateId(): string {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
@@ -77,11 +88,6 @@ function loadChat(): ChatMessage[] {
     // corrupted — start fresh
   }
   return [];
-}
-
-function formatTime(ts: number): string {
-  const d = new Date(ts);
-  return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 }
 
 /** Normalize area slug for URL: "Direito Trabalhista" → "trabalhista" */
@@ -131,7 +137,7 @@ const WELCOME_MESSAGE: ChatMessage = {
   id: "welcome",
   role: "assistant",
   content:
-    "Oi! Sou a Marina, assistente virtual do AdvAqui 🙂 Te ajudo a encontrar o advogado certo pro seu caso. Essa conversa fica registrada para eu te conectar ao advogado certo, tá? Me conta rapidinho o que aconteceu?",
+    "Oi! Eu sou a Marina 👋 Me conta o que aconteceu — ou toque numa opção aí embaixo — que eu encontro o advogado certo pra você. É grátis e leva 1 minuto. (A conversa fica registrada só pra te conectar ao advogado.)",
   ts: Date.now(),
 };
 
@@ -173,6 +179,25 @@ async function postLeadWithRetry(payload: Record<string, unknown>): Promise<void
   }
 }
 
+/** Avatar da Marina — círculo âmbar com M, usado no header e nas bolhas. */
+function MarinaAvatar({ size = 32 }: { size?: number }) {
+  return (
+    <span
+      aria-hidden
+      className="flex items-center justify-center rounded-full font-display font-bold shrink-0 select-none"
+      style={{
+        width: size,
+        height: size,
+        background: "#C8A24A",
+        color: "#0F1B2D",
+        fontSize: size * 0.5
+      }}
+    >
+      M
+    </span>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
@@ -199,7 +224,7 @@ export function TriagemChat() {
   // sem ser intrusivo (dispensável e aparece 1x por sessão).
   const [teaser, setTeaser] = useState(false);
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // Hydrate from sessionStorage
@@ -251,10 +276,12 @@ export function TriagemChat() {
     }
   }, [messages, mounted]);
 
-  // Auto-scroll
+  // Auto-scroll — rola SÓ o container de mensagens. (scrollIntoView rolava
+  // também a página atrás do chat no desktop — a tela "fugia" ao digitar.)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, loading]);
+    const el = listRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages, loading, triage]);
 
   // Focus input when opening
   useEffect(() => {
@@ -292,88 +319,100 @@ export function TriagemChat() {
     setUnread(0);
   }, []);
 
-  // Send message
-  const sendMessage = useCallback(async () => {
-    const text = input.trim();
-    if (!text || loading) return;
+  /** Ajusta a altura do textarea ao conteúdo (até ~5 linhas). */
+  const autoGrow = useCallback(() => {
+    const el = inputRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
+  }, []);
 
-    const userMsg: ChatMessage = {
-      id: generateId(),
-      role: "user",
-      content: text,
-      ts: Date.now(),
-    };
+  // Send message — aceita texto direto (respostas rápidas) ou usa o input.
+  const sendMessage = useCallback(
+    async (forcedText?: string) => {
+      const text = (forcedText ?? input).trim();
+      if (!text || loading) return;
 
-    const updatedMessages = [...messages, userMsg];
-    setMessages(updatedMessages);
-    setInput("");
-    setLoading(true);
+      const userMsg: ChatMessage = {
+        id: generateId(),
+        role: "user",
+        content: text,
+        ts: Date.now(),
+      };
 
-    try {
-      const res = await fetch("/api/chat/triage", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sessionId: getSessionId(),
-          messages: updatedMessages
-            .filter((m) => m.id !== "welcome")
-            .map((m) => ({ role: m.role, content: m.content })),
-        }),
-      });
+      const updatedMessages = [...messages, userMsg];
+      setMessages(updatedMessages);
+      setInput("");
+      if (inputRef.current) inputRef.current.style.height = "auto";
+      setLoading(true);
 
-      const data = await res.json();
+      try {
+        const res = await fetch("/api/chat/triage", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sessionId: getSessionId(),
+            messages: updatedMessages
+              .filter((m) => m.id !== "welcome")
+              .map((m) => ({ role: m.role, content: m.content })),
+          }),
+        });
 
-      if (!data.ok) {
+        const data = await res.json();
+
+        if (!data.ok) {
+          const errMsg: ChatMessage = {
+            id: generateId(),
+            role: "assistant",
+            content:
+              data.error || "Desculpe, ocorreu um erro. Tente novamente em instantes.",
+            ts: Date.now(),
+          };
+          setMessages((prev) => [...prev, errMsg]);
+        } else {
+          const assistantMsg: ChatMessage = {
+            id: generateId(),
+            role: "assistant",
+            content: data.message,
+            ts: Date.now(),
+          };
+          setMessages((prev) => [...prev, assistantMsg]);
+
+          if (data.triage) {
+            setTriage(data.triage);
+            // Capture lead — inclui a resposta final da assistente no transcript
+            captureLead(data.triage, [...updatedMessages, assistantMsg]);
+          }
+
+          // Increment unread if minimized
+          if (minimized) {
+            setUnread((prev) => prev + 1);
+          }
+        }
+      } catch {
         const errMsg: ChatMessage = {
           id: generateId(),
           role: "assistant",
-          content:
-            data.error || "Desculpe, ocorreu um erro. Tente novamente em instantes.",
+          content: "Falha na conexão. Verifique sua internet e tente novamente.",
           ts: Date.now(),
         };
         setMessages((prev) => [...prev, errMsg]);
-      } else {
-        const assistantMsg: ChatMessage = {
-          id: generateId(),
-          role: "assistant",
-          content: data.message,
-          ts: Date.now(),
-        };
-        setMessages((prev) => [...prev, assistantMsg]);
-
-        if (data.triage) {
-          setTriage(data.triage);
-          // Capture lead — inclui a resposta final da assistente no transcript
-          captureLead(data.triage, [...updatedMessages, assistantMsg]);
-        }
-
-        // Increment unread if minimized
-        if (minimized) {
-          setUnread((prev) => prev + 1);
-        }
+      } finally {
+        setLoading(false);
+        // Mantém o foco no campo após enviar — evita ter que clicar de novo
+        // no chat a cada mensagem.
+        setTimeout(() => inputRef.current?.focus(), 0);
       }
-    } catch {
-      const errMsg: ChatMessage = {
-        id: generateId(),
-        role: "assistant",
-        content: "Falha na conexão. Verifique sua internet e tente novamente.",
-        ts: Date.now(),
-      };
-      setMessages((prev) => [...prev, errMsg]);
-    } finally {
-      setLoading(false);
-      // Mantém o foco no campo após enviar — evita ter que clicar de novo
-      // no chat a cada mensagem.
-      setTimeout(() => inputRef.current?.focus(), 0);
-    }
-  }, [input, loading, messages, minimized]);
+    },
+    [input, loading, messages, minimized]
+  );
 
   // Handle keyboard
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
-        sendMessage();
+        void sendMessage();
       }
     },
     [sendMessage]
@@ -454,6 +493,10 @@ export function TriagemChat() {
 
   if (hidden || !mounted) return null;
 
+  // Mostra as respostas rápidas enquanto a conversa ainda não começou de fato
+  const showQuickOptions =
+    !loading && !triage && messages.filter((m) => m.role === "user").length === 0;
+
   // -- Floating button (chat closed) --
   if (!open) {
     return (
@@ -468,15 +511,12 @@ export function TriagemChat() {
               >
                 <X className="w-3.5 h-3.5" />
               </button>
-              <button
-                onClick={handleOpen}
-                className="text-left"
-              >
+              <button onClick={handleOpen} className="text-left">
                 <p className="text-sm font-bold text-brand-accent leading-snug">
                   Precisa de um advogado?
                 </p>
                 <p className="text-xs text-white/80 mt-0.5 leading-snug">
-                  Faça uma triagem gratuita em 2 minutos e veja quem pode te ajudar.
+                  Me conta seu caso que eu te indico quem pode ajudar — grátis, 1 minuto.
                 </p>
               </button>
               <span
@@ -538,8 +578,8 @@ export function TriagemChat() {
   // -- Full chat panel --
   return (
     <div
-      className="fixed bottom-0 right-0 sm:bottom-5 sm:right-5 z-50 flex flex-col
-        w-full h-full sm:w-[400px] sm:h-[560px] sm:max-h-[80vh]
+      className="fixed inset-x-0 bottom-0 sm:inset-x-auto sm:bottom-5 sm:right-5 z-50 flex flex-col
+        w-full h-dvh max-h-dvh sm:w-[420px] sm:h-[620px] sm:max-h-[85vh]
         sm:rounded-2xl overflow-hidden shadow-2xl
         bg-white border border-brand-line
         animate-in"
@@ -549,11 +589,20 @@ export function TriagemChat() {
     >
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-brand-ink text-white shrink-0">
-        <div className="flex items-center gap-2">
-          <MessageCircle className="w-5 h-5 text-brand-accent" />
+        <div className="flex items-center gap-2.5">
+          <span className="relative">
+            <MarinaAvatar size={36} />
+            <span
+              aria-hidden
+              className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-brand-ink"
+            />
+          </span>
           <div>
-            <p className="text-sm font-semibold leading-tight">Advogado Online</p>
-            <p className="text-[11px] text-white/60 leading-tight">Marina • assistente virtual do AdvAqui</p>
+            <p className="text-sm font-semibold leading-tight">Marina — Advogado Online</p>
+            <p className="text-[11px] leading-tight inline-flex items-center gap-1" style={{ color: "#CBD5E6" }}>
+              <BadgeCheck className="w-3 h-3 text-brand-accent2" aria-hidden />
+              Advogados verificados • grátis • responde na hora
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-1">
@@ -576,6 +625,7 @@ export function TriagemChat() {
 
       {/* Messages */}
       <div
+        ref={listRef}
         className="flex-1 overflow-y-auto px-4 py-3 space-y-3 overscroll-contain bg-brand-bg"
         role="log"
         aria-live="polite"
@@ -585,30 +635,41 @@ export function TriagemChat() {
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+            className={`flex items-end gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
+            {msg.role === "assistant" && <MarinaAvatar size={24} />}
             <div
-              className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
+              className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-[15px] leading-relaxed ${
                 msg.role === "user"
                   ? "bg-brand-ink text-white rounded-br-md"
                   : "bg-white text-brand-ink border border-brand-line rounded-bl-md"
               }`}
             >
               <p className="whitespace-pre-wrap break-words">{msg.content}</p>
-              <p
-                className={`text-[10px] mt-1 ${
-                  msg.role === "user" ? "text-white/50" : "text-brand-ink/40"
-                }`}
-              >
-                {formatTime(msg.ts)}
-              </p>
             </div>
           </div>
         ))}
 
+        {/* Respostas rápidas — 1 toque em vez de digitar */}
+        {showQuickOptions && (
+          <div className="flex flex-wrap gap-2 pl-8">
+            {QUICK_OPTIONS.map((opt) => (
+              <button
+                key={opt}
+                type="button"
+                onClick={() => void sendMessage(opt)}
+                className="rounded-full border-2 border-brand-line bg-white px-3.5 py-2 text-sm font-medium text-brand-ink transition hover:border-brand-accent hover:bg-brand-accent/10"
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Typing indicator */}
         {loading && (
-          <div className="flex justify-start">
+          <div className="flex items-end gap-2 justify-start">
+            <MarinaAvatar size={24} />
             <div className="bg-white border border-brand-line rounded-2xl rounded-bl-md px-4 py-3">
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-brand-ink/30 animate-bounce [animation-delay:0ms]" />
@@ -621,14 +682,14 @@ export function TriagemChat() {
 
         {/* CTA after triage — usa o link validado no servidor quando presente */}
         {triage && (triage.ctaUrl || triage.area) && (
-          <div className="flex justify-start">
+          <div className="flex justify-start pl-8">
             <div className="max-w-[85%] space-y-2">
               <a
                 href={triage.ctaUrl || buildCtaUrl(triage)}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-accent text-brand-ink text-sm font-semibold hover:brightness-110 transition-all"
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-brand-accent text-brand-ink text-sm font-bold hover:brightness-110 transition-all shadow-md"
               >
                 <ArrowUpRight className="w-4 h-4" />
-                {triage.ctaLabel || "Encontrar advogado"}
+                {triage.ctaLabel || "Ver advogados agora"}
               </a>
               <p className="text-[11px] text-brand-ink/50 leading-snug px-1">
                 Triagem informativa — não substitui orientação de um advogado.
@@ -636,35 +697,41 @@ export function TriagemChat() {
             </div>
           </div>
         )}
-
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Input */}
-      <div className="shrink-0 border-t border-brand-line bg-white px-3 py-2.5">
+      <div
+        className="shrink-0 border-t border-brand-line bg-white px-3 py-2.5"
+        style={{ paddingBottom: "max(0.625rem, env(safe-area-inset-bottom))" }}
+      >
         <div className="flex items-end gap-2">
           <textarea
             ref={inputRef}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => {
+              setInput(e.target.value);
+              autoGrow();
+            }}
             onKeyDown={handleKeyDown}
-            placeholder="Digite aqui a sua mensagem..."
+            placeholder="Escreva sua mensagem..."
             rows={1}
-            className="flex-1 resize-none rounded-xl border-2 border-brand-line bg-brand-bg px-3 py-2.5 text-sm
+            enterKeyHint="send"
+            autoComplete="off"
+            className="flex-1 resize-none rounded-xl border-2 border-brand-line bg-brand-bg px-3.5 py-2.5 text-[15px]
               text-brand-ink placeholder:text-brand-ink/50
               focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent
-              max-h-24 overflow-y-auto"
-            style={{ minHeight: "40px" }}
+              overflow-y-auto"
+            style={{ minHeight: "44px", maxHeight: "120px" }}
           />
           <button
-            onClick={sendMessage}
+            onClick={() => void sendMessage()}
             disabled={!input.trim() || loading}
             aria-label="Enviar mensagem"
-            className="flex items-center justify-center w-10 h-10 rounded-xl bg-brand-ink text-white
-              hover:bg-brand-deep transition-colors
+            className="flex items-center justify-center w-11 h-11 rounded-xl bg-brand-accent text-brand-ink
+              hover:bg-brand-accent2 transition-colors
               disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-5 h-5" />
           </button>
         </div>
         <p className="text-[10px] text-brand-ink/40 mt-1.5 text-center">

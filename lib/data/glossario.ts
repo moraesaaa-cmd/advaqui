@@ -1830,6 +1830,537 @@ export const GLOSSARIO: GlossarioTermo[] = [
     areas: ["administrativo"],
     ver_tambem: ["mandado-de-seguranca", "processo-administrativo-disciplinar", "liminar"],
     atualizado_em: "2026-07-02"
+  },
+  // ——— Criminal (cidadão) ———
+  {
+    slug: "prisao-em-flagrante",
+    termo: "Prisão em flagrante",
+    variacoes: ["flagrante", "auto de prisão em flagrante", "preso em flagrante"],
+    definicao_curta:
+      "Prisão de quem é surpreendido durante o crime ou logo após, que deve ser comunicada imediatamente ao juiz.",
+    explicacao: [
+      "A prisão em flagrante acontece quando a pessoa é presa no momento em que comete o crime, logo depois de cometê-lo ou quando é encontrada com objetos que indiquem, de forma clara, que acabou de praticá-lo. É a única prisão que pode ser feita sem ordem prévia do juiz, inclusive por qualquer pessoa do povo, embora seja mais comum pela polícia.",
+      "Feita a prisão, lavra-se o auto de prisão em flagrante, e a pessoa presa tem direitos garantidos pela Constituição — permanecer em silêncio, ser informada da acusação, ter assistência de advogado e comunicar a família. O caso deve ser levado rapidamente ao juiz, que decide se converte o flagrante em prisão preventiva, concede liberdade (com ou sem fiança) ou relaxa a prisão quando ela foi ilegal.",
+      "O flagrante não significa condenação: é apenas o início. A pessoa continua presumida inocente até o fim do processo. Se a prisão foi feita fora das hipóteses previstas na lei ou sem respeitar os direitos do preso, ela pode ser considerada ilegal e desfeita.",
+      "Diante de uma prisão em flagrante, o mais importante é acionar imediatamente um advogado, que pode pedir liberdade, fiança ou habeas corpus. Procure sempre um advogado o quanto antes."
+    ],
+    exemplos: [
+      "Pessoa detida pela polícia com o produto do furto momentos após a subtração",
+      "Suspeito preso por populares logo após uma agressão e entregue à polícia",
+      "Motorista flagrado dirigindo embriagado durante uma blitz"
+    ],
+    areas: ["criminal"],
+    ver_tambem: ["fianca", "audiencia-de-custodia", "habeas-corpus"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "fianca",
+    termo: "Fiança criminal",
+    variacoes: ["fiança", "pagar fiança", "arbitramento de fiança"],
+    definicao_curta:
+      "Valor pago para que a pessoa presa responda ao processo em liberdade, com o compromisso de cumprir obrigações.",
+    explicacao: [
+      "A fiança é uma garantia em dinheiro (ou em bens) que permite ao acusado responder ao processo em liberdade, assumindo o compromisso de comparecer aos atos do processo e de não atrapalhar a investigação. Se descumprir as condições ou fugir, pode perder o valor e ser preso novamente.",
+      "Em crimes menos graves, a própria autoridade policial (o delegado) pode arbitrar a fiança já na delegacia; nos demais casos, quem decide é o juiz. O valor é fixado conforme a gravidade do crime e a situação econômica da pessoa, podendo ser reduzido ou até dispensado para quem não tem condições de pagar.",
+      "Nem todo crime admite fiança. A lei lista crimes inafiançáveis, como o racismo e os crimes hediondos. Mesmo quando a fiança não é cabível, isso não significa que a pessoa ficará necessariamente presa — o juiz pode conceder liberdade provisória sem fiança em outras situações.",
+      "Se a fiança arbitrada for alta demais para a realidade da pessoa, o advogado pode pedir revisão ao juiz. Diante de uma prisão, procure sempre um advogado para avaliar o cabimento e o valor da fiança."
+    ],
+    exemplos: [
+      "Delegado que arbitra fiança para soltar a pessoa presa por crime de menor gravidade",
+      "Juiz que reduz o valor da fiança por causa da baixa renda do acusado",
+      "Acusado que perde a fiança por deixar de comparecer às audiências"
+    ],
+    areas: ["criminal"],
+    ver_tambem: ["prisao-em-flagrante", "audiencia-de-custodia", "habeas-corpus"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "audiencia-de-custodia",
+    termo: "Audiência de custódia",
+    variacoes: ["audiência de apresentação", "custódia"],
+    definicao_curta:
+      "Apresentação rápida da pessoa presa a um juiz, para verificar a legalidade da prisão e a integridade do preso.",
+    explicacao: [
+      "A audiência de custódia é o encontro, em regra dentro de 24 horas após a prisão, entre a pessoa presa e um juiz. Serve para o juiz verificar se a prisão foi legal, se a pessoa sofreu maus-tratos ou tortura e para decidir o que acontece a seguir — soltar, conceder liberdade com medidas ou manter a prisão.",
+      "Ela não julga se a pessoa é culpada ou inocente. O objetivo é controlar a legalidade da prisão logo no início e coibir abusos. Estão presentes o juiz, o Ministério Público e a defesa, e a pessoa presa pode falar sobre as circunstâncias da prisão.",
+      "A audiência de custódia foi adotada no Brasil a partir de normas do Conselho Nacional de Justiça e depois incorporada expressamente à lei processual penal. Hoje é etapa obrigatória, e a sua ausência pode ser motivo para questionar a prisão.",
+      "É um momento decisivo: uma boa atuação da defesa pode resultar em liberdade já ali. Por isso, é importante que a pessoa presa esteja acompanhada de advogado. Procure sempre um advogado."
+    ],
+    exemplos: [
+      "Pessoa presa em flagrante que é levada ao juiz no dia seguinte para a audiência de custódia",
+      "Juiz que concede liberdade na audiência ao constatar que a prisão foi desnecessária",
+      "Preso que relata agressões na abordagem, registradas na audiência de custódia"
+    ],
+    areas: ["criminal"],
+    ver_tambem: ["prisao-em-flagrante", "fianca", "habeas-corpus"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "porte-de-drogas",
+    termo: "Porte de drogas para consumo pessoal",
+    variacoes: ["porte de drogas", "usuário de drogas", "porte para uso próprio"],
+    definicao_curta:
+      "Ter drogas para consumo próprio, situação tratada de forma diferente do tráfico e que, em regra, não leva à prisão.",
+    explicacao: [
+      "Porte de drogas para consumo pessoal é ter consigo pequena quantidade de entorpecente para uso próprio. A Lei de Drogas trata essa situação de modo bem diferente do tráfico: para o usuário, não há pena de prisão — as medidas previstas são advertência, prestação de serviços à comunidade e comparecimento a programa educativo.",
+      "A grande questão prática é distinguir o usuário do traficante. A lei manda considerar a quantidade da droga, o local e as circunstâncias da apreensão, além da conduta e dos antecedentes da pessoa. Não existe uma regra única e simples; cada caso é analisado individualmente.",
+      "No caso específico da maconha, o Supremo Tribunal Federal fixou parâmetros para orientar essa diferença entre uso pessoal e tráfico. Ainda assim, a classificação continua dependendo do conjunto das circunstâncias de cada caso concreto.",
+      "Ser flagrado com droga, mesmo como usuário, gera um procedimento que pode ter reflexos importantes. Por isso, procure sempre um advogado para orientar a defesa e evitar que o uso seja tratado, indevidamente, como tráfico."
+    ],
+    exemplos: [
+      "Pessoa flagrada com pequena quantidade de droga para consumo próprio",
+      "Discussão, no processo, sobre se a quantidade indica uso ou tráfico",
+      "Usuário que recebe medida educativa em vez de pena de prisão"
+    ],
+    areas: ["criminal"],
+    ver_tambem: ["prisao-em-flagrante", "fianca", "bafometro", "habeas-corpus"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "bafometro",
+    termo: "Bafômetro e Lei Seca",
+    variacoes: ["bafômetro", "etilômetro", "lei seca", "embriaguez ao volante"],
+    definicao_curta:
+      "Teste que mede o álcool no organismo do motorista; a recusa e a embriaguez ao volante geram penalidades próprias.",
+    explicacao: [
+      "O bafômetro (etilômetro) é o aparelho usado para medir a concentração de álcool no ar expelido pelos pulmões, indicando se o motorista bebeu. Faz parte da fiscalização da chamada Lei Seca, voltada a coibir a direção sob efeito de álcool.",
+      "Dirigir sob influência de álcool é, ao mesmo tempo, infração administrativa gravíssima (com multa e suspensão do direito de dirigir) e, a partir de certo nível ou de sinais claros de embriaguez, crime de trânsito. A prova pode vir do bafômetro, de exame de sangue ou até de outros sinais observados pelo agente, como o comportamento do condutor.",
+      "Ninguém é obrigado a produzir prova contra si mesmo, e por isso o motorista pode se recusar a soprar o bafômetro. A recusa, porém, é tratada pela lei como infração administrativa autônoma, com penalidade equivalente à da embriaguez — ou seja, evita a prova, mas não a punição administrativa.",
+      "As consequências variam conforme o caso e podem envolver as esferas administrativa e criminal ao mesmo tempo. Diante de uma autuação por embriaguez ou por recusa, procure sempre um advogado."
+    ],
+    exemplos: [
+      "Motorista abordado em blitz que sopra o bafômetro e é autuado por embriaguez",
+      "Condutor que se recusa ao teste e recebe a penalidade administrativa pela recusa",
+      "Caso em que a embriaguez ao volante vira também processo criminal"
+    ],
+    areas: ["criminal", "administrativo"],
+    ver_tambem: ["cnh-suspensa", "prisao-em-flagrante", "porte-de-drogas"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "cnh-suspensa",
+    termo: "CNH suspensa",
+    variacoes: ["suspensão do direito de dirigir", "carteira suspensa", "suspensão da CNH"],
+    definicao_curta:
+      "Penalidade que impede a pessoa de dirigir por um período, aplicada em processo administrativo de trânsito.",
+    explicacao: [
+      "A suspensão do direito de dirigir é a penalidade que retira, temporariamente, a possibilidade de conduzir veículos. Ela ocorre principalmente em duas situações previstas no Código de Trânsito: quando o condutor atinge um determinado número de pontos na carteira dentro de 12 meses, ou quando comete certas infrações que, sozinhas, já geram a suspensão.",
+      "A suspensão não é automática: deve haver um processo administrativo, com notificação e direito de defesa e de recurso perante os órgãos de trânsito. Só depois de concluído esse processo é que o condutor deve entregar a CNH e cumprir o período de suspensão, muitas vezes acompanhado de curso de reciclagem.",
+      "Dirigir durante o período de suspensão é infração gravíssima e pode levar à cassação da CNH — penalidade mais grave, que exige recomeçar o processo de habilitação depois de um prazo. São coisas diferentes: a suspensão é temporária; a cassação é a perda da habilitação.",
+      "Há prazos curtos para apresentar defesa e recurso, e falhas no processo podem anular a penalidade. Ao receber a notificação, guarde tudo, observe os prazos e procure sempre um advogado."
+    ],
+    exemplos: [
+      "Motorista que atinge o limite de pontos em um ano e responde a processo de suspensão",
+      "Condutor autuado por infração que, sozinha, gera a suspensão do direito de dirigir",
+      "Defesa que anula a suspensão por falta de notificação regular"
+    ],
+    areas: ["administrativo"],
+    ver_tambem: ["bafometro", "mandado-de-seguranca", "tutela-de-urgencia"],
+    atualizado_em: "2026-07-04"
+  },
+  // ——— Previdenciário (cidadão) ———
+  {
+    slug: "salario-maternidade",
+    termo: "Salário-maternidade",
+    variacoes: ["licença-maternidade", "benefício maternidade"],
+    definicao_curta:
+      "Benefício pago pelo INSS à segurada afastada do trabalho por causa do nascimento ou da adoção de um filho.",
+    explicacao: [
+      "O salário-maternidade é o benefício que garante renda à mãe durante o afastamento pelo nascimento de um filho, e também em casos de adoção, de guarda para adoção e, em situações previstas, de aborto não criminoso. Em regra, dura 120 dias.",
+      "Têm direito não só as empregadas com carteira assinada, mas também as trabalhadoras autônomas, as MEIs, as contribuintes facultativas e as seguradas especiais (como as trabalhadoras rurais), desde que cumpridos os requisitos de qualidade de segurada e, quando exigida, a carência mínima de contribuições.",
+      "Para a empregada com carteira assinada, em regra o pagamento é feito pela empresa, que depois se compensa; para as demais, costuma ser pago diretamente pelo INSS. Em caso de falecimento da mãe, o benefício pode ser transferido ao outro genitor.",
+      "Pedidos são negados com frequência por falta de documentos ou por dúvida sobre a qualidade de segurada. Se o benefício foi negado ou pago a menos, vale revisar. Procure sempre um advogado ou o INSS para orientação sobre o seu caso."
+    ],
+    exemplos: [
+      "Empregada gestante que se afasta e recebe o salário-maternidade durante a licença",
+      "Trabalhadora autônoma que requer o benefício diretamente ao INSS após o parto",
+      "Casal que adota uma criança e requer o salário-maternidade"
+    ],
+    areas: ["previdenciario", "trabalhista"],
+    ver_tambem: ["auxilio-doenca", "aposentadoria", "estabilidade-gestante"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "auxilio-reclusao",
+    termo: "Auxílio-reclusão",
+    variacoes: ["benefício de reclusão", "pensão de preso"],
+    definicao_curta:
+      "Benefício pago aos dependentes de segurado de baixa renda que foi preso, enquanto durar a reclusão em regime fechado.",
+    explicacao: [
+      "O auxílio-reclusão é um benefício previdenciário pago não ao preso, mas aos seus dependentes — como cônjuge, companheiro e filhos —, para amparar a família que dependia da renda dele. Segue, em boa parte, a mesma lógica da pensão por morte.",
+      "Para ter direito, o segurado preso precisa se enquadrar como de baixa renda (conforme o limite atualizado periodicamente), estar em regime fechado e ter a qualidade de segurado, com o número mínimo de contribuições exigido pela lei. Não basta estar preso: os requisitos são específicos.",
+      "O benefício é pago enquanto durar a reclusão nessas condições. Se o preso passa a regime menos rigoroso, é solto ou foge, o pagamento pode cessar. A família precisa comprovar periodicamente que ele continua preso.",
+      "As regras mudaram nos últimos anos e há bastante confusão sobre quem tem direito. Diante da prisão de quem sustentava a casa, vale verificar o cabimento. Procure sempre um advogado ou o INSS."
+    ],
+    exemplos: [
+      "Filhos de trabalhador de baixa renda preso em regime fechado que passam a receber o benefício",
+      "Esposa que comprova a prisão do marido para manter o auxílio-reclusão",
+      "Benefício encerrado quando o segurado é colocado em liberdade"
+    ],
+    areas: ["previdenciario"],
+    ver_tambem: ["pensao-por-morte", "bpc-loas", "auxilio-doenca"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "aposentadoria-especial",
+    termo: "Aposentadoria especial",
+    variacoes: ["aposentadoria por insalubridade", "tempo especial", "atividade especial"],
+    definicao_curta:
+      "Aposentadoria de quem trabalhou exposto a agentes que prejudicam a saúde, com regras próprias de tempo e comprovação.",
+    explicacao: [
+      "A aposentadoria especial é destinada a quem trabalhou exposto, de forma habitual, a agentes nocivos à saúde — ruído excessivo, calor, produtos químicos, agentes biológicos, entre outros. A ideia é permitir a aposentadoria antes, por causa do desgaste maior da atividade.",
+      "A comprovação da exposição é o ponto central e costuma ser feita por documentos técnicos fornecidos pela empresa, como o PPP (Perfil Profissiográfico Previdenciário) e laudos ambientais. Sem essa prova, o INSS não reconhece o tempo especial.",
+      "Depois da reforma da Previdência de 2019, as regras mudaram: passou a haver exigência de idade mínima somada ao tempo de atividade especial, com regras de transição para quem já contribuía. O uso de equipamentos de proteção também pode influenciar o reconhecimento, tema que ainda gera discussão.",
+      "Muitos pedidos são negados por documentação incompleta ou porque o INSS não reconhece a exposição. Em vários casos é possível reverter em revisão ou na Justiça. Procure sempre um advogado especializado em direito previdenciário."
+    ],
+    exemplos: [
+      "Metalúrgico exposto a ruído acima do limite que soma tempo de atividade especial",
+      "Profissional de saúde exposto a agentes biológicos que requer a aposentadoria especial",
+      "Trabalhador que consegue reconhecer o tempo especial com base no PPP fornecido pela empresa"
+    ],
+    areas: ["previdenciario", "trabalhista"],
+    ver_tambem: ["aposentadoria", "insalubridade", "periculosidade"],
+    atualizado_em: "2026-07-04"
+  },
+  // ——— Trabalhista (cidadão) ———
+  {
+    slug: "rescisao-indireta",
+    termo: "Rescisão indireta",
+    variacoes: ["demissão indireta", "justa causa do empregador"],
+    definicao_curta:
+      "Rompimento do contrato por culpa grave do empregador, com direito às mesmas verbas de uma demissão sem justa causa.",
+    explicacao: [
+      "A rescisão indireta é a justa causa aplicada ao empregador. Quando o patrão comete falta grave — deixa de pagar salários, exige serviços humilhantes ou fora do contrato, descumpre obrigações, submete o empregado a rigor excessivo ou a assédio —, o trabalhador pode considerar o contrato rompido por culpa da empresa.",
+      "O efeito é importante: reconhecida a rescisão indireta, o trabalhador recebe as mesmas verbas de quem foi demitido sem justa causa — aviso prévio, multa de 40% do FGTS, saque do FGTS e seguro-desemprego, entre outras, conforme o caso. É o oposto do pedido de demissão, em que se perde parte desses direitos.",
+      "Em regra, o reconhecimento é buscado na Justiça do Trabalho, e o trabalhador precisa provar a falta grave do empregador. Por isso, reunir provas — mensagens, testemunhas, comprovantes de atraso de salário — é decisivo.",
+      "Sair simplesmente pedindo demissão pode significar perder direitos que seriam garantidos pela rescisão indireta. Antes de tomar a decisão, procure sempre um advogado trabalhista."
+    ],
+    exemplos: [
+      "Empregado que sai por meses de salário atrasado e pede a rescisão indireta",
+      "Trabalhador vítima de assédio moral que rompe o contrato por culpa da empresa",
+      "Funcionário obrigado a tarefas humilhantes que busca as verbas na Justiça"
+    ],
+    areas: ["trabalhista"],
+    ver_tambem: ["rescisao", "justa-causa", "assedio-moral", "fgts"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "ferias",
+    termo: "Férias",
+    variacoes: ["férias vencidas", "férias proporcionais", "terço de férias"],
+    definicao_curta:
+      "Descanso remunerado anual do trabalhador, pago com um adicional de um terço sobre o salário.",
+    explicacao: [
+      "As férias são o direito ao descanso anual remunerado. Em regra, o trabalhador com carteira assinada adquire o direito a 30 dias de férias após cada período de 12 meses de trabalho (o chamado período aquisitivo) e deve tirá-las nos 12 meses seguintes.",
+      "Além do salário do período, o trabalhador recebe o adicional de um terço (1/3) de férias, garantido pela Constituição. Faltas em excesso ao longo do ano podem reduzir a quantidade de dias de férias, conforme a lei.",
+      "É possível vender parte das férias: o trabalhador pode converter até um terço em dinheiro, o chamado abono pecuniário. Após a reforma trabalhista, as férias também podem ser fracionadas em até três períodos, respeitados os limites da lei. Férias não concedidas no prazo devem ser pagas em dobro.",
+      "Erros comuns envolvem férias pagas fora do prazo, sem o terço, ou nunca concedidas. Se você saiu do emprego sem receber férias vencidas ou proporcionais, procure sempre um advogado."
+    ],
+    exemplos: [
+      "Trabalhador que tira 30 dias de férias e recebe o salário com o terço constitucional",
+      "Empregado que vende dez dias de férias como abono pecuniário",
+      "Férias concedidas com atraso que precisam ser pagas em dobro"
+    ],
+    areas: ["trabalhista"],
+    ver_tambem: ["decimo-terceiro", "rescisao", "aviso-previo"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "decimo-terceiro",
+    termo: "Décimo terceiro salário",
+    variacoes: ["13º salário", "gratificação natalina", "decimo terceiro"],
+    definicao_curta:
+      "Gratificação natalina paga ao trabalhador no fim do ano, equivalente, em regra, a um salário extra.",
+    explicacao: [
+      "O décimo terceiro salário, ou gratificação natalina, é um pagamento anual a que têm direito os trabalhadores com carteira assinada e também aposentados e pensionistas. Corresponde, em regra, a um salário, proporcional aos meses trabalhados no ano.",
+      "O pagamento costuma ser feito em duas parcelas: a primeira até o fim de novembro e a segunda até 20 de dezembro. Quem trabalhou o ano inteiro recebe o valor cheio; quem trabalhou parte do ano recebe proporcionalmente (cada mês com 15 dias ou mais de trabalho conta como mês integral).",
+      "Na saída do emprego, o décimo terceiro proporcional entra nas verbas rescisórias, salvo na dispensa por justa causa, em que há perda dessa parcela. Ele também compõe a base de outros direitos, como o FGTS.",
+      "Se o décimo terceiro não foi pago, foi pago a menos ou não entrou na rescisão, é possível cobrar. Procure sempre um advogado trabalhista."
+    ],
+    exemplos: [
+      "Empregado que recebe a primeira parcela do décimo terceiro em novembro",
+      "Trabalhador desligado em julho que recebe o décimo terceiro proporcional na rescisão",
+      "Cobrança de décimo terceiro atrasado na Justiça do Trabalho"
+    ],
+    areas: ["trabalhista"],
+    ver_tambem: ["ferias", "rescisao", "fgts"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "banco-de-horas",
+    termo: "Banco de horas",
+    variacoes: ["compensação de jornada", "compensação de horas"],
+    definicao_curta:
+      "Sistema que permite compensar horas trabalhadas a mais com folgas, em vez de pagar hora extra.",
+    explicacao: [
+      "O banco de horas é um acordo que permite guardar as horas trabalhadas além da jornada para depois compensá-las com folgas ou redução de jornada, em vez de pagá-las como horas extras. Serve para dar flexibilidade quando a demanda de trabalho varia.",
+      "Para valer, precisa de acordo. Após a reforma trabalhista, um acordo individual por escrito permite compensação dentro de até seis meses; para prazos maiores, de até um ano, exige-se acordo ou convenção coletiva com o sindicato. As horas não compensadas dentro do prazo devem ser pagas como extras, com o adicional.",
+      "O banco de horas não pode ser usado para mascarar horas extras nunca pagas nem compensadas. Se o sistema não é regular ou as horas somem sem a folga correspondente, o trabalhador pode ter direito a receber essas horas como extras.",
+      "Encerrado o contrato, o saldo positivo de horas deve ser pago. Se você desconfia que o banco de horas está sendo usado de forma irregular, procure sempre um advogado trabalhista."
+    ],
+    exemplos: [
+      "Empresa que compensa as horas extras da semana cheia com folgas na semana seguinte",
+      "Acordo coletivo que institui banco de horas com compensação em até um ano",
+      "Saldo de horas não compensado que é pago como hora extra na rescisão"
+    ],
+    areas: ["trabalhista"],
+    ver_tambem: ["horas-extras", "adicional-noturno", "rescisao"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "adicional-noturno",
+    termo: "Adicional noturno",
+    variacoes: ["trabalho noturno", "hora noturna", "hora reduzida noturna"],
+    definicao_curta:
+      "Acréscimo no salário do trabalhador que atua durante a noite, pago sobre as horas trabalhadas nesse período.",
+    explicacao: [
+      "O adicional noturno é o valor a mais pago a quem trabalha durante a noite, em compensação pelo desgaste maior desse horário. Para o trabalhador urbano, considera-se noturno, em regra, o trabalho entre 22h de um dia e 5h do dia seguinte.",
+      "O adicional é de, no mínimo, 20% sobre o valor da hora normal para o trabalhador urbano — convenções coletivas podem prever percentual maior. Além disso, há a chamada hora noturna reduzida: cada hora trabalhada à noite é contada como se tivesse pouco menos de 60 minutos, o que aumenta o total de horas pagas.",
+      "O trabalho rural tem regras próprias, com horários e percentuais diferentes. Quando a jornada noturna se prolonga para depois das 5h, o adicional pode continuar incidindo sobre esse tempo, conforme a jurisprudência.",
+      "É comum o adicional noturno ser pago a menos ou não considerar a hora reduzida. Se você trabalha à noite e desconfia de erro no cálculo, procure sempre um advogado trabalhista."
+    ],
+    exemplos: [
+      "Vigia noturno que recebe adicional sobre as horas trabalhadas entre 22h e 5h",
+      "Profissional de hospital em plantão noturno com direito à hora reduzida",
+      "Trabalhador que descobre que o adicional noturno vinha sendo pago a menos"
+    ],
+    areas: ["trabalhista"],
+    ver_tambem: ["horas-extras", "banco-de-horas", "insalubridade"],
+    atualizado_em: "2026-07-04"
+  },
+  // ——— Família e sucessões (cidadão) ———
+  {
+    slug: "regime-de-bens",
+    termo: "Regime de bens",
+    variacoes: ["comunhão parcial", "comunhão universal", "separação de bens", "pacto antenupcial"],
+    definicao_curta:
+      "Conjunto de regras que define como ficam os bens do casal durante o casamento e em caso de divórcio ou falecimento.",
+    explicacao: [
+      "O regime de bens é o que determina se o patrimônio do casal se mistura ou não, e como será dividido se o casamento terminar por divórcio ou por morte. A escolha é feita antes do casamento; sem escolha expressa, aplica-se o regime legal padrão.",
+      "Os principais regimes são: a comunhão parcial (regra geral no Brasil), em que se dividem os bens adquiridos durante o casamento, ficando de fora os anteriores e os recebidos por herança ou doação; a comunhão universal, em que quase tudo se comunica; a separação total, em que cada um mantém o seu; e a participação final nos aquestos, mais rara.",
+      "Para adotar um regime diferente do padrão, o casal faz um pacto antenupcial em cartório antes de casar. Em algumas situações a lei impõe a separação obrigatória de bens, como para quem se casa acima de certa idade prevista em lei. O regime pode, em regra, ser alterado depois, mas isso depende de autorização judicial.",
+      "A escolha do regime tem efeitos enormes no futuro — em dívidas, herança e divórcio. Antes de casar ou de mudar o regime, procure sempre um advogado para entender as consequências no seu caso."
+    ],
+    exemplos: [
+      "Casal que se casa sem pacto e fica automaticamente na comunhão parcial de bens",
+      "Noivos que assinam pacto antenupcial optando pela separação total de bens",
+      "Divórcio em que a divisão do patrimônio segue o regime escolhido no casamento"
+    ],
+    areas: ["familia", "civil"],
+    ver_tambem: ["divorcio", "uniao-estavel", "partilha-de-bens", "meacao"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "investigacao-de-paternidade",
+    termo: "Investigação de paternidade",
+    variacoes: ["ação de paternidade", "reconhecimento de paternidade", "exame de DNA"],
+    definicao_curta:
+      "Ação judicial para reconhecer quem é o pai (ou a mãe) de uma pessoa, com efeitos de filiação.",
+    explicacao: [
+      "A ação de investigação de paternidade serve para reconhecer juridicamente o vínculo entre filho e pai quando esse reconhecimento não foi feito de forma voluntária. Reconhecida a paternidade, surgem todos os efeitos da filiação: nome, direito a alimentos, herança e demais direitos.",
+      "A prova mais importante costuma ser o exame de DNA. Quando o suposto pai se recusa, sem justificativa, a fazer o exame, essa recusa pesa contra ele — a lei e a jurisprudência admitem que se presuma a paternidade a partir desse comportamento, somado a outros indícios.",
+      "O direito de investigar a origem é protegido de forma ampla: o reconhecimento do estado de filho, em regra, não se perde pelo passar do tempo. Já a cobrança de valores como alimentos e a discussão sobre herança podem ter prazos próprios, o que exige análise cuidadosa.",
+      "É possível cumular o pedido de reconhecimento com o de pensão alimentícia. Por envolver provas e prazos técnicos, procure sempre um advogado para conduzir a ação."
+    ],
+    exemplos: [
+      "Filho que ingressa com ação para reconhecer o pai que nunca o registrou",
+      "Mãe que pede o reconhecimento e a pensão do filho na mesma ação",
+      "Caso em que a recusa ao exame de DNA leva o juiz a presumir a paternidade"
+    ],
+    areas: ["familia", "civil"],
+    ver_tambem: ["pensao-alimenticia", "guarda", "herdeiro-necessario"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "doacao",
+    termo: "Doação",
+    variacoes: ["doar bem", "doação de imóvel", "adiantamento de legítima"],
+    definicao_curta:
+      "Contrato em que uma pessoa transfere, de graça, um bem seu para outra, dentro dos limites da lei.",
+    explicacao: [
+      "Doação é a entrega gratuita de um bem — dinheiro, imóvel, veículo — de uma pessoa (doador) para outra (donatário). Por ser um ato importante, a doação de imóveis exige escritura pública, e algumas doações precisam ser aceitas pelo donatário.",
+      "A lei protege quem doa e também terceiros. O doador não pode doar todo o seu patrimônio a ponto de ficar sem o mínimo para a própria subsistência. Além disso, quem tem herdeiros necessários (como filhos) não pode doar, além da metade que a lei reserva a eles (a legítima) — a doação que ultrapassa esse limite pode ser questionada.",
+      "A doação de pais para filhos é, em regra, vista como adiantamento de herança e, no futuro, precisa ser trazida à conta na partilha (a colação), salvo dispensa expressa dentro dos limites legais. Também existem doações com condições ou com reserva de usufruto, muito usadas em planejamento familiar.",
+      "Doações mal planejadas geram brigas de família e problemas fiscais (incide o imposto estadual sobre a doação). Antes de doar ou de aceitar uma doação, procure sempre um advogado."
+    ],
+    exemplos: [
+      "Pai que doa um imóvel ao filho reservando para si o usufruto",
+      "Doação em dinheiro que precisa ser considerada na partilha da herança",
+      "Doação anulada por ultrapassar a parte que a lei reserva aos herdeiros"
+    ],
+    areas: ["civil", "familia"],
+    ver_tambem: ["testamento", "inventario", "herdeiro-necessario", "usufruto"],
+    atualizado_em: "2026-07-04"
+  },
+  // ——— Consumidor e civil (cidadão) ———
+  {
+    slug: "juizado-especial",
+    termo: "Juizado Especial",
+    variacoes: ["juizado de pequenas causas", "juizado especial cível", "pequenas causas"],
+    definicao_curta:
+      "Justiça mais rápida e simples para causas de menor valor e complexidade, em que muitas vezes nem é preciso advogado.",
+    explicacao: [
+      "O Juizado Especial (também chamado de Juizado de Pequenas Causas) foi criado para resolver, de forma rápida e informal, conflitos de menor valor e complexidade. É onde o cidadão costuma resolver problemas do dia a dia — cobrança indevida, produto com defeito, briga de vizinhos, pequenas dívidas.",
+      "Nos Juizados Especiais Cíveis estaduais, cabem causas até um limite ligado ao salário mínimo, e para as de menor valor a própria pessoa pode entrar sozinha, sem advogado, embora contar com um seja recomendável. O processo é guiado pelos princípios da oralidade e da simplicidade, com audiência de conciliação logo no início.",
+      "Existem também o Juizado Especial Federal (para causas contra o INSS e outros órgãos federais até certo valor) e o da Fazenda Pública (contra estados e municípios). Cada um tem o seu limite e as suas regras próprias.",
+      "A gratuidade em primeiro grau e a rapidez tornam o Juizado uma porta acessível de acesso à Justiça. Para causas mais complexas, de valor maior ou em caso de recurso, procure sempre um advogado."
+    ],
+    exemplos: [
+      "Consumidor que cobra na Justiça a devolução de uma cobrança indevida no cartão",
+      "Cliente que pede a troca de um produto com defeito não resolvido pela loja",
+      "Segurado que discute a negativa de um benefício no Juizado Especial Federal"
+    ],
+    areas: ["civil", "consumidor"],
+    ver_tambem: ["dano-moral", "vicio-do-produto", "negativacao-indevida"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "nome-negativado",
+    termo: "Nome negativado",
+    variacoes: ["nome sujo", "negativado", "limpar o nome", "SPC e Serasa"],
+    definicao_curta:
+      "Situação de quem teve o nome incluído em cadastros de inadimplentes, como SPC e Serasa, por causa de uma dívida.",
+    explicacao: [
+      "Ter o nome negativado significa estar registrado em um cadastro de proteção ao crédito, como SPC, Serasa ou SCPC, por causa de uma dívida não paga. Na prática, isso dificulta conseguir crédito, financiamento, cartão e até fechar alguns contratos.",
+      "Antes de negativar, a empresa deve avisar o consumidor por escrito, dando a chance de pagar. A inscrição só pode se referir a uma dívida real e ainda cobrável — dívida já paga, prescrita ou inexistente não pode manter o nome sujo, e a permanência do registro tem prazo máximo previsto no Código de Defesa do Consumidor.",
+      "Pago o débito ou feito um acordo, o consumidor tem direito de ter o nome retirado do cadastro em prazo razoável. Se a negativação foi feita sem aviso prévio, por dívida que não existe ou já quitada, ela é indevida e pode gerar direito a indenização — assunto tratado no verbete sobre negativação indevida.",
+      "Para regularizar, vale conferir os cadastros (a consulta ao próprio nome é gratuita), negociar a dívida e guardar os comprovantes. Se houver cobrança abusiva ou recusa em dar baixa, procure sempre um advogado."
+    ],
+    exemplos: [
+      "Consumidor que descobre o nome no SPC ao tentar comprar parcelado",
+      "Pessoa que paga a dívida e cobra a retirada do nome do cadastro",
+      "Nome mantido negativado mesmo após acordo, gerando reclamação"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["negativacao-indevida", "dano-moral", "protesto-de-titulo", "superendividamento"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "superendividamento",
+    termo: "Superendividamento",
+    variacoes: ["repactuação de dívidas", "renegociação de dívidas", "endividamento excessivo"],
+    definicao_curta:
+      "Situação do consumidor de boa-fé que não consegue pagar todas as suas dívidas sem comprometer o mínimo para viver.",
+    explicacao: [
+      "Superendividamento é quando a pessoa física, de boa-fé, acumula dívidas de consumo a ponto de não conseguir pagá-las sem sacrificar o mínimo necessário para a sua sobrevivência e a da família. A lei que atualizou o Código de Defesa do Consumidor (Lei 14.181/2021) passou a tratar expressamente do tema.",
+      "A lei criou ferramentas para ajudar quem está nessa situação, sem simplesmente perdoar as dívidas. A principal é a possibilidade de renegociar todas as dívidas de uma só vez, em uma audiência de conciliação com todos os credores, na qual se monta um plano de pagamento que preserve o chamado mínimo existencial.",
+      "A proteção alcança dívidas de consumo (cartão, empréstimo, financiamento, contas), mas não abrange dívidas contraídas com fraude, nem, em regra, alimentos, tributos e débitos sem relação com o consumo. Também há regras contra o crédito irresponsável e a cobrança abusiva.",
+      "Quem está afundado em dívidas pode buscar essa repactuação no Judiciário ou em órgãos de defesa do consumidor. Para organizar o plano e proteger o mínimo existencial, procure sempre um advogado ou o Procon."
+    ],
+    exemplos: [
+      "Aposentado com vários empréstimos consignados que compromete quase toda a renda",
+      "Consumidor que pede a repactuação conjunta de todas as suas dívidas em audiência",
+      "Família que monta plano de pagamento preservando o mínimo para viver"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["nome-negativado", "juros-de-mora", "negativacao-indevida"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "golpe-do-pix",
+    termo: "Golpe do Pix",
+    variacoes: ["fraude no Pix", "estelionato por Pix", "golpe bancário"],
+    definicao_curta:
+      "Fraudes que usam o Pix para enganar a vítima e desviar dinheiro, com possíveis responsabilidades do golpista e do banco.",
+    explicacao: [
+      "Golpe do Pix é o nome popular de diversas fraudes que se aproveitam da rapidez das transferências instantâneas — falso funcionário de banco, falso parente pedindo dinheiro, compra em site falso, clonagem de WhatsApp, troca de QR Code. Do ponto de vista penal, geralmente configuram estelionato.",
+      "Ao perceber o golpe, a vítima deve agir rápido: comunicar o banco, registrar boletim de ocorrência e acionar o Mecanismo Especial de Devolução (MED), criado pelo Banco Central, que pode bloquear e tentar devolver os valores quando ainda estão na conta do fraudador ou em casos de falha de segurança.",
+      "A responsabilidade do banco depende do caso. A jurisprudência costuma reconhecer que as instituições financeiras respondem quando há falha no serviço ou na segurança que facilita a fraude; por outro lado, quando a própria vítima é induzida a transferir voluntariamente, a discussão é mais complexa e analisada caso a caso.",
+      "Guardar prints, comprovantes e protocolos é essencial para tentar reaver o dinheiro e para uma eventual ação. Diante de um golpe, procure a polícia, o banco e sempre um advogado."
+    ],
+    exemplos: [
+      "Vítima que transfere dinheiro a um falso funcionário do banco e aciona o MED",
+      "Consumidor que paga por produto em site falso e não recebe nada",
+      "Pessoa que cai em golpe de WhatsApp clonado pedindo Pix urgente"
+    ],
+    areas: ["consumidor", "civil", "criminal"],
+    ver_tambem: ["dano-moral", "responsabilidade-civil", "nome-negativado"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "decadencia",
+    termo: "Decadência",
+    variacoes: ["prazo decadencial", "caducidade"],
+    definicao_curta:
+      "Perda do próprio direito por não ter sido exercido dentro do prazo que a lei ou o contrato fixaram.",
+    explicacao: [
+      "Decadência é a extinção de um direito porque o seu titular deixou passar o prazo para exercê-lo. Diferente da prescrição, que faz perder a possibilidade de cobrar algo na Justiça, a decadência faz desaparecer o próprio direito — em geral, direitos que dependem de uma providência da pessoa dentro de certo tempo.",
+      "Um exemplo comum está nas relações de consumo: o consumidor tem prazos curtos para reclamar de um defeito aparente no produto ou serviço (contados da entrega ou da execução). Passado esse prazo sem reclamar, decai o direito de exigir a troca, o conserto ou a devolução por aquele defeito.",
+      "Em regra, os prazos de decadência não se interrompem nem se suspendem como os de prescrição, embora existam exceções previstas em lei. Por isso, quando a lei ou o contrato fixam um prazo para agir, deixar o tempo correr costuma ser ainda mais arriscado do que na prescrição.",
+      "Saber se o caso é de prescrição ou de decadência, e qual o prazo aplicável, é uma análise técnica que muda o resultado. Antes de deixar um prazo passar, procure sempre um advogado."
+    ],
+    exemplos: [
+      "Consumidor que perde o direito de reclamar de defeito aparente por deixar passar o prazo",
+      "Direito de anular certo negócio que se extingue se não exercido no prazo legal",
+      "Prazo para exercer uma opção prevista em contrato que se encerra sem uso"
+    ],
+    areas: ["civil", "consumidor"],
+    ver_tambem: ["prescricao", "vicio-do-produto", "garantia-legal"],
+    atualizado_em: "2026-07-04"
+  },
+  // ——— Imobiliário e proteção de dados (cidadão) ———
+  {
+    slug: "contrato-de-aluguel",
+    termo: "Contrato de aluguel",
+    variacoes: ["contrato de locação", "locação de imóvel", "lei do inquilinato"],
+    definicao_curta:
+      "Acordo pelo qual o dono cede o uso de um imóvel a outra pessoa em troca do aluguel, regido pela Lei do Inquilinato.",
+    explicacao: [
+      "O contrato de aluguel (locação) é o acordo pelo qual o proprietário (locador) cede o uso do imóvel ao inquilino (locatário) por um prazo, em troca do pagamento do aluguel. A relação é regida principalmente pela Lei do Inquilinato, que trata da locação urbana.",
+      "O contrato costuma prever prazo, valor e forma de reajuste, responsabilidades por consertos e uma garantia. As garantias mais comuns são o fiador, a caução (depósito), o seguro-fiança e a cessão de cotas de fundo — a lei, em regra, admite apenas uma garantia por contrato.",
+      "A lei protege os dois lados: define quando o inquilino pode devolver o imóvel antes do prazo (pagando multa proporcional), quando o dono pode pedir o imóvel de volta e como funciona o direito de renovação em locações comerciais. O descumprimento, sobretudo a falta de pagamento, pode levar à ação de despejo.",
+      "Ler o contrato com atenção antes de assinar evita a maioria dos conflitos. Diante de cláusulas duvidosas ou de um pedido de despejo, procure sempre um advogado."
+    ],
+    exemplos: [
+      "Inquilino que assina contrato de 30 meses com fiador como garantia",
+      "Locatário que devolve o imóvel antes do prazo e paga multa proporcional",
+      "Contrato encerrado por falta de pagamento, com ação de despejo"
+    ],
+    areas: ["imobiliario", "civil"],
+    ver_tambem: ["caucao-locaticia", "despejo", "arras", "clausula-penal"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "caucao-locaticia",
+    termo: "Caução locatícia",
+    variacoes: ["caução", "depósito caução", "garantia de aluguel"],
+    definicao_curta:
+      "Depósito dado como garantia em contrato de aluguel, limitado por lei e devolvido ao fim da locação se não houver dívidas.",
+    explicacao: [
+      "A caução é uma das garantias possíveis no contrato de aluguel: o inquilino deposita um valor (ou oferece um bem) que servirá para cobrir eventuais dívidas, como aluguéis atrasados ou danos ao imóvel. É uma alternativa ao fiador e ao seguro-fiança.",
+      "Quando a caução é em dinheiro, a Lei do Inquilinato limita o valor a, no máximo, três meses de aluguel. Esse dinheiro, em regra, deve ser depositado em caderneta de poupança, e o que render pertence ao inquilino.",
+      "Ao final da locação, se não houver aluguéis em aberto nem danos além do desgaste natural do uso, a caução deve ser devolvida ao inquilino, com a correção. Descontos só são cabíveis para cobrir dívidas ou reparos efetivamente comprovados.",
+      "A retenção indevida da caução é uma queixa frequente. Guarde o contrato, o comprovante do depósito e as fotos do imóvel na entrada e na saída. Havendo recusa injustificada em devolver, procure sempre um advogado."
+    ],
+    exemplos: [
+      "Inquilino que dá três meses de aluguel como caução em vez de apresentar fiador",
+      "Caução depositada em poupança e devolvida corrigida no fim do contrato",
+      "Locador que retém a caução alegando danos, sem comprovar os reparos"
+    ],
+    areas: ["imobiliario", "civil"],
+    ver_tambem: ["contrato-de-aluguel", "despejo", "arras", "clausula-penal"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "lgpd",
+    termo: "LGPD (proteção de dados pessoais)",
+    variacoes: ["lei geral de proteção de dados", "proteção de dados", "dados pessoais"],
+    definicao_curta:
+      "Lei que protege os dados pessoais dos cidadãos e define regras para empresas e órgãos que coletam e usam essas informações.",
+    explicacao: [
+      "A Lei Geral de Proteção de Dados (LGPD, Lei 13.709/2018) regula como empresas, sites e órgãos públicos podem coletar, guardar e usar dados pessoais — nome, CPF, endereço, e-mail, dados de saúde, entre outros. O objetivo é dar ao cidadão controle sobre as suas próprias informações.",
+      "A lei garante ao titular dos dados vários direitos: saber quais dados uma empresa tem sobre ele, corrigir informações erradas, pedir a exclusão de dados desnecessários e revogar o consentimento dado antes. Em regra, o tratamento de dados precisa de uma base legal, como o consentimento ou o cumprimento de um contrato.",
+      "A fiscalização cabe à Autoridade Nacional de Proteção de Dados (ANPD), que pode orientar e aplicar sanções, incluindo multas, a quem descumpre a lei. Vazamentos e uso indevido de dados também podem gerar direito a indenização na Justiça.",
+      "Se os seus dados foram vazados, usados sem autorização ou uma empresa se recusa a corrigi-los ou excluí-los, você tem caminhos para reclamar. Procure sempre um advogado para avaliar o seu caso."
+    ],
+    exemplos: [
+      "Consumidor que pede a uma empresa a exclusão dos seus dados após encerrar o cadastro",
+      "Cliente que descobre o vazamento dos seus dados e busca reparação",
+      "Pessoa que revoga o consentimento para receber mensagens de marketing"
+    ],
+    areas: ["digital", "civil", "consumidor"],
+    ver_tambem: ["habeas-data", "dano-moral", "nome-negativado"],
+    atualizado_em: "2026-07-04"
   }
 ];
 
