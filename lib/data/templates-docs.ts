@@ -2004,6 +2004,235 @@ Anexos: nota fiscal; fotos/laudo do defeito; protocolos de atendimento.
       "Guarde nota fiscal, fotos e o protocolo de envio desta notificação",
       "Defeito que cause dano à saúde/segurança (fato do produto) tem regras próprias e prazo de 5 anos"
     ]
+  },
+  {
+    slug: "recibo-de-pagamento-de-servico",
+    title: "Recibo de pagamento de serviço",
+    category: "Recibos e quitações",
+    description:
+      "Modelo de recibo para comprovar o pagamento de um serviço prestado, com quitação — útil para autônomos, prestadores e serviços de pequeno valor.",
+    legalBase: "Código Civil, arts. 319 e 320 (direito à quitação e ao recibo de pagamento).",
+    fillingMinutes: 3,
+    whenToUse: [
+      "Comprovar o pagamento de um serviço prestado (autônomo, prestador, profissional)",
+      "Registrar a quitação de mão de obra, reparo ou consultoria",
+      "Substituir a nota fiscal em serviços informais de pequeno valor"
+    ],
+    howToFill: [
+      "Identifique o prestador (quem recebe) e o pagador (quem paga)",
+      "Descreva o serviço com clareza, com o período ou o objeto",
+      "Informe o valor por extenso e a forma de pagamento",
+      "Assine e, se possível, colha a assinatura de testemunhas"
+    ],
+    content: `RECIBO DE PAGAMENTO DE SERVIÇO
+Nº [_____]   Valor: R$ [VALOR] ([VALOR POR EXTENSO])
+
+Eu, [NOME COMPLETO DO PRESTADOR], [nacionalidade], [estado civil], [profissão], inscrito(a) no CPF/MF sob o nº [000.000.000-00] [se pessoa jurídica: inscrita no CNPJ sob o nº [00.000.000/0000-00]], residente/estabelecido(a) à [endereço completo], DECLARO que RECEBI de [NOME COMPLETO DO PAGADOR/CONTRATANTE], inscrito(a) no CPF/CNPJ sob o nº [000.000.000-00], a importância de R$ [VALOR] ([VALOR POR EXTENSO]).
+
+REFERENTE A: [DESCRIÇÃO DO SERVIÇO PRESTADO — ex.: pintura do imóvel situado à Rua ___; consultoria contábil do mês de ___; reparo elétrico].
+
+FORMA DE PAGAMENTO: [dinheiro / PIX / transferência / cheque nº ___].
+[SE PARCELADO: Pagamento referente à parcela ___ de ___.]
+
+Para maior clareza, dou por este a mais plena, geral e irrevogável QUITAÇÃO do valor acima, referente ao serviço descrito, nada mais tendo a receber a esse título.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+[NOME DO PRESTADOR]
+CPF/CNPJ: [_____]
+
+TESTEMUNHAS (opcional):
+1. _________________________ CPF: _____________
+2. _________________________ CPF: _____________
+`,
+    notes: [
+      "A quitação serve como prova de pagamento (art. 320 do Código Civil)",
+      "Se o prestador for autônomo, o pagamento pode gerar obrigações de retenção (INSS, IR e ISS) — confira com um contador",
+      "Guarde uma via assinada; para valores maiores, colha a assinatura de duas testemunhas"
+    ]
+  },
+  {
+    slug: "termo-de-acordo-extrajudicial-de-pensao",
+    title: "Termo de acordo extrajudicial de pensão alimentícia",
+    category: "Contratos",
+    description:
+      "Modelo de termo de acordo extrajudicial de pensão alimentícia, definindo valor, vencimento e reajuste — base para levar à homologação da Justiça.",
+    legalBase: "Código Civil, arts. 1.694 a 1.710 (alimentos); CPC (execução e homologação de acordo); intervenção do Ministério Público quando há incapaz.",
+    fillingMinutes: 8,
+    whenToUse: [
+      "Formalizar, de comum acordo, o valor e a forma da pensão alimentícia",
+      "Registrar acordo sobre pensão de filhos ou entre ex-cônjuges/companheiros",
+      "Servir de base para pedir a homologação do acordo na Justiça"
+    ],
+    howToFill: [
+      "Identifique quem paga (alimentante) e quem recebe (alimentado ou representante)",
+      "Defina o valor (em reais ou percentual da renda), o vencimento e a forma de pagamento",
+      "Ajuste o reajuste anual e o rateio de despesas extras (saúde, escola)",
+      "Colha assinaturas e testemunhas e busque a homologação judicial"
+    ],
+    content: `TERMO DE ACORDO EXTRAJUDICIAL DE PENSÃO ALIMENTÍCIA
+
+ALIMENTANTE (quem paga): [NOME COMPLETO], [nacionalidade], [estado civil], [profissão], inscrito(a) no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
+
+ALIMENTADO(A) / REPRESENTANTE (quem recebe): [NOME COMPLETO DO(S) FILHO(S) OU CREDOR(A)], neste ato representado(a), se menor, por [NOME DO(A) GENITOR(A)/RESPONSÁVEL], inscrito(a) no CPF/MF sob o nº [000.000.000-00], residente à [endereço completo].
+
+As partes acima, de comum acordo e livremente, ajustam o pagamento de pensão alimentícia nos termos abaixo:
+
+CLÁUSULA 1ª — DO VALOR. O ALIMENTANTE pagará, a título de pensão alimentícia, a quantia de [ESCOLHA: R$ [VALOR] ([VALOR POR EXTENSO]) / [PERCENTUAL]% dos seus rendimentos líquidos], em favor do(a) ALIMENTADO(A).
+
+CLÁUSULA 2ª — DO VENCIMENTO E FORMA. O pagamento será mensal, até o dia [DIA] de cada mês, por meio de [depósito/PIX/transferência] na conta [DADOS BANCÁRIOS] ou por desconto em folha de pagamento, servindo o comprovante como recibo.
+
+CLÁUSULA 3ª — DA ATUALIZAÇÃO. O valor será reajustado [ex.: anualmente, pelo mesmo índice do salário mínimo / pelo índice ___], para preservar o seu poder de compra.
+
+CLÁUSULA 4ª — DAS DESPESAS EXTRAS. As despesas extraordinárias (saúde, medicamentos, material escolar) serão rateadas entre as partes na proporção de [ex.: 50% para cada], mediante comprovação.
+
+CLÁUSULA 5ª — DA VIGÊNCIA E REVISÃO. A pensão é devida enquanto persistir o dever de alimentar, na forma da lei, podendo ser revista a qualquer tempo havendo mudança na necessidade de quem recebe ou na possibilidade de quem paga.
+
+E, por estarem de acordo, firmam o presente em [duas] vias de igual teor.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+ALIMENTANTE — [NOME]   CPF: [000.000.000-00]
+
+_____________________________________
+ALIMENTADO(A)/REPRESENTANTE — [NOME]   CPF: [000.000.000-00]
+
+TESTEMUNHAS:
+1. _________________________ Nome: _____________ CPF: _____________
+2. _________________________ Nome: _____________ CPF: _____________
+`,
+    notes: [
+      "Quando o alimentado é menor ou incapaz, o acordo só ganha força plena de título executivo judicial após a homologação pela Justiça, com participação do Ministério Público",
+      "Homologado o acordo, o descumprimento permite execução, inclusive com risco de prisão quanto às parcelas mais recentes",
+      "A pensão pode ser revista a qualquer tempo se mudarem a necessidade de quem recebe ou a possibilidade de quem paga",
+      "Este é um modelo geral; para alimentos de filhos, procure orientação de um advogado ou da Defensoria Pública"
+    ]
+  },
+  {
+    slug: "contrato-de-locacao-comercial",
+    title: "Contrato de locação comercial (ponto comercial)",
+    category: "Contratos",
+    description:
+      "Modelo de contrato de locação comercial (não residencial) conforme a Lei do Inquilinato, com prazo, garantia, reajuste e direito à renovação.",
+    legalBase: "Lei nº 8.245/1991 (Lei do Inquilinato — locação não residencial), especialmente arts. 51 a 57.",
+    fillingMinutes: 12,
+    whenToUse: [
+      "Alugar imóvel para loja, escritório, galpão ou ponto comercial",
+      "Formalizar locação não residencial por prazo determinado",
+      "Deixar claras a garantia, o reajuste e as responsabilidades"
+    ],
+    howToFill: [
+      "Qualifique locador e locatário e descreva o imóvel e a atividade",
+      "Defina prazo, valor, reajuste e a modalidade única de garantia",
+      "Ajuste encargos, benfeitorias e a multa por descumprimento",
+      "Faça a vistoria de entrada e assine com duas testemunhas"
+    ],
+    content: `CONTRATO DE LOCAÇÃO COMERCIAL (NÃO RESIDENCIAL)
+(Lei nº 8.245/1991 — Lei do Inquilinato)
+
+LOCADOR: [NOME/RAZÃO SOCIAL], inscrito(a) no CPF/CNPJ sob o nº [_____], residente/com sede à [endereço completo].
+LOCATÁRIO: [NOME/RAZÃO SOCIAL], inscrito(a) no CPF/CNPJ sob o nº [_____], residente/com sede à [endereço completo].
+
+As partes ajustam a locação NÃO RESIDENCIAL do imóvel adiante descrito, nos termos abaixo:
+
+CLÁUSULA 1ª — DO IMÓVEL E DA FINALIDADE. O LOCADOR dá em locação ao LOCATÁRIO o imóvel situado à [ENDEREÇO COMPLETO DO PONTO], que será utilizado exclusivamente para fins comerciais, na atividade de [RAMO/ATIVIDADE], vedado o uso para fim diverso sem autorização escrita.
+
+CLÁUSULA 2ª — DO PRAZO. A locação vigora pelo prazo de [ex.: 60 (sessenta) meses], com início em [DATA] e término em [DATA], data em que o imóvel deverá ser devolvido, salvo renovação.
+
+CLÁUSULA 3ª — DO ALUGUEL. O aluguel mensal é de R$ [VALOR] ([VALOR POR EXTENSO]), pago até o dia [DIA] de cada mês, por [forma de pagamento], reajustado anualmente pelo índice [ex.: IGP-M / IPCA].
+
+CLÁUSULA 4ª — DOS ENCARGOS. Correm por conta do LOCATÁRIO as despesas de [água, energia, IPTU, taxas e demais consumos], salvo o que a lei atribuir ao LOCADOR.
+
+CLÁUSULA 5ª — DA GARANTIA. A locação é garantida por [ESCOLHA UMA: caução / fiança / seguro-fiança], na forma dos arts. 37 e 38 da Lei 8.245/1991, sendo vedada a exigência de mais de uma modalidade ao mesmo tempo.
+
+CLÁUSULA 6ª — DAS BENFEITORIAS. As benfeitorias necessárias e as úteis previamente autorizadas por escrito [serão/não serão] indenizáveis, conforme ajuste entre as partes.
+
+CLÁUSULA 7ª — DA CONSERVAÇÃO E DEVOLUÇÃO. O LOCATÁRIO recebe o imóvel conforme laudo de vistoria e o devolverá no mesmo estado, salvo o desgaste natural do uso.
+
+CLÁUSULA 8ª — DA MULTA. O descumprimento deste contrato sujeita a parte infratora à multa de [ex.: 3 (três) aluguéis], reduzida proporcionalmente em caso de devolução antecipada, sem prejuízo das perdas e danos.
+
+CLÁUSULA 9ª — DA RENOVAÇÃO. Cumpridos os requisitos legais (art. 51 da Lei 8.245/1991), o LOCATÁRIO poderá pleitear a renovação do contrato por ação renovatória, no prazo legal.
+
+CLÁUSULA 10 — DO FORO. Fica eleito o foro da comarca de [CIDADE]/[UF] para dirimir dúvidas oriundas deste contrato.
+
+E, por estarem de acordo, firmam o presente em duas vias, na presença das testemunhas.
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+LOCADOR — [NOME]   CPF/CNPJ: [_____]
+
+_____________________________________
+LOCATÁRIO — [NOME]   CPF/CNPJ: [_____]
+
+TESTEMUNHAS:
+1. _________________________ CPF: _____________
+2. _________________________ CPF: _____________
+`,
+    notes: [
+      "Na locação comercial, o inquilino que cumpre os requisitos do art. 51 (contrato escrito por prazo determinado, cinco anos somados e mesmo ramo por três anos) pode ter direito à renovação por ação renovatória, ajuizada no prazo legal",
+      "É vedado exigir mais de uma modalidade de garantia ao mesmo tempo (art. 37, parágrafo único, da Lei 8.245/1991)",
+      "Faça vistoria detalhada na entrada e na saída, registrada em laudo e fotos",
+      "Para pontos de maior valor ou com fundo de comércio, vale a revisão por um advogado"
+    ]
+  },
+  {
+    slug: "recibo-de-venda-de-veiculo",
+    title: "Recibo de compra e venda de veículo",
+    category: "Recibos e quitações",
+    description:
+      "Modelo de recibo de compra e venda de veículo entre particulares, com quitação e responsabilidade por multas — complemento à transferência no Detran.",
+    legalBase: "Código Civil (compra e venda); Código de Trânsito Brasileiro, art. 134 (comunicação da venda ao órgão de trânsito).",
+    fillingMinutes: 5,
+    whenToUse: [
+      "Registrar a venda de carro ou moto entre particulares",
+      "Comprovar o pagamento e a entrega do veículo",
+      "Marcar a data a partir da qual as multas passam ao comprador"
+    ],
+    howToFill: [
+      "Qualifique vendedor e comprador com CPF e endereço",
+      "Preencha os dados do veículo (placa, RENAVAM, chassi)",
+      "Informe o valor por extenso e a quitação",
+      "Registre a data e a hora de entrega e assine com testemunhas"
+    ],
+    content: `RECIBO DE COMPRA E VENDA DE VEÍCULO
+
+VENDEDOR: [NOME COMPLETO], [nacionalidade], [estado civil], inscrito(a) no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
+COMPRADOR: [NOME COMPLETO], [nacionalidade], [estado civil], inscrito(a) no CPF/MF sob o nº [000.000.000-00], RG nº [00.000.000] [órgão]/[UF], residente à [endereço completo].
+
+DADOS DO VEÍCULO:
+Marca/Modelo: [_____]   Ano fab./modelo: [____/____]
+Placa: [___-____]   RENAVAM: [___________]   Chassi: [_________________]
+Cor: [_____]   Combustível: [_____]   Km: [_________]
+
+O VENDEDOR declara que RECEBEU do COMPRADOR a quantia de R$ [VALOR] ([VALOR POR EXTENSO]), como pagamento integral pela venda do veículo acima, transferindo-lhe, neste ato, a posse e a propriedade do bem, dando plena e geral QUITAÇÃO.
+
+O VENDEDOR declara, sob sua responsabilidade, que o veículo se encontra [livre e desembaraçado de ônus / com o seguinte ônus: ______] e que as multas e os débitos até a data desta venda são de sua responsabilidade; a partir desta data, passam à responsabilidade do COMPRADOR.
+
+O COMPRADOR compromete-se a providenciar a transferência do veículo para o seu nome no órgão de trânsito no prazo legal. O VENDEDOR fica ciente de que deve comunicar a venda ao órgão de trânsito (DETRAN), na forma do art. 134 do Código de Trânsito Brasileiro, em até 30 dias, sob pena de responder solidariamente pelas infrações cometidas após a venda.
+
+DATA E HORA DA ENTREGA DO VEÍCULO: [DIA]/[MÊS]/[ANO], às [__:__].
+
+[CIDADE]/[UF], [DIA] de [MÊS] de [ANO].
+
+_____________________________________
+VENDEDOR — [NOME]   CPF: [000.000.000-00]
+
+_____________________________________
+COMPRADOR — [NOME]   CPF: [000.000.000-00]
+
+TESTEMUNHAS:
+1. _________________________ CPF: _____________
+2. _________________________ CPF: _____________
+`,
+    notes: [
+      "Além deste recibo, preencha e assine a autorização de transferência (CRV/ATPV-e) com firma reconhecida — é o documento exigido pelo Detran para transferir a propriedade",
+      "O vendedor deve comunicar a venda ao Detran em até 30 dias (art. 134 do CTB) para não responder por multas posteriores",
+      "Confira débitos, multas e restrições do veículo antes de assinar e pagar",
+      "Guarde uma via assinada por cada parte"
+    ]
   }
 ];
 

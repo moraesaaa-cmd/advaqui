@@ -3536,6 +3536,301 @@ export const ARTICLES: Article[] = [
           "O cálculo considera a média dos salários de contribuição a partir de julho de 1994, com um percentual que aumenta conforme o tempo de contribuição. O valor exato depende do histórico de cada pessoa, então vale conferir a conta com cuidado. Não existe um valor único para todos."
       }
     ]
+  },
+  {
+    slug: "seguro-de-vida-negado-como-recorrer",
+    title: "Seguro de vida negado: como recorrer da recusa da seguradora",
+    excerpt:
+      "Seguro de vida negado nem sempre é recusa legítima. Veja os motivos comuns, o que a lei diz sobre doença preexistente e suicídio e o passo a passo para contestar.",
+    category: "Consumidor",
+    readingMinutes: 11,
+    publishedAt: "2026-07-04",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "civil",
+    intro:
+      "Ter o seguro de vida negado é uma frustração dupla: além da perda que motivou o pedido, vem a recusa de quem deveria amparar a família. A boa notícia é que nem toda negativa é legítima, e muitas caem quando a seguradora não consegue justificar o motivo. Este guia explica, em linguagem simples, por que os seguros de vida costumam ser negados, o que a lei e a jurisprudência dizem sobre doença preexistente e suicídio, e o passo a passo para contestar a recusa primeiro pela via administrativa e, se preciso, na Justiça.",
+    body: [
+      { type: "h2", text: "O que significa ter o seguro de vida negado" },
+      {
+        type: "p",
+        text: "O seguro de vida negado é a recusa da seguradora em pagar a indenização prevista na apólice quando ocorre o evento coberto — a morte do segurado, uma invalidez ou uma doença grave, conforme o contrato. Em vez de liberar o valor ao beneficiário ou ao próprio segurado, a empresa comunica que não vai pagar, geralmente apontando algum motivo ligado ao contrato ou às informações prestadas na contratação."
+      },
+      {
+        type: "p",
+        text: "Receber essa negativa não quer dizer que o direito acabou. A recusa é apenas a posição da seguradora, e ela precisa ser fundamentada. Se o motivo não se sustenta diante da lei e das provas, é possível reverter a decisão e receber a indenização, com correção e juros."
+      },
+      { type: "h2", text: "Os motivos mais comuns de recusa" },
+      {
+        type: "p",
+        text: "Antes de contestar, é importante entender qual foi o motivo alegado, porque a estratégia muda conforme a justificativa. Os motivos que mais aparecem são estes:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Alegação de doença preexistente que não teria sido informada na contratação",
+          "Suicídio do segurado, quando a seguradora sustenta que o caso não é coberto",
+          "Falta de pagamento do prêmio (a mensalidade do seguro)",
+          "Afirmação de que o evento não estava entre as coberturas contratadas",
+          "Alegação de informação incorreta ou omissão relevante na proposta"
+        ]
+      },
+      { type: "h3", text: "Doença preexistente não informada" },
+      {
+        type: "p",
+        text: "Este é um dos motivos mais frequentes e também um dos mais contestáveis. O STJ firmou o entendimento de que a seguradora não pode negar o pagamento alegando doença anterior à contratação se ela não exigiu exames médicos antes de fechar o contrato e não comprovou que o segurado agiu de má-fé, escondendo de propósito uma condição que sabia ter. Em outras palavras, quem aceitou o cliente sem pedir exame assumiu esse risco e não pode, depois, usar a doença como desculpa para não pagar."
+      },
+      { type: "h3", text: "Suicídio do segurado" },
+      {
+        type: "p",
+        text: "O Código Civil traz uma regra clara: passados dois anos do início da vigência do seguro (ou de sua recondução após suspensão), a indenização por suicídio é devida (art. 798). Ou seja, depois desse prazo, a seguradora não pode negar o pagamento com esse argumento. Dentro dos dois primeiros anos, a discussão é mais delicada, mas a jurisprudência não presume a premeditação: cabe à seguradora demonstrar que houve fraude, e não ao beneficiário provar que não houve."
+      },
+      { type: "h3", text: "Falta de pagamento e coberturas" },
+      {
+        type: "p",
+        text: "A seguradora pode alegar atraso no pagamento do prêmio, mas o simples atraso de uma parcela nem sempre autoriza o cancelamento automático: em regra, é preciso que o segurado tenha sido notificado antes. Já quando o motivo é a cobertura, vale ler a apólice com atenção — às vezes o evento realmente não estava contratado, mas em outras a recusa se apoia em cláusula confusa, que deve ser interpretada em favor do consumidor."
+      },
+      {
+        type: "callout",
+        text: "Assim que receber a negativa, guarde tudo: a apólice, o comprovante de pagamento das parcelas, a carta ou mensagem com o motivo da recusa e os documentos médicos. Esses papéis são a base de qualquer contestação."
+      },
+      { type: "h2", text: "O que a lei garante ao segurado e aos beneficiários" },
+      {
+        type: "p",
+        text: "O contrato de seguro é regido pelo Código Civil (arts. 757 e seguintes), que define a obrigação da seguradora de garantir o interesse do segurado contra riscos predeterminados. Quando o segurado é uma pessoa comum que aderiu a um plano padronizado, aplica-se também o Código de Defesa do Consumidor. Isso traz duas consequências importantes: a seguradora deve prestar informação clara sobre coberturas e exclusões, e as cláusulas dúbias são interpretadas da forma mais favorável a quem contratou."
+      },
+      {
+        type: "p",
+        text: "Outro ponto relevante é o dever de motivar a recusa. O beneficiário tem direito de saber, por escrito, exatamente por que o pagamento foi negado. Uma negativa genérica, sem explicar o fundamento, já é, por si só, um sinal de fragilidade da posição da seguradora."
+      },
+      { type: "h2", text: "Passo a passo para contestar a recusa" },
+      {
+        type: "ol",
+        items: [
+          "Peça a negativa por escrito, com o motivo detalhado e a cláusula em que a seguradora se baseia",
+          "Releia a apólice e as condições gerais, conferindo coberturas, exclusões e carências",
+          "Reúna os documentos do evento (certidão de óbito, laudos, relatórios médicos) e os comprovantes de pagamento",
+          "Apresente reclamação formal à própria seguradora (SAC e ouvidoria), exigindo a revisão da negativa",
+          "Se não resolver, registre reclamação nos canais de defesa do consumidor e na SUSEP",
+          "Persistindo a recusa, procure orientação jurídica para avaliar a ação judicial"
+        ]
+      },
+      { type: "h3", text: "Documentos que costumam ser necessários" },
+      {
+        type: "ul",
+        items: [
+          "Apólice do seguro e as condições gerais do contrato",
+          "Comprovantes de pagamento das parcelas (prêmio)",
+          "Documento que comprove o evento coberto (certidão de óbito, laudo de invalidez)",
+          "Relatórios e prontuários médicos, quando o motivo envolve saúde",
+          "A comunicação da recusa e todos os protocolos de atendimento"
+        ]
+      },
+      { type: "h2", text: "Reclamar na SUSEP e nos órgãos de defesa do consumidor" },
+      {
+        type: "p",
+        text: "Antes de partir para a Justiça, vale usar os canais administrativos. A SUSEP é o órgão que fiscaliza o mercado de seguros e recebe reclamações contra seguradoras. Também é possível registrar o caso no Procon e na plataforma consumidor.gov.br. Esses caminhos são gratuitos, pressionam a empresa a rever a negativa e, mesmo quando não resolvem sozinhos, geram um histórico que ajuda em uma eventual ação."
+      },
+      { type: "h2", text: "Quando levar o caso à Justiça" },
+      {
+        type: "p",
+        text: "Se a via administrativa não resolver, o beneficiário pode ajuizar ação de cobrança da indenização. Nesse processo, discute-se se o motivo da recusa se sustenta e, muitas vezes, a seguradora não consegue provar a fraude ou a exclusão que alegou. Além do valor da apólice, atualizado e com juros, é possível pedir indenização por dano moral quando a recusa indevida causou sofrimento que vai além do mero aborrecimento — por exemplo, quando a família ficou desamparada em um momento crítico."
+      },
+      { type: "h3", text: "Dano moral pela recusa indevida" },
+      {
+        type: "p",
+        text: "Nem toda negativa gera dano moral automático. A Justiça costuma reconhecê-lo quando a recusa é claramente indevida e traz consequências pesadas para quem contava com o valor. Cada caso é avaliado individualmente, considerando a gravidade da situação e a conduta da seguradora."
+      },
+      { type: "h2", text: "Fique atento aos prazos" },
+      {
+        type: "p",
+        text: "O prazo para acionar a seguradora é curto e não convém demorar. Em muitos casos envolvendo seguro, esse prazo é de um ano, contado, em regra, da ciência inequívoca da recusa. Como a contagem depende do tipo de cobertura e da situação concreta, confirme o prazo aplicável ao seu caso o quanto antes, para não perder o direito por decurso de tempo."
+      },
+      { type: "h2", text: "Quando procurar ajuda" },
+      {
+        type: "p",
+        text: "Um advogado pode analisar a apólice, o motivo da recusa e as provas para dizer se a negativa é frágil e qual o melhor caminho — administrativo ou judicial. Quem não pode pagar tem direito à Defensoria Pública. Este texto é informativo e não substitui a orientação de um profissional para a sua situação concreta."
+      }
+    ],
+    faq: [
+      {
+        question: "A seguradora pode negar o seguro por doença preexistente?",
+        answer:
+          "Só em situações específicas. O STJ entende que a seguradora não pode recusar o pagamento alegando doença anterior se não exigiu exames médicos na contratação e não comprovou má-fé do segurado. Quem aceitou o cliente sem pedir exame assumiu esse risco."
+      },
+      {
+        question: "O seguro de vida paga em caso de suicídio?",
+        answer:
+          "Sim, se o suicídio ocorrer depois de dois anos do início do contrato, conforme o art. 798 do Código Civil. Dentro dos dois primeiros anos, a seguradora só pode negar se provar premeditação, o que não se presume."
+      },
+      {
+        question: "A seguradora precisa explicar por que negou?",
+        answer:
+          "Sim. O beneficiário tem direito de receber, por escrito, o motivo da recusa e a cláusula em que ela se baseia. Uma negativa genérica, sem fundamento claro, já é um indício da fragilidade da posição da empresa."
+      },
+      {
+        question: "Onde posso reclamar antes de ir à Justiça?",
+        answer:
+          "Você pode reclamar na própria seguradora (SAC e ouvidoria), na SUSEP, que fiscaliza o setor, no Procon e na plataforma consumidor.gov.br. São canais gratuitos que pressionam a revisão e geram histórico útil para uma eventual ação."
+      },
+      {
+        question: "Tenho direito a indenização por dano moral pela recusa?",
+        answer:
+          "Pode ter, quando a recusa é claramente indevida e traz consequências graves, como deixar a família desamparada. Não é automático: cada caso é avaliado conforme a gravidade da situação e a conduta da seguradora."
+      },
+      {
+        question: "Qual é o prazo para acionar a seguradora?",
+        answer:
+          "O prazo costuma ser curto, de um ano em muitos casos de seguro, contado em regra da ciência da recusa. Como varia conforme a cobertura e a situação, confirme o prazo do seu caso o quanto antes para não perder o direito."
+      }
+    ]
+  },
+  {
+    slug: "revisao-de-financiamento-de-veiculo-vale-a-pena",
+    title: "Revisão de financiamento de veículo vale a pena? Como funciona",
+    excerpt:
+      "Revisão de financiamento de veículo pode reduzir juros e tarifas indevidas, mas não é milagre. Veja quando compensa, o que dá para questionar e o passo a passo.",
+    category: "Consumidor",
+    readingMinutes: 11,
+    publishedAt: "2026-07-04",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "civil",
+    intro:
+      "A revisão de financiamento de veículo é um caminho para questionar juros e tarifas que o consumidor considera abusivos no contrato do carro ou da moto e, com isso, tentar reduzir o valor das parcelas e do saldo devedor. Mas ela não é uma solução mágica: só compensa quando há cobrança realmente fora do padrão, e depende de prova. Este guia explica, em linguagem simples, o que pode ser revisto, o mito dos juros de 12% ao ano, quando a revisão tende a valer a pena e o passo a passo para buscá-la com os pés no chão.",
+    body: [
+      { type: "h2", text: "O que é a revisão de financiamento de veículo" },
+      {
+        type: "p",
+        text: "A revisão de financiamento de veículo é o pedido para reexaminar as cláusulas do contrato de financiamento — em regra por ação judicial, a chamada ação revisional — quando o consumidor entende que há encargos indevidos. O objetivo é ajustar o contrato ao que seria efetivamente devido, recalculando juros, tarifas e o saldo, o que pode diminuir a parcela ou o total a pagar."
+      },
+      {
+        type: "p",
+        text: "É importante começar por uma expectativa realista: a revisão não apaga a dívida nem garante, sozinha, uma parcela muito menor. Ela serve para corrigir abusos concretos. Onde não há abuso, não há o que revisar, e insistir pode gerar custo sem retorno."
+      },
+      { type: "h2", text: "Quando a revisão pode valer a pena" },
+      {
+        type: "p",
+        text: "A revisão tende a fazer sentido quando há sinais concretos de cobrança fora do padrão. Vale investigar principalmente nestas situações:"
+      },
+      {
+        type: "ul",
+        items: [
+          "A taxa de juros do contrato está bem acima da média que o mercado praticava na época",
+          "Existem tarifas embutidas sem explicação clara ou sem previsão no contrato",
+          "Há seguros e serviços que você não pediu e foram incluídos no financiamento",
+          "A parcela cresceu de forma que não bate com o que foi combinado",
+          "Você está com dificuldade de pagar e quer entender se há espaço para reduzir o valor"
+        ]
+      },
+      { type: "h2", text: "O mito dos juros de 12% ao ano" },
+      {
+        type: "p",
+        text: "Circula muito a ideia de que juro acima de 12% ao ano é sempre ilegal. Isso não é verdade para financiamentos. O antigo limite de 12% ao ano não se aplica às instituições financeiras, que não estão presas a esse teto. Por isso, uma taxa alta, sozinha, não prova abuso."
+      },
+      {
+        type: "p",
+        text: "O que a jurisprudência do STJ diz é que os juros só podem ser considerados abusivos, e reduzidos, quando destoam de forma significativa da taxa média de mercado da época do contrato, divulgada pelo Banco Central. É essa comparação — e não um número fixo — que define se há exagero."
+      },
+      { type: "h3", text: "Como saber se os juros estão acima da média" },
+      {
+        type: "p",
+        text: "O Banco Central divulga as taxas médias de juros por tipo de operação e por instituição. Dá para comparar a taxa do seu contrato com a média praticada para financiamento de veículos no período em que você assinou. Se a diferença for grande, há um bom argumento para a revisão; se estiver próxima da média, a chance de reduzir os juros é pequena."
+      },
+      { type: "h2", text: "O que costuma ser questionado no contrato" },
+      {
+        type: "p",
+        text: "Além dos juros, alguns pontos aparecem com frequência nas revisões:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Capitalização de juros (juros sobre juros) cobrada fora das regras",
+          "Tarifas administrativas e de cadastro sem previsão clara",
+          "Seguros e serviços de terceiros embutidos sem escolha do consumidor",
+          "Comissão de permanência cumulada com outros encargos na inadimplência",
+          "Diferença entre o Custo Efetivo Total informado e o que foi realmente cobrado"
+        ]
+      },
+      { type: "h3", text: "Capitalização de juros (juros sobre juros)" },
+      {
+        type: "p",
+        text: "A cobrança de juros sobre juros não é proibida por si só: o STJ admite a capitalização quando ela está expressamente prevista e é possível identificá-la no contrato. O que se discute é a capitalização feita de forma escondida ou sem previsão. Por isso, esse ponto exige leitura atenta das cláusulas e, muitas vezes, um cálculo técnico."
+      },
+      { type: "h3", text: "Tarifas e seguros embutidos" },
+      {
+        type: "p",
+        text: "Algumas tarifas são admitidas, como a de cadastro no início do relacionamento. Já a cobrança de serviços de terceiros e de seguros que o consumidor não escolheu costuma ser questionável, especialmente quando não houve informação clara nem opção de recusar. Somadas ao longo do contrato, essas cobranças fazem diferença no total."
+      },
+      {
+        type: "callout",
+        text: "Revisão depende de prova. Sem comparar a taxa com a média do Banco Central e sem apontar a cobrança indevida no contrato, o pedido tende a não prosperar. Reúna o contrato, os extratos e os comprovantes antes de decidir."
+      },
+      { type: "h2", text: "Revisão não suspende a busca e apreensão sozinha" },
+      {
+        type: "p",
+        text: "Um cuidado importante: entrar com a revisão não faz, automaticamente, o banco parar de cobrar nem suspende uma eventual busca e apreensão por falta de pagamento, que segue as regras do Decreto-Lei 911/1969. Continuar em atraso enquanto discute o contrato é arriscado. Em alguns casos, é possível pedir ao juiz medidas para permitir o depósito dos valores que o consumidor entende corretos enquanto o processo corre, mas isso depende de decisão judicial."
+      },
+      { type: "h2", text: "Passo a passo para pedir a revisão" },
+      {
+        type: "ol",
+        items: [
+          "Junte o contrato, o carnê ou boletos e os extratos de pagamento",
+          "Anote a taxa de juros contratada e compare com a média do Banco Central da época",
+          "Liste as tarifas e seguros cobrados e verifique quais você não pediu",
+          "Peça ao banco, por escrito, a planilha de evolução da dívida e a revisão amigável",
+          "Se não resolver, procure um advogado ou a Defensoria para avaliar a ação revisional",
+          "Mantenha o pagamento em dia ou negocie para não sofrer busca e apreensão durante a discussão"
+        ]
+      },
+      { type: "h2", text: "Renegociar ou fazer portabilidade antes de revisar" },
+      {
+        type: "p",
+        text: "Nem sempre a Justiça é o melhor primeiro passo. Se o problema é a parcela alta, duas alternativas costumam ser mais rápidas: renegociar diretamente com o banco e a portabilidade da dívida, que é o direito de transferir o financiamento para outra instituição com juros menores, sem tarifa e sem que o banco atual possa impedir. Comparar o Custo Efetivo Total das propostas pode resolver o aperto no orçamento sem processo."
+      },
+      { type: "h2", text: "Cuidado com promessas de revisão milagrosa" },
+      {
+        type: "p",
+        text: "Desconfie de quem promete zerar a dívida, reduzir a parcela pela metade de forma garantida ou tirar seu nome dos cadastros do dia para a noite. A revisão depende de análise do contrato e de decisão da Justiça, e ninguém pode assegurar resultado. Ofertas assim, muitas vezes com pagamento adiantado, costumam ser cilada. Uma avaliação séria começa pela leitura do contrato e pela comparação de taxas, não por promessas."
+      },
+      { type: "h2", text: "Quando procurar ajuda" },
+      {
+        type: "p",
+        text: "Um advogado pode analisar o contrato, fazer o cálculo comparativo e dizer, com franqueza, se a revisão tende a compensar no seu caso ou se renegociar e portar a dívida resolve melhor. Quem não pode pagar tem direito à Defensoria Pública. Este texto é informativo e não substitui a orientação de um profissional para a sua situação concreta."
+      }
+    ],
+    faq: [
+      {
+        question: "Juros acima de 12% ao ano são abusivos?",
+        answer:
+          "Não necessariamente. Esse limite não se aplica aos bancos. O STJ entende que os juros só são abusivos quando destoam muito da taxa média de mercado da época, divulgada pelo Banco Central. É a comparação com a média que define o exagero, não um número fixo."
+      },
+      {
+        question: "A revisão sempre diminui a parcela?",
+        answer:
+          "Não. A revisão só reduz o valor quando há cobrança realmente indevida, como juros muito acima da média ou tarifas sem previsão. Se o contrato está dentro do padrão, pode não haver o que reduzir, e o pedido tende a não prosperar."
+      },
+      {
+        question: "Posso pedir revisão com o financiamento em dia?",
+        answer:
+          "Sim. Não é preciso estar inadimplente para pedir revisão. Aliás, manter o pagamento em dia é recomendável, porque a revisão não suspende sozinha a cobrança nem eventual busca e apreensão durante o processo."
+      },
+      {
+        question: "A revisão para a busca e apreensão do carro?",
+        answer:
+          "Não automaticamente. A busca e apreensão segue o Decreto-Lei 911/1969 e continua possível mesmo com a ação em curso. Em alguns casos, o juiz pode autorizar o depósito dos valores que o consumidor entende corretos, mas isso depende de decisão judicial."
+      },
+      {
+        question: "É melhor revisar ou fazer portabilidade da dívida?",
+        answer:
+          "Depende do caso. Se o problema é só a parcela alta, renegociar ou portar a dívida para um banco com juros menores costuma ser mais rápido que um processo. A revisão faz mais sentido quando há cobrança abusiva concreta a ser corrigida."
+      },
+      {
+        question: "Preciso de advogado para pedir a revisão?",
+        answer:
+          "A ação revisional é ajuizada por advogado ou pela Defensoria Pública. Antes disso, você pode tentar a revisão amigável e a renegociação diretamente com o banco, o que não exige advogado e pode resolver mais rápido."
+      }
+    ]
   }
 ];
 

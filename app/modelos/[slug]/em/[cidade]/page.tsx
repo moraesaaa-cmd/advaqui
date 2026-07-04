@@ -31,7 +31,7 @@ import { SITE } from "@/lib/config";
 /**
  * /modelos/[slug]/em/[cidade] — combinação modelo × cidade.
  *
- * 32 modelos × 5571 cidades IBGE = ~178 mil URLs cauda longa indexáveis.
+ * 36 modelos × 5571 cidades IBGE = ~201 mil URLs cauda longa indexáveis.
  *
  * Estratégia híbrida:
  *  - SSG nas 50 cidades prioritárias × todos os modelos

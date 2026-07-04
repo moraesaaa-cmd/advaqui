@@ -206,6 +206,20 @@ export const BLOG_CIDADE_TEMPLATES: Record<string, LocalTemplate> = {
     h1: (c) => `Aposentadoria por idade em ${c}: regras e como pedir ao INSS`,
     description: (c) =>
       `Veja a idade e o tempo de contribuição exigidos e como pedir pelo Meu INSS. Guia em linguagem simples para ${c}.`
+  },
+  "seguro-de-vida-negado-como-recorrer": {
+    full: (c) => `Seguro de vida negado em ${c}? Como recorrer`,
+    short: (c) => `Seguro de vida negado em ${c}?`,
+    h1: (c) => `Seguro de vida negado em ${c}? Como recorrer da recusa`,
+    description: (c) =>
+      `A recusa nem sempre é legítima: peça o motivo por escrito e conteste na seguradora, na SUSEP ou na Justiça. Guia em linguagem simples para ${c}.`
+  },
+  "revisao-de-financiamento-de-veiculo-vale-a-pena": {
+    full: (c) => `Revisar financiamento de veículo em ${c} vale a pena?`,
+    short: (c) => `Revisar financiamento em ${c}: vale a pena?`,
+    h1: (c) => `Revisão de financiamento de veículo em ${c}: vale a pena?`,
+    description: (c) =>
+      `Só compensa quando há juros ou tarifas fora do padrão; compare com a média do Banco Central. Guia em linguagem simples para ${c}.`
   }
 };
 

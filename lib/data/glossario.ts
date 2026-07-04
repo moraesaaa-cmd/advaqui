@@ -3167,6 +3167,275 @@ export const GLOSSARIO: GlossarioTermo[] = [
     areas: ["previdenciario"],
     ver_tambem: ["aposentadoria", "aposentadoria-por-idade", "aposentadoria-especial", "revisao-de-beneficio-inss"],
     atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "acao-de-usucapiao",
+    termo: "Ação de usucapião",
+    variacoes: ["usucapião judicial", "ação para usucapir imóvel", "usucapião na Justiça"],
+    definicao_curta:
+      "Ação para reconhecer a propriedade de quem ocupou um imóvel por tempo prolongado, como se dono fosse, cumprindo os requisitos legais.",
+    explicacao: [
+      "A ação de usucapião é o pedido levado à Justiça para que o juiz reconheça a propriedade de quem ocupou um imóvel de forma mansa, pacífica e contínua por determinado tempo, comportando-se como verdadeiro dono. É o caminho para regularizar quem mora ou usa o bem há anos sem ter a escritura em seu nome.",
+      "O Código Civil prevê modalidades diferentes de usucapião, cada uma com prazo próprio de posse e requisitos específicos. Alguns exigem menos tempo quando há moradia da família ou benfeitorias; outros exigem prazo maior. Também é preciso não haver oposição do antigo dono durante o período e, em regra, agir de boa-fé.",
+      "No processo, o interessado precisa comprovar a posse ao longo do tempo com documentos como contas de água, luz, IPTU, recibos e testemunhas, além de indicar os confrontantes (vizinhos) e o antigo proprietário, que são chamados a se manifestar. Quando não há conflito e há concordância de todos, é possível fazer a usucapião extrajudicial, direto no cartório de imóveis.",
+      "Como cada caso depende do tipo de posse, do prazo cumprido e da documentação, vale reunir as provas com antecedência e procurar um advogado ou a Defensoria Pública para escolher a modalidade correta e o caminho mais rápido."
+    ],
+    exemplos: [
+      "Família que mora há mais de dez anos em terreno sem registro no seu nome",
+      "Pessoa que comprou por contrato de gaveta e nunca conseguiu passar a escritura",
+      "Ocupante de imóvel abandonado que quer regularizar a propriedade"
+    ],
+    areas: ["imobiliario", "civil"],
+    ver_tambem: ["usucapiao", "usucapiao-extrajudicial", "adjudicacao-compulsoria", "contrato-de-gaveta"],
+    tema_jurisprudencia: "usucapiao",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "contrato-de-gaveta",
+    termo: "Contrato de gaveta",
+    variacoes: ["compra na gaveta", "cessão de direitos sem registro", "contrato de gaveta de imóvel financiado"],
+    definicao_curta:
+      "Acordo particular de compra e venda ou de transferência de imóvel que não é registrado em cartório nem comunicado ao banco financiador.",
+    explicacao: [
+      "Contrato de gaveta é o nome popular do acordo em que uma pessoa vende ou transfere um imóvel a outra por instrumento particular, mas sem levar a transferência a registro no cartório de imóveis e, muitas vezes, sem comunicar o banco quando o imóvel ainda está financiado. Na prática, o comprador passa a ocupar e a pagar, mas continua constando o antigo dono como proprietário.",
+      "O contrato de gaveta é comum porque é rápido e barato, mas envolve riscos importantes. Para terceiros e para o banco, o dono continua sendo quem está no registro; por isso, dívidas, penhoras ou até a venda do imóvel a outra pessoa pelo antigo titular podem atingir o comprador de gaveta. Sem registro, também não se tem a segurança jurídica plena da propriedade.",
+      "Existem caminhos para reduzir o risco e regularizar a situação, como a ação de adjudicação compulsória, quando o vendedor se recusa a passar a escritura, ou a usucapião, quando estão presentes os requisitos de posse. Em imóveis financiados, é possível buscar a transferência formal do financiamento junto ao banco.",
+      "Antes de comprar por contrato de gaveta, ou para regularizar um que já existe, é prudente conferir a matrícula do imóvel e procurar um advogado, para avaliar os riscos e o melhor modo de garantir a propriedade."
+    ],
+    exemplos: [
+      "Comprador que assume as prestações de um imóvel financiado no nome de outra pessoa",
+      "Venda feita só por recibo, sem escritura e sem registro na matrícula",
+      "Herdeiro que 'passa' sua parte a outro por acordo particular não registrado"
+    ],
+    areas: ["imobiliario", "civil"],
+    ver_tambem: ["financiamento-imobiliario", "adjudicacao-compulsoria", "acao-de-usucapiao", "arras"],
+    tema_jurisprudencia: "imobiliario",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "financiamento-imobiliario",
+    termo: "Financiamento imobiliário",
+    variacoes: ["financiamento de imóvel", "crédito imobiliário", "financiamento da casa própria"],
+    definicao_curta:
+      "Empréstimo de longo prazo para comprar imóvel, em que o próprio bem costuma ficar em garantia até a quitação.",
+    explicacao: [
+      "Financiamento imobiliário é o contrato pelo qual um banco ou instituição financeira empresta o valor para a compra de um imóvel, e o comprador devolve esse valor em prestações ao longo de muitos anos, acrescidas de juros e encargos. É a forma mais usada para adquirir a casa própria por quem não tem o valor total à vista.",
+      "Na maior parte dos contratos atuais, a garantia é a alienação fiduciária (Lei 9.514/1997): o imóvel fica em nome do comprador, mas em garantia do banco até a quitação. Se o comprador deixa de pagar, o contrato prevê um procedimento próprio de retomada do bem, o que torna essencial acompanhar o pagamento das parcelas.",
+      "O contrato traz o sistema de amortização (como SAC ou Price), a taxa de juros, o seguro obrigatório e a correção do saldo. Como a relação também é de consumo, o consumidor tem direito à informação clara sobre os valores e pode discutir cobranças e taxas que considere indevidas, inclusive pedindo revisão quando os encargos se mostram fora do padrão.",
+      "Antes de assinar, vale comparar propostas, conferir o Custo Efetivo Total (CET) e, em caso de dúvida sobre cláusulas ou dificuldade para pagar, procurar orientação de um advogado ou da Defensoria Pública."
+    ],
+    exemplos: [
+      "Compra da casa própria financiada em 30 anos pelo banco",
+      "Uso do FGTS para dar entrada e abater parte do financiamento",
+      "Consumidor que pede revisão de taxas que considera abusivas no contrato"
+    ],
+    areas: ["imobiliario", "consumidor"],
+    ver_tambem: ["alienacao-fiduciaria", "contrato-de-gaveta", "revisao-de-financiamento", "acao-revisional"],
+    tema_jurisprudencia: "imobiliario",
+    problema: "vou-comprar-imovel-o-que-conferir",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "financiamento-de-veiculo",
+    termo: "Financiamento de veículo",
+    variacoes: ["financiamento de carro", "financiamento de moto", "CDC de veículo"],
+    definicao_curta:
+      "Empréstimo para comprar carro ou moto em prestações, em que o veículo normalmente fica em garantia do banco até a quitação.",
+    explicacao: [
+      "Financiamento de veículo é o contrato pelo qual o banco ou a financeira paga o carro ou a moto ao vendedor, e o comprador devolve o valor em parcelas mensais, com juros e encargos. É uma das formas mais comuns de comprar veículo sem dispor do valor total à vista.",
+      "A garantia mais usada é a alienação fiduciária: o veículo fica registrado com essa restrição e só passa a ser totalmente do comprador após a quitação. Se as parcelas deixam de ser pagas, o credor pode ajuizar ação de busca e apreensão para retomar o bem, prevista no Decreto-Lei 911/1969, o que reforça a importância de manter o pagamento em dia ou renegociar antes do atraso.",
+      "Por ser uma relação de consumo, o contrato deve informar com clareza a taxa de juros, o total a pagar e as tarifas embutidas. O consumidor pode questionar cobranças que considere indevidas e, em alguns casos, pedir a revisão do contrato quando os juros destoam muito da média praticada no mercado.",
+      "Antes de assinar, compare o Custo Efetivo Total (CET) entre instituições e desconfie de parcelas 'baixas' com prazo muito longo. Em caso de dúvida ou dificuldade para pagar, procure um advogado ou a Defensoria Pública."
+    ],
+    exemplos: [
+      "Compra de carro popular em 48 parcelas com o veículo em garantia",
+      "Consumidor que sofre busca e apreensão após atrasar as prestações",
+      "Comprador que descobre tarifas embutidas e busca revisão do contrato"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["alienacao-fiduciaria", "busca-e-apreensao-de-veiculo", "revisao-de-financiamento", "juros-abusivos"],
+    tema_jurisprudencia: "bancario",
+    problema: "fui-cobrado-juros-abusivos",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "multa-rescisoria",
+    termo: "Multa rescisória",
+    variacoes: ["multa por quebra de contrato", "multa por rescisão", "multa contratual"],
+    definicao_curta:
+      "Valor previsto em contrato a ser pago por quem o encerra antes do prazo ou descumpre o que foi combinado.",
+    explicacao: [
+      "Multa rescisória é a quantia acordada no contrato para o caso de uma das partes encerrar o acordo antes do prazo ou descumprir suas obrigações. Ela funciona como uma prefixação de perdas e danos: em vez de discutir quanto o prejuízo custou, as partes já definiram um valor. No Código Civil, esse ajuste aparece como cláusula penal (arts. 408 a 416).",
+      "No aluguel, a lei traz uma regra específica: quem devolve o imóvel antes do fim do contrato paga a multa combinada, mas ela deve ser reduzida de forma proporcional ao tempo já cumprido (art. 4º da Lei 8.245/1991). Assim, quanto mais perto do fim, menor a multa. Há também situações em que a lei dispensa a multa, como a transferência do inquilino para outra cidade a trabalho, cumpridas as condições legais.",
+      "Na relação de trabalho, a expressão costuma se referir à multa de 40% sobre o saldo do FGTS, devida pelo empregador na demissão sem justa causa. É um valor diferente das multas de contratos civis e segue as regras trabalhistas.",
+      "A multa não pode ultrapassar o valor da obrigação principal e pode ser reduzida pelo juiz quando for excessiva ou quando a obrigação já tiver sido cumprida em parte. Em caso de cobrança que pareça abusiva, vale procurar um advogado ou a Defensoria Pública."
+    ],
+    exemplos: [
+      "Inquilino que devolve o imóvel antes do prazo e paga multa proporcional",
+      "Empresa que rompe contrato de prestação de serviço sem aviso e paga a cláusula penal",
+      "Trabalhador demitido sem justa causa que recebe a multa de 40% do FGTS"
+    ],
+    areas: ["civil", "consumidor", "trabalhista"],
+    ver_tambem: ["clausula-penal", "rescisao", "contrato-de-aluguel", "fgts", "distrato"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "seguro-de-vida-negado",
+    termo: "Seguro de vida negado",
+    variacoes: ["seguradora negou o seguro de vida", "recusa de indenização de seguro", "negativa de seguro de vida"],
+    definicao_curta:
+      "Recusa da seguradora em pagar a indenização do seguro de vida ao beneficiário ou ao próprio segurado.",
+    explicacao: [
+      "A negativa de seguro de vida acontece quando a seguradora se recusa a pagar a indenização prevista na apólice — por morte, invalidez ou doença coberta. Nem toda recusa é legítima: é preciso analisar o contrato, as coberturas contratadas e o motivo alegado pela empresa.",
+      "Um motivo comum de recusa é a alegação de doença preexistente não informada na contratação. O STJ, porém, firmou o entendimento de que a seguradora não pode negar o pagamento sob esse argumento se não exigiu exames médicos antes de fechar o contrato e não comprovou a má-fé do segurado. Outra alegação frequente, o suicídio, tem regra própria: passados dois anos do início da vigência, a indenização é devida (art. 798 do Código Civil).",
+      "O contrato de seguro é regido pelo Código Civil (arts. 757 e seguintes) e, quando o segurado é consumidor, também pelo Código de Defesa do Consumidor, o que impõe informação clara e interpretação favorável ao aderente em caso de cláusula dúbia. A negativa deve ser motivada por escrito quando solicitada.",
+      "Diante de uma recusa, guarde a apólice, a comunicação da negativa e os documentos médicos, e procure um advogado ou a Defensoria Pública para avaliar se a indenização é devida e como cobrá-la."
+    ],
+    exemplos: [
+      "Seguradora que nega pagamento alegando doença preexistente sem ter pedido exames",
+      "Recusa de indenização por invalidez com cobertura prevista na apólice",
+      "Negativa em caso de morte após o prazo de carência do contrato"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["dano-moral", "responsabilidade-civil", "seguro-dpvat", "acao-de-indenizacao"],
+    tema_jurisprudencia: "consumidor",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "danos-morais-voo-atrasado",
+    termo: "Danos morais por voo atrasado",
+    variacoes: ["indenização por atraso de voo", "voo atrasado direitos", "atraso de voo dano moral"],
+    definicao_curta:
+      "Reparação que o passageiro pode buscar quando o atraso do voo causa transtorno que ultrapassa o mero aborrecimento.",
+    explicacao: [
+      "Danos morais por voo atrasado são a compensação que o passageiro pode pleitear quando o atraso, o cancelamento ou o preterimento de embarque gera um transtorno relevante — perda de compromisso importante, pernoite forçado, longa espera sem assistência. Nem todo atraso pequeno gera dano moral, mas atrasos significativos e mal assistidos costumam ser reconhecidos pela Justiça.",
+      "A relação entre passageiro e companhia aérea é de consumo, regida pelo Código de Defesa do Consumidor. Além disso, a Resolução 400/2016 da ANAC prevê a assistência material devida conforme o tempo de espera: comunicação, alimentação e, em atrasos maiores, acomodação e transporte. A falta dessa assistência pesa a favor do passageiro.",
+      "Em voos internacionais, os danos materiais seguem regras de convenções internacionais, enquanto o dano moral continua sendo analisado à luz do caso concreto. Guardar cartão de embarque, comprovantes de gastos e registros do atraso ajuda a demonstrar o transtorno e o prejuízo.",
+      "Causas assim podem ser levadas ao Juizado Especial, muitas vezes sem necessidade de advogado nas de menor valor. Ainda assim, em situações mais complexas, vale procurar orientação jurídica."
+    ],
+    exemplos: [
+      "Passageiro que perde compromisso por atraso de várias horas sem assistência",
+      "Cancelamento de voo que obriga o consumidor a pernoitar por conta própria",
+      "Preterição de embarque por excesso de reservas (overbooking)"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["voo-cancelado", "extravio-de-bagagem", "dano-moral", "acao-de-indenizacao"],
+    tema_jurisprudencia: "consumidor",
+    problema: "voo-cancelado-ou-atrasado",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "extravio-de-bagagem",
+    termo: "Extravio de bagagem",
+    variacoes: ["perda de bagagem", "bagagem extraviada", "mala perdida no aeroporto"],
+    definicao_curta:
+      "Perda, atraso ou dano da bagagem sob responsabilidade da companhia aérea, que dá ao passageiro direito a reparação.",
+    explicacao: [
+      "Extravio de bagagem é a perda, o atraso na entrega ou a avaria da mala que estava sob os cuidados da companhia aérea. Como o transporte da bagagem é obrigação da empresa, o passageiro tem direito à reparação pelos prejuízos, que podem incluir os bens perdidos (dano material) e o transtorno sofrido (dano moral), conforme o caso.",
+      "O primeiro passo é registrar a ocorrência ainda no aeroporto, por meio do relatório de irregularidade de bagagem (o RIB), e guardar o comprovante. A Resolução 400/2016 da ANAC prevê prazos para a companhia localizar e devolver a mala e situações de assistência ao passageiro; passado o prazo sem devolução, a bagagem é considerada extraviada.",
+      "Em voos nacionais, aplica-se o Código de Defesa do Consumidor, e o passageiro deve buscar comprovar o conteúdo e o valor dos itens. Em voos internacionais, a indenização por dano material segue limites de convenções internacionais, o que torna importante declarar objetos de maior valor no embarque.",
+      "Guarde o cartão de embarque, o RIB e notas dos itens perdidos. Se a companhia não resolver administrativamente, é possível acionar o Juizado Especial ou procurar um advogado."
+    ],
+    exemplos: [
+      "Mala que não chega ao destino junto com o passageiro",
+      "Bagagem entregue com objetos danificados ou faltando",
+      "Atraso de dias na devolução da mala em viagem"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["danos-morais-voo-atrasado", "voo-cancelado", "dano-material", "dano-moral"],
+    tema_jurisprudencia: "consumidor",
+    problema: "voo-cancelado-ou-atrasado",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "juros-abusivos",
+    termo: "Juros abusivos",
+    variacoes: ["juros abusivos no financiamento", "cobrança de juros excessivos", "taxa de juros abusiva"],
+    definicao_curta:
+      "Juros cobrados em valor muito acima da média do mercado, que podem ser revistos e reduzidos pela Justiça.",
+    explicacao: [
+      "Juros abusivos são os encargos cobrados em patamar muito superior ao praticado pelo mercado para o mesmo tipo de operação. A discussão é comum em financiamentos, empréstimos, cheque especial e cartão de crédito, quando o consumidor sente que o valor a pagar cresceu de forma desproporcional.",
+      "É importante entender um ponto: o antigo limite de 12% ao ano não se aplica às instituições financeiras, que não estão sujeitas a esse teto. Por isso, uma taxa alta não é, sozinha, prova de abuso. O STJ entende que os juros só podem ser considerados abusivos e reduzidos quando destoam significativamente da taxa média de mercado da época do contrato, divulgada pelo Banco Central.",
+      "Além dos juros em si, é possível questionar cobranças acessórias e a chamada capitalização quando cobrada fora das regras. A relação de consumo permite discutir cláusulas que coloquem o consumidor em desvantagem exagerada, com base no Código de Defesa do Consumidor.",
+      "Para avaliar se há abuso, é útil comparar a taxa do contrato com a média divulgada pelo Banco Central e reunir o contrato e os extratos. Um advogado ou a Defensoria Pública podem orientar sobre a ação revisional e sobre o realismo de reduzir os valores."
+    ],
+    exemplos: [
+      "Financiamento com taxa muito acima da média divulgada pelo Banco Central",
+      "Dívida de cartão ou cheque especial que cresce de forma desproporcional",
+      "Consumidor que pede revisão para reduzir os juros do contrato"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["acao-revisional", "revisao-de-financiamento", "superendividamento", "juros-de-mora"],
+    tema_jurisprudencia: "bancario",
+    problema: "fui-cobrado-juros-abusivos",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "revisao-de-financiamento",
+    termo: "Revisão de financiamento",
+    variacoes: ["ação revisional de financiamento", "revisar contrato de financiamento", "revisão de contrato bancário"],
+    definicao_curta:
+      "Pedido, em regra judicial, para revisar cláusulas e encargos de um contrato de financiamento considerados abusivos.",
+    explicacao: [
+      "Revisão de financiamento é o pedido para que sejam reexaminadas as cláusulas de um contrato de financiamento — de imóvel, de veículo ou de crédito pessoal — quando o consumidor entende que há cobranças indevidas ou encargos fora do padrão. O objetivo é ajustar o valor das parcelas e do saldo devedor ao que seria devido.",
+      "Os pontos mais discutidos são os juros muito acima da média de mercado, a capitalização cobrada fora das regras, tarifas embutidas sem previsão clara e a forma de correção do saldo. Vale lembrar que taxa alta, por si só, não garante a revisão: é preciso demonstrar que os encargos destoam do que o mercado praticava na época.",
+      "A revisão costuma ser buscada por ação judicial (ação revisional), com base no Código de Defesa do Consumidor e no Código Civil. Em alguns casos, é possível também renegociar diretamente com o banco antes de ir à Justiça, o que pode ser mais rápido.",
+      "Antes de decidir, reúna o contrato e os extratos e compare a taxa com a média divulgada pelo Banco Central. Um advogado ou a Defensoria Pública podem avaliar se a revisão tende a compensar no seu caso concreto."
+    ],
+    exemplos: [
+      "Consumidor que pede para reduzir juros de financiamento de veículo",
+      "Mutuário que questiona tarifas embutidas no financiamento do imóvel",
+      "Cliente que busca recalcular o saldo devedor de empréstimo"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["acao-revisional", "juros-abusivos", "financiamento-de-veiculo", "financiamento-imobiliario"],
+    tema_jurisprudencia: "bancario",
+    problema: "fui-cobrado-juros-abusivos",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "portabilidade-de-divida",
+    termo: "Portabilidade de dívida",
+    variacoes: ["portabilidade de crédito", "trocar dívida de banco", "portabilidade de financiamento"],
+    definicao_curta:
+      "Transferência de um empréstimo ou financiamento de uma instituição para outra que ofereça condições melhores, sem custo para o cliente.",
+    explicacao: [
+      "Portabilidade de dívida é o direito do cliente de transferir um empréstimo ou financiamento que já possui para outra instituição financeira que ofereça juros menores ou melhores condições. Na prática, o novo banco quita a dívida no banco antigo e o cliente passa a pagar as parcelas restantes na nova instituição.",
+      "As regras da portabilidade são definidas pelo Banco Central e pelo Conselho Monetário Nacional. O banco original não pode impedir a portabilidade nem cobrar tarifa por ela, e deve fornecer as informações necessárias para a transferência quando solicitado pelo cliente ou pela nova instituição.",
+      "A portabilidade pode reduzir o custo total da dívida, mas exige atenção: é preciso comparar não só a taxa de juros, mas o Custo Efetivo Total (CET), o prazo e eventuais seguros embutidos. Nem sempre a proposta 'mais barata' à primeira vista é a mais vantajosa no fim.",
+      "Antes de trocar, peça a proposta por escrito e compare com o contrato atual. Em caso de recusa indevida do banco ou de cobrança de tarifa para portar, é possível reclamar ao Banco Central e procurar um advogado ou a Defensoria Pública."
+    ],
+    exemplos: [
+      "Cliente que transfere o financiamento do carro para um banco com juros menores",
+      "Consumidor que porta o empréstimo consignado para reduzir a parcela",
+      "Mutuário que leva o financiamento do imóvel para outra instituição"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["revisao-de-financiamento", "juros-abusivos", "superendividamento", "financiamento-imobiliario"],
+    tema_jurisprudencia: "bancario",
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "acao-de-indenizacao",
+    termo: "Ação de indenização",
+    variacoes: ["ação indenizatória", "processo de indenização", "ação por danos"],
+    definicao_curta:
+      "Ação em que a vítima pede reparação, em dinheiro, pelos prejuízos materiais ou morais causados por outra pessoa ou empresa.",
+    explicacao: [
+      "Ação de indenização é o processo em que alguém que sofreu um prejuízo pede à Justiça que o responsável repare o dano, normalmente pagando um valor em dinheiro. Ela pode envolver dano material (o prejuízo financeiro concreto), dano moral (a ofensa a direitos da personalidade) ou os dois ao mesmo tempo.",
+      "A base está na responsabilidade civil do Código Civil: quem, por ação ou omissão, causa dano a outro fica obrigado a repará-lo (arts. 186 e 927). Em regra, é preciso demonstrar a conduta, o dano e o nexo entre eles; em algumas situações, como em relações de consumo, a responsabilidade independe de culpa. Cada caso depende das provas reunidas.",
+      "Servem de exemplo situações como acidentes, erro na prestação de um serviço, cobrança indevida, negativação injusta do nome ou descumprimento grave de contrato. O valor do dano material é comprovado por documentos; o do dano moral é arbitrado pelo juiz conforme a gravidade e as circunstâncias.",
+      "Há prazos para ajuizar (prescrição), que variam conforme o tipo de dano, por isso não convém demorar. Reúna provas do fato e do prejuízo e procure um advogado ou a Defensoria Pública para avaliar o cabimento e o valor do pedido."
+    ],
+    exemplos: [
+      "Vítima de acidente que cobra o conserto e o tratamento do responsável",
+      "Consumidor negativado indevidamente que pede reparação por dano moral",
+      "Cliente prejudicado por serviço malfeito que busca ressarcimento"
+    ],
+    areas: ["civil", "consumidor"],
+    ver_tambem: ["responsabilidade-civil", "dano-moral", "dano-material", "danos-morais-voo-atrasado"],
+    tema_jurisprudencia: "responsabilidade-civil",
+    atualizado_em: "2026-07-04"
   }
 ];
 

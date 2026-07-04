@@ -48,7 +48,9 @@ export const ARTIGOS_LOCALIZAVEIS_SLUGS: string[] = [
   "acidente-de-transito-quem-paga-o-conserto",
   "plano-de-saude-negou-cobertura-o-que-fazer",
   "como-funciona-a-guarda-compartilhada",
-  "aposentadoria-por-idade-regras-e-como-pedir"
+  "aposentadoria-por-idade-regras-e-como-pedir",
+  "seguro-de-vida-negado-como-recorrer",
+  "revisao-de-financiamento-de-veiculo-vale-a-pena"
 ];
 
 /**

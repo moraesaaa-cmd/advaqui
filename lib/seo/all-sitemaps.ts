@@ -14,7 +14,7 @@ import { getArtigosLocalizaveis } from "@/lib/data/articles-cidades";
 /**
  * Lista completa dos sitemaps do site — fonte única usada pelo robots.txt e
  * pelo índice /sitemap-index.xml (um único URL enviável ao Search Console que
- * cobre os ~380 sitemaps / ~480k URLs).
+ * cobre os ~400 sitemaps / ~580k URLs).
  */
 export function getAllSitemapUrls(): string[] {
   const base = SITE.url.replace(/\/$/, "");
