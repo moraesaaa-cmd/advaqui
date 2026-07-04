@@ -14,7 +14,7 @@
  */
 
 import { execFile } from "child_process";
-import { mkdtemp, rm, readFile, writeFile, readdir } from "fs/promises";
+import { mkdtemp, mkdir, rm, readFile, writeFile, readdir } from "fs/promises";
 import { tmpdir } from "os";
 import path from "path";
 import { PDFDocument, StandardFonts, rgb, degrees } from "pdf-lib";
@@ -143,6 +143,43 @@ async function soffice(
       "Não foi possível converter este arquivo. Verifique se o documento abre normalmente e tente de novo."
     );
   }
+}
+
+/**
+ * Monta um .docx (OOXML) de texto corrido DIRETO em Node, sem LibreOffice.
+ * Blindagem: PDF→Word não depende mais do soffice/Java (que já quebrou uma vez
+ * por falta de JRE). Cada linha vira um parágrafo Word; texto é XML-escapado.
+ * Zipa a estrutura mínima com a CLI `zip`.
+ */
+async function buildDocxFromText(dir: string, text: string): Promise<string> {
+  const root = path.join(dir, "docxsrc");
+  await mkdir(path.join(root, "_rels"), { recursive: true });
+  await mkdir(path.join(root, "word"), { recursive: true });
+
+  const esc = (s: string) =>
+    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const paras = text
+    .split(/\r?\n/)
+    .map((line) => {
+      const t = line.trim();
+      return t
+        ? `<w:p><w:r><w:t xml:space="preserve">${esc(t)}</w:t></w:r></w:p>`
+        : "<w:p/>";
+    })
+    .join("");
+
+  const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${paras}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1417" w:right="1417" w:bottom="1417" w:left="1417"/></w:sectPr></w:body></w:document>`;
+  const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>`;
+  const rootRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`;
+
+  await writeFile(path.join(root, "[Content_Types].xml"), contentTypes);
+  await writeFile(path.join(root, "_rels", ".rels"), rootRels);
+  await writeFile(path.join(root, "word", "document.xml"), documentXml);
+
+  const outZip = path.join(dir, "resultado.docx");
+  // Zipa TUDO do diretório raiz do pacote (inclui [Content_Types].xml literal).
+  await sh("zip", ["-r", "-X", "-q", outZip, "."], { cwd: root });
+  return outZip;
 }
 
 async function pdftotextOf(dir: string, input: string, layout = false): Promise<string> {
@@ -513,14 +550,11 @@ export async function runPdfTool(
       }
 
       case "pdf-para-word": {
-        // NÃO usar o import de PDF do LibreOffice (writer_pdf_import): ele
-        // traz o texto em CAIXAS posicionadas e o Word abre tudo embaralhado.
-        // Extraímos o texto limpo (pdftotext, ordem correta) e montamos um DOCX
-        // de texto corrido, editável — o que serve para editar petições/contratos.
+        // Texto limpo do PDF (pdftotext, ordem correta) → DOCX montado em Node
+        // (buildDocxFromText), SEM LibreOffice. Antes usava soffice, que quebrou
+        // por falta de Java no VPS; agora é independente e à prova de falha.
         const text = await pdftotextOf(dir, first);
-        const txtPath = path.join(dir, "conteudo.txt");
-        await writeFile(txtPath, text, "utf-8");
-        const p = await soffice(dir, txtPath, "docx");
+        const p = await buildDocxFromText(dir, text);
         return fileResult(p, outName(firstName, "", ".docx"));
       }
 
