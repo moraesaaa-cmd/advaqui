@@ -29,6 +29,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { localLegalContext } from "@/lib/seo/local-context";
 import { SITE } from "@/lib/config";
 
 /**
@@ -166,14 +167,19 @@ export default function GlossarioTermoCidadePage({
               {p}
             </p>
           ))}
-          <p className="text-sm md:text-base text-brand-ink/85 leading-relaxed">
-            Em {cidadeInfo.cidadeNome}/{cidadeInfo.uf}, o conceito é aplicado
-            da mesma forma que no resto do Brasil. O que muda na prática local
-            costuma ser a competência da vara, o calendário do foro, a
-            disponibilidade de canais públicos (Procon, defensoria, OAB
-            seccional) e a jurisprudência do tribunal estadual. Por isso, na
-            hora de agir, vale conversar com um advogado da cidade.
-          </p>
+          {localLegalContext({
+            cityName: cidadeInfo.cidadeNome,
+            uf: cidadeInfo.uf,
+            citySlug: cidadeInfo.citySlug,
+            assunto: termo.slug
+          }).map((par, i) => (
+            <p
+              key={`ctx-${i}`}
+              className="text-sm md:text-base text-brand-ink/85 leading-relaxed"
+            >
+              {par}
+            </p>
+          ))}
         </section>
 
         {termo.exemplos && termo.exemplos.length > 0 && (
