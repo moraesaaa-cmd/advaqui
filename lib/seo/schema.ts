@@ -12,6 +12,9 @@ export const orgSchema = () => ({
   url: SITE.url,
   description: SITE.description,
   logo: `${SITE.url}/opengraph-image`,
+  // sameAs só entra quando houver perfis reais (config SITE.social) — declarar
+  // perfil inexistente é sinal ruim; quando o dono criar as redes, vira aqui.
+  ...(Array.isArray(SITE.social) && SITE.social.length > 0 ? { sameAs: SITE.social } : {}),
   contactPoint: [
     {
       "@type": "ContactPoint",

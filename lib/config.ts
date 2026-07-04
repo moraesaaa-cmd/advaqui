@@ -8,7 +8,12 @@
   // Email em lowercase — convenção universal e evita problemas em filtros
   // de email que normalizam o domínio.
   email: "contato@advaqui.com.br",
-  supportEmail: "suporte@advaqui.com.br"
+  supportEmail: "suporte@advaqui.com.br",
+  // Perfis oficiais do AdvAqui nas redes (schema.org sameAs → sinal de
+  // autoridade/entidade p/ Google). Preencher quando as contas existirem:
+  // ex.: "https://www.instagram.com/advaqui", "https://www.linkedin.com/company/advaqui".
+  // Enquanto vazio, o sameAs não é emitido (não declarar perfil inexistente).
+  social: [] as string[]
 };
 
 export const PIX = {
