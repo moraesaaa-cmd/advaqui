@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { isAdminRequest } from "@/lib/auth/adminSession";
 import { callAI, type ChatMessage } from "@/lib/ai/core";
 
 /**
@@ -60,18 +61,23 @@ const SYSTEM_PROMPT =
 
 export async function POST(req: Request) {
   // Sessão obrigatória (mesma exigência do ToolGate da página /processos).
-  const supabase = createClient();
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return NextResponse.json(
-      { ok: false, mensagem: "Faça login para usar este recurso." },
-      { status: 401 }
-    );
+  // O ADMIN usa cookie HMAC próprio (sem sessão Supabase) — aceitar também.
+  let userId = "admin";
+  if (!isAdminRequest()) {
+    const supabase = createClient();
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json(
+        { ok: false, mensagem: "Faça login para usar este recurso." },
+        { status: 401 }
+      );
+    }
+    userId = user.id;
   }
 
-  if (rateLimited(user.id)) {
+  if (rateLimited(userId)) {
     return NextResponse.json(
       {
         ok: false,

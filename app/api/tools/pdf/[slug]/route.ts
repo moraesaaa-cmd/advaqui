@@ -4,6 +4,7 @@ import { getPdfTool } from "@/lib/tools/pdf/registry";
 import { runPdfTool, ToolError, type UploadedFile } from "@/lib/tools/pdf/engine";
 import { logAgentRun } from "@/lib/ai/core";
 import { createClient } from "@/lib/supabase/server";
+import { isAdminRequest } from "@/lib/auth/adminSession";
 
 export const dynamic = "force-dynamic";
 
@@ -36,21 +37,27 @@ export async function POST(
 
   // Gate de conta grátis: o processamento (e portanto o download) exige login.
   // A página em si é pública e indexável — o gate fica só na ação.
-  const supabase = createClient();
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return NextResponse.json(
-      {
-        error: "cadastro_necessario",
-        message: "Crie uma conta gratuita para baixar o resultado."
-      },
-      { status: 401 }
-    );
+  // O ADMIN usa cookie HMAC próprio (sem sessão Supabase) — aceitar também,
+  // senão o dono logado como admin cai num loop de "crie sua conta".
+  let userId = "admin";
+  if (!isAdminRequest()) {
+    const supabase = createClient();
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json(
+        {
+          error: "cadastro_necessario",
+          message: "Crie uma conta gratuita para baixar o resultado."
+        },
+        { status: 401 }
+      );
+    }
+    userId = user.id;
   }
 
-  if (rateLimited(user.id)) {
+  if (rateLimited(userId)) {
     return NextResponse.json(
       { error: "Muitas operações em sequência. Aguarde alguns minutos e tente de novo." },
       { status: 429 }
@@ -124,7 +131,7 @@ export async function POST(
       status: "success",
       itemsProcessed: files.length,
       durationMs: Date.now() - started,
-      details: { user: user.id }
+      details: { user: userId }
     });
 
     if (result.kind === "text") {
@@ -150,7 +157,7 @@ export async function POST(
     void logAgentRun("pdf_tools", tool.slug, {
       status: "error",
       durationMs: Date.now() - started,
-      details: { user: user.id, error: e instanceof Error ? e.message.slice(0, 200) : "erro" }
+      details: { user: userId, error: e instanceof Error ? e.message.slice(0, 200) : "erro" }
     });
     return NextResponse.json({ error: msg }, { status: 422 });
   }
