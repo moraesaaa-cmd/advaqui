@@ -142,8 +142,7 @@ export default function TemplatePage({ params }: { params: { slug: string } }) {
                     Modelo do documento
                   </h2>
                   <p className="text-sm text-brand-ink/60 mt-1">
-                    Visualização parcial · cadastre-se para liberar o conteúdo completo
-                    e baixar.
+                    Grátis com conta · preencha os campos entre colchetes e use.
                   </p>
                 </div>
                 {/* Botão "Baixar" só fica útil para advogado logado; ContentGate
