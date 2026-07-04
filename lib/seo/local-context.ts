@@ -29,6 +29,14 @@ function hashInt(str: string): number {
 const pick = <T,>(arr: T[], seed: number): T =>
   arr[((Math.trunc(seed) % arr.length) + arr.length) % arr.length];
 
+// Preposição "de + artigo" por estado (concordância PT-BR).
+const PREP_ESTADO: Record<string, string> = {
+  AC: "do", AL: "de", AM: "do", AP: "do", BA: "da", CE: "do", DF: "do",
+  ES: "do", GO: "de", MA: "do", MG: "de", MS: "de", MT: "de", PA: "do",
+  PB: "da", PE: "de", PI: "do", PR: "do", RJ: "do", RN: "do", RO: "de",
+  RR: "de", RS: "do", SC: "de", SE: "de", SP: "de", TO: "do"
+};
+
 // Aberturas — situam o assunto na cidade/foro. {cid}=cidade, {uf}, {est}=estado.
 const ABERTURAS = [
   "Em {cid}/{uf}, quem enfrenta essa situação costuma resolver na comarca local, vinculada ao Tribunal de Justiça de {est}.",
@@ -83,11 +91,15 @@ export function localLegalContext(opts: {
   const capital = est?.capital || "";
   const region = est?.region || "";
   const isCapital = est ? est.capital.toLowerCase() === opts.cityName.toLowerCase() : false;
+  // Preposição correta por estado: "do Paraná", "da Bahia", "de São Paulo".
+  const estComPrep = `${PREP_ESTADO[opts.uf.toUpperCase()] || "de"} ${estNome}`;
 
   const fill = (s: string) =>
     (s || "")
       .split("{cid}").join(opts.cityName)
       .split("{uf}").join(opts.uf.toUpperCase())
+      // "de {est}" vira a forma com preposição correta ANTES do "{est}" solto.
+      .split("de {est}").join(estComPrep)
       .split("{est}").join(estNome)
       .split("{capital}").join(capital);
 
@@ -97,8 +109,8 @@ export function localLegalContext(opts: {
 
   const regional = fill(REGIONAIS[region] || "");
   const capitalNote = isCapital
-    ? `Como ${opts.cityName} é a capital de ${estNome}, concentra varas especializadas e os principais órgãos estaduais, o que costuma ampliar as opções de atendimento. `
-    : `Sendo ${opts.cityName} um município do interior de ${estNome}, alguns procedimentos podem tramitar em comarca regional ou na capital ${capital}, dependendo da matéria. `;
+    ? `Como ${opts.cityName} é a capital ${estComPrep}, concentra varas especializadas e os principais órgãos estaduais, o que costuma ampliar as opções de atendimento. `
+    : `Sendo ${opts.cityName} um município do interior ${estComPrep}, alguns procedimentos podem tramitar em comarca regional ou na capital ${capital}, dependendo da matéria. `;
 
   const p2 = `${capitalNote}${regional ? regional + " " : ""}${fill(pick(FECHOS, seed >>> 6))}`;
 

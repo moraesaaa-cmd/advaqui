@@ -30,6 +30,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { localLegalContext } from "@/lib/seo/local-context";
 import { SITE } from "@/lib/config";
 
 /**
@@ -298,6 +299,26 @@ export default async function CustoPorCidadePage({
             </ul>
           </section>
         )}
+
+        {/* Contexto local único por cidade — anti thin-content */}
+        <section className="mt-6">
+          <h2 className="font-display text-xl font-bold text-brand-ink mb-2">
+            No seu caso, em {cidadeInfo.cidadeNome}
+          </h2>
+          {localLegalContext({
+            cityName: cidadeInfo.cidadeNome,
+            uf: cidadeInfo.uf,
+            citySlug: cidadeInfo.citySlug,
+            assunto: custo.slug
+          }).map((par, i) => (
+            <p
+              key={`ctx-${i}`}
+              className="text-sm md:text-base text-brand-ink/85 leading-relaxed mb-3"
+            >
+              {par}
+            </p>
+          ))}
+        </section>
       </article>
 
       {/* Advogados da área em CIDADE */}

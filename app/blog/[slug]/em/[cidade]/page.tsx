@@ -37,6 +37,7 @@ import {
   fitDescription
 } from "@/lib/seo/local-titles";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { localLegalContext } from "@/lib/seo/local-context";
 import { SITE } from "@/lib/config";
 
 /**
@@ -295,14 +296,16 @@ export default async function ArticleCidadePage({
             <MapPin className="w-5 h-5 text-brand-deep" aria-hidden />
             Como este guia se aplica em {cidadeInfo.cidadeNome}, {cidadeInfo.uf}
           </h2>
-          <p className="text-brand-ink/85 leading-relaxed mb-3">
-            O conteúdo abaixo é o mesmo guia técnico do AdvAqui — os passos,
-            direitos e documentos descritos valem em todo o Brasil. O que muda
-            em {cidadeInfo.cidadeNome}/{cidadeInfo.uf} são pontos de execução
-            local — qual vara é competente, prazos administrativos do Tribunal
-            de Justiça local, presença de defensoria pública na cidade,
-            disponibilidade de Procon, e canais da OAB seccional.
-          </p>
+          {localLegalContext({
+            cityName: cidadeInfo.cidadeNome,
+            uf: cidadeInfo.uf,
+            citySlug: cidadeInfo.citySlug,
+            assunto: article.slug
+          }).map((par, i) => (
+            <p key={`ctx-${i}`} className="text-brand-ink/85 leading-relaxed mb-3">
+              {par}
+            </p>
+          ))}
           <p className="text-brand-ink/85 leading-relaxed">
             Por isso, antes ou depois de ler o guia, vale conversar com um
             advogado que atue em {cidadeInfo.cidadeNome} — quem conhece o foro

@@ -32,6 +32,7 @@ import {
   fitDescription
 } from "@/lib/seo/local-titles";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { localLegalContext } from "@/lib/seo/local-context";
 import { SITE } from "@/lib/config";
 
 /**
@@ -229,15 +230,19 @@ export default async function GuiaPorCidadePage({
               {p}
             </p>
           ))}
-          <p className="text-sm md:text-base text-brand-ink/85 leading-relaxed">
-            Em {cidadeInfo.cidadeNome}/{cidadeInfo.uf}, as regras nacionais se
-            aplicam normalmente. O que pode variar localmente é a competência
-            das varas (justiça estadual ou federal), tribunais regionais, a
-            estrutura da OAB seccional, e a disponibilidade de canais
-            extrajudiciais como Procon, defensoria pública e juizado especial.
-            Por isso vale buscar um advogado que conheça as particularidades
-            forenses da cidade.
-          </p>
+          {localLegalContext({
+            cityName: cidadeInfo.cidadeNome,
+            uf: cidadeInfo.uf,
+            citySlug: cidadeInfo.citySlug,
+            assunto: guia.slug
+          }).map((par, i) => (
+            <p
+              key={`ctx-${i}`}
+              className="text-sm md:text-base text-brand-ink/85 leading-relaxed mb-3"
+            >
+              {par}
+            </p>
+          ))}
         </section>
 
         {/* Temas centrais */}

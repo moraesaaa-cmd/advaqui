@@ -26,6 +26,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { localLegalContext } from "@/lib/seo/local-context";
 import { SITE } from "@/lib/config";
 
 /**
@@ -163,14 +164,27 @@ export default async function ModeloPorCidadePage({
             </p>
             <p className="text-sm text-brand-ink/70 mt-3 leading-relaxed">
               Modelo gratuito de uso geral, baseado na redação tradicional
-              brasileira. Em <strong>{cidadeInfo.cidadeNome}/{cidadeInfo.uf}</strong>
-              , o conteúdo se aplica normalmente. Variações locais costumam
-              ficar por conta do cartório (reconhecimento de firma, registro),
-              da OAB seccional e da repartição administrativa onde o
-              documento será apresentado. Quando exigido reconhecimento de
-              firma ou assinatura digital, qualquer cartório de notas da
-              cidade resolve.
+              brasileira. Em{" "}
+              <strong>
+                {cidadeInfo.cidadeNome}/{cidadeInfo.uf}
+              </strong>{" "}
+              o conteúdo se aplica normalmente; variações locais costumam ficar
+              por conta do cartório (reconhecimento de firma, registro) e da
+              repartição onde o documento será apresentado.
             </p>
+            {localLegalContext({
+              cityName: cidadeInfo.cidadeNome,
+              uf: cidadeInfo.uf,
+              citySlug: cidadeInfo.citySlug,
+              assunto: tpl.slug
+            }).map((par, i) => (
+              <p
+                key={`ctx-${i}`}
+                className="text-sm md:text-base text-brand-ink/85 leading-relaxed mt-3"
+              >
+                {par}
+              </p>
+            ))}
           </div>
         </div>
 
