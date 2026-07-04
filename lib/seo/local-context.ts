@@ -24,7 +24,10 @@ function hashInt(str: string): number {
   return h;
 }
 
-const pick = <T,>(arr: T[], seed: number): T => arr[seed % arr.length];
+// Índice SEMPRE não-negativo: `seed % n` pode ser negativo em JS quando o seed
+// vem de um shift com sinal (>>), o que devolvia undefined e quebrava o render.
+const pick = <T,>(arr: T[], seed: number): T =>
+  arr[((Math.trunc(seed) % arr.length) + arr.length) % arr.length];
 
 // Aberturas — situam o assunto na cidade/foro. {cid}=cidade, {uf}, {est}=estado.
 const ABERTURAS = [
@@ -82,7 +85,7 @@ export function localLegalContext(opts: {
   const isCapital = est ? est.capital.toLowerCase() === opts.cityName.toLowerCase() : false;
 
   const fill = (s: string) =>
-    s
+    (s || "")
       .split("{cid}").join(opts.cityName)
       .split("{uf}").join(opts.uf.toUpperCase())
       .split("{est}").join(estNome)
@@ -90,14 +93,14 @@ export function localLegalContext(opts: {
 
   const seed = hashInt(`${opts.citySlug}|${opts.uf}|${opts.assunto}`);
 
-  const p1 = `${fill(pick(ABERTURAS, seed))} ${fill(pick(CANAIS, seed >> 3))}`;
+  const p1 = `${fill(pick(ABERTURAS, seed))} ${fill(pick(CANAIS, seed >>> 3))}`;
 
   const regional = fill(REGIONAIS[region] || "");
   const capitalNote = isCapital
     ? `Como ${opts.cityName} é a capital de ${estNome}, concentra varas especializadas e os principais órgãos estaduais, o que costuma ampliar as opções de atendimento. `
     : `Sendo ${opts.cityName} um município do interior de ${estNome}, alguns procedimentos podem tramitar em comarca regional ou na capital ${capital}, dependendo da matéria. `;
 
-  const p2 = `${capitalNote}${regional ? regional + " " : ""}${fill(pick(FECHOS, seed >> 6))}`;
+  const p2 = `${capitalNote}${regional ? regional + " " : ""}${fill(pick(FECHOS, seed >>> 6))}`;
 
   return [p1.trim(), p2.trim()];
 }
