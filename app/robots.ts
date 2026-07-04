@@ -14,7 +14,7 @@ import { getAllSitemapUrls } from "@/lib/seo/all-sitemaps";
  *  - /sitemap-problemas-cidades/sitemap/[i].xml — 20 problemas × 5571 cidades
  *  - /sitemap-advogados-de/sitemap/[i].xml — 15 áreas × 5571 cidades
  *  - /sitemap-temas-cidades/sitemap/[i].xml — 15 temas STJ × 5571 cidades
- *  - /sitemap-glossario-cidades/sitemap/[i].xml — 20 termos × 5571 cidades
+ *  - /sitemap-glossario-cidades/sitemap/[i].xml — 135 termos × 5571 cidades
  *  - /sitemap-jurisprudencia.xml — decisões reais STJ + hubs
  *
  * Total descoberta: ~480k URLs cauda longa indexáveis + ~5k canônicas.

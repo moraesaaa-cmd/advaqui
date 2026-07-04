@@ -42,7 +42,10 @@ export const ARTIGOS_LOCALIZAVEIS_SLUGS: string[] = [
   "cnh-suspensa-o-que-fazer",
   "pensao-alimenticia-como-calcular",
   "limpar-nome-negativado-passo-a-passo",
-  "inventario-como-fazer-custos-e-prazos"
+  "inventario-como-fazer-custos-e-prazos",
+  "como-dar-entrada-no-inss-pelo-meu-inss",
+  "assedio-moral-no-trabalho-o-que-fazer",
+  "acidente-de-transito-quem-paga-o-conserto"
 ];
 
 /**

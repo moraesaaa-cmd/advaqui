@@ -7,7 +7,7 @@ import { getAllCities } from "@/lib/data/cities";
 /**
  * Sitemap secundário — /glossario/[slug]/em/[cidade-uf].
  *
- * 1 sitemap por termo × 5571 cidades = 20 sitemaps × 5571 = 111.420 URLs.
+ * 1 sitemap por termo × 5571 cidades = 135 sitemaps × 5571 = 752.085 URLs.
  */
 export async function generateSitemaps() {
   return GLOSSARIO.map((_, idx) => ({ id: idx }));

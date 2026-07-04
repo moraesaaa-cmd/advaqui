@@ -358,9 +358,9 @@ RG: [00.000.000] [órgão emissor]/[UF]
     legalBase: "ECA (Lei 8.069/90), arts. 83 e 84; Resolução 295/2019 do CNJ.",
     fillingMinutes: 5,
     whenToUse: [
-      "Menor de 16 anos viajando sem os pais, dentro do Brasil",
-      "Viagem com avós, tios ou outros parentes acompanhantes",
-      "Viagem em excursão escolar, religiosa ou esportiva"
+      "Criança (menor de 12 anos) viajando dentro do Brasil sem os pais — é quando a autorização é exigida pelo ECA (art. 83)",
+      "Adolescente (12 anos ou mais) em regra é dispensado no Brasil, mas a transportadora pode exigir a autorização — leve por segurança",
+      "Viagem com avós, tios ou outros parentes, ou em excursão escolar/religiosa/esportiva"
     ],
     howToFill: [
       "Preencha dados de ambos os pais (ou responsável legal)",

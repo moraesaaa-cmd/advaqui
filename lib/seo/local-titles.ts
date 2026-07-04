@@ -164,6 +164,27 @@ export const BLOG_CIDADE_TEMPLATES: Record<string, LocalTemplate> = {
     h1: (c) => `Inventário em ${c}: como fazer, custos e prazos`,
     description: (c) =>
       `O maior custo é o ITCMD, somado a cartório ou custas e honorários; o prazo para abrir é de 2 meses. Guia em linguagem simples para ${c}.`
+  },
+  "como-dar-entrada-no-inss-pelo-meu-inss": {
+    full: (c) => `Dar entrada no INSS em ${c}: passo a passo pelo Meu INSS`,
+    short: (c) => `Dar entrada no INSS em ${c}`,
+    h1: (c) => `Como dar entrada no INSS em ${c} pelo Meu INSS`,
+    description: (c) =>
+      `Você faz o pedido pelo aplicativo ou site Meu INSS, anexa os documentos e acompanha o andamento sem sair de casa. Guia em linguagem simples para ${c}.`
+  },
+  "assedio-moral-no-trabalho-o-que-fazer": {
+    full: (c) => `Assédio moral no trabalho em ${c}: o que fazer`,
+    short: (c) => `Assédio moral em ${c}: o que fazer`,
+    h1: (c) => `Assédio moral no trabalho em ${c}: o que fazer e seus direitos`,
+    description: (c) =>
+      `Registre os episódios, guarde provas e use os canais internos e o sindicato antes de decidir os próximos passos. Guia em linguagem simples para ${c}.`
+  },
+  "acidente-de-transito-quem-paga-o-conserto": {
+    full: (c) => `Acidente de trânsito em ${c}: quem paga o conserto?`,
+    short: (c) => `Acidente em ${c}: quem paga o conserto`,
+    h1: (c) => `Acidente de trânsito em ${c}: quem paga o conserto do carro`,
+    description: (c) =>
+      `Em regra paga quem deu causa à batida; o ressarcimento pode vir por acordo, seguro ou Juizado. Guia em linguagem simples para ${c}.`
   }
 };
 

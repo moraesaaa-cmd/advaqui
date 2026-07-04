@@ -2762,6 +2762,425 @@ export const ARTICLES: Article[] = [
           "A venda do imóvel em si, antes da partilha, depende de alvará judicial. O que o herdeiro pode fazer por conta própria é ceder seus direitos hereditários por escritura pública — o comprador assume o lugar dele no inventário, com os riscos correspondentes. Em qualquer cenário, formalize por escritura e com orientação jurídica."
       }
     ]
+  },
+  {
+    slug: "como-dar-entrada-no-inss-pelo-meu-inss",
+    title: "Como dar entrada no INSS pelo Meu INSS: o passo a passo para pedir seu benefício",
+    excerpt:
+      "Crie o acesso gov.br, encontre o serviço certo, anexe documentos e acompanhe o pedido de aposentadoria, auxílio ou pensão pelo Meu INSS — sem sair de casa.",
+    category: "Previdenciário",
+    readingMinutes: 10,
+    publishedAt: "2026-07-04",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "previdenciario",
+    intro:
+      "Saber como dar entrada no INSS pelo Meu INSS evita filas, deslocamentos e a sensação de estar perdido diante da burocracia — hoje quase todos os pedidos de aposentadoria, auxílio, salário-maternidade e pensão começam pela internet, no aplicativo ou no site. Este guia mostra, em linguagem simples, como criar o acesso, encontrar o serviço certo, anexar os documentos, acompanhar o andamento e o que fazer se o pedido for negado ou demorar.",
+    body: [
+      { type: "h2", text: "O que dá para resolver pelo Meu INSS" },
+      {
+        type: "p",
+        text: "O Meu INSS é o canal digital do INSS, disponível como aplicativo (Android e iPhone) e como site. Por ele, o segurado faz a maior parte dos pedidos e consultas sem precisar ir a uma agência. Entre os serviços mais procurados estão:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Pedir aposentadoria (por idade, por tempo de contribuição e outras modalidades das regras vigentes)",
+          "Pedir auxílio por incapacidade temporária (o antigo auxílio-doença) e agendar a perícia",
+          "Pedir salário-maternidade, pensão por morte e auxílio-reclusão",
+          "Solicitar o BPC/LOAS (benefício assistencial ao idoso e à pessoa com deficiência)",
+          "Consultar o extrato de contribuições (CNIS), a carta de concessão e o histórico de pagamentos",
+          "Acompanhar o andamento de um pedido, cumprir exigências e apresentar recurso"
+        ]
+      },
+      { type: "h2", text: "Passo 1: criar ou recuperar o acesso gov.br" },
+      {
+        type: "p",
+        text: "O login do Meu INSS é a conta gov.br, a mesma usada em vários serviços do governo. Se você já tem conta gov.br (de outro serviço, como o Detran ou a Receita), use o mesmo CPF e senha. Se ainda não tem, dá para criar na hora."
+      },
+      { type: "h3", text: "Se você ainda não tem conta gov.br" },
+      {
+        type: "ol",
+        items: [
+          "Baixe o aplicativo Meu INSS ou acesse o site oficial e toque em 'Entrar com gov.br'",
+          "Informe o CPF e siga a opção de criar conta",
+          "Confirme seus dados e escolha uma forma de validação (por reconhecimento facial no aplicativo, por bancos credenciados ou pelas demais opções oferecidas)",
+          "Crie uma senha forte e guarde-a em local seguro",
+          "Quando possível, aumente o nível da conta (selo prata ou ouro) — alguns serviços exigem esse nível de segurança"
+        ]
+      },
+      {
+        type: "callout",
+        text: "Nunca pague para criar conta gov.br nem para acessar o Meu INSS: os dois são gratuitos e oficiais. Cobranças e 'facilitadores' que pedem senha ou dinheiro para 'liberar' benefício são golpe."
+      },
+      { type: "h2", text: "Passo 2: encontrar o serviço certo" },
+      {
+        type: "p",
+        text: "Depois de entrar, use a barra de busca 'Do que você precisa?' e digite o nome do benefício — por exemplo, 'aposentadoria por idade' ou 'salário-maternidade'. O sistema mostra o serviço correspondente com o botão para iniciar o pedido. Escolher o serviço certo importa: pedir a modalidade errada pode gerar negativa e fazer você perder tempo. Na dúvida sobre qual benefício se encaixa no seu caso, vale consultar um profissional antes de protocolar."
+      },
+      {
+        type: "ul",
+        items: [
+          "Antes de pedir, confira o seu extrato CNIS: ele mostra os vínculos e contribuições que o INSS reconhece",
+          "Se faltar algum período, guarde carteira de trabalho, holerites e carnês para comprovar depois",
+          "Alguns serviços permitem simular o tempo de contribuição antes de decidir"
+        ]
+      },
+      { type: "h2", text: "Passo 3: preencher o pedido e anexar documentos" },
+      {
+        type: "p",
+        text: "Ao iniciar o serviço, o sistema faz perguntas e pede o anexo de documentos digitalizados (fotos legíveis ou PDF). Os documentos variam conforme o benefício, mas os mais comuns são:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Documento de identidade com foto e CPF",
+          "Comprovante de residência atualizado",
+          "Carteira de trabalho, carnês de contribuição (GPS) e holerites, quando o caso envolver tempo de trabalho",
+          "Documentos específicos do benefício — por exemplo, certidão de nascimento do bebê no salário-maternidade, ou laudos e exames médicos nos benefícios por incapacidade",
+          "No caso de pensão por morte, a certidão de óbito e a prova do vínculo com o falecido (casamento, união estável, filiação)"
+        ]
+      },
+      {
+        type: "p",
+        text: "Digitalize tudo com boa qualidade, sem cortar as bordas. Depois de conferir os dados, finalize o pedido: o sistema gera um número de protocolo e, se houver perícia médica ou avaliação social, oferece o agendamento. Guarde o número do protocolo — é por ele que você acompanha tudo."
+      },
+      { type: "h2", text: "Passo 4: acompanhar o andamento" },
+      {
+        type: "p",
+        text: "Todo pedido pode ser acompanhado dentro do próprio Meu INSS, em 'Consultar pedidos'. Ali aparecem o status atual e eventuais pendências. Fique atento porque o INSS costuma se comunicar por esse canal, e não por telefone."
+      },
+      {
+        type: "ul",
+        items: [
+          "'Em análise' — o pedido está na fila de avaliação",
+          "'Exigência' — o INSS pediu um documento ou informação; há prazo para cumprir, e o não atendimento pode levar ao indeferimento",
+          "'Concluído' — o pedido foi decidido (concedido ou negado); veja a carta com o resultado"
+        ]
+      },
+      { type: "h2", text: "E se aparecer uma exigência ou for marcada perícia?" },
+      {
+        type: "p",
+        text: "Se surgir uma exigência, cumpra dentro do prazo indicado, anexando o que foi pedido pelo próprio sistema. Se o benefício depende de perícia médica (como os por incapacidade), compareça na data agendada levando documento com foto e todos os laudos, exames e receitas que comprovem a sua condição. Faltar à perícia sem justificativa costuma levar ao arquivamento do pedido."
+      },
+      { type: "h2", text: "Quanto tempo o INSS tem para responder?" },
+      {
+        type: "p",
+        text: "A lei e as normas do INSS preveem prazos para a análise dos pedidos, que variam conforme o tipo de benefício. Na prática, as filas oscilam bastante. Se o prazo estourar sem resposta, existem caminhos para pressionar o andamento, inclusive administrativos e judiciais. Guardar o protocolo e as datas ajuda muito nesse momento."
+      },
+      { type: "h2", text: "Pedido negado: o que fazer" },
+      {
+        type: "p",
+        text: "Uma negativa não é o fim da linha. Leia com atenção a carta de indeferimento: ela indica o motivo (falta de carência, tempo insuficiente, perícia que não reconheceu a incapacidade etc.). A partir do motivo, você pode:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Apresentar recurso administrativo ao Conselho de Recursos da Previdência Social, dentro do prazo informado na carta",
+          "Corrigir o que faltou e, quando cabível, formular novo pedido com mais provas",
+          "Levar o caso à Justiça — no Juizado Especial Federal para valores menores, ou na Justiça Federal comum para os demais"
+        ]
+      },
+      { type: "h2", text: "Precisa de advogado para dar entrada?" },
+      {
+        type: "p",
+        text: "Para o pedido inicial no Meu INSS, não é obrigatório ter advogado — qualquer pessoa pode protocolar. Mesmo assim, uma orientação profissional ajuda a escolher o benefício certo, organizar as provas do tempo de contribuição e evitar erros que geram negativa. Em caso de recurso ou de ação na Justiça, o acompanhamento por advogado passa a ser muito recomendável, e quem não pode pagar tem direito à Defensoria Pública."
+      },
+      { type: "h2", text: "Cuidado com golpes" },
+      {
+        type: "p",
+        text: "O INSS não liga pedindo senha, código ou pagamento para liberar benefício, e o Meu INSS é gratuito. Desconfie de mensagens, ligações e perfis que prometem 'antecipar' ou 'garantir' benefício mediante pagamento. Use apenas o aplicativo e o site oficiais, e nunca compartilhe a sua senha gov.br."
+      }
+    ],
+    faq: [
+      {
+        question: "O Meu INSS é gratuito?",
+        answer:
+          "Sim. O aplicativo e o site Meu INSS são gratuitos e oficiais, assim como a criação da conta gov.br. Ninguém precisa pagar para dar entrada em um benefício. Qualquer cobrança para 'liberar' ou 'agilizar' o pedido é indício de golpe."
+      },
+      {
+        question: "Posso dar entrada no INSS sem advogado?",
+        answer:
+          "Pode. O pedido inicial pelo Meu INSS não exige advogado. A orientação profissional ajuda a escolher o benefício correto e a reunir provas, e passa a ser muito recomendável em caso de recurso ou de ação judicial. Quem não pode pagar tem direito à Defensoria Pública."
+      },
+      {
+        question: "Esqueci minha senha gov.br. Como recupero?",
+        answer:
+          "Na tela de login, use a opção de recuperar senha e siga a validação disponível (por reconhecimento facial no aplicativo, por bancos credenciados ou pelas demais opções). Como o gov.br é usado em vários serviços, recuperar o acesso resolve o login em todos eles."
+      },
+      {
+        question: "Meu pedido apareceu como 'exigência'. O que significa?",
+        answer:
+          "Significa que o INSS precisa de um documento ou informação para continuar a análise. Cumpra a exigência dentro do prazo indicado, anexando o que foi solicitado no próprio sistema. Deixar de atender no prazo pode levar ao indeferimento do pedido."
+      },
+      {
+        question: "O INSS negou meu benefício. Ainda dá para reverter?",
+        answer:
+          "Sim. Você pode apresentar recurso administrativo dentro do prazo da carta de indeferimento, corrigir o que faltou em novo pedido ou levar o caso à Justiça. A carta indica o motivo da negativa, e é por ele que se define a melhor estratégia."
+      }
+    ]
+  },
+  {
+    slug: "assedio-moral-no-trabalho-o-que-fazer",
+    title: "Assédio moral no trabalho: o que fazer, como provar e quais são seus direitos",
+    excerpt:
+      "Humilhação repetida, metas como punição, isolamento: entenda o que caracteriza assédio moral, como reunir provas, a rescisão indireta e como buscar indenização.",
+    category: "Trabalhista",
+    readingMinutes: 10,
+    publishedAt: "2026-07-04",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "trabalhista",
+    intro:
+      "O assédio moral no trabalho é a humilhação repetida e prolongada que expõe, isola ou constrange o trabalhador — e, ao contrário do que muita gente pensa, não é 'coisa de quem não aguenta pressão': é conduta que pode gerar indenização e até justificar o rompimento do contrato por culpa da empresa. Este guia explica, em linguagem simples, o que caracteriza o assédio, o que fazer agora, como reunir provas e quais são os seus direitos.",
+    body: [
+      { type: "h2", text: "O que é (e o que não é) assédio moral" },
+      {
+        type: "p",
+        text: "Assédio moral é a repetição de condutas abusivas que humilham, constrangem ou desestabilizam o trabalhador no ambiente de trabalho. O ponto central é a repetição e a intenção de menosprezar ou perseguir — um episódio isolado de estresse, uma cobrança pontual e justa ou um desentendimento comum não configuram, por si só, assédio. São exemplos frequentes:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Humilhações e ofensas diante dos colegas, apelidos pejorativos e gritos",
+          "Isolamento proposital: deixar a pessoa sem tarefas ou sem informação para trabalhar",
+          "Metas impossíveis usadas como forma de punição e ameaças constantes de demissão",
+          "Vigilância excessiva, controle abusivo de idas ao banheiro e exposição pública de erros",
+          "Rebaixamento de função sem motivo ou retirada de responsabilidades para constranger"
+        ]
+      },
+      { type: "h2", text: "Assédio moral não é só 'chefe chato'" },
+      {
+        type: "p",
+        text: "O assédio pode vir do superior (assédio vertical), de colegas do mesmo nível (assédio horizontal) e até de subordinados contra a chefia. Cobrança de resultados e fiscalização razoável fazem parte da relação de trabalho — o que a lei reprova é o abuso reiterado que fere a dignidade da pessoa, direito garantido pela Constituição. A diferença entre gestão rígida e assédio está na intenção de humilhar e na repetição."
+      },
+      { type: "h2", text: "O que fazer agora: passo a passo" },
+      {
+        type: "ol",
+        items: [
+          "Registre cada episódio: data, hora, local, o que foi dito ou feito e quem presenciou",
+          "Guarde provas — mensagens, e-mails, áudios, prints e documentos que mostrem as condutas",
+          "Use os canais internos da empresa (RH, ouvidoria, canal de denúncia), de preferência por escrito, guardando o protocolo",
+          "Procure atendimento médico se a situação afetou a sua saúde e guarde atestados e laudos",
+          "Se houver sindicato da categoria, procure orientação; ele pode acompanhar e intermediar",
+          "Antes de decisões definitivas, como pedir a rescisão indireta, consulte um advogado"
+        ]
+      },
+      { type: "h2", text: "Como reunir provas" },
+      {
+        type: "p",
+        text: "A prova é o ponto mais decisivo em casos de assédio, porque muitas condutas acontecem sem testemunhas ou de forma velada. Vale reunir o máximo de elementos, de preferência combinando mais de um tipo:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Mensagens e e-mails com o teor abusivo (salve cópias fora do computador da empresa)",
+          "Testemunhas — colegas que presenciaram; mesmo ex-funcionários podem depor",
+          "Registros médicos que liguem o adoecimento ao ambiente de trabalho",
+          "Um diário dos fatos, feito no dia a dia, que ajuda a demonstrar a repetição ao longo do tempo"
+        ]
+      },
+      {
+        type: "callout",
+        text: "Gravar uma conversa da qual você participa é, em regra, admitido como prova pela Justiça. Já invadir e-mails alheios ou expor terceiros pode se voltar contra você. Na dúvida sobre o que pode ou não ser usado, pergunte a um advogado antes."
+      },
+      { type: "h2", text: "Quais são os seus direitos" },
+      {
+        type: "p",
+        text: "Reconhecido o assédio moral, abrem-se dois caminhos principais, que podem ser cumulados conforme o caso."
+      },
+      { type: "h3", text: "Rescisão indireta" },
+      {
+        type: "p",
+        text: "A rescisão indireta é a 'demissão por justa causa do empregador': quando a empresa comete falta grave — e o assédio moral pode ser uma delas —, o trabalhador pode pedir na Justiça o fim do contrato mantendo os direitos de quem é dispensado sem justa causa (aviso prévio, multa de 40% do FGTS, saque do FGTS e, cumpridos os requisitos, seguro-desemprego). É uma decisão séria e depende de prova consistente, por isso costuma ser encaminhada com apoio de advogado."
+      },
+      { type: "h3", text: "Indenização por dano moral" },
+      {
+        type: "p",
+        text: "O assédio moral pode gerar direito a indenização por dano moral, cujo valor é arbitrado pelo juiz conforme a gravidade dos fatos, a duração e as circunstâncias. Não existe uma tabela fixa: cada caso é avaliado individualmente, o que reforça a importância das provas."
+      },
+      { type: "h2", text: "Assédio moral e adoecimento: o lado do INSS" },
+      {
+        type: "p",
+        text: "Quando o assédio leva a um transtorno de saúde que afasta do trabalho, pode haver direito a benefício por incapacidade do INSS. Se ficar demonstrado que a doença tem relação com o trabalho, ela pode ser tratada como doença ocupacional, o que traz efeitos adicionais, como estabilidade e reflexos indenizatórios. O reconhecimento do nexo passa por perícia médica."
+      },
+      { type: "h2", text: "Denunciar dentro e fora da empresa" },
+      {
+        type: "p",
+        text: "Além dos canais internos, existem instâncias externas que podem receber denúncias e atuar, especialmente quando o problema é coletivo ou a empresa se omite:"
+      },
+      {
+        type: "ul",
+        items: [
+          "Sindicato da categoria — orientação e acompanhamento",
+          "Ministério Público do Trabalho — atua em casos com repercussão coletiva",
+          "Auditoria-Fiscal do Trabalho — fiscaliza o ambiente e as condições de trabalho"
+        ]
+      },
+      { type: "h2", text: "Prazo para agir" },
+      {
+        type: "p",
+        text: "Na Justiça do Trabalho, em regra o trabalhador tem até 2 anos após o fim do contrato para ajuizar a ação, podendo cobrar verbas dos últimos 5 anos. Esperar demais pode fazer você perder direitos, por isso não deixe para depois quando a situação já estiver clara."
+      },
+      { type: "h2", text: "Quando procurar um advogado" },
+      {
+        type: "p",
+        text: "Vale procurar um advogado assim que a situação se repete e você começa a reunir provas — e, com mais razão, antes de tomar decisões definitivas, como pedir a rescisão indireta ou ajuizar a ação. O profissional avalia se o caso reúne elementos suficientes, orienta sobre as provas e define a melhor estratégia. Quem não pode pagar tem direito à Defensoria Pública ou ao atendimento do sindicato."
+      }
+    ],
+    faq: [
+      {
+        question: "Um único episódio já é assédio moral?",
+        answer:
+          "Em regra, não. O assédio moral se caracteriza pela repetição de condutas abusivas ao longo do tempo. Um episódio isolado grave pode gerar outras consequências e direito a reparação, mas o assédio moral propriamente dito costuma exigir a demonstração de que a conduta se repetiu."
+      },
+      {
+        question: "Posso gravar meu chefe para usar como prova?",
+        answer:
+          "Gravar uma conversa da qual você mesmo participa é, em regra, aceito como prova pela Justiça. O cuidado é não obter provas por meios ilícitos, como invadir contas de terceiros. Em caso de dúvida sobre o que pode ser usado, consulte um advogado antes."
+      },
+      {
+        question: "O que é rescisão indireta?",
+        answer:
+          "É quando o trabalhador pede o fim do contrato por falta grave da empresa e, reconhecida na Justiça, recebe os mesmos direitos de quem é dispensado sem justa causa. O assédio moral pode fundamentar esse pedido, que depende de prova consistente e costuma exigir apoio jurídico."
+      },
+      {
+        question: "Consigo indenização por assédio moral?",
+        answer:
+          "Pode haver direito a indenização por dano moral quando o assédio é comprovado. O valor é definido pelo juiz conforme a gravidade, a duração e as circunstâncias do caso — não existe tabela fixa. Por isso, reunir boas provas é decisivo."
+      },
+      {
+        question: "Qual o prazo para entrar com ação?",
+        answer:
+          "Na Justiça do Trabalho, em regra o prazo é de até 2 anos após o fim do contrato, com possibilidade de cobrar verbas dos últimos 5 anos. Esperar demais pode significar a perda de direitos, então não convém adiar quando a situação já está clara."
+      }
+    ]
+  },
+  {
+    slug: "acidente-de-transito-quem-paga-o-conserto",
+    title: "Acidente de trânsito: quem paga o conserto do carro e como ser ressarcido",
+    excerpt:
+      "Batida sem vítimas? Veja quem paga o conserto, o que fazer no local, como acionar seguro ou Juizado, o que fazer se o culpado fugiu e os prazos para cobrar.",
+    category: "Trânsito",
+    readingMinutes: 10,
+    publishedAt: "2026-07-04",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "civil",
+    intro:
+      "Depois de um acidente de trânsito, a primeira dúvida costuma ser quem paga o conserto do carro — e a resposta, na maioria dos casos, é simples: paga quem deu causa à batida. Este guia explica, em linguagem simples, como funciona a responsabilidade, o que fazer no local, os caminhos para ser ressarcido (acordo, seguro, Juizado e Justiça comum), o que fazer se o culpado fugiu ou não tem seguro e quais prazos você precisa respeitar.",
+    body: [
+      { type: "h2", text: "A regra geral: quem tem culpa paga" },
+      {
+        type: "p",
+        text: "No Brasil, quem causa um dano a outra pessoa por imprudência, negligência ou imperícia tem o dever de repará-lo — é a chamada responsabilidade civil, prevista no Código Civil. No trânsito, isso significa que o motorista que provocou a batida deve arcar com o conserto do veículo do outro e com os demais prejuízos causados. Provar de quem foi a culpa, portanto, é o coração de qualquer pedido de ressarcimento."
+      },
+      { type: "h2", text: "No local do acidente: o que fazer na hora" },
+      {
+        type: "ol",
+        items: [
+          "Garanta a segurança: sinalize a via e, havendo feridos, chame o socorro (SAMU 192) e a polícia",
+          "Não saia do local antes de resolver o essencial — deixar a cena de acidente com vítimas é infração grave e pode ser crime",
+          "Anote os dados do outro condutor: nome, CPF, telefone, placa, modelo e seguradora, se houver",
+          "Fotografe tudo: posição dos veículos, danos, placas, a via, a sinalização e eventuais marcas de frenagem",
+          "Busque testemunhas e anote nome e telefone de quem viu o acidente",
+          "Registre o boletim de ocorrência, presencialmente ou pela internet, conforme o caso"
+        ]
+      },
+      { type: "h2", text: "Boletim de ocorrência é obrigatório?" },
+      {
+        type: "p",
+        text: "Em batidas apenas com danos materiais e sem vítimas, muitas vezes é possível resolver por acordo, e o boletim não é sempre obrigatório. Ainda assim, registrá-lo é altamente recomendável: o boletim é uma prova importante e costuma ser exigido pelas seguradoras. Havendo feridos, o registro é indispensável. Em muitas cidades existe o boletim eletrônico, feito pela internet."
+      },
+      { type: "h2", text: "Caminhos para ser ressarcido" },
+      { type: "h3", text: "1. Acordo direto com o culpado" },
+      {
+        type: "p",
+        text: "É o caminho mais rápido e barato. As partes combinam o valor do conserto — de preferência com base em orçamentos de oficinas — e formalizam por escrito, com um recibo ou termo de acordo assinado que descreva o que foi combinado e dê quitação após o pagamento. Colocar tudo no papel evita que o assunto volte depois."
+      },
+      { type: "h3", text: "2. Acionar o seguro" },
+      {
+        type: "p",
+        text: "Se você tem seguro com a cobertura adequada, pode acionar a sua seguradora, pagando a franquia; a seguradora depois cobra do culpado, se for o caso. Se o culpado tem seguro, também é possível buscar a seguradora dele. Leia a apólice para entender coberturas, franquia e prazos de aviso de sinistro."
+      },
+      { type: "h3", text: "3. Juizado Especial Cível" },
+      {
+        type: "p",
+        text: "Não havendo acordo, o Juizado Especial Cível é a via mais acessível para valores menores. Causas de até 20 salários mínimos podem ser propostas sem advogado; entre 20 e 40 salários mínimos, o advogado passa a ser exigido. É um caminho mais rápido e sem custas iniciais na maioria dos casos, ideal para a cobrança do conserto e de despesas comprovadas."
+      },
+      { type: "h3", text: "4. Ação na Justiça comum" },
+      {
+        type: "p",
+        text: "Para valores maiores ou casos mais complexos — com feridos, discussão técnica de culpa ou perdas elevadas —, a cobrança segue pela Justiça comum, com advogado. Nessa via cabem pedidos mais amplos, como lucros cessantes e danos morais, conforme a gravidade."
+      },
+      { type: "h2", text: "E se o culpado fugiu ou não tem seguro?" },
+      {
+        type: "p",
+        text: "Se o outro motorista fugiu, o boletim de ocorrência, as imagens de câmeras próximas e as testemunhas são essenciais para tentar identificá-lo. Identificado, ele pode ser cobrado ainda que não tenha seguro — a responsabilidade é da pessoa, não da apólice, e a cobrança pode alcançar seus bens. Para danos à própria pessoa (não ao carro), existe ainda o seguro obrigatório de vítimas de trânsito, o DPVAT, que independe de identificar o culpado."
+      },
+      { type: "h2", text: "O que dá para cobrar além do conserto" },
+      {
+        type: "ul",
+        items: [
+          "O conserto do veículo (ou a perda total, quando o reparo é inviável)",
+          "Despesas comprovadas: guincho, transporte alternativo, diárias e itens danificados",
+          "Lucros cessantes — o que a pessoa deixou de ganhar, típico de quem usa o carro para trabalhar (aplicativo, táxi, entregas)",
+          "Danos morais, em situações que ultrapassam o mero aborrecimento, sobretudo quando há lesões",
+          "Despesas médicas e tratamentos, quando houver vítimas"
+        ]
+      },
+      { type: "h2", text: "Batida com veículo de aplicativo, ônibus ou moto" },
+      {
+        type: "p",
+        text: "Quando o outro veículo é de transporte de passageiros (ônibus, van, táxi) ou de empresa, a responsabilidade pode alcançar também a empresa dona do veículo ou empregadora do motorista. Em acidentes com transporte de passageiros há regras próprias de responsabilidade. Identificar corretamente quem responde amplia as chances de ressarcimento, e é um ponto em que a orientação jurídica costuma ajudar."
+      },
+      { type: "h2", text: "DPVAT: o seguro que cobre pessoas, não o carro" },
+      {
+        type: "p",
+        text: "É importante não confundir: o DPVAT indeniza danos às pessoas (morte, invalidez permanente e despesas médicas), independentemente de quem foi o culpado, mas não cobre o conserto do veículo. O prejuízo material do carro segue a lógica da responsabilidade civil — ou seja, é cobrado de quem deu causa ao acidente."
+      },
+      {
+        type: "callout",
+        text: "Antes de assinar qualquer acordo ou receber um valor 'para encerrar', confira se ele cobre tudo o que você tem a receber. Um recibo de quitação amplo pode impedir cobranças futuras, mesmo que surjam danos que você não havia percebido no momento."
+      },
+      { type: "h2", text: "Prazos: não deixe para depois" },
+      {
+        type: "p",
+        text: "O Código Civil prevê prazo para a pretensão de reparação de danos — em regra, três anos. Perder esse prazo pode impedir a cobrança judicial. Além disso, provas se perdem com o tempo: câmeras apagam imagens, testemunhas mudam de endereço e a memória do acidente esfria. Agir logo aumenta muito as chances de ser ressarcido."
+      },
+      { type: "h2", text: "Quando procurar um advogado" },
+      {
+        type: "p",
+        text: "Para causas menores, sem vítimas e com culpa clara, o Juizado Especial funciona bem mesmo sem advogado. A orientação profissional passa a ser importante quando há feridos, discussão sobre quem teve culpa, valores altos, envolvimento de empresas ou negativa da seguradora. O advogado ajuda a reunir provas, calcular tudo o que é devido e escolher a via correta. Quem não pode pagar tem direito à Defensoria Pública."
+      }
+    ],
+    faq: [
+      {
+        question: "Quem paga o conserto do carro depois da batida?",
+        answer:
+          "Em regra, paga quem deu causa ao acidente. É a responsabilidade civil: o motorista culpado deve arcar com o conserto do veículo do outro e com os demais prejuízos. Por isso, provar de quem foi a culpa — com boletim, fotos e testemunhas — é o ponto central de qualquer ressarcimento."
+      },
+      {
+        question: "Preciso registrar boletim de ocorrência?",
+        answer:
+          "Havendo feridos, sim, o registro é indispensável. Em batidas só com danos materiais, muitas vezes dá para resolver por acordo, mas registrar o boletim ainda é recomendável: é prova importante e costuma ser exigido pelas seguradoras. Em muitas cidades há boletim eletrônico pela internet."
+      },
+      {
+        question: "O culpado fugiu. Ainda dá para ser ressarcido?",
+        answer:
+          "Se ele for identificado — por câmeras, testemunhas ou pela placa anotada —, pode ser cobrado mesmo sem seguro, porque a responsabilidade é da pessoa. Para danos à própria pessoa (não ao carro), há ainda o DPVAT, que independe de identificar o culpado."
+      },
+      {
+        question: "Dá para resolver no Juizado sem advogado?",
+        answer:
+          "Sim, em causas de até 20 salários mínimos você pode ir ao Juizado Especial Cível sem advogado. Entre 20 e 40 salários mínimos o advogado passa a ser exigido, e acima disso a cobrança segue pela Justiça comum. É uma via rápida e, em regra, sem custas iniciais."
+      },
+      {
+        question: "Qual o prazo para cobrar o prejuízo?",
+        answer:
+          "O Código Civil prevê, em regra, o prazo de três anos para a pretensão de reparação de danos. Perder esse prazo pode impedir a cobrança judicial, e as provas se perdem com o tempo. Por isso, o ideal é agir o quanto antes."
+      }
+    ]
   }
 ];
 

@@ -47,7 +47,7 @@ import { SITE } from "@/lib/config";
  * cidade (não criamos "como entender prescrição em Almenara" porque não
  * faz sentido procurar isso geograficamente).
  *
- * 17 artigos × 5571 cidades IBGE = 94.707 URLs cauda longa.
+ * 20 artigos × 5571 cidades IBGE = 111.420 URLs cauda longa.
  *
  * Híbrido SSG + ISR — pré-gera 50 cidades prioritárias × 2 = 100 URLs.
  * ISR cobre as 5521 demais cidades, geradas sob demanda no primeiro

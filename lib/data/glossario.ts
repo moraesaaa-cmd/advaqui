@@ -2361,6 +2361,426 @@ export const GLOSSARIO: GlossarioTermo[] = [
     areas: ["digital", "civil", "consumidor"],
     ver_tambem: ["habeas-data", "dano-moral", "nome-negativado"],
     atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "revisao-de-beneficio-inss",
+    termo: "Revisão de benefício do INSS",
+    variacoes: ["revisão de aposentadoria", "revisão do INSS", "recálculo de benefício"],
+    definicao_curta:
+      "Pedido para corrigir o valor de um benefício do INSS que teria sido calculado de forma equivocada.",
+    explicacao: [
+      "A revisão de benefício é o pedido para que o INSS recalcule o valor de uma aposentadoria, pensão ou auxílio quando há indício de erro na conta — por exemplo, quando salários de contribuição, tempo de trabalho ou períodos especiais não foram computados corretamente.",
+      "Ela pode ser feita na via administrativa, pelo próprio INSS (inclusive pelo aplicativo ou site Meu INSS), ou na Justiça, quando o pedido é negado ou ignorado. A revisão não é automática: cabe ao segurado apontar o que estaria errado e apresentar documentos.",
+      "Existe prazo para revisar o ato de concessão, em regra contado a partir do início do benefício. Passado esse prazo, discutem-se apenas as parcelas mais recentes. Por isso, revisão é assunto sensível a prazo, que pede conferência com um profissional antes de decidir esperar.",
+      "Nem toda revisão aumenta o valor: às vezes o recálculo confirma o que já era pago, e há casos em que o próprio INSS pode apontar pagamento a maior. Vale reunir a carta de concessão e o extrato do CNIS antes de pedir."
+    ],
+    exemplos: [
+      "Aposentado que descobre que um período de trabalho não entrou na conta do INSS",
+      "Segurado que trabalhou exposto a agente nocivo e não teve o tempo especial reconhecido",
+      "Pensionista que suspeita de erro no valor calculado pelo INSS"
+    ],
+    areas: ["previdenciario"],
+    ver_tambem: ["aposentadoria", "aposentadoria-especial", "auxilio-doenca", "pente-fino-inss"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "pente-fino-inss",
+    termo: "Pente-fino do INSS",
+    variacoes: ["revisão administrativa do INSS", "convocação para perícia", "revisão de benefícios por incapacidade"],
+    definicao_curta:
+      "Revisão em massa feita pelo INSS para checar se benefícios continuam devidos, podendo convocar o segurado para perícia.",
+    explicacao: [
+      "O chamado pente-fino é o mutirão de revisão em que o INSS reexamina benefícios já concedidos — sobretudo os por incapacidade, como o auxílio por incapacidade temporária (o antigo auxílio-doença) e a aposentadoria por incapacidade — para verificar se os requisitos continuam presentes.",
+      "Nesses mutirões, o segurado costuma ser convocado para nova perícia médica. Ignorar a convocação é arriscado: a ausência sem justificativa pode levar à suspensão e depois ao cancelamento do benefício. Fique atento às cartas, ao aplicativo Meu INSS e aos prazos indicados.",
+      "Se o benefício for suspenso ou cortado, o segurado pode apresentar recurso administrativo e, se necessário, buscar a Justiça, sobretudo quando a incapacidade persiste e há laudos médicos que a comprovem. Manter documentos e exames atualizados é decisivo.",
+      "Nem toda convocação significa corte: muitas vezes a perícia apenas confirma a manutenção do benefício. O essencial é não deixar de comparecer nem perder prazos."
+    ],
+    exemplos: [
+      "Beneficiário de auxílio por incapacidade convocado para nova perícia",
+      "Aposentado por incapacidade que recebe carta pedindo reavaliação médica",
+      "Segurado que tem o benefício suspenso por não comparecer à perícia e precisa recorrer"
+    ],
+    areas: ["previdenciario"],
+    ver_tambem: ["auxilio-doenca", "aposentadoria-por-invalidez", "revisao-de-beneficio-inss", "bpc-loas"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "seguro-dpvat",
+    termo: "Seguro DPVAT",
+    variacoes: ["DPVAT", "seguro obrigatório", "indenização DPVAT"],
+    definicao_curta:
+      "Seguro obrigatório que indeniza vítimas de acidentes com veículos, independentemente de quem foi o culpado.",
+    explicacao: [
+      "O DPVAT é o seguro obrigatório de danos pessoais causados por veículos automotores. Ele cobre vítimas de acidentes de trânsito — motoristas, passageiros e pedestres — sem discutir de quem foi a culpa. É um seguro de caráter social, diferente do seguro do carro que se contrata por conta própria.",
+      "As coberturas tradicionais são três: indenização por morte, por invalidez permanente (total ou parcial, conforme a gravidade) e reembolso de despesas médicas comprovadas, dentro dos limites e regras vigentes. O valor da invalidez varia conforme o grau e o tipo de sequela.",
+      "Para pedir a indenização é preciso reunir documentos como boletim de ocorrência, laudos e comprovantes médicos, além dos documentos pessoais da vítima ou dos beneficiários. Há prazo para requerer, contado do acidente, o que torna importante não deixar o pedido para depois.",
+      "As regras e a gestão do DPVAT passaram por mudanças ao longo dos anos, inclusive quanto ao órgão responsável pelo pagamento. Diante de dúvida sobre onde e como pedir, ou de negativa de pagamento, procure sempre um advogado."
+    ],
+    exemplos: [
+      "Pedestre atropelado que fica com sequela permanente e pede indenização por invalidez",
+      "Família que requer a indenização por morte após acidente de trânsito",
+      "Motociclista que reúne laudos para reembolso de despesas médicas"
+    ],
+    areas: ["civil", "consumidor"],
+    ver_tambem: ["dano-material", "responsabilidade-civil", "dano-existencial"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "busca-e-apreensao-de-veiculo",
+    termo: "Busca e apreensão de veículo",
+    variacoes: ["apreensão de carro financiado", "busca e apreensão de carro", "retomada de veículo pelo banco"],
+    definicao_curta:
+      "Ação em que o credor pede de volta o veículo financiado com alienação fiduciária quando o comprador atrasa as parcelas.",
+    explicacao: [
+      "Quando alguém compra um carro ou uma moto financiados com garantia de alienação fiduciária, o bem fica em nome do comprador, mas em garantia do banco ou da financeira até a quitação. Se as parcelas atrasam e o devedor é notificado sem regularizar, o credor pode entrar com a ação de busca e apreensão do veículo.",
+      "Reconhecida a mora (o atraso) e concedida a liminar, o veículo pode ser apreendido logo no início do processo. Por isso é uma ação rápida, com regras próprias previstas em lei específica sobre alienação fiduciária (Decreto-Lei 911/1969).",
+      "O devedor costuma ter a chance de quitar a dívida para reaver o carro (a chamada purgação da mora), dentro do prazo e das condições que a lei e a jurisprudência admitem. Também pode apresentar defesa, discutindo, por exemplo, encargos e cobranças que considere indevidos.",
+      "Perder o carro e ainda continuar devendo é um risco real quando nada é feito. Ao receber a notificação ou a citação, reúna o contrato e os comprovantes de pagamento e procure sempre um advogado com urgência, porque os prazos são curtos."
+    ],
+    exemplos: [
+      "Comprador que atrasa várias parcelas do financiamento e é notificado pela financeira",
+      "Devedor que quita o valor em atraso para tentar recuperar o veículo apreendido",
+      "Consumidor que contesta encargos que considera abusivos no financiamento"
+    ],
+    areas: ["civil", "consumidor"],
+    ver_tambem: ["alienacao-fiduciaria", "busca-e-apreensao", "juros-de-mora", "acao-revisional"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "alienacao-fiduciaria",
+    termo: "Alienação fiduciária",
+    variacoes: ["garantia fiduciária", "propriedade fiduciária", "financiamento com alienação fiduciária"],
+    definicao_curta:
+      "Garantia em que o bem financiado fica com o comprador para uso, mas em propriedade do credor até a dívida ser quitada.",
+    explicacao: [
+      "Na alienação fiduciária, quem financia um bem (um carro ou um imóvel, por exemplo) passa a usá-lo desde já, mas a propriedade fica com o credor como garantia até o pagamento da última parcela. Só com a quitação a propriedade se consolida em nome do comprador.",
+      "É a forma de garantia mais comum em financiamentos de veículos e imóveis, porque dá segurança ao credor e costuma reduzir os juros. Em troca, o descumprimento tem consequências rápidas: no caso de veículos, a busca e apreensão; no de imóveis, um procedimento de retomada e leilão previsto em lei, em boa parte fora da Justiça.",
+      "Enquanto paga, o devedor tem o dever de conservar o bem e não pode vendê-lo livremente sem quitar ou transferir a dívida. Quitado o financiamento, é importante providenciar a baixa da garantia — por exemplo, a baixa do gravame no documento do veículo.",
+      "Contratos de financiamento costumam ter cláusulas de juros, seguros e tarifas nem sempre bem explicadas. Antes de assinar, ou diante de cobrança que pareça indevida, procure sempre um advogado."
+    ],
+    exemplos: [
+      "Comprador que financia o carro e só vira dono pleno após a última parcela",
+      "Mutuário que financia o apartamento com garantia de alienação fiduciária",
+      "Devedor que quita o financiamento e pede a baixa do gravame do veículo"
+    ],
+    areas: ["civil", "consumidor", "imobiliario"],
+    ver_tambem: ["busca-e-apreensao-de-veiculo", "juros-de-mora", "clausula-penal", "acao-revisional"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "acao-de-cobranca",
+    termo: "Ação de cobrança",
+    variacoes: ["cobrança judicial", "cobrança de dívida", "ação de cobrança de dívida"],
+    definicao_curta:
+      "Ação para exigir na Justiça o pagamento de uma dívida quando não há título que permita execução direta.",
+    explicacao: [
+      "A ação de cobrança serve para o credor pedir ao juiz que reconheça a dívida e condene o devedor a pagar. É o caminho quando não existe um título executivo pronto (como um cheque ou uma nota promissória) ou quando é preciso primeiro comprovar que o valor é realmente devido.",
+      "Diferentemente da execução — que parte de um título já reconhecido —, na cobrança o credor precisa provar a origem e o valor do débito, com contratos, recibos, e-mails, mensagens ou testemunhas. Reconhecida a dívida por sentença, formam-se as condições para depois cobrar de forma forçada.",
+      "Há prazos de prescrição que variam conforme o tipo de dívida. Deixar o tempo passar pode impedir a cobrança judicial, por isso não convém adiar indefinidamente. Antes de ajuizar, também vale tentar acordo e registrar as tentativas.",
+      "Do lado de quem é cobrado, é possível apresentar defesa discutindo o valor, alegando pagamento já feito ou apontando a prescrição. Em qualquer posição, reunir a documentação e procurar um advogado ajuda a evitar surpresas."
+    ],
+    exemplos: [
+      "Prestador de serviço que não recebeu e cobra o cliente na Justiça",
+      "Credor de dívida sem título formal que precisa comprovar o débito",
+      "Condomínio que cobra taxas atrasadas de um morador"
+    ],
+    areas: ["civil", "consumidor"],
+    ver_tambem: ["juros-de-mora", "correcao-monetaria", "prescricao", "penhora"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "embargos-de-declaracao",
+    termo: "Embargos de declaração",
+    variacoes: ["embargos declaratórios", "embargos de esclarecimento"],
+    definicao_curta:
+      "Recurso usado para corrigir omissão, contradição, obscuridade ou erro material em uma decisão judicial.",
+    explicacao: [
+      "Os embargos de declaração são um recurso de finalidade específica: não servem para rediscutir quem tem razão, e sim para pedir que o juiz ou o tribunal esclareça a decisão. Cabem quando há omissão (algo que devia ser respondido e não foi), contradição, obscuridade ou erro material.",
+      "O prazo para apresentá-los é curto, em geral bem menor que o dos demais recursos, contado da publicação da decisão. Por serem dirigidos ao próprio julgador que decidiu, costumam ser resolvidos com rapidez.",
+      "Em regra, os embargos interrompem o prazo dos outros recursos, o que os torna úteis também para preparar a defesa seguinte. Usados apenas para atrasar o processo, porém, podem ser considerados protelatórios e gerar multa.",
+      "Como envolvem prazo curto e técnica própria, saber quando e como usar os embargos é tarefa para um advogado, que avalia se a decisão realmente tem um dos vícios que autorizam o recurso."
+    ],
+    exemplos: [
+      "Parte que aponta um pedido não analisado na sentença",
+      "Advogado que pede esclarecimento sobre trecho contraditório do acórdão",
+      "Correção de erro de cálculo ou de nome na decisão"
+    ],
+    areas: ["civil"],
+    ver_tambem: ["apelacao", "recurso-especial", "recurso-extraordinario", "coisa-julgada"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "dano-existencial",
+    termo: "Dano existencial",
+    variacoes: ["dano ao projeto de vida", "dano à vida de relação"],
+    definicao_curta:
+      "Dano que compromete o projeto de vida ou as atividades cotidianas da pessoa, além do sofrimento pontual.",
+    explicacao: [
+      "O dano existencial é uma modalidade de dano extrapatrimonial que atinge o modo de viver da pessoa: o seu projeto de vida (planos e realizações pessoais) e a sua vida de relação (convívio social, lazer, descanso, família). Vai além do abalo momentâneo, alcançando o cotidiano de forma duradoura.",
+      "No campo trabalhista, costuma ser discutido em casos de jornadas exaustivas e sistemáticas que impedem o trabalhador de conviver com a família, estudar, descansar ou cuidar da saúde. Também aparece em situações graves fora do trabalho que alteram profundamente a rotina da vítima.",
+      "Por ser dano à esfera pessoal, a reparação é financeira e definida pelo juiz conforme a gravidade e as provas. Não se confunde exatamente com o dano moral comum: aqui o foco é o comprometimento do projeto e das atividades de vida, o que exige demonstração concreta.",
+      "Reunir provas do impacto na rotina — horários, ausência de folgas, efeitos na saúde e nas relações — é decisivo. Por ser tema técnico e ainda em construção na jurisprudência, procure sempre um advogado para avaliar o caso."
+    ],
+    exemplos: [
+      "Trabalhador submetido a jornadas excessivas que o impedem de conviver com a família",
+      "Vítima de ato grave que perde a capacidade de manter sua rotina e seus planos",
+      "Empregado sem folgas por longos períodos, com prejuízo ao descanso e à vida social"
+    ],
+    areas: ["trabalhista", "civil"],
+    ver_tambem: ["dano-moral", "dano-material", "assedio-moral", "horas-extras"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "assedio-sexual-no-trabalho",
+    termo: "Assédio sexual no trabalho",
+    variacoes: ["assédio sexual", "importunação sexual no trabalho"],
+    definicao_curta:
+      "Conduta de conotação sexual não desejada no ambiente de trabalho, que pode gerar responsabilização e é crime.",
+    explicacao: [
+      "O assédio sexual no trabalho é a insistência ou a imposição de conduta de caráter sexual não desejada — cantadas insistentes, propostas, toques, chantagem por promoção ou ameaça de demissão. Pode ocorrer entre chefe e subordinado ou entre colegas.",
+      "Além das consequências trabalhistas, o assédio sexual é tratado como crime pela lei penal brasileira, especialmente quando há abuso da posição de superioridade hierárquica. No trabalho, pode gerar direito a indenização e, em casos graves, embasar a rescisão indireta.",
+      "A empresa tem o dever de prevenir e agir: manter canais de denúncia, apurar e punir. A omissão diante de um caso conhecido pode ampliar a responsabilidade do empregador.",
+      "Guardar provas — mensagens, e-mails, testemunhas — e registrar os fatos é decisivo, ainda que delicado. Por envolver aspectos trabalhistas e criminais, procure sempre um advogado e, quando for o caso, os canais de denúncia e a polícia."
+    ],
+    exemplos: [
+      "Superior que condiciona uma promoção a favores sexuais",
+      "Colega que insiste em investidas sexuais mesmo após recusas claras",
+      "Trabalhadora que reúne mensagens para comprovar o assédio sofrido"
+    ],
+    areas: ["trabalhista", "criminal", "civil"],
+    ver_tambem: ["assedio-moral", "dano-moral", "rescisao-indireta", "dano-existencial"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "doenca-ocupacional",
+    termo: "Doença ocupacional",
+    variacoes: ["doença do trabalho", "doença profissional", "LER/DORT"],
+    definicao_curta:
+      "Doença causada ou agravada pelo trabalho, equiparada a acidente de trabalho para fins de direitos.",
+    explicacao: [
+      "Doença ocupacional é aquela adquirida ou desencadeada em razão do trabalho ou das condições em que ele é realizado. Inclui a doença profissional (típica de certa atividade) e a doença do trabalho (ligada às condições específicas). Exemplos comuns são as lesões por esforço repetitivo (LER/DORT), perdas auditivas e transtornos ligados ao ambiente laboral.",
+      "Para fins de direitos, a doença ocupacional é equiparada ao acidente de trabalho. Isso significa que pode dar acesso a benefícios do INSS e, conforme o caso, à estabilidade no emprego e à indenização, quando houver responsabilidade do empregador.",
+      "A ligação entre a doença e o trabalho (o chamado nexo) costuma ser avaliada por perícia médica. A empresa deve emitir a CAT (Comunicação de Acidente de Trabalho) também nos casos de doença, e a falta dessa comunicação não retira o direito do trabalhador.",
+      "Reunir laudos, exames e o histórico da função ajuda a comprovar o nexo. Por envolver questões previdenciárias e trabalhistas ao mesmo tempo, procure sempre um advogado para orientar os pedidos."
+    ],
+    exemplos: [
+      "Digitador que desenvolve LER/DORT após anos na mesma função",
+      "Trabalhador com perda auditiva por exposição contínua a ruído",
+      "Empregado com transtorno de saúde agravado pelas condições de trabalho"
+    ],
+    areas: ["trabalhista", "previdenciario"],
+    ver_tambem: ["acidente-de-trabalho", "auxilio-doenca", "auxilio-acidente", "insalubridade"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "reintegracao-de-posse",
+    termo: "Reintegração de posse",
+    variacoes: ["ação de reintegração de posse", "ação possessória"],
+    definicao_curta:
+      "Ação para retomar a posse de um bem quando o possuidor é esbulhado, ou seja, dele privado indevidamente.",
+    explicacao: [
+      "A reintegração de posse é a ação de quem tinha a posse de um bem — em geral um imóvel — e a perdeu por esbulho, isto é, por invasão ou ocupação indevida. O objetivo é recuperar a posse, e não discutir quem é o dono; discute-se quem estava legitimamente na posse.",
+      "Quando a retomada é pedida logo após a perda (posse de menos de ano e dia, a chamada posse nova), a lei permite ao juiz conceder uma ordem rápida de reintegração já no início do processo. Passado esse tempo, o rito é mais demorado, mas a ação continua possível.",
+      "É diferente de ações que discutem a propriedade, como a reivindicatória, e não se confunde com o despejo, próprio da relação de locação. Escolher a via correta é essencial para não perder tempo nem direito.",
+      "Do lado de quem é retirado, há defesas possíveis, inclusive alegar posse própria ou pedir indenização por benfeitorias. Por envolver prazos e provas de posse (contas, contratos, testemunhas), procure sempre um advogado."
+    ],
+    exemplos: [
+      "Proprietário que retoma imóvel invadido por terceiros",
+      "Possuidor de terreno esbulhado que pede a reintegração no prazo da posse nova",
+      "Empresa que recupera a posse de área ocupada indevidamente"
+    ],
+    areas: ["civil", "imobiliario"],
+    ver_tambem: ["usucapiao", "despejo", "bem-de-familia", "tutela-de-urgencia"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "acao-renovatoria",
+    termo: "Ação renovatória",
+    variacoes: ["renovatória de aluguel", "renovação compulsória de locação comercial"],
+    definicao_curta:
+      "Ação que garante ao inquilino comercial o direito de renovar o contrato de aluguel, cumpridos os requisitos legais.",
+    explicacao: [
+      "A ação renovatória protege o ponto comercial: permite ao inquilino de imóvel usado para comércio renovar o contrato de locação mesmo sem a concordância do dono, desde que preencha os requisitos da Lei do Inquilinato. A ideia é preservar o fundo de comércio construído com o tempo.",
+      "Entre os requisitos costumam estar o contrato escrito e por prazo determinado, um tempo mínimo de contrato (e de exploração do mesmo ramo) e a regularidade nas obrigações, como o pagamento dos aluguéis. Há também prazo certo para ajuizar a ação, contado em relação ao fim do contrato — perder esse prazo faz perder o direito à renovação.",
+      "O dono pode se opor em situações previstas em lei, como a necessidade de uso próprio do imóvel ou a realização de obras determinadas pelo poder público, entre outras. O valor do novo aluguel pode ser discutido e ajustado ao preço de mercado.",
+      "Por ser ação com prazo rígido e requisitos técnicos, o acompanhamento por advogado é essencial. Comerciantes locatários devem ficar atentos à contagem do prazo bem antes do fim do contrato."
+    ],
+    exemplos: [
+      "Lojista que pede a renovação do aluguel para preservar o ponto comercial",
+      "Inquilino comercial que ajuíza a renovatória dentro do prazo legal",
+      "Discussão do novo valor do aluguel em contrato comercial renovado"
+    ],
+    areas: ["imobiliario", "empresarial", "civil"],
+    ver_tambem: ["contrato-de-aluguel", "despejo", "caucao-locaticia"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "retificacao-de-registro",
+    termo: "Retificação de registro",
+    variacoes: ["retificação de registro civil", "correção de certidão", "retificação de nome"],
+    definicao_curta:
+      "Procedimento para corrigir erros ou atualizar informações em registros públicos, como certidões e matrículas de imóveis.",
+    explicacao: [
+      "A retificação de registro é o caminho para corrigir informações erradas ou desatualizadas em registros oficiais — certidões de nascimento, casamento e óbito, no registro civil, ou a matrícula de um imóvel, no registro de imóveis. Erros de grafia de nome, datas, filiação e dados do imóvel são exemplos comuns.",
+      "Muitos casos podem ser resolvidos diretamente no cartório, de forma administrativa, especialmente quando o erro é evidente e não há conflito. Situações mais complexas ou contestadas podem exigir decisão da Justiça.",
+      "No registro civil, além da correção de erros, a lei tem ampliado as hipóteses de alteração de nome em certas condições. No registro de imóveis, a retificação alinha a matrícula à realidade — por exemplo, corrigindo a área ou as divisas do terreno.",
+      "Cada tipo de retificação tem regras e documentos próprios. Para saber se o caso se resolve no cartório ou depende de ação judicial, procure orientação de um advogado ou do próprio cartório."
+    ],
+    exemplos: [
+      "Pessoa que corrige a grafia do nome na certidão de nascimento",
+      "Proprietário que ajusta a área do imóvel na matrícula do registro de imóveis",
+      "Correção de data ou de filiação lançada com erro em certidão"
+    ],
+    areas: ["civil", "imobiliario"],
+    ver_tambem: ["usucapiao", "inventario", "partilha-de-bens"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "aposentadoria-por-invalidez",
+    termo: "Aposentadoria por invalidez",
+    variacoes: ["aposentadoria por incapacidade permanente", "aposentadoria por incapacidade"],
+    definicao_curta:
+      "Benefício do INSS pago a quem fica permanentemente incapaz de trabalhar e não pode ser reabilitado em outra função.",
+    explicacao: [
+      "A aposentadoria por invalidez, hoje chamada oficialmente de aposentadoria por incapacidade permanente, é o benefício pago ao segurado considerado incapaz de trabalhar de forma definitiva e sem condições de reabilitação para outra atividade que lhe garanta o sustento.",
+      "Ela depende de perícia médica do INSS, que reconhece a incapacidade e a sua permanência, e em regra exige qualidade de segurado e carência (tempo mínimo de contribuição), salvo nas exceções previstas em lei, como certos acidentes e doenças graves.",
+      "Não é necessariamente definitiva: o INSS pode convocar o segurado para reavaliação (o chamado pente-fino). Se a capacidade for recuperada, o benefício pode ser cessado de forma gradual, conforme as regras vigentes. Há acréscimo no valor quando o segurado precisa da ajuda permanente de outra pessoa.",
+      "Negativas por perícia são comuns mesmo quando há incapacidade real. Reunir laudos, exames e histórico médico é essencial, e a decisão pode ser revista por recurso administrativo ou na Justiça. Procure sempre um advogado."
+    ],
+    exemplos: [
+      "Trabalhador que fica permanentemente incapaz após doença grave",
+      "Segurado que tem o pedido negado apesar de laudos que atestam a incapacidade",
+      "Beneficiário convocado para reavaliação médica pelo INSS"
+    ],
+    areas: ["previdenciario"],
+    ver_tambem: ["auxilio-doenca", "auxilio-acidente", "pente-fino-inss", "revisao-de-beneficio-inss"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "salario-familia",
+    termo: "Salário-família",
+    variacoes: ["salário família", "benefício por filho"],
+    definicao_curta:
+      "Valor pago ao trabalhador de baixa renda para ajudar no sustento de filhos menores ou com deficiência.",
+    explicacao: [
+      "O salário-família é um valor adicional pago ao trabalhador de baixa renda, por filho de até certa idade ou por filho com deficiência de qualquer idade. Serve de auxílio ao sustento dos dependentes e é pago conforme uma faixa de renda e um valor por dependente definidos e atualizados por norma.",
+      "Para o empregado, em geral o valor é pago junto com o salário pela empresa, que depois compensa com o INSS; para outros segurados, o pagamento segue as regras do INSS. É preciso comprovar os filhos com certidão de nascimento e manter em dia exigências como a vacinação e a frequência escolar, conforme a idade.",
+      "Não se confunde com o abono nem com benefícios assistenciais. É um direito ligado ao trabalho e à baixa renda, de valor costumeiramente modesto, mas que se soma a cada filho que se enquadra.",
+      "Se o valor não é pago ou é pago a menos, o trabalhador pode reclamar junto ao empregador e ao INSS. Em caso de dúvida sobre o direito, procure orientação."
+    ],
+    exemplos: [
+      "Empregado de baixa renda que recebe o adicional por cada filho pequeno",
+      "Trabalhador com filho com deficiência que tem direito ao benefício",
+      "Segurado que apresenta a caderneta de vacinação para manter o pagamento"
+    ],
+    areas: ["previdenciario", "trabalhista"],
+    ver_tambem: ["bpc-loas", "salario-maternidade", "auxilio-reclusao"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "voo-cancelado",
+    termo: "Voo cancelado ou atrasado",
+    variacoes: ["cancelamento de voo", "atraso de voo", "direitos do passageiro aéreo"],
+    definicao_curta:
+      "Situação que gera direitos ao passageiro, como assistência, reacomodação ou reembolso, conforme a duração e o motivo.",
+    explicacao: [
+      "Quando um voo é cancelado ou sofre atraso relevante, o passageiro tem direitos de assistência que aumentam conforme o tempo de espera — comunicação, alimentação e, nas esperas mais longas, hospedagem e transporte. Essas regras vêm da ANAC e do Código de Defesa do Consumidor.",
+      "Diante do cancelamento ou de atraso significativo, a companhia deve oferecer opções ao passageiro: a reacomodação em outro voo, o reembolso do valor pago ou a remarcação, à escolha do consumidor. A assistência não pode ser condicionada a abrir mão de outros direitos.",
+      "Além da assistência, pode haver direito à indenização por danos materiais (gastos comprovados) e, em casos que ultrapassam o mero aborrecimento, por danos morais — especialmente quando há perda de compromissos importantes, longa espera ou má informação. Cada caso depende das circunstâncias e das provas.",
+      "Guarde cartão de embarque, comprovantes de gastos, prints de comunicações e o registro do ocorrido. Se a empresa não resolver, é possível acionar a ANAC, o Procon e o Juizado Especial. Em casos maiores, procure um advogado."
+    ],
+    exemplos: [
+      "Passageiro que tem o voo cancelado e escolhe o reembolso integral",
+      "Viajante que fica horas no aeroporto sem receber alimentação e hospedagem",
+      "Consumidor que perde um compromisso por atraso e busca indenização"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["dano-moral", "dano-material", "direito-de-arrependimento", "juizado-especial"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "acao-revisional",
+    termo: "Ação revisional",
+    variacoes: ["revisional de contrato", "ação revisional de juros", "revisão de contrato bancário"],
+    definicao_curta:
+      "Ação para revisar cláusulas de um contrato, em geral para questionar juros e encargos considerados abusivos.",
+    explicacao: [
+      "A ação revisional é usada para pedir ao juiz que reavalie cláusulas de um contrato, com frequência em financiamentos, empréstimos e contratos bancários. O foco costuma ser juros, tarifas, seguros embutidos e formas de cálculo que o consumidor considere abusivos ou fora do que foi combinado.",
+      "Ela não serve para simplesmente deixar de pagar o que é devido: busca ajustar o contrato ao que a lei e a jurisprudência admitem, recalculando o saldo quando reconhecida a abusividade. Enquanto o processo corre, é importante saber que continuar sem pagar pode gerar consequências, como a negativação e, em financiamentos com garantia, a busca e apreensão.",
+      "O resultado depende de demonstrar o problema concreto — por exemplo, cobrança que destoa do mercado ou encargo não pactuado. Nem todo juro alto é ilegal, e cada contrato precisa ser analisado com os documentos em mãos.",
+      "Reúna o contrato, os extratos e o histórico de pagamentos. Por ser tema técnico, com muita variação na jurisprudência, procure sempre um advogado antes de ajuizar."
+    ],
+    exemplos: [
+      "Consumidor que questiona tarifas e seguros embutidos no financiamento",
+      "Devedor que pede o recálculo de juros considerados abusivos",
+      "Cliente que discute encargos não previstos no contrato de empréstimo"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["juros-de-mora", "correcao-monetaria", "alienacao-fiduciaria", "busca-e-apreensao-de-veiculo"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "inversao-do-onus-da-prova",
+    termo: "Inversão do ônus da prova",
+    variacoes: ["ônus da prova", "inversão do ônus probatório"],
+    definicao_curta:
+      "Regra que transfere a quem tem mais condições — em geral a empresa — o dever de provar os fatos discutidos.",
+    explicacao: [
+      "Em um processo, em regra cabe a quem afirma um fato prová-lo. A inversão do ônus da prova muda essa lógica: passa para a outra parte o dever de provar, quando a lei entende que ela tem mais condições de fazê-lo. É instrumento típico da defesa do consumidor.",
+      "No direito do consumidor, o juiz pode inverter o ônus da prova em favor do consumidor quando a sua alegação é verossímil (plausível) ou quando ele é hipossuficiente (em desvantagem técnica ou de informação) diante do fornecedor. Assim, muitas vezes é a empresa que precisa provar que o produto não tinha defeito ou que a cobrança era devida.",
+      "A inversão facilita a vida de quem, sozinho, não teria como produzir certas provas — como dados internos de uma empresa. Ela não garante a vitória: apenas redistribui quem tem de provar o quê.",
+      "Saber quando pedir a inversão e como usá-la faz parte da estratégia do processo. Por isso, mesmo em causas de consumo, a orientação de um advogado costuma fazer diferença."
+    ],
+    exemplos: [
+      "Consumidor que alega defeito e a empresa é quem precisa provar que o produto estava perfeito",
+      "Cliente hipossuficiente que não tem acesso aos dados internos do fornecedor",
+      "Juiz que inverte o ônus por considerar a alegação do consumidor plausível"
+    ],
+    areas: ["consumidor", "civil"],
+    ver_tambem: ["hipossuficiencia", "vicio-do-produto", "fato-do-produto", "juizado-especial"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "rescisao-por-acordo",
+    termo: "Rescisão por acordo (demissão consensual)",
+    variacoes: ["demissão consensual", "demissão de comum acordo", "distrato trabalhista"],
+    definicao_curta:
+      "Forma de encerrar o contrato de trabalho por acordo entre empregado e empregador, com verbas reduzidas.",
+    explicacao: [
+      "A rescisão por acordo, também chamada de demissão consensual, foi criada pela reforma trabalhista de 2017. Ela permite encerrar o contrato quando as duas partes concordam, com um pacote de verbas intermediário — menor do que na dispensa sem justa causa, maior do que no pedido de demissão.",
+      "Nesse formato, o aviso prévio, quando indenizado, e a multa do FGTS são pagos pela metade. O trabalhador pode sacar parte do FGTS (um percentual do saldo, não a totalidade) e não tem direito ao seguro-desemprego.",
+      "É uma alternativa para situações em que ambos querem o fim do contrato, evitando simulações — como a antiga prática de 'combinar' uma dispensa sem justa causa e devolver a multa, que é irregular e arriscada para os dois lados.",
+      "Antes de assinar, vale conferir os cálculos e entender o que se ganha e o que se perde nessa modalidade. Em caso de dúvida, procure orientação de um advogado ou do sindicato."
+    ],
+    exemplos: [
+      "Empregado e empresa que combinam o fim do contrato pela via consensual",
+      "Trabalhador que saca parte do FGTS ao encerrar por acordo",
+      "Partes que formalizam a demissão de comum acordo em vez de simular dispensa"
+    ],
+    areas: ["trabalhista"],
+    ver_tambem: ["rescisao", "rescisao-indireta", "seguro-desemprego", "fgts"],
+    atualizado_em: "2026-07-04"
+  },
+  {
+    slug: "prisao-por-pensao-alimenticia",
+    termo: "Prisão por pensão alimentícia",
+    variacoes: ["prisão civil por alimentos", "prisão por não pagar pensão"],
+    definicao_curta:
+      "Prisão civil de quem deve pensão alimentícia e não paga, usada como forma de forçar o pagamento.",
+    explicacao: [
+      "A prisão por pensão alimentícia é a única prisão civil por dívida admitida no Brasil. Não é punição criminal: é um meio de coerção para forçar quem pode pagar, mas não paga, a quitar a dívida de alimentos. Por isso, quem é preso continua devendo — a prisão não apaga o débito.",
+      "Em regra, ela recai sobre as parcelas mais recentes em atraso (as últimas devidas antes da cobrança, mais as que vencerem no curso do processo). O devedor é intimado a pagar, provar que já pagou ou justificar a impossibilidade; sem isso, o juiz pode decretar a prisão, em regime separado dos presos comuns e por prazo limitado.",
+      "Existe também a cobrança pela via do desconto em salário, da penhora e de outras medidas. A prisão costuma ser um último recurso para o não pagamento das parcelas atuais; dívidas mais antigas seguem por execução comum, com penhora de bens.",
+      "Quem não consegue pagar deve procurar a Justiça para pedir a revisão do valor, e não simplesmente parar de pagar. Em qualquer dos lados, procure um advogado ou a Defensoria Pública."
+    ],
+    exemplos: [
+      "Devedor de pensão que é intimado a pagar as parcelas recentes sob pena de prisão",
+      "Pai ou mãe que pede a revisão do valor por não conseguir mais pagar",
+      "Credor que executa as parcelas atrasadas com pedido de prisão do devedor"
+    ],
+    areas: ["familia", "civil"],
+    ver_tambem: ["pensao-alimenticia", "penhora", "guarda", "juros-de-mora"],
+    atualizado_em: "2026-07-04"
   }
 ];
 

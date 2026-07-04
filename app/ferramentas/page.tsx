@@ -442,7 +442,7 @@ export default function FerramentasPage() {
       <nav aria-label="Breadcrumb" className="mb-6 text-sm text-brand-ink/60">
         <ol className="flex items-center gap-1.5">
           <li>
-            <Link href="/" className="hover:text-brand-ink transition">Home</Link>
+            <Link href="/" className="hover:text-brand-ink transition">Início</Link>
           </li>
           <li className="flex items-center gap-1.5" aria-current="page">
             <ChevronRight className="w-3.5 h-3.5 text-brand-ink/30" aria-hidden />
