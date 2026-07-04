@@ -715,13 +715,12 @@ export function TriagemChat() {
             onKeyDown={handleKeyDown}
             placeholder="Escreva sua mensagem..."
             rows={1}
-            enterKeyHint="send"
             autoComplete="off"
-            className="flex-1 resize-none rounded-xl border-2 border-brand-line bg-brand-bg px-3.5 py-2.5 text-[15px]
+            className="flex-1 resize-none rounded-xl border-2 border-brand-line bg-brand-bg px-3.5 py-2.5
               text-brand-ink placeholder:text-brand-ink/50
               focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent
               overflow-y-auto"
-            style={{ minHeight: "44px", maxHeight: "120px" }}
+            style={{ minHeight: "44px", maxHeight: "120px", fontSize: "16px" }}
           />
           <button
             onClick={() => void sendMessage()}
