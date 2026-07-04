@@ -513,7 +513,14 @@ export async function runPdfTool(
       }
 
       case "pdf-para-word": {
-        const p = await soffice(dir, first, "docx", "writer_pdf_import");
+        // NÃO usar o import de PDF do LibreOffice (writer_pdf_import): ele
+        // traz o texto em CAIXAS posicionadas e o Word abre tudo embaralhado.
+        // Extraímos o texto limpo (pdftotext, ordem correta) e montamos um DOCX
+        // de texto corrido, editável — o que serve para editar petições/contratos.
+        const text = await pdftotextOf(dir, first);
+        const txtPath = path.join(dir, "conteudo.txt");
+        await writeFile(txtPath, text, "utf-8");
+        const p = await soffice(dir, txtPath, "docx");
         return fileResult(p, outName(firstName, "", ".docx"));
       }
 

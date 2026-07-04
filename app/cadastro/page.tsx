@@ -109,8 +109,17 @@ export default function CadastroPage() {
       fetch(`/api/cities?q=${encodeURIComponent(term)}&limit=10`, { signal: ctrl.signal })
         .then((r) => (r.ok ? r.json() : []))
         .then((data: CitySuggestion[]) => {
-          // Filtra pela UF escolhida (autocomplete contextual)
-          setCitySuggestions(data.filter((c) => c.uf === form.uf).slice(0, 6));
+          // NÃO filtra por UF: antes só mostrava cidades da UF escolhida (padrão
+          // MG), então quem era de outro estado digitava a cidade e NÃO via
+          // sugestão nenhuma — e não conseguia se cadastrar. Agora mostramos as
+          // cidades de qualquer estado e o próprio clique define a UF certa.
+          // A UF selecionada só sobe as cidades daquela UF no topo.
+          const sorted = [...data].sort((a, b) => {
+            const au = a.uf === form.uf ? 0 : 1;
+            const bu = b.uf === form.uf ? 0 : 1;
+            return au - bu;
+          });
+          setCitySuggestions(sorted.slice(0, 8));
           setHighlightIndex(-1);
         })
         .catch(() => undefined);
@@ -133,9 +142,11 @@ export default function CadastroPage() {
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, [showSuggestions]);
 
-  // Seleção de cidade (clique ou Enter no teclado)
+  // Seleção de cidade (clique ou Enter no teclado). Seta TAMBÉM a UF da cidade
+  // escolhida — sem isso, a validação servidor (uf+nome) podia falhar mesmo
+  // depois de o usuário selecionar na lista.
   const selectCity = useCallback((c: CitySuggestion) => {
-    setForm((p) => ({ ...p, city: c.name }));
+    setForm((p) => ({ ...p, city: c.name, uf: c.uf }));
     setCitySelected(true);
     setShowSuggestions(false);
     setHighlightIndex(-1);
@@ -184,6 +195,36 @@ export default function CadastroPage() {
       setCityValidating(false);
     }
   }, []);
+
+  // Resolve a cidade digitada quando o usuário NÃO clicou numa sugestão:
+  // busca no IBGE e, se houver um casamento exato de nome (único, ou
+  // desambiguado pela UF escolhida), seleciona sozinho. Retorna se resolveu.
+  const resolveTypedCity = useCallback(async (): Promise<boolean> => {
+    const typed = form.city.trim();
+    if (typed.length < 2) return false;
+    try {
+      setCityValidating(true);
+      const res = await fetch(`/api/cities?q=${encodeURIComponent(typed)}&limit=20`);
+      if (!res.ok) return false;
+      const data = (await res.json()) as CitySuggestion[];
+      const norm = (s: string) =>
+        s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+      const exact = data.filter((c) => norm(c.name) === norm(typed));
+      let pick: CitySuggestion | undefined;
+      if (exact.length === 1) pick = exact[0];
+      else if (exact.length > 1) pick = exact.find((c) => c.uf === form.uf) || undefined;
+      else if (data.length === 1) pick = data[0];
+      if (pick) {
+        selectCity(pick);
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    } finally {
+      setCityValidating(false);
+    }
+  }, [form.city, form.uf, selectCity]);
 
   const [cepWarn, setCepWarn] = useState("");
 
@@ -266,7 +307,28 @@ export default function CadastroPage() {
     return Object.keys(e).length === 0;
   };
 
-  const next = () => {
+  const next = async () => {
+    // No passo de dados profissionais, se o usuário digitou a cidade mas não
+    // clicou numa sugestão, tentamos resolver automaticamente antes de validar
+    // (usamos o resultado local — o estado citySelected só atualiza no próximo
+    // render). Isso elimina a armadilha "digitei mas não consigo avançar".
+    if (step === 1) {
+      let citySel = citySelected;
+      if (!citySel && form.city.trim().length >= 2) {
+        citySel = await resolveTypedCity();
+      }
+      const e: Record<string, string> = {};
+      if (!isValidOab(form.oab)) e.oab = "Número da OAB inválido";
+      if (!form.city.trim()) e.city = "Informe sua cidade";
+      else if (!citySel)
+        e.city = "Não encontramos essa cidade. Escolha uma opção da lista que aparece ao digitar.";
+      if (form.specialties.length === 0) e.specialties = "Escolha ao menos uma especialidade";
+      setErrors(e);
+      if (Object.keys(e).length > 0) return;
+      setStep((s) => Math.min(s + 1, STEPS.length - 1));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
     if (validate(step)) {
       setStep((s) => Math.min(s + 1, STEPS.length - 1));
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -662,7 +724,7 @@ export default function CadastroPage() {
                   )}
                 </div>
                 <p className="text-xs text-brand-ink/50 mt-1">
-                  Digite apenas o nome (ex.: <strong>Almenara</strong>) e <strong>clique na sugestão</strong>. Aceitamos todas as cidades do IBGE.
+                  Digite o nome da sua cidade e escolha na lista (mostramos o estado ao lado). Aceitamos todas as cidades do IBGE, de qualquer estado.
                 </p>
 
                 {showSuggestions && form.city.trim().length >= 2 && (
@@ -693,6 +755,7 @@ export default function CadastroPage() {
                           >
                             <MapPin className="w-3.5 h-3.5 text-brand-ink/40" aria-hidden />
                             <span>{c.name}</span>
+                            <span className="text-xs font-semibold text-brand-deep/70">{c.uf}</span>
                             {c.isCapital && (
                               <span className="ml-1 text-[10px] uppercase tracking-wider text-brand-accentText font-semibold">
                                 capital
