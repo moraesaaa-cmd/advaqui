@@ -515,12 +515,27 @@ export async function runPdfTool(
       case "comprimir-pdf": {
         const nivel =
           options.nivel === "maxima" ? "/screen" : options.nivel === "leve" ? "/printer" : "/ebook";
+        // "Máxima" força downsampling agressivo das imagens (72 dpi) — sem isso
+        // ela ficava idêntica à "Recomendada". Threshold 1.0 = sempre reduz.
+        const extra =
+          options.nivel === "maxima"
+            ? [
+                "-dDownsampleColorImages=true", "-dColorImageResolution=72", "-dColorImageDownsampleThreshold=1.0",
+                "-dDownsampleGrayImages=true", "-dGrayImageResolution=72", "-dGrayImageDownsampleThreshold=1.0",
+                "-dDownsampleMonoImages=true", "-dMonoImageResolution=100"
+              ]
+            : [];
         await sh(
           "gs",
-          [...GS_BASE, "-sDEVICE=pdfwrite", "-dCompatibilityLevel=1.5", `-dPDFSETTINGS=${nivel}`, "-o", out(".pdf"), first],
+          [...GS_BASE, "-sDEVICE=pdfwrite", "-dCompatibilityLevel=1.5", `-dPDFSETTINGS=${nivel}`, ...extra, "-o", out(".pdf"), first],
           { cwd: dir, timeoutMs: 180_000 }
         );
-        return fileResult(out(".pdf"), outName(firstName, "-comprimido", ".pdf"));
+        // Nunca devolver arquivo MAIOR que o original: PDFs pequenos ou já
+        // otimizados podem crescer com o Ghostscript. Se não reduziu, devolve
+        // o original (o usuário via "comprimir" aumentar o tamanho e achava bug).
+        const compBuf = await readFile(out(".pdf"));
+        const menor = compBuf.length < files[0].buffer.length ? compBuf : files[0].buffer;
+        return { kind: "file", fileName: outName(firstName, "-comprimido", ".pdf"), buffer: menor, mime: MIME[".pdf"] };
       }
 
       case "reparar-pdf": {

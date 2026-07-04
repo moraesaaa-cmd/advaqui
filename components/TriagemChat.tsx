@@ -209,7 +209,11 @@ export function TriagemChat() {
     pathname?.startsWith("/painel") ||
     pathname?.startsWith("/lp") ||
     pathname?.startsWith("/multas") ||
-    pathname?.startsWith("/recurso");
+    pathname?.startsWith("/recurso") ||
+    // Páginas de ferramenta PDF individuais: o botão/balão flutuante cobria os
+    // controles e o botão de processar no mobile, travando o uso. O hub
+    // (/ferramentas/pdf) e o resto do site mantêm o chat.
+    pathname?.includes("/ferramentas/pdf/");
 
   const [open, setOpen] = useState(false);
   const [minimized, setMinimized] = useState(false);

@@ -37,6 +37,9 @@ export type PdfToolOption = {
   required?: boolean;
   help?: string;
   default?: string;
+  /** Só exibe este campo quando outra opção tiver determinado valor
+   *  (ex.: o intervalo de páginas só aparece no modo "intervalo"). */
+  showWhen?: { field: string; value: string };
 };
 
 export type PdfTool = {
@@ -141,10 +144,11 @@ export const PDF_TOOLS: PdfTool[] = [
       },
       {
         name: "intervalo",
-        label: "Páginas (ex.: 1-5 ou 2,4,7-9)",
+        label: "Quais páginas manter (ex.: 1-5 ou 2,4,7-9)",
         type: "text",
         placeholder: "1-5",
-        help: "Use vírgula para páginas soltas e hífen para intervalos. Ignorado no modo 'todas as páginas'."
+        help: "Hífen para intervalos (1-5) e vírgula para páginas soltas (2,4,7).",
+        showWhen: { field: "modo", value: "intervalo" }
       }
     ],
     passos: [

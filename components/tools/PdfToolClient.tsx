@@ -23,6 +23,7 @@ type ToolOption = {
   required?: boolean;
   help?: string;
   default?: string;
+  showWhen?: { field: string; value: string };
 };
 
 export type PdfToolClientProps = {
@@ -53,7 +54,7 @@ export function PdfToolClient(tool: PdfToolClientProps) {
   const [drag, setDrag] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [fileOut, setFileOut] = useState<{ url: string; name: string } | null>(null);
+  const [fileOut, setFileOut] = useState<{ url: string; name: string; sizeBytes: number; origBytes: number } | null>(null);
   const [textOut, setTextOut] = useState<{
     text: string;
     downloadUrl?: string;
@@ -93,6 +94,10 @@ export function PdfToolClient(tool: PdfToolClientProps) {
     setErro("");
   };
 
+  // Um campo condicional (showWhen) só conta quando visível.
+  const isVisible = (opt: ToolOption) =>
+    !opt.showWhen || (options[opt.showWhen.field] ?? "") === opt.showWhen.value;
+
   const processar = async () => {
     setErro("");
     const min = tool.minArquivos || 1;
@@ -101,7 +106,7 @@ export function PdfToolClient(tool: PdfToolClientProps) {
       return;
     }
     for (const opt of tool.opcoes || []) {
-      if (opt.required && !(options[opt.name] || "").trim()) {
+      if (isVisible(opt) && opt.required && !(options[opt.name] || "").trim()) {
         setErro(`Preencha o campo "${opt.label}".`);
         return;
       }
@@ -147,7 +152,8 @@ export function PdfToolClient(tool: PdfToolClientProps) {
         const star = /filename\*=UTF-8''([^;]+)/.exec(dispo);
         const plain = /filename="([^"]+)"/.exec(dispo);
         const name = star ? decodeURIComponent(star[1]) : plain ? plain[1] : "resultado.pdf";
-        setFileOut({ url: URL.createObjectURL(blob), name });
+        const origBytes = files.reduce((a, f) => a + f.size, 0);
+        setFileOut({ url: URL.createObjectURL(blob), name, sizeBytes: blob.size, origBytes });
       }
       setStatus("done");
     } catch {
@@ -193,14 +199,33 @@ export function PdfToolClient(tool: PdfToolClientProps) {
         </div>
 
         {fileOut && (
-          <a
-            href={fileOut.url}
-            download={fileOut.name}
-            className="mt-5 inline-flex items-center gap-2 rounded-md bg-brand-accent px-5 py-3 font-semibold text-brand-ink transition hover:bg-brand-accent2"
-          >
-            <Download className="h-5 w-5" aria-hidden />
-            Baixar {fileOut.name}
-          </a>
+          <>
+            <a
+              href={fileOut.url}
+              download={fileOut.name}
+              className="mt-5 inline-flex items-center gap-2 rounded-md bg-brand-accent px-5 py-3 font-semibold text-brand-ink transition hover:bg-brand-accent2"
+            >
+              <Download className="h-5 w-5" aria-hidden />
+              Baixar {fileOut.name}
+            </a>
+            <p className="mt-3 text-sm text-brand-ink/70">
+              {tool.slug === "comprimir-pdf" && fileOut.origBytes > 0 ? (
+                fileOut.sizeBytes < fileOut.origBytes ? (
+                  <>
+                    De <strong>{fmtSize(fileOut.origBytes)}</strong> para{" "}
+                    <strong>{fmtSize(fileOut.sizeBytes)}</strong> —{" "}
+                    <span className="text-emerald-700 font-semibold">
+                      {Math.round((1 - fileOut.sizeBytes / fileOut.origBytes) * 100)}% menor
+                    </span>
+                  </>
+                ) : (
+                  <>Este PDF já estava otimizado — mantivemos o tamanho original ({fmtSize(fileOut.sizeBytes)}).</>
+                )
+              ) : (
+                <>Tamanho do arquivo: {fmtSize(fileOut.sizeBytes)}</>
+              )}
+            </p>
+          </>
         )}
 
         {textOut && (
@@ -339,10 +364,10 @@ export function PdfToolClient(tool: PdfToolClientProps) {
         </ul>
       )}
 
-      {/* Opções */}
-      {(tool.opcoes || []).length > 0 && (
+      {/* Opções — só após enviar arquivo (evita empurrar o botão p/ fora da tela no mobile) */}
+      {files.length > 0 && (tool.opcoes || []).length > 0 && (
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
-          {(tool.opcoes || []).map((opt) => (
+          {(tool.opcoes || []).filter(isVisible).map((opt) => (
             <label key={opt.name} className="block">
               <span className="mb-1 block text-sm font-medium text-brand-ink">{opt.label}</span>
               {opt.type === "select" ? (
