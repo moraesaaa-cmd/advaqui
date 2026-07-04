@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Eye, EyeOff, Check, MapPin } from "lucide-react";
+import { Eye, EyeOff, Check, MapPin, Wrench } from "lucide-react";
+import { QuickSignupModal } from "@/components/tools/QuickSignupModal";
 import { STATES } from "@/lib/data/states";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import {
@@ -45,6 +46,8 @@ const STEPS = ["Dados pessoais", "Profissionais", "Acesso"] as const;
 export default function CadastroPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
+  // Modal de conta simples (cidadão) — para quem não é advogado.
+  const [showCitizenSignup, setShowCitizenSignup] = useState(false);
   const [form, setForm] = useState<FormState>({
     name: "",
     cpf: "",
@@ -402,9 +405,36 @@ export default function CadastroPage() {
   return (
     <div className="container-narrow py-12">
       <h1 className="font-display text-4xl font-bold text-brand-ink">Cadastro de advogado</h1>
-      <p className="text-brand-ink/60 mt-2 mb-6">
+      <p className="text-brand-ink/60 mt-2 mb-4">
         Crie seu perfil em 3 passos. O cadastro é gratuito e leva menos de 5 minutos.
       </p>
+
+      {/* Caminho do cidadão: conta simples só para usar ferramentas/baixar modelos */}
+      <div className="mb-8 flex flex-col gap-3 rounded-xl border border-brand-line bg-white p-4 sm:flex-row sm:items-center">
+        <span className="flex items-center gap-2 text-sm text-brand-ink/75">
+          <Wrench className="h-4 w-4 shrink-0 text-brand-accentText" aria-hidden />
+          <span>
+            <strong className="text-brand-ink">Não é advogado?</strong> Para usar as
+            ferramentas gratuitas e baixar modelos, basta uma conta simples — 1 minuto.
+          </span>
+        </span>
+        <button
+          type="button"
+          onClick={() => setShowCitizenSignup(true)}
+          className="shrink-0 rounded-md border border-brand-line px-4 py-2 text-sm font-semibold text-brand-deep transition hover:border-brand-accent"
+        >
+          Criar conta gratuita
+        </button>
+      </div>
+      {showCitizenSignup && (
+        <QuickSignupModal
+          ferramenta="pagina-cadastro"
+          onClose={() => setShowCitizenSignup(false)}
+          onSuccess={() => {
+            window.location.href = "/ferramentas";
+          }}
+        />
+      )}
 
       <div className="flex items-center gap-2 mb-8">
         {STEPS.map((label, idx) => (

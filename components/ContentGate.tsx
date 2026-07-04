@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Lock, Sparkles, UserPlus, LogIn } from "lucide-react";
+import { QuickSignupModal } from "@/components/tools/QuickSignupModal";
 
 /**
  * Content Gate — captura de lead em troca de acesso ao conteúdo completo.
@@ -53,6 +54,7 @@ export function ContentGate({
   const [status, setStatus] = useState<"checking" | "anonymous" | "authorized">(
     alwaysOpen ? "authorized" : "checking"
   );
+  const [showSignup, setShowSignup] = useState(false);
 
   useEffect(() => {
     if (alwaysOpen) {
@@ -70,7 +72,7 @@ export function ContentGate({
         }
         const data = (await res.json()) as { kind?: string };
         if (cancelled) return;
-        if (data.kind === "lawyer" || data.kind === "admin") {
+        if (data.kind === "lawyer" || data.kind === "admin" || data.kind === "citizen") {
           setStatus("authorized");
         } else {
           setStatus("anonymous");
@@ -142,22 +144,37 @@ export function ContentGate({
               </li>
             </ul>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/cadastro" className="btn-accent inline-flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setShowSignup(true)}
+                className="btn-accent inline-flex items-center gap-2"
+              >
                 <UserPlus className="w-4 h-4" aria-hidden />
                 {ctaLabel}
-              </Link>
+              </button>
               <Link href="/login" className="btn-ghost inline-flex items-center gap-2">
                 <LogIn className="w-4 h-4" aria-hidden />
                 Já tenho conta — entrar
               </Link>
             </div>
             <p className="text-xs text-brand-ink/55 mt-3">
-              Cadastro 100% gratuito, sem cartão. Você recebe acesso a todos os modelos,
-              checklists e materiais do AdvAqui.
+              Cadastro 100% gratuito, sem cartão — só nome, e-mail e senha. Você recebe
+              acesso a todos os modelos, checklists e materiais do AdvAqui.
             </p>
           </div>
         </div>
       </div>
+
+      {showSignup && (
+        <QuickSignupModal
+          ferramenta="content-gate"
+          onClose={() => setShowSignup(false)}
+          onSuccess={() => {
+            setShowSignup(false);
+            setStatus("authorized");
+          }}
+        />
+      )}
     </div>
   );
 }

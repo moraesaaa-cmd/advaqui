@@ -114,8 +114,12 @@ export default function LoginPage() {
       if (!signInError && signInData.user) {
         const userName =
           (signInData.user.user_metadata?.name as string) || signInData.user.email || "";
-        toast(`Bem-vindo, ${userName.split(" ")[0] || "advogado"}!`);
-        router.push("/painel");
+        // Conta de cidadão (cadastro rápido das ferramentas) não tem painel de
+        // advogado — vai direto para as ferramentas.
+        const isCitizen =
+          (signInData.user.user_metadata?.account_type as string) === "cidadao";
+        toast(`Bem-vindo, ${userName.split(" ")[0] || (isCitizen ? "visitante" : "advogado")}!`);
+        router.push(isCitizen ? "/ferramentas" : "/painel");
         router.refresh();
         return;
       }

@@ -9,4 +9,4 @@
  * novo). Páginas com data real (updated_at/atualizado_em) continuam usando a
  * data própria; RELEASE_DATE é só o fallback estável.
  */
-export const RELEASE_DATE = new Date("2026-07-01T00:00:00.000Z");
+export const RELEASE_DATE = new Date("2026-07-03T00:00:00.000Z");

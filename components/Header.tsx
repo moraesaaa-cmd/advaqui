@@ -50,6 +50,7 @@ const TRAILING: Array<{ href: string; label: string }> = [
 type SessionState =
   | { status: "anonymous" }
   | { status: "lawyer"; name: string; firstName: string }
+  | { status: "citizen"; name: string; firstName: string }
   | { status: "admin"; email: string };
 
 export function Header() {
@@ -86,7 +87,7 @@ export function Header() {
           return;
         }
         const data = (await res.json()) as {
-          kind?: "admin" | "lawyer" | "anonymous";
+          kind?: "admin" | "lawyer" | "citizen" | "anonymous";
           email?: string;
           name?: string;
           firstName?: string;
@@ -96,6 +97,8 @@ export function Header() {
           setSession({ status: "admin", email: data.email });
         } else if (data.kind === "lawyer" && data.name && data.firstName) {
           setSession({ status: "lawyer", name: data.name, firstName: data.firstName });
+        } else if (data.kind === "citizen" && data.name && data.firstName) {
+          setSession({ status: "citizen", name: data.name, firstName: data.firstName });
         } else {
           setSession({ status: "anonymous" });
         }
@@ -210,7 +213,7 @@ export function Header() {
           ))}
 
           <div className="ml-2 flex items-center gap-2">
-            {session.status === "lawyer" || session.status === "admin" ? (
+            {session.status !== "anonymous" ? (
               <div className="relative">
                 <button
                   type="button"
@@ -252,12 +255,22 @@ export function Header() {
                     >
                       <Link
                         role="menuitem"
-                        href={session.status === "admin" ? "/admin" : "/painel"}
+                        href={
+                          session.status === "admin"
+                            ? "/admin"
+                            : session.status === "citizen"
+                              ? "/ferramentas"
+                              : "/painel"
+                        }
                         onClick={() => setMenuOpen(false)}
                         className="flex items-center gap-2 px-4 py-3 text-sm text-brand-ink hover:bg-brand-line/40"
                       >
                         <LayoutDashboard className="w-4 h-4 text-brand-deep" aria-hidden />
-                        {session.status === "admin" ? "Painel admin" : "Meu painel"}
+                        {session.status === "admin"
+                          ? "Painel admin"
+                          : session.status === "citizen"
+                            ? "Minhas ferramentas"
+                            : "Meu painel"}
                       </Link>
                       <button
                         role="menuitem"
@@ -345,7 +358,7 @@ export function Header() {
             ))}
 
             <div className="pt-2 flex flex-col gap-2 border-t border-white/10 mt-2">
-              {session.status === "lawyer" || session.status === "admin" ? (
+              {session.status !== "anonymous" ? (
                 <>
                   <p className="px-3 text-xs text-white/60">
                     {session.status === "admin" ? (
@@ -355,12 +368,22 @@ export function Header() {
                     )}
                   </p>
                   <Link
-                    href={session.status === "admin" ? "/admin" : "/painel"}
+                    href={
+                      session.status === "admin"
+                        ? "/admin"
+                        : session.status === "citizen"
+                          ? "/ferramentas"
+                          : "/painel"
+                    }
                     onClick={() => setOpen(false)}
                     className="justify-center inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-[#0F1B2D] font-semibold hover:bg-white/90 transition"
                   >
                     <LayoutDashboard className="w-4 h-4" aria-hidden />
-                    {session.status === "admin" ? "Painel admin" : "Meu painel"}
+                    {session.status === "admin"
+                      ? "Painel admin"
+                      : session.status === "citizen"
+                        ? "Minhas ferramentas"
+                        : "Meu painel"}
                   </Link>
                   <button
                     type="button"

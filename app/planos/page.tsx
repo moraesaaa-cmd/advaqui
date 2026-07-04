@@ -1,4 +1,16 @@
 import Link from "next/link";
+import {
+  TrendingUp,
+  MessageCircle,
+  BadgeCheck,
+  Star,
+  MapPin,
+  Clock,
+  Link2,
+  FileSignature,
+  Sparkles,
+  Unlock
+} from "lucide-react";
 import { PLAN } from "@/lib/config";
 import { formatCurrency } from "@/lib/utils/format";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -15,17 +27,34 @@ export const metadata = buildMetadata({
 // problema/solução → o que muda com o premium → como você aparece (Google) →
 // comparativo → garantias → depoimentos rolando (marquee) → CTA final.
 
-const BENEFITS = [
-  { icon: "⬆", title: "Topo da cidade", desc: "Seu perfil em primeiro lugar quando alguém busca advogado na sua cidade ou especialidade." },
-  { icon: "💬", title: "WhatsApp clicável", desc: "Botão verde com mensagem pré-preenchida. Cliente fala com você em 1 clique." },
-  { icon: "✓", title: "Selo OAB verificada", desc: "Sinal claro de credibilidade, após validação do nosso time. Mais confiança = mais contratação." },
-  { icon: "★", title: "Foto de destaque", desc: "Card maior, borda dourada, foto em evidência. A conversão de busca para clique sobe muito." },
-  { icon: "📍", title: "Até 10 cidades", desc: "Atende em mais de uma comarca? Apareça nas buscas de até 10 cidades diferentes." },
-  { icon: "🕐", title: "Horários visíveis", desc: "Mostre quando atende. O cliente não desiste achando que você está fechado." },
-  { icon: "🔗", title: "Site, Insta, LinkedIn", desc: "Links pras suas redes e site profissional direto no perfil." },
-  { icon: "📝", title: "Revisão de peças", desc: "Aprimore a redação das suas petições — revise gramática, clareza e técnica do texto." },
-  { icon: "✨", title: "Perfil otimizado", desc: "Deixe seu perfil mais completo e claro para quem procura advogado na sua cidade." },
-  { icon: "🚫", title: "Sem fidelidade", desc: "Plano mensal. Cancela quando quiser, sem multa e sem permanência." }
+// Rol de benefícios com hierarquia: os 3 que decidem a assinatura em destaque,
+// o resto compacto. Ícones lucide (DESIGN.md: nunca emoji como ícone).
+const BENEFITS_DESTAQUE = [
+  {
+    Icon: TrendingUp,
+    title: "Topo da cidade",
+    desc: "Seu perfil em primeiro lugar quando alguém busca advogado na sua cidade ou especialidade — antes de todos os perfis gratuitos."
+  },
+  {
+    Icon: MessageCircle,
+    title: "WhatsApp em 1 clique",
+    desc: "Botão verde com mensagem pré-preenchida direto no seu card. O cliente que achou você fala com você — sem formulário no meio."
+  },
+  {
+    Icon: BadgeCheck,
+    title: "Selo OAB verificada",
+    desc: "Credibilidade validada pelo nosso time, visível na busca e no perfil. Confiança é o que converte contato em contratação."
+  }
+];
+
+const BENEFITS_MAIS = [
+  { Icon: Star, title: "Foto de destaque", desc: "Card maior, borda dourada, foto em evidência." },
+  { Icon: MapPin, title: "Até 10 cidades", desc: "Apareça nas buscas de até 10 comarcas diferentes." },
+  { Icon: Clock, title: "Horários visíveis", desc: "Mostre quando atende — o cliente não desiste achando que está fechado." },
+  { Icon: Link2, title: "Site, Insta, LinkedIn", desc: "Seus links profissionais direto no perfil." },
+  { Icon: FileSignature, title: "Revisão de peças", desc: "Aprimore gramática, clareza e técnica das suas petições." },
+  { Icon: Sparkles, title: "Perfil otimizado", desc: "Sugestões para deixar seu perfil mais completo e claro." },
+  { Icon: Unlock, title: "Sem fidelidade", desc: "Pix mensal. Cancela quando quiser, sem multa." }
 ];
 
 const COMPARE = [
@@ -182,21 +211,49 @@ export default function PlanosPage() {
             </span>
             , você ganha:
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-9 text-left">
-            {BENEFITS.map((b) => (
+          {/* Os 3 benefícios que decidem — em destaque */}
+          <div className="grid md:grid-cols-3 gap-4 mt-9 text-left">
+            {BENEFITS_DESTAQUE.map((b) => (
               <div
                 key={b.title}
-                className="bg-white border border-brand-line rounded-[13px] p-[22px]"
+                className="rounded-2xl border-2 p-6"
+                style={{
+                  borderColor: "rgba(200,162,74,0.5)",
+                  background: "#FFFFFF",
+                  boxShadow: "0 2px 8px rgba(15,27,45,0.06)"
+                }}
+              >
+                <div
+                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
+                  style={{ background: "#0F1B2D" }}
+                >
+                  <b.Icon className="w-5 h-5" style={{ color: "#E3C078" }} aria-hidden />
+                </div>
+                <div className="font-display font-semibold text-lg mb-1.5">{b.title}</div>
+                <div className="text-sm leading-relaxed" style={{ color: "#5A6678" }}>{b.desc}</div>
+              </div>
+            ))}
+          </div>
+          {/* E mais — compactos */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4 text-left">
+            {BENEFITS_MAIS.map((b) => (
+              <div
+                key={b.title}
+                className="bg-white border border-brand-line rounded-[13px] px-4 py-3.5 flex items-start gap-3"
                 style={{ boxShadow: "0 1px 2px rgba(15,27,45,0.04)" }}
               >
                 <div
-                  className="w-[34px] h-[34px] rounded-[9px] flex items-center justify-center text-[17px] mb-3.5"
-                  style={{ background: "#FBF1D8", color: "#A0843A" }}
+                  className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                  style={{ background: "#FBF1D8" }}
                 >
-                  {b.icon}
+                  <b.Icon className="w-4 h-4" style={{ color: "#A0843A" }} aria-hidden />
                 </div>
-                <div className="font-semibold text-[15px] mb-1.5">{b.title}</div>
-                <div className="text-[13px] leading-relaxed" style={{ color: "#6B7689" }}>{b.desc}</div>
+                <div>
+                  <div className="font-semibold text-[14px] leading-tight">{b.title}</div>
+                  <div className="text-[12.5px] leading-relaxed mt-0.5" style={{ color: "#6B7689" }}>
+                    {b.desc}
+                  </div>
+                </div>
               </div>
             ))}
           </div>

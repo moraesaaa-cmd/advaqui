@@ -7,7 +7,8 @@ import {
   FileText,
   Clock,
   AlertTriangle,
-  Building2
+  Building2,
+  Lightbulb
 } from "lucide-react";
 
 /**
@@ -46,12 +47,17 @@ export function ConsultaProcesso() {
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
   const [proc, setProc] = useState<Processo | null>(null);
+  const [explicando, setExplicando] = useState(false);
+  const [explicacao, setExplicacao] = useState<string | null>(null);
+  const [erroExplicar, setErroExplicar] = useState<string | null>(null);
 
   const consultar = async () => {
     if (!numero.trim() || carregando) return;
     setCarregando(true);
     setErro(null);
     setProc(null);
+    setExplicacao(null);
+    setErroExplicar(null);
     try {
       const res = await fetch("/api/consulta-processo", {
         method: "POST",
@@ -65,6 +71,36 @@ export function ConsultaProcesso() {
       setErro("Falha de conexão. Tente novamente.");
     } finally {
       setCarregando(false);
+    }
+  };
+
+  // Tradução dos andamentos para linguagem simples (server-side, sessão
+  // obrigatória). Texto visível nunca menciona como o resumo é produzido.
+  const explicar = async () => {
+    if (!proc || explicando || proc.movimentos.length === 0) return;
+    setExplicando(true);
+    setErroExplicar(null);
+    try {
+      const movimentos = proc.movimentos
+        .slice(0, 60)
+        .map((m) =>
+          `${m.data ? `${dataBR(m.data)} — ` : ""}${m.nome}`.slice(0, 300)
+        );
+      const res = await fetch("/api/consulta-processo/explicar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ movimentos })
+      });
+      const json = await res.json();
+      if (json.ok && typeof json.texto === "string") {
+        setExplicacao(json.texto);
+      } else {
+        setErroExplicar(json.mensagem || "Não foi possível gerar agora.");
+      }
+    } catch {
+      setErroExplicar("Não foi possível gerar agora.");
+    } finally {
+      setExplicando(false);
     }
   };
 
@@ -162,6 +198,49 @@ export function ConsultaProcesso() {
                 </li>
               ))}
             </ol>
+          )}
+
+          {proc.movimentos.length > 0 && (
+            <div className="mt-4">
+              {!explicacao && (
+                <button
+                  onClick={explicar}
+                  disabled={explicando}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-brand-deep/30 px-4 py-2 text-sm font-bold text-brand-deep hover:border-brand-deep hover:bg-brand-deep/5 transition disabled:opacity-40"
+                  type="button"
+                >
+                  {explicando ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" aria-hidden />{" "}
+                      Traduzindo os andamentos...
+                    </>
+                  ) : (
+                    <>
+                      <Lightbulb className="w-4 h-4" aria-hidden /> Entender em
+                      linguagem simples
+                    </>
+                  )}
+                </button>
+              )}
+              {erroExplicar && !explicando && (
+                <p className="mt-2 text-sm text-brand-ink/65">{erroExplicar}</p>
+              )}
+              {explicacao && (
+                <div className="mt-3 rounded-xl border border-brand-line bg-brand-bg p-4">
+                  <h4 className="font-display text-base font-bold text-brand-ink mb-2 inline-flex items-center gap-2">
+                    <Lightbulb className="w-4 h-4 text-brand-deep" aria-hidden />
+                    Em linguagem simples
+                  </h4>
+                  <p className="text-sm text-brand-ink/85 leading-relaxed whitespace-pre-wrap">
+                    {explicacao}
+                  </p>
+                  <p className="mt-3 text-[11px] text-brand-ink/55">
+                    Resumo informativo a partir das movimentações públicas — não
+                    substitui a orientação do seu advogado.
+                  </p>
+                </div>
+              )}
+            </div>
           )}
         </div>
       )}

@@ -40,6 +40,7 @@ export default function robots(): MetadataRoute.Robots {
     "/tribunais/",
     "/calculadoras/",
     "/recurso-de-multa/",
+    "/ferramentas/",
     "/para-advogados/"
   ];
   const disallow = [

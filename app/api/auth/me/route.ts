@@ -11,8 +11,11 @@ export const dynamic = "force-dynamic";
  * GET /api/auth/me
  *
  * Único endpoint que o Header consulta pra saber QUEM é o visitante. Retorna:
- *   { kind: "admin", email }            — cookie HMAC admin presente
- *   { kind: "lawyer", name, firstName } — sessão Supabase ativa
+ *   { kind: "admin", email }             — cookie HMAC admin presente
+ *   { kind: "citizen", name, firstName } — sessão Supabase com
+ *                                          user_metadata.account_type="cidadao"
+ *                                          (conta grátis das ferramentas)
+ *   { kind: "lawyer", name, firstName }  — demais sessões Supabase
  *   { kind: "anonymous" }                — sem nenhuma sessão
  *
  * Substitui a chamada `supabase.auth.getUser()` direta no Header, que dependia
@@ -40,6 +43,19 @@ export async function GET() {
     } = await supabase.auth.getUser();
 
     if (user) {
+      // Conta de cidadão (cadastro rápido das ferramentas): não tem linha em
+      // lawyers — resolve direto pelo metadata, sem consultar o banco.
+      if (user.user_metadata?.account_type === "cidadao") {
+        const rawName =
+          (user.user_metadata?.name as string | undefined) || user.email || "Visitante";
+        const name = titleCaseNameBR(rawName);
+        return NextResponse.json({
+          kind: "citizen",
+          name,
+          firstName: name.trim().split(/\s+/)[0] || "Visitante"
+        });
+      }
+
       // Busca nome canônico + plan_status em public.lawyers (mais confiável
       // que user_metadata). plan_status alimenta UI que distingue
       // lawyer-free vs lawyer-premium (ex: CTA "ativar premium" desaparece

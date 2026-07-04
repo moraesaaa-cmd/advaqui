@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Copy, Check, FileText } from "lucide-react";
 import { downloadLegalDoc } from "@/lib/peca/documento";
+import { useDownloadGate } from "@/components/tools/useDownloadGate";
 
 /**
  * Botão de download de modelo. Oferece DOIS formatos:
@@ -25,6 +26,8 @@ export function TemplateDownloadButton({
 }) {
   const [copied, setCopied] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
+  // Download e cópia exigem conta grátis (lead) — a página segue indexável.
+  const { guard, modal } = useDownloadGate(`modelo-${slug}`);
 
   const downloadWord = () => {
     downloadLegalDoc(slug, {
@@ -63,7 +66,7 @@ export function TemplateDownloadButton({
     <div className="flex flex-wrap gap-2">
       <button
         type="button"
-        onClick={downloadWord}
+        onClick={() => guard(downloadWord)}
         className="inline-flex items-center gap-2 btn-accent"
       >
         {downloaded ? (
@@ -80,7 +83,7 @@ export function TemplateDownloadButton({
       </button>
       <button
         type="button"
-        onClick={copyToClipboard}
+        onClick={() => guard(() => void copyToClipboard())}
         className="inline-flex items-center gap-2 btn-ghost"
       >
         {copied ? (
@@ -95,6 +98,7 @@ export function TemplateDownloadButton({
           </>
         )}
       </button>
+      {modal}
     </div>
   );
 }

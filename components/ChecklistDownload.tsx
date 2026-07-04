@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Download, Check } from "lucide-react";
+import { useDownloadGate } from "@/components/tools/useDownloadGate";
 
 /**
  * Botão de download do checklist em .txt.
@@ -10,6 +11,8 @@ import { Download, Check } from "lucide-react";
  */
 export function ChecklistDownload({ content }: { content: string }) {
   const [done, setDone] = useState(false);
+  // Download exige conta grátis (lead) — o conteúdo da página segue indexável.
+  const { guard, modal } = useDownloadGate("checklist-marketing");
 
   const downloadTxt = () => {
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
@@ -26,22 +29,25 @@ export function ChecklistDownload({ content }: { content: string }) {
   };
 
   return (
-    <button
-      type="button"
-      onClick={downloadTxt}
-      className="btn-accent inline-flex items-center gap-2"
-    >
-      {done ? (
-        <>
-          <Check className="w-4 h-4" aria-hidden />
-          Baixado
-        </>
-      ) : (
-        <>
-          <Download className="w-4 h-4" aria-hidden />
-          Baixar checklist (.txt)
-        </>
-      )}
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={() => guard(downloadTxt)}
+        className="btn-accent inline-flex items-center gap-2"
+      >
+        {done ? (
+          <>
+            <Check className="w-4 h-4" aria-hidden />
+            Baixado
+          </>
+        ) : (
+          <>
+            <Download className="w-4 h-4" aria-hidden />
+            Baixar checklist (.txt)
+          </>
+        )}
+      </button>
+      {modal}
+    </>
   );
 }

@@ -8,7 +8,9 @@ import {
   Check,
   EyeOff,
   HelpCircle,
+  Loader2,
   ShieldOff,
+  Sparkles,
   Trash2,
   X
 } from "lucide-react";
@@ -53,6 +55,8 @@ export default function PainelPerguntasPage() {
   const [migrationPending, setMigrationPending] = useState(false);
   const [answering, setAnswering] = useState<{ id: string; text: string } | null>(null);
   const [saving, setSaving] = useState(false);
+  const [draftLoading, setDraftLoading] = useState(false);
+  const [draftError, setDraftError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -114,6 +118,40 @@ export default function PainelPerguntasPage() {
     );
     if (reason === null) return;
     void updateQuestion(q.id, { status: "rejected", rejected_reason: reason });
+  };
+
+  const startAnswering = (q: Question) => {
+    setDraftError(null);
+    setAnswering({ id: q.id, text: q.answer || "" });
+  };
+
+  // Rascunho por IA: preenche o textarea; o advogado edita antes de publicar.
+  const gerarRascunho = async () => {
+    if (!answering || draftLoading) return;
+    const q = questions.find((item) => item.id === answering.id);
+    if (!q) return;
+    setDraftLoading(true);
+    setDraftError(null);
+    try {
+      const res = await fetch("/api/painel/question-draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: q.question })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.ok === false || typeof data.draft !== "string") {
+        setDraftError(data.error || "Não foi possível gerar o rascunho agora.");
+      } else {
+        setAnswering((prev) =>
+          prev && prev.id === q.id ? { ...prev, text: data.draft } : prev
+        );
+      }
+    } catch (err) {
+      console.error("[painel/perguntas] draft failed", err);
+      setDraftError("Erro de conexão.");
+    } finally {
+      setDraftLoading(false);
+    }
   };
 
   const saveAnswer = async () => {
@@ -244,8 +282,32 @@ export default function PainelPerguntasPage() {
                         setAnswering({ ...answering, text: e.target.value })
                       }
                     />
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        onClick={() => void gerarRascunho()}
+                        disabled={draftLoading}
+                        className="btn-ghost border border-brand-line text-xs disabled:opacity-50"
+                        type="button"
+                      >
+                        {draftLoading ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" aria-hidden />{" "}
+                            Gerando rascunho...
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="w-3.5 h-3.5" aria-hidden /> Gerar
+                            rascunho com IA
+                          </>
+                        )}
+                      </button>
+                      {draftError && !draftLoading && (
+                        <span className="text-[11px] text-red-700">{draftError}</span>
+                      )}
+                    </div>
                     <p className="text-[11px] text-brand-ink/55">
-                      Lembre-se: caráter informativo, sem promessa de resultado.
+                      Lembre-se: caráter informativo, sem promessa de resultado. O
+                      rascunho é só um ponto de partida — revise antes de publicar.
                     </p>
                     <div className="flex gap-2">
                       <button
@@ -279,9 +341,7 @@ export default function PainelPerguntasPage() {
                           <Check className="w-3.5 h-3.5" aria-hidden /> Aprovar
                         </button>
                         <button
-                          onClick={() =>
-                            setAnswering({ id: q.id, text: q.answer || "" })
-                          }
+                          onClick={() => startAnswering(q)}
                           className="text-xs inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white hover:bg-emerald-500"
                           type="button"
                         >
@@ -306,9 +366,7 @@ export default function PainelPerguntasPage() {
                     {q.status === "approved" && (
                       <>
                         <button
-                          onClick={() =>
-                            setAnswering({ id: q.id, text: q.answer || "" })
-                          }
+                          onClick={() => startAnswering(q)}
                           className="text-xs inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white hover:bg-emerald-500"
                           type="button"
                         >
@@ -326,9 +384,7 @@ export default function PainelPerguntasPage() {
                     {q.status === "answered" && (
                       <>
                         <button
-                          onClick={() =>
-                            setAnswering({ id: q.id, text: q.answer || "" })
-                          }
+                          onClick={() => startAnswering(q)}
                           className="btn-ghost border border-brand-line text-xs"
                           type="button"
                         >

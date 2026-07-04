@@ -152,14 +152,28 @@ export async function POST(req: NextRequest) {
     // Camada central (lib/ai/core.ts): modelo novo primeiro; se a API recusar
     // (nome/params/erro), cai pro antigo. log:false nas tentativas — o
     // resultado final é logado uma única vez abaixo.
+    // gpt-5.5 (topo da linha) com reasoning low: ~3,5s testado ao vivo,
+    // qualidade de conversa muito acima do mini no funil de conversão.
     let r = await callAI({
       feature: "chat_triage",
       messages: chatMessages,
-      model: "gpt-5.4-mini",
-      maxTokens: 400,
+      model: "gpt-5.5",
+      reasoningEffort: "low",
+      maxTokens: 900,
       retries: 0,
       log: false
     });
+    if (!r.ok) {
+      console.error(`[chat:triage] gpt-5.5 falhou (${r.erro}) — fallback gpt-5.4-mini`);
+      r = await callAI({
+        feature: "chat_triage",
+        messages: chatMessages,
+        model: "gpt-5.4-mini",
+        maxTokens: 400,
+        retries: 0,
+        log: false
+      });
+    }
     if (!r.ok) {
       console.error(`[chat:triage] gpt-5.4-mini falhou (${r.erro}) — fallback gpt-4o-mini`);
       r = await callAI({

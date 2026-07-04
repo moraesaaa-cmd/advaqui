@@ -14,6 +14,7 @@ import { GUIAS } from "@/lib/data/guias";
 import { TEMAS_STJ } from "@/lib/data/jurisprudencia-temas";
 import { CUSTOS } from "@/lib/data/custos-juridicos";
 import { CALCULADORAS } from "@/lib/data/calculadoras";
+import { PDF_TOOLS } from "@/lib/tools/pdf/registry";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
@@ -80,6 +81,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/tribunais`, changeFrequency: "weekly", priority: 0.7, lastModified: now },
     { url: `${base}/selo`, changeFrequency: "monthly", priority: 0.5, lastModified: now },
     { url: `${base}/ferramentas`, changeFrequency: "weekly", priority: 0.8, lastModified: now },
+    { url: `${base}/ferramentas/pdf`, changeFrequency: "weekly", priority: 0.9, lastModified: now },
+    ...PDF_TOOLS.map((t) => ({
+      url: `${base}/ferramentas/pdf/${t.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+      lastModified: now
+    })),
     { url: `${base}/ferramentas/checklist-recurso-multa`, changeFrequency: "monthly", priority: 0.7, lastModified: now },
     { url: `${base}/ferramentas/checklist-limpar-nome`, changeFrequency: "monthly", priority: 0.7, lastModified: now },
     { url: `${base}/ferramentas/checklist-pensao-alimenticia`, changeFrequency: "monthly", priority: 0.7, lastModified: now },

@@ -11,6 +11,7 @@ import {
   type Tese
 } from "@/lib/data/multas";
 import { printLegalDoc, downloadLegalDoc } from "@/lib/peca/documento";
+import { useDownloadGate } from "@/components/tools/useDownloadGate";
 
 /**
  * Gerador de Recurso de Multa — monta a peça por template (determinístico),
@@ -214,6 +215,10 @@ export function RecursoMultaWidget() {
     }
   };
 
+  // Copiar/baixar/imprimir o modelo exige conta grátis (lead) — o formulário
+  // e a prévia seguem abertos e a página continua indexável.
+  const { guard, modal } = useDownloadGate("recurso-de-multa");
+
   const copiar = async () => {
     try {
       await navigator.clipboard.writeText(exibido);
@@ -400,7 +405,7 @@ export function RecursoMultaWidget() {
           </p>
           <div className="flex gap-2">
             <button
-              onClick={copiar}
+              onClick={() => guard(() => void copiar())}
               className="inline-flex items-center gap-1.5 rounded-lg border-2 border-brand-line px-3 py-1.5 text-xs font-semibold text-brand-ink hover:border-brand-deep transition"
             >
               {copied ? (
@@ -414,13 +419,13 @@ export function RecursoMultaWidget() {
               )}
             </button>
             <button
-              onClick={baixarWord}
+              onClick={() => guard(baixarWord)}
               className="inline-flex items-center gap-1.5 rounded-lg border-2 border-brand-line px-3 py-1.5 text-xs font-semibold text-brand-ink hover:border-brand-deep transition"
             >
               <FileText className="w-3.5 h-3.5 text-brand-deep" aria-hidden /> Word
             </button>
             <button
-              onClick={imprimir}
+              onClick={() => guard(imprimir)}
               className="inline-flex items-center gap-1.5 rounded-lg bg-brand-deep px-3 py-1.5 text-xs font-bold text-white hover:bg-brand-ink transition"
             >
               <Printer className="w-3.5 h-3.5" aria-hidden /> Imprimir / PDF
@@ -453,6 +458,7 @@ export function RecursoMultaWidget() {
           procurar um advogado.
         </span>
       </aside>
+      {modal}
     </section>
   );
 }

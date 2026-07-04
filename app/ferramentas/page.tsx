@@ -11,7 +11,6 @@ import {
   Coins,
   Landmark,
   UserPlus,
-  Search,
   TrendingUp,
   Stethoscope,
   Route,
@@ -29,17 +28,24 @@ import {
   ShieldCheck,
   Users,
   ChevronRight,
-  CheckCircle2
+  Combine,
+  FileArchive,
+  ScanText,
+  FileType,
+  Languages,
+  FileOutput
 } from "lucide-react";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { SITE, PLAN } from "@/lib/config";
+import { PDF_TOOLS } from "@/lib/tools/pdf/registry";
+import { ToolsQuickFind, type QuickFindItem } from "@/components/tools/ToolsQuickFind";
 
 export const metadata = buildMetadata({
-  title: "Ferramentas Jurídicas Gratuitas",
+  title: "Ferramentas jurídicas gratuitas — calculadoras, modelos e PDF",
   description:
-    "Checklists, simuladores e triagens jurídicas gratuitas. Organize seus documentos e descubra seus direitos.",
+    "Ferramentas jurídicas gratuitas: calculadoras, modelos de documentos, recurso de multa, ferramentas PDF e guias passo a passo. Ache a sua em segundos.",
   path: "/ferramentas"
 });
 
@@ -49,11 +55,12 @@ type Tool = {
   desc: string;
   Icon: typeof Calculator;
   area?: string;
-  free?: boolean;
 };
 
 type Group = {
+  id: string;
   title: string;
+  chip: string;
   blurb: string;
   tools: Tool[];
 };
@@ -62,15 +69,23 @@ const AREA_COLORS: Record<string, { bg: string; text: string }> = {
   "Trânsito": { bg: "rgba(234,88,12,0.10)", text: "#C2410C" },
   "Consumidor": { bg: "rgba(37,99,235,0.10)", text: "#1D4ED8" },
   "Família": { bg: "rgba(147,51,234,0.10)", text: "#7C3AED" },
-  "Administrativo": { bg: "rgba(22,163,74,0.10)", text: "#15803D" },
+  "Administrativo": { bg: "rgba(22,163,74,0.10)", text: "#15803D" }
 };
 
 const GROUPS: Group[] = [
   {
-    title: "Calcular e contar prazo",
+    id: "calcular",
+    title: "Calcular e contar prazos",
+    chip: "Calcular",
     blurb:
       "Os cálculos que mais aparecem no dia a dia — com a fórmula explicada, não só o número.",
     tools: [
+      {
+        href: "/calculadoras",
+        label: "Calculadoras jurídicas",
+        desc: "Rescisão, FGTS, pensão, férias, 13º, aluguel, dívida, inventário e mais.",
+        Icon: Calculator
+      },
       {
         href: "/calculadora-prazos",
         label: "Calculadora de prazos",
@@ -90,22 +105,10 @@ const GROUPS: Group[] = [
         Icon: TrendingUp
       },
       {
-        href: "/calculadoras",
-        label: "Calculadoras jurídicas",
-        desc: "Rescisão, FGTS, pensão, férias, 13º, aluguel, dívida, inventário e mais.",
-        Icon: Calculator
-      },
-      {
         href: "/seguro-desemprego",
         label: "Simulador de seguro-desemprego",
         desc: "Quantas parcelas e qual o valor pela tabela oficial do MTE de 2026.",
         Icon: Wallet
-      },
-      {
-        href: "/quanto-custa",
-        label: "Quanto custa um advogado",
-        desc: "Faixas de honorários por tipo de causa, em valores reais.",
-        Icon: Coins
       },
       {
         href: "/prazos",
@@ -116,19 +119,15 @@ const GROUPS: Group[] = [
     ]
   },
   {
-    title: "Escrever um documento",
+    id: "documentos",
+    title: "Escrever e gerar documentos",
+    chip: "Documentos",
     blurb:
-      "Rascunhos organizados para você levar ao advogado — com os campos certos e a estrutura na ordem.",
+      "Modelos prontos e rascunhos organizados — com os campos certos e a estrutura na ordem.",
     tools: [
       {
-        href: "/montar-peticao",
-        label: "Montar petição",
-        desc: "Reclamação trabalhista, alimentos, consumo, cobrança, honorários e procuração.",
-        Icon: FileSignature
-      },
-      {
         href: "/modelos",
-        label: "Modelos prontos",
+        label: "Modelos prontos para baixar",
         desc: "Procuração, contrato de locação, recibo, distrato e outros — é só preencher.",
         Icon: FileText
       },
@@ -137,13 +136,65 @@ const GROUPS: Group[] = [
         label: "Recurso de multa de trânsito",
         desc: "Monte o recurso (defesa prévia, JARI ou CETRAN) com a fundamentação do CTB.",
         Icon: Car
+      },
+      {
+        href: "/montar-peticao",
+        label: "Montar petição",
+        desc: "Reclamação trabalhista, alimentos, consumo, cobrança e mais. Prévia grátis; texto completo no Premium.",
+        Icon: FileSignature
       }
     ]
   },
   {
-    title: "Entender e pesquisar",
+    id: "pdf",
+    title: "Ferramentas PDF",
+    chip: "PDF",
     blurb:
-      "Antes de gastar com consulta, entenda o seu caso e o caminho dele.",
+      "Juntar, comprimir, converter, proteger — 25 ferramentas de PDF grátis, prontas para o PJe e o dia a dia.",
+    tools: [
+      {
+        href: "/ferramentas/pdf/juntar-pdf",
+        label: "Juntar PDF",
+        desc: "Una vários PDFs em um único documento, na ordem que você escolher.",
+        Icon: Combine
+      },
+      {
+        href: "/ferramentas/pdf/comprimir-pdf",
+        label: "Comprimir PDF",
+        desc: "Reduza o tamanho para caber no limite do PJe, do e-mail e do WhatsApp.",
+        Icon: FileArchive
+      },
+      {
+        href: "/ferramentas/pdf/pdf-para-word",
+        label: "PDF para Word",
+        desc: "Transforme PDF em DOCX editável, sem redigitar nada.",
+        Icon: FileType
+      },
+      {
+        href: "/ferramentas/pdf/pdf-para-pdfa",
+        label: "PDF para PDF/A (padrão PJe)",
+        desc: "Gere o formato de arquivamento exigido pelos tribunais.",
+        Icon: Landmark
+      },
+      {
+        href: "/ferramentas/pdf/pdf-pesquisavel",
+        label: "PDF pesquisável (OCR)",
+        desc: "Documento escaneado passa a permitir busca, seleção e cópia.",
+        Icon: ScanText
+      },
+      {
+        href: "/ferramentas/pdf/traduzir-pdf",
+        label: "Traduzir PDF",
+        desc: "Traduza documentos entre português, inglês e espanhol.",
+        Icon: Languages
+      }
+    ]
+  },
+  {
+    id: "entender",
+    title: "Entender o seu caso",
+    chip: "Meu caso",
+    blurb: "Antes de gastar com consulta, entenda o seu problema e o caminho dele.",
     tools: [
       {
         href: "/triagem",
@@ -158,28 +209,16 @@ const GROUPS: Group[] = [
         Icon: Stethoscope
       },
       {
-        href: "/previdencia",
-        label: "Aposentadoria: regras e simulador",
-        desc: "As regras de transição explicadas + cálculo da sua pontuação (idade + tempo).",
-        Icon: PiggyBank
-      },
-      {
-        href: "/imobiliario",
-        label: "Comprar imóvel com segurança",
-        desc: "Checklist de documentos e certidões — vê os pontos críticos antes de assinar.",
-        Icon: Home
-      },
-      {
         href: "/problemas-juridicos",
         label: "Problemas jurídicos passo a passo",
         desc: "Demissão, negativação, pensão, INSS, plano de saúde — o que fazer, em ordem.",
         Icon: HelpCircle
       },
       {
-        href: "/linha-do-tempo",
-        label: "Linha do tempo de um processo",
-        desc: "Quanto tempo demora? Veja as etapas de um processo, da inicial ao pagamento.",
-        Icon: Route
+        href: "/previdencia",
+        label: "Aposentadoria: regras e simulador",
+        desc: "As regras de transição explicadas + cálculo da sua pontuação (idade + tempo).",
+        Icon: PiggyBank
       },
       {
         href: "/divorcio",
@@ -188,10 +227,80 @@ const GROUPS: Group[] = [
         Icon: Scale
       },
       {
+        href: "/imobiliario",
+        label: "Comprar imóvel com segurança",
+        desc: "Checklist de documentos e certidões — vê os pontos críticos antes de assinar.",
+        Icon: Home
+      },
+      {
+        href: "/linha-do-tempo",
+        label: "Linha do tempo de um processo",
+        desc: "Quanto tempo demora? Veja as etapas de um processo, da inicial ao pagamento.",
+        Icon: Route
+      }
+    ]
+  },
+  {
+    id: "checklists",
+    title: "Checklists por situação",
+    chip: "Checklists",
+    blurb:
+      "Verifique seus direitos em minutos. Marque os itens, veja o resultado e, se quiser, fale com um advogado.",
+    tools: [
+      {
+        href: "/ferramentas/checklist-recurso-multa",
+        label: "Checklist: Recurso de Multa",
+        desc: "Verifique se tem tudo para recorrer.",
+        Icon: Car,
+        area: "Trânsito"
+      },
+      {
+        href: "/ferramentas/checklist-limpar-nome",
+        label: "Checklist: Limpar Nome",
+        desc: "Passo a passo para sair do SPC/Serasa.",
+        Icon: ShieldCheck,
+        area: "Consumidor"
+      },
+      {
+        href: "/ferramentas/checklist-pensao-alimenticia",
+        label: "Checklist: Pensão Alimentícia",
+        desc: "Documentos para pedir pensão.",
+        Icon: ClipboardCheck,
+        area: "Família"
+      },
+      {
+        href: "/ferramentas/checklist-documentos-guarda",
+        label: "Checklist: Guarda de Filhos",
+        desc: "Preparação para ação de guarda.",
+        Icon: Users,
+        area: "Família"
+      },
+      {
+        href: "/ferramentas/triagem-mandado-seguranca",
+        label: "Triagem: Mandado de Segurança",
+        desc: "Descubra se cabe MS no seu caso.",
+        Icon: Scale,
+        area: "Administrativo"
+      }
+    ]
+  },
+  {
+    id: "pesquisar",
+    title: "Pesquisar e consultar",
+    chip: "Consultar",
+    blurb: "Processos, tribunais, jurisprudência e os termos do direito em linguagem clara.",
+    tools: [
+      {
         href: "/processos",
         label: "Consulta de processos",
         desc: "Acompanhe o andamento pelo número (CNJ), direto da base pública do DataJud.",
         Icon: Radar
+      },
+      {
+        href: "/quanto-custa",
+        label: "Quanto custa um advogado",
+        desc: "Faixas de honorários por tipo de causa, em valores reais.",
+        Icon: Coins
       },
       {
         href: "/agenda",
@@ -220,56 +329,11 @@ const GROUPS: Group[] = [
     ]
   },
   {
-    title: "Checklists e triagens gratuitas",
-    blurb:
-      "Verifique seus direitos em minutos. Marque os itens, veja o resultado e, se quiser, fale com um advogado.",
-    tools: [
-      {
-        href: "/ferramentas/checklist-recurso-multa",
-        label: "Checklist: Recurso de Multa",
-        desc: "Verifique se tem tudo para recorrer",
-        Icon: Car,
-        area: "Trânsito",
-        free: true
-      },
-      {
-        href: "/ferramentas/checklist-limpar-nome",
-        label: "Checklist: Limpar Nome",
-        desc: "Passo a passo para sair do SPC/Serasa",
-        Icon: ShieldCheck,
-        area: "Consumidor",
-        free: true
-      },
-      {
-        href: "/ferramentas/checklist-pensao-alimenticia",
-        label: "Checklist: Pensão Alimentícia",
-        desc: "Documentos para pedir pensão",
-        Icon: ClipboardCheck,
-        area: "Família",
-        free: true
-      },
-      {
-        href: "/ferramentas/checklist-documentos-guarda",
-        label: "Checklist: Guarda de Filhos",
-        desc: "Preparação para ação de guarda",
-        Icon: Users,
-        area: "Família",
-        free: true
-      },
-      {
-        href: "/ferramentas/triagem-mandado-seguranca",
-        label: "Triagem: Mandado de Segurança",
-        desc: "Descubra se cabe MS no seu caso",
-        Icon: Scale,
-        area: "Administrativo",
-        free: true
-      }
-    ]
-  },
-  {
+    id: "advogados",
     title: "Para advogados",
+    chip: "Advogados",
     blurb:
-      "Apareça para quem procura na sua cidade e use as mesmas ferramentas no seu dia a dia.",
+      "Apareça para quem procura na sua cidade e use as ferramentas profissionais no seu dia a dia.",
     tools: [
       {
         href: "/criar-perfil",
@@ -282,12 +346,6 @@ const GROUPS: Group[] = [
         label: "Revisor de petições",
         desc: "Revise ou humanize o texto da sua peça. Exclusivo do plano Premium.",
         Icon: Sparkles
-      },
-      {
-        href: "/advogados",
-        label: "Encontrar um advogado",
-        desc: "Diretório por cidade e área de atuação, com contato direto.",
-        Icon: Search
       }
     ]
   }
@@ -298,24 +356,20 @@ const GOLD = "#C8A24A";
 const GOLD_LIGHT = "#E3C078";
 const GOLD_TEXT = "#8A6E2B";
 
-// Ferramentas que ainda exigem conta gratuita (ToolGate). As calculadoras,
-// simuladores e checklists determinísticos ficam ABERTOS (grátis, sem login)
-// para serem plenamente rastreáveis/indexáveis pelo Google e sem fricção.
-// Só /processos (usa API externa DataJud — evita abuso anônimo) e /triagem
-// (funil da Marina) seguem exigindo conta.
-const GATED_TOOLS = new Set([
-  "/processos",
-  "/triagem"
-]);
+// Modelo de acesso dos selos:
+//  - "Grátis"            → aberto, sem conta (calculadoras, guias, checklists)
+//  - "Grátis com conta"  → a página é aberta; usar/baixar pede conta gratuita
+//                          (processos, triagem, modelos, recurso de multa, PDF)
+//  - "Prévia grátis"     → prévia aberta; versão completa no Premium
+//  - "Premium"           → exclusivo de advogado Premium
+const CONTA_TOOLS = new Set(["/processos", "/triagem", "/modelos", "/recurso-de-multa"]);
 
-type BadgeKind = "conta" | "premium" | "gratis";
+type BadgeKind = "conta" | "premium" | "gratis" | "previa";
 
-// Exatamente UM selo por ferramenta, seguindo o modelo de acesso:
-// "Grátis com conta" (interativas com ToolGate), "Premium" (revisor de
-// petições, exclusivo de advogado), "Grátis" (conteúdo aberto).
 function badgeFor(href: string): BadgeKind {
   if (href === "/revisor-peticao") return "premium";
-  if (GATED_TOOLS.has(href)) return "conta";
+  if (href === "/montar-peticao") return "previa";
+  if (CONTA_TOOLS.has(href) || href.startsWith("/ferramentas/pdf/")) return "conta";
   return "gratis";
 }
 
@@ -334,6 +388,14 @@ const BADGE_STYLES: Record<BadgeKind, { text: string; style: CSSProperties }> = 
       background: GOLD,
       color: NAVY,
       border: "1px solid #B08F3E"
+    }
+  },
+  previa: {
+    text: "Prévia grátis",
+    style: {
+      background: "rgba(15,27,45,0.06)",
+      color: NAVY,
+      border: "1px solid rgba(15,27,45,0.25)"
     }
   },
   gratis: {
@@ -358,6 +420,21 @@ function Badge({ kind }: { kind: BadgeKind }) {
   );
 }
 
+// Itens da busca rápida: tudo que está no grid + as 25 ferramentas PDF.
+const QUICK_FIND_ITEMS: QuickFindItem[] = [
+  ...GROUPS.flatMap((g) =>
+    g.tools.map((t) => ({ href: t.href, label: t.label, desc: t.desc, group: g.title }))
+  ),
+  ...PDF_TOOLS.filter(
+    (t) => !GROUPS.some((g) => g.tools.some((x) => x.href === `/ferramentas/pdf/${t.slug}`))
+  ).map((t) => ({
+    href: `/ferramentas/pdf/${t.slug}`,
+    label: t.nome,
+    desc: t.subtitulo,
+    group: "Ferramentas PDF"
+  }))
+];
+
 export default function FerramentasPage() {
   return (
     <main className="container-tight py-12 md:py-16">
@@ -372,111 +449,231 @@ export default function FerramentasPage() {
         </ol>
       </nav>
 
-      <header className="max-w-2xl mb-12">
+      <header className="max-w-2xl mb-6">
         <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: GOLD_TEXT }}>
           Ferramentas
         </p>
         <h1 className="font-display text-3xl md:text-5xl font-semibold text-brand-ink tracking-tight text-balance leading-[1.08]">
-          Mais que um diretório: as ferramentas do seu caso, num lugar só
+          Todas as ferramentas, gratuitas — ache a sua em segundos
         </h1>
         <p className="text-brand-ink/70 mt-4 text-base md:text-lg leading-relaxed">
-          Calcular um prazo, atualizar uma dívida, montar o rascunho de uma
-          peça, entender o passo a passo do seu problema. As ferramentas são
-          gratuitas e abertas — use sem cadastro. Só a consulta de processos e
-          a triagem pedem uma conta grátis.
+          Calculadoras, modelos de documentos, recurso de multa, ferramentas de PDF e
+          guias passo a passo. Para baixar resultados e consultar processos, basta uma
+          conta gratuita — 1 minuto, sem cartão.
         </p>
       </header>
 
-      {/* DESTAQUE — recurso de multa completo (produto pago, avulso ou Premium) */}
-      <section
-        className="rounded-3xl text-white p-7 md:p-9 mb-10 relative overflow-hidden"
-        style={{ background: NAVY }}
-      >
-        <div
-          aria-hidden
-          className="absolute pointer-events-none"
-          style={{
-            top: -90,
-            right: -40,
-            width: 380,
-            height: 300,
-            background: "radial-gradient(ellipse at center, rgba(200,162,74,0.25), transparent 70%)"
-          }}
-        />
-        <div
-          aria-hidden
-          className="absolute inset-x-0 top-0 h-1"
-          style={{ background: `linear-gradient(90deg, ${GOLD} 0%, ${GOLD_LIGHT} 50%, ${GOLD} 100%)` }}
-        />
-        <div className="relative grid lg:grid-cols-[1fr_auto] gap-7 items-center">
-          <div>
-            <span
-              className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full mb-4"
-              style={{ background: "rgba(200,162,74,0.18)", color: GOLD_LIGHT, border: "1px solid rgba(200,162,74,0.45)" }}
-            >
-              <Car className="w-3.5 h-3.5" aria-hidden /> Recurso de multa completo
-            </span>
-            <h2 className="font-display text-2xl md:text-[32px] font-semibold tracking-tight leading-[1.1] mb-3">
-              Multa de trânsito? Receba o recurso completo, pronto para protocolar
-            </h2>
-            <p className="text-[15px] md:text-base leading-relaxed max-w-[640px]" style={{ color: "#C4CDDC" }}>
-              Você informa os dados da multa e recebe o recurso elaborado sob
-              medida para o seu caso (defesa prévia, JARI ou CETRAN), fundamentado
-              no Código de Trânsito Brasileiro — pronto para protocolar.
-            </p>
-            <ul className="flex flex-wrap gap-x-5 gap-y-2 mt-5 text-[13px]" style={{ color: "#C4CDDC" }}>
-              <li className="inline-flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4" style={{ color: GOLD_LIGHT }} aria-hidden />
-                Pagamento ÚNICO de R$ 9,90 via Pix — sem mensalidade
-              </li>
-              <li className="inline-flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4" style={{ color: GOLD_LIGHT }} aria-hidden />
-                Vale para até 3 recursos
-              </li>
-              <li className="inline-flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4" style={{ color: GOLD_LIGHT }} aria-hidden />
-                Não quer pagar? Use o modelo grátis
-              </li>
-            </ul>
-          </div>
+      {/* Busca rápida */}
+      <div className="mb-5">
+        <ToolsQuickFind items={QUICK_FIND_ITEMS} />
+      </div>
 
-          <div className="flex flex-col gap-3 lg:w-[280px] shrink-0">
-            <a
-              href="https://multas.advaqui.com"
-              target="_blank"
-              rel="noopener"
-              className="inline-flex items-center justify-center gap-2 text-[15px] font-bold px-6 py-3.5 rounded-xl transition hover:brightness-110 shadow-lg shadow-black/25"
-              style={{ background: GOLD, color: NAVY }}
-            >
-              Fazer meu recurso — R$ 9,90
-              <ArrowRight className="w-4 h-4" aria-hidden />
-            </a>
-            <Link
-              href="/recurso-de-multa"
-              className="inline-flex items-center justify-center gap-2 text-[15px] font-semibold px-6 py-3.5 rounded-xl text-white border transition hover:bg-white/10"
-              style={{ borderColor: "rgba(227,192,120,0.6)" }}
-            >
-              Usar o modelo grátis
-            </Link>
-            <Link
-              href="/planos"
-              className="text-[13px] text-center underline underline-offset-2 hover:text-white transition"
-              style={{ color: GOLD_LIGHT }}
-            >
-              Sou advogado — ver o plano Premium
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* Navegação por categoria (âncoras) */}
+      <nav aria-label="Categorias de ferramentas" className="mb-12 flex flex-wrap gap-2">
+        {GROUPS.map((g) => (
+          <a
+            key={g.id}
+            href={`#${g.id}`}
+            className="rounded-full border border-brand-line bg-white px-4 py-1.5 text-sm font-medium text-brand-ink/80 transition hover:border-brand-accent hover:text-brand-ink"
+          >
+            {g.chip}
+          </a>
+        ))}
+      </nav>
 
-      {/* Como funciona o acesso */}
-      <section className="mb-14" aria-labelledby="acesso-title">
+      <div className="space-y-14">
+        {GROUPS.map((group) => (
+          <section key={group.id} id={group.id} className="scroll-mt-24">
+            <div className="flex items-center gap-3 mb-5">
+              <div>
+                <h2 className="font-display text-2xl font-semibold text-brand-ink tracking-tight">
+                  {group.title}
+                </h2>
+                <p className="text-sm text-brand-ink/65 mt-1">{group.blurb}</p>
+              </div>
+              <span className="hidden md:block h-px flex-1 mt-2" style={{ background: "rgba(200,162,74,0.35)" }} />
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {group.tools.map((t) => {
+                const badge = badgeFor(t.href);
+                const areaColor = t.area ? AREA_COLORS[t.area] : null;
+                return (
+                  <Link
+                    key={t.href}
+                    href={t.href}
+                    className="card group relative flex flex-col transition hover:-translate-y-0.5 hover:shadow-cardHover hover:!border-[#C8A24A]"
+                    style={{ borderColor: "#E6E1D6" }}
+                  >
+                    <div className="absolute top-4 right-4">
+                      <Badge kind={badge} />
+                    </div>
+
+                    <span
+                      className="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+                      style={{ background: NAVY }}
+                    >
+                      <t.Icon className="w-5 h-5" style={{ color: GOLD_LIGHT }} aria-hidden />
+                    </span>
+                    <span className="font-display font-semibold text-brand-ink pr-24">
+                      {t.label}
+                    </span>
+                    <span className="text-sm text-brand-ink/70 mt-1 leading-relaxed flex-1">
+                      {t.desc}
+                    </span>
+
+                    {t.area && areaColor && (
+                      <span
+                        className="inline-flex items-center self-start text-[11px] font-semibold px-2 py-0.5 rounded-full mt-2"
+                        style={{ background: areaColor.bg, color: areaColor.text }}
+                      >
+                        {t.area}
+                      </span>
+                    )}
+
+                    <span
+                      className="text-sm font-bold inline-flex items-center gap-1 mt-3"
+                      style={{ color: GOLD_TEXT }}
+                    >
+                      Usar ferramenta
+                      <ArrowRight
+                        className="w-4 h-4 group-hover:translate-x-0.5 transition"
+                        aria-hidden
+                      />
+                    </span>
+                  </Link>
+                );
+              })}
+
+              {/* Card "ver todas" do grupo PDF */}
+              {group.id === "pdf" && (
+                <Link
+                  href="/ferramentas/pdf"
+                  className="group relative flex flex-col justify-center rounded-2xl p-5 text-white transition hover:-translate-y-0.5 hover:shadow-cardHover"
+                  style={{ background: NAVY }}
+                >
+                  <span className="w-11 h-11 rounded-xl flex items-center justify-center mb-3 bg-white/10">
+                    <FileOutput className="w-5 h-5" style={{ color: GOLD_LIGHT }} aria-hidden />
+                  </span>
+                  <span className="font-display font-semibold">
+                    Ver as {PDF_TOOLS.length} ferramentas PDF
+                  </span>
+                  <span className="text-sm mt-1 leading-relaxed" style={{ color: "#C4CDDC" }}>
+                    Dividir, rodar, numerar, marca d&apos;água, proteger, resumir,
+                    comparar e muito mais.
+                  </span>
+                  <span
+                    className="text-sm font-bold inline-flex items-center gap-1 mt-3"
+                    style={{ color: GOLD_LIGHT }}
+                  >
+                    Abrir a central de PDF
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition" aria-hidden />
+                  </span>
+                </Link>
+              )}
+            </div>
+
+            {/* Banner do recurso completo — logo após "Escrever e gerar documentos",
+                onde faz sentido para quem veio resolver multa. Modelo grátis primeiro. */}
+            {group.id === "documentos" && (
+              <div
+                className="mt-8 rounded-3xl text-white p-7 md:p-8 relative overflow-hidden"
+                style={{ background: NAVY }}
+              >
+                <div
+                  aria-hidden
+                  className="absolute pointer-events-none"
+                  style={{
+                    top: -90,
+                    right: -40,
+                    width: 380,
+                    height: 300,
+                    background:
+                      "radial-gradient(ellipse at center, rgba(200,162,74,0.25), transparent 70%)"
+                  }}
+                />
+                <div className="relative grid lg:grid-cols-[1fr_auto] gap-6 items-center">
+                  <div>
+                    <span
+                      className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full mb-3"
+                      style={{
+                        background: "rgba(200,162,74,0.18)",
+                        color: GOLD_LIGHT,
+                        border: "1px solid rgba(200,162,74,0.45)"
+                      }}
+                    >
+                      <Car className="w-3.5 h-3.5" aria-hidden /> Multa de trânsito
+                    </span>
+                    <h3 className="font-display text-xl md:text-2xl font-semibold tracking-tight leading-tight mb-2">
+                      Monte grátis o seu recurso — ou receba a peça completa, pronta para protocolar
+                    </h3>
+                    <p className="text-[15px] leading-relaxed max-w-[640px]" style={{ color: "#C4CDDC" }}>
+                      O modelo grátis você preenche e adapta. Se preferir, o recurso completo
+                      sai elaborado sob medida para o seu caso (defesa prévia, JARI ou CETRAN),
+                      fundamentado no CTB, por um pagamento único de R$ 9,90 — vale para até 3
+                      recursos.
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-3 lg:w-[280px] shrink-0">
+                    <Link
+                      href="/recurso-de-multa"
+                      className="inline-flex items-center justify-center gap-2 text-[15px] font-bold px-6 py-3.5 rounded-xl transition hover:brightness-110 shadow-lg shadow-black/25"
+                      style={{ background: GOLD, color: NAVY }}
+                    >
+                      Montar recurso grátis
+                      <ArrowRight className="w-4 h-4" aria-hidden />
+                    </Link>
+                    <a
+                      href="https://multas.advaqui.com"
+                      target="_blank"
+                      rel="noopener"
+                      className="inline-flex items-center justify-center gap-2 text-[15px] font-semibold px-6 py-3.5 rounded-xl text-white border transition hover:bg-white/10"
+                      style={{ borderColor: "rgba(227,192,120,0.6)" }}
+                    >
+                      Recurso completo — R$ 9,90
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Cross-sell: encontre um advogado, após "Entender o seu caso" */}
+            {group.id === "entender" && (
+              <div
+                className="mt-8 rounded-2xl border-2 p-6 md:p-8 flex flex-col md:flex-row items-center gap-5"
+                style={{ borderColor: "rgba(200,162,74,0.5)", background: "rgba(200,162,74,0.07)" }}
+              >
+                <div className="flex-1">
+                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: GOLD_TEXT }}>
+                    Precisa de um advogado?
+                  </p>
+                  <p className="text-brand-ink font-display font-semibold text-lg">
+                    Entendeu o seu caso? Encontre o advogado certo na sua cidade
+                  </p>
+                  <p className="text-sm text-brand-ink/60 mt-1">
+                    Pesquise por área de atuação e cidade — contato direto, sem intermediário.
+                  </p>
+                </div>
+                <Link
+                  href="/advogados"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-110 shadow-md shadow-black/10 shrink-0"
+                  style={{ background: GOLD, color: NAVY }}
+                >
+                  Buscar advogado
+                  <ArrowRight className="w-4 h-4" aria-hidden />
+                </Link>
+              </div>
+            )}
+          </section>
+        ))}
+      </div>
+
+      {/* Como funciona o acesso — meta-informação, perto do fim */}
+      <section className="mt-16 mb-4" aria-labelledby="acesso-title">
         <h2 id="acesso-title" className="font-display text-2xl font-semibold text-brand-ink tracking-tight mb-1">
           Como funciona o acesso
         </h2>
         <p className="text-sm text-brand-ink/65 mb-5">
-          Três formas de usar o AdvAqui, cada uma para um público — sem pegadinha,
-          sem fidelidade.
+          Três formas de usar o AdvAqui, cada uma para um público — sem pegadinha, sem fidelidade.
         </p>
         <div className="grid md:grid-cols-3 gap-4">
           <div
@@ -491,9 +688,10 @@ export default function FerramentasPage() {
               <Badge kind="conta" />
             </div>
             <p className="text-sm text-brand-ink/75 leading-relaxed flex-1">
-              As calculadoras, checklists, simuladores e o montar petição já são
-              abertos — não pedem cadastro. A conta grátis libera a consulta de
-              processos e a triagem do seu caso. Custa R$ 0 — para sempre.
+              Calculadoras, simuladores e guias são abertos — sem cadastro. A conta
+              gratuita (só nome, e-mail e senha) libera os downloads: modelos prontos,
+              ferramentas PDF, recurso de multa grátis, consulta de processos e triagem.
+              Custa R$ 0 — para sempre.
             </p>
             <Link
               href="/cadastro"
@@ -504,10 +702,7 @@ export default function FerramentasPage() {
             </Link>
           </div>
 
-          <div
-            className="rounded-2xl p-6 flex flex-col text-white"
-            style={{ background: NAVY }}
-          >
+          <div className="rounded-2xl p-6 flex flex-col text-white" style={{ background: NAVY }}>
             <p className="text-[11px] font-bold uppercase tracking-wider mb-1" style={{ color: GOLD_LIGHT }}>
               Para quem levou multa
             </p>
@@ -515,16 +710,19 @@ export default function FerramentasPage() {
               <span className="font-display font-semibold text-lg">Recurso de multa</span>
               <span
                 className="inline-flex items-center text-[11px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
-                style={{ background: "rgba(227,192,120,0.18)", color: GOLD_LIGHT, border: "1px solid rgba(227,192,120,0.5)" }}
+                style={{
+                  background: "rgba(227,192,120,0.18)",
+                  color: GOLD_LIGHT,
+                  border: "1px solid rgba(227,192,120,0.5)"
+                }}
               >
                 Pago — R$ 9,90
               </span>
             </div>
             <p className="text-sm leading-relaxed flex-1" style={{ color: "#C4CDDC" }}>
-              A peça completa, elaborada sob medida e fundamentada no CTB, pronta
-              para protocolar. Pagamento ÚNICO de R$ 9,90 via Pix (não é
-              mensalidade) libera até 3 recursos. Advogado com plano Premium não
-              paga — já está incluído no plano.
+              A peça completa, elaborada sob medida e fundamentada no CTB, pronta para
+              protocolar. Pagamento ÚNICO de R$ 9,90 via Pix (não é mensalidade) libera
+              até 3 recursos. Advogado com plano Premium não paga — já está incluído.
             </p>
             <a
               href="https://multas.advaqui.com"
@@ -549,10 +747,9 @@ export default function FerramentasPage() {
               <Badge kind="premium" />
             </div>
             <p className="text-sm text-brand-ink/75 leading-relaxed flex-1">
-              {PLAN.priceLabel}/mês via Pix, sem fidelidade: perfil no topo da sua
-              cidade, selo de destaque, WhatsApp no card, bio de 500 caracteres,
-              cidades extras, revisor de petições e o recurso de multa completo
-              incluído (sem pagar os R$ 9,90).
+              {PLAN.priceLabel}/mês via Pix, sem fidelidade: perfil no topo da sua cidade,
+              selo de destaque, WhatsApp no card, cidades extras, revisor de petições e o
+              recurso de multa completo incluído (sem pagar os R$ 9,90).
             </p>
             <Link
               href="/planos"
@@ -565,141 +762,17 @@ export default function FerramentasPage() {
         </div>
       </section>
 
-      <div className="space-y-14">
-        {GROUPS.map((group, groupIdx) => (
-          <section key={group.title}>
-            <div className="flex items-center gap-3 mb-5">
-              <div>
-                <h2 className="font-display text-2xl font-semibold text-brand-ink tracking-tight">
-                  {group.title}
-                </h2>
-                <p className="text-sm text-brand-ink/65 mt-1">{group.blurb}</p>
-              </div>
-              <span className="hidden md:block h-px flex-1 mt-2" style={{ background: "rgba(200,162,74,0.35)" }} />
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {group.tools.map((t) => {
-                const badge = badgeFor(t.href);
-                const areaColor = t.area ? AREA_COLORS[t.area] : null;
-                return (
-                  <Link
-                    key={t.href}
-                    href={t.href}
-                    className="card group relative flex flex-col transition hover:-translate-y-0.5 hover:shadow-cardHover hover:!border-[#C8A24A]"
-                    style={{ borderColor: "#E6E1D6" }}
-                  >
-                    {/* Selo único de acesso */}
-                    <div className="absolute top-4 right-4">
-                      <Badge kind={badge} />
-                    </div>
-
-                    <span
-                      className="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
-                      style={{ background: NAVY }}
-                    >
-                      <t.Icon className="w-5 h-5" style={{ color: GOLD_LIGHT }} aria-hidden />
-                    </span>
-                    <span className="font-display font-semibold text-brand-ink pr-24">
-                      {t.label}
-                    </span>
-                    <span className="text-sm text-brand-ink/70 mt-1 leading-relaxed flex-1">
-                      {t.desc}
-                    </span>
-
-                    {/* Area badge */}
-                    {t.area && areaColor && (
-                      <span
-                        className="inline-flex items-center self-start text-[11px] font-semibold px-2 py-0.5 rounded-full mt-2"
-                        style={{ background: areaColor.bg, color: areaColor.text }}
-                      >
-                        {t.area}
-                      </span>
-                    )}
-
-                    <span
-                      className="text-sm font-bold inline-flex items-center gap-1 mt-3"
-                      style={{ color: GOLD_TEXT }}
-                    >
-                      Usar ferramenta
-                      <ArrowRight
-                        className="w-4 h-4 group-hover:translate-x-0.5 transition"
-                        aria-hidden
-                      />
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
-
-            {/* Cross-sell: após "Entender e pesquisar" */}
-            {groupIdx === 2 && (
-              <div
-                className="mt-8 rounded-2xl border-2 p-6 md:p-8 flex flex-col md:flex-row items-center gap-5"
-                style={{ borderColor: "rgba(200,162,74,0.5)", background: "rgba(200,162,74,0.07)" }}
-              >
-                <div className="flex-1">
-                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: GOLD_TEXT }}>
-                    Precisa de um advogado?
-                  </p>
-                  <p className="text-brand-ink font-display font-semibold text-lg">
-                    Usou a ferramenta? Encontre o advogado certo na sua cidade
-                  </p>
-                  <p className="text-sm text-brand-ink/60 mt-1">
-                    Pesquise por área de atuação e cidade — contato direto, sem intermediário.
-                  </p>
-                </div>
-                <Link
-                  href="/advogados"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-110 shadow-md shadow-black/10 shrink-0"
-                  style={{ background: GOLD, color: NAVY }}
-                >
-                  Buscar advogado
-                  <ArrowRight className="w-4 h-4" aria-hidden />
-                </Link>
-              </div>
-            )}
-
-            {/* Cross-sell: após "Checklists e triagens" */}
-            {groupIdx === 3 && (
-              <div
-                className="mt-8 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-5"
-                style={{ background: NAVY }}
-              >
-                <div className="flex-1 text-white">
-                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: GOLD_LIGHT }}>
-                    Plano Premium para advogados
-                  </p>
-                  <p className="font-display font-semibold text-lg">
-                    Perfil no topo da cidade + revisor de petições + recurso de multa completo incluído
-                  </p>
-                  <p className="text-sm mt-1" style={{ color: "#C4CDDC" }}>
-                    Tudo por {PLAN.priceLabel}/mês, via Pix e sem fidelidade — ativação em até {PLAN.activationHours}h.
-                  </p>
-                </div>
-                <Link
-                  href="/planos"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[15px] font-bold transition hover:brightness-110 shadow-lg shadow-black/25 shrink-0"
-                  style={{ background: GOLD, color: NAVY }}
-                >
-                  Ver planos
-                  <ArrowRight className="w-4 h-4" aria-hidden />
-                </Link>
-              </div>
-            )}
-          </section>
-        ))}
-      </div>
-
       {/* CTA para advogados */}
       <section
-        className="mt-16 rounded-2xl border-2 p-8 md:p-10 text-center"
+        className="mt-12 rounded-2xl border-2 p-8 md:p-10 text-center"
         style={{ borderColor: "rgba(200,162,74,0.45)", background: "rgba(200,162,74,0.06)" }}
       >
         <h2 className="font-display text-xl md:text-2xl font-semibold text-brand-ink tracking-tight">
           É advogado? Cadastre-se e apareça para clientes que usam essas ferramentas
         </h2>
         <p className="text-brand-ink/70 mt-2 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-          Quem usa uma checklist ou triagem está a um passo de contratar. Monte seu perfil e receba contatos diretos.
+          Quem usa uma checklist ou triagem está a um passo de contratar. Monte seu perfil
+          e receba contatos diretos.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-5">
           <Link
@@ -721,12 +794,11 @@ export default function FerramentasPage() {
       </section>
 
       <p className="text-xs text-brand-ink/50 mt-12 max-w-2xl">
-        As ferramentas do AdvAqui são de apoio e têm caráter informativo. Para
-        decisões sobre o seu caso, fale com um advogado — cada situação tem
-        detalhes que mudam o resultado.
+        As ferramentas do AdvAqui são de apoio e têm caráter informativo. Para decisões
+        sobre o seu caso, fale com um advogado — cada situação tem detalhes que mudam o
+        resultado.
       </p>
 
-      {/* Breadcrumb */}
       <JsonLd
         data={breadcrumbSchema([
           { name: "Início", url: "/" },
@@ -734,51 +806,22 @@ export default function FerramentasPage() {
         ])}
       />
 
-      {/* ItemList — ferramentas de checklist/triagem */}
+      {/* ItemList — TODAS as ferramentas do hub (gerado dos grupos) */}
       <JsonLd
         data={{
           "@context": "https://schema.org",
           "@type": "ItemList",
-          name: "Ferramentas Jurídicas Gratuitas",
-          description: "Checklists, simuladores e triagens jurídicas gratuitas. Organize seus documentos e descubra seus direitos.",
-          numberOfItems: 5,
-          itemListElement: [
-            {
-              "@type": "ListItem",
-              position: 1,
-              name: "Checklist: Recurso de Multa",
-              url: `${SITE.url}/ferramentas/checklist-recurso-multa`,
-              description: "Verifique se tem tudo para recorrer"
-            },
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: "Checklist: Limpar Nome",
-              url: `${SITE.url}/ferramentas/checklist-limpar-nome`,
-              description: "Passo a passo para sair do SPC/Serasa"
-            },
-            {
-              "@type": "ListItem",
-              position: 3,
-              name: "Checklist: Pensão Alimentícia",
-              url: `${SITE.url}/ferramentas/checklist-pensao-alimenticia`,
-              description: "Documentos para pedir pensão"
-            },
-            {
-              "@type": "ListItem",
-              position: 4,
-              name: "Checklist: Guarda de Filhos",
-              url: `${SITE.url}/ferramentas/checklist-documentos-guarda`,
-              description: "Preparação para ação de guarda"
-            },
-            {
-              "@type": "ListItem",
-              position: 5,
-              name: "Triagem: Mandado de Segurança",
-              url: `${SITE.url}/ferramentas/triagem-mandado-seguranca`,
-              description: "Descubra se cabe MS no seu caso"
-            }
-          ]
+          name: "Ferramentas jurídicas gratuitas",
+          description:
+            "Calculadoras, modelos de documentos, recurso de multa, ferramentas PDF, checklists e triagens gratuitas.",
+          numberOfItems: GROUPS.reduce((n, g) => n + g.tools.length, 0),
+          itemListElement: GROUPS.flatMap((g) => g.tools).map((t, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: t.label,
+            url: `${SITE.url}${t.href}`,
+            description: t.desc
+          }))
         }}
       />
     </main>

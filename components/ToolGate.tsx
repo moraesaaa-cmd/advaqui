@@ -3,6 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { Lock, UserPlus, LogIn } from "lucide-react";
+import { QuickSignupModal } from "@/components/tools/QuickSignupModal";
 
 type AuthState = "loading" | "logged-in" | "anonymous";
 
@@ -16,12 +17,13 @@ export function ToolGate({
   description?: string;
 }) {
   const [auth, setAuth] = useState<AuthState>("loading");
+  const [showSignup, setShowSignup] = useState(false);
 
   useEffect(() => {
     fetch("/api/auth/me", { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
-        if (data?.kind === "admin" || data?.kind === "lawyer") {
+        if (data?.kind === "admin" || data?.kind === "lawyer" || data?.kind === "citizen") {
           setAuth("logged-in");
         } else {
           setAuth("anonymous");
@@ -55,14 +57,15 @@ export function ToolGate({
         {description}
       </p>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <Link
-          href="/cadastro"
+        <button
+          type="button"
+          onClick={() => setShowSignup(true)}
           className="inline-flex items-center justify-center gap-2 font-bold text-[15px] px-6 py-3.5 rounded-xl"
           style={{ background: "#C8A24A", color: "#0F1B2D" }}
         >
           <UserPlus className="w-4 h-4" />
           Criar conta grátis
-        </Link>
+        </button>
         <Link
           href="/login"
           className="inline-flex items-center justify-center gap-2 font-semibold text-[15px] px-6 py-3.5 rounded-xl border border-brand-line text-brand-ink hover:bg-brand-line/30 transition"
@@ -72,8 +75,22 @@ export function ToolGate({
         </Link>
       </div>
       <p className="text-xs text-brand-ink/40 mt-6">
-        O cadastro é gratuito e leva menos de 2 minutos.
+        Leva menos de 1 minuto — só nome, e-mail e senha. É advogado(a)?{" "}
+        <Link href="/cadastro" className="underline">
+          Crie seu perfil profissional
+        </Link>
+        .
       </p>
+      {showSignup && (
+        <QuickSignupModal
+          ferramenta="tool-gate"
+          onClose={() => setShowSignup(false)}
+          onSuccess={() => {
+            setShowSignup(false);
+            setAuth("logged-in");
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -27,7 +27,9 @@ export const DEFAULT_MODEL = process.env.OPENAI_MODEL || "gpt-4o-mini";
  *  o preço do gpt-4o-mini como aproximação conservadora. */
 const PRICES_PER_MTOK: Record<string, { input: number; output: number }> = {
   "gpt-4o-mini": { input: 0.15, output: 0.6 },
-  "gpt-5.4-mini": { input: 0.3, output: 1.2 }
+  "gpt-5.4-mini": { input: 0.3, output: 1.2 },
+  // aproximação (tabela gpt-5 base) — serve só para o custo em agent_logs
+  "gpt-5.5": { input: 1.25, output: 10 }
 };
 
 export function estimateCostUsd(
@@ -61,6 +63,11 @@ export type CallAIOptions = {
   model?: string;
   maxTokens?: number;
   temperature?: number;
+  /**
+   * Esforço de raciocínio (só família gpt-5.x que aceita o parâmetro).
+   * "low" mantém latência de chat; sem valor, o default do modelo vale.
+   */
+  reasoningEffort?: "minimal" | "low" | "medium" | "high";
   /** true → response_format json_object. */
   json?: boolean;
   /** Default 60s. */
@@ -97,11 +104,13 @@ function buildBody(
   messages: ChatMessage[],
   maxTokens: number | undefined,
   temperature: number | undefined,
-  json: boolean | undefined
+  json: boolean | undefined,
+  reasoningEffort?: "minimal" | "low" | "medium" | "high"
 ): Record<string, unknown> {
   const body: Record<string, unknown> = { model, messages };
   if (model.startsWith("gpt-5")) {
     if (maxTokens) body.max_completion_tokens = maxTokens;
+    if (reasoningEffort) body.reasoning_effort = reasoningEffort;
   } else {
     if (maxTokens) body.max_tokens = maxTokens;
     if (typeof temperature === "number") body.temperature = temperature;
@@ -130,7 +139,14 @@ async function callOnce(
         "Content-Type": "application/json"
       },
       body: JSON.stringify(
-        buildBody(model, opts.messages, opts.maxTokens, opts.temperature, opts.json)
+        buildBody(
+          model,
+          opts.messages,
+          opts.maxTokens,
+          opts.temperature,
+          opts.json,
+          opts.reasoningEffort
+        )
       )
     });
     clearTimeout(timer);
