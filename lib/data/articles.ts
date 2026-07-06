@@ -3831,6 +3831,355 @@ export const ARTICLES: Article[] = [
           "A ação revisional é ajuizada por advogado ou pela Defensoria Pública. Antes disso, você pode tentar a revisão amigável e a renegociação diretamente com o banco, o que não exige advogado e pode resolver mais rápido."
       }
     ]
+  },
+  {
+    slug: "rescisao-indireta-como-funciona",
+    title: "Rescisão indireta: quando o patrão comete a falta grave e você sai com todos os direitos",
+    excerpt:
+      "Atraso de salário, FGTS sem depósito, assédio ou desvio de função podem justificar a rescisão indireta. Veja as hipóteses do art. 483 da CLT e como agir.",
+    category: "Trabalhista",
+    readingMinutes: 9,
+    publishedAt: "2026-07-06",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "trabalhista",
+    intro:
+      "A rescisão indireta é a 'justa causa ao contrário': quem comete a falta grave é o empregador, e o trabalhador pode encerrar o contrato recebendo as mesmas verbas de uma demissão sem justa causa. É a saída legal para quem está preso a um emprego onde salário atrasa, FGTS não é depositado ou as condições de trabalho se tornaram insustentáveis.",
+    body: [
+      { type: "h2", text: "O que é rescisão indireta" },
+      {
+        type: "p",
+        text: "É a forma de encerrar o contrato de trabalho por culpa do empregador, prevista no art. 483 da CLT. Quando a empresa descumpre gravemente suas obrigações, o empregado não precisa pedir demissão (e perder direitos): pode pedir na Justiça o reconhecimento da rescisão indireta e receber o mesmo pacote de verbas de quem é demitido sem justa causa."
+      },
+      { type: "h2", text: "Quais situações justificam a rescisão indireta" },
+      {
+        type: "ul",
+        items: [
+          "Atraso reiterado de salário ou pagamento por fora sem regularização",
+          "FGTS não depositado ou depositado com atraso constante — uma das causas mais aceitas pela Justiça do Trabalho",
+          "Exigência de serviços superiores às suas forças, proibidos por lei ou alheios ao contrato (desvio de função)",
+          "Rigor excessivo do chefe, perseguição ou tratamento humilhante",
+          "Perigo manifesto de mal considerável — risco grave à saúde ou segurança sem proteção adequada",
+          "Ofensa à honra ou agressão física por parte do empregador ou superiores",
+          "Redução do trabalho por peça ou tarefa que diminua sensivelmente o salário",
+          "Corte de plano de saúde ou benefícios contratuais sem substituição"
+        ]
+      },
+      { type: "h2", text: "O que você recebe se a rescisão indireta for reconhecida" },
+      {
+        type: "p",
+        text: "Todas as verbas da dispensa sem justa causa: saldo de salário, aviso prévio indenizado, férias vencidas e proporcionais com 1/3, 13º proporcional, liberação do FGTS com multa de 40% e guias do seguro-desemprego. A diferença para o pedido de demissão é enorme — quem pede demissão não recebe aviso indenizado, não saca o FGTS, não ganha a multa de 40% nem o seguro-desemprego."
+      },
+      { type: "h2", text: "Preciso continuar trabalhando enquanto o processo corre?" },
+      {
+        type: "p",
+        text: "Depende da situação. A lei permite que o empregado permaneça no serviço até a decisão em alguns casos (art. 483, §3º da CLT), como descumprimento de obrigações contratuais. Sair imediatamente é possível, mas envolve estratégia: se o juiz não reconhecer a falta do empregador, a saída pode ser tratada como pedido de demissão. Essa escolha — sair ou aguardar trabalhando — deve ser avaliada com um advogado trabalhista antes de qualquer atitude."
+      },
+      { type: "h2", text: "Como provar a falta grave do empregador" },
+      {
+        type: "ol",
+        items: [
+          "Guarde holerites, extrato do FGTS (app FGTS/Caixa) e comprovantes de pagamento com datas",
+          "Reúna mensagens, e-mails e áudios que mostrem cobranças indevidas, humilhações ou ordens irregulares",
+          "Anote datas e testemunhas de cada episódio relevante",
+          "Registre atestados e CATs se houver reflexo na saúde",
+          "Não assine documentos em branco nem 'acordos' sem ler — peça cópia de tudo"
+        ]
+      },
+      {
+        type: "callout",
+        text: "Prazo: a ação deve ser proposta em até 2 anos após o fim do contrato, e só podem ser cobrados os últimos 5 anos de direitos (art. 7º, XXIX da Constituição). Quanto mais recente a falta grave, mais forte tende a ser o pedido."
+      },
+      { type: "h2", text: "Quando procurar ajuda" },
+      {
+        type: "p",
+        text: "A rescisão indireta é decidida por um juiz, caso a caso, com base nas provas. Um advogado trabalhista avalia se a falta do empregador é grave o suficiente, organiza as provas e orienta se vale sair do emprego de imediato ou aguardar. Quem não pode pagar tem direito à Defensoria Pública ou aos núcleos de prática jurídica. Este texto é informativo e não substitui a análise do seu caso concreto."
+      }
+    ],
+    faq: [
+      {
+        question: "Atraso de salário de quantos meses dá rescisão indireta?",
+        answer:
+          "Não existe número fixo em lei. A Justiça costuma reconhecer a rescisão indireta quando o atraso é reiterado ou prolongado, não por um único atraso pontual de poucos dias. O conjunto — frequência dos atrasos, FGTS em dia ou não, impacto na vida do trabalhador — é o que pesa na decisão."
+      },
+      {
+        question: "FGTS não depositado é motivo para rescisão indireta?",
+        answer:
+          "Sim. A falta de depósito do FGTS é descumprimento de obrigação contratual grave e é uma das causas mais aceitas pelos tribunais do trabalho para reconhecer a rescisão indireta, mesmo que o salário em si esteja em dia."
+      },
+      {
+        question: "Se eu perder a ação, o que acontece?",
+        answer:
+          "Se o juiz entender que não houve falta grave do empregador e você já tiver saído do emprego, a saída tende a valer como pedido de demissão: você recebe apenas saldo de salário, férias e 13º proporcionais, sem multa de 40%, sem saque do FGTS e sem seguro-desemprego. Por isso a avaliação prévia com advogado é tão importante."
+      },
+      {
+        question: "Posso pedir rescisão indireta e indenização por dano moral juntas?",
+        answer:
+          "Sim. Quando a falta do empregador também ofende a dignidade — assédio, humilhações, salário atrasado de forma humilhante —, é comum cumular o pedido de rescisão indireta com indenização por danos morais na mesma ação."
+      },
+      {
+        question: "Quanto tempo demora um processo de rescisão indireta?",
+        answer:
+          "Varia por região e complexidade. Boa parte dos processos trabalhistas tem audiência em alguns meses e pode terminar em acordo. Se houver recursos, pode levar mais de um ano. O advogado da sua região sabe o ritmo das varas locais."
+      }
+    ]
+  },
+  {
+    slug: "trabalho-sem-carteira-assinada-direitos",
+    title: "Trabalho sem carteira assinada: seus direitos e como provar o vínculo",
+    excerpt:
+      "Trabalhar sem registro não apaga seus direitos: a CLT vale mesmo sem carteira assinada. Veja como reconhecer o vínculo e cobrar salários, FGTS e INSS.",
+    category: "Trabalhista",
+    readingMinutes: 9,
+    publishedAt: "2026-07-06",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "trabalhista",
+    intro:
+      "Milhões de brasileiros trabalham sem registro em carteira. O que pouca gente sabe: o vínculo de emprego existe pela realidade do trabalho, não pelo papel. Se você trabalha todo dia, recebe ordens e ganha pelo serviço, a lei considera você empregado — e todos os direitos da CLT podem ser cobrados, de forma retroativa.",
+    body: [
+      { type: "h2", text: "Trabalhar sem registro tira meus direitos?" },
+      {
+        type: "p",
+        text: "Não. A relação de emprego se caracteriza pelos fatos: trabalho prestado por pessoa física, de forma habitual, com subordinação (receber ordens) e mediante pagamento (arts. 2º e 3º da CLT). Registrar a carteira é obrigação do empregador (art. 29 da CLT) — se ele não registra, a falta é dele, e a Justiça do Trabalho pode reconhecer o vínculo e mandar pagar tudo o que ficou para trás."
+      },
+      { type: "h2", text: "O que dá para cobrar quando o vínculo é reconhecido" },
+      {
+        type: "ul",
+        items: [
+          "Anotação da carteira de trabalho (hoje digital) com a data real de início",
+          "Diferenças até o salário mínimo ou o piso da categoria",
+          "13º salário e férias + 1/3 de todo o período",
+          "FGTS de todo o contrato + multa de 40% em caso de dispensa sem justa causa",
+          "Horas extras, adicional noturno e descanso semanal, quando devidos",
+          "Recolhimento do INSS — que conta para aposentadoria e benefícios",
+          "Verbas rescisórias completas se você foi mandado embora"
+        ]
+      },
+      { type: "h2", text: "Como provar que existia vínculo de emprego" },
+      {
+        type: "ol",
+        items: [
+          "Testemunhas: colegas, clientes e fornecedores que viam você trabalhando",
+          "Mensagens de WhatsApp e e-mails com ordens, escalas e cobranças do patrão",
+          "Comprovantes de pagamento: Pix, transferências e recibos com habitualidade",
+          "Uniforme, crachá, escala de trabalho, fotos no local",
+          "Registros de ponto, planilhas e sistemas que você usava"
+        ]
+      },
+      {
+        type: "callout",
+        text: "Prazos: você pode entrar com a ação até 2 anos depois de sair do trabalho, e cobrar os últimos 5 anos do período trabalhado (art. 7º, XXIX da Constituição). Quem ainda está trabalhando sem registro também pode agir — mas a estratégia deve ser pensada com um advogado."
+      },
+      { type: "h2", text: "E se me contrataram como PJ ou autônomo?" },
+      {
+        type: "p",
+        text: "O nome do contrato não decide. Se, na prática, você trabalha com habitualidade, recebe ordens, cumpre horário e presta o serviço pessoalmente, a contratação como 'PJ', 'MEI' ou 'autônomo' pode mascarar um vínculo de emprego — o que a Justiça analisa caso a caso, olhando a realidade. Guarde contratos, notas emitidas e as conversas que mostram como o trabalho funcionava de verdade."
+      },
+      { type: "h2", text: "Trabalho sem registro e o INSS" },
+      {
+        type: "p",
+        text: "Sem registro, o empregador normalmente não recolhe INSS — e isso afeta aposentadoria, auxílio por incapacidade e salário-maternidade. Com o vínculo reconhecido na Justiça do Trabalho, o período pode ser averbado no INSS. Guarde a sentença e os comprovantes: eles valem como prova do tempo de contribuição."
+      },
+      { type: "h2", text: "Quando procurar ajuda" },
+      {
+        type: "p",
+        text: "Reconhecimento de vínculo depende de prova e de condução técnica. Um advogado trabalhista monta o caso, calcula os valores e evita armadilhas — como acordos verbais que 'quitam' tudo por uma fração do devido. Quem não pode pagar tem direito à Defensoria Pública. Este conteúdo é informativo e não substitui a análise do seu caso."
+      }
+    ],
+    faq: [
+      {
+        question: "Quanto tempo de trabalho sem carteira dá direito a processo?",
+        answer:
+          "Não há mínimo. Mesmo poucos meses sem registro geram direitos (salários, 13º, férias e FGTS proporcionais). O que muda com o tempo é o tamanho do valor a cobrar."
+      },
+      {
+        question: "Posso processar mesmo ainda trabalhando lá?",
+        answer:
+          "Pode, não é preciso esperar sair. Mas processar o empregador atual tem consequências práticas, então a decisão de agir agora ou documentar e aguardar deve ser tomada com orientação profissional."
+      },
+      {
+        question: "Recebia por Pix, sem recibo. Isso prova alguma coisa?",
+        answer:
+          "Sim. Transferências habituais, na mesma época do mês e de valores parecidos, são forte indício de salário. Somadas a conversas e testemunhas, costumam ser suficientes para o juiz reconhecer o vínculo."
+      },
+      {
+        question: "Trabalho sem carteira conta para aposentadoria?",
+        answer:
+          "Conta se o período for reconhecido. A sentença trabalhista que declara o vínculo permite averbar o tempo no INSS. Sem reconhecimento, o período fica fora do cálculo da aposentadoria."
+      },
+      {
+        question: "O patrão pode ser multado por não assinar a carteira?",
+        answer:
+          "Sim. Além de pagar os direitos ao trabalhador, o empregador que mantém empregado sem registro está sujeito a multa administrativa prevista na CLT (art. 47), aplicada pela fiscalização do trabalho."
+      }
+    ]
+  },
+  {
+    slug: "escala-6x1-o-que-diz-a-lei",
+    title: "Escala 6x1: o que diz a lei, o que é permitido e quais são os seus direitos",
+    excerpt:
+      "A escala 6x1 é legal? Quais os limites de jornada, folga aos domingos e hora extra? Entenda as regras atuais e o que está em discussão no Congresso.",
+    category: "Trabalhista",
+    readingMinutes: 8,
+    publishedAt: "2026-07-06",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "trabalhista",
+    intro:
+      "A escala 6x1 — seis dias de trabalho para um de descanso — é a rotina de milhões de trabalhadores do comércio, de supermercados, da segurança e da saúde. Ela é permitida pela legislação atual, mas tem limites claros que muitos empregadores desrespeitam. Conhecer essas regras é o primeiro passo para saber se os seus direitos estão sendo cumpridos.",
+    body: [
+      { type: "h2", text: "A escala 6x1 é legal?" },
+      {
+        type: "p",
+        text: "Sim, atualmente é. A Constituição garante jornada de até 8 horas diárias e 44 horas semanais (art. 7º, XIII) e um descanso semanal remunerado, preferencialmente aos domingos (art. 7º, XV, e Lei 605/1949). A escala 6x1 respeita esse desenho quando dá pelo menos 24 horas seguidas de folga por semana e não estoura os limites de jornada."
+      },
+      { type: "h2", text: "Quais são os limites que o empregador deve respeitar" },
+      {
+        type: "ul",
+        items: [
+          "Folga de 24 horas consecutivas por semana (descanso semanal remunerado)",
+          "Folga que recaia em domingo ao menos periodicamente, conforme as regras do setor — trabalhar todos os domingos sem rodízio é irregular na maior parte das atividades",
+          "Jornada de até 8 horas por dia e 44 por semana; o que passar é hora extra com adicional mínimo de 50%",
+          "Intervalo para refeição de no mínimo 1 hora em jornadas acima de 6 horas (art. 71 da CLT)",
+          "Intervalo de 11 horas entre uma jornada e outra (art. 66 da CLT)",
+          "Domingos e feriados trabalhados sem folga compensatória devem ser pagos em dobro (Súmula 146 do TST)"
+        ]
+      },
+      { type: "h2", text: "Quando a escala 6x1 vira abuso" },
+      {
+        type: "p",
+        text: "A escala em si é permitida; o problema é como ela é aplicada. Ficar semanas sem folgar no domingo quando o setor exige rodízio, ter a folga 'engolida' por convocações, emendar jornadas sem o intervalo de 11 horas, ou trabalhar feriado sem dobra nem compensação — tudo isso gera direito a pagamento e pode ser cobrado na Justiça do Trabalho, com provas simples como escalas, pontos e mensagens."
+      },
+      { type: "h2", text: "O fim da escala 6x1 já foi aprovado?" },
+      {
+        type: "p",
+        text: "Não. Existe proposta de emenda constitucional em discussão no Congresso para reduzir a jornada semanal e mudar o regime de escalas, com grande repercussão. Enquanto não houver aprovação e promulgação, valem as regras atuais descritas aqui. Desconfie de conteúdo que anuncie o 'fim da 6x1' como se já estivesse em vigor."
+      },
+      {
+        type: "callout",
+        text: "Guarde suas escalas, folhas de ponto e conversas de convocação. Esses documentos são a prova de folgas suprimidas, horas extras e domingos trabalhados — e valem por até 5 anos em uma eventual ação (art. 7º, XXIX da Constituição)."
+      },
+      { type: "h2", text: "Quando procurar ajuda" },
+      {
+        type: "p",
+        text: "Se a sua folga não existe na prática, se os domingos nunca chegam ou se as horas extras não aparecem no holerite, um advogado trabalhista pode calcular as diferenças e orientar a cobrança — muitas vezes o caso se resolve em acordo. Quem não pode pagar tem direito à Defensoria Pública. Este texto é informativo e as regras do seu setor podem ter particularidades de convenção coletiva."
+      }
+    ],
+    faq: [
+      {
+        question: "Trabalhar todos os domingos na escala 6x1 é permitido?",
+        answer:
+          "Em regra, não. A folga deve coincidir com o domingo periodicamente, em sistema de rodízio, conforme a legislação e as normas do setor. Passar meses sem folgar em nenhum domingo é sinal de irregularidade que pode gerar pagamento em dobro."
+      },
+      {
+        question: "Feriado trabalhado na 6x1 é pago em dobro?",
+        answer:
+          "Se não houver folga compensatória em outro dia, sim: o feriado trabalhado deve ser pago em dobro, conforme a Súmula 146 do TST e a Lei 605/1949."
+      },
+      {
+        question: "A escala 6x1 pode ter jornada de 12 horas?",
+        answer:
+          "Não como rotina. A jornada padrão é de até 8 horas diárias, prorrogáveis por no máximo 2 horas extras. Jornadas de 12 horas seguem regime próprio (12x36) que exige previsão em acordo ou convenção coletiva — misturar os dois modelos sem previsão é irregular."
+      },
+      {
+        question: "A PEC que acaba com a 6x1 já está valendo?",
+        answer:
+          "Não. Até a publicação deste guia, a proposta segue em tramitação no Congresso. Mudança constitucional só vale depois de aprovada nas duas Casas e promulgada — por enquanto, a escala 6x1 dentro dos limites legais continua permitida."
+      },
+      {
+        question: "Minha folga cai sempre em dia de semana. Perco algo?",
+        answer:
+          "Você tem direito ao descanso semanal de 24 horas de qualquer forma, mas a lei manda que ele coincida com o domingo periodicamente na maior parte das atividades. Se isso nunca acontece, vale registrar as escalas e buscar orientação."
+      }
+    ]
+  },
+  {
+    slug: "auxilio-doenca-como-pedir-e-recorrer",
+    title: "Auxílio-doença (benefício por incapacidade): como pedir no INSS e o que fazer se for negado",
+    excerpt:
+      "Passo a passo do benefício por incapacidade temporária: requisitos, perícia, documentos médicos e os 3 caminhos quando o INSS nega o pedido.",
+    category: "Previdenciário",
+    readingMinutes: 9,
+    publishedAt: "2026-07-06",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "previdenciario",
+    intro:
+      "O auxílio-doença — nome popular do benefício por incapacidade temporária — é pago pelo INSS a quem fica impossibilitado de trabalhar por mais de 15 dias por doença ou acidente. É também um dos benefícios mais negados. Saber os requisitos, preparar a documentação médica e conhecer os caminhos de recurso faz diferença real no resultado.",
+    body: [
+      { type: "h2", text: "Quem tem direito ao auxílio-doença" },
+      {
+        type: "ul",
+        items: [
+          "Ter qualidade de segurado: estar contribuindo ao INSS ou no 'período de graça' (prazo em que a proteção continua mesmo sem contribuir)",
+          "Cumprir carência de 12 contribuições mensais — dispensada em caso de acidente de qualquer natureza e nas doenças graves listadas na legislação (art. 26 e art. 151 da Lei 8.213/91)",
+          "Estar incapacitado para o trabalho por mais de 15 dias, comprovado por documentos médicos e avaliação do INSS"
+        ]
+      },
+      { type: "h2", text: "Como pedir o benefício" },
+      {
+        type: "ol",
+        items: [
+          "Reúna atestados com prazo de afastamento e CID, laudos, exames e receitas — recentes e legíveis",
+          "Agende pelo aplicativo ou site Meu INSS (ou telefone 135) o pedido de 'Benefício por incapacidade'",
+          "Envie os documentos médicos pelo próprio aplicativo quando solicitado — em muitos casos a análise é documental, sem perícia presencial",
+          "Se houver perícia presencial, leve originais de todos os documentos e chegue com antecedência",
+          "Acompanhe o resultado e os prazos pelo Meu INSS"
+        ]
+      },
+      { type: "h2", text: "Quem paga os primeiros 15 dias" },
+      {
+        type: "p",
+        text: "Para empregados com carteira assinada, os primeiros 15 dias de afastamento são pagos pela empresa; a partir do 16º dia, a responsabilidade passa ao INSS. Contribuintes individuais, MEIs e desempregados no período de graça recebem do INSS desde o início do afastamento reconhecido."
+      },
+      { type: "h2", text: "O INSS negou: quais são os 3 caminhos" },
+      {
+        type: "p",
+        text: "A negativa não é o fim. Existem três rotas, que podem inclusive ser combinadas ao longo do tempo: recurso administrativo à Junta de Recursos em até 30 dias pelo Meu INSS (gratuito); novo pedido, quando surgirem documentos médicos mais fortes ou a doença se agravar; e ação judicial, em que um perito do juízo — e não do INSS — reavalia a incapacidade. Causas de até 60 salários mínimos correm no Juizado Especial Federal, sem custas iniciais."
+      },
+      {
+        type: "callout",
+        text: "Motivo campeão de negativa: documentação médica fraca. Atestado sem CID, sem prazo de afastamento ou muito antigo enfraquece o pedido. Peça ao seu médico um relatório detalhado, com data, assinatura, CID, limitações concretas para o trabalho e tempo estimado de recuperação."
+      },
+      { type: "h2", text: "Auxílio-doença, auxílio-acidente e aposentadoria: não confunda" },
+      {
+        type: "p",
+        text: "O benefício por incapacidade temporária vale enquanto dura a incapacidade. Se a recuperação deixar sequela que reduza permanentemente a capacidade de trabalho, pode caber o auxílio-acidente (uma indenização mensal paga junto com o salário). Se a incapacidade for total e definitiva, o caminho é a aposentadoria por incapacidade permanente. A perícia e os laudos definem o enquadramento."
+      },
+      { type: "h2", text: "Quando procurar ajuda" },
+      {
+        type: "p",
+        text: "Se o benefício foi negado, cessado antes da hora ('alta programada' com você ainda doente) ou o valor veio errado, um advogado previdenciário pode montar o recurso ou a ação com os laudos certos. Quem não pode pagar conta com a Defensoria Pública da União. Este conteúdo é informativo e cada caso depende da análise dos documentos médicos."
+      }
+    ],
+    faq: [
+      {
+        question: "Quanto tempo o INSS demora para analisar o auxílio-doença?",
+        answer:
+          "O prazo legal de referência é de 45 dias, mas na prática varia conforme a fila da sua região e a necessidade de perícia. Pelo Meu INSS dá para acompanhar o andamento e ver se falta algum documento."
+      },
+      {
+        question: "Fui negado por 'não constatação de incapacidade'. Vale recorrer?",
+        answer:
+          "É a negativa mais comum e muitas vezes cai no recurso ou na Justiça, onde outro perito examina o caso. O ponto decisivo é reforçar a prova médica: relatório detalhado, exames e histórico do tratamento."
+      },
+      {
+        question: "Desempregado pode receber auxílio-doença?",
+        answer:
+          "Pode, se ainda estiver no período de graça — em regra até 12 meses após a última contribuição, prorrogáveis em algumas situações (por exemplo, desemprego comprovado). Fora desse período, perde-se a qualidade de segurado."
+      },
+      {
+        question: "Posso trabalhar recebendo auxílio-doença?",
+        answer:
+          "Não na atividade da qual você foi considerado incapaz. Trabalhar durante o benefício pode levar à cessação e à cobrança de valores. Se você melhorou e voltou a trabalhar, comunique o INSS."
+      },
+      {
+        question: "O que é a 'alta programada' e o que fazer se eu continuar doente?",
+        answer:
+          "É a data de cessação já definida quando o benefício é concedido. Se chegar essa data e você continuar incapaz, peça a prorrogação pelo Meu INSS nos 15 dias que antecedem o fim do benefício — e, se negarem, valem os mesmos caminhos de recurso."
+      }
+    ]
   }
 ];
 

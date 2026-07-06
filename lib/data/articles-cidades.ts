@@ -50,7 +50,11 @@ export const ARTIGOS_LOCALIZAVEIS_SLUGS: string[] = [
   "como-funciona-a-guarda-compartilhada",
   "aposentadoria-por-idade-regras-e-como-pedir",
   "seguro-de-vida-negado-como-recorrer",
-  "revisao-de-financiamento-de-veiculo-vale-a-pena"
+  "revisao-de-financiamento-de-veiculo-vale-a-pena",
+  "rescisao-indireta-como-funciona",
+  "trabalho-sem-carteira-assinada-direitos",
+  "escala-6x1-o-que-diz-a-lei",
+  "auxilio-doenca-como-pedir-e-recorrer"
 ];
 
 /**
