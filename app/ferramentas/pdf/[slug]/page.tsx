@@ -78,7 +78,7 @@ export default function PdfToolPage({ params }: { params: { slug: string } }) {
   };
 
   return (
-    <main className="bg-brand-bg">
+    <section className="bg-brand-bg">
       <JsonLd data={breadcrumb} />
       <JsonLd data={faqSchema} />
       <JsonLd data={howTo} />
@@ -220,6 +220,6 @@ export default function PdfToolPage({ params }: { params: { slug: string } }) {
           </section>
         )}
       </div>
-    </main>
+    </section>
   );
 }

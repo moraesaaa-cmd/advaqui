@@ -69,7 +69,7 @@ export default function PdfHubPage() {
   };
 
   return (
-    <main className="bg-brand-bg">
+    <section className="bg-brand-bg">
       <JsonLd data={itemList} />
       <JsonLd data={faqSchema} />
       <JsonLd data={breadcrumb} />
@@ -159,6 +159,6 @@ export default function PdfHubPage() {
           .
         </p>
       </section>
-    </main>
+    </section>
   );
 }

@@ -22,3 +22,4 @@ tsconfig.tsbuildinfo
 .next.old
 .next.livebak
 .next.*
+.env.local.bak*

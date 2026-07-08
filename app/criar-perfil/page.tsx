@@ -186,7 +186,7 @@ export default function CriarPerfilPage() {
     : null;
 
   return (
-    <main className="container-narrow py-10 md:py-14">
+    <section className="container-narrow py-10 md:py-14">
       {/* Cabeçalho */}
       <div className="text-center mb-8">
         <span className="chip border-brand-accent/40 bg-brand-accent/10 text-brand-ink mb-3">
@@ -602,6 +602,6 @@ export default function CriarPerfilPage() {
           </div>
         )}
       </div>
-    </main>
+    </section>
   );
 }

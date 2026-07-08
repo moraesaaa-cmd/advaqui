@@ -147,7 +147,7 @@ export default async function LandingAdvogadoPremium() {
   const pixPayload = buildPixPayload();
   const qrDataUrl = await QRCode.toDataURL(pixPayload, { margin: 1, width: 320 });
   return (
-    <main className="min-h-screen overflow-x-hidden bg-slate-950 text-slate-100">
+    <section className="min-h-screen overflow-x-hidden bg-slate-950 text-slate-100">
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-950" />
@@ -1116,6 +1116,6 @@ export default async function LandingAdvogadoPremium() {
           </div>
         </div>
       </footer>
-    </main>
+    </section>
   );
 }

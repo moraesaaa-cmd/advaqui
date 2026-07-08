@@ -48,7 +48,7 @@ const FAQ_ITEMS = [
 
 export default function TriagemMandadoSegurancaPage() {
   return (
-    <main className="container-narrow py-10 md:py-14">
+    <section className="container-narrow py-10 md:py-14">
       <Breadcrumb
         items={[
           { label: "Ferramentas", href: "/ferramentas" },
@@ -137,6 +137,6 @@ export default function TriagemMandadoSegurancaPage() {
           isPartOf: { "@type": "WebSite", url: SITE.url, name: SITE.name },
         }}
       />
-    </main>
+    </section>
   );
 }

@@ -44,7 +44,7 @@ const FAQ = [
 
 export default function ChecklistPensaoAlimenticiaPage() {
   return (
-    <main className="container-narrow py-10">
+    <section className="container-narrow py-10">
       <Breadcrumb
         items={[
           { label: "Ferramentas", href: "/ferramentas" },
@@ -127,6 +127,6 @@ export default function ChecklistPensaoAlimenticiaPage() {
           inLanguage: "pt-BR",
         }}
       />
-    </main>
+    </section>
   );
 }

@@ -338,7 +338,7 @@ export function RecursoPainelView() {
         </div>
       </header>
 
-      <main style={{ ...wrap, paddingTop: 36, paddingBottom: 70 }}>
+      <section style={{ ...wrap, paddingTop: 36, paddingBottom: 70 }}>
         {estado === "carregando" && (
           <p style={{ textAlign: "center", color: "#5A5F6A", padding: "60px 0" }}>Carregando…</p>
         )}
@@ -561,7 +561,7 @@ export function RecursoPainelView() {
             )}
           </>
         )}
-      </main>
+      </section>
     </div>
   );
 }

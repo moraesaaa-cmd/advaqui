@@ -437,7 +437,7 @@ const QUICK_FIND_ITEMS: QuickFindItem[] = [
 
 export default function FerramentasPage() {
   return (
-    <main className="container-tight py-12 md:py-16">
+    <section className="container-tight py-12 md:py-16">
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="mb-6 text-sm text-brand-ink/60">
         <ol className="flex items-center gap-1.5">
@@ -830,6 +830,6 @@ export default function FerramentasPage() {
           }))
         }}
       />
-    </main>
+    </section>
   );
 }

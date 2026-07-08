@@ -153,7 +153,7 @@ export default function CalculadoraPrazosPage() {
   );
 
   return (
-    <main className="container-narrow py-10 md:py-14">
+    <section className="container-narrow py-10 md:py-14">
       <div className="text-center mb-6">
         <span className="chip border-brand-deep/30 bg-brand-deep/5 text-brand-ink mb-3">
           <CalendarClock className="w-3.5 h-3.5" aria-hidden /> Prazos processuais
@@ -286,6 +286,6 @@ export default function CalculadoraPrazosPage() {
           Encontrar um advogado <ArrowRight className="w-4 h-4" aria-hidden />
         </Link>
       </div>
-    </main>
+    </section>
   );
 }

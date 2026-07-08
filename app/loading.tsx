@@ -1,7 +1,7 @@
 /**
  * Fallback global de navegação (App Router).
  *
- * Antes mostrava um spinner grande com a palavra "Carregando…" no slot <main>.
+ * Antes mostrava um spinner grande com a palavra "Carregando…" no slot <section>.
  * Como o layout (header, CTA de recrutamento, footer) é renderizado ao redor
  * deste fallback enquanto a Server Component busca dados, o usuário via
  * "Carregando…" seguido do rodapé/CTA e só depois o conteúdo — parecia página
