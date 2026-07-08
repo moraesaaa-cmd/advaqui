@@ -90,20 +90,20 @@ const FASES_CARDS: { n: string; t: string; d: string }[] = [
 
 const FAQS: { q: string; a: string }[] = [
   {
-    q: "A análise é mesmo gratuita?",
-    a: "Sim. Você descreve a multa e mostramos as teses cabíveis sem custo. Você só paga R$9,90 se quiser gerar o recurso completo, pronto para protocolar."
+    q: "Quem pode usar a ferramenta?",
+    a: "A análise e a geração da peça completa são exclusivas dos advogados com o plano Premium AdvAqui (R$ 19,90/mês). Entre na sua conta Premium para usar a ferramenta."
   },
   {
     q: "Como eu gero o meu recurso?",
-    a: "Depois do pagamento via Pix e do cadastro, o seu painel é liberado. Lá você preenche os dados da multa e o recurso é gerado na hora, pronto para baixar, imprimir e protocolar."
+    a: "Sendo advogado Premium AdvAqui, basta entrar na sua conta: você preenche os dados da multa e o recurso é gerado na hora, pronto para baixar, imprimir e protocolar."
   },
   {
     q: "O recurso garante o cancelamento da multa?",
     a: "Nenhum recurso pode garantir o resultado — a decisão é do órgão de trânsito. O que você gera é uma peça tecnicamente sólida, com os fundamentos certos para o seu caso."
   },
   {
-    q: "O que está incluso no plano de R$9,90?",
-    a: "Pagamento único, sem renovação automática, que libera o seu painel para gerar até 3 recursos completos na hora, com a fundamentação do CTB, das súmulas do STJ e das Resoluções do CONTRAN."
+    q: "O recurso de multa está incluso no plano Premium?",
+    a: "Sim. Advogados com o plano Premium AdvAqui (R$ 19,90/mês) geram recursos completos direto pelo site, com a fundamentação do CTB, das súmulas do STJ e das Resoluções do CONTRAN — sem custo adicional."
   },
   {
     q: "Preciso de advogado para recorrer de multa?",
@@ -271,7 +271,7 @@ export function RecursoMultaLanding(): ReactNode {
       }
     } catch {
       setAnaliseErro(
-        "Não foi possível conectar agora. Tente novamente em instantes — a análise é gratuita."
+        "Não foi possível conectar agora. Tente novamente em instantes."
       );
     } finally {
       if (azTimer.current) {
@@ -569,7 +569,7 @@ export function RecursoMultaLanding(): ReactNode {
                   borderRadius: 9
                 }}
               >
-                Analisar minha multa
+                Usar com o meu Premium
               </a>
             </nav>
           </div>
@@ -654,7 +654,7 @@ export function RecursoMultaLanding(): ReactNode {
                     boxShadow: "0 10px 26px rgba(244,99,26,0.35)"
                   }}
                 >
-                  Analisar minha multa grátis
+                  Analisar minha multa — Premium
                 </a>
                 <a
                   href="#planos"
@@ -668,7 +668,7 @@ export function RecursoMultaLanding(): ReactNode {
                     border: "1px solid rgba(255,255,255,0.2)"
                   }}
                 >
-                  Planos a partir de R$9,90
+                  Incluso no Premium AdvAqui
                 </a>
               </div>
               <div
@@ -860,7 +860,7 @@ export function RecursoMultaLanding(): ReactNode {
               Vamos analisar a sua multa
             </h2>
             <p style={{ fontSize: 16, color: "#5A5F6A", maxWidth: "60ch", margin: "0 auto", lineHeight: 1.6 }}>
-              Leva cerca de 2 minutos. A análise é gratuita — você só paga se quiser gerar o
+              Leva cerca de 2 minutos. Exclusivo Premium AdvAqui: você analisa e gera o
               recurso completo.
             </p>
           </div>
@@ -888,8 +888,31 @@ export function RecursoMultaLanding(): ReactNode {
               overflow: "hidden"
             }}
           >
-            {/* STEP: FORM */}
-            {step === "form" && (
+            {/* STEP: FORM — exclusivo Premium (gate na entrada) */}
+            {step === "form" && !isPremium && (
+              <div style={{ padding: "clamp(28px,4vw,44px)", textAlign: "center" }}>
+                <h3 style={{ fontFamily: DISPLAY, fontWeight: 700, fontSize: "clamp(21px,2.8vw,26px)", margin: "0 0 10px", letterSpacing: "-0.01em" }}>
+                  Ferramenta exclusiva Premium
+                </h3>
+                <p style={{ fontSize: 15, color: "#5A5F6A", lineHeight: 1.6, maxWidth: "46ch", margin: "0 auto 24px" }}>
+                  A análise da multa e a geração do recurso completo são benefícios exclusivos
+                  dos advogados com o plano Premium AdvAqui (R$ 19,90/mês).
+                </p>
+                <a
+                  href="/login?redirect=/multas"
+                  style={{ ...ctaPrimary, width: "100%", maxWidth: 420, display: "inline-block", textAlign: "center", textDecoration: "none", boxSizing: "border-box" }}
+                >
+                  Já sou Premium — entrar na minha conta
+                </a>
+                <a
+                  href="/planos"
+                  style={{ display: "block", marginTop: 14, fontSize: 14.5, fontWeight: 600, color: ACCENT, textDecoration: "underline" }}
+                >
+                  Ainda não sou Premium — conhecer o plano
+                </a>
+              </div>
+            )}
+            {step === "form" && isPremium && (
               <div style={{ padding: "clamp(24px,4vw,38px)" }}>
                 <div style={{ fontFamily: DISPLAY, fontWeight: 700, fontSize: 21, margin: "0 0 4px" }}>
                   Conte sobre a multa
@@ -1047,7 +1070,7 @@ export function RecursoMultaLanding(): ReactNode {
                   Analisar meu caso →
                 </button>
                 <div style={{ textAlign: "center", fontSize: 12, color: "#9AA0AA", marginTop: 11 }}>
-                  Análise gratuita · sem compromisso
+                  Exclusivo advogados Premium AdvAqui
                 </div>
               </div>
             )}
@@ -1340,7 +1363,7 @@ export function RecursoMultaLanding(): ReactNode {
                     letterSpacing: "-0.01em"
                   }}
                 >
-                  Desbloqueie o seu recurso
+                  Recurso completo: exclusivo Premium
                 </h3>
                 <p
                   style={{
@@ -1374,17 +1397,17 @@ export function RecursoMultaLanding(): ReactNode {
                       marginBottom: 18
                     }}
                   >
-                    <span style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 40, color: "#16181D" }}>
-                      R$9,90
+                    <span style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 34, color: "#16181D" }}>
+                      Plano Premium
                     </span>
-                    <span style={{ color: "#8A8F99", fontSize: 14 }}>pagamento único</span>
+                    <span style={{ color: "#8A8F99", fontSize: 14 }}>R$ 19,90/mês no AdvAqui</span>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 11, fontSize: 14 }}>
                     {[
-                      <>Até <strong>3 recursos</strong> completos</>,
+                      "Recursos de multa inclusos no plano",
                       "Gerados automaticamente com a tese certa",
                       "Artigos, súmulas e Resoluções citados",
-                      "No seu painel, prontos para baixar"
+                      "Perfil em destaque no diretório AdvAqui"
                     ].map((t, i) => (
                       <div key={i} style={{ display: "flex", gap: 10 }}>
                         <span style={{ color: "#1E8E54" }}>✓</span> {t}
@@ -1392,15 +1415,20 @@ export function RecursoMultaLanding(): ReactNode {
                     ))}
                   </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setStep("cadastro")}
-                  style={{ ...ctaPrimary, width: "100%", maxWidth: 420 }}
+                <a
+                  href="/login?redirect=/multas"
+                  style={{ ...ctaPrimary, width: "100%", maxWidth: 420, display: "inline-block", textAlign: "center", textDecoration: "none", boxSizing: "border-box" }}
                 >
-                  Ativar plano · R$9,90
-                </button>
+                  Já sou Premium — entrar na minha conta
+                </a>
+                <a
+                  href="/planos"
+                  style={{ display: "block", marginTop: 14, fontSize: 14.5, fontWeight: 600, color: ACCENT, textDecoration: "underline" }}
+                >
+                  Ainda não sou Premium — conhecer o plano
+                </a>
                 <div style={{ fontSize: 12, color: "#9AA0AA", marginTop: 12 }}>
-                  Pagamento via Pix · sem renovação automática
+                  Assinatura mensal no AdvAqui · cancele quando quiser
                 </div>
               </div>
             )}
@@ -1970,7 +1998,7 @@ export function RecursoMultaLanding(): ReactNode {
               Bem mais barato que pagar a multa
             </h2>
             <p style={{ fontSize: 16, color: "#5A5F6A", margin: 0, lineHeight: 1.6 }}>
-              A análise é gratuita. Por uma fração do valor da multa, gere o recurso completo no seu
+              Com o plano Premium AdvAqui, você gera o recurso completo no seu
               painel e proteja a sua CNH.
             </p>
           </div>
@@ -1980,13 +2008,13 @@ export function RecursoMultaLanding(): ReactNode {
           >
             <div style={{ background: "#fff", border: "1px solid #E6E7EB", borderRadius: 16, padding: 32 }}>
               <div style={{ fontSize: 12.5, fontWeight: 700, color: "#5A5F6A", letterSpacing: "0.04em" }}>
-                ANÁLISE
+                O QUE VOCÊ RECEBE
               </div>
               <div style={{ fontFamily: DISPLAY, fontSize: 42, fontWeight: 800, margin: "12px 0 4px" }}>
-                Grátis
+                Análise + peça
               </div>
               <p style={{ fontSize: 13.5, color: "#5A5F6A", margin: "0 0 24px" }}>
-                Descubra suas chances antes de pagar.
+                Teses identificadas e recurso completo, na hora.
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 11, fontSize: 14 }}>
                 <div style={{ display: "flex", gap: 10 }}>
@@ -1995,8 +2023,8 @@ export function RecursoMultaLanding(): ReactNode {
                 <div style={{ display: "flex", gap: 10 }}>
                   <span style={{ color: "#1E8E54" }}>✓</span> Teses cabíveis identificadas
                 </div>
-                <div style={{ display: "flex", gap: 10, color: "#9AA0AA" }}>
-                  <span>—</span> Recurso completo gerado no painel
+                <div style={{ display: "flex", gap: 10 }}>
+                  <span style={{ color: "#1E8E54" }}>✓</span> Recurso completo gerado na hora
                 </div>
               </div>
               <a
@@ -2042,21 +2070,21 @@ export function RecursoMultaLanding(): ReactNode {
                 MAIS ESCOLHIDO
               </div>
               <div style={{ fontSize: 12.5, fontWeight: 700, color: "#9AA0AA", letterSpacing: "0.04em" }}>
-                PLANO RECURSO
+                PLANO PREMIUM ADVAQUI
               </div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, margin: "12px 0 4px" }}>
-                <span style={{ fontFamily: DISPLAY, fontSize: 48, fontWeight: 800 }}>R$9,90</span>
-                <span style={{ color: "#8A8F99", fontSize: 13.5 }}>único</span>
+                <span style={{ fontFamily: DISPLAY, fontSize: 48, fontWeight: 800 }}>R$ 19,90</span>
+                <span style={{ color: "#8A8F99", fontSize: 13.5 }}>por mês</span>
               </div>
               <p style={{ fontSize: 13.5, color: "#C2C7D0", margin: "0 0 24px" }}>
-                Gere até <strong style={{ color: "#fff" }}>3 recursos</strong> completos no seu painel.
+                Recursos de multa <strong style={{ color: "#fff" }}>inclusos no plano</strong> + perfil em destaque no diretório.
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 11, fontSize: 14 }}>
                 {[
-                  "Até 3 recursos completos",
+                  "Recursos de multa inclusos",
                   "Gerados na hora, automaticamente",
-                  "Você mesmo gera no seu painel",
-                  "Sem renovação automática"
+                  "Perfil em destaque no AdvAqui",
+                  "Cancele quando quiser"
                 ].map((t) => (
                   <div key={t} style={{ display: "flex", gap: 10 }}>
                     <span style={{ color: "#FFB089" }}>✓</span> {t}
@@ -2210,7 +2238,7 @@ export function RecursoMultaLanding(): ReactNode {
                 </span>
               </div>
               <p style={{ fontSize: 13, lineHeight: 1.6, margin: "0 0 12px" }}>
-                Recurso de multa de trânsito on-line: análise gratuita e a peça pronta,
+                Recurso de multa de trânsito on-line para advogados Premium: análise e peça pronta,
                 elaborada sob medida com a fundamentação do CTB. Um serviço AdvAqui.
               </p>
               <a

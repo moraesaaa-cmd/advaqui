@@ -3,7 +3,7 @@ import { Car, Clock, ShieldCheck, HelpCircle, ListChecks, MapPin } from "lucide-
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
-import { RecursoMultaWidget } from "@/components/RecursoMultaWidget";
+import { RecursoMultaGatePremium } from "@/components/RecursoMultaGatePremium";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { findCapital, type City } from "@/lib/data/cities";
@@ -20,10 +20,10 @@ import { SITE } from "@/lib/config";
 export const revalidate = 604800;
 
 const DESC =
-  "Gere grátis o recurso da sua multa de trânsito. Escolha a infração e a fase (defesa prévia, JARI ou CETRAN), preencha os dados e baixe a peça pronta com a fundamentação do CTB. Sem cadastro.";
+  "Gere o recurso da sua multa de trânsito — ferramenta exclusiva dos advogados Premium do AdvAqui. Escolha a infração e a fase (defesa prévia, JARI ou CETRAN), preencha os dados e baixe a peça pronta com a fundamentação do CTB.";
 
 export const metadata = buildMetadata({
-  title: "Recurso de multa de trânsito — modelo grátis",
+  title: "Recurso de multa de trânsito — exclusivo Premium",
   description: DESC,
   path: "/recurso-de-multa"
 });
@@ -79,7 +79,7 @@ export default function RecursoMultaPage() {
               Recurso de multa de trânsito
             </h1>
             <p className="text-base text-brand-ink/85 mt-3 leading-relaxed">
-              Levou uma multa que considera injusta? Monte aqui, de graça, o
+              Levou uma multa que considera injusta? Monte aqui — ferramenta exclusiva Premium — o
               recurso com a fundamentação do Código de Trânsito Brasileiro.
               Escolha a infração e a fase, preencha os dados e baixe a peça
               pronta para protocolar. Sem cadastro.
@@ -115,7 +115,7 @@ Novo: recurso completo em minutos
               className="inline-flex items-center justify-center gap-2 text-[14px] font-bold px-5 py-3 rounded-xl transition hover:brightness-105"
               style={{ background: "#C8A24A", color: "#0F1B2D" }}
             >
-Gerar recurso completo — R$ 9,90
+Gerar recurso completo — Premium
             </a>
             <span className="text-[11px] text-center" style={{ color: "#7E8BA1" }}>
               Até 3 recursos por compra
@@ -125,7 +125,7 @@ Gerar recurso completo — R$ 9,90
       </section>
 
       {/* Gerador gratuito (modelo por template) */}
-      <RecursoMultaWidget />
+      <RecursoMultaGatePremium />
 
       {/* Conteúdo de apoio — SEO + sem-JS */}
       <section className="card mb-6">
@@ -186,7 +186,7 @@ Gerar recurso completo — R$ 9,90
       >
         <ShieldCheck className="w-4 h-4 mt-0.5 flex-shrink-0" aria-hidden />
         <span>
-          Ferramenta informativa e gratuita. O modelo gerado é um ponto de
+          Ferramenta exclusiva dos advogados Premium do AdvAqui. O modelo gerado é um ponto de
           partida para você revisar e adaptar; não substitui a orientação de um
           advogado nem garante o deferimento. Use somente argumentos verdadeiros
           no seu caso.

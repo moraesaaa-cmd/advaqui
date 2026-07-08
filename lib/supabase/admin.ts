@@ -31,13 +31,15 @@ export function createAdminClient(options: { noStore?: boolean } = {}) {
     // de cron/admin que releem dados que elas mesmas acabaram de gravar —
     // sem isso o SELECT volta congelado num snapshot antigo enquanto o
     // UPDATE (PATCH, nunca cacheado) segue funcionando.
-    ...(options.noStore
-      ? {
-          global: {
-            fetch: (input: RequestInfo | URL, init?: RequestInit) =>
-              fetch(input, { ...init, cache: "no-store" })
-          }
-        }
-      : {})
+    // Data Cache do Next congela GETs repetidos ao PostgREST indefinidamente.
+    // noStore=true: sem cache nenhum (read-after-write). Default: TTL de 600 s (10 min) —
+    // dado público nunca fica mais de 60s defasado, em página estática ou dinâmica.
+    global: {
+      fetch: options.noStore
+        ? (input: RequestInfo | URL, init?: RequestInit) =>
+            fetch(input, { ...init, cache: "no-store" })
+        : (input: RequestInfo | URL, init?: RequestInit) =>
+            fetch(input, { ...init, next: { revalidate: 600 } } as RequestInit)
+    }
   });
 }

@@ -34,9 +34,9 @@ const SUBDOMINIO = "https://multas.advaqui.com/";
 
 export const metadata: Metadata = {
   ...buildMetadata({
-    title: "Recurso de multa de trânsito — análise grátis",
+    title: "Recurso de multa de trânsito — exclusivo Premium",
     description:
-      "Multado injustamente? Analise o seu caso de graça e receba um recurso técnico (Defesa Prévia, JARI ou CETRAN) pronto para protocolar, a partir de R$9,90.",
+      "Recurso de multa de trânsito com análise e peça completa (Defesa Prévia, JARI ou CETRAN) — ferramenta exclusiva dos advogados Premium do AdvAqui.",
     path: "/multas"
   }),
   // Canonical no subdomínio (alvo dos anúncios e do ranqueamento), não no path.

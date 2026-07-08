@@ -81,6 +81,31 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, mensagem: msgRL }, { status: 429 });
   }
 
+  // EXCLUSIVO PREMIUM (2026-07-07, decisao do dono): analise E peca completa
+  // exigem advogado logado com plano ativo. Nao ha mais acesso gratuito.
+  let premiumOk = false;
+  try {
+    const supabaseGate = createClient();
+    const { data: { user: userGate } } = await supabaseGate.auth.getUser();
+    if (userGate) {
+      const adminGate = createAdminClient();
+      const { data: lawGate } = await adminGate
+        .from("lawyers")
+        .select("plan_status")
+        .eq("id", userGate.id)
+        .maybeSingle();
+      if (lawGate?.plan_status === "active") premiumOk = true;
+    }
+  } catch {
+    // sem sessao valida
+  }
+  if (!premiumOk) {
+    return NextResponse.json(
+      { ok: false, motivo: "premium", mensagem: "Ferramenta exclusiva dos advogados com plano Premium AdvAqui. Entre na sua conta Premium para usar." },
+      { status: 402 }
+    );
+  }
+
   // A PEÇA COMPLETA é o recurso pago: exige um token de cliente ATIVO (liberado
   // pelo admin após o pagamento) com recursos restantes. A ANÁLISE é gratuita.
   // EXCEÇÃO: advogados com plano Premium AdvAqui (plan_status=active) geram

@@ -14,7 +14,7 @@ export const metadata = buildMetadata({
 
 const REGIONS = ["Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"] as const;
 
-export const revalidate = 600;
+export const revalidate = 60;
 
 export default async function DiretorioPage() {
   const byRegion = REGIONS.map((r) => ({

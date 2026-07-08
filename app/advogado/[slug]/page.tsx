@@ -13,7 +13,7 @@ import {
   FileText,
   HelpCircle
 } from "lucide-react";
-import { findLawyerBySlug } from "@/lib/data/lawyers";
+import { findLawyerBySlugFresh } from "@/lib/data/lawyers";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { getUsefulDocsForSpecialties } from "@/lib/data/specialty-descriptions";
@@ -35,10 +35,10 @@ import { SITE } from "@/lib/config";
  * seguem gated por `featured`. Nota/avaliações/formação/anos NÃO existem no
  * banco e NÃO são inventados — só exibimos dado real do profissional.
  */
-export const revalidate = 3600;
+export const dynamic = "force-dynamic"; // sempre fresco: reflete plan_status mesmo alterado direto no banco
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const l = await findLawyerBySlug(params.slug);
+  const l = await findLawyerBySlugFresh(params.slug);
   if (!l)
     return buildMetadata({
       title: "Página Profissional",
@@ -145,7 +145,7 @@ export default async function ProfessionalPage({
 }: {
   params: { slug: string };
 }) {
-  const l = await findLawyerBySlug(params.slug);
+  const l = await findLawyerBySlugFresh(params.slug);
   if (!l) notFound();
 
   // Página pausada / não-pública → mensagem neutra e fim.

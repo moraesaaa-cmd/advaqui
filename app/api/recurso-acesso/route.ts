@@ -73,6 +73,16 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  // Pagamento avulso DESCONTINUADO (2026-07-07, decisao do dono): o recurso de
+  // multa e exclusivo dos advogados Premium. Clientes antigos com token seguem
+  // atendidos pelo GET acima e pelo /api/recurso-ia.
+  const AVULSO_DESATIVADO: boolean = true;
+  if (AVULSO_DESATIVADO) {
+    return NextResponse.json(
+      { ok: false, mensagem: "O pagamento avulso foi descontinuado. O recurso de multa agora é exclusivo dos advogados com plano Premium do AdvAqui." },
+      { status: 410 }
+    );
+  }
   const ip = ipDe(req);
   if (rateLimited(ip)) {
     return NextResponse.json(

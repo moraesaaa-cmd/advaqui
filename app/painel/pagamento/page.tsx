@@ -79,6 +79,19 @@ export default function PagamentoPage() {
   const [confirming, setConfirming] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
 
+  // Fluxo AUTOMÁTICO (Asaas): cobrança PIX confirmada via webhook, sem análise
+  // manual. O fluxo antigo (chave estática + "Já paguei") vira alternativa.
+  const [pixAuto, setPixAuto] = useState<{
+    paymentId: string;
+    copiaECola: string;
+    qrCodeBase64: string;
+  } | null>(null);
+  const [gerandoPix, setGerandoPix] = useState(false);
+  const [precisaCpf, setPrecisaCpf] = useState(false);
+  const [cpfInput, setCpfInput] = useState("");
+  const [copiado, setCopiado] = useState(false);
+  const [ativado, setAtivado] = useState(false);
+
   useEffect(() => {
     let active = true;
 
@@ -110,6 +123,79 @@ export default function PagamentoPage() {
       active = false;
     };
   }, []);
+
+  // Enquanto houver cobrança automática aberta, sonda o perfil: quando o
+  // webhook do Asaas ativar o plano, a tela vira "Plano ativo" sozinha.
+  useEffect(() => {
+    if (!pixAuto || ativado) return;
+    const timer = window.setInterval(async () => {
+      try {
+        const data = await requestJson<ProfileResponse>("/api/painel/profile");
+        setUser(data.lawyer);
+        if (data.lawyer.planStatus === "active") {
+          setAtivado(true);
+          toast("Pagamento confirmado — seu premium está ativo!");
+        }
+      } catch {
+        /* rede oscilou; a próxima sonda tenta de novo */
+      }
+    }, 6000);
+    return () => window.clearInterval(timer);
+  }, [pixAuto, ativado]);
+
+  const gerarPixAutomatico = async () => {
+    if (gerandoPix) return;
+    setGerandoPix(true);
+    try {
+      const data = await requestJson<{
+        ok: true;
+        paymentId: string;
+        copiaECola: string;
+        qrCodeBase64: string;
+        alreadyActive?: boolean;
+      }>(
+        "/api/painel/payment-pix",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(cpfInput ? { cpf: cpfInput } : {})
+        },
+        15000
+      );
+      if (data.alreadyActive) {
+        setAtivado(true);
+        return;
+      }
+      setPrecisaCpf(false);
+      setPixAuto({
+        paymentId: data.paymentId,
+        copiaECola: data.copiaECola,
+        qrCodeBase64: data.qrCodeBase64
+      });
+    } catch (err) {
+      if (err instanceof PaymentApiError && err.status === 400) {
+        setPrecisaCpf(true);
+        toast(err.message, "error");
+      } else if (err instanceof PaymentApiError && err.status === 503) {
+        toast("Pagamento automático indisponível agora — use a chave PIX manual.", "error");
+      } else {
+        toast(err instanceof Error ? err.message : "Erro ao gerar o PIX.", "error");
+      }
+    } finally {
+      setGerandoPix(false);
+    }
+  };
+
+  const copiarCodigo = async () => {
+    if (!pixAuto) return;
+    try {
+      await navigator.clipboard.writeText(pixAuto.copiaECola);
+      setCopiado(true);
+      window.setTimeout(() => setCopiado(false), 2000);
+    } catch {
+      toast("Não foi possível copiar. Selecione o código manualmente.", "error");
+    }
+  };
 
   const confirm = async () => {
     if (!user || confirming) return;
@@ -189,6 +275,36 @@ export default function PagamentoPage() {
     { icon: Sparkles, text: "Ferramentas com IA: petições, recursos, revisor" },
     { icon: Search, text: "Filtro avançado por área nas buscas" },
   ];
+
+  if (ativado) {
+    return (
+      <div className="container-narrow max-w-lg py-16">
+        <div className="rounded-3xl border border-brand-line bg-white overflow-hidden text-center">
+          <div
+            className="px-6 pt-10 pb-8"
+            style={{ background: "linear-gradient(135deg,#0F1B2D,#1B2D49)" }}
+          >
+            <div className="w-20 h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center mx-auto mb-4">
+              <Crown className="w-10 h-10 text-amber-400" aria-hidden />
+            </div>
+            <h1 className="font-display text-2xl font-bold text-white mb-2">
+              Premium ativo!
+            </h1>
+            <p className="text-sm text-white/70 max-w-sm mx-auto">
+              Pagamento confirmado automaticamente. Seu destaque já está valendo por{" "}
+              <strong className="text-white">{PLAN.cycleDays} dias</strong> — nada mais
+              a fazer.
+            </p>
+          </div>
+          <div className="px-6 py-6">
+            <Link href="/painel" className="btn-primary w-full">
+              Voltar ao painel
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (confirmed) {
     return (
@@ -295,34 +411,124 @@ export default function PagamentoPage() {
           </div>
 
           <div className="border-t border-brand-line/60 pt-6">
-            <h2 className="font-display text-lg font-bold text-brand-ink mb-4 text-center">
+            <h2 className="font-display text-lg font-bold text-brand-ink mb-1 text-center">
               Pagamento via Pix
             </h2>
-            <PixDisplay txid={`AdvAqui${user.id.slice(0, 6).toUpperCase()}`} />
-
-            <button
-              onClick={confirm}
-              disabled={confirming}
-              className="w-full mt-6 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white text-sm transition shadow-lg shadow-emerald-600/20 disabled:opacity-50"
-              style={{ background: "linear-gradient(135deg, #059669, #047857)" }}
-            >
-              {confirming ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Registrando...
-                </>
-              ) : (
-                <>
-                  <Check className="w-4 h-4" aria-hidden />
-                  Já realizei o pagamento
-                </>
-              )}
-            </button>
-
-            <p className="text-[11px] text-brand-ink/40 mt-4 text-center leading-relaxed">
-              Ao clicar, você confirma que enviou o Pix para a chave acima. Nossa equipe valida
-              manualmente e ativa o seu destaque em até {PLAN.activationHours} horas.
+            <p className="text-xs text-emerald-700 font-medium text-center mb-4">
+              <Zap className="w-3.5 h-3.5 inline -mt-0.5 mr-1" aria-hidden />
+              Confirmação automática: pagou, ativou. Sem espera.
             </p>
+
+            {!pixAuto ? (
+              <div className="space-y-3">
+                {precisaCpf && (
+                  <div>
+                    <label
+                      htmlFor="cpf-pagamento"
+                      className="block text-xs font-semibold text-brand-ink/70 mb-1"
+                    >
+                      Seu CPF (obrigatório para o PIX automático)
+                    </label>
+                    <input
+                      id="cpf-pagamento"
+                      type="text"
+                      inputMode="numeric"
+                      autoComplete="off"
+                      placeholder="000.000.000-00"
+                      value={cpfInput}
+                      onChange={(e) => setCpfInput(e.target.value)}
+                      className="w-full rounded-xl border border-brand-line px-4 py-3 text-sm"
+                    />
+                  </div>
+                )}
+                <button
+                  onClick={gerarPixAutomatico}
+                  disabled={gerandoPix}
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white text-sm transition shadow-lg shadow-emerald-600/20 disabled:opacity-50"
+                  style={{ background: "linear-gradient(135deg, #059669, #047857)" }}
+                >
+                  {gerandoPix ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Gerando PIX...
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="w-4 h-4" aria-hidden />
+                      Gerar PIX com ativação automática
+                    </>
+                  )}
+                </button>
+              </div>
+            ) : (
+              <div className="text-center space-y-4">
+                {pixAuto.qrCodeBase64 && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={`data:image/png;base64,${pixAuto.qrCodeBase64}`}
+                    alt="QR Code PIX do plano premium"
+                    width={210}
+                    height={210}
+                    className="mx-auto rounded-2xl border border-brand-line bg-white p-2"
+                  />
+                )}
+                <div className="flex items-stretch gap-2">
+                  <code className="flex-1 overflow-x-auto rounded-xl border border-brand-line bg-brand-line/20 px-3 py-2 text-[11px] text-brand-ink text-left">
+                    {pixAuto.copiaECola}
+                  </code>
+                  <button
+                    onClick={copiarCodigo}
+                    className="btn-primary px-4"
+                    aria-label="Copiar código PIX"
+                  >
+                    {copiado ? "Copiado" : "Copiar"}
+                  </button>
+                </div>
+                <p className="text-xs text-brand-ink/60 leading-relaxed inline-flex items-center gap-1.5">
+                  <span
+                    aria-hidden
+                    className="w-3.5 h-3.5 border-2 border-emerald-200 border-t-emerald-600 rounded-full animate-spin inline-block"
+                  />
+                  Aguardando o banco confirmar... esta página ativa o seu premium
+                  sozinha assim que o PIX cair.
+                </p>
+              </div>
+            )}
+
+            <details className="mt-6 border-t border-brand-line/60 pt-4">
+              <summary className="text-xs text-brand-ink/50 cursor-pointer text-center">
+                Prefere pagar pela chave PIX manual? (ativação em até{" "}
+                {PLAN.activationHours}h)
+              </summary>
+              <div className="mt-4">
+                <PixDisplay txid={`AdvAqui${user.id.slice(0, 6).toUpperCase()}`} />
+
+                <button
+                  onClick={confirm}
+                  disabled={confirming}
+                  className="w-full mt-6 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white text-sm transition shadow-lg shadow-emerald-600/20 disabled:opacity-50"
+                  style={{ background: "linear-gradient(135deg, #059669, #047857)" }}
+                >
+                  {confirming ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Registrando...
+                    </>
+                  ) : (
+                    <>
+                      <Check className="w-4 h-4" aria-hidden />
+                      Já realizei o pagamento
+                    </>
+                  )}
+                </button>
+
+                <p className="text-[11px] text-brand-ink/40 mt-4 text-center leading-relaxed">
+                  Ao clicar, você confirma que enviou o Pix para a chave acima. Nossa
+                  equipe valida manualmente e ativa o seu destaque em até{" "}
+                  {PLAN.activationHours} horas.
+                </p>
+              </div>
+            </details>
           </div>
         </div>
       </div>

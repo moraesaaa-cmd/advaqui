@@ -9,7 +9,7 @@ import { getAllArticles } from "@/lib/data/articles";
 import { getProblemaIndex } from "@/lib/data/problema-index";
 import { getAllCities } from "@/lib/data/cities";
 
-export const revalidate = 600;
+export const revalidate = 60;
 
 const GOLD = "#C8A24A";
 const GOLD_EYEBROW = "#A0843A";

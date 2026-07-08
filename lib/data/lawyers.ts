@@ -45,16 +45,14 @@ async function getFallbackLawyers(): Promise<Lawyer[]> {
   // erro transitório do Supabase, ou um perfil temporariamente pausado, não
   // congela um array errado em memória até o próximo restart (rota é
   // force-dynamic). No caminho normal (todos publicados) memoiza na 1ª chamada.
-  if (_fallbackCache && _fallbackCache.length === FALLBACK_LAWYER_SLUGS.length) {
-    return _fallbackCache;
-  }
+  // Memoizacao de modulo REMOVIDA: congelava plan_status ate o proximo restart
+  // do pm2 (banco mudava, pagina nao). Buscar sempre; o fetch ja tem TTL 60s.
   const resolved = await Promise.all(
     FALLBACK_LAWYER_SLUGS.map((s) => findLawyerBySlug(s))
   );
   const arr = resolved.filter(
     (l): l is Lawyer => Boolean(l) && isLawyerPubliclyVisible(l as Lawyer)
   );
-  if (arr.length === FALLBACK_LAWYER_SLUGS.length) _fallbackCache = arr;
   return arr;
 }
 
@@ -317,6 +315,26 @@ export async function getLawyersForState(uf: string): Promise<Lawyer[]> {
 /**
  * Busca um advogado pelo slug (URL pública /p/[slug]).
  */
+/**
+ * Versao SEM CACHE NENHUM da busca por slug — usada pela pagina do perfil
+ * (/advogado/[slug], force-dynamic). Ativar/desativar premium (mesmo direto
+ * no banco) reflete na URL imediatamente.
+ */
+export async function findLawyerBySlugFresh(slug: string): Promise<Lawyer | null> {
+  const supabase = createAdminClient({ noStore: true });
+  const { data, error } = await supabase
+    .from("lawyers")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
+  if (error) {
+    console.error("findLawyerBySlugFresh error:", error.message);
+    return null;
+  }
+  if (!data) return null;
+  return mapLawyerRow(data as PublicLawyer);
+}
+
 export async function findLawyerBySlug(slug: string): Promise<Lawyer | null> {
   const supabase = createAdminClient();
   const { data, error } = await supabase
