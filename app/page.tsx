@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Check, Scale, FileText, Calculator, ArrowRight } from "lucide-react";
+import { Check, Scale, FileText, Calculator, ArrowRight, Briefcase, Heart, Shield, Clock, ShoppingCart, Search, Car } from "lucide-react";
 import { SearchBox } from "@/components/SearchBox";
 import { GeoPersonalize } from "@/components/GeoPersonalize";
 import { ResolverAgora } from "@/components/ResolverAgora";
@@ -18,7 +18,7 @@ const HOW_STEPS = [
   {
     n: "01",
     t: "Busque por cidade",
-    d: "Digite o nome da sua cidade e veja advogados com OAB verificada."
+    d: "Digite o nome da sua cidade e veja quem atende por lá, com o registro OAB visível no perfil."
   },
   {
     n: "02",
@@ -27,24 +27,26 @@ const HOW_STEPS = [
   },
   {
     n: "03",
-    t: "Fale direto pelo WhatsApp",
-    d: "Cada perfil traz telefone, e-mail e WhatsApp clicável."
+    t: "Fale direto com o advogado",
+    d: "Telefone em todos os perfis. Advogados em destaque atendem também por WhatsApp clicável."
   }
 ];
 
 const AREAS_POPULARES = [
-  { label: "Trabalhista", href: "/advogados-de/trabalhista", icon: "briefcase" },
-  { label: "Família", href: "/advogados-de/familia", icon: "heart" },
-  { label: "Criminal", href: "/advogados-de/criminal", icon: "shield" },
-  { label: "Previdenciário", href: "/advogados-de/previdenciario", icon: "clock" },
-  { label: "Consumidor", href: "/advogados-de/consumidor", icon: "shopping" },
-  { label: "Civil", href: "/advogados-de/civil", icon: "file" },
+  { label: "Trabalhista", href: "/advogados-de/trabalhista", Icon: Briefcase },
+  { label: "Família", href: "/advogados-de/familia", Icon: Heart },
+  { label: "Criminal", href: "/advogados-de/criminal", Icon: Shield },
+  { label: "Previdenciário", href: "/advogados-de/previdenciario", Icon: Clock },
+  { label: "Consumidor", href: "/advogados-de/consumidor", Icon: ShoppingCart },
+  { label: "Civil", href: "/advogados-de/civil", Icon: Scale },
 ];
 
 const FERRAMENTAS = [
+  { label: "Consultar meu processo", href: "/processos", Icon: Search },
   { label: "Calculadora de rescisão", href: "/calculadoras", Icon: Calculator },
-  { label: "Calculadora de prazos", href: "/calculadora-prazos", Icon: Calculator },
+  { label: "Recurso de multa", href: "/recurso-de-multa", Icon: Car },
   { label: "Modelos de documentos", href: "/modelos", Icon: FileText },
+  { label: "Calculadora de prazos", href: "/calculadora-prazos", Icon: Calculator },
   { label: "Problemas jurídicos", href: "/problemas-juridicos", Icon: Scale },
 ];
 
@@ -96,18 +98,28 @@ export default async function HomePage() {
               className="mt-4 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto"
               style={{ color: "#CBD5E6" }}
             >
-              Diretório gratuito com OAB verificada em 5.570+ cidades.
-              Contato direto, sem intermediário.
+              Veja quem atende na sua cidade, confira o registro na OAB
+              e fale direto com o advogado, sem intermediário.
             </p>
             <div className="mt-7 max-w-xl mx-auto">
               <SearchBox />
             </div>
+            <p className="mt-4 text-sm" style={{ color: "#CBD5E6" }}>
+              Não sabe qual advogado procurar?{" "}
+              <a
+                href="#orientacao"
+                className="font-medium underline underline-offset-4 decoration-2 hover:opacity-90 transition"
+                style={{ color: "#F0CE84" }}
+              >
+                Conte o que aconteceu e veja seu caminho
+              </a>
+            </p>
             <div
               className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px]"
               style={{ color: "#CBD5E6" }}
             >
               {[
-                "OAB conferida em cada perfil",
+                "Registro OAB em cada perfil",
                 "100% gratuito para você",
                 "Sem cadastro, sem comissão"
               ].map((t) => (
@@ -148,7 +160,7 @@ export default async function HomePage() {
                 className="flex items-center justify-center w-10 h-10 rounded-xl group-hover:scale-105 transition"
                 style={{ background: "rgba(200,162,74,0.1)" }}
               >
-                <Scale className="w-5 h-5 text-brand-accent" aria-hidden />
+                <a.Icon className="w-5 h-5 text-brand-accent" aria-hidden />
               </span>
               <span className="text-sm font-medium text-brand-ink group-hover:text-brand-deep transition">
                 {a.label}
@@ -197,7 +209,7 @@ export default async function HomePage() {
         <h2 className="font-display text-lg md:text-xl font-semibold text-brand-ink mb-4">
           Ferramentas gratuitas
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {FERRAMENTAS.map(({ label, href, Icon }) => (
             <Link
               key={href}
@@ -264,7 +276,7 @@ export default async function HomePage() {
           <div className="relative grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
               { n: `${totalCities.toLocaleString("pt-BR")}+`, label: "Cidades cobertas" },
-              { n: "27", label: "Estados brasileiros" },
+              { n: "25+", label: "Ferramentas gratuitas" },
               { n: "15+", label: "Áreas do direito" },
               { n: "100%", label: "Gratuito para você" },
             ].map(({ n, label }) => (

@@ -237,19 +237,21 @@ export default async function CitySpecialtyPage({
               </div>
               <div className="text-[12.5px]" style={{ color: "#6B7689" }}>cadastrados</div>
             </div>
-            <div className="flex-1 rounded-[11px] p-3.5" style={{ background: "#F7F6F2" }}>
-              <div className="font-display text-[28px] font-semibold" style={{ color: "#0F1B2D" }}>
-                {onlineCount}
+            {onlineCount > 0 && (
+              <div className="flex-1 rounded-[11px] p-3.5" style={{ background: "#F7F6F2" }}>
+                <div className="font-display text-[28px] font-semibold" style={{ color: "#0F1B2D" }}>
+                  {onlineCount}
+                </div>
+                <div className="text-[12.5px]" style={{ color: "#6B7689" }}>atendem online</div>
               </div>
-              <div className="text-[12.5px]" style={{ color: "#6B7689" }}>atendem online</div>
-            </div>
+            )}
           </div>
           <div
             className="flex flex-col gap-[11px] text-[13.5px] pt-4"
             style={{ color: "#3C485A", borderTop: "1px solid #EDEBE3" }}
           >
-            <div className="flex gap-2.5 items-center"><span style={{ color: "#2E7D5B" }}>✓</span> OAB verificada em cada perfil</div>
-            <div className="flex gap-2.5 items-center"><span style={{ color: "#2E7D5B" }}>✓</span> Contato direto por WhatsApp</div>
+            <div className="flex gap-2.5 items-center"><span style={{ color: "#2E7D5B" }}>✓</span> Registro OAB em cada perfil</div>
+            <div className="flex gap-2.5 items-center"><span style={{ color: "#2E7D5B" }}>✓</span> Telefone direto do advogado</div>
             <div className="flex gap-2.5 items-center"><span style={{ color: "#2E7D5B" }}>✓</span> Sem comissão e sem intermediário</div>
           </div>
         </aside>

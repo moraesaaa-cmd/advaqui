@@ -339,22 +339,6 @@ export default async function ProfessionalPage({
             </div>
           )}
 
-          {/* upsell (free) */}
-          {!featured && (
-            <div className="rounded-2xl border border-brand-accent/40 bg-brand-accent/5 p-5">
-              <p className="text-sm font-semibold text-brand-ink">
-                Quer aparecer no topo de {l.cityName} e ter WhatsApp clicável no perfil?
-              </p>
-              <p className="text-xs text-brand-ink/70 mt-1.5 mb-3">
-                O plano premium (<strong>R$ 19,90/mês</strong>, sem fidelidade) coloca seu perfil em
-                destaque, libera botão WhatsApp clicável, bio completa e selo de OAB verificada.
-              </p>
-              <Link href="/planos" className="text-sm font-medium text-brand-deep underline">
-                Conhecer o plano premium
-              </Link>
-            </div>
-          )}
-
           {/* Sobre */}
           {l.bio && (
             <section className={cardCls}>
@@ -414,6 +398,22 @@ export default async function ProfessionalPage({
                 )}
               </div>
             </section>
+          )}
+
+          {/* dono do perfil — atualizar/destacar (sem preço: oferta não é para o visitante) */}
+          {!featured && (
+            <div className="rounded-xl border border-brand-line bg-white p-4 flex flex-wrap items-center justify-between gap-3">
+              <p className="text-[13px] text-brand-ink/60">
+                Este perfil é seu? Atualize seus dados, adicione WhatsApp clicável e
+                apareça em destaque em {l.cityName}.
+              </p>
+              <Link
+                href="/login"
+                className="text-[13px] font-medium text-brand-deep underline whitespace-nowrap"
+              >
+                Gerenciar meu perfil
+              </Link>
+            </div>
           )}
 
           {/* Como funciona o atendimento (premium, navy) */}
