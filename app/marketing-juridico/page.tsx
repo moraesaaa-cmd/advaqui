@@ -164,7 +164,7 @@ export default function MarketingJuridicoPage() {
         <section className="mt-14 rounded-3xl bg-brand-ink text-white p-8 md:p-10 relative overflow-hidden">
           <div
             aria-hidden
-            className="absolute -bottom-1/4 -left-1/4 w-1/2 aspect-square rounded-full bg-brand-accent/20 blur-3xl"
+            className="absolute -bottom-1/4 -left-1/4 w-1/2 aspect-square hidden"
           />
           <div className="relative grid md:grid-cols-3 gap-6 items-center">
             <div className="md:col-span-2">

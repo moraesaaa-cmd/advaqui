@@ -242,7 +242,7 @@ export default function MktArticlePage({ params }: { params: { slug: string } })
           <section className="mt-10 rounded-2xl bg-brand-ink text-white p-6 md:p-8 relative overflow-hidden">
             <div
               aria-hidden
-              className="absolute -bottom-1/3 -right-1/4 w-1/2 aspect-square rounded-full bg-brand-accent/20 blur-2xl"
+              className="absolute -bottom-1/3 -right-1/4 w-1/2 aspect-square hidden"
             />
             <div className="relative grid md:grid-cols-3 gap-5 items-center">
               <div className="md:col-span-2">

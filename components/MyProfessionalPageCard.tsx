@@ -531,7 +531,7 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
     <section className="rounded-2xl border-2 border-brand-accent bg-brand-ink text-white p-5 md:p-6 relative overflow-hidden">
       <div
         aria-hidden
-        className="absolute -top-1/3 -right-1/4 w-1/2 aspect-square rounded-full bg-brand-accent/20 blur-2xl"
+        className="absolute -top-1/3 -right-1/4 w-1/2 aspect-square hidden"
       />
       <div className="relative">
         <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-brand-accent text-brand-ink mb-3">

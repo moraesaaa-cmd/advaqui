@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  Sparkles,
   ArrowRight,
   Search,
   Compass,
@@ -301,23 +300,12 @@ export function ResolverAgora({ items }: { items: ProblemaIndexItem[] }) {
   return (
     <section id="orientacao" className="relative bg-brand-bg">
       <div className="container-tight py-12 md:py-16">
-        <div className="relative rounded-3xl bg-white border border-brand-line shadow-cardHover overflow-hidden">
-          <div
-            aria-hidden
-            className="absolute -top-24 -right-20 w-72 h-72 rounded-full bg-brand-accent/10 blur-3xl"
-          />
-          <div
-            aria-hidden
-            className="absolute -bottom-24 -left-20 w-72 h-72 rounded-full bg-brand-deep/5 blur-3xl"
-          />
+        <div className="relative rounded-2xl bg-white border border-brand-line shadow-cardHover overflow-hidden">
+          <div aria-hidden className="h-1 bg-brand-accent" />
           <div className="relative p-6 md:p-10">
             <div className="flex items-center gap-2 mb-3">
-              <span className="relative flex h-2.5 w-2.5" aria-hidden>
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-60" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-accent2" />
-              </span>
               <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-accentText">
-                <Sparkles className="w-4 h-4" aria-hidden />
+                <Compass className="w-4 h-4" aria-hidden />
                 Orientação inteligente
               </span>
             </div>
@@ -343,14 +331,14 @@ export function ResolverAgora({ items }: { items: ProblemaIndexItem[] }) {
                 onKeyDown={onKeyDown}
                 placeholder="Ex.: meu patrão não pagou minhas verbas"
                 aria-label="Descreva sua situação com suas palavras"
-                className="w-full rounded-2xl border-2 border-brand-line focus:border-brand-accent outline-none bg-brand-bg/40 focus:bg-white pl-12 pr-12 py-4 text-base md:text-lg text-brand-ink transition"
+                className="w-full rounded-xl border-2 border-brand-line focus:border-brand-accent outline-none bg-white pl-12 pr-12 py-4 text-base md:text-lg text-brand-ink transition"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1 text-[11px] text-brand-ink/40">
                 <CornerDownLeft className="w-3.5 h-3.5" aria-hidden />
                 Enter
               </span>
               {thinking && (
-                <div className="absolute left-0 right-0 -bottom-0.5 h-0.5 overflow-hidden rounded-b-2xl">
+                <div className="absolute left-0 right-0 -bottom-0.5 h-0.5 overflow-hidden rounded-b-xl">
                   <div className="h-full w-full bg-gradient-to-r from-transparent via-brand-accent to-transparent animate-pulse" />
                 </div>
               )}

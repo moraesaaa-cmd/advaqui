@@ -217,7 +217,7 @@ export default function SeloPage() {
         <div className="rounded-3xl bg-brand-ink text-white p-8 md:p-12 text-center relative overflow-hidden">
           <div
             aria-hidden
-            className="absolute -top-1/3 left-1/2 -translate-x-1/2 w-2/3 aspect-square rounded-full bg-brand-accent/20 blur-3xl"
+            className="absolute -top-1/3 left-1/2 -translate-x-1/2 w-2/3 aspect-square hidden"
           />
           <div className="relative">
             <h2 className="font-display text-3xl md:text-4xl font-bold leading-tight">

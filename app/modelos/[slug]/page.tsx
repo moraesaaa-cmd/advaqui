@@ -238,7 +238,7 @@ export default function TemplatePage({ params }: { params: { slug: string } }) {
             <div className="rounded-2xl bg-brand-ink text-white p-6 relative overflow-hidden">
               <div
                 aria-hidden
-                className="absolute -bottom-1/3 -right-1/4 w-2/3 aspect-square rounded-full bg-brand-accent/15 blur-2xl"
+                className="absolute -bottom-1/3 -right-1/4 w-2/3 aspect-square hidden"
               />
               <div className="relative">
                 <h3 className="font-display text-xl font-bold">

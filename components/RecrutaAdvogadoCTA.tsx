@@ -12,7 +12,7 @@ export function RecrutaAdvogadoCTA() {
       <div className="rounded-3xl bg-brand-ink text-white p-7 md:p-10 relative overflow-hidden">
         <div
           aria-hidden
-          className="absolute -top-1/4 -right-1/4 w-1/2 aspect-square rounded-full bg-brand-accent/20 blur-3xl"
+          className="absolute -top-1/4 -right-1/4 w-1/2 aspect-square hidden"
         />
         <div className="relative max-w-2xl">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-brand-accent text-brand-ink mb-4">
