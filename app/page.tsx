@@ -57,66 +57,45 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ── HERO ── busca por cidade, limpo e focado */}
+      {/* ── HERO ── busca por cidade, sóbrio e editorial */}
       <section
-        className="relative text-white overflow-hidden"
+        className="relative text-white"
         style={{
-          background: "linear-gradient(155deg, #0B1830 0%, #13294C 55%, #1A2C5A 100%)"
+          background: "radial-gradient(120% 90% at 50% 0%, #16263D 0%, #0F1B2D 62%)"
         }}
       >
-        <div
-          aria-hidden
-          className="absolute pointer-events-none"
-          style={{
-            top: -180,
-            left: "36%",
-            transform: "translateX(-50%)",
-            width: 680,
-            height: 440,
-            background:
-              "radial-gradient(ellipse at center, rgba(212,170,84,0.22), transparent 70%)"
-          }}
-        />
-        <div className="relative container-tight py-14 md:py-20">
+        <div className="container-tight py-14 md:py-[76px]">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="font-display font-semibold text-4xl md:text-6xl leading-[1.08] tracking-tight text-balance">
+            <h1 className="font-display font-semibold text-4xl md:text-5xl leading-[1.14] tracking-tight text-balance">
               Encontre o{" "}
-              <span
-                className="italic"
-                style={{
-                  background: "linear-gradient(90deg, #F0CE84, #D8A94E)",
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                  WebkitTextFillColor: "transparent"
-                }}
-              >
+              <span className="italic md:whitespace-nowrap" style={{ color: "#E9C87D" }}>
                 advogado certo
               </span>{" "}
               na sua cidade
             </h1>
             <p
               className="mt-4 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto"
-              style={{ color: "#CBD5E6" }}
+              style={{ color: "#B9C5D8" }}
             >
-              Veja quem atende na sua cidade, confira o registro na OAB
+              Veja quem atende perto de você, confira o registro na OAB
               e fale direto com o advogado, sem intermediário.
             </p>
-            <div className="mt-7 max-w-xl mx-auto">
+            <div className="mt-8 max-w-xl mx-auto">
               <SearchBox />
             </div>
-            <p className="mt-4 text-sm" style={{ color: "#CBD5E6" }}>
-              Não sabe qual advogado procurar?{" "}
+            <p className="mt-4 text-[13.5px]" style={{ color: "#8FA3BF" }}>
+              Não sabe por onde começar?{" "}
               <a
                 href="#orientacao"
-                className="font-medium underline underline-offset-4 decoration-2 hover:opacity-90 transition"
-                style={{ color: "#F0CE84" }}
+                className="font-medium text-white/90 underline underline-offset-4 transition hover:text-white"
+                style={{ textDecorationColor: "rgba(200,162,74,0.65)" }}
               >
-                Conte o que aconteceu e veja seu caminho
+                Conte o que aconteceu
               </a>
             </p>
             <div
-              className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px]"
-              style={{ color: "#CBD5E6" }}
+              className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px]"
+              style={{ color: "#B9C5D8" }}
             >
               {[
                 "Registro OAB em cada perfil",
@@ -124,7 +103,7 @@ export default async function HomePage() {
                 "Sem cadastro, sem comissão"
               ].map((t) => (
                 <span key={t} className="inline-flex items-center gap-1.5">
-                  <Check className="w-3.5 h-3.5" style={{ color: "#34C77B" }} aria-hidden />
+                  <Check className="w-3.5 h-3.5" style={{ color: "#8FA3BF" }} aria-hidden />
                   {t}
                 </span>
               ))}
@@ -154,10 +133,10 @@ export default async function HomePage() {
             <Link
               key={a.href}
               href={a.href}
-              className="group flex flex-col items-center gap-2 rounded-2xl border border-brand-line bg-white p-4 hover:border-brand-accent hover:shadow-card transition text-center"
+              className="group flex flex-col items-center gap-2 rounded-xl border border-brand-line bg-white p-4 hover:border-brand-accent hover:shadow-card transition text-center"
             >
               <span
-                className="flex items-center justify-center w-10 h-10 rounded-xl group-hover:scale-105 transition"
+                className="flex items-center justify-center w-10 h-10 rounded-lg transition"
                 style={{ background: "rgba(200,162,74,0.1)" }}
               >
                 <a.Icon className="w-5 h-5 text-brand-accent" aria-hidden />
@@ -167,15 +146,6 @@ export default async function HomePage() {
               </span>
             </Link>
           ))}
-        </div>
-      </section>
-
-      {/* ── PONTE ── transição para o ResolverAgora */}
-      <section className="container-tight pt-10 md:pt-14">
-        <div className="text-center mb-1">
-          <p className="text-sm font-medium text-brand-ink/50">
-            Não sabe que tipo de advogado procurar? Descreva sua situação abaixo.
-          </p>
         </div>
       </section>
 
