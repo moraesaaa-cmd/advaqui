@@ -120,7 +120,7 @@ export default function PlanosPage() {
       {/* HERO */}
       <section
         className="text-white"
-        style={{ background: "linear-gradient(160deg, #0F1B2D 0%, #16263F 100%)" }}
+        style={{ background: "#0F1B2D" }}
       >
         <div className="max-w-[820px] mx-auto px-7 py-16 md:py-[70px] text-center">
           <div
@@ -494,7 +494,7 @@ export default function PlanosPage() {
         <section className="py-16">
           <div
             className="rounded-[18px] p-11 text-center text-white"
-            style={{ background: "linear-gradient(110deg, #1B2D49, #0F1B2D)" }}
+            style={{ background: "#0F1B2D" }}
           >
             <h2 className="font-display font-semibold text-3xl tracking-tight mb-2.5">
               Comece a aparecer hoje na sua cidade

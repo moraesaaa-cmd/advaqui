@@ -24,7 +24,7 @@ export function Fluxograma({
 
   return (
     <figure
-      className="my-8 rounded-2xl bg-gradient-to-br from-brand-bg/30 via-white to-brand-accent/5 border-2 border-brand-accent/20 p-5 md:p-7"
+      className="my-8 rounded-2xl bg-white border-2 border-brand-accent/20 p-5 md:p-7"
       aria-label={titulo}
     >
       <figcaption className="text-xs font-bold uppercase tracking-wider text-brand-deep mb-5 text-center">

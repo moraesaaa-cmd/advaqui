@@ -1054,7 +1054,7 @@ export default async function LandingAdvogadoPremium() {
               >
                 <blockquote className="flex-1 text-slate-300">&ldquo;{d.texto}&rdquo;</blockquote>
                 <figcaption className="mt-5 flex items-center gap-3 border-t border-slate-800 pt-5">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-300 to-amber-500 text-base font-bold text-slate-950">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-400 text-base font-bold text-slate-950">
                     {d.iniciais}
                   </span>
                   <span>

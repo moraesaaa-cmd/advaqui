@@ -102,7 +102,7 @@ export function CTAFinal({
 
   return (
     <section
-      className="mt-12 rounded-3xl border-2 border-brand-accent/30 bg-gradient-to-br from-brand-bg via-white to-brand-accent/5 p-6 md:p-8"
+      className="mt-12 rounded-3xl border-2 border-brand-accent/30 bg-white p-6 md:p-8"
       aria-labelledby="cta-final-titulo"
     >
       <header className="text-center mb-6 max-w-2xl mx-auto">

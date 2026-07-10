@@ -411,7 +411,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           </section>
         )}
 
-        <section className="mt-10 rounded-2xl bg-gradient-to-br from-brand-deep to-brand-ink text-white p-6 md:p-8">
+        <section className="mt-10 rounded-2xl bg-brand-ink text-white p-6 md:p-8">
           <div className="flex items-start gap-4">
             <div className="hidden md:flex w-14 h-14 rounded-2xl bg-brand-accent/20 items-center justify-center flex-shrink-0">
               <ShieldCheck className="w-7 h-7 text-brand-accent" aria-hidden />

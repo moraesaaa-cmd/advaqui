@@ -28,13 +28,13 @@ export default function MarketingJuridicoPage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative bg-gradient-to-br from-brand-ink via-brand-deep to-brand-primary text-white overflow-hidden">
+      <section className="relative bg-brand-ink text-white overflow-hidden">
         <div
           aria-hidden
           className="absolute inset-0 opacity-25"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 20% 30%, rgba(245,158,11,0.55) 0%, transparent 45%), radial-gradient(circle at 80% 70%, rgba(251,191,36,0.4) 0%, transparent 45%)"
+              "none"
           }}
         />
         <div className="relative container-tight py-14 md:py-20">
@@ -67,10 +67,10 @@ export default function MarketingJuridicoPage() {
 
       <div className="container-tight py-12">
         {/* Card isca — checklist gratuito */}
-        <section className="rounded-3xl bg-gradient-to-br from-brand-accent2/15 via-white to-brand-accent/10 border-2 border-brand-accent p-6 md:p-8 mb-12 relative overflow-hidden">
+        <section className="rounded-3xl bg-white border-2 border-brand-accent p-6 md:p-8 mb-12 relative overflow-hidden">
           <div
             aria-hidden
-            className="absolute -top-px left-6 right-6 h-1 bg-gradient-to-r from-brand-accent2 via-brand-accent to-brand-accent2 rounded-b"
+            className="absolute -top-px left-6 right-6 h-1 bg-brand-accent rounded-b"
           />
           <div className="grid md:grid-cols-3 gap-6 items-center">
             <div className="md:col-span-2">
@@ -161,7 +161,7 @@ export default function MarketingJuridicoPage() {
         </section>
 
         {/* CTA premium AdvAqui */}
-        <section className="mt-14 rounded-3xl bg-gradient-to-br from-brand-deep to-brand-ink text-white p-8 md:p-10 relative overflow-hidden">
+        <section className="mt-14 rounded-3xl bg-brand-ink text-white p-8 md:p-10 relative overflow-hidden">
           <div
             aria-hidden
             className="absolute -bottom-1/4 -left-1/4 w-1/2 aspect-square rounded-full bg-brand-accent/20 blur-3xl"

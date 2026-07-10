@@ -100,13 +100,13 @@ export default function ModelosPage() {
   return (
     <>
       {/* HERO — visual marcante, gradiente, destaque amarelo vivo */}
-      <section className="relative bg-gradient-to-br from-brand-ink via-brand-deep to-brand-primary text-white overflow-hidden">
+      <section className="relative bg-brand-ink text-white overflow-hidden">
         <div
           aria-hidden
           className="absolute inset-0 opacity-25"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 15% 30%, rgba(245,158,11,0.55) 0%, transparent 45%), radial-gradient(circle at 85% 70%, rgba(251,191,36,0.45) 0%, transparent 45%)"
+              "none"
           }}
         />
         <div className="relative container-tight py-14 md:py-20">
@@ -166,7 +166,7 @@ export default function ModelosPage() {
                 <Link
                   key={t.slug}
                   href={`/modelos/${t.slug}`}
-                  className={`group relative rounded-2xl border-2 bg-gradient-to-br ${style.tile} p-5 transition shadow-card hover:shadow-cardHover`}
+                  className={`group relative rounded-2xl border-2 bg-white ${style.tile} p-5 transition shadow-card hover:shadow-cardHover`}
                 >
                   <span className="absolute -top-2 -left-2 w-7 h-7 rounded-full bg-brand-accent text-brand-ink text-sm font-bold flex items-center justify-center shadow-card">
                     {i + 1}
@@ -226,7 +226,7 @@ export default function ModelosPage() {
                       <Link
                         key={t.slug}
                         href={`/modelos/${t.slug}`}
-                        className={`group rounded-2xl border-2 bg-gradient-to-br ${style.tile} p-4 transition shadow-card hover:shadow-cardHover flex flex-col`}
+                        className={`group rounded-2xl border-2 bg-white ${style.tile} p-4 transition shadow-card hover:shadow-cardHover flex flex-col`}
                       >
                         <div className="flex items-center justify-between mb-2">
                           <div className={`w-9 h-9 rounded-xl ${style.iconBg} flex items-center justify-center`}>
@@ -254,7 +254,7 @@ export default function ModelosPage() {
         )}
 
         {/* CTA final */}
-        <section className="mt-12 rounded-3xl bg-gradient-to-br from-brand-deep to-brand-ink text-white p-8 md:p-10 relative overflow-hidden">
+        <section className="mt-12 rounded-3xl bg-brand-ink text-white p-8 md:p-10 relative overflow-hidden">
           <div
             aria-hidden
             className="absolute -top-1/4 -right-1/4 w-1/2 aspect-square rounded-full bg-brand-accent/20 blur-3xl"

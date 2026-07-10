@@ -91,7 +91,7 @@ export default function RecursoMultaPage() {
       {/* Destaque — versão completa (12+ páginas) */}
       <section
         className="rounded-2xl text-white p-6 md:p-7 mb-6 relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg,#0F1B2D 0%,#16263F 60%,#1B3A5C 100%)" }}
+        style={{ background: "#0F1B2D" }}
       >
         <div className="grid md:grid-cols-[1fr_auto] gap-5 items-center">
           <div>

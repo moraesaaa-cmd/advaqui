@@ -281,10 +281,10 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
 
     return (
       <>
-        <section className="rounded-2xl border-2 border-brand-accent bg-gradient-to-br from-brand-accent2/10 via-white to-brand-accent/10 p-5 md:p-6 shadow-card relative overflow-hidden">
+        <section className="rounded-2xl border-2 border-brand-accent bg-white p-5 md:p-6 shadow-card relative overflow-hidden">
           <div
             aria-hidden
-            className="absolute -top-px left-4 right-4 h-1 bg-gradient-to-r from-brand-accent2 via-brand-accent to-brand-accent2 rounded-b"
+            className="absolute -top-px left-4 right-4 h-1 bg-brand-accent rounded-b"
           />
 
           {/* Header */}
@@ -528,7 +528,7 @@ export function MyProfessionalPageCard({ lawyer }: { lawyer: Lawyer }) {
 
   // ---- variante: free/expired → upsell ----
   return (
-    <section className="rounded-2xl border-2 border-brand-accent bg-gradient-to-br from-brand-deep to-brand-ink text-white p-5 md:p-6 relative overflow-hidden">
+    <section className="rounded-2xl border-2 border-brand-accent bg-brand-ink text-white p-5 md:p-6 relative overflow-hidden">
       <div
         aria-hidden
         className="absolute -top-1/3 -right-1/4 w-1/2 aspect-square rounded-full bg-brand-accent/20 blur-2xl"

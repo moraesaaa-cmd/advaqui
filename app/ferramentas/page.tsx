@@ -594,7 +594,7 @@ export default function FerramentasPage() {
                     width: 380,
                     height: 300,
                     background:
-                      "radial-gradient(ellipse at center, rgba(200,162,74,0.25), transparent 70%)"
+                      "none"
                   }}
                 />
                 <div className="relative grid lg:grid-cols-[1fr_auto] gap-6 items-center">

@@ -442,7 +442,7 @@ export default function CriarPerfilPage() {
             </h2>
 
             {/* Preview do card destacado */}
-            <div className="rounded-2xl border-2 border-brand-accent bg-gradient-to-br from-brand-accent/10 via-white to-white p-5 shadow-card">
+            <div className="rounded-2xl border-2 border-brand-accent bg-white p-5 shadow-card">
               <div className="flex items-start gap-3">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-deep text-white font-bold text-lg">
                   {(form.name.trim()[0] || "A").toUpperCase()}

@@ -634,7 +634,7 @@ export default async function AdvogadoDashboardPage() {
             <div
               className="rounded-2xl p-6 text-white relative overflow-hidden"
               style={{
-                background: "linear-gradient(135deg,#0F1B2D 0%,#1B2D49 100%)",
+                background: "#0F1B2D",
               }}
             >
               <div
@@ -646,7 +646,7 @@ export default async function AdvogadoDashboardPage() {
                   width: 160,
                   height: 120,
                   background:
-                    "radial-gradient(ellipse at center, rgba(200,162,74,0.25), transparent 70%)",
+                    "none",
                 }}
               />
               <div className="relative">

@@ -292,7 +292,7 @@ export function ChecklistClient() {
 
       {/* ---- Lead capture form ---- */}
       <section
-        className="card border-2 border-brand-accent/30 bg-gradient-to-br from-brand-bg via-white to-brand-accent/5"
+        className="card border-2 border-brand-accent/30 bg-white"
         aria-labelledby="form-heading"
       >
         <div className="flex items-start gap-3 mb-6">

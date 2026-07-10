@@ -229,7 +229,7 @@ export default async function ProfessionalPage({
   return (
     <>
       {/* ===== CAPA NAVY ===== */}
-      <div style={{ background: "linear-gradient(110deg,#0F1B2D 0%,#1B2D49 100%)" }} className="text-white">
+      <div style={{ background: "#0F1B2D" }} className="text-white">
         <div className="max-w-[1140px] mx-auto px-7 pt-[34px]">
           {/* breadcrumb */}
           <div className="flex gap-2 items-center text-[13px] mb-6 flex-wrap" style={{ color: "#CBD5E6" }}>

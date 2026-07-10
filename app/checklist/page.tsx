@@ -30,13 +30,13 @@ export default function ChecklistPage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative bg-gradient-to-br from-brand-ink via-brand-deep to-brand-primary text-white overflow-hidden">
+      <section className="relative bg-brand-ink text-white overflow-hidden">
         <div
           aria-hidden
           className="absolute inset-0 opacity-25"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 20% 30%, rgba(245,158,11,0.55) 0%, transparent 45%), radial-gradient(circle at 80% 70%, rgba(251,191,36,0.4) 0%, transparent 45%)"
+              "none"
           }}
         />
         <div className="relative container-tight py-12 md:py-16">
@@ -107,7 +107,7 @@ export default function ChecklistPage() {
           )}
 
           {/* Download (só funciona se conteúdo estiver visível — gate cobre) */}
-          <section className="mt-10 rounded-2xl border-2 border-brand-accent bg-gradient-to-br from-brand-bg to-white p-6 md:p-8 text-center">
+          <section className="mt-10 rounded-2xl border-2 border-brand-accent bg-brand-bg p-6 md:p-8 text-center">
             <h2 className="font-display text-2xl font-bold text-brand-ink">
               Pronto pra usar?
             </h2>
@@ -121,7 +121,7 @@ export default function ChecklistPage() {
           </section>
 
           {/* Próximos passos */}
-          <section className="mt-12 rounded-2xl bg-gradient-to-br from-brand-deep to-brand-ink text-white p-6 md:p-8">
+          <section className="mt-12 rounded-2xl bg-brand-ink text-white p-6 md:p-8">
             <h2 className="font-display text-xl md:text-2xl font-bold leading-tight">
               Aprofunde em cada tópico
             </h2>

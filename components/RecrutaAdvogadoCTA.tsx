@@ -9,7 +9,7 @@ import { Scale, ArrowRight } from "lucide-react";
 export function RecrutaAdvogadoCTA() {
   return (
     <section className="container-tight py-8">
-      <div className="rounded-3xl bg-gradient-to-br from-brand-ink to-brand-deep text-white p-7 md:p-10 relative overflow-hidden">
+      <div className="rounded-3xl bg-brand-ink text-white p-7 md:p-10 relative overflow-hidden">
         <div
           aria-hidden
           className="absolute -top-1/4 -right-1/4 w-1/2 aspect-square rounded-full bg-brand-accent/20 blur-3xl"

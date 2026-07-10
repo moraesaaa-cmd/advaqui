@@ -112,13 +112,13 @@ export default function ParaAdvogadosCidadePage({
   return (
     <>
       {/* Hero localizado */}
-      <section className="relative bg-gradient-to-br from-brand-ink via-brand-deep to-brand-primary text-white overflow-hidden">
+      <section className="relative bg-brand-ink text-white overflow-hidden">
         <div
           aria-hidden
           className="absolute inset-0 opacity-20"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 15% 50%, rgba(201,162,76,0.45) 0%, transparent 50%), radial-gradient(circle at 85% 25%, rgba(232,184,86,0.3) 0%, transparent 45%)"
+              "none"
           }}
         />
         <div className="relative container-tight py-16 md:py-24">
@@ -286,7 +286,7 @@ export default function ParaAdvogadosCidadePage({
               Criar perfil grátis
             </Link>
           </div>
-          <div className="rounded-2xl border-2 border-brand-accent bg-gradient-to-br from-brand-accent/10 via-white to-brand-accent2/5 p-6 shadow-card relative">
+          <div className="rounded-2xl border-2 border-brand-accent bg-white p-6 shadow-card relative">
             <span className="absolute -top-3 left-6 px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide bg-brand-accent text-brand-ink">
               Destaque · {PLAN.priceLabel}/mês
             </span>
@@ -363,7 +363,7 @@ export default function ParaAdvogadosCidadePage({
 
       {/* CTA final */}
       <section className="container-tight pb-16">
-        <div className="rounded-3xl bg-gradient-to-br from-brand-ink to-brand-deep text-white p-8 md:p-12 text-center relative overflow-hidden">
+        <div className="rounded-3xl bg-brand-ink text-white p-8 md:p-12 text-center relative overflow-hidden">
           <div
             aria-hidden
             className="absolute -top-1/3 left-1/2 -translate-x-1/2 w-2/3 aspect-square rounded-full bg-brand-accent/20 blur-3xl"

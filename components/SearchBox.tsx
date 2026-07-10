@@ -182,7 +182,7 @@ export function SearchBox() {
           />
           <button
             className="px-6 font-bold flex items-center gap-2"
-            style={{ background: "linear-gradient(135deg, #E0B65C, #C39A3F)", color: "#11203B" }}
+            style={{ background: "#C8A24A", color: "#11203B" }}
             aria-label="Buscar"
             type="submit"
           >

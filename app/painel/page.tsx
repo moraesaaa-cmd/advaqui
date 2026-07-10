@@ -175,7 +175,7 @@ export default async function DashboardOverviewPage() {
         className="rounded-3xl text-white p-6 md:p-8 mb-6 relative overflow-hidden"
         style={{
           background:
-            "linear-gradient(135deg,#0F1B2D 0%,#16263F 60%,#1B2D49 100%)",
+            "#0F1B2D",
         }}
       >
         <div
@@ -187,7 +187,7 @@ export default async function DashboardOverviewPage() {
             width: 360,
             height: 300,
             background:
-              "radial-gradient(ellipse at center, rgba(200,162,74,0.18), transparent 70%)",
+              "none",
           }}
         />
         <div className="relative">
@@ -281,7 +281,7 @@ export default async function DashboardOverviewPage() {
           {/* LEADS FUNNEL                                                   */}
           {/* ------------------------------------------------------------- */}
           <section className="rounded-2xl border border-brand-line bg-white overflow-hidden">
-            <div className="px-6 py-4 border-b border-brand-line/60 bg-gradient-to-r from-brand-bg to-white">
+            <div className="px-6 py-4 border-b border-brand-line/60 bg-brand-bg">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-brand-deep/10 flex items-center justify-center">
                   <TrendingUp
@@ -367,7 +367,7 @@ export default async function DashboardOverviewPage() {
                             className="h-full rounded-full transition-all duration-500"
                             style={{
                               width: `${widthPct}%`,
-                              background: `linear-gradient(90deg, ${stage.color}, ${stage.color}dd)`,
+                              background: stage.color,
                             }}
                           />
                         </div>
@@ -383,7 +383,7 @@ export default async function DashboardOverviewPage() {
           {/* RECENT ACTIVITY FEED                                           */}
           {/* ------------------------------------------------------------- */}
           <section className="rounded-2xl border border-brand-line bg-white overflow-hidden">
-            <div className="px-6 py-4 border-b border-brand-line/60 bg-gradient-to-r from-brand-bg to-white">
+            <div className="px-6 py-4 border-b border-brand-line/60 bg-brand-bg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-brand-deep/10 flex items-center justify-center">
@@ -484,7 +484,7 @@ export default async function DashboardOverviewPage() {
           {/* TOP SOURCES                                                    */}
           {/* ------------------------------------------------------------- */}
           <section className="rounded-2xl border border-brand-line bg-white overflow-hidden">
-            <div className="px-5 py-4 border-b border-brand-line/60 bg-gradient-to-r from-brand-bg to-white">
+            <div className="px-5 py-4 border-b border-brand-line/60 bg-brand-bg">
               <h2 className="font-display text-base font-bold text-brand-ink">
                 Origem dos leads
               </h2>
@@ -519,7 +519,7 @@ export default async function DashboardOverviewPage() {
                           style={{
                             width: `${widthPct}%`,
                             background:
-                              "linear-gradient(90deg, #C8A24A, #E3C078)",
+                              "#C8A24A",
                           }}
                         />
                       </div>
@@ -534,7 +534,7 @@ export default async function DashboardOverviewPage() {
           {/* QUICK ACTIONS                                                  */}
           {/* ------------------------------------------------------------- */}
           <section className="rounded-2xl border border-brand-line bg-white overflow-hidden">
-            <div className="px-5 py-4 border-b border-brand-line/60 bg-gradient-to-r from-brand-bg to-white">
+            <div className="px-5 py-4 border-b border-brand-line/60 bg-brand-bg">
               <h2 className="font-display text-base font-bold text-brand-ink">
                 Acoes rapidas
               </h2>
@@ -620,7 +620,7 @@ export default async function DashboardOverviewPage() {
             className="rounded-2xl p-5 text-white relative overflow-hidden"
             style={{
               background:
-                "linear-gradient(135deg,#0F1B2D 0%,#1B2D49 100%)",
+                "#0F1B2D",
             }}
           >
             <div
@@ -632,7 +632,7 @@ export default async function DashboardOverviewPage() {
                 width: 200,
                 height: 160,
                 background:
-                  "radial-gradient(ellipse at center, rgba(200,162,74,0.2), transparent 70%)",
+                  "none",
               }}
             />
             <div className="relative">

@@ -282,7 +282,7 @@ export default function PagamentoPage() {
         <div className="rounded-3xl border border-brand-line bg-white overflow-hidden text-center">
           <div
             className="px-6 pt-10 pb-8"
-            style={{ background: "linear-gradient(135deg,#0F1B2D,#1B2D49)" }}
+            style={{ background: "#0F1B2D" }}
           >
             <div className="w-20 h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center mx-auto mb-4">
               <Crown className="w-10 h-10 text-amber-400" aria-hidden />
@@ -312,7 +312,7 @@ export default function PagamentoPage() {
         <div className="rounded-3xl border border-brand-line bg-white overflow-hidden text-center">
           <div
             className="px-6 pt-10 pb-8"
-            style={{ background: "linear-gradient(135deg,#0F1B2D,#1B2D49)" }}
+            style={{ background: "#0F1B2D" }}
           >
             <div className="w-20 h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center mx-auto mb-4">
               <Check className="w-10 h-10 text-emerald-400" aria-hidden />
@@ -365,7 +365,7 @@ export default function PagamentoPage() {
       <div className="rounded-3xl overflow-hidden border border-brand-line bg-white">
         <div
           className="relative px-6 pt-10 pb-8 text-center overflow-hidden"
-          style={{ background: "linear-gradient(135deg,#0F1B2D,#1B2D49)" }}
+          style={{ background: "#0F1B2D" }}
         >
           <div
             aria-hidden
@@ -375,11 +375,11 @@ export default function PagamentoPage() {
               right: -20,
               width: 260,
               height: 200,
-              background: "radial-gradient(ellipse at center, rgba(200,162,74,0.2), transparent 70%)"
+              background: "none"
             }}
           />
           <div className="relative">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/20">
+            <div className="w-16 h-16 rounded-2xl bg-amber-500 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/20">
               <Crown className="w-8 h-8 text-white" aria-hidden />
             </div>
             <h1 className="font-display text-3xl font-bold text-white mb-1">
@@ -445,7 +445,7 @@ export default function PagamentoPage() {
                   onClick={gerarPixAutomatico}
                   disabled={gerandoPix}
                   className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white text-sm transition shadow-lg shadow-emerald-600/20 disabled:opacity-50"
-                  style={{ background: "linear-gradient(135deg, #059669, #047857)" }}
+                  style={{ background: "#059669" }}
                 >
                   {gerandoPix ? (
                     <>
@@ -507,7 +507,7 @@ export default function PagamentoPage() {
                   onClick={confirm}
                   disabled={confirming}
                   className="w-full mt-6 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white text-sm transition shadow-lg shadow-emerald-600/20 disabled:opacity-50"
-                  style={{ background: "linear-gradient(135deg, #059669, #047857)" }}
+                  style={{ background: "#059669" }}
                 >
                   {confirming ? (
                     <>

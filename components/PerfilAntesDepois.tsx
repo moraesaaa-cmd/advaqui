@@ -67,7 +67,7 @@ export function PerfilAntesDepois() {
         <div className="relative rounded-2xl border-2 border-brand-accent bg-white p-5 shadow-cardHover overflow-hidden">
           <div
             aria-hidden
-            className="absolute -top-px left-5 right-5 h-1 bg-gradient-to-r from-brand-accent2 via-brand-accent to-brand-accent2 rounded-b"
+            className="absolute -top-px left-5 right-5 h-1 bg-brand-accent rounded-b"
           />
           <span className="absolute top-3 right-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide bg-brand-accent text-brand-ink">
             <Star className="w-3 h-3 fill-current" aria-hidden />

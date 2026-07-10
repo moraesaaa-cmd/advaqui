@@ -59,7 +59,7 @@ export function ProblemaChecklist({
   const completo = total > 0 && marcados === total;
 
   return (
-    <section className="mt-6 rounded-2xl border-2 border-brand-accent bg-gradient-to-br from-brand-accent/10 via-white to-brand-accent2/5 p-5 md:p-6 shadow-card">
+    <section className="mt-6 rounded-2xl border-2 border-brand-accent bg-white p-5 md:p-6 shadow-card">
       <div className="flex items-center gap-2 mb-1">
         <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-brand-accent/25">
           <Wrench className="w-5 h-5 text-brand-deep" aria-hidden />
@@ -93,7 +93,7 @@ export function ProblemaChecklist({
           aria-valuemax={100}
         >
           <div
-            className="h-full rounded-full bg-gradient-to-r from-brand-accent2 to-brand-accent transition-all duration-300"
+            className="h-full rounded-full bg-brand-accent transition-all duration-300"
             style={{ width: `${pct}%` }}
           />
         </div>

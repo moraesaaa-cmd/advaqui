@@ -56,13 +56,13 @@ export default function SeloPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-brand-ink via-brand-deep to-brand-primary text-white overflow-hidden">
+      <section className="relative bg-brand-ink text-white overflow-hidden">
         <div
           aria-hidden
           className="absolute inset-0 opacity-20"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 15% 50%, rgba(201,162,76,0.45) 0%, transparent 50%), radial-gradient(circle at 85% 25%, rgba(232,184,86,0.3) 0%, transparent 45%)"
+              "none"
           }}
         />
         <div className="relative container-tight py-16 md:py-24">
@@ -214,7 +214,7 @@ export default function SeloPage() {
 
       {/* CTA final */}
       <section className="container-tight py-16">
-        <div className="rounded-3xl bg-gradient-to-br from-brand-ink to-brand-deep text-white p-8 md:p-12 text-center relative overflow-hidden">
+        <div className="rounded-3xl bg-brand-ink text-white p-8 md:p-12 text-center relative overflow-hidden">
           <div
             aria-hidden
             className="absolute -top-1/3 left-1/2 -translate-x-1/2 w-2/3 aspect-square rounded-full bg-brand-accent/20 blur-3xl"

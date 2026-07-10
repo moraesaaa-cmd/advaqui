@@ -1094,7 +1094,7 @@ export default function AdminPage() {
     <div className="container-tight py-10">
       <section
         className="rounded-3xl text-white p-6 md:p-7 mb-6 relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg,#0F1B2D,#1B2D49)" }}
+        style={{ background: "#0F1B2D" }}
       >
         <div
           aria-hidden
@@ -1104,7 +1104,7 @@ export default function AdminPage() {
             right: -30,
             width: 320,
             height: 260,
-            background: "radial-gradient(ellipse at center, rgba(200,162,74,0.16), transparent 70%)"
+            background: "none"
           }}
         />
         <div className="relative flex flex-wrap items-start justify-between gap-4">

@@ -556,7 +556,7 @@ export default function MontarPeticaoPage() {
                   <Link
                     href="/painel/pagamento"
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition shadow-lg shadow-amber-500/20"
-                    style={{ background: "linear-gradient(135deg, #C8A24A, #A67C2E)" }}
+                    style={{ background: "#C8A24A" }}
                   >
                     <Crown className="w-4 h-4" aria-hidden /> Ativar premium
                   </Link>

@@ -160,7 +160,7 @@ export default async function AgentesPage() {
         className="rounded-3xl text-white p-6 md:p-8 mb-6 relative overflow-hidden"
         style={{
           background:
-            "linear-gradient(135deg,#0F1B2D 0%,#16263F 60%,#1B2D49 100%)"
+            "#0F1B2D"
         }}
       >
         <div
@@ -172,7 +172,7 @@ export default async function AgentesPage() {
             width: 360,
             height: 300,
             background:
-              "radial-gradient(ellipse at center, rgba(200,162,74,0.18), transparent 70%)"
+              "none"
           }}
         />
         <div className="relative">
@@ -268,7 +268,7 @@ export default async function AgentesPage() {
       {/* RECENT LOGS                                                     */}
       {/* --------------------------------------------------------------- */}
       <section className="rounded-2xl border border-brand-line bg-white overflow-hidden">
-        <div className="px-6 py-4 border-b border-brand-line/60 bg-gradient-to-r from-brand-bg to-white">
+        <div className="px-6 py-4 border-b border-brand-line/60 bg-brand-bg">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-brand-deep/10 flex items-center justify-center">
               <svg

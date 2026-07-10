@@ -230,7 +230,7 @@ export default async function HomePage() {
       <section className="container-tight pt-10 md:pt-14">
         <div
           className="rounded-3xl p-8 md:p-11 text-white relative overflow-hidden"
-          style={{ background: "linear-gradient(135deg, #0F1B2D 0%, #1B2D49 100%)" }}
+          style={{ background: "#0F1B2D" }}
         >
           <div
             aria-hidden
@@ -240,7 +240,7 @@ export default async function HomePage() {
               right: -20,
               width: 300,
               height: 240,
-              background: "radial-gradient(ellipse at center, rgba(200,162,74,0.15), transparent 70%)"
+              background: "none"
             }}
           />
           <div className="relative grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -268,7 +268,7 @@ export default async function HomePage() {
       <section className="container-tight py-10 md:py-14">
         <div
           className="rounded-3xl text-white p-8 md:p-11 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
-          style={{ background: "linear-gradient(110deg, #1B2D49, #0F1B2D)" }}
+          style={{ background: "#0F1B2D" }}
         >
           <div className="max-w-2xl">
             <h2 className="font-display text-2xl md:text-3xl font-semibold leading-tight">

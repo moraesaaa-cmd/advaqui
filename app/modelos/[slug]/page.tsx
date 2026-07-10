@@ -53,13 +53,13 @@ export default function TemplatePage({ params }: { params: { slug: string } }) {
   return (
     <>
       {/* HERO compacto com cor + tipografia mais sofisticada */}
-      <section className="relative bg-gradient-to-br from-brand-ink via-brand-deep to-brand-primary text-white overflow-hidden">
+      <section className="relative bg-brand-ink text-white overflow-hidden">
         <div
           aria-hidden
           className="absolute inset-0 opacity-20"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 80% 30%, rgba(245,158,11,0.5) 0%, transparent 50%)"
+              "none"
           }}
         />
         <div className="relative container-tight py-8 md:py-12">
@@ -235,7 +235,7 @@ export default function TemplatePage({ params }: { params: { slug: string } }) {
 
           {/* Sidebar */}
           <aside className="lg:sticky lg:top-24 space-y-4">
-            <div className="rounded-2xl bg-gradient-to-br from-brand-deep to-brand-ink text-white p-6 relative overflow-hidden">
+            <div className="rounded-2xl bg-brand-ink text-white p-6 relative overflow-hidden">
               <div
                 aria-hidden
                 className="absolute -bottom-1/3 -right-1/4 w-2/3 aspect-square rounded-full bg-brand-accent/15 blur-2xl"

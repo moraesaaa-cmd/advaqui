@@ -109,10 +109,10 @@ export function ContentGate({
         />
       </div>
 
-      <div className="mt-5 rounded-2xl border-2 border-brand-accent bg-gradient-to-br from-brand-bg to-white p-6 shadow-card relative overflow-hidden">
+      <div className="mt-5 rounded-2xl border-2 border-brand-accent bg-brand-bg p-6 shadow-card relative overflow-hidden">
         <div
           aria-hidden
-          className="absolute -top-px left-4 right-4 h-1 bg-gradient-to-r from-brand-accent2 via-brand-accent to-brand-accent2 rounded-b"
+          className="absolute -top-px left-4 right-4 h-1 bg-brand-accent rounded-b"
         />
         <div className="flex items-start gap-4">
           <div className="hidden sm:flex w-12 h-12 rounded-xl bg-brand-accent/20 items-center justify-center flex-shrink-0">

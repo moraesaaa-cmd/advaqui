@@ -158,8 +158,8 @@ export function ChecklistClient() {
               width: `${pct}%`,
               background:
                 pct >= 50
-                  ? "linear-gradient(90deg, #16a34a, #22c55e)"
-                  : "linear-gradient(90deg, #F59E0B, #FBBF24)",
+                  ? "#16a34a"
+                  : "#F59E0B",
             }}
           />
         </div>

@@ -505,7 +505,7 @@ export default async function CitySpecialtyPage({
 
           <div
             className="rounded-[14px] px-[22px] py-4 mt-6 flex items-center justify-between gap-5 flex-wrap"
-            style={{ background: "linear-gradient(135deg, #0F1B2D 0%, #1A3050 100%)" }}
+            style={{ background: "#0F1B2D" }}
           >
             <div>
               <span className="text-sm text-white font-semibold">

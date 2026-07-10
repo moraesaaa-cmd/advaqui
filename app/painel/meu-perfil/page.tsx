@@ -508,7 +508,7 @@ export default function PainelPage() {
       {/* HERO do dashboard — navy com métricas */}
       <section
         className="rounded-3xl text-white p-6 md:p-8 mb-6 relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg,#0F1B2D 0%,#16263F 60%,#1B2D49 100%)" }}
+        style={{ background: "#0F1B2D" }}
       >
         <div
           aria-hidden
@@ -518,7 +518,7 @@ export default function PainelPage() {
             right: -40,
             width: 360,
             height: 300,
-            background: "radial-gradient(ellipse at center, rgba(200,162,74,0.18), transparent 70%)"
+            background: "none"
           }}
         />
         <div className="relative flex flex-wrap items-start justify-between gap-4">
@@ -703,7 +703,7 @@ export default function PainelPage() {
 
           {/* Ferramentas jurídicas — todas visíveis, premium gating nas IA */}
           <section className="rounded-2xl border border-brand-line bg-white overflow-hidden">
-            <div className="px-6 pt-6 pb-4 border-b border-brand-line/60 bg-gradient-to-r from-brand-bg to-white">
+            <div className="px-6 pt-6 pb-4 border-b border-brand-line/60 bg-brand-bg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-brand-deep/10 flex items-center justify-center">
@@ -743,7 +743,7 @@ export default function PainelPage() {
                         tool.premium
                           ? locked
                             ? "bg-brand-ink/5"
-                            : "bg-gradient-to-br from-brand-accent/20 to-brand-accent2/10"
+                            : "bg-brand-accent/15"
                           : "bg-brand-deep/8"
                       }`}>
                         <tool.Icon className={`w-4 h-4 ${
@@ -1444,7 +1444,7 @@ export default function PainelPage() {
           </div>
 
           <div className="rounded-2xl overflow-hidden border border-brand-line bg-white">
-            <div className="px-4 py-3 bg-gradient-to-r from-brand-deep to-brand-ink">
+            <div className="px-4 py-3 bg-brand-ink">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-brand-accent" aria-hidden />
                 <p className="text-sm font-bold text-white">Recursos</p>

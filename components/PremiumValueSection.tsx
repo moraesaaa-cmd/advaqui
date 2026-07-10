@@ -42,7 +42,7 @@ export function PremiumValueSection() {
       </header>
 
       {/* Como funciona — 3 passos do funil de captação premium */}
-      <div className="rounded-3xl bg-gradient-to-br from-brand-bg via-white to-brand-accent/5 border-2 border-brand-accent/30 p-6 md:p-10 mb-12 max-w-5xl mx-auto">
+      <div className="rounded-3xl bg-white border-2 border-brand-accent/30 p-6 md:p-10 mb-12 max-w-5xl mx-auto">
         <p className="text-xs font-bold uppercase tracking-wider text-brand-deep mb-2 text-center">
           Como o premium atrai mais clientes pra você
         </p>
@@ -174,7 +174,7 @@ export function PremiumValueSection() {
       </div>
 
       <div className="mt-10 max-w-2xl mx-auto">
-        <div className="rounded-3xl border-2 border-brand-accent bg-gradient-to-br from-brand-accent/15 via-white to-brand-accent2/10 p-6 md:p-8 shadow-cardHover text-center">
+        <div className="rounded-3xl border-2 border-brand-accent bg-white p-6 md:p-8 shadow-cardHover text-center">
           <h3 className="font-display text-xl md:text-2xl font-bold text-brand-ink leading-snug">
             Pronto pra aparecer no topo da sua cidade?
           </h3>
