@@ -3,6 +3,7 @@ import { MessageCircle, ShieldCheck, User } from "lucide-react";
 import type { Lawyer } from "@/lib/data/lawyer-mapper";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { whatsappLink } from "@/lib/utils/format";
+import { TrackedContactLink } from "@/components/TrackedContactLink";
 
 const labelOf = (slug: string) =>
   SPECIALTIES.find((s) => s.slug === slug)?.name || slug;
@@ -131,7 +132,8 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
           )}
           <div className="flex gap-2.5 items-center flex-wrap">
             {wa && (
-              <a
+              <TrackedContactLink
+                event={`contato-whatsapp/${lawyer.slug}`}
                 href={wa}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -139,7 +141,7 @@ export function LawyerCard({ lawyer, featured }: { lawyer: Lawyer; featured?: bo
                 style={{ background: "#25D366" }}
               >
                 <MessageCircle className="w-4 h-4" aria-hidden /> Falar agora
-              </a>
+              </TrackedContactLink>
             )}
             <Link
               href={profileHref}

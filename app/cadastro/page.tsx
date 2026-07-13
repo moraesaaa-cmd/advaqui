@@ -17,6 +17,12 @@ import { formatPhone, formatCep, titleCaseNameBR } from "@/lib/utils/format";
 import { slugify } from "@/lib/utils/slug";
 import { toast } from "@/components/Toast";
 import { createClient } from "@/lib/supabase/client";
+import {
+  loadCadastroDraft,
+  saveCadastroDraft,
+  clearCadastroDraft
+} from "@/lib/cadastro-draft";
+import { trackEvent } from "@/lib/analytics/track-event";
 
 type CitySuggestion = { name: string; slug: string; uf: string; isCapital: boolean };
 
@@ -70,6 +76,69 @@ export default function CadastroPage() {
   });
   const [showPass, setShowPass] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // ---- Rascunho persistente + eventos de funil ------------------------------
+  // Restaura o progresso salvo (autosave abaixo) ou as respostas trazidas do
+  // assistente /criar-perfil. Refresh, queda de rede ou fechamento acidental
+  // deixaram de apagar o formulário.
+  const funnelSent = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    const d = loadCadastroDraft();
+    if (!d) return;
+    setForm((p) => ({
+      ...p,
+      ...(d.name ? { name: d.name } : {}),
+      ...(d.cpf ? { cpf: d.cpf } : {}),
+      ...(d.oab ? { oab: d.oab } : {}),
+      ...(d.oabUf ? { oabUf: d.oabUf } : {}),
+      ...(d.email ? { email: d.email } : {}),
+      ...(d.phone ? { phone: d.phone } : {}),
+      ...(d.whatsapp ? { whatsapp: d.whatsapp } : {}),
+      ...(d.address ? { address: d.address } : {}),
+      ...(d.city ? { city: d.city } : {}),
+      ...(d.uf ? { uf: d.uf } : {}),
+      ...(d.cep ? { cep: d.cep } : {}),
+      ...(d.bio ? { bio: d.bio } : {}),
+      ...(d.specialties && d.specialties.length > 0
+        ? { specialties: d.specialties }
+        : {})
+    }));
+    toast(
+      d.from === "assistente"
+        ? "Trouxemos suas respostas do assistente — confira e crie seu acesso."
+        : "Recuperamos o que você já tinha preenchido."
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Autosave do rascunho (NUNCA senha) — debounce curto a cada mudança.
+  useEffect(() => {
+    const t = setTimeout(() => {
+      const hasContent =
+        [form.name, form.email, form.oab, form.city, form.phone, form.bio].some(
+          (s) => s && s.trim()
+        ) || form.specialties.length > 0;
+      if (!hasContent) return;
+      saveCadastroDraft({
+        name: form.name,
+        cpf: form.cpf,
+        oab: form.oab,
+        oabUf: form.oabUf,
+        email: form.email,
+        phone: form.phone,
+        whatsapp: form.whatsapp,
+        address: form.address,
+        city: form.city,
+        uf: form.uf,
+        cep: form.cep,
+        specialties: form.specialties,
+        bio: form.bio,
+        from: "cadastro"
+      });
+    }, 400);
+    return () => clearTimeout(t);
+  }, [form]);
+  // ---------------------------------------------------------------------------
 
   const u = <K extends keyof FormState>(k: K, v: FormState[K]) =>
     setForm((p) => ({ ...p, [k]: v }));
@@ -325,11 +394,19 @@ export default function CadastroPage() {
       if (form.specialties.length === 0) e.specialties = "Escolha ao menos uma especialidade";
       setErrors(e);
       if (Object.keys(e).length > 0) return;
+      if (!funnelSent.current.has("p2")) {
+        funnelSent.current.add("p2");
+        trackEvent("cadastro-adv-passo2");
+      }
       setStep((s) => Math.min(s + 1, STEPS.length - 1));
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
     if (validate(step)) {
+      if (step === 0 && !funnelSent.current.has("p1")) {
+        funnelSent.current.add("p1");
+        trackEvent("cadastro-adv-passo1");
+      }
       setStep((s) => Math.min(s + 1, STEPS.length - 1));
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -406,6 +483,19 @@ export default function CadastroPage() {
       return;
     }
 
+    // Conta criada — o rascunho cumpriu o papel e o funil registra a conversão
+    // (com a origem da campanha quando veio em /cadastro?origem=...).
+    clearCadastroDraft();
+    const origem = new URLSearchParams(window.location.search).get("origem");
+    trackEvent(
+      origem
+        ? `cadastro-adv-concluido/${slugify(origem).slice(0, 40)}`
+        : "cadastro-adv-concluido"
+    );
+    // Feedback imediato: o usuário sabe NA HORA que a conta existe, mesmo que
+    // a preparação do painel (trigger do banco) demore alguns segundos.
+    toast("Conta criada! Preparando seu painel…", "info");
+
     // Garante sessão ativa antes de redirecionar. Se Confirm Email
     // estiver desativado, signUp já retorna data.session, mas em alguns
     // cenários (race) pode vir null. Forçamos signIn como fallback.
@@ -442,6 +532,9 @@ export default function CadastroPage() {
       try {
         const r = await fetch("/api/painel/profile", { cache: "no-store" });
         if (r.ok) break;
+        // 401 = sessão ainda não propagou (ex.: confirmação de e-mail
+        // pendente) — insistir aqui não resolve; o painel trata a auth.
+        if (r.status === 401) break;
       } catch {
         // rede instável — tenta de novo no próximo ciclo
       }

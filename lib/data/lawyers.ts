@@ -483,6 +483,56 @@ export async function getLawyerCountsByCity(
   return map;
 }
 
+/**
+ * Conta advogados para um conjunto de cidades de UFs possivelmente diferentes
+ * (autocomplete /api/cities). Mesma regra de vínculo do diretório:
+ * city_slug+uf principal, target_* legado e extra_cities — sempre por SLUG,
+ * contando só perfis publicamente visíveis. Chave do mapa: "UF:slug".
+ */
+export async function getLawyerCountsForCities(
+  cities: Array<{ uf: string; slug: string }>
+): Promise<Record<string, number>> {
+  if (cities.length === 0) return {};
+  const wanted = new Set(cities.map((c) => `${c.uf.toUpperCase()}:${c.slug.toLowerCase()}`));
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("lawyers")
+    .select("city_slug,uf,target_city,target_uf,extra_cities,page_status,is_public");
+  if (error) {
+    console.error("getLawyerCountsForCities error:", error.message);
+    return {};
+  }
+  type Row = {
+    city_slug?: string | null;
+    uf?: string | null;
+    target_city?: string | null;
+    target_uf?: string | null;
+    extra_cities?: Array<{ uf?: string; slug?: string }> | null;
+    page_status?: string | null;
+    is_public?: boolean | null;
+  };
+  const map: Record<string, number> = {};
+  for (const r of (data || []) as Row[]) {
+    if (!isPubliclyVisible(r)) continue;
+    // Cidades únicas atendidas por esse advogado (dedup por Set).
+    const keys = new Set<string>();
+    if (r.uf && r.city_slug) keys.add(`${r.uf.toUpperCase()}:${r.city_slug.toLowerCase()}`);
+    if (r.target_uf && r.target_city)
+      keys.add(`${r.target_uf.toUpperCase()}:${r.target_city.toLowerCase()}`);
+    if (Array.isArray(r.extra_cities)) {
+      for (const c of r.extra_cities) {
+        if (c && typeof c.uf === "string" && typeof c.slug === "string") {
+          keys.add(`${c.uf.toUpperCase()}:${c.slug.toLowerCase()}`);
+        }
+      }
+    }
+    for (const k of keys) {
+      if (wanted.has(k)) map[k] = (map[k] || 0) + 1;
+    }
+  }
+  return map;
+}
+
 // =====================================================================
 // FUNÇÕES ADMIN — usam service_role, ignoram RLS
 // USE APENAS em Route Handlers protegidos por verificação admin

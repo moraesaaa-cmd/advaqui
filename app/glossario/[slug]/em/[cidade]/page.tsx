@@ -28,6 +28,7 @@ import { SPECIALTIES } from "@/lib/data/specialties";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { fitDescription } from "@/lib/seo/local-titles";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { localLegalContext } from "@/lib/seo/local-context";
 import { SITE } from "@/lib/config";
@@ -82,18 +83,14 @@ export async function generateMetadata({
 }) {
   const termo = findGlossarioTermo(params.slug);
   const cidadeInfo = parseCidadeParam(params.cidade);
-  if (!termo || !cidadeInfo) {
-    return buildMetadata({
-      title: "Página não encontrada",
-      description: "Página não encontrada",
-      noIndex: true
-    });
-  }
+  // notFound() no generateMetadata garante status 404 real (no corpo o throw
+  // chega depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!termo || !cidadeInfo) notFound();
   const title = `${termo.termo} em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
   const description = `${termo.definicao_curta} Aplicação prática em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}.`;
   return buildMetadata({
     title,
-    description: description.slice(0, 160),
+    description: fitDescription(description, 158),
     path: `/glossario/${termo.slug}/em/${params.cidade}`
   });
 }

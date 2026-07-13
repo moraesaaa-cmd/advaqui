@@ -51,6 +51,10 @@ const emptyResponse = {
   topRegions: [] as Array<{ region: string; count: number }>,
   topCities: [] as Array<{ city: string; count: number }>,
   topReferrers: [] as Array<{ source: string; count: number }>,
+  // Funil de conversão — eventos sintéticos "/e/{nome}" (cadastro-adv-passo1/
+  // passo2/concluido, contato-whatsapp, contato-telefone, assistente-para-cadastro).
+  funnel7d: [] as Array<{ event: string; count: number }>,
+  funnel24h: [] as Array<{ event: string; count: number }>,
   recent: [] as Array<{
     path: string;
     country: string | null;
@@ -81,24 +85,29 @@ export async function GET() {
     // Counts paralelos: 24h, 48h, 7d, ativos agora (5min) — só humanos no BR.
     // cAuto24 = tráfego automatizado/exterior em 24h (não-bot, fora do BR),
     // contado à parte só para transparência.
+    // Eventos de funil ("/e/…") ficam FORA das contagens de visita — são
+    // ações, não pageviews.
     const [c24, c48, c7d, cNow, cAuto24] = await Promise.all([
       admin
         .from("site_visits")
         .select("id", { count: "exact", head: true })
         .eq("is_bot", false)
         .eq("country", "BR")
+        .not("path", "like", "/e/%")
         .gte("visited_at", minus24h),
       admin
         .from("site_visits")
         .select("id", { count: "exact", head: true })
         .eq("is_bot", false)
         .eq("country", "BR")
+        .not("path", "like", "/e/%")
         .gte("visited_at", minus48h),
       admin
         .from("site_visits")
         .select("id", { count: "exact", head: true })
         .eq("is_bot", false)
         .eq("country", "BR")
+        .not("path", "like", "/e/%")
         .gte("visited_at", minus7d),
       admin
         .from("site_visits")
@@ -168,10 +177,48 @@ export async function GET() {
     };
 
     const safeRows = err24 ? [] : (rows24 || []);
-    const topPaths = aggregate(safeRows, "path").map((x) => ({
+    const topPaths = aggregate(
+      (safeRows as Array<Record<string, string | null>>).filter(
+        (r) => !(r.path || "").startsWith("/e/")
+      ),
+      "path"
+    ).map((x) => ({
       path: x.key,
       count: x.count
     }));
+
+    // Funil de conversão — conta os eventos "/e/{nome}" (humanos, qualquer
+    // país: eventos são raros e importam um a um). O sufixo depois do nome
+    // (ex.: slug do advogado) é agrupado no evento-mãe.
+    const [{ data: ev7 }, { data: ev24 }] = await Promise.all([
+      admin
+        .from("site_visits")
+        .select("path")
+        .eq("is_bot", false)
+        .like("path", "/e/%")
+        .gte("visited_at", minus7d)
+        .limit(5000),
+      admin
+        .from("site_visits")
+        .select("path")
+        .eq("is_bot", false)
+        .like("path", "/e/%")
+        .gte("visited_at", minus24h)
+        .limit(5000)
+    ]);
+    const groupEvents = (rows: Array<{ path: string | null }> | null) => {
+      const m = new Map<string, number>();
+      for (const r of rows || []) {
+        const name = (r.path || "").split("/")[2] || "";
+        if (!name) continue;
+        m.set(name, (m.get(name) || 0) + 1);
+      }
+      return Array.from(m.entries())
+        .map(([event, count]) => ({ event, count }))
+        .sort((a, b) => b.count - a.count);
+    };
+    const funnel7d = groupEvents(ev7 as Array<{ path: string | null }> | null);
+    const funnel24h = groupEvents(ev24 as Array<{ path: string | null }> | null);
     // Países do exterior (tráfego automatizado) — não são visitantes reais,
     // exibidos só para o admin saber a origem dos robôs.
     const topCountries = aggregate(
@@ -236,6 +283,8 @@ export async function GET() {
       topRegions,
       topCities,
       topReferrers,
+      funnel7d,
+      funnel24h,
       recent: recentData || [],
       migrationPending: false
     });

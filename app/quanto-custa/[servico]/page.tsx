@@ -24,6 +24,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { fitDescription } from "@/lib/seo/local-titles";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 
@@ -57,7 +58,10 @@ export async function generateMetadata({
   const faixa = formatFaixa(custo.faixa_min, custo.faixa_max);
   return buildMetadata({
     title: custo.titulo,
-    description: `${custo.titulo} — faixa típica ${faixa}. O que está incluído, opções gratuitas (defensoria, juizado) e prazos. Valor não é tabelado e varia por caso.`.slice(0, 160),
+    description: fitDescription(
+      `${custo.titulo} — faixa típica ${faixa}. O que está incluído, opções gratuitas (defensoria, juizado) e prazos. Valor não é tabelado e varia por caso.`,
+      158
+    ),
     path: `/quanto-custa/${custo.slug}`
   });
 }

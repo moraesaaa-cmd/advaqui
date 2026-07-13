@@ -8,6 +8,7 @@ import { OfficialSourceBox } from "@/components/jurisprudencia/OfficialSourceBox
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { fitDescription } from "@/lib/seo/local-titles";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 
 export const revalidate = 86400;
@@ -24,13 +25,9 @@ export async function generateMetadata({
   params: { slug: string };
 }) {
   const tema = findTemaStf(params.slug);
-  if (!tema) {
-    return buildMetadata({
-      title: "Tema não encontrado",
-      description: "Tema não encontrado",
-      noIndex: true
-    });
-  }
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!tema) notFound();
   const { items } = await searchDecisoes({
     tribunal: "STF",
     q: tema.keywords[0],
@@ -38,7 +35,7 @@ export async function generateMetadata({
   });
   return buildMetadata({
     title: `Jurisprudência STF — ${tema.titulo}`,
-    description: tema.descricao.slice(0, 160),
+    description: fitDescription(tema.descricao, 158),
     path: `/jurisprudencia/stf/tema/${tema.slug}`,
     noIndex: items.length < MIN_DECISOES
   });

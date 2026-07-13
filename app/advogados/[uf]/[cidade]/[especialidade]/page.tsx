@@ -8,7 +8,7 @@ import { LawyerCard } from "@/components/LawyerCard";
 import { JsonLd } from "@/components/JsonLd";
 import { CadastroCTA } from "@/components/PlanosCTAs";
 import { buildMetadata, fitTitle } from "@/lib/seo/metadata";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, lawyerItemListSchema } from "@/lib/seo/schema";
 import { citySpecialtyIntro } from "@/lib/data/templates";
 import { cityFaqByKeys } from "@/lib/data/faq-cidades";
 import { getUsefulDocsForSpecialties } from "@/lib/data/specialty-descriptions";
@@ -44,8 +44,9 @@ export async function generateMetadata({
   const st = findState(params.uf);
   const city = findCity(params.uf, params.cidade);
   const sp = findSpecialty(params.especialidade);
-  if (!st || !city || !sp)
-    return buildMetadata({ title: "Especialidade", description: "Não encontrado", noIndex: true });
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!st || !city || !sp) notFound();
 
   const areaLow = sp.name.toLowerCase();
   // TITLE — keyword exata no início; se estourar ~58 chars, cai para a
@@ -826,6 +827,14 @@ export default async function CitySpecialtyPage({
               acceptedAnswer: { "@type": "Answer", text: f.a }
             }))
           }}
+        />
+      )}
+      {lawyers.length > 0 && (
+        <JsonLd
+          data={lawyerItemListSchema(
+            `Advogados ${sp.name.toLowerCase()} em ${city.name}, ${st.uf}`,
+            lawyers
+          )}
         />
       )}
     </div>

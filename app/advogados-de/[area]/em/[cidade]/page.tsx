@@ -26,7 +26,8 @@ import { LawyerCard } from "@/components/LawyerCard";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { fitDescription } from "@/lib/seo/local-titles";
+import { breadcrumbSchema, lawyerItemListSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 
 /**
@@ -85,18 +86,18 @@ export async function generateMetadata({
 }) {
   const sp = findSpecialty(params.area);
   const cidadeInfo = parseCidadeParam(params.cidade);
-  if (!sp || !cidadeInfo) {
-    return buildMetadata({
-      title: "Página não encontrada",
-      description: "Página não encontrada",
-      noIndex: true
-    });
-  }
+  // notFound() AQUI (e não só no corpo): o generateMetadata resolve antes do
+  // primeiro flush da resposta — é o único ponto onde o 404 ainda vira status
+  // HTTP de verdade. No corpo, o throw chega tarde e a página sai 200 (soft-404).
+  if (!sp || !cidadeInfo) notFound();
   const title = `Advogado ${sp.name.toLowerCase()} em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
-  const description = `Encontre advogados de direito ${sp.name.toLowerCase()} em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}. ${sp.intro.slice(0, 80)}`;
+  const description = fitDescription(
+    `Encontre advogados de direito ${sp.name.toLowerCase()} em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}. ${sp.intro}`,
+    158
+  );
   return buildMetadata({
     title,
-    description: description.slice(0, 160),
+    description,
     path: `/advogados-de/${sp.slug}/em/${params.cidade}`
   });
 }
@@ -479,6 +480,14 @@ export default async function AdvogadoAreaCidadePage({
           serviceType: `Direito ${sp.name}`
         }}
       />
+      {lawyersExibir.length > 0 && (
+        <JsonLd
+          data={lawyerItemListSchema(
+            `Advogados ${sp.name.toLowerCase()} em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`,
+            lawyersExibir
+          )}
+        />
+      )}
     </div>
   );
 }

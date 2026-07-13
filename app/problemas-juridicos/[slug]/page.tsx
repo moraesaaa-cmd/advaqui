@@ -28,6 +28,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { ProblemaChecklist } from "@/components/ProblemaChecklist";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { fitDescription } from "@/lib/seo/local-titles";
 import { breadcrumbSchema, howToSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 
@@ -53,7 +54,7 @@ export async function generateMetadata({
   }
   return buildMetadata({
     title: p.titulo,
-    description: p.resumo.slice(0, 160),
+    description: fitDescription(p.resumo, 158),
     path: `/problemas-juridicos/${p.slug}`
   });
 }

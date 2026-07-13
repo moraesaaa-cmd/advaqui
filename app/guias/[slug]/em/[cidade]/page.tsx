@@ -93,13 +93,9 @@ export async function generateMetadata({
 }) {
   const guia = findGuia(params.slug);
   const cidadeInfo = parseCidadeParam(params.cidade);
-  if (!guia || !cidadeInfo) {
-    return buildMetadata({
-      title: "Página não encontrada",
-      description: "Página não encontrada",
-      noIndex: true
-    });
-  }
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!guia || !cidadeInfo) notFound();
   // Fórmula de CTR: tema + cidade + ação, por guia (mapa determinístico);
   // fallback genérico pra guias novos sem template.
   const tpl = GUIA_CIDADE_TEMPLATES[guia.slug];

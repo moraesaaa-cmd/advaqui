@@ -18,6 +18,7 @@ import { isOfficialSource } from "@/lib/data/jurisprudencia-validators";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { fitDescription } from "@/lib/seo/local-titles";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 import { OfficialSourceBox } from "@/components/jurisprudencia/OfficialSourceBox";
@@ -54,22 +55,12 @@ export async function generateMetadata({
   params: { tribunal: string; slug: string };
 }) {
   const slug = params.tribunal.toLowerCase() as TribunalSlug;
-  if (!VALID_TRIBUNALS.includes(slug)) {
-    return buildMetadata({
-      title: "Decisão não encontrada",
-      description: "Decisão não encontrada",
-      noIndex: true,
-    });
-  }
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!VALID_TRIBUNALS.includes(slug)) notFound();
   const tribunal = slug.toUpperCase() as Tribunal;
   const decisao = await getDecisaoBySlug(tribunal, params.slug);
-  if (!decisao) {
-    return buildMetadata({
-      title: "Decisão não encontrada",
-      description: "Decisão não encontrada no acervo do AdvAqui.",
-      noIndex: true,
-    });
-  }
+  if (!decisao) notFound();
 
   // Title pedido: [Classe] [Número] — [Tema] | [Tribunal] | AdvAqui
   // Prioriza resumo_tema (conservador, vindo dos dados oficiais)
@@ -91,10 +82,12 @@ export async function generateMetadata({
       " "
     ).trim();
     const temaTxt = temaPrincipal ? ` Tema: ${temaPrincipal}.` : "";
-    return (head + "." + temaTxt + " Consulte ementa, metadados e fonte oficial no AdvAqui.")
-      .replace(/\s+/g, " ")
-      .trim()
-      .slice(0, 158);
+    return fitDescription(
+      (head + "." + temaTxt + " Consulte ementa, metadados e fonte oficial no AdvAqui.")
+        .replace(/\s+/g, " ")
+        .trim(),
+      158
+    );
   })();
 
   return buildMetadata({

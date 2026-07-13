@@ -29,6 +29,7 @@ import { LawyerCard } from "@/components/LawyerCard";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { fitDescription } from "@/lib/seo/local-titles";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { localLegalContext } from "@/lib/seo/local-context";
 import { SITE } from "@/lib/config";
@@ -92,19 +93,15 @@ export async function generateMetadata({
 }) {
   const custo = findCusto(params.servico);
   const cidadeInfo = parseCidadeParam(params.cidade);
-  if (!custo || !cidadeInfo) {
-    return buildMetadata({
-      title: "Página não encontrada",
-      description: "Página não encontrada",
-      noIndex: true
-    });
-  }
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!custo || !cidadeInfo) notFound();
   const tituloLocal = `${custo.titulo} em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
   const faixa = formatFaixa(custo.faixa_min, custo.faixa_max);
   const descricaoLocal = `Honorário típico em ${cidadeInfo.cidadeNome}/${cidadeInfo.uf} — ${faixa}. Veja o que está incluído, opções gratuitas (defensoria, juizado) e prazos esperados.`;
   return buildMetadata({
     title: tituloLocal,
-    description: descricaoLocal.slice(0, 160),
+    description: fitDescription(descricaoLocal, 158),
     path: `/quanto-custa/${custo.slug}/em/${params.cidade}`
   });
 }

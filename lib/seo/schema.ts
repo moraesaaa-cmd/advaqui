@@ -136,6 +136,27 @@ export const lawyerPersonSchema = (lawyer: Lawyer) => ({
   }
 });
 
+/**
+ * ItemList — estrutura explícita da lista de advogados exibida numa página
+ * de diretório (cidade, cidade×especialidade, área×cidade). O Google passa
+ * a ver a relação página→perfis listados, na ordem de exibição.
+ */
+export const lawyerItemListSchema = (
+  name: string,
+  lawyers: Array<Pick<Lawyer, "name" | "slug">>
+) => ({
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name,
+  numberOfItems: lawyers.length,
+  itemListElement: lawyers.map((l, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: l.name,
+    url: `${SITE.url}/advogado/${l.slug}`
+  }))
+});
+
 export const cityServiceSchema = (cityName: string, uf: string, count: number) => ({
   "@context": "https://schema.org",
   "@type": "Service",

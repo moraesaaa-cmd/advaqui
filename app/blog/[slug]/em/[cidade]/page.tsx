@@ -101,14 +101,10 @@ export async function generateMetadata({
 }) {
   const article = getArticleBySlug(params.slug);
   const cidadeInfo = parseCidadeParam(params.cidade);
-  // Bloqueia URLs fora da allow-list e cidades inexistentes
-  if (!article || !cidadeInfo || !isArtigoLocalizavel(params.slug)) {
-    return buildMetadata({
-      title: "Página não encontrada",
-      description: "Página não encontrada",
-      noIndex: true
-    });
-  }
+  // Bloqueia URLs fora da allow-list e cidades inexistentes.
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!article || !cidadeInfo || !isArtigoLocalizavel(params.slug)) notFound();
   // Fórmula de CTR: pergunta/ação + cidade no início, por tema.
   // Mapa determinístico slug → template; fallback genérico pra slugs novos.
   const tpl = BLOG_CIDADE_TEMPLATES[article.slug];

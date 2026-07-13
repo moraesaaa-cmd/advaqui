@@ -28,6 +28,7 @@ import { CalculadoraWidget } from "@/components/CalculadoraWidget";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { fitDescription } from "@/lib/seo/local-titles";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 
 /**
@@ -78,18 +79,14 @@ export async function generateMetadata({
 }) {
   const calc = findCalculadora(params.slug);
   const cidadeInfo = parseCidadeParam(params.cidade);
-  if (!calc || !cidadeInfo) {
-    return buildMetadata({
-      title: "Página não encontrada",
-      description: "Página não encontrada",
-      noIndex: true
-    });
-  }
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!calc || !cidadeInfo) notFound();
   return buildMetadata({
     title: `${calc.titulo} — guia para ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`,
-    description: `${calc.resumo} Particularidades para ${cidadeInfo.cidadeNome}/${cidadeInfo.uf}.`.slice(
-      0,
-      160
+    description: fitDescription(
+      `${calc.resumo} Particularidades para ${cidadeInfo.cidadeNome}/${cidadeInfo.uf}.`,
+      158
     ),
     path: `/calculadoras/${calc.slug}/em/${params.cidade}`
   });

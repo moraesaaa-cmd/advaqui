@@ -21,6 +21,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { CalculadoraWidget } from "@/components/CalculadoraWidget";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { fitDescription } from "@/lib/seo/local-titles";
 import { breadcrumbSchema, howToSchema } from "@/lib/seo/schema";
 
 export const revalidate = 86400;
@@ -35,16 +36,12 @@ export async function generateMetadata({
   params: { slug: string };
 }) {
   const calc = findCalculadora(params.slug);
-  if (!calc) {
-    return buildMetadata({
-      title: "Calculadora não encontrada",
-      description: "Calculadora não encontrada",
-      noIndex: true
-    });
-  }
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!calc) notFound();
   return buildMetadata({
     title: calc.titulo,
-    description: calc.resumo.slice(0, 160),
+    description: fitDescription(calc.resumo, 158),
     path: `/calculadoras/${calc.slug}`
   });
 }

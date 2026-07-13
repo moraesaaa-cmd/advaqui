@@ -17,6 +17,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { CTAFinal } from "@/components/CTAFinal";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { fitDescription } from "@/lib/seo/local-titles";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 
@@ -40,18 +41,15 @@ export async function generateMetadata({
   params: { area: string };
 }) {
   const sp = findSpecialty(params.area);
-  if (!sp) {
-    return buildMetadata({
-      title: "Área não encontrada",
-      description: "Página não encontrada.",
-      noIndex: true
-    });
-  }
+  if (!sp) notFound();
   const info = SPECIALTY_INFO[sp.slug];
   return buildMetadata({
     title: `Advogado de ${sp.name} — quando procurar e como encontrar`,
-    description: (info?.description ||
-      `Entenda quando procurar um advogado de ${sp.name.toLowerCase()} e encontre profissionais na sua cidade.`).slice(0, 160),
+    description: fitDescription(
+      info?.description ||
+        `Entenda quando procurar um advogado de ${sp.name.toLowerCase()} e encontre profissionais na sua cidade.`,
+      158
+    ),
     path: `/advogados-de/${sp.slug}`
   });
 }

@@ -56,13 +56,9 @@ export async function generateMetadata({
   params: { tribunal: string };
 }) {
   const slug = params.tribunal.toLowerCase() as TribunalSlug;
-  if (!VALID_TRIBUNALS.includes(slug)) {
-    return buildMetadata({
-      title: "Jurisprudência",
-      description: "Não encontrado",
-      noIndex: true,
-    });
-  }
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!VALID_TRIBUNALS.includes(slug)) notFound();
   const meta = TRIBUNAL_META[slug];
   return buildMetadata({
     title: `Jurisprudência do ${meta.name} — Decisões e ementas`,

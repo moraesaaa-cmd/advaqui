@@ -74,9 +74,11 @@ export async function generateMetadata({
   params: { slug: string; artigoSlug: string };
 }) {
   const l = await findLawyerBySlug(params.slug);
-  if (!l) return buildMetadata({ title: "Artigo", description: "Não encontrado", noIndex: true });
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!l) notFound();
   const a = await fetchPublishedArticle(l.id, params.artigoSlug);
-  if (!a) return buildMetadata({ title: "Artigo", description: "Não encontrado", noIndex: true });
+  if (!a) notFound();
 
   // Template Fase 5 — [Título do Artigo] | [Nome do Advogado] | AdvAqui
   // (buildMetadata adiciona "— AdvAqui" no fim automaticamente, então passamos

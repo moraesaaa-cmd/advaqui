@@ -66,13 +66,9 @@ export async function generateMetadata({
 }) {
   const st = findState(params.uf);
   const city = findCity(params.uf, params.cidade);
-  if (!st || !city) {
-    return buildMetadata({
-      title: "Página não encontrada",
-      description: "Página não encontrada",
-      noIndex: true
-    });
-  }
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!st || !city) notFound();
   return buildMetadata({
     title: `Tribunais e órgãos de justiça em ${city.name}, ${st.uf}`,
     description: `Onde está o fórum, defensoria pública, OAB, Procon e juizado especial em ${city.name}/${st.uf}. Links oficiais do TJ-${st.uf}, TRT, TRE.`,

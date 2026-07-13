@@ -13,7 +13,7 @@ import { SPECIALTIES } from "@/lib/data/specialties";
 import { LawyerCard } from "@/components/LawyerCard";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata, fitTitle } from "@/lib/seo/metadata";
-import { breadcrumbSchema, cityServiceSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, cityServiceSchema, lawyerItemListSchema } from "@/lib/seo/schema";
 import { cityIntro } from "@/lib/data/templates";
 import { topCitiesForState, neighborAnchor, guiasUteisForCity } from "@/lib/seo/internal-links";
 import { CidadeRecursos } from "@/components/CidadeRecursos";
@@ -35,8 +35,9 @@ export async function generateMetadata({
 }) {
   const st = findState(params.uf);
   const city = findCity(params.uf, params.cidade);
-  if (!st || !city)
-    return buildMetadata({ title: "Cidade", description: "Cidade não encontrada", noIndex: true });
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!st || !city) notFound();
 
   // Mesma query da página — cache() do React deduplica na mesma request.
   const lawyers = await getLawyersForCity(st.uf, city.slug);
@@ -562,6 +563,9 @@ export default async function CityPage({
         ])}
       />
       <JsonLd data={cityServiceSchema(city.name, st.uf, allLawyers.length)} />
+      {sorted.length > 0 && (
+        <JsonLd data={lawyerItemListSchema(`Advogados em ${city.name}, ${st.uf}`, sorted)} />
+      )}
     </div>
   );
 }

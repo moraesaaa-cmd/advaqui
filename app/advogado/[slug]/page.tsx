@@ -24,6 +24,7 @@ import { ReaderQuestionForm } from "@/components/ReaderQuestionForm";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, lawyerSchema, lawyerPersonSchema } from "@/lib/seo/schema";
 import { whatsappLink, telLink, formatDate } from "@/lib/utils/format";
+import { TrackedContactLink } from "@/components/TrackedContactLink";
 import { SITE } from "@/lib/config";
 
 /**
@@ -39,12 +40,9 @@ export const dynamic = "force-dynamic"; // sempre fresco: reflete plan_status me
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const l = await findLawyerBySlugFresh(params.slug);
-  if (!l)
-    return buildMetadata({
-      title: "Página Profissional",
-      description: "Página não encontrada",
-      noIndex: true
-    });
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!l) notFound();
   const isPaused = l.pageStatus === "paused" || l.isPublic === false;
   const noIndex = isPaused || l.isIndexable === false;
   if (isPaused) {
@@ -299,7 +297,8 @@ export default async function ProfessionalPage({
             {/* CTA (premium) */}
             {featured && wa && (
               <div className="flex flex-col gap-2 pb-1">
-                <a
+                <TrackedContactLink
+                  event={`contato-whatsapp/${l.slug}`}
                   href={wa}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -307,7 +306,7 @@ export default async function ProfessionalPage({
                   style={{ background: "#25D366" }}
                 >
                   <MessageCircle className="w-4 h-4" aria-hidden /> Falar agora
-                </a>
+                </TrackedContactLink>
                 <span className="text-center text-[12.5px]" style={{ color: "#CBD5E6" }}>
                   Sem custo de contato
                 </span>
@@ -391,10 +390,14 @@ export default async function ProfessionalPage({
                   </div>
                 )}
                 {showPhone && tel && (
-                  <a href={tel} className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition">
+                  <TrackedContactLink
+                    event={`contato-telefone/${l.slug}`}
+                    href={tel}
+                    className="flex items-center gap-3 rounded-xl border border-brand-line p-3 hover:border-brand-accent transition"
+                  >
                     <Phone className="w-4 h-4 text-brand-ink/50 flex-shrink-0" aria-hidden />
                     <span>{l.phone}</span>
-                  </a>
+                  </TrackedContactLink>
                 )}
               </div>
             </section>
@@ -678,7 +681,8 @@ export default async function ProfessionalPage({
                 )}
               </div>
               {wa && (
-                <a
+                <TrackedContactLink
+                  event={`contato-whatsapp/${l.slug}`}
                   href={wa}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -686,7 +690,7 @@ export default async function ProfessionalPage({
                   style={{ background: "#25D366" }}
                 >
                   <MessageCircle className="w-4 h-4" aria-hidden /> Falar no WhatsApp
-                </a>
+                </TrackedContactLink>
               )}
             </div>
 

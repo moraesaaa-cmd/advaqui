@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { SPECIALTIES } from "@/lib/data/specialties";
 import { PLAN } from "@/lib/config";
+import { saveCadastroDraft } from "@/lib/cadastro-draft";
+import { trackEvent } from "@/lib/analytics/track-event";
 
 /**
  * /criar-perfil — Assistente guiado de perfil (robô de onboarding).
@@ -563,18 +565,36 @@ export default function CriarPerfilPage() {
               </div>
             </div>
 
-            {/* CTA */}
+            {/* CTA — leva as respostas junto: grava o rascunho que o /cadastro
+                restaura e pré-preenche (antes o assistente descartava tudo). */}
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <Link href="/cadastro" className="btn-primary flex-1">
-                Criar meu perfil grátis <ArrowRight className="w-4 h-4" aria-hidden />
+              <Link
+                href="/cadastro"
+                className="btn-primary flex-1"
+                onClick={() => {
+                  saveCadastroDraft({
+                    name: form.name,
+                    oab: form.oab,
+                    oabUf: form.oabUf,
+                    city: form.city,
+                    uf: form.uf,
+                    specialties: form.specialties,
+                    whatsapp: form.whatsapp,
+                    bio,
+                    from: "assistente"
+                  });
+                  trackEvent("assistente-para-cadastro");
+                }}
+              >
+                Criar meu perfil com estes dados <ArrowRight className="w-4 h-4" aria-hidden />
               </Link>
               <Link href="/planos" className="btn-accent flex-1">
                 Ver o premium ({PLAN.priceLabel}/mês)
               </Link>
             </div>
             <p className="text-xs text-brand-ink/45 text-center">
-              Este assistente não salva nada — é só uma prévia. Seu perfil real é
-              criado no cadastro, onde você confirma os dados.
+              Suas respostas vão junto: o cadastro abre preenchido com o que você
+              montou aqui — você só confere, cria a senha e publica.
             </p>
           </div>
         )}

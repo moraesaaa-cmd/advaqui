@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAllCities } from "@/lib/data/cities";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { getLawyerCountsForCities } from "@/lib/data/lawyers";
 
 /**
  * Endpoint server-side para busca de cidades.
@@ -85,27 +85,20 @@ export async function GET(req: Request) {
 
   let enriched = sorted;
   try {
-    const supabase = createAdminClient();
-    const { data: counts } = await supabase
-      .from("lawyers")
-      .select("target_city, target_uf")
-      .in("target_city", sorted.map((c) => c.name))
-      .eq("verified_oab", true);
-
-    if (counts) {
-      const countMap = new Map<string, number>();
-      for (const row of counts) {
-        const key = `${row.target_city}-${row.target_uf}`;
-        countMap.set(key, (countMap.get(key) || 0) + 1);
-      }
-      enriched = sorted.map((c) => ({
-        ...c,
-        lawyerCount: countMap.get(`${c.name}-${c.uf}`) || 0,
-      }));
-    }
+    // Mesma regra de contagem do diretório (city_slug/target/extra_cities,
+    // por SLUG, só perfis visíveis) — a versão anterior consultava apenas
+    // target_city comparando slug com nome acentuado e zerava tudo.
+    const countMap = await getLawyerCountsForCities(
+      sorted.map((c) => ({ uf: c.uf, slug: c.slug }))
+    );
+    enriched = sorted.map((c) => ({
+      ...c,
+      lawyerCount: countMap[`${c.uf.toUpperCase()}:${c.slug.toLowerCase()}`] || 0,
+    }));
   } catch {}
 
   return NextResponse.json(enriched, {
-    headers: { "Cache-Control": "public, max-age=3600, s-maxage=3600" }
+    // 10 min: contagem muda quando advogado se cadastra — 1h prendia o valor.
+    headers: { "Cache-Control": "public, max-age=600, s-maxage=600" }
   });
 }

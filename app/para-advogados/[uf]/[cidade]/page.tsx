@@ -35,13 +35,9 @@ export async function generateMetadata({
 }) {
   const st = findState(params.uf);
   const city = findCity(params.uf, params.cidade);
-  if (!st || !city) {
-    return buildMetadata({
-      title: "Para advogados",
-      description: "Cidade não encontrada.",
-      noIndex: true
-    });
-  }
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!st || !city) notFound();
   return buildMetadata({
     title: `Advogado em destaque em ${city.name}, ${st.uf} — apareça no topo das buscas`,
     description:

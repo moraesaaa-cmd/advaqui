@@ -113,6 +113,38 @@ export function buildLawyerPaths(lawyer: RevalidatableLawyer): string[] {
 }
 
 /**
+ * Refresh do microcache do nginx para os paths do lawyer.
+ *
+ * As páginas públicas são cacheadas pelo nginx por 5 min (TTL curto). Em
+ * mudança de perfil/plano, este hook rebusca cada URL com o header secreto
+ * de bypass (CACHE_REFRESH_SECRET, o mesmo valor mapeado no nginx): o bypass
+ * força ir ao Next e a resposta fresca SUBSTITUI a cópia em cache na hora —
+ * ninguém espera o TTL para ver selo premium aparecer/sumir.
+ *
+ * Fire-and-forget: nunca lança, nunca bloqueia a resposta do painel/admin.
+ * Sem o env configurado é no-op (o TTL de 5 min segue como teto).
+ */
+export function refreshNginxCacheForLawyer(lawyer: RevalidatableLawyer): void {
+  const secret = process.env.CACHE_REFRESH_SECRET;
+  if (!secret) return;
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://advaqui.com").replace(/\/$/, "");
+  const paths = buildLawyerPaths(lawyer).filter(
+    (p) => p !== "/sitemap.xml" && !p.startsWith("/p/")
+  );
+  for (const p of paths) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 15000);
+    fetch(`${base}${p}`, {
+      headers: { "x-adv-cache-refresh": secret },
+      cache: "no-store",
+      signal: ctrl.signal
+    })
+      .catch(() => undefined)
+      .finally(() => clearTimeout(timer));
+  }
+}
+
+/**
  * Revalida todas as páginas afetadas por mudanças no perfil/plano do lawyer.
  * Versão síncrona (dados já em mãos) — usada pelo painel.
  */
@@ -124,6 +156,7 @@ export function revalidateLawyerPages(lawyer: RevalidatableLawyer): void {
       console.error("[revalidate] revalidatePath failed for", path, err);
     }
   }
+  refreshNginxCacheForLawyer(lawyer);
 }
 
 /**

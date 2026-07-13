@@ -544,6 +544,8 @@ export default function AdminPage() {
     topRegions: Array<{ region: string; count: number }>;
     topCities: Array<{ city: string; count: number }>;
     topReferrers: Array<{ source: string; count: number }>;
+    funnel7d?: Array<{ event: string; count: number }>;
+    funnel24h?: Array<{ event: string; count: number }>;
     recent: Array<{
       path: string;
       country: string | null;
@@ -553,6 +555,15 @@ export default function AdminPage() {
       visited_at: string;
     }>;
     migrationPending: boolean;
+  };
+  // Nomes legíveis dos eventos de funil ("/e/{nome}" em site_visits).
+  const FUNNEL_LABELS: Record<string, string> = {
+    "cadastro-adv-passo1": "Cadastro de advogado — passo 1 concluído",
+    "cadastro-adv-passo2": "Cadastro de advogado — passo 2 concluído",
+    "cadastro-adv-concluido": "Cadastro de advogado CONCLUÍDO",
+    "assistente-para-cadastro": "Assistente de perfil → cadastro",
+    "contato-whatsapp": "Clique em WhatsApp (perfil/card)",
+    "contato-telefone": "Clique em telefone (perfil)"
   };
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
   const [analyticsLoading, setAnalyticsLoading] = useState(false);
@@ -2129,6 +2140,48 @@ export default function AdminPage() {
                   </span>
                 </p>
               )}
+
+              {/* Funil de conversão — a medição que faltava: quem inicia o
+                  cadastro, quem conclui e quem clica nos contatos. */}
+              <section className="card">
+                <h3 className="font-display text-base font-bold text-brand-ink mb-3 inline-flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-brand-deep" aria-hidden />
+                  Funil de conversão (7 dias · e 24h)
+                </h3>
+                {(analytics.funnel7d?.length ?? 0) === 0 ? (
+                  <p className="text-xs text-brand-ink/55 italic">
+                    Sem eventos ainda. Aparecem aqui quando alguém avança ou
+                    conclui o cadastro de advogado, vem do assistente de perfil
+                    ou clica em WhatsApp/telefone de um perfil.
+                  </p>
+                ) : (
+                  <ul className="space-y-1.5 text-xs">
+                    {(analytics.funnel7d ?? []).map((f) => {
+                      const in24 =
+                        (analytics.funnel24h ?? []).find(
+                          (x) => x.event === f.event
+                        )?.count ?? 0;
+                      return (
+                        <li
+                          key={f.event}
+                          className="flex items-center justify-between gap-2 py-1 border-b border-brand-line/60 last:border-0"
+                        >
+                          <span className="text-brand-deep">
+                            {FUNNEL_LABELS[f.event] || f.event}
+                          </span>
+                          <span className="font-bold text-brand-ink whitespace-nowrap">
+                            {f.count}
+                            <span className="font-normal text-brand-ink/50">
+                              {" "}
+                              · {in24} em 24h
+                            </span>
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </section>
 
               {/* Top páginas + Top países lado a lado */}
               <div className="grid md:grid-cols-2 gap-4">

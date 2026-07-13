@@ -25,6 +25,7 @@ import { LawyerCard } from "@/components/LawyerCard";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { fitDescription } from "@/lib/seo/local-titles";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { localLegalContext } from "@/lib/seo/local-context";
 import { SITE } from "@/lib/config";
@@ -86,18 +87,14 @@ export async function generateMetadata({
 }) {
   const tpl = getTemplateBySlug(params.slug);
   const cidadeInfo = parseCidadeParam(params.cidade);
-  if (!tpl || !cidadeInfo) {
-    return buildMetadata({
-      title: "Página não encontrada",
-      description: "Página não encontrada",
-      noIndex: true
-    });
-  }
+  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
+  // depois do primeiro flush e a resposta sai 200 — soft-404).
+  if (!tpl || !cidadeInfo) notFound();
   const tituloLocal = `${tpl.title} — modelo grátis para usar em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
-  const descricaoLocal = `${tpl.description.slice(0, 100)}... Modelo pronto para preencher, com adaptações específicas para ${cidadeInfo.cidadeNome}/${cidadeInfo.uf} (cartórios, OAB seccional).`;
+  const descricaoLocal = `Modelo pronto para preencher, com adaptações para ${cidadeInfo.cidadeNome}/${cidadeInfo.uf} (cartórios, OAB seccional). ${tpl.description}`;
   return buildMetadata({
     title: tituloLocal,
-    description: descricaoLocal.slice(0, 160),
+    description: fitDescription(descricaoLocal, 158),
     path: `/modelos/${tpl.slug}/em/${params.cidade}`
   });
 }
