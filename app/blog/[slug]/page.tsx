@@ -118,9 +118,13 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const article = getArticleBySlug(params.slug) || await getArticleFromDB(params.slug);
-  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
-  // depois do primeiro flush e a resposta sai 200 — soft-404).
-  if (!article) notFound();
+  if (!article) {
+    return buildMetadata({
+      title: "Artigo",
+      description: "Artigo não encontrado",
+      noIndex: true
+    });
+  }
   const base = buildMetadata({
     title: article.title,
     description: article.excerpt,

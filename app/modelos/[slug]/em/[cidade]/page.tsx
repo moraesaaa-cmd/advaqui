@@ -87,9 +87,13 @@ export async function generateMetadata({
 }) {
   const tpl = getTemplateBySlug(params.slug);
   const cidadeInfo = parseCidadeParam(params.cidade);
-  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
-  // depois do primeiro flush e a resposta sai 200 — soft-404).
-  if (!tpl || !cidadeInfo) notFound();
+  if (!tpl || !cidadeInfo) {
+    return buildMetadata({
+      title: "Página não encontrada",
+      description: "Página não encontrada",
+      noIndex: true
+    });
+  }
   const tituloLocal = `${tpl.title} — modelo grátis para usar em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
   const descricaoLocal = `Modelo pronto para preencher, com adaptações para ${cidadeInfo.cidadeNome}/${cidadeInfo.uf} (cartórios, OAB seccional). ${tpl.description}`;
   return buildMetadata({

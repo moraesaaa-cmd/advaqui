@@ -25,9 +25,13 @@ export async function generateMetadata({
   params: { slug: string };
 }) {
   const tema = findTemaStf(params.slug);
-  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
-  // depois do primeiro flush e a resposta sai 200 — soft-404).
-  if (!tema) notFound();
+  if (!tema) {
+    return buildMetadata({
+      title: "Tema não encontrado",
+      description: "Tema não encontrado",
+      noIndex: true
+    });
+  }
   const { items } = await searchDecisoes({
     tribunal: "STF",
     q: tema.keywords[0],

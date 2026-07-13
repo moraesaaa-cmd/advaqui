@@ -93,9 +93,13 @@ export async function generateMetadata({
 }) {
   const custo = findCusto(params.servico);
   const cidadeInfo = parseCidadeParam(params.cidade);
-  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
-  // depois do primeiro flush e a resposta sai 200 — soft-404).
-  if (!custo || !cidadeInfo) notFound();
+  if (!custo || !cidadeInfo) {
+    return buildMetadata({
+      title: "Página não encontrada",
+      description: "Página não encontrada",
+      noIndex: true
+    });
+  }
   const tituloLocal = `${custo.titulo} em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
   const faixa = formatFaixa(custo.faixa_min, custo.faixa_max);
   const descricaoLocal = `Honorário típico em ${cidadeInfo.cidadeNome}/${cidadeInfo.uf} — ${faixa}. Veja o que está incluído, opções gratuitas (defensoria, juizado) e prazos esperados.`;

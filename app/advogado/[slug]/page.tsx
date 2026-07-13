@@ -40,9 +40,15 @@ export const dynamic = "force-dynamic"; // sempre fresco: reflete plan_status me
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const l = await findLawyerBySlugFresh(params.slug);
-  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
-  // depois do primeiro flush e a resposta sai 200 — soft-404).
-  if (!l) notFound();
+  // Slug de perfil é dado de BANCO — o middleware não valida. Metadata
+  // noindex + corpo de não-encontrado é a defesa (notFound() aqui não vira
+  // status 404 neste Next self-hosted e derrubaria o noindex).
+  if (!l)
+    return buildMetadata({
+      title: "Página Profissional",
+      description: "Página não encontrada",
+      noIndex: true
+    });
   const isPaused = l.pageStatus === "paused" || l.isPublic === false;
   const noIndex = isPaused || l.isIndexable === false;
   if (isPaused) {

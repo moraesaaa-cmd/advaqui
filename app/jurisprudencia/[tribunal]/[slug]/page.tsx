@@ -55,12 +55,22 @@ export async function generateMetadata({
   params: { tribunal: string; slug: string };
 }) {
   const slug = params.tribunal.toLowerCase() as TribunalSlug;
-  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
-  // depois do primeiro flush e a resposta sai 200 — soft-404).
-  if (!VALID_TRIBUNALS.includes(slug)) notFound();
+  if (!VALID_TRIBUNALS.includes(slug)) {
+    return buildMetadata({
+      title: "Decisão não encontrada",
+      description: "Decisão não encontrada",
+      noIndex: true,
+    });
+  }
   const tribunal = slug.toUpperCase() as Tribunal;
   const decisao = await getDecisaoBySlug(tribunal, params.slug);
-  if (!decisao) notFound();
+  if (!decisao) {
+    return buildMetadata({
+      title: "Decisão não encontrada",
+      description: "Decisão não encontrada no acervo do AdvAqui.",
+      noIndex: true,
+    });
+  }
 
   // Title pedido: [Classe] [Número] — [Tema] | [Tribunal] | AdvAqui
   // Prioriza resumo_tema (conservador, vindo dos dados oficiais)

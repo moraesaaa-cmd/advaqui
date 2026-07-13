@@ -83,9 +83,15 @@ export async function generateMetadata({
 }) {
   const termo = findGlossarioTermo(params.slug);
   const cidadeInfo = parseCidadeParam(params.cidade);
-  // notFound() no generateMetadata garante status 404 real (no corpo o throw
-  // chega depois do primeiro flush e a resposta sai 200 — soft-404).
-  if (!termo || !cidadeInfo) notFound();
+  // Cidade inválida já morre no middleware com 404 real; aqui fica a defesa
+  // do termo (noindex — notFound() não vira status neste Next self-hosted).
+  if (!termo || !cidadeInfo) {
+    return buildMetadata({
+      title: "Página não encontrada",
+      description: "Página não encontrada",
+      noIndex: true
+    });
+  }
   const title = `${termo.termo} em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}`;
   const description = `${termo.definicao_curta} Aplicação prática em ${cidadeInfo.cidadeNome}, ${cidadeInfo.uf}.`;
   return buildMetadata({

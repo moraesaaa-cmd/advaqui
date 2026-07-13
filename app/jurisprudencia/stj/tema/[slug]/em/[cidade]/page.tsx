@@ -75,9 +75,13 @@ export async function generateMetadata({
 }) {
   const tema = findTemaStj(params.slug);
   const cidadeInfo = parseCidadeParam(params.cidade);
-  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
-  // depois do primeiro flush e a resposta sai 200 — soft-404).
-  if (!tema || !cidadeInfo) notFound();
+  if (!tema || !cidadeInfo) {
+    return buildMetadata({
+      title: "Página não encontrada",
+      description: "Página não encontrada",
+      noIndex: true
+    });
+  }
   const { items } = await searchDecisoes({
     tribunal: "STJ",
     q: tema.keywords[0],

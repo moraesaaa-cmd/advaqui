@@ -36,9 +36,13 @@ export async function generateMetadata({
   params: { slug: string };
 }) {
   const calc = findCalculadora(params.slug);
-  // notFound() no generateMetadata = status 404 real (no corpo o throw chega
-  // depois do primeiro flush e a resposta sai 200 — soft-404).
-  if (!calc) notFound();
+  if (!calc) {
+    return buildMetadata({
+      title: "Calculadora não encontrada",
+      description: "Calculadora não encontrada",
+      noIndex: true
+    });
+  }
   return buildMetadata({
     title: calc.titulo,
     description: fitDescription(calc.resumo, 158),
