@@ -25,11 +25,20 @@ cp -al .next .next.livebak && echo "BACKUP_OK"
 
 echo "=== PONTE: staging assume o público ==="
 pm2 stop advaqui >/dev/null 2>&1
+sleep 2
 pm2 start npm --name advaqui-temp --cwd /var/www/advaqui-build -- start >/dev/null 2>&1
-sleep 6
-TEMP_CODE=$(curl -sk -o /dev/null -w '%{http_code}' https://advaqui.com/ --resolve advaqui.com:443:127.0.0.1)
+# Prontidão: a porta 3000 pode demorar a ser liberada pelo processo parado
+# (o temp reinicia até conseguir bindar) — espera até 45s em vez de chute fixo.
+TEMP_CODE=000
+for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+  sleep 3
+  TEMP_CODE=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 http://127.0.0.1:3000/)
+  [ "$TEMP_CODE" = "200" ] && break
+done
 echo "TEMP_HOME=$TEMP_CODE"
 if [ "$TEMP_CODE" != "200" ]; then
+  echo "--- diagnostico do temp ---"
+  tail -12 /root/.pm2/logs/advaqui-temp-error.log 2>/dev/null
   pm2 delete advaqui-temp >/dev/null 2>&1; pm2 start advaqui >/dev/null 2>&1
   echo "PONTE_FALHOU — advaqui retomado no build antigo"; exit 1
 fi
@@ -48,8 +57,16 @@ fi
 
 echo "=== swap de volta ==="
 pm2 delete advaqui-temp >/dev/null 2>&1
+sleep 2
 pm2 start advaqui >/dev/null 2>&1
-sleep 8
+# Prontidão do live novo (mesma lógica do temp)
+LIVE_CODE=000
+for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+  sleep 3
+  LIVE_CODE=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 http://127.0.0.1:3000/)
+  [ "$LIVE_CODE" = "200" ] && break
+done
+echo "LIVE_HOME=$LIVE_CODE"
 pm2 save >/dev/null 2>&1
 
 echo "=== verificação (retry até 3x por URL) ==="
