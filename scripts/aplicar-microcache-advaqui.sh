@@ -33,7 +33,10 @@ set -u
 
 ENV_FILE=/var/www/advaqui/.env.local
 CONF_MAPS=/etc/nginx/conf.d/advaqui-microcache.conf
-SITE=/etc/nginx/sites-enabled/advaqui
+# sites-enabled/advaqui é SYMLINK para sites-available/advaqui — sempre
+# operar no alvo real, e fazer backup do CONTEÚDO (cp -aL), nunca do link
+# (cp -a copiava o symlink e o "restore" virava no-op — aprendido 13/07).
+SITE=$(readlink -f /etc/nginx/sites-enabled/advaqui)
 BACKUP="/root/nginx-advaqui-bak-$(date +%Y%m%d-%H%M%S)"
 
 # ---- 1) segredo ------------------------------------------------------------
@@ -54,6 +57,8 @@ mkdir -p /var/cache/nginx
 cat > "$CONF_MAPS" <<NGX
 # Microcache das páginas públicas do AdvAqui
 # (gerado por scripts/aplicar-microcache-advaqui.sh — editar lá, não aqui)
+# O segredo de 48 chars no map estoura o bucket default (64) do map_hash.
+map_hash_bucket_size 128;
 proxy_cache_path /var/cache/nginx/advaqui levels=1:2 keys_zone=advaqui_cache:64m max_size=2g inactive=48h use_temp_path=off;
 
 # 1 = usuário logado (Supabase sb-* ou sessão admin) -> nunca cachear p/ ele
@@ -72,8 +77,8 @@ NGX
 echo "[ok] $CONF_MAPS escrito"
 
 # ---- 3) server block --------------------------------------------------------
-cp -a "$SITE" "$BACKUP"
-echo "[ok] backup do site em $BACKUP"
+cp -aL "$SITE" "$BACKUP"
+echo "[ok] backup do site (conteúdo real) em $BACKUP"
 
 cat > "$SITE" <<'NGX'
 server {
@@ -200,7 +205,7 @@ echo "[ok] server block novo escrito"
 # ---- 4) valida (rollback automático) -----------------------------------------
 if ! nginx -t; then
   echo "[ERRO] nginx -t reprovou — restaurando backup"
-  cp -a "$BACKUP" "$SITE"
+  cat "$BACKUP" > "$SITE"
   rm -f "$CONF_MAPS"
   nginx -t && systemctl reload nginx
   exit 1
