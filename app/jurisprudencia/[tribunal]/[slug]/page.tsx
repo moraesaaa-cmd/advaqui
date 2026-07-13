@@ -22,6 +22,7 @@ import { fitDescription } from "@/lib/seo/local-titles";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE } from "@/lib/config";
 import { OfficialSourceBox } from "@/components/jurisprudencia/OfficialSourceBox";
+import { ComentariosDecisao } from "@/components/ComentariosDecisao";
 import { CopyButton } from "@/components/jurisprudencia/CopyButton";
 
 /**
@@ -615,6 +616,10 @@ export default async function DecisaoDetailPage({
         </section>
       </article>
 
+      {/* Espaço de comentários (aba Notícias) — client component busca os
+          aprovados via API para não depender do ISR da página. */}
+      <ComentariosDecisao tribunal={slug} slug={decisao.slug} />
+
       <JsonLd
         data={breadcrumbSchema([
           { name: "Início", url: "/" },
@@ -632,7 +637,7 @@ export default async function DecisaoDetailPage({
           "@type": "Article",
           headline: h1,
           description:
-            decisao.seo_description || decisao.ementa.slice(0, 158),
+            decisao.seo_description || fitDescription(decisao.ementa, 158),
           datePublished:
             decisao.data_publicacao || decisao.data_julgamento || undefined,
           dateModified:

@@ -49,6 +49,7 @@ const TABS = [
   { id: "users", label: "Cadastros", Icon: Users },
   { id: "messages", label: "Mensagens", Icon: MessageSquare },
   { id: "blog", label: "Blog", Icon: BookOpen },
+  { id: "comentarios", label: "Comentários", Icon: MessageSquare },
   { id: "visits", label: "Visitas", Icon: Activity },
   { id: "stats", label: "Resumo", Icon: BarChart3 }
 ] as const;
@@ -595,6 +596,58 @@ export default function AdminPage() {
     return () => window.clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab]);
+
+  // --- Comentários de decisão (aba Notícias) — moderação -------------------
+  type ComentarioAdmin = {
+    id: string;
+    tribunal: string;
+    slug: string;
+    nome: string;
+    texto: string;
+    status: "pendente" | "aprovado";
+    createdAt: string;
+  };
+  const [comentarios, setComentarios] = useState<ComentarioAdmin[]>([]);
+  const [comentariosLoading, setComentariosLoading] = useState(false);
+
+  const loadComentarios = async () => {
+    setComentariosLoading(true);
+    try {
+      const r = await fetch("/api/admin/comentarios", { cache: "no-store" });
+      const j = await r.json();
+      if (j.ok) setComentarios(j.comentarios || []);
+      else toast(j.error || "Erro ao carregar comentários", "error");
+    } catch (err) {
+      console.error("[admin:comentarios] load failed", err);
+    } finally {
+      setComentariosLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (tab !== "comentarios") return;
+    void loadComentarios();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab]);
+
+  const moderarComentarioAdmin = async (id: string, action: "aprovar" | "excluir") => {
+    try {
+      const r = await fetch("/api/admin/comentarios", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, action })
+      });
+      const j = await r.json();
+      if (j.ok) {
+        toast(action === "aprovar" ? "Comentário aprovado e publicado." : "Comentário excluído.");
+        void loadComentarios();
+      } else {
+        toast(j.error || "Falha na moderação", "error");
+      }
+    } catch {
+      toast("Falha de conexão", "error");
+    }
+  };
 
   // Verifica autenticação admin e carrega dados iniciais
   useEffect(() => {
@@ -2047,6 +2100,86 @@ export default function AdminPage() {
                 </article>
               ))}
             </div>
+          )}
+        </div>
+      )}
+
+      {tab === "comentarios" && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <h2 className="font-display text-xl font-bold text-brand-ink">
+              Comentários de decisões
+            </h2>
+            <button
+              type="button"
+              onClick={() => void loadComentarios()}
+              className="btn-ghost text-sm"
+            >
+              Atualizar
+            </button>
+          </div>
+          <p className="text-sm text-brand-ink/60">
+            Enviados pelo público nas páginas de decisão (aba Notícias). Nada é
+            publicado sem aprovação aqui.
+          </p>
+          {comentariosLoading ? (
+            <p className="text-sm text-brand-ink/55 italic">Carregando…</p>
+          ) : comentarios.length === 0 ? (
+            <p className="text-sm text-brand-ink/55 italic">Nenhum comentário ainda.</p>
+          ) : (
+            <ul className="space-y-3">
+              {comentarios.map((c) => (
+                <li key={c.id} className="card">
+                  <div className="flex flex-wrap items-center gap-2 text-xs mb-1.5">
+                    <span
+                      className={`font-bold px-2 py-0.5 rounded ${
+                        c.status === "pendente"
+                          ? "bg-amber-100 text-amber-900"
+                          : "bg-emerald-100 text-emerald-800"
+                      }`}
+                    >
+                      {c.status}
+                    </span>
+                    <span className="uppercase font-semibold text-brand-ink/60">
+                      {c.tribunal}
+                    </span>
+                    <a
+                      href={`/jurisprudencia/${c.tribunal}/${c.slug}#comentarios`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-brand-deep underline truncate max-w-[280px]"
+                    >
+                      {c.slug}
+                    </a>
+                    <span className="text-brand-ink/45">
+                      {new Date(c.createdAt).toLocaleString("pt-BR")}
+                    </span>
+                  </div>
+                  <p className="text-sm text-brand-ink">
+                    <strong>{c.nome}:</strong> {c.texto}
+                  </p>
+                  <div className="flex gap-2 mt-3">
+                    {c.status === "pendente" && (
+                      <button
+                        type="button"
+                        onClick={() => void moderarComentarioAdmin(c.id, "aprovar")}
+                        className="text-sm font-semibold px-3 py-1.5 rounded-lg"
+                        style={{ background: "#059669", color: "#fff" }}
+                      >
+                        Aprovar
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => void moderarComentarioAdmin(c.id, "excluir")}
+                      className="text-sm font-semibold px-3 py-1.5 rounded-lg border border-red-200 text-red-700 bg-white"
+                    >
+                      Excluir
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
           )}
         </div>
       )}

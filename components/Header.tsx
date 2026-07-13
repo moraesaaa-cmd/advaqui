@@ -26,6 +26,7 @@ const GROUPS: Array<{ label: string; items: Array<{ href: string; label: string;
     label: "Conteúdo",
     items: [
       { href: "/blog", label: "Blog jurídico", desc: "Artigos, guias, glossário e problemas" },
+      { href: "/noticias", label: "Notícias de decisões", desc: "Decisões recentes, abertas a comentários" },
       { href: "/jurisprudencia", label: "Jurisprudência", desc: "Decisões do STF e STJ por tema" },
       { href: "/problemas-juridicos", label: "Problemas jurídicos", desc: "Passo a passo do seu caso" },
       { href: "/glossario", label: "Glossário", desc: "Termos jurídicos em linguagem clara" }
