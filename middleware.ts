@@ -63,6 +63,67 @@ function publicPathInvalid(pathname: string): boolean {
 
 const NOT_FOUND_HTML = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Página não encontrada — AdvAqui</title><style>body{font-family:system-ui,-apple-system,sans-serif;background:#F7F6F1;color:#1A2433;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0}main{text-align:center;padding:32px;max-width:420px}h1{font-family:Georgia,serif;font-size:46px;margin:0 0 10px}p{color:#5A6678;line-height:1.5;margin:0 0 22px}a{display:inline-block;background:#0F1B2D;color:#fff;text-decoration:none;padding:12px 22px;border-radius:10px;font-weight:600}</style></head><body><main><h1>404</h1><p>Esta página não existe ou o endereço está incompleto. Confira o link ou volte para o início.</p><a href="/">Ir para a página inicial</a></main></body></html>`;
 
+/* Perfil de advogado é dado de BANCO — validação com cache em memória:
+ * um SELECT de todos os slugs (tabela pequena, colunas públicas via RLS) a
+ * cada 60s; slug fora do cache paga UMA consulta direta antes do 404, então
+ * perfil recém-criado nunca é bloqueado. Qualquer falha de rede = fail-open
+ * (jamais 404 indevido em perfil real). */
+const RE_ADVOGADO_PERFIL = /^\/advogado\/([^/]+)\/?$/;
+let lawyerSlugCache: { set: Set<string>; at: number } | null = null;
+
+function supabaseRestHeaders(key: string): Record<string, string> {
+  return { apikey: key, authorization: `Bearer ${key}` };
+}
+
+async function fetchLawyerSlugs(): Promise<Set<string> | null> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) return null;
+  try {
+    const r = await fetch(`${url}/rest/v1/lawyers?select=slug&limit=5000`, {
+      headers: supabaseRestHeaders(key),
+      cache: "no-store"
+    });
+    if (!r.ok) return null;
+    const rows = (await r.json()) as Array<{ slug?: string }>;
+    return new Set(
+      rows.map((x) => (x.slug || "").toLowerCase()).filter(Boolean)
+    );
+  } catch {
+    return null;
+  }
+}
+
+async function lawyerSlugMissing(slug: string): Promise<boolean> {
+  const now = Date.now();
+  if (!lawyerSlugCache || now - lawyerSlugCache.at > 60_000) {
+    const set = await fetchLawyerSlugs();
+    if (set) lawyerSlugCache = { set, at: now };
+  }
+  const cached = lawyerSlugCache;
+  if (!cached) return false; // sem cache utilizável → fail-open
+  if (cached.set.has(slug.toLowerCase())) return false;
+  // Miss: confirma direto no banco (cobre perfil criado nos últimos 60s).
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) return false;
+  try {
+    const r = await fetch(
+      `${url}/rest/v1/lawyers?select=slug&slug=eq.${encodeURIComponent(slug)}&limit=1`,
+      { headers: supabaseRestHeaders(key), cache: "no-store" }
+    );
+    if (!r.ok) return false;
+    const rows = (await r.json()) as unknown[];
+    if (rows.length > 0) {
+      cached.set.add(slug.toLowerCase());
+      return false;
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Renova a sessao do Supabase (refresh do access_token) a cada request das
  * rotas autenticadas do advogado, reescrevendo os cookies na resposta.
@@ -109,6 +170,21 @@ export async function middleware(request: NextRequest) {
         "cache-control": "public, max-age=300"
       }
     });
+  }
+
+  // Perfil de advogado inexistente → 404 real (slugs do banco com cache 60s).
+  if (request.method === "GET") {
+    const pm = pathname.match(RE_ADVOGADO_PERFIL);
+    if (pm && (await lawyerSlugMissing(pm[1]))) {
+      return new NextResponse(NOT_FOUND_HTML, {
+        status: 404,
+        headers: {
+          "content-type": "text/html; charset=utf-8",
+          "x-robots-tag": "noindex",
+          "cache-control": "public, max-age=60"
+        }
+      });
+    }
   }
 
   // Fora de /painel e /api/painel não há o que renovar — evita rodar o
@@ -160,6 +236,7 @@ export const config = {
     "/",
     "/painel/:path*",
     "/api/painel/:path*",
+    "/advogado/:path*",
     "/advogados/:path*",
     "/advogados-de/:path*",
     "/glossario/:path*",

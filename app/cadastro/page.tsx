@@ -553,8 +553,12 @@ export default function CadastroPage() {
 
     setSubmitting(false);
     toast("Cadastro realizado! Bem-vindo ao AdvAqui.");
-    // Hard reload pra garantir que o Header re-sincroniza /api/auth/me
-    window.location.href = "/painel";
+    // Intenção declarada de Premium (CTA de /planos → /cadastro?origem=planos-*)
+    // conduz DIRETO ao pagamento — antes o advogado caía no painel genérico e o
+    // caminho até pagar se perdia. Hard reload nos dois casos garante que o
+    // Header re-sincroniza /api/auth/me.
+    window.location.href =
+      origem && origem.startsWith("planos") ? "/painel/pagamento" : "/painel";
   };
 
   return (
