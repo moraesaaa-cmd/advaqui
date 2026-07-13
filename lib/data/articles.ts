@@ -4180,6 +4180,470 @@ export const ARTICLES: Article[] = [
           "É a data de cessação já definida quando o benefício é concedido. Se chegar essa data e você continuar incapaz, peça a prorrogação pelo Meu INSS nos 15 dias que antecedem o fim do benefício — e, se negarem, valem os mesmos caminhos de recurso."
       }
     ]
+  },
+  {
+    slug: "seguro-desemprego-quem-tem-direito-e-como-pedir",
+    title: "Seguro-desemprego: quem tem direito, quantas parcelas e como pedir",
+    excerpt:
+      "Requisitos da Lei 7.998/90, número de parcelas por tempo trabalhado, prazo de 7 a 120 dias para pedir e o que faz você perder o benefício.",
+    category: "Trabalhista",
+    readingMinutes: 8,
+    publishedAt: "2026-07-12",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "trabalhista",
+    intro:
+      "Quem é demitido sem justa causa tem uma rede de proteção temporária: o seguro-desemprego. Mas o benefício tem regras de tempo mínimo trabalhado, janela curta para o requerimento e situações que cortam o pagamento. Entender isso antes de pedir evita perder parcelas por detalhe.",
+    body: [
+      { type: "h2", text: "Quem tem direito" },
+      {
+        type: "p",
+        text: "O seguro-desemprego (Lei 7.998/90) é do trabalhador dispensado SEM justa causa que estava recebendo salário e que não possui renda própria suficiente nem outro benefício previdenciário de prestação continuada (exceto pensão por morte e auxílio-acidente). Pedido de demissão e demissão por justa causa não dão direito."
+      },
+      { type: "h2", text: "Tempo mínimo trabalhado (varia conforme a solicitação)" },
+      {
+        type: "ul",
+        items: [
+          "1ª solicitação: pelo menos 12 meses de trabalho nos últimos 18 meses",
+          "2ª solicitação: pelo menos 9 meses nos últimos 12 meses",
+          "3ª solicitação em diante: pelo menos 6 meses imediatamente anteriores à dispensa"
+        ]
+      },
+      { type: "h2", text: "Quantas parcelas você recebe" },
+      {
+        type: "ul",
+        items: [
+          "3 parcelas — de 6 a 11 meses trabalhados no período de referência",
+          "4 parcelas — de 12 a 23 meses trabalhados",
+          "5 parcelas — 24 meses ou mais trabalhados"
+        ]
+      },
+      {
+        type: "p",
+        text: "O valor é calculado pela média dos últimos 3 salários, com piso de 1 salário mínimo e teto reajustado todo ano. Empregada e empregado doméstico têm regra própria (LC 150/2015): 3 parcelas de 1 salário mínimo, exigidos 15 meses de trabalho nos últimos 24."
+      },
+      { type: "h2", text: "O prazo para pedir: do 7º ao 120º dia" },
+      {
+        type: "p",
+        text: "O requerimento pode ser feito do 7º ao 120º dia contado da data da dispensa. Passou de 120 dias, o direito àquela demissão se perde. O pedido é gratuito, pelo aplicativo Carteira de Trabalho Digital, pelo portal gov.br ou presencialmente nas unidades do Ministério do Trabalho."
+      },
+      { type: "h2", text: "O que faz perder ou suspender o benefício" },
+      {
+        type: "ul",
+        items: [
+          "Conseguir novo emprego com carteira assinada durante o recebimento",
+          "Passar a receber benefício previdenciário de prestação continuada (salvo pensão por morte ou auxílio-acidente)",
+          "Recusar, sem justificativa, emprego condizente com sua qualificação e salário anterior",
+          "Comprovação de renda própria (inclusive como sócio ativo de empresa ou MEI com faturamento)"
+        ]
+      },
+      {
+        type: "callout",
+        text: "Atenção: quem sai por acordo com a empresa (art. 484-A da CLT) NÃO recebe seguro-desemprego. Esse é um dos principais pontos a pesar antes de aceitar um acordo — a empresa às vezes oferece o acordo justamente porque custa menos que a demissão sem justa causa."
+      },
+      { type: "h2", text: "Pedido negado ou parcela bloqueada: o que fazer" },
+      {
+        type: "ol",
+        items: [
+          "Leia o motivo no aplicativo ou no portal Emprega Brasil — grande parte dos bloqueios é vínculo aberto no CNIS (empresa que não deu baixa) ou suspeita de renda como sócio de empresa inativa",
+          "Corrija o cadastro: baixa na carteira digital, baixa de MEI/empresa inativa na Junta Comercial ou na Receita",
+          "Apresente recurso administrativo no próprio sistema ou na unidade do Ministério do Trabalho",
+          "Persistindo a negativa indevida, é possível discutir na Justiça — inclusive pedindo as parcelas retroativas"
+        ]
+      },
+      { type: "h2", text: "Quando procurar um advogado" },
+      {
+        type: "p",
+        text: "Procure orientação se o benefício foi negado por vínculo fantasma ou empresa em seu nome que você desconhece, se a empresa te pressionou a assinar acordo para não pagar as verbas cheias, ou se a dispensa foi manobra para bloquear o seguro. Um advogado trabalhista avalia se cabe ação para liberar as parcelas e cobrar diferenças."
+      }
+    ],
+    faq: [
+      {
+        question: "Quanto tempo demora para cair a primeira parcela?",
+        answer:
+          "Em regra, cerca de 30 dias após o requerimento aprovado. As demais parcelas caem a cada 30 dias, por crédito em conta ou pelo Caixa Tem."
+      },
+      {
+        question: "MEI pode receber seguro-desemprego?",
+        answer:
+          "Ter um MEI aberto não impede automaticamente, mas o sistema costuma bloquear por presunção de renda própria. Se o MEI está sem faturamento, é preciso comprovar isso (declarações, extrato) no recurso — ou dar baixa no CNPJ."
+      },
+      {
+        question: "Trabalho intermitente conta para o seguro-desemprego?",
+        answer:
+          "O contrato intermitente não dá direito ao seguro-desemprego pela dispensa comum, porque o vínculo permanece. A hipótese aparece quando o contrato é rescindido e são cumpridos os requisitos de meses trabalhados."
+      },
+      {
+        question: "Posso acumular seguro-desemprego com pensão por morte?",
+        answer:
+          "Sim. A própria Lei 7.998/90 excetua a pensão por morte e o auxílio-acidente da vedação de acumular com benefício previdenciário."
+      }
+    ]
+  },
+  {
+    slug: "ferias-como-funcionam-venda-atraso-e-calculo",
+    title: "Férias: quando você tem direito, venda de dias, atraso e pagamento em dobro",
+    excerpt:
+      "Período aquisitivo e concessivo, 1/3 constitucional, venda de até 1/3 dos dias, fracionamento em 3 períodos e a dobra do art. 137 da CLT.",
+    category: "Trabalhista",
+    readingMinutes: 8,
+    publishedAt: "2026-07-12",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "trabalhista",
+    intro:
+      "Todo empregado com carteira assinada conquista 30 dias de férias a cada 12 meses de trabalho — com um terço a mais de salário. Na prática, as dúvidas aparecem nos detalhes: empresa que atrasa a concessão, desconto por faltas, venda de dias e o pagamento fora do prazo. A CLT responde a tudo isso.",
+    body: [
+      { type: "h2", text: "Período aquisitivo e período concessivo" },
+      {
+        type: "p",
+        text: "A cada 12 meses de contrato (período aquisitivo) você adquire o direito a férias (arts. 129 e 130 da CLT). A empresa então tem os 12 meses SEGUINTES (período concessivo) para conceder o descanso, na data que ela escolher — ouvindo o interesse do empregado, mas a palavra final é do empregador."
+      },
+      { type: "h2", text: "Se a empresa passa do prazo: férias em dobro" },
+      {
+        type: "p",
+        text: "Vencido o período concessivo sem a concessão, as férias passam a ser devidas EM DOBRO (art. 137 da CLT). Vale também para a fração: se parte dos dias foi dada depois do limite, a parte atrasada dobra. É um dos pedidos mais comuns — e mais certeiros — na Justiça do Trabalho."
+      },
+      { type: "h2", text: "Quantos dias você tem (e o efeito das faltas)" },
+      {
+        type: "ul",
+        items: [
+          "Até 5 faltas injustificadas no período aquisitivo: 30 dias de férias",
+          "6 a 14 faltas: 24 dias",
+          "15 a 23 faltas: 18 dias",
+          "24 a 32 faltas: 12 dias (art. 130 da CLT)"
+        ]
+      },
+      { type: "h2", text: "O terço constitucional e o prazo de pagamento" },
+      {
+        type: "p",
+        text: "As férias são pagas com acréscimo de 1/3 sobre a remuneração (art. 7º, XVII, da Constituição), incluindo a média de horas extras e adicionais habituais. O pagamento deve acontecer até 2 dias ANTES do início do descanso (art. 145 da CLT) — pagou depois, a jurisprudência majoritária aplica a dobra do valor."
+      },
+      { type: "h2", text: "Vender férias: o abono de 1/3" },
+      {
+        type: "p",
+        text: "Você pode converter até 1/3 dos dias em dinheiro (abono pecuniário, art. 143 da CLT) — em férias de 30 dias, vender até 10. A escolha é do EMPREGADO, requerida até 15 dias antes de completar o período aquisitivo; a empresa não pode impor a venda."
+      },
+      { type: "h2", text: "Fracionar em até 3 períodos" },
+      {
+        type: "p",
+        text: "Desde a Reforma Trabalhista, havendo concordância do empregado, as férias podem ser divididas em até 3 períodos: um deles de pelo menos 14 dias corridos e os demais de no mínimo 5 dias cada (art. 134, §1º, da CLT). Também é proibido começar férias nos 2 dias que antecedem feriado ou dia de repouso semanal."
+      },
+      {
+        type: "callout",
+        text: "Pegadinha comum: 'férias coletivas' não anulam suas regras individuais — dias além do seu saldo são licença remunerada, e o pagamento com o terço segue obrigatório no mesmo prazo."
+      },
+      { type: "h2", text: "Férias na rescisão" },
+      {
+        type: "p",
+        text: "Na saída, entram no acerto as férias vencidas (com dobra, se já venciam o concessivo) e as proporcionais — ambas com 1/3. Mesmo quem pede demissão recebe as proporcionais; só a justa causa retira as proporcionais do trabalhador com menos de 12 meses."
+      },
+      { type: "h2", text: "Quando procurar um advogado" },
+      {
+        type: "p",
+        text: "Vale a conversa quando a empresa vive 'empurrando' suas férias além do prazo, paga depois de iniciado o descanso, impõe a venda dos 10 dias ou não inclui médias de horas extras no cálculo. A prescrição trabalhista é de 5 anos — férias antigas ainda podem ser cobradas dentro desse limite, até 2 anos após o fim do contrato."
+      }
+    ],
+    faq: [
+      {
+        question: "A empresa pode cortar minhas férias depois de marcadas?",
+        answer:
+          "Pode remarcar antes do início, por necessidade do serviço, mas deve reembolsar gastos não recuperáveis que você comprovar (passagens, reservas). Iniciadas as férias, a interrupção só em situação excepcional."
+      },
+      {
+        question: "Quem trabalha meio período tem férias menores?",
+        answer:
+          "Não. Desde a Reforma de 2017 o regime de tempo parcial segue a MESMA tabela do art. 130 da CLT — 30 dias, reduzidos apenas por faltas injustificadas."
+      },
+      {
+        question: "Férias vencidas prescrevem?",
+        answer:
+          "A cobrança respeita a prescrição de 5 anos no curso do contrato e o limite de 2 anos após a rescisão (art. 7º, XXIX, da Constituição). O prazo conta do fim do período concessivo."
+      },
+      {
+        question: "Posso ser demitido durante as férias?",
+        answer:
+          "Não. Durante as férias o contrato está interrompido e a dispensa não produz efeitos; o aviso prévio também não pode correr dentro delas."
+      }
+    ]
+  },
+  {
+    slug: "horas-extras-como-calcular-e-como-provar",
+    title: "Horas extras: como calcular o adicional, os reflexos e como provar na Justiça",
+    excerpt:
+      "Adicional mínimo de 50% (100% em domingos e feriados), limite de 2 horas diárias, banco de horas, reflexos em férias, 13º e FGTS — e as provas que funcionam.",
+    category: "Trabalhista",
+    readingMinutes: 9,
+    publishedAt: "2026-07-12",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "trabalhista",
+    intro:
+      "A jornada padrão é de 8 horas diárias e 44 semanais. O que passar disso é hora extra — e vale no mínimo 50% a mais. O problema raramente é a conta: é a prova. Saber o que a lei presume a seu favor muda completamente o resultado de uma ação.",
+    body: [
+      { type: "h2", text: "O adicional: 50% no mínimo, 100% em domingos e feriados" },
+      {
+        type: "p",
+        text: "A Constituição garante adicional de pelo menos 50% sobre a hora normal (art. 7º, XVI). Em domingos e feriados trabalhados sem folga compensatória, o entendimento consolidado (Súmula 146 do TST) é pagamento em DOBRO. Convenções coletivas frequentemente fixam percentuais maiores — vale conferir a da sua categoria."
+      },
+      { type: "h2", text: "Como calcular o valor da sua hora" },
+      {
+        type: "ol",
+        items: [
+          "Divida o salário mensal por 220 (jornada de 44h semanais) — esse é o valor da hora normal",
+          "Multiplique por 1,5 para a hora extra comum (ou 2,0 em domingo/feriado)",
+          "Multiplique pelo número de horas extras do mês",
+          "Some os REFLEXOS: a média de horas extras habituais entra no DSR, nas férias + 1/3, no 13º, no aviso prévio e no FGTS + 40%"
+        ]
+      },
+      { type: "h2", text: "Limite legal e intervalo" },
+      {
+        type: "p",
+        text: "O limite são 2 horas extras por dia (art. 59 da CLT). Suprimir o intervalo de almoço também gera pagamento: o período suprimido é devido com acréscimo de 50%, como parcela indenizatória (art. 71, §4º). Jornadas 12x36 válidas dependem de previsão em acordo ou convenção coletiva."
+      },
+      { type: "h2", text: "Banco de horas: quando vale" },
+      {
+        type: "p",
+        text: "A compensação por banco de horas exige forma: por acordo INDIVIDUAL escrito, a compensação deve ocorrer em até 6 meses; por convenção ou acordo coletivo, em até 1 ano (art. 59, §§ 2º e 5º, da CLT). Banco 'informal', sem controle transparente ou que nunca zera, costuma ser invalidado — e as horas viram extras com adicional."
+      },
+      { type: "h2", text: "A prova: o que a lei presume a seu favor" },
+      {
+        type: "p",
+        text: "Empresas com mais de 20 empregados são OBRIGADAS a manter registro de jornada (art. 74, §2º, da CLT). Pela Súmula 338 do TST, se a empresa não apresenta os cartões de ponto em juízo, presume-se verdadeira a jornada que você declarou na inicial — cabendo a ela provar o contrário. Cartões 'britânicos' (sempre o mesmo horário) também são desconsiderados."
+      },
+      { type: "h2", text: "Provas que funcionam na prática" },
+      {
+        type: "ul",
+        items: [
+          "Testemunhas que trabalhavam no mesmo horário (a prova mais usada)",
+          "Mensagens de WhatsApp e e-mails respondidos fora do expediente, com data e hora",
+          "Registros de acesso: catraca, crachá, login em sistemas, câmeras",
+          "GPS e histórico de aplicativos corporativos ou de rota",
+          "Escalas, agendas e ordens de serviço com horários"
+        ]
+      },
+      {
+        type: "callout",
+        text: "Prazo: você pode cobrar as horas extras dos ÚLTIMOS 5 ANOS, desde que entre com a ação em até 2 anos após sair da empresa (art. 7º, XXIX, da Constituição). Espera demais, perde mês a mês."
+      },
+      { type: "h2", text: "Cargo de confiança e trabalho externo" },
+      {
+        type: "p",
+        text: "Nem todo mundo tem direito: gerentes com poderes reais de mando e gratificação de pelo menos 40% e trabalhadores externos SEM possibilidade de controle (art. 62 da CLT) ficam fora. Mas o rótulo não basta — se o 'gerente' bate meta com supervisor no pé ou o externo tem roteiro e aplicativo monitorado, o direito às extras costuma ser reconhecido."
+      },
+      { type: "h2", text: "Quando procurar um advogado" },
+      {
+        type: "p",
+        text: "Se as extras são habituais e não aparecem no contracheque, se o banco de horas nunca fecha, ou se você bate ponto e continua trabalhando, reúna as provas acima e converse com um advogado trabalhista. A análise do caso costuma ser gratuita e a ação pode incluir os reflexos — que muitas vezes valem mais que as próprias horas."
+      }
+    ],
+    faq: [
+      {
+        question: "Recebo salário fixo 'sem direito a extras'. Isso vale?",
+        answer:
+          "Cláusula genérica de 'salário compensando extras' não vale para jornada além do limite legal. Fora dos casos do art. 62 da CLT (externo sem controle e gestão com gratificação de 40%), a hora além da 8ª diária/44ª semanal é devida."
+      },
+      {
+        question: "Home office tem hora extra?",
+        answer:
+          "O teletrabalho por PRODUÇÃO ou tarefa fica fora do controle de jornada (art. 62, III), mas teletrabalho com horário controlado (login, reuniões, disponibilidade exigida) gera extras normalmente."
+      },
+      {
+        question: "O que é o DSR sobre horas extras?",
+        answer:
+          "É o reflexo do descanso semanal remunerado: as extras habituais aumentam proporcionalmente o valor do seu repouso semanal (Lei 605/49). Na prática, soma-se cerca de 1/6 sobre o total de extras do mês."
+      },
+      {
+        question: "Minutos antes e depois do expediente contam?",
+        answer:
+          "Até 5 minutos em cada marcação (máximo de 10 no dia) não contam (art. 58, §1º, da CLT). Passou disso, conta TODO o excedente — fila do relógio de ponto e troca de uniforme obrigatória podem entrar na conta."
+      }
+    ]
+  },
+  {
+    slug: "contrato-de-aluguel-direitos-do-inquilino",
+    title: "Contrato de aluguel: os direitos do inquilino que o dono nem sempre conta",
+    excerpt:
+      "Caução de no máximo 3 meses, multa proporcional na saída antecipada, quem paga cada despesa do condomínio e quando o despejo é ilegal — Lei 8.245/91.",
+    category: "Imobiliário",
+    readingMinutes: 8,
+    publishedAt: "2026-07-12",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "imobiliario",
+    intro:
+      "A Lei do Inquilinato (Lei 8.245/91) equilibra a relação entre quem aluga e quem mora — mas boa parte dos contratos ignora limites que a lei impõe ao proprietário. Conhecer cinco ou seis regras evita cobranças indevidas na entrada, durante o contrato e principalmente na saída.",
+    body: [
+      { type: "h2", text: "Garantia: uma só, e caução de no máximo 3 aluguéis" },
+      {
+        type: "p",
+        text: "O locador pode exigir apenas UMA garantia por contrato (art. 37): caução, fiador, seguro-fiança ou cessão de cotas de fundo. Exigir fiador E caução ao mesmo tempo é ilegal — e é contravenção penal (art. 43). A caução em dinheiro é limitada a 3 meses de aluguel, deve ficar em caderneta de poupança e volta CORRIGIDA no fim do contrato (art. 38, §2º)."
+      },
+      { type: "h2", text: "Saída antes do prazo: multa proporcional, sempre" },
+      {
+        type: "p",
+        text: "Quem devolve o imóvel antes do fim do prazo paga a multa combinada de forma PROPORCIONAL ao tempo restante (art. 4º, com a redação da Lei 12.744). Exemplo: multa de 3 aluguéis num contrato de 30 meses — cumpridos 20 meses, paga-se apenas 1/3 da multa. E quem é transferido pelo empregador para outra cidade sai sem multa, avisando com 30 dias."
+      },
+      { type: "h2", text: "Despesas: o que é do inquilino e o que é do dono" },
+      {
+        type: "ul",
+        items: [
+          "Inquilino: despesas ORDINÁRIAS do condomínio (limpeza, salários, consumo de água/luz das áreas comuns, manutenção rotineira) — art. 23, §1º",
+          "Dono: despesas EXTRAORDINÁRIAS (obras estruturais, pintura de fachada, fundo de reserva, instalação de equipamentos novos) — art. 22, parágrafo único",
+          "IPTU e seguro incêndio: podem ser transferidos ao inquilino SE o contrato previr expressamente",
+          "Taxas de administração imobiliária e de cadastro: sempre do dono (art. 22, VII)"
+        ]
+      },
+      { type: "h2", text: "Reajuste e revisão do aluguel" },
+      {
+        type: "p",
+        text: "O reajuste é anual, pelo índice previsto no contrato (IGP-M e IPCA são os mais comuns) — reajustar antes de 12 meses é vedado por lei federal. Depois de 3 anos de contrato, qualquer das partes pode pedir a REVISÃO judicial do valor para adequá-lo ao mercado (art. 19)."
+      },
+      { type: "h2", text: "Consertos: benfeitorias e o dever de manter o imóvel" },
+      {
+        type: "p",
+        text: "Problemas estruturais e tudo o que já existia antes da entrega são do dono (art. 22, I e IV); o inquilino responde pelo uso normal. Benfeitorias NECESSÁRIAS (ex.: infiltração que compromete o imóvel) são indenizáveis mesmo sem autorização; as úteis, se autorizadas — com direito de retenção (art. 35). Muitos contratos 'renunciam' a isso; a renúncia vale, mas precisa estar escrita."
+      },
+      {
+        type: "callout",
+        text: "Vistoria de entrada é sua melhor defesa na saída: exija o laudo com fotos e conteste por escrito o que não corresponder. Sem vistoria inicial, o dono tem enorme dificuldade de cobrar reparos na devolução."
+      },
+      { type: "h2", text: "Despejo: só por ação judicial" },
+      {
+        type: "p",
+        text: "Nenhum locador pode trocar fechadura, cortar água e luz ou remover seus pertences por conta própria — despejo é sempre por AÇÃO JUDICIAL (art. 5º), e a autotutela pode gerar indenização. No aluguel residencial, o atraso permite purgar a mora (pagar o débito no processo e manter o contrato), desde que não tenha usado essa faculdade há pouco tempo."
+      },
+      { type: "h2", text: "Preferência na compra do imóvel" },
+      {
+        type: "p",
+        text: "Se o dono decidir vender, o inquilino tem PREFERÊNCIA na compra em igualdade de condições (art. 27), com 30 dias para responder à oferta. Com o contrato averbado na matrícula, é possível até anular a venda feita por fora (art. 33)."
+      },
+      { type: "h2", text: "Quando procurar um advogado" },
+      {
+        type: "p",
+        text: "Procure orientação ao receber cobrança de multa integral em saída antecipada, desconto indevido da caução, repasse de despesas extraordinárias do condomínio, ameaça de despejo sem processo ou negativa de devolução corrigida da garantia. Boa parte desses conflitos se resolve com uma notificação bem fundamentada — sem precisar de processo."
+      }
+    ],
+    faq: [
+      {
+        question: "O dono pode pedir o imóvel de volta antes do prazo?",
+        answer:
+          "Durante o prazo determinado, NÃO — o contrato protege o inquilino (art. 4º). Após virar prazo indeterminado, a retomada imotivada exige aviso de 30 dias e, se o inquilino não sair, ação de despejo."
+      },
+      {
+        question: "Fiador pode ser exigido junto com caução?",
+        answer:
+          "Não. A lei proíbe mais de uma modalidade de garantia no mesmo contrato (art. 37, parágrafo único) — e o excesso é contravenção do art. 43."
+      },
+      {
+        question: "Posso reter o aluguel se o dono não faz os consertos?",
+        answer:
+          "Suspender pagamento por conta própria é arriscado (pode virar despejo por falta de pagamento). O caminho seguro é notificar, documentar e pedir judicialmente o abatimento ou a obrigação de fazer — ou, em casos graves, a rescisão por culpa do locador."
+      },
+      {
+        question: "Aluguel verbal vale?",
+        answer:
+          "Vale — a locação verbal é regida pela mesma lei, presume-se por prazo indeterminado e o inquilino tem os mesmos direitos (recibo, preferência, despejo só judicial). A dificuldade é só de prova das condições combinadas."
+      }
+    ]
+  },
+  {
+    slug: "pensao-por-morte-quem-tem-direito-e-como-pedir",
+    title: "Pensão por morte do INSS: quem recebe, por quanto tempo e como pedir",
+    excerpt:
+      "Dependentes por classe, duração conforme a idade do cônjuge, o prazo de 90 dias para receber desde o óbito e o cálculo pós-reforma — Lei 8.213/91.",
+    category: "Previdenciário",
+    readingMinutes: 8,
+    publishedAt: "2026-07-12",
+    author: "Equipe AdvAqui",
+    authorRole: "Equipe",
+    relatedSpecialty: "previdenciario",
+    intro:
+      "A pensão por morte substitui a renda de quem faleceu para amparar a família — mas as regras mudaram bastante desde 2015 e 2019, e hoje a duração do benefício depende da idade do viúvo ou viúva e do tempo de casamento. Pedir dentro do prazo certo garante o pagamento desde a data do óbito.",
+    body: [
+      { type: "h2", text: "Quem é dependente (e a ordem das classes)" },
+      {
+        type: "ul",
+        items: [
+          "Classe 1 (preferencial, dependência presumida): cônjuge, companheiro(a) — inclusive em união estável e casais do mesmo sexo — e filhos menores de 21 anos ou inválidos/com deficiência",
+          "Classe 2: pais do falecido (precisam PROVAR dependência econômica)",
+          "Classe 3: irmãos menores de 21 anos ou inválidos (também com prova de dependência)"
+        ]
+      },
+      {
+        type: "p",
+        text: "Existindo dependente de uma classe, as classes seguintes ficam excluídas (art. 16 da Lei 8.213/91). A pensão é dividida em partes iguais entre os dependentes da mesma classe — e a cota de quem perde a condição (ex.: filho que completa 21) reverte aos demais."
+      },
+      { type: "h2", text: "O falecido precisava estar 'em dia' com o INSS?" },
+      {
+        type: "p",
+        text: "A pensão NÃO exige carência mínima de contribuições, mas exige que o falecido tivesse QUALIDADE DE SEGURADO na data do óbito (estivesse contribuindo ou no 'período de graça', que vai de 12 a 36 meses após parar). Se já era aposentado, a qualidade é automática. Perdida a qualidade, a pensão só sai se ele já tinha direito adquirido a alguma aposentadoria."
+      },
+      { type: "h2", text: "Por quanto tempo o cônjuge recebe" },
+      {
+        type: "ul",
+        items: [
+          "4 meses apenas: se o casamento/união tinha menos de 2 anos OU o falecido tinha menos de 18 contribuições mensais",
+          "Com 2+ anos de união e 18+ contribuições, vale a idade do dependente no óbito: menos de 22 anos → 3 anos de pensão; 22 a 26 → 6 anos; 27 a 29 → 10 anos; 30 a 40 → 15 anos; 41 a 43 → 20 anos; 44 anos ou mais → VITALÍCIA (Lei 13.135/2015)"
+        ]
+      },
+      {
+        type: "p",
+        text: "Cônjuge inválido ou com deficiência recebe enquanto durar a condição, independentemente da tabela. Filhos recebem até os 21 anos (não se prorroga por faculdade), salvo invalidez ou deficiência anterior."
+      },
+      { type: "h2", text: "Quanto se recebe (regra pós-2019)" },
+      {
+        type: "p",
+        text: "Para óbitos após a EC 103/2019, a pensão parte de 50% do valor da aposentadoria que o falecido recebia (ou teria direito por incapacidade permanente) MAIS 10% por dependente, até 100%. Viúva com 2 filhos, por exemplo, recebe 80%. Nunca abaixo do salário mínimo quando a pensão é a única renda formal do dependente."
+      },
+      { type: "h2", text: "O prazo que faz diferença: 90 e 180 dias" },
+      {
+        type: "callout",
+        text: "Peça dentro de 90 DIAS do falecimento e a pensão retroage à DATA DO ÓBITO (art. 74). Para filhos menores de 16 anos, o prazo é de 180 dias. Passou do prazo, o benefício só conta a partir do requerimento — cada mês de demora é um mês perdido."
+      },
+      { type: "h2", text: "Como pedir" },
+      {
+        type: "ol",
+        items: [
+          "Acesse o Meu INSS (aplicativo ou meu.inss.gov.br) → 'Novo pedido' → 'Pensão por morte'",
+          "Documentos básicos: certidão de óbito, documento e CPF de ambos, certidão de casamento ou provas da união estável (contas conjuntas, mesmo endereço, filhos, fotos, declarações), certidão de nascimento dos filhos",
+          "Trabalhador rural, MEI e contribuinte individual: leve também as provas de atividade/contribuição do falecido",
+          "Acompanhe pelo próprio Meu INSS; se houver exigência, cumpra no prazo indicado"
+        ]
+      },
+      { type: "h2", text: "Negativas mais comuns (e o que fazer)" },
+      {
+        type: "p",
+        text: "As recusas típicas são: união estável 'não comprovada', perda da qualidade de segurado e contribuições em atraso de contribuinte individual. Cabe recurso administrativo à Junta de Recursos em 30 dias — e, com provas razoáveis, a via judicial costuma reverter negativas de união estável e reconhecer período de graça estendido por desemprego involuntário."
+      },
+      { type: "h2", text: "Quando procurar um advogado" },
+      {
+        type: "p",
+        text: "Procure ajuda especializada se a união estável foi negada, se há disputa entre dependentes (ex-cônjuge com pensão alimentícia concorre com o atual), se o INSS alegou perda da qualidade de segurado ou se há filho com deficiência envolvido. Previdenciarista costuma atuar por êxito, sem custo inicial."
+      }
+    ],
+    faq: [
+      {
+        question: "Ex-esposa que recebia pensão alimentícia tem direito?",
+        answer:
+          "Sim — o ex-cônjuge credor de alimentos concorre em igualdade com o cônjuge atual e demais dependentes (art. 76, §2º, da Lei 8.213/91), pelo tempo que durar a obrigação alimentar ou conforme a tabela etária."
+      },
+      {
+        question: "Quem vivia junto sem casar no papel recebe?",
+        answer:
+          "Sim. União estável dá os mesmos direitos, mas exige prova documental do convívio (endereço comum, dependência em plano de saúde, conta conjunta, filhos em comum). Quanto mais início de prova material, melhor."
+      },
+      {
+        question: "Pensão por morte acumula com aposentadoria?",
+        answer:
+          "Acumula, mas desde a EC 103/2019 o benefício de menor valor sofre redução escalonada (recebe-se 100% do maior + um percentual do menor por faixa de salário mínimo)."
+      },
+      {
+        question: "Namorado(a) ou noivo(a) tem direito?",
+        answer:
+          "Não — namoro e noivado, sem convivência com intuito de família, não configuram união estável para o INSS. O que decide é a vida em comum comprovada, não o rótulo."
+      }
+    ]
   }
 ];
 

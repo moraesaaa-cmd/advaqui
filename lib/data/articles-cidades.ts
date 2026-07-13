@@ -54,7 +54,12 @@ export const ARTIGOS_LOCALIZAVEIS_SLUGS: string[] = [
   "rescisao-indireta-como-funciona",
   "trabalho-sem-carteira-assinada-direitos",
   "escala-6x1-o-que-diz-a-lei",
-  "auxilio-doenca-como-pedir-e-recorrer"
+  "auxilio-doenca-como-pedir-e-recorrer",
+  "seguro-desemprego-quem-tem-direito-e-como-pedir",
+  "ferias-como-funcionam-venda-atraso-e-calculo",
+  "horas-extras-como-calcular-e-como-provar",
+  "contrato-de-aluguel-direitos-do-inquilino",
+  "pensao-por-morte-quem-tem-direito-e-como-pedir"
 ];
 
 /**
